@@ -1,0 +1,51 @@
+---
+title: "Introduction"
+# description: "Orderly Network, a permissionless and modular protocol built on NEAR."
+---
+
+We provide two interfaces to communicate between Orderly Network and clients. 
+
+- [RESTful API interface](#restful-api): Provides sending events like create order, cancel order, fetch balance, etc.
+- [Websocket interface](#websocket-api): Provides real-time orderbook data feed and order update feed.
+
+### Base endpoints
+
+- `https://api-evm.orderly.org/` **(Mainnet)**
+- `https://testnet-api-evm.orderly.org` **(Testnet)**
+
+### General Information on REST Endpoints
+
+For `GET` and `DELETE` endpoints, parameters must be sent as a `query string`.
+
+For `POST` and `PUT` endpoints, the parameters must be sent in the `request body` with content type `application/json`.
+
+Parameters may be sent in any order.
+
+### Authorization
+
+All our interfaces require keys to access.  
+
+Please set the corresponding header in your request. See refer to [Authentication](/api-reference-evm/authentication) for more information.
+
+### Symbol
+
+Orderly Network uses the format of `<TYPE>_<BASE>_<QUOTE>` to represent a symbol name, for example: `SPOT_NEAR_USDC` means that it is `NEAR_USDC` pair in `SPOT` trading market.
+
+### Rate Limit
+
+Rate limit is counted using the Orderly key. If your application reached the rate limit of certain endpoint, the server will return an error result with http code `429`. You may need wait until next time horizon.
+
+### Error Message
+
+> **Errors consist of three parts: an error code, detailed message and a success flag.**
+
+```json
+{
+  "success": false,
+  "code": -1005, // Error code
+  "message": "order_price must be a positive number" // Detail message  
+}
+```
+
+All API will return following json when api fails, the "message" will contain the detail error message, it may be because some data are in wrong format, or other reasons.  
+Specific error codes and messages are defined in [Errors Codes](#error-codes).
