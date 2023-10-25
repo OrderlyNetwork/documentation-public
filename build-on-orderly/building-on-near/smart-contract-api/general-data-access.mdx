@@ -1,0 +1,62 @@
+---
+title: "General Data Access"
+---
+
+## Quick Overview:
+
+![](/images/build-on-orderly/building-on-near/smart-contract-api/image.png)
+
+## Check if a Token is Listed
+
+`is_token_listed`
+
+Parameters:
+
+```css
+args: {
+    token: accountId,
+}
+```
+
+## Get All Listed Tokens
+
+`get_listed_tokens`
+
+Parameters:
+
+`none`
+
+## Check if a Pair is Listed
+
+`is_symbol_listed`
+
+Parameters:
+
+```css
+args: {
+    pair_symbol: "SPOT_NEAR_USDC",
+}
+```
+
+Given the off-chain/on-chain architecture, when users withdraw their funds, the smart contract checks the off-chain matching engine for pending orders to prevent double-spending. Orderly has implemented a fallback mechanism in case communication is lost between the two modules for a certain amount of time which can be checked using the following API:
+
+## Get the Manual Withdrawal Time
+
+`get_max_operator_downtime_nanos`
+
+Parameters:
+
+`none`
+
+Queries the maximum duration of the downtime after which manual withdrawal will be available
+
+## Get the Time Remaining for Manual Withdrawal
+
+`get_withdraw_unlock_duration_nanos`
+
+Parameters:
+
+`none`
+
+Computes duration after which manual withdrawal will be available
+

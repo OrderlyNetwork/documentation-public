@@ -1,0 +1,98 @@
+---
+title: "User Data"
+---
+
+## Quick Overview:
+
+![](/images/build-on-orderly/building-on-near/smart-contract-api/image.png)
+
+## Get
+
+`get_user_info`
+
+Parameters:
+
+```css
+args: {
+    account: accountId,
+}
+```
+
+Response:
+
+```css
+V3: {
+    storage_balance: 5.611e+22,
+    keys: {
+        'ed25519: AtjCTrwVsiUXkA607aX9xEomxxwwL07AsHEtKdryCmgZ': {
+            key: [ 
+                100, 100, 100, 98, 98,  56, 55, 54, 50, 55, 98, 102,
+                 51,  55,  48, 53, 51, 100, 56, 57, 55, 54, 52, 101,
+                 99,  56, 100, 54, 97,  54, 99, 98, 54, 53, 53,  56,
+                 54,  48,  57, 99, 50,  48, 56, 99, 57, 99, 57,  56,
+                 54,  55,  55, 55, 99,  48, 47, 56, 99, 50, 56,  48,
+                 48,  48,  55, 57
+            ]
+        },
+        'ed25519: 35WjjUVFRWsTDpqbeq195Bhcoa8cPdLC6Z1ftKV35Sa': {
+            key: [
+                100, 100, 100, 98, 98,  56, 55, 54, 50, 55, 98, 102,
+                 51,  55,  48, 53, 51, 100, 56, 57, 55, 54, 52, 101,
+                 99,  56, 100, 54, 97,  54, 99, 98, 54, 53, 53,  56,
+                 54,  48,  57, 99, 50,  48, 56, 99, 57, 99, 57,  56,
+                 54,  55,  55, 55, 99,  48, 47, 56, 99, 50, 56,  48,
+                 48,  48,  55, 57
+            ]
+        }
+    },
+    token_ balances: {
+        near: { balance: 1.5655267308e+27, pending_transfer: 0 }, 
+        'a0b86091c6218b36c1d19d402e9eb0ce3606eb48.factory.bridge.near': { balance: 18947, pending_transfer: 0 },
+        '2260fac5e5542a773aa44fbcfedf7c193bc2c599.factory.bridge.near': { balance: 96, pending_transfer: 0 }
+    }, 
+    withdraw_requests: {},
+    keys_to_remove: {}, 
+    onchain_orders: {}
+}
+
+```
+
+## Check if an Account exists
+
+`user_account_exists`
+
+Parameters:
+
+```css
+args: {
+    user: accountId,
+}
+```
+
+## Get the Token Balance of a User
+
+`get_user_token_balance`
+
+Parameters:
+
+```css
+args: {
+    user: accountId,
+    token: accountId,
+}
+```
+
+## Get the User's Trading Key
+
+`get_user_trading_key`
+
+Parameters:
+
+```css
+args: {
+    user: accountId,
+    //optional and is only required for cross-contract calls
+    orderly_key: "ed25519: Public Orderly Access key",
+}
+```
+

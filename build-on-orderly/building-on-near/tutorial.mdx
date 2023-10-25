@@ -1,0 +1,1347 @@
+---
+title: "Tutorial"
+description: "Sample interaction with Orderly"
+---
+
+In this guide, we will dive into Orderly Network to show step-by-step instructions on how to build a simple dex dapp using Orderly Network’s order book. Given how different NEAR protocol is from other chains, we will also cover the basics of the developer tooling and architecture to help you get up and running building your own DeFi dapps on Orderly Network.
+
+In order to place a trade on Orderly the following steps have to be executed:
+
+Step 1: Connect a wallet
+
+Step 2: Deposit storage balance
+
+Step 3: Generate Orderly Access keys
+
+Step 4: Assign Orderly Access keys to the Orderly contract
+
+Step 5: Generate Trading keys
+
+Step 6: Set Trading keys in the Orderly Contract
+
+Step 7: Deposit funds
+
+Step 8: Trade/Get user data/Get market data
+
+Step 9: Withdraw
+
+
+## Getting Started
+
+There are several ways to interact with the NEAR blockchain, including NEAR CLI which uses JavaScript API. We will use `near-api-js` which can be used in the browser or in Node.js but let’s stick with the browser for our tutorial. NEAR has great documentation which can be found [here](https://docs.near.org/tools/near-api-js/quick-reference) and on their [GitHub](https://github.com/near/near-api-js).
+
+Let’s start off by setting up all dependencies.
+
+## Setting Up
+
+First, download near-api-js using npm
+
+```bash
+npm i --save near-api-js
+```
+
+Now we can start by connecting to NEAR testnet and configure the variables in `environment.ts`
+
+```java
+import {keyStores} from "near-api-js";
+
+export const environment = {
+    nearWalletConfig: {
+        keyStore: new keyStores.BrowserLocalStorageKeyStore(),
+        contractName: 'asset-manager.orderly.testnet',
+        methodNames: ['user_announce_key', 'user_request_set_trading_key', 'create_user_account'],
+        networkId: 'testnet'
+        nodeUrl: 'https://rpc.testnet.near.org',
+        walletUrl: 'https://testnet.mynearwallet.com',
+        helperUrl: 'https://helper.testnet.near.org',
+        explorerUrl: 'https://explorer.testnet.near.org',
+        appWallet: ['sender', 'coin98-wallet', 'nightly', 'wallet-connect', 'here-wallet'],
+        headers: {},
+        connectCallback: {
+            success: '',
+            failure: '',
+        },
+    },
+    config: {
+        apiUrl: 'https://testnet-api.orderly.org',
+        privateWsUrl: 'wss://testnet-ws-private.orderly.org',
+        publicWsUrl: 'wss://testnet-ws.orderly.org',
+        publicWebsocketKey: 'OqdphuyCtYWxwzhxyLLjOWNdFP7sQt8RPWzmb5xY',
+    }
+}
+```
+
+## Connecting Wallet
+
+In this tutorial, we use MyNearWallet.
+
+```java
+import {Account, connect, WalletConnection} from "near-api-js";
+
+const nearConfig = environment.nearWalletConfig;
+const nearConnection = await connect(nearConfig);
+let appKeyPrefix = 'near_app';
+const wallet = new WalletConnection(nearConnection, appKeyPrefix);
+if (connection.isSignedIn()) {
+    // do some action
+} else {
+    walletConnection?.requestSignIn({
+        contractId: environment.nearWalletConfig.contractName,
+        methodNames: environment.nearWalletConfig.methodNames,
+    });
+}
+```
+
+## Generating Access Keys
+
+When the connection is successful, we can get the `accessKey`, `accountId`, and `Account` instance.
+
+```java
+if (wallet.isSignedIn()) {
+    const nearAccount = await nearConnection.account(connection.getAccountId());
+    const accountId = wallet.getAccountId();
+    const orderlyKeyPair = await environment.nearWalletConfig.keyStore.getKey(environment.nearWalletConfig.networkId, accountId);
+}
+```
+
+## Checking if an Account Exists
+
+The base function to call viewFunction:
+
+```java
+import {AccessKeyViewRaw, AccountView, CodeResult} from "near-api-js/lib/providers/provider";
+import {createTransaction, functionCall, Transaction} from "near-api-js/lib/transaction";
+
+function callViewFunction(params: { contractName: string; methodName: string; args: { [key: string]: any } }) {
+    const provider = new providers.JsonRpcProvider({url: environment.nearWalletConfig.nodeUrl});
+    const b64 = Buffer.from(JSON.stringify(params.args)).toString('base64');
+    return provider
+        .query({
+            request_type: 'call_function',
+            account_id: params.contractName,
+            method_name: params.methodName,
+            args_base64: b64,
+            finality: 'optimistic',
+        })
+        .then((res) => JSON.parse(Buffer.from(res.result).toString()));
+}
+```
+
+First, we need to check if a user exists using `user_account_exists` function:
+
+```java
+export const checkUserAccountIsExist = (accountId: string) =>
+    callViewFunction({
+        contractName: environment.nearWalletConfig.contractName,
+        methodName: 'user_account_exists',
+        args: {
+            user: accountId,
+        },
+    });
+```
+
+We can also check if Orderly Key is already announced:
+
+```java
+export const isOrderlyKeyAnnounced = (accountId: string, orderlyKeyPair: KeyPair) =>
+    callViewFunction({
+        contractName: environment.nearWalletConfig.contractName,
+        methodName: 'is_orderly_key_announced',
+        args: {
+            user: accountId,
+            orderly_key: orderlyKeyPair.getPublicKey().toString(),
+        },
+    });
+```
+
+If a user exists, we can retrieve the access keys through the following method:
+
+```java
+export const getAccessKeyInfo = async (accountId: string, keyPair: KeyPair): Promise => {
+    const provider = new providers.JsonRpcProvider({url: environment.nearWalletConfig.nodeUrl});
+
+    const publicKey = keyPair.getPublicKey();
+    return provider.query(
+        `access_key/${accountId}/${publicKey.toString()}`, ''
+    );
+
+}
+```
+
+## Announcing Orderly Key/Storage Deposit
+
+If a user account does not exist, we need to call `storage_deposit` function to create a user account:
+
+```java
+export const storageDeposit = async (wallet: WalletConnection, depositValue: string) => {
+    const accountId = wallet.getAccountId();
+    const keyPair = await environment.nearWalletConfig.keyStore.getKey(environment.nearWalletConfig.networkId, accountId);
+    const publicKey = keyPair.getPublicKey();
+
+    const accessKeyInfo = await getAccessKeyInfo(accountId, keyPair);
+    const nonce = ++accessKeyInfo.nonce;
+    const recentBlockHash = serialize.base_decode(accessKeyInfo.block_hash);
+    const transactions: Transaction[] = [];
+    transactions.push(createTransaction(
+        accountId,
+        publicKey,
+        environment.nearWalletConfig.contractName,
+        nonce,
+        [
+            functionCall(
+                'storage_deposit',
+                {
+                    receiver_id: environment.nearWalletConfig.contractName,
+                    msg: '',
+
+                },
+                BOATLOAD_OF_GAS,
+                depositValue,
+            )
+        ],
+        recentBlockHash,
+    ))
+    return wallet.requestSignTransactions({
+        transactions,
+    })
+
+};
+```
+
+and we need to know how much NEAR we need to add to `storage_deposit`. We can call the `storage_balance_bounds` function to get:
+
+```java
+export const storageBalanceBounds = (tokenContractAddress: string, accountId: string) =>
+    callViewFunction({
+        contractName: tokenContractAddress,
+        methodName: 'storage_balance_bounds',
+        args: {
+            account_id: accountId,
+        },
+    });
+```
+
+We can announce Orderly Key if it hasn't been before. However, we need to check if there's enough storage deposit to announce the key:
+
+```java
+export const storageBalanceOf = (tokenContractAddress: string, accountId: string) =>
+    callViewFunction({
+        contractName: tokenContractAddress,
+        methodName: 'storage_balance_of',
+        args: {
+            account_id: accountId,
+        },
+    });
+
+export const storageCostOfAnnounceKey = () =>
+    callViewFunction({
+        contractName: environment.nearWalletConfig.contractName,
+        methodName: 'storage_cost_of_announce_key',
+        args: {},
+    });
+```
+
+```java
+export const setAnnounceKey = async (account: Account): Promise => {
+    return account.functionCall({
+        contractId: environment.nearWalletConfig.contractName,
+        methodName: 'user_announce_key',
+        args: {},
+        gas: MAX_GAS,
+    });
+}
+```
+
+In summary, the flow will look like the following:
+
+```java
+if (wallet.isSignedIn()) {
+    const nearAccount = await nearConnection.account(wallet.getAccountId());
+    const accountId = wallet.getAccountId();
+    const isExist = await checkUserAccountIsExist(accountId);
+    const orderlyKeyPair = await environment.nearWalletConfig.keyStore.getKey(environment.nearWalletConfig.networkId, accountId);
+    if (!isExist) {
+        const bounds = await storageBalanceBounds(environment.nearWalletConfig.contractName, accountId);
+        const storageDepositRes = await storageDeposit(wallet, bounds.min);
+    }
+    const isAnnounced = await isOrderlyKeyAnnounced(accountId, orderlyKeyPair!);
+    if (!isAnnounced) {
+        const storageUsage = await userStorageUsage(accountId);
+        const balanceOf = await storageBalanceOf(environment.nearWalletConfig.contractName, accountId);
+        const storageCost = await storageCostOfAnnounceKey()
+        const value = new BigNumber(storageUsage).plus(new BigNumber(storageCost)).minus(new BigNumber(balanceOf.total));
+        if (value.isGreaterThan(0)) {
+            const storageDepositRes = await storageDeposit(wallet, value.toFixed());
+        }
+        const setOrderlyKeyRes = await setAnnounceKey(nearAccount!);
+    }
+}
+```
+
+## Setting TradingKey
+
+We use elliptic curve cryptography to generate trading keys and `kecccak256` to format them.
+
+```bash
+npm i elliptic
+npm i keccak256
+```
+
+Generating trading key:
+
+```java
+ export const getTradingKeyPair = () => {
+    const ec = new EC('secp256k1');
+    const keyPair = ec.keyFromPrivate(secretKey);
+    return {
+        privateKey: keyPair.getPrivate().toString('hex'),
+        publicKey: keyPair.getPublic().encode('hex'),
+        keyPair,
+    };
+}
+```
+
+We can check if trading keys have been set before:
+
+```java
+export const isTradingKeySet = async (accountId: string, orderlyKeyPair: KeyPair) =>
+    callViewFunction({
+        contractName: environment.nearWalletConfig.contractName,
+        methodName: 'is_trading_key_set',
+        args: {
+            user: accountId,
+            orderly_key: orderlyKeyPair.getPublicKey().toString(),
+        },
+    });
+
+```
+
+We can set the trading key if none has been set before:
+
+```java
+export const userRequestSetTradingKey = (account: Account, tradingKeyPair: any) => {
+    const pubKeyAsHex = tradingKeyPair.publicKey.replace('04', '');
+    const normalizeTradingKey = window.btoa(keccak256(pubKeyAsHex).toString('hex'));
+    return account.functionCall({
+        contractId: environment.nearWalletConfig.contractName,
+        methodName: 'user_request_set_trading_key',
+        args: {
+            key: normalizeTradingKey,
+        },
+        gas: MAX_GAS,
+        attachedDeposit: utils.format.parseNearAmount('0'),
+    });
+
+}
+```
+
+In summary, the flow for setting trading keys will look like the following:
+
+```java
+const tradingKeyPair = getTradingKeyPair();
+const isSet = await isTradingKeySet(accountId, orderlyKeyPair);
+if (!isSet) {
+    const setTradingKeyRes = await userRequestSetTradingKey(nearAccount, tradingKeyPair);
+    localStorage.setItem('TradingKeySecret', tradingKeyPair.privateKey);
+}
+```
+
+## Depositing NEAR
+
+First we need to check `storage_cost_of_token_balance` :
+
+```java
+export const storageCostOfTokenBalance = () =>
+    callViewFunction({
+        contractName: environment.nearWalletConfig.contractName,
+        methodName: 'storage_cost_of_token_balance',
+        args: {},
+    });
+```
+
+and check if we need additional `storage_deposit`
+
+```java
+export const depositNear = async (wallet: WalletConnection, amount: string) => {
+    const accountId = wallet.getAccountId();
+    const keyPair = await environment.nearWalletConfig.keyStore.getKey(environment.nearWalletConfig.networkId, accountId);
+    const publicKey = keyPair.getPublicKey();
+
+    const [storageUsage, balanceOf, storageCost, accessKeyInfo] = await Promise.all([
+        userStorageUsage(accountId),
+        storageBalanceOf(environment.nearWalletConfig.contractName, accountId),
+        storageCostOfTokenBalance(),
+        getAccessKeyInfo(accountId, keyPair)
+    ]);
+    const value = new BigNumber(storageUsage).plus(new BigNumber(storageCost)).minus(new BigNumber(balanceOf.total));
+
+    const nonce = ++accessKeyInfo.nonce;
+    const recentBlockHash = serialize.base_decode(accessKeyInfo.block_hash);
+    const transactions: Transaction[] = [];
+
+    if (value.isGreaterThan(0)) {
+        transactions.push(createTransaction(
+            accountId,
+            publicKey,
+            environment.nearWalletConfig.contractName,
+            nonce,
+            [
+                functionCall(
+                    'storage_deposit',
+                    {
+                        receiver_id: environment.nearWalletConfig.contractName,
+                        msg: '',
+
+                    },
+                    BOATLOAD_OF_GAS,
+                    value.toFixed(),
+                )
+            ],
+            recentBlockHash,
+        ))
+    }
+    transactions.push(createTransaction(
+        accountId,
+        publicKey,
+        environment.nearWalletConfig.contractName,
+        nonce + 1,
+        [
+            functionCall(
+                'user_deposit_native_token',
+                {},
+                BOATLOAD_OF_GAS,
+                utils.format.parseNearAmount(amount),
+            )
+        ],
+        recentBlockHash,
+    ))
+    return wallet.requestSignTransactions({
+        transactions,
+    })
+}
+```
+
+## Withdrawing NEAR
+
+We need to call the view function `get_withdraw_fee` 
+
+```java
+export const getWithdrawFee = async () =>
+    callViewFunction({
+        contractName: environment.nearWalletConfig.contractName,
+        methodName: 'get_withdraw_fee',
+        args: {},
+    });
+```
+
+check if need `storage_deposit`, if needed, batch transaction to sign.
+
+```java
+export const withdrawNear = async (wallet: WalletConnection, tokenAddress: string, amount: string) => {
+    const accountId = wallet.getAccountId();
+    const keyPair = await environment.nearWalletConfig.keyStore.getKey(environment.nearWalletConfig.networkId, accountId);
+    const publicKey = keyPair.getPublicKey();
+
+    const [storageUsage, balanceOf, storageCost, withdrawFee, accessKeyInfo] = await Promise.all([
+        userStorageUsage(accountId),
+        storageBalanceOf(environment.nearWalletConfig.contractName, accountId),
+        storageCostOfTokenBalance(),
+        getWithdrawFee(),
+        getAccessKeyInfo(accountId, keyPair)
+    ]);
+    const recentBlockHash = serialize.base_decode(accessKeyInfo.block_hash);
+    const value = new BigNumber(storageUsage).plus(new BigNumber(storageCost)).minus(new BigNumber(balanceOf.total));
+    const transactions: Transaction[] = [];
+    if (value.isGreaterThan(0)) {
+        transactions.push(createTransaction(
+            accountId,
+            publicKey,
+            environment.nearWalletConfig.contractName,
+            accessKeyInfo.nonce + 1,
+            [
+                functionCall(
+                    'storage_deposit',
+                    {
+                        receiver_id: environment.nearWalletConfig.contractName,
+                        msg: '',
+
+                    },
+                    BOATLOAD_OF_GAS,
+                    value.toFixed(),
+                )
+            ],
+            recentBlockHash,
+        ))
+    }
+
+    transactions.push(createTransaction(
+        accountId,
+        publicKey,
+        environment.nearWalletConfig.contractName,
+        accessKeyInfo.nonce + 2,
+        [
+            functionCall(
+                'user_request_withdraw',
+                {
+                    token: tokenAddress,
+                    amount: utils.format.parseNearAmount(amount),
+                },
+                BOATLOAD_OF_GAS,
+                withdrawFee,
+            )
+        ],
+        recentBlockHash,
+    ))
+
+    return wallet.requestSignTransactions({
+        transactions,
+    });
+
+}
+```
+
+## Call REST API
+
+```java
+const base64url = function (aStr: string) {
+    return aStr.replace(/\+/g, '-').replace(/\//g, '_');
+};
+export const signMessageByOrderlyKey = (params: string, keyPair: KeyPair) => {
+    const u8 = Buffer.from(params);
+    const signStr = keyPair.sign(u8);
+    return base64url(Buffer.from(signStr.signature).toString('base64'));
+}
+
+```
+
+### Get Balance
+
+```java
+export const getBalance = async (): Promise => {
+    const urlParam = '/position/balances';
+    const accountId = '';
+    const timestamp = new Date().getTime().toString();
+    const messageStr = [timestamp, 'GET', urlParam].join('');
+    const keyPair = await environment.nearWalletConfig.keyStore.getKey(environment.nearWalletConfig.networkId, accountId)
+    const sign = signMessageByOrderlyKey(messageStr, keyPair);
+
+    const headers = {
+        'Access-Control-Allow-Origin': '*',
+        Accept: 'application/json',
+        'Content-Type': 'application/json;charset=utf-8',
+    }
+    Object.assign(headers, {
+        'orderly-account-id': accountId,
+        'orderly-key': keyPair?.getPublicKey().toString(),
+        'orderly-timestamp': timestamp,
+        'orderly-signature': sign,
+    });
+    return fetch(environment.config.apiUrl + '/position/balances', {
+        method: 'GET',
+        headers,
+    })
+        .then(response => response.json());
+}
+```
+
+### Place/Cancel/Get Orders
+
+#### Generate Signatures
+
+To place an order we need to generate Orderly Key and Trading Key signatures:
+
+```java
+const base64url = function (aStr: string) {
+    return aStr.replace(/\+/g, '-').replace(/\//g, '_');
+};
+export const signMessageByOrderlyKey = (params: string, keyPair: KeyPair) => {
+    const u8 = Buffer.from(params);
+    const signStr = keyPair.sign(u8);
+    return base64url(Buffer.from(signStr.signature).toString('base64'));
+}
+
+function handleZero(str: string) {
+    if (str.length < 64) {
+        const zeroArr = new Array(64 - str.length).fill(0);
+        return zeroArr.join('') + str;
+    }
+    return str;
+}
+export const signMessageByTradingKey = (message: string, tradingKeyPair: any) => {
+    const ec = new EC('secp256k1');
+    const msgHash = keccak256(message);
+    const privateKey = tradingKeyPair.getPrivate('hex');
+    const signature = ec.sign(msgHash, privateKey, 'hex', { canonical: true });
+    const r = signature.r.toJSON();
+    const s = signature.s.toJSON();
+    return `${handleZero(r)}${handleZero(s)}0${signature.recoveryParam}`;
+}
+
+```
+
+and we put the request function code in `request.util.ts` file:
+
+```java
+import {environment} from "../environment/environment";
+import {getTradingKeyPair, signMessageByOrderlyKey, signMessageByTradingKey} from "../services/contract.service";
+
+export enum MethodTypeEnum {
+    GET = 'GET',
+    POST = 'POST',
+    DELETE = 'DELETE',
+}
+
+async function get(url: string, params?: Object) {
+    const headers = await getOrderlySignature(url, MethodTypeEnum.GET);
+    return requestMethod(url, MethodTypeEnum.GET, params, headers);
+}
+
+async function post(url: string, params: { [key: string]: string }) {
+    const sign = getTradingKeySignature(params);
+    params['signature'] = sign.signature;
+    const headers = await getOrderlySignature(url, MethodTypeEnum.POST, params);
+    Object.assign(headers, {'orderly-trading-key': sign.tradingKey})
+    return requestMethod(url, MethodTypeEnum.POST, params, headers);
+}
+
+async function del(url: string, params: { [key: string]: any}) {
+    const sign = getTradingKeySignature(params);
+    params['signature'] = sign.signature;
+    url += `?${Object.keys(params).sort().map(key => `${key}=${params[key]}`).join('&')}`
+    const headers = await getOrderlySignature(url, MethodTypeEnum.DELETE);
+    Object.assign(headers, {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'orderly-trading-key': sign.tradingKey
+    })
+    return requestMethod(url, MethodTypeEnum.DELETE, null, headers);
+}
+
+const getOrderlySignature = async (url: string, method: MethodTypeEnum, params?: null | { [key: string]: string }): Promise<{ [key: string]: string }> => {
+    const accountId = 'neardapp-t1.testnet';
+    const urlParam = url.split(environment.config.apiUrl)[1];
+    const timestamp = new Date().getTime().toString();
+    let messageStr = [timestamp, method.toUpperCase(), urlParam].join('');
+    if (params && Object.keys(params).length) {
+        messageStr += JSON.stringify(params);
+    }
+    const keyPair = await environment.nearWalletConfig.keyStore.getKey(environment.nearWalletConfig.networkId, accountId)
+    const sign = signMessageByOrderlyKey(messageStr, keyPair);
+
+    return {
+        'orderly-account-id': accountId,
+        'orderly-key': keyPair?.getPublicKey().toString(),
+        'orderly-timestamp': timestamp,
+        'orderly-signature': sign,
+    };
+}
+
+const getTradingKeySignature = (params: { [key: string]: string }) => {
+    const orderMessage = Object.keys(params)
+        .sort()
+        .map((key: string) => `${key}=${params[key]}`)
+        .join('&',)
+
+    const tradingKey = getTradingKeyPair();
+    const tradingKeySignature = signMessageByTradingKey(orderMessage, tradingKey.keyPair);
+    return {
+        tradingKey: tradingKey?.publicKey.replace('04', ''),
+        signature: tradingKeySignature,
+    }
+
+}
+
+const requestMethod = (url: string, method: MethodTypeEnum, params: any, headers: { [key: string]: string } = {}) => {
+    return fetch(url, {
+        method,
+        headers: Object.assign({
+            'Access-Control-Allow-Origin': '*',
+            Accept: 'application/json',
+            'Content-Type': 'application/json;charset=utf-8',
+        }, headers),
+        body: method === MethodTypeEnum.GET ? null : (params ? JSON.stringify(params) : null),
+
+    })
+        .then(response => response.json());
+}
+
+const requestUtil = {
+    get,
+    post,
+    del,
+}
+export default requestUtil;typ</{>
+```
+
+and then we can place an order in the following format:
+
+```
+import {environment} from "../environment/environment";
+import requestUtil from "../utils/request.util";
+
+export const entryOrder = async (params: any) => {
+    return requestUtil.post(environment.config.apiUrl + '/v1/order', params);
+}
+
+export const fetchOrderList = async (params: any) => {
+    return requestUtil.get(environment.config.apiUrl + '/v1/orders', params);
+}
+
+export const cancelOrder = async (params:{order_id: number; symbol: string}) => {
+    return requestUtil.del(environment.config.apiUrl + '/v1/order', params);
+}
+```
+
+e.g.
+
+```java
+ // place order
+ const params: { [key: string]: any } = {
+    order_price: '4.3',
+    order_quantity: '1',
+    order_type: 'LIMIT',
+    side: 'BUY',
+    symbol: 'SPOT_NEAR_USDC',
+}
+entryOrder(params).then(res => {
+    console.log('place order res', res);
+})
+
+// get order list
+fetchOrderList({}).then(res => {
+  console.log('order list', res)
+})
+
+// cancel order
+ cancelOrder({
+    order_id: order.order_id,
+    symbol: order.symbol,
+}).then(res => {
+    console.log('cancel order', res);
+})
+
+```
+
+## Subscribe to WebSocket API
+
+We need to put WebSocket url in `environment.ts`:
+
+```java
+export const environment = {
+    // ....
+    config: {
+        apiUrl: 'https://testnet-api.orderly.org',
+        privateWsUrl: 'wss://testnet-ws-private.orderly.org',
+        publicWsUrl: 'wss://testnet-ws.orderly.org',
+        publicWebsocketKey: 'OqdphuyCtYWxwzhxyLLjOWNdFP7sQt8RPWzmb5xY',
+    }
+}
+```
+
+WebSocket only needs an orderlyKey signature. We put WS code in `websocket.service.ts`:
+
+```java
+import {environment} from "../environment/environment";
+import UUID from "../utils/uuid.util";
+import {signMessageByOrderlyKey} from "./contract.service";
+
+const PING_TIMEOUT = 10 * 1000; // second
+const PING_INTERVAL = 10 * 1000; // second
+
+export const getRandomString =() => `${new Date().getTime()}${Math.floor(Math.random() * 10000)}`;
+
+export enum WsState {
+    connecting,
+    opened,
+    closing,
+    closed,
+}
+
+export enum WsEventEnum {
+    SUBSCRIBE = 'subscribe',
+    UNSCUBSCRIBE = 'unsubscribe',
+    PING = 'ping',
+    PONG = 'pong',
+    REQUEST = 'request',
+    AUTH = 'auth',
+}
+
+export enum WsTopicEnum {
+    TICKERS = 'tickers',
+    BBO = 'bbo',
+    BBOS = 'bbos',
+    ORDERBOOK = 'orderbook',
+    ORDERBOOK_UPDATE = 'orderbookupdate',
+    TRADE = 'trade',
+    POSITION_INFO = 'positioninfo',
+    NOTIFICATIONS = 'notifications',
+    EXECUTION_REPORT = 'executionreport',
+    ALGO_EXECUTION_REPORT = 'algoexecutionreportv2',
+    KLINE_1M = 'kline_1m',
+    KLINE_5M = 'kline_5m',
+    KLINE_15M = 'kline_15m',
+    KLINE_30M = 'kline_30m',
+    KLINE_1H = 'kline_1h',
+    KLINE_1D = 'kline_1d',
+    FUTURES_POSITION = 'position',
+    MARK_PRICES = 'markprices',
+    INDEX_PRICES = 'indexprices',
+    OPEN_INTERESTS = 'openinterests',
+    EST_FUNDING_RATE = 'estfundingrate',
+    BALANCE = 'balance',
+    ACCOUNT = 'account',
+    EVENT = 'event',
+}
+
+export interface WsResponseInterface {
+    id: string;
+    event?: WsEventEnum;
+    success?: boolean;
+    ts?: number;
+    data: any;
+    topic?: string;
+    errorMsg?: string;
+}
+
+export class WsInstancePro {
+    readonly uniqueKey: string = '';
+    readonly appId: string = '';
+    pingTimeOutTimer?: number;
+    connectingTimeoutTimer?: number;
+
+    wsState = WsState.connecting;
+    sendPingTimer?: number;
+
+    wsInstance: WebSocket;
+
+    constructor(wsInstance: WebSocket, appId: string, uniqueKey: string) {
+        this.wsInstance = wsInstance;
+        this.appId = appId;
+        this.uniqueKey = uniqueKey;
+    }
+
+    setPingTimeOut() {
+        this.pingTimeOutTimer = window.setTimeout(() => {
+            console.error(`[WS ${this.uniqueKey} PING_TIMEOUT`)
+
+        }, PING_TIMEOUT);
+    }
+
+    removePingTimeOut() {
+        if (this.pingTimeOutTimer) {
+            clearTimeout(this.pingTimeOutTimer);
+        }
+    }
+
+    send(message: any) {
+        try {
+            if (this.wsInstance.readyState === WebSocket.OPEN) {
+                this.wsInstance.send(JSON.stringify(message))
+            } else if (this.wsInstance.readyState === WebSocket.CONNECTING) {
+                setTimeout(() => {
+                    this.send(message);
+                }, 100)
+            } else {
+                console.log(this.wsInstance.readyState, this.wsInstance);
+                console.error(`send ws message failed. ws has been closed.`)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    subscribe(topic: string) {
+        try {
+            const sendSubscribe = {
+                id: topic,
+                event: WsEventEnum.SUBSCRIBE,
+                topic,
+                ts: new Date().getTime(),
+            }
+            this.send(sendSubscribe);
+            console.log(`[WS ${this.uniqueKey} SUBSCRIBE] ${topic}`)
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    wsAuth() {
+        const accountId = 'neardapp-t1.testnet';
+        if (accountId) {
+            (async () => {
+                const orderlyKeyPair = await environment.nearWalletConfig.keyStore.getKey(environment.nearWalletConfig.networkId, accountId);
+                const timestamp = new Date().getTime();
+                // 需要用orderlyKey签名消息
+                const sign = signMessageByOrderlyKey(timestamp.toString(), orderlyKeyPair);
+                const sendAuth = {
+                    id: '123r',
+                    event: WsEventEnum.AUTH,
+                    params: {
+                        timestamp,
+                        sign,
+                        orderly_key: orderlyKeyPair.getPublicKey().toString(),
+                    }
+                }
+                this.send(sendAuth);
+            })();
+        } else {
+            console.error(`[WS ${this.uniqueKey} NO_AUTH]`)
+        }
+    }
+
+    setConnectingTimeOut() {
+        this.connectingTimeoutTimer = window.setTimeout(() => {
+            console.error(`[WS ${this.uniqueKey} PING_TIMEOUT]`)
+            this.closeWebsocket();
+        }, PING_TIMEOUT);
+    }
+
+    removeConnectingTimeout() {
+        if (this.connectingTimeoutTimer) {
+            clearTimeout(this.connectingTimeoutTimer)
+        }
+    }
+
+    closeWebsocket() {
+        console.log(`WS ${this.uniqueKey} ON CLOSE`)
+        this.removePingTimeOut();
+        this.wsState = WsState.closing;
+        this.wsInstance.close()
+    }
+
+}
+
+export class WebsocketService {
+    static _created = false;
+    static _instance: any = null;
+    wsInstancePro?: WsInstancePro;
+    constructor() {
+        if (!WebsocketService._created) {
+            WebsocketService._instance = this;
+            WebsocketService._created = true;
+
+        }
+        return WebsocketService._instance;
+    }
+
+    needAuth(): boolean {
+        return true;
+    }
+
+    getUserKey(): string {
+        return 'neardapp-t1.testnet'
+    }
+
+    wsUrl(): string {
+        return this.needAuth() ? environment.config.privateWsUrl : environment.config.publicWsUrl;
+    }
+
+    path(): string {
+        return this.needAuth() ? '/v2/ws/private/stream/' : '/ws/stream/';
+    }
+
+    openWebsocket() {
+        const userKey = this.getUserKey();
+        const wsInstance = new WebSocket(this.wsUrl() + this.path() + userKey)
+        console.log(`[WS CONNECTING]:::${this.wsUrl() + this.path() + userKey}`);
+        const wsInstancePro = new WsInstancePro(
+            wsInstance,
+            userKey,
+            getRandomString()
+        );
+        wsInstancePro.setConnectingTimeOut();
+        wsInstancePro.wsState = WsState.connecting;
+        this.wsInstancePro = wsInstancePro
+        wsInstance.onopen = () => {
+            // first ping
+            this.handlePongResponse(wsInstancePro)
+            if (wsInstancePro.wsState === WsState.connecting) {
+                wsInstancePro.removeConnectingTimeout();
+                console.log(`[WS-${wsInstancePro.uniqueKey} CONNECTING]`)
+                wsInstancePro.wsState = WsState.opened;
+                this.handleWsOnOpen(wsInstancePro)
+
+            }
+
+        }
+        wsInstance.onmessage = (wsMessage) => {
+            const message: WsResponseInterface = JSON.parse(wsMessage.data);
+            if (wsInstancePro.wsState === WsState.closing || wsInstancePro.wsState === WsState.closed) {
+                console.warn(`[WS ${wsInstancePro.uniqueKey} RECEIVED BUT ${wsInstancePro.wsState}:::${String(wsMessage).toString()}]`)
+            }
+            const {topic, data, ts, event, success, errorMsg} = message;
+            if (event) {
+                if (success === false) {
+                    console.warn(`[WS ${wsInstancePro.uniqueKey} EVENT ERROR] EVENT: ${event}, ERROR: ${errorMsg}`)
+                }
+                switch (event) {
+                    case WsEventEnum.PING:
+                        this.handlePingResponse(wsInstancePro)
+                        break;
+                    case WsEventEnum.PONG:
+                        this.handlePongResponse(wsInstancePro)
+                        break;
+                    case WsEventEnum.AUTH:
+                        this.handleAuthResponse(message, wsInstancePro);
+                        break;
+                }
+            }
+            if (topic !== null) {
+                this.handleTopicResponse(message, wsInstancePro);
+            }
+        }
+    }
+
+    handleWsOnOpen(wsInstancePro: WsInstancePro) {
+        wsInstancePro.wsAuth();
+    }
+
+    handlePongResponse(wsInstancePro: WsInstancePro) {
+        wsInstancePro.removePingTimeOut();
+        wsInstancePro.sendPingTimer = window.setTimeout(() => {
+            const sendPing = {
+                id: '',
+                event: WsEventEnum.PING,
+                ts: new Date().getTime(),
+            }
+            wsInstancePro.send(sendPing);
+            wsInstancePro.setPingTimeOut();
+        }, PING_INTERVAL);
+    }
+
+    handlePingResponse(wsInstancePro: WsInstancePro) {
+        const sendPong = {
+            id: '',
+            event: WsEventEnum.PONG,
+            ts: new Date().getTime(),
+        }
+        wsInstancePro.send(sendPong)
+    }
+
+    handleAuthResponse(msgData: WsResponseInterface, wsInstancePro: WsInstancePro) {
+        if (msgData.success) {
+            wsInstancePro.subscribe(WsTopicEnum.ACCOUNT);
+            wsInstancePro.subscribe(WsTopicEnum.BALANCE);
+        } else {
+            console.error(`[WS AUTH_FAILED]`)
+        }
+    }
+
+    handleTopicResponse(msgData: WsResponseInterface, wsInstancePro: WsInstancePro) {
+        const {topic, data} = msgData;
+        switch (topic) {
+            case WsTopicEnum.BALANCE:
+                const position = Object.entries(data.balance as {[key: string]:any}).map(([token, position]) => {
+                    return {
+                        token,
+                        balance: position.holding,
+                        open: position.averageOpenPrice,
+                    }
+                })
+                console.log('position', position);
+                break;
+        }
+
+    }
+
+}
+```
+
+and then we can call the WebSocket open after announcing orderlyKey and set tradingKey:
+
+```java
+const privateWs = new WebsocketService();
+privateWs.openWebsocket();
+```
+
+## On-chain Swap/Order
+
+For those who want to avoid two-level interactions with off-chain and on-chain components, Orderly offers on-chain order support which can be called in the following fashion. Let's name the main file `index.ts`
+
+```java
+import {keyStores, KeyPair, utils, transactions} from "near-api-js";
+import { ec as EC } from 'elliptic';
+import {AccessKeyViewRaw} from "near-api-js/lib/providers/provider";
+import {providers as providers} from "near-api-js";
+import {BN} from "bn.js";
+import {sha256} from "js-sha256";
+
+const GAS_300T = new BN("300000000000000");
+const provider = new providers.JsonRpcProvider({url: "https://rpc.testnet.near.org"});
+
+import {createTransaction, functionCall, Transaction} from "near-api-js/lib/transaction";
+import {base_decode} from "near-api-js/lib/utils/serialize";
+
+// @ts-ignore
+import keccak256 from 'keccak256';
+
+function handleZero(str: string) {
+    if (str.length < 64) {
+        const zeroArr = new Array(64 - str.length).fill(0);
+        return zeroArr.join('') + str;
+    }
+    return str;
+}
+
+export const signMessageByTradingKey = (message: string, tradingKeyPair: any) => {
+    const ec = new EC('secp256k1');
+    const msgHash = keccak256(message);
+    const privateKey = tradingKeyPair.getPrivate('hex');
+    const signature = ec.sign(msgHash, privateKey, 'hex', { canonical: true });
+    const r = signature.r.toJSON();
+    const s = signature.s.toJSON();
+    return `${handleZero(r)}${handleZero(s)}0${signature.recoveryParam}`;
+}
+
+export const getAccessKeyInfo = async (accountId: string, keyPair: KeyPair): Promise => {
+    // const provider = new providers.JsonRpcProvider({url: "https://rpc.testnet.near.org"});
+    const publicKey = keyPair.getPublicKey();
+    return provider.query(
+        `access_key/${accountId}/${publicKey.toString()}`, ''
+    );
+
+}
+
+// @ts-ignore
+async function create_onchain_order(): Promise {
+    let key = new keyStores.UnencryptedFileSystemKeyStore("./");
+    let accountId = "spring202202.testnet";
+    let keyPair = await key.getKey("testnet", "spring202202.testnet");
+    const ec = new EC('secp256k1');
+    const tradingKeyPair = ec.keyFromPrivate('b2ab96eff6116ff526350892390b1c9ded41b6a4da3bc574f64b105731f85ac4');
+    let order_info: { [key: string]: any } = {
+        order_price: '4.3',
+        order_quantity: '1',
+        order_type: 'MARKET',
+        side: 'SELL',
+        symbol: 'SPOT_NEAR_USDC',
+    }
+    const orderMessage = Object.keys(order_info)
+        .sort()
+        .map((key: string) => `${key}=${order_info[key]}`)
+        .join('&',)
+    // need to pack signature field into order_info
+    order_info["signature"] = signMessageByTradingKey(orderMessage, tradingKeyPair);
+    console.log("order_info", order_info, "orderMessage", orderMessage);
+    const accessKeyInfo = await getAccessKeyInfo("spring202202.testnet", keyPair);
+    const nonce = ++accessKeyInfo.nonce;
+    const recentBlockHash = base_decode(accessKeyInfo.block_hash);
+    console.log("nonce", nonce, "recentBlockHash", recentBlockHash);
+    const transaction = createTransaction(
+        accountId,
+        keyPair.getPublicKey(),
+        "asset-manager.orderly-dev.testnet",
+        nonce + 1,
+        [
+            functionCall(
+                'create_onchain_order',
+                {
+                    "order_info": order_info,
+                    "orderly_key": "ed25519:BhP7ZoA3EvFrSkqVCDrJJSHzUYsgvngjmFCkLNVbZCj2",
+                },
+                GAS_300T,
+                new BN("5000000000000000000000"),
+            )
+        ],
+        recentBlockHash,
+    );
+    const serializedTx = utils.serialize.serialize(
+        transactions.SCHEMA,
+        transaction
+    );
+    const serializedTxHash = new Uint8Array(sha256.array(serializedTx));
+    const signature = keyPair.sign(serializedTxHash);
+    const signedTransaction = new transactions.SignedTransaction({
+        transaction,
+        signature: new transactions.Signature({
+            keyType: transaction.publicKey.keyType,
+            data: signature.signature,
+        }),
+    });
+    // encodes transaction to serialized Borsh (required for all transactions)
+    const signedSerializedTx = signedTransaction.encode();
+// sends transaction to NEAR blockchain via JSON RPC call and records the result
+    const result = await provider.sendJsonRpc("broadcast_tx_commit", [
+        Buffer.from(signedSerializedTx).toString("base64"),
+    ]);
+    console.log(result)
+}
+
+// @ts-ignore
+async function create_onchain_swap_ft(): Promise {
+    let key = new keyStores.UnencryptedFileSystemKeyStore("./");
+    let accountId = "spring202202.testnet";
+    let keyPair = await key.getKey("testnet", "spring202202.testnet");
+    const ec = new EC('secp256k1');
+    const tradingKeyPair = ec.keyFromPrivate('b2ab96eff6116ff526350892390b1c9ded41b6a4da3bc574f64b105731f85ac4');
+    let order_info: { [key: string]: any } = {
+        order_price: '2.3',
+        order_amount: '1',
+        order_type: 'MARKET',
+        side: 'BUY',
+        symbol: 'SPOT_NEAR_USDC',
+    }
+    const orderMessage = Object.keys(order_info)
+        .sort()
+        .map((key: string) => `${key}=${order_info[key]}`)
+        .join('&',)
+    // need to pack signature field into order_info
+    order_info["signature"] = signMessageByTradingKey(orderMessage, tradingKeyPair);
+    console.log("order_info", order_info, "orderMessage", orderMessage);
+    const accessKeyInfo = await getAccessKeyInfo("spring202202.testnet", keyPair);
+    const nonce = ++accessKeyInfo.nonce;
+    const recentBlockHash = base_decode(accessKeyInfo.block_hash);
+    console.log("nonce", nonce, "recentBlockHash", recentBlockHash);
+    let swap_info = {
+        "OnchainFtSwapInfo": {
+            "order_info": order_info,
+            "orderly_key": "ed25519:BhP7ZoA3EvFrSkqVCDrJJSHzUYsgvngjmFCkLNVbZCj2"
+        }
+    }
+    const transaction = createTransaction(
+        accountId,
+        keyPair.getPublicKey(),
+        "usdc.orderly-dev.testnet",
+        nonce + 1,
+        [
+            functionCall(
+                'ft_transfer_call',
+                {
+                    "receiver_id": "asset-manager.orderly-dev.testnet",
+                    "amount": "10001000",
+                    "msg": JSON.stringify(swap_info),
+                },
+                GAS_300T,
+                new BN("1"),
+            )
+        ],
+        recentBlockHash,
+    );
+    const serializedTx = utils.serialize.serialize(
+        transactions.SCHEMA,
+        transaction
+    );
+    const serializedTxHash = new Uint8Array(sha256.array(serializedTx));
+    const signature = keyPair.sign(serializedTxHash);
+    const signedTransaction = new transactions.SignedTransaction({
+        transaction,
+        signature: new transactions.Signature({
+            keyType: transaction.publicKey.keyType,
+            data: signature.signature,
+        }),
+    });
+    // encodes transaction to serialized Borsh (required for all transactions)
+    const signedSerializedTx = signedTransaction.encode();
+// sends transaction to NEAR blockchain via JSON RPC call and records the result
+    const result = await provider.sendJsonRpc("broadcast_tx_commit", [
+        Buffer.from(signedSerializedTx).toString("base64"),
+    ]);
+    console.log("create_onchain_swap_ft:");
+    console.log(result)
+}
+
+// @ts-ignore
+async function create_onchain_swap_near(): Promise {
+    let key = new keyStores.UnencryptedFileSystemKeyStore("./");
+    let accountId = "spring202202.testnet";
+    let keyPair = await key.getKey("testnet", "spring202202.testnet");
+    const ec = new EC('secp256k1');
+    const tradingKeyPair = ec.keyFromPrivate('b2ab96eff6116ff526350892390b1c9ded41b6a4da3bc574f64b105731f85ac4');
+    let order_info: { [key: string]: any } = {
+        order_price: '2.3',
+        order_quantity: '1',
+        order_type: 'MARKET',
+        side: 'SELL',
+        symbol: 'SPOT_NEAR_USDC',
+    }
+    const orderMessage = Object.keys(order_info)
+        .sort()
+        .map((key: string) => `${key}=${order_info[key]}`)
+        .join('&',)
+    // need to pack signature field into order_info
+    order_info["signature"] = signMessageByTradingKey(orderMessage, tradingKeyPair);
+    console.log("order_info", order_info, "orderMessage", orderMessage);
+    const accessKeyInfo = await getAccessKeyInfo("spring202202.testnet", keyPair);
+    const nonce = ++accessKeyInfo.nonce;
+    const recentBlockHash = base_decode(accessKeyInfo.block_hash);
+    console.log("nonce", nonce, "recentBlockHash", recentBlockHash);
+    const transaction = createTransaction(
+        accountId,
+        keyPair.getPublicKey(),
+        "asset-manager.orderly-dev.testnet",
+        nonce + 1,
+        [
+            functionCall(
+                'deposit_and_create_order',
+                {
+                    "order_info": order_info,
+                    "orderly_key": "ed25519:BhP7ZoA3EvFrSkqVCDrJJSHzUYsgvngjmFCkLNVbZCj2",
+                },
+                GAS_300T,
+                new BN("1005000000000000000000000"),
+            )
+        ],
+        recentBlockHash,
+    );
+    const serializedTx = utils.serialize.serialize(
+        transactions.SCHEMA,
+        transaction
+    );
+    const serializedTxHash = new Uint8Array(sha256.array(serializedTx));
+    const signature = keyPair.sign(serializedTxHash);
+    const signedTransaction = new transactions.SignedTransaction({
+        transaction,
+        signature: new transactions.Signature({
+            keyType: transaction.publicKey.keyType,
+            data: signature.signature,
+        }),
+    });
+    // encodes transaction to serialized Borsh (required for all transactions)
+    const signedSerializedTx = signedTransaction.encode();
+// sends transaction to NEAR blockchain via JSON RPC call and records the result
+    const result = await provider.sendJsonRpc("broadcast_tx_commit", [
+        Buffer.from(signedSerializedTx).toString("base64"),
+    ]);
+    console.log("create_onchain_swap_near:");
+    console.log(result)
+}
+
+create_onchain_order().then(r=> {
+    console.log("create_onchain_order end...");
+    create_onchain_swap_ft().then(_r => {
+        console.log("create_onchain_swap_ft end...");
+        create_onchain_swap_near().then(_r => {
+            console.log("create_onchain_swap_near end...");
+        })
+    })
+})
+
+```
+
+and some dependencies in `package.json`
+
+```json
+{
+  "name": "trading_key_sign",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bn.js": "^5.2.1",
+    "elliptic": "^6.5.4",
+    "js-sha256": "^0.9.0",
+    "keccak256": "^1.0.6",
+    "near-api-js": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/big.js": "^6.1.6",
+    "@types/elliptic": "^6.4.14",
+    "big.js": "^6.2.1"
+  }
+}
+
+```

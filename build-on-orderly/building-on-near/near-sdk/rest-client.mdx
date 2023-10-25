@@ -1,0 +1,302 @@
+---
+title: "REST Client"
+---
+
+<Note>
+_Documentation can be found_ [_here_](/api-reference)
+</Note>
+
+`</user_deposit_native_token>`
+
+REST client consists of the next clients:
+
+* `public` \- public methods client;
+
+* `orders` \- orders methods client;
+
+* `trade` \- trade methods client;
+
+* `user` \- user methods client.
+
+## Public Client
+
+### Order Rules
+
+This endpoint provides all the values for the rules that an order needs to fulfill in order for it to be placed successfully
+
+```css
+  await api.public.getSymbolOrderRules('SPOT_NEAR_USDC')
+```
+
+| Parameter name | Type   | Is required? | Description                         |
+| -------------- | ------ | ------------ | ----------------------------------- |
+| symbol         | string | Yes          | Symbol for which to get order rules |
+
+### Available Pairs
+
+Get available symbols that Orderly Network supports, and also send order rules for each symbol
+
+```css
+  await api.public.getAvailableSymbols()
+```
+
+**Parameters:** _None_
+
+### Fee Structure
+
+Get the latest Orderly Network fee structure
+
+```css
+  await api.public.getFeeInformation()
+```
+
+**Parameters:** _None_
+
+### Market Trades
+
+Get the latest market trades
+
+```css
+  await api.public.getMarketTrades('SPOT_NEAR_USDC', 10)
+```
+
+| Parameter name | Type   | Is required? | Description                                  |
+| -------------- | ------ | ------------ | -------------------------------------------- |
+| symbol         | string | Yes          | For which symbol to get latest market trades |
+| limit          | number | No           | How may records to return                    |
+
+## Orders client
+
+### Create Order
+
+```css
+  const order = {
+    symbol: 'SPOT_NEAR_USDC',
+    order_type: 'LIMIT',
+    side: 'BUY',
+    order_price: 1.11,
+    order_quantity: 2.00000000
+  }
+
+  await api.orders.create(order)
+```
+
+| Parameter name    | Type   | Is required? | Description                                                                          |
+| ----------------- | ------ | ------------ | ------------------------------------------------------------------------------------ |
+| symbol            | string | Yes          | Token symbol                                                                         |
+| client\_order\_id | string | No           | Customized order\_id, a unique id among open orders                                  |
+| order\_type       | enum   | Yes          | Order type. Possible values are: LIMIT/MARKET/IOC/FOK/POST\_ONLY/ASK/BID.            |
+| order\_price      | number | No           | If order\_type is MARKET, then is not required, otherwise this parameter is required |
+| order\_quantity   | number | No           | For MARKET/ASK/BID order, if order\_amount is given, it is not required.             |
+| order\_amount     | number | No           | For MARKET/ASK/BID order, the order size in terms of quote currency                  |
+| visible\_quantity | number | No           | The order quantity shown on orderbook. (default: equal to order\_quantity)           |
+| side              | enum   | Yes          | Order side. Possible values are: SELL/BUY.                                           |
+
+### Batch Create Order
+
+Places multiple orders at once
+
+```css
+  const order1 = {
+    symbol: 'SPOT_NEAR_USDC',
+    order_type: 'LIMIT',
+    side: 'BUY',
+    order_price: 1.11,
+    order_quantity: 2.00000000
+  }
+
+  const order2 = {
+    symbol: 'SPOT_WOO_USDC',
+    order_type: 'LIMIT',
+    side: 'BUY',
+    order_price: 0.12,
+    order_quantity: 10.00000000
+  }
+
+  await api.orders.createBatch([order1, order2])
+```
+
+| Parameter name | Type  | Is required? | Description                                    |
+| -------------- | ----- | ------------ | ---------------------------------------------- |
+| orders         | array | Yes          | Array of objects used for create order request |
+
+### Cancel
+
+Cancels placed request
+
+```css
+  const cancleOrderRequest = {
+    symbol: 'SPOT_NEAR_USDC',
+    order_id: 12345
+  }
+
+  await api.orders.cancle(cancleOrderRequest)
+```
+
+| Parameter name    | Type   | Is required?                                      | Description                    |
+| ----------------- | ------ | ------------------------------------------------- | ------------------------------ |
+| symbol            | string | Yes                                               | Token symbol                   |
+| order\_id         | number | R**equired** if client\_order\_id is not provided | ID of the order                |
+| client\_order\_id | number | R**equired** if order\_id is not provided         | client\_order\_id of the order |
+
+### Cancel Order in Bulk
+
+Cancels multiple placed orders for a symbol
+
+```css
+  await api.orders.cancelBatch({symbol: 'SPOT_NEAR_USDC'})
+```
+
+| Parameter name | Type   | Is required? | Description  |
+| -------------- | ------ | ------------ | ------------ |
+| symbol         | string | Yes          | Token symbol |
+
+### Get an order
+
+Gets an order by `client_order_id` or `order_id`
+
+```css
+  await api.orders.getOrder({order_id: 12345})
+```
+
+| Parameter name    | Type   | Is required?                                      | Description                    |
+| ----------------- | ------ | ------------------------------------------------- | ------------------------------ |
+| order\_id         | number | R**equired** if client\_order\_id is not provided | ID of the order                |
+| client\_order\_id | number | R**equired** if order\_id is not provided         | client\_order\_id of the order |
+
+### Get Orders
+
+Gets multiple orders by provided params
+
+```css
+  await api.orders.getOrders({})
+```
+
+| Parameter name | Type   | Is required? | Description                                                                                                               |
+| -------------- | ------ | ------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| symbol         | string | No           | Which token to query orders for                                                                                           |
+| side           | enum   | No           | Which order side orders to get. Possible values are: BUY/SELL.                                                            |
+| order\_type    | enum   | No           | Which order type orders to get. Possible values are LIMIT/MARKET                                                          |
+| order\_tag     | string | No           | An optional tag for the order.                                                                                            |
+| status         | enum   | No           | Which order status orders to get. Possible values are: NEW/CANCELLED/PARTIAL\_FILLED/FILLED/REJECTED/INCOMPLETE/COMPLETED |
+| start\_t       | number | No           | Start time range that wish to query, noted the time stamp is 13-digits timestamp.                                         |
+| end\_t         | number | No           | End time range that wish to query, noted the time stamp is 13-digits timestamp.                                           |
+| page           | number | No           | The page wish to query (default: 1).                                                                                      |
+| size           | number | No           | The page size wish to query (default: 25, max: 500)                                                                       |
+
+### Orderbook snapshot
+
+Get a snapshot of the current orderbook
+
+```css
+  await api.orders.getOrderbook('SPOT_NEAR_USDC', 10)
+```
+
+| Parameter name | Type   | Is required? | Description                                          |
+| -------------- | ------ | ------------ | ---------------------------------------------------- |
+| symbol         | string | Yes          | Token symbol for which to get the snapshot           |
+| max\_level     | number | No           | The levels wish to show on both side (default: 100). |
+
+## Trade client
+
+### Get Kline
+
+Get the latest klines of the trading pairs
+
+```css
+  const getKlineData = {
+    symbol: 'SPOT_NEAR_USDC',
+    type: '1h',
+    limit: 100
+  }
+
+  await api.trade.getKline(getKlineData)
+```
+
+| Parameter name | Type   | Is required? | Description                                                   |
+| -------------- | ------ | ------------ | ------------------------------------------------------------- |
+| symbol         | string | Yes          | Token symbol for which to get klines                          |
+| type           | enum   | Yes          | Which kline type to get 1m/5m/15m/30m/1h/4h/12h/1d/1w/1mon/1y |
+| limit          | number | No           | Number of klines to get (default: 100, maximum: 1000).        |
+
+### Order Trades
+
+Get specific order trades by order\_id
+
+```css
+  await api.trade.getOrderTrades(12345)
+```
+
+| Parameter name | Type   | Is required? | Description     |
+| -------------- | ------ | ------------ | --------------- |
+| order\_id      | number | Yes          | ID of the order |
+
+### Get Trades
+
+Get the client’s trades history in a range of time
+
+```css
+  await api.trade.getTrades({symbol: 'SPOT_NEAR_USDC'})
+```
+
+| Parameter name | Type   | Is required? | Description                                                                       |
+| -------------- | ------ | ------------ | --------------------------------------------------------------------------------- |
+| symbol         | string | No           | Token symbol for which to get trades                                              |
+| tag            | string | No           | An optional tag for the order.                                                    |
+| start\_t       | number | No           | Start time range that wish to query, noted the time stamp is 13-digits timestamp. |
+| end\_t         | number | No           | End time range that wish to query, noted the time stamp is 13-digits timestamp.   |
+| page           | number | No           | The page wish to query (default: 1).                                              |
+| size           | number | No           | The page size wish to query (default: 25)                                         |
+
+### Transaction Detail
+
+Get specific transaction detail by trade id
+
+```css
+  await api.trade.getTrade(54321)
+```
+
+| Parameter name | Type   | Is required? | Description     |
+| -------------- | ------ | ------------ | --------------- |
+| tradeId        | number | Yes          | ID of the trade |
+
+## User client
+
+### Check holdings
+
+Get a holding summary of the user
+
+```css
+  await api.account.getCurrentHolding(true)
+```
+
+| Parameter name | Type    | Is required? | Description                                                  |
+| -------------- | ------- | ------------ | ------------------------------------------------------------ |
+| all            | boolean | No           | If true then will return all token even if balance is empty. |
+
+### Account Information
+
+Get account information
+
+```css
+  await api.account.getInformation()
+```
+
+**Parameters:** _None_
+
+### Asset History
+
+Get asset history, including token deposit/withdraw and collateral deposit/withdraw.
+
+```css
+  await api.account.getAssetHistory({side: 'DEPOSIT'})
+```
+
+| Parameter name | Type   | Is required? | Description                                                                          |
+| -------------- | ------ | ------------ | ------------------------------------------------------------------------------------ |
+| token          | string | No           | Token name you want to search                                                        |
+| side           | enum   | No           | Which history record type to query. Possible values are: DEPOSIT/WITHDRAW            |
+| status         | enum   | No           | Which status to search. Possible values are: NEW/CONFIRM/PROCESSING/COMPLETED/FAILED |
+| start\_t       | number | No           | Start time range that wish to query, noted the time stamp is 13-digits timestamp.    |
+| end\_t         | number | No           | End time range that wish to query, noted the time stamp is 13-digits timestamp.      |
+| page           | number | No           | The page wish to query (default: 1).                                                 |

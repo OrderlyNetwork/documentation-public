@@ -1,0 +1,54 @@
+---
+title: "Liquidations"
+---
+
+An account is subject to liquidation if its Account Margin Ratio falls below its Maintenance Margin Ratio. Orderly uses the [Mark Price](/trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price#mark-price) to represent a contract's estimated value. As it derives from multiple reputable spot exchanges (see [Index Price](/trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price#index-price)) and the funding rate, it is less volatile than the [Last Price](/trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price#last-price) and discourages bad actors from manipulating the market price to trigger liquidations.
+
+When an account is under liquidation, its current open orders are automatically cancelled and its USDC balance is frozen.
+
+## Decentralized Liquidations 
+
+Unlike CEXes (Centralized Exchanges) or a few other dApps such as dYdX, at Orderly, liquidations are decentralized. 
+
+Most of the time, CEXes directly close positions on the orderbook, which often triggers cascading liquidations, hurting traders further and encouraging bad actors to manipulate market prices. 
+
+Orderly adopts a decentralized liquidation model where positions are transferred to **liquidators** at a discount instead of being market sold in the orderbook. It is fully decentralized as anyone with an Orderly account can act as a liquidator, as long as the account has enough margin to take over the liquidated positions. Further details on how an account can claim liquidating positions can be found in the API docs.
+
+## Liquidation Trigger
+
+A liquidation is triggered if the Account Margin Ratio (AMR) is below the Maintenance Margin Ratio (MMR) required for the account (see [here](/trade-on-orderly/perpetual-futures/margin-leverage-and-pnl#maintenance-margin-ratio) for more details).
+
+## Liquidation amount
+
+The amount of positions that need to be liquidated is calculated so that, after liquidation, the Account Margin Ratio equals the Initial Margin Ratio.
+
+If the account has multiple positions, the positions will be partially liquidated in a volume-weighted fashion.
+
+## Liquidation fee
+
+When an account is liquidated, a User Liquidation Fee is incurred. This is split between the Orderly **Insurance Fund** and the **liquidator**. Each perpetual market has its own Liquidation Fee:
+
+| Perp Market | Liquidator Fee | Liquidation Fee |
+| ----------- | -------------- | --------------- |
+| BTC         | 1.5%           | 3%              |
+| ETH         | 1.5%           | 3%              |
+| NEAR        | 1.75%          | 3.5%            |
+
+The overall User Liquidation Fee and Liquidator Fee are calculated as follows:
+
+```
+User Liquidation Fee = Sum[Liquidation Fee(Symbol i) * Abs(Notional i)]/Total Notional
+Liquidator Fee = Sum[Liquidator Fee(Asset i) * Abs(Notional i)]/Total Notional
+```
+
+* If the Account Margin Ratio is higher than the User Liquidation Fee, the User Liquidation Fee is split in half between the Insurance Fund and the liquidator (Insurance Fund and Liquidator each receives `0.5 * User Liquidation Fee`).
+
+* If the Account Margin Ratio is between User Liquidation Fee and Liquidator Fee, then a fee equal to `0.5 * User Liquidation Fee` is paid to the liquidator, and the remaining account margin is transferred to the insurance fund.
+
+* In the unlikely scenario that the remaining margin of the account cannot cover the Liquidator Fee, the account's balance and positions are transferred to the insurance fund. Those positions can still be claimed by liquidators (see [Insurance Fund & ADL](/trade-on-orderly/perpetual-futures/insurance-fund-and-adl)).
+
+## Full vs Partial Liquidator Takeover
+
+The minimum notional for a partial liquidation takeover is 10,000 USDC. For liquidation positions below the threshold, the liquidator must take over all of the positions of the liquidated user. Above the threshold, the liquidator could choose to take over only a percentage of the positions of the liquidated user, provided that the notional of the positions taken over exceeds the threshold.
+
+Before transferring positions to the liquidator, Orderly makes sure that the liquidator can effectively take over the positions, doing similar margin checks as for new order placements.

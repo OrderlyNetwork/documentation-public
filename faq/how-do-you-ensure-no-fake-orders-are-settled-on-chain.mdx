@@ -1,0 +1,7 @@
+---
+title: "How do you ensure no fake orders are settled on-chain?"
+---
+
+All orders coming into the Orderly off-chain matching engine are signed by users' private trading keys and are settled on-chain with those signatures. Public keys are stored on the contract and the signatures are verified thus validifying orders.
+
+The above model ensures that even in the event operator gets compromised, no fake orders are executed and all user funds are safe.

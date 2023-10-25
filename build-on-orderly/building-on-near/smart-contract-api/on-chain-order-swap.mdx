@@ -1,0 +1,159 @@
+---
+title: "On-Chain Order/Swap"
+description: "The current Orderly architecture has an off-chain order book, and the orders are placed through an off-chain RESTful API. "
+---
+
+Users might want to perform a swap/trade without interacting with off-chain components. We have created on-chain order support, where orders can be placed directly through the smart contract rather than the RESTful API. 
+
+The on-chain swap includes three steps under a single smart contract call: deposit, trade, and withdraw.
+
+The on-chain order includes two steps under a single smart contract call: trade and withdraw.
+
+<Note>
+Please note, all quotes and trades are against USDC as the quote currency
+</Note>
+
+Before placing an order, a user first has to announce Orderly and Trading Key and make a storage deposit, more info [here](https://docs.orderly.network/build-on-orderly/smart-contract-api/authentication-key-management).
+
+After the required steps are completed, the following smart contract function can be called to initiate an order:
+
+<Note>
+All on-chain orders require a signature, more details on how to generate one can be found [here](https://docs-api.orderly.network/#order-signature-example)
+</Note>
+
+## Create an On-chain Order
+
+`create_onchain_order`
+
+Parameters:
+
+```css
+struct OnchainOrderInfo {
+  symbol: String,
+  client_order_id: Option, 
+  order_type: OrderTypeEnum, // MARKET/IOC/FOK
+  order_price: Option, // If order_type is MARKET, then is not required, otherwise this parameter is required.
+  order_quantity: Option, // For MARKET order, if order_amount is given, it is not required.
+  order_amount: Option,
+  visible_quantity: Option, // The order quantity shown on orderbook. (default: equal to order_quantity)
+  side: SideEnum, // SELL/BUY
+  broker_id: Option, // for broker use, the id corresponding to the broker
+  signature: Option, // trading signature
+} 
+
+pub fn create_onchain_order(&mut self, 
+  order_info: OnchainOrderInfo, 
+  orderly_key: Option, // If orderly_key=null, orderly_key from env::signer_account_pk() will be used
+)
+```
+
+#### Example:
+
+```
+near call asset-manager.orderly-dev.testnet create_onchain_order '{"order_info": {"symbol": "SPOT_NEAR_USDC", "side":"SELL","order_type":"MARKET","order_quantity":"3", "signature": "43833e76a0d881f0b435e933688025eab5a6b11c647ba5058b51057cf6d41ea61479ce7fdd8a770c0b99cf86c261c19573472af0678afb6844514818296a00f001"},"orderly_key": "ed25519:EDUzpbNh9j1U3gfpRjGbHEXRgTtE3omd394ZnopvUTuO"}' --accountId example.testnet --amount 3.1
+```
+
+## Create an On-chain Swap
+
+### Fungible token
+
+<Note>
+Storage has to be paid for each token being swapped from and to, otherwise, tokens may fail to withdraw with the error message "`Smart contract panicked: panicked at 'The account is not registered'`" Check [here](https://docs.orderly.network/build-on-orderly/building-on-near/smart-contract-api/storage-staking) for more details on storage deposit.
+</Note>
+
+`ft_transfer_call`
+
+Parameters:
+
+```css
+pub fn ft_transfer_call (&mut self,
+    receiver_id: AccountId, //Orderly asset manager contract address
+    amount: U128,
+    memo: Option,
+    msg: String, //FtOnTransferMessage::OnChainFtSwapInfo
+)
+
+pub enum FtOnTransferMessage {
+    OnChainFtSwapInfo(OnchainFtSwapInfo)
+}
+
+pub struct OnchainFtSwapInfo {
+    pub order_info: OnchainOrderInfo,
+    pub orderly_key: Option,
+}
+
+pub struct OnchainOrderInfo {
+    pub symbol: String,
+    pub client_order_id: Option,
+    pub order_type: OrderType,
+    pub order_price: Option,
+    pub order_quantity: Option,
+    pub order_amount: Option,
+    pub visible_quantity: Option,
+    pub side: PurchaseSide,
+    pub broker_id: Option,
+    pub signature: String,
+}
+```
+
+#### Example:
+
+```css
+near call usdc.orderly-dev.testnet ft_transfer_call '{"receiver_id":"asset-manager.orderly-dev.testnet","amount":"10001000","msg":"{\"OnchainFtSwapInfo\":{\"order_info\":{\"symbol\":\"SPOT_NEAR_USDC\",\"order_type\":\"MARKET\",\"order_amount\": \"10\",\"side\":\"BUY\", \"signature\": \"f99d41a857f13fefbc2991d76ececab05f7579d23b9d22afc20662508113130a21aa7a5ac29e1f6a645c01ffdfb9e6f0f0c118ca6f9fd8854ee137f6947dbd0501\"},\"orderly_key\":\"ed25519:EKUzpbNh9j1T3gfpRjGbDEXRgTtE3omd394ZnopvUTuO\"}}"}' --accountId example.testnet --depositYocto 1 --gas 90000000000000
+```
+
+### NEAR token
+
+`deposit_and_create_order`
+
+Parameters:
+
+```css
+pub fn deposit_and_create_order (&mut self, 
+    order_info: OnchainOrderInfo,
+    orderly_key: Option
+)
+
+pub struct OnchainOrderInfo {
+    pub symbol: String,
+    pub client_order_id: Option,
+    pub order_type: OrderType,
+    pub order_price: Option,
+    pub order_quantity: Option,
+    pub order_amount: Option,
+    pub visible_quantity: Option,
+    pub side: PurchaseSide,
+    pub broker_id: Option,
+    pub signature: String,
+}
+```
+
+#### Example:
+
+```css
+near call asset-manager.orderly-dev.testnet deposit_and_create_order '{"order_info": {"symbol": "SPOT_NEAR_USDC", "side":"SELL","order_type":"MARKET","order_quantity":"3", "signature": "43833e76a0d881f0b435e933688025eab5a6b11c647ba5058b51057cf6d41ea61479ce7fdd8a770c0b99cf86c261c19573472af0678afb6844514818296a00f001"},"orderly_key": "ed25519:EKUzpbNh9j1T3gfpRjGbDEXRgTtE3omd394ZnopvUTuO"}' --accountId example.testnet --amount 3.1
+```
+
+## Get the On-chain Order Fee
+
+`get_onchain_order_fee`
+
+Parameters:
+
+```css
+args: {
+    token: accountId,
+}
+```
+
+Returns the fee needed to create an on-chain order in Yocto NEAR amount.
+
+When placing an order, an amount of NEAR equivalent to the result from this function has to be attached to the contract call.
+
+#### Example:
+
+```
+mainnet near view asset-manager.orderly-network.near get_onchain_order_fee '{"token": "near"}'
+View call: asset-manager.orderly-network.near.get_onchain_order_fee({"token": "near"})
+'5000000000000000000000'
+```

@@ -1,0 +1,103 @@
+---
+title: "Storage Staking"
+---
+
+## Storage Deposit
+
+`storage_deposit`
+
+Parameters:
+
+```css
+args: {
+    account_id: "NEAR account" //optional
+    registration_only: "bool"  //optional
+}
+```
+
+Registers an account in the smart contract/Deposit storage fee\*
+
+\*_It cannot be used without any deposit attached_
+
+This API creates a NEAR account\_id in the Orderly contract or is used to top up storage deposit and is a payable method, thus requires a specified amount of NEAR to be attached when first registering an account. The required amount can be retrieved using `storage_balance_bounds`. 
+
+If `registration_only`\=`true`only the minimum required NEAR amount to register an account is accepted which can be retrieved using `storage_balance_bounds`. This cannot be true if the account already exists.
+
+If the account already exists or the value of `registration_only`\=`false,`it can also be omitted.
+
+<Note>
+Any data stored in the contract, such as setting Access/Trading keys, token balance, etc., requires storage staking as per [NEAR architecture](https://docs.near.org/concepts/storage/storage-staking)
+</Note>
+
+## Check Storage Deposit Balance
+
+`storage_balance_of`
+
+Parameters:
+
+```css
+args: {
+    account_id: accountId,
+}
+```
+
+## Check the Cost of Creating an Account
+
+`storage_balance_bounds`
+
+Parameters:
+
+`none`
+
+Queries min and max values of storage cost required for initial registration (only use the min value)
+
+## Check the Cost of Setting Access Key
+
+`storage_cost_of_announce_key`
+
+Parameters:
+
+`none`
+
+Setting each Access Key requires a storage deposit
+
+## Check the Cost of Having a Token
+
+`storage_cost_of_token_balance`
+
+Parameters:
+
+`none`
+
+Depositing each new token requires a storage deposit
+
+## Withdraw Storage Deposit
+
+`storage_withdraw`
+
+Parameters:
+
+```
+args: {
+    //optional, if amount=null, the full available balance will be refunded
+    amount: "Amount of NEAR to withdraw",
+}
+```
+
+Withdraw a specified amount of NEAR from storage staking
+
+## Close the Account
+
+`storage_unregister`
+
+Parameters:
+
+```
+//Requires exactly 1 yochtoNEAR attached
+args: {
+    //if force=true, the remaining tokens in the account will burn and close the account
+    force: bool,
+}
+```
+
+## 

@@ -1,0 +1,9 @@
+---
+title: "Why does Orderly require two different keys to trade? (NEAR only)"
+---
+
+There are a couple of reasons:
+
+1. Separating the rights for trading and other operations, which is crucial for larger companies and institutions.
+
+2. Verify order contents uploaded by the operator corresponds to an order sent by the user when the trade is settled. Since the orders don't go through the smart contract which uses Access Keys, we need trading keys, so that the operator cannot create fake orders not coming from the users

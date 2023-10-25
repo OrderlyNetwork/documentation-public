@@ -1,0 +1,53 @@
+---
+title: "bbo"
+---
+
+- Push interval: 10ms
+
+```json
+{
+    "id": "clientID5",
+    "topic": "SPOT_WOO_USDC.e@bbo",
+    "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name   | Type   | Required | Description                              |
+| ------ | ------ | -------- | ---------------------------------------- |
+| id     | string | Y        | id generate by client                    |
+| event  | string | Y        | `subscribe`/`unsubscribe`                |
+| topic  | string | Y        | `{symbol}@bbo`                           |
+
+
+<RequestExample>
+
+```json Response
+{
+    "id": "clientID5",
+    "event": "subscribe",
+    "success": true,
+    "ts": 1609924478533
+}
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Subscribed Message
+{
+    "topic": "SPOT_WOO_USDC.e@bbo",
+    "ts": 1614152296945,
+    "data": {
+        "symbol": "SPOT_WOO_USDC.e",
+        "ask": 0.30939,
+        "askSize": 4508.53,
+        "bid": 0.30776,
+        "bidSize": 25246.14
+    }
+}
+```
+
+</ResponseExample>

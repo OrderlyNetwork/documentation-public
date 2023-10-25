@@ -1,0 +1,130 @@
+---
+title: "Asset Manager Contract"
+---
+
+_Documentation can be found_ [_here_](/smart-contract-api)
+
+## Storage
+
+_Path:_ _`<Asset Manager Contract Client Instance>.storage.<method (described above)>`_
+
+Orderly asset manager contract implements NEP-145 protocol, which has the following methods:
+
+#### Storage Deposit
+
+Method to deposit NEAR into storage from the account
+
+```css
+  await contract.storage.deposit(100000)
+```
+
+| Parameter name | Type   | Is required? | Description                              |
+| -------------- | ------ | ------------ | ---------------------------------------- |
+| amount         | number | Yes          | Amount of NEAR to add to storage deposit |
+
+#### Storage Withdraw
+
+Method to withdraw NEAR from storage into the account
+
+```css
+  await contract.storage.withdraw(100000)
+```
+
+| Parameter name | Type   | Is required? | Description                                                                                                                      |
+| -------------- | ------ | ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| amount         | number | No           | Amount of NEAR to withdraw from storage into account; can be ommited, then whole available deposit will be returned into account |
+
+#### Storage Balance
+
+Method to get current storage balance
+
+```css
+  await contract.storage.balance()
+```
+
+**Parameters:** _None_
+
+#### Storage Unregister
+
+Unregisters a user from the contract, withdraws available deposit, and removes all keys
+
+```css
+  await contract.storage.unregister()
+```
+
+| Parameter name | Type    | Is required? | Description                                                                                                                                                       |
+| -------------- | ------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| force          | boolean | No           | If true will ignore account balances (burn them) and close the account; if false (or omitted) and caller has a positive registered balance it will throw an error |
+
+## Other methods
+
+_Path:_ _`<Asset Manager Contract Client Instance>.<method (described above)>`_
+
+#### Deposit NEAR
+
+This method is used to deposit NEAR to your account
+
+```css
+  await contract.depositNEAR(amount)
+```
+
+| Parameter name | Type   | Is required? | Description              |
+| -------------- | ------ | ------------ | ------------------------ |
+| amount         | number | Yes          | How much NEAR to deposit |
+
+####  Withdraw
+
+This method is used to withdraw tokens from your account in the contract
+
+```css
+  await contract.withdraw({token: 'usdc.orderly.testnet', amount: 50000000})
+```
+
+| Parameter name | Type   | Is required? | Description                    |
+| -------------- | ------ | ------------ | ------------------------------ |
+| token          | string | Yes          | Token to withdraw from account |
+| amount         | number | Yes          | How much tokens to withdraw    |
+
+#### Check if a Token is Listed
+
+This method is used to check if a token is whitelisted on the contract
+
+```css
+  await contract.isTokenListed('usdc.orderly.testnet')
+```
+
+| Parameter name | Type   | Is required? | Description    |
+| -------------- | ------ | ------------ | -------------- |
+| token          | string | Yes          | Token to check |
+
+#### Check if a Pair is Listed
+
+This method is used to check if the symbol pair is whitelisted on the contract
+
+```css
+  await contract.isSymbolPairListed('SPOT_NEAR_USDC')
+```
+
+| Parameter name | Type   | Is required? | Description          |
+| -------------- | ------ | ------------ | -------------------- |
+| pair           | string | Yes          | Symbol pair to check |
+
+#### Get Supported Tokens
+
+This method is used to get all whitelisted tokens on the contract
+
+```css
+  await contract.getPossibleTokens()
+```
+
+#### Account Balance
+
+This method is used to check the account token balance
+
+```css
+  await contract.getUserTokenBalance('user.near')
+```
+
+| Parameter name | Type   | Is required? | Description                                                         |
+| -------------- | ------ | ------------ | ------------------------------------------------------------------- |
+| user           | string | No           | Wallet address. If empty then will return balance of connected user |

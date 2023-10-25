@@ -1,101 +1,405 @@
 {
-  "name": "Orderly Network",
-  "logo": "/logo/logo.png",
-  "favicon": "/logo/logo.pn",
-  "colors": {
-    "primary": "#771de2",
-    "light": "#AE87FF",
-    "dark": "#0D001D",
-    "anchors": {
-      "from": "#FF7F57",
-      "to": "#9563FF"
-    }
-  },
-  "backgroundImage": "/images/color_bg.png",
-  "topbarLinks": [
-    {
-      "name": "Support",
-      "url": "mailto:product@orderly.network"
+    "name": "Orderly Network",
+    "logo": {
+      "light": "/logo/light.png",
+      "dark": "/logo/dark.png"
     },
-    {
-      "name": "Blog",
-      "url": "https://medium.com/@orderlynetwork"
-    }
-  ],
-  "topbarCtaButton": {
-    "name": "Explore",
-    "url": "https://orderly.network"
-  },
-  "tabs": [
-    {
-      "name": "API Reference (NEAR)",
-      "url": "api-reference-near"
+    "favicon": "/favicon.png",
+    "colors": {
+      "primary": "#aa5cf8",
+      "light": "#BE7CFF",
+      "dark": "#aa5cf8",
+      "anchors": {
+        "from": "#32cce1",
+        "to": "#aa5cf8"
+      }
     },
-    {
-      "name": "API Reference (EVM)",
-      "url": "api-reference-evm"
-    }
-  ],
-  "navigation": [
-    {
-      "group": "Getting Started",
-      "pages": [
-        "documentation/getting-started/introduction",
-        "documentation/getting-started/mission",
-        "documentation/getting-started/roadmap"
-      ]
+    
+    "modeToggle": {
+        "default": "dark"
     },
-    {
-      "group": "Build on Orderly",
-      "pages": [
+    "topbarCtaButton": {
+      "name": "Get a Grant",
+      "url": "https://forms.gle/ThhKdKQxsfQHASZ29"
+    },
+    "topbarLinks": [
+      {
+        "name": "Socials",
+        "url": "https://linktr.ee/orderlynetwork"
+      }
+    ],
+    "tabs": [
         {
-          "group": "Building on NEAR",
-          "pages": [
-            "documentation/build-on-orderly/near/overview"
-          ]
+            "name": "NEAR API",
+            "url": "near-api"
         },
         {
-          "group": "Building on EVM",
-          "pages": [
-            "documentation/build-on-orderly/evm/tutorial"
-          ]
-        }            
-      ]
-    },
-    {
-      "group": "Trade on Orderly",
-      "pages": [
-        "documentation/trade-on-orderly/trade"
-      ]
-    },
-    {
-      "group": "API Documentation (NEAR)",
-      "pages": [
-        "api-reference-near/authentication"
-      ]
-    },
-    {
-      "group": "API Reference (EVM)",
-      "pages": [
-        "api-reference-evm/introduction",
-        "api-reference-evm/authentication",
-        "api-reference-evm/change-log"
-      ]
-    }
-  ],
-  "feedback": {
-    "thumbsRating": true,
-    "suggestEdit": true,
-    "raiseIssue": true
-  },
-  "search": {
-    "prompt": "Search docs"
-  },
-  "footerSocials": {
-    "website": "https://orderly.network",
-    "discord": "https://discord.com/invite/orderlynetwork",
-    "twitter": "https://twitter.com/orderlynetwork",
-    "linkedin": "https://www.linkedin.com/company/orderly-network",
-    "github": "https://github.com/orderlynetwork"
+          "name": "EVM API",
+          "url": "evm-api"
+      }
+    ],
+    "navigation": [
+      {
+        "group": "Getting Started",
+        "pages": [
+          "getting-started/what-is-orderly-network",
+          "getting-started/our-mission",
+          "getting-started/roadmap"
+        ]
+      },
+      {
+        "group": "Build on Orderly",
+        "pages": [
+          {
+            "group": "Build on NEAR",
+            "pages": [
+              "build-on-orderly/building-on-near",
+              {
+                "group": "Smart Contract API",
+                "pages": [
+                  "build-on-orderly/building-on-near/smart-contract-api/smart-contract-addresses",
+                  "build-on-orderly/building-on-near/smart-contract-api/authentication-key-management",
+                  "build-on-orderly/building-on-near/smart-contract-api/deposit",
+                  "build-on-orderly/building-on-near/smart-contract-api/withdrawal",
+                  "build-on-orderly/building-on-near/smart-contract-api/general-data-access",
+                  "build-on-orderly/building-on-near/smart-contract-api/user-data",
+                  "build-on-orderly/building-on-near/smart-contract-api/on-chain-order-swap",
+                  "build-on-orderly/building-on-near/smart-contract-api/storage-staking",
+                  "build-on-orderly/building-on-near/smart-contract-api/perpetual-futures"
+                ]
+              },
+              "build-on-orderly/building-on-near/off-chain-engine-api",
+              {
+                "group": "Near SDK",
+                "pages": [
+                  "build-on-orderly/building-on-near/near-sdk/near-sdk",
+                  "build-on-orderly/building-on-near/near-sdk/setting-up",
+                  "build-on-orderly/building-on-near/near-sdk/asset-manager-contract",
+                  "build-on-orderly/building-on-near/near-sdk/fungible-token-contract",
+                  "build-on-orderly/building-on-near/near-sdk/rest-client"
+                ]
+              },
+              "build-on-orderly/building-on-near/tutorial"
+            ]
+          },
+          {
+            "group": "Near SDK",
+            "pages": [
+              "build-on-orderly/building-on-evm/building-on-evm",
+              "build-on-orderly/building-on-evm/smart-contract-addresses",
+              "build-on-orderly/building-on-evm/evm-sdk"
+            ]
+          },
+          "build-on-orderly/supported-chains"
+        ]
+      },
+      {
+        "group": "Trade on Orderly",
+        "pages": [
+          "trade-on-orderly/trade-on-orderly",
+          {
+            "group": "Perpetual Futures",
+            "pages": [
+              "trade-on-orderly/perpetual-futures/perpetual-futures",
+              "trade-on-orderly/perpetual-futures/margin-leverage-and-pnl",
+              "trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price",
+              "trade-on-orderly/perpetual-futures/orders-price-limits",
+              "trade-on-orderly/perpetual-futures/funding-rate",
+              "trade-on-orderly/perpetual-futures/liquidations",
+              "trade-on-orderly/perpetual-futures/insurance-fund-and-adl"      
+            ]
+          },
+          "trade-on-orderly/fee-structure",
+          "trade-on-orderly/supported-markets",
+          "trade-on-orderly/trading-guis"
+        ]
+      },
+      {
+        "group": "Learn More",
+        "pages": [
+          {
+            "group": "FAQ",
+            "pages": [
+              "faq/what-is-orderly",
+              "faq/how-do-i-get-started",
+              "faq/what-can-i-do-on-orderly",
+              "faq/how-are-trading-fees-calculated-charged",
+              "faq/can-i-list-my-token-on-orderly",
+              "faq/what-are-the-different-order-types",
+              "faq/why-does-orderly-require-two-different-keys-to-trade-near-only",
+              "faq/how-do-you-ensure-no-fake-orders-are-settled-on-chain",
+              "faq/are-there-code-examples-or-tutorials-for-how-to-build-on-orderly",
+              "faq/learn-more"
+            ]
+          },
+          "security",
+          "terms-of-service",
+          "privacy-policy"
+        ]
+      },
+      {
+        "group": "NEAR API",
+        "pages": [
+          "near-api/introduction",
+          "near-api/authentication",
+          "near-api/error-codes",
+          {
+            "group": "RESTful API",
+            "pages": [
+              {
+                "group": "Public",
+                "pages": [
+                  "near-api/restful-api/public/get-leverage-configuration",
+                  "near-api/restful-api/public/system",
+                  "near-api/restful-api/public/exchange-information",
+                  "near-api/restful-api/public/token-info",
+                  "near-api/restful-api/public/available-symbols",
+                  "near-api/restful-api/public/fee-information",
+                  "near-api/restful-api/public/future-fee-information",
+                  "near-api/restful-api/public/market-trades",
+                  "near-api/restful-api/public/volume-statistics",
+                  "near-api/restful-api/public/get-list-of-brokers",
+                  "near-api/restful-api/public/funding-rate-1",
+                  "near-api/restful-api/public/funding-rate-2",
+                  "near-api/restful-api/public/funding-rate-3",
+                  "near-api/restful-api/public/futures-1",
+                  "near-api/restful-api/public/futures-2",
+                  "near-api/restful-api/public/liquidation-1",
+                  "near-api/restful-api/public/liquidation-2",
+                  "near-api/restful-api/public/insurance",
+                  "near-api/restful-api/public/trading-view-1",
+                  "near-api/restful-api/public/trading-view-2",
+                  "near-api/restful-api/public/trading-view-3"
+                ]
+              },
+              {
+                "group": "Private",
+                "pages": [
+                  "near-api/restful-api/private/create-order",
+                  "near-api/restful-api/private/create-batch-order",
+                  "near-api/restful-api/private/edit-order",
+                  "near-api/restful-api/private/cancel-order",
+                  "near-api/restful-api/private/batch-cancel-orders",
+                  "near-api/restful-api/private/cancel-orders-by-order-id",
+                  "near-api/restful-api/private/get-order",
+                  "near-api/restful-api/private/get-order-by-client-id",
+                  "near-api/restful-api/private/get-orders",
+                  "near-api/restful-api/private/orderbook-snapshot",
+                  "near-api/restful-api/private/get-kline",
+                  "near-api/restful-api/private/get-trades-order",
+                  "near-api/restful-api/private/get-trades",
+                  "near-api/restful-api/private/get-trade",
+                  "near-api/restful-api/private/get-one-position-info",
+                  "near-api/restful-api/private/get-funding-fee-history",
+                  "near-api/restful-api/private/update-leverage-setting",
+                  "near-api/restful-api/private/get-liquidate-positions",
+                  "near-api/restful-api/private/get-liquidated-positions-2",
+                  "near-api/restful-api/private/claim-liquidated-positions",
+                  "near-api/restful-api/private/claim-from-insurance-fraud",
+                  "near-api/restful-api/private/get-current-holding",
+                  "near-api/restful-api/private/get-account-information",
+                  "near-api/restful-api/private/get-user-statistics",
+                  "near-api/restful-api/private/set-maintainance",
+                  "near-api/restful-api/private/get-asset-history",
+                  "near-api/restful-api/private/get-daily-user-volume",
+                  "near-api/restful-api/private/get-user-volume-statistics",
+                  "near-api/restful-api/private/get-pnl",
+                  "near-api/restful-api/private/get-trading-info",
+                  "near-api/restful-api/private/get-trading-key",
+                  "near-api/restful-api/private/add-ip-restriction",
+                  "near-api/restful-api/private/remove-trading-key",
+                  "near-api/restful-api/private/set-trading-key",
+                  "near-api/restful-api/private/get-ip",
+                  "near-api/restful-api/private/get-all-notifications",
+                  "near-api/restful-api/private/get-unread-notifications",
+                  "near-api/restful-api/private/set-read",
+                  "near-api/restful-api/private/set-all"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Websocket API",
+            "pages": [
+              "near-api/websocket-api/introduction",
+              "near-api/websocket-api/ping-pong",
+              "near-api/websocket-api/auth",
+              {
+                "group": "Public",
+                "pages": [
+                  "near-api/websocket-api/public/request-orderbook",
+                  "near-api/websocket-api/public/orderbook",
+                  "near-api/websocket-api/public/order-book-update",
+                  "near-api/websocket-api/public/trade",
+                  "near-api/websocket-api/public/24-hour-ticker",
+                  "near-api/websocket-api/public/24-hours-tickers",
+                  "near-api/websocket-api/public/bbo",
+                  "near-api/websocket-api/public/bbos",
+                  "near-api/websocket-api/public/k-line",
+                  "near-api/websocket-api/public/index-price",
+                  "near-api/websocket-api/public/index-prices",
+                  "near-api/websocket-api/public/mark-price",
+                  "near-api/websocket-api/public/mark-prices",
+                  "near-api/websocket-api/public/open-interest",
+                  "near-api/websocket-api/public/estimated-funding-rate",
+                  "near-api/websocket-api/public/liquidation-push"
+                ]
+              },
+              {
+                "group": "Private",
+                "pages": [
+                  "near-api/websocket-api/private/balance",
+                  "near-api/websocket-api/private/execution-report",
+                  "near-api/websocket-api/private/execution-report-single",
+                  "near-api/websocket-api/private/notifications",
+                  "near-api/websocket-api/private/position-push",
+                  "near-api/websocket-api/private/liquidation-account-push",
+                  "near-api/websocket-api/private/liquidator"
+                ]
+              },
+              "near-api/websocket-api/error-response"
+            ]
+          },
+          "near-api/release-notes"
+        ]
+      },
+      {
+        "group": "EVM API ",
+        "pages": [
+          {
+            "group": "RESTful API",
+            "pages": [
+              "evm-api/introduction",
+              "evm-api/user-flow-walkthrough",
+              "evm-api/authentication",
+              "evm-api/error-codes",
+              {
+                "group": "Public",
+                "pages": [
+                  "evm-api/restful-api/public/system-maintenance-status",
+                  "evm-api/restful-api/public/get-faucet-usdcs",
+                  "evm-api/restful-api/public/get-registration-nonce",
+                  "evm-api/restful-api/public/get-account",
+                  "evm-api/restful-api/public/register-account",
+                  "evm-api/restful-api/public/get-orderly-key",
+                  "evm-api/restful-api/public/add-orderly-key",
+                  "evm-api/restful-api/public/exchange-information",
+                  "evm-api/restful-api/public/token-info",
+                  "evm-api/restful-api/public/get-vault-balances",
+                  "evm-api/restful-api/public/available-symbols",
+                  "evm-api/restful-api/public/future-fees-information",
+                  "evm-api/restful-api/public/get-leverage-configuration",
+                  "evm-api/restful-api/public/market-trades",
+                  "evm-api/restful-api/public/volume-statistics",
+                  "evm-api/restful-api/public/get-list-of-brokers",
+                  "evm-api/restful-api/public/predicted-funding-rate",
+                  "evm-api/restful-api/public/predicted-funding-rate-2",
+                  "evm-api/restful-api/public/funding-rate-3",
+                  "evm-api/restful-api/public/futures-1",
+                  "evm-api/restful-api/public/liquidation-1",
+                  "evm-api/restful-api/public/liquidation-2",
+                  "evm-api/restful-api/public/insurance",
+                  "evm-api/restful-api/public/get-vault-chain-config",
+                  "evm-api/restful-api/public/trading-view-history",
+                  "evm-api/restful-api/public/get-tradingview-symbol-info"
+                ]
+              },
+              {
+                "group": "Private",
+                "pages": [
+                  "evm-api/restful-api/private/create-order",
+                  "evm-api/restful-api/private/create-batch-order",
+                  "evm-api/restful-api/private/edit-order",
+                  "evm-api/restful-api/private/cancel-order",
+                  "evm-api/restful-api/private/batch-cancel-orders",
+                  "evm-api/restful-api/private/cancel-orders-by-order-id",
+                  "evm-api/restful-api/private/get-order",
+                  "evm-api/restful-api/private/get-order-by-client-id",
+                  "evm-api/restful-api/private/get-orders",
+                  "evm-api/restful-api/private/orderbook-snapshot",
+                  "evm-api/restful-api/private/get-kline",
+                  "evm-api/restful-api/private/get-trades-order",
+                  "evm-api/restful-api/private/get-trades",
+                  "evm-api/restful-api/private/get-trade",
+                  "evm-api/restful-api/private/get-one-position-info",
+                  "evm-api/restful-api/private/get-funding-fee-history",
+                  "evm-api/restful-api/private/update-leverage-setting",
+                  "evm-api/restful-api/private/get-liquidate-positions",
+                  "evm-api/restful-api/private/get-liquidated-positions-2",
+                  "evm-api/restful-api/private/claim-liquidated-positions",
+                  "evm-api/restful-api/private/claim-from-insurance-fraud",
+                  "evm-api/restful-api/private/get-current-holding",
+                  "evm-api/restful-api/private/get-account-information",
+                  "evm-api/restful-api/private/get-user-statistics",
+                  "evm-api/restful-api/private/set-maintainance",
+                  "evm-api/restful-api/private/get-asset-history",
+                  "evm-api/restful-api/private/get-daily-user-volume",
+                  "evm-api/restful-api/private/get-user-volume-statistics",
+                  "evm-api/restful-api/private/get-pnl",
+                  "evm-api/restful-api/private/get-trading-info",
+                  "evm-api/restful-api/private/get-trading-key",
+                  "evm-api/restful-api/private/add-ip-restriction",
+                  "evm-api/restful-api/private/remove-trading-key",
+                  "evm-api/restful-api/private/set-trading-key",
+                  "evm-api/restful-api/private/get-ip",
+                  "evm-api/restful-api/private/get-all-notifications",
+                  "evm-api/restful-api/private/get-unread-notifications",
+                  "evm-api/restful-api/private/set-read",
+                  "evm-api/restful-api/private/set-all"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Websocket API",
+            "pages": [
+              "evm-api/websocket-api/introduction",
+              "evm-api/websocket-api/ping-pong",
+              "evm-api/websocket-api/auth",
+              {
+                "group": "Public",
+                "pages": [
+                  "evm-api/websocket-api/public/request-orderbook",
+                  "evm-api/websocket-api/public/orderbook",
+                  "evm-api/websocket-api/public/order-book-update",
+                  "evm-api/websocket-api/public/trade",
+                  "evm-api/websocket-api/public/24-hour-ticker",
+                  "evm-api/websocket-api/public/24-hours-tickers",
+                  "evm-api/websocket-api/public/bbo",
+                  "evm-api/websocket-api/public/bbos",
+                  "evm-api/websocket-api/public/k-line",
+                  "evm-api/websocket-api/public/index-price",
+                  "evm-api/websocket-api/public/index-prices",
+                  "evm-api/websocket-api/public/mark-price",
+                  "evm-api/websocket-api/public/mark-prices",
+                  "evm-api/websocket-api/public/open-interest",
+                  "evm-api/websocket-api/public/estimated-funding-rate",
+                  "evm-api/websocket-api/public/liquidation-push"
+                ]
+              },
+              {
+                "group": "Private",
+                "pages": [
+                  "evm-api/websocket-api/private/balance",
+                  "evm-api/websocket-api/private/execution-report",
+                  "evm-api/websocket-api/private/execution-report-single",
+                  "evm-api/websocket-api/private/notifications",
+                  "evm-api/websocket-api/private/position-push",
+                  "evm-api/websocket-api/private/liquidation-account-push",
+                  "evm-api/websocket-api/private/liquidator"
+                ]
+              },
+              "evm-api/websocket-api/error-response"
+            ]
+          },
+          "evm-api/release-notes"
+       ]
+      }
+    ],
+    "footerSocials":
+      {
+          "twitter": "https://twitter.com/OrderlyNetwork",
+          "linkedin": "https://www.linkedin.com/company/orderly-network/",
+          "discord": "https://discord.gg/orderlynetwork"
+      }
   }
-}

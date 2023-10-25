@@ -1,0 +1,88 @@
+---
+title: "Setting Up"
+---
+
+## Typescript
+
+The library is written fully in Typescript, so no additional type installation is needed.
+
+## Usage
+
+### Available Clients
+
+`contractsApi` \- asset manager smart contract client;
+
+`ftClient` \- fungible token smart contract client;
+
+`restApi` \- REST API client.
+
+## Initialization
+
+To initialize these clients you will need the following:
+
+`contractsApi` \- SDK configuration options
+
+`ftClient` \- contract URL and SDK configuration options
+
+`restApi` \- SDK configuration options
+
+SDK configuration options is an object with the next properties:
+
+`networkId` \- NEAR network id to which we want to connect when working with the SDK. Currently, Orderly contracts are deployed on `testnet` and `mainnet` (fungible token contract is deployed only on `testnet`).
+
+<Note>
+_**Note:**_ You can read about NEAR CLI [here](https://docs.near.org/tools/near-cli)
+</Note>
+
+If you want to change the NEAR configuration options for smart contract clients, pass them as the last parameter in their constructors.
+
+## First steps
+
+After instantiating the smart contract client, call the `connect` function.
+<Note>
+_**Note:**_ As all requests work with HTTP don't forget to fetch the user balance after each action like`orderCreate`
+</Note>
+```java
+import { AuthClient } from 'orderly-sdk';
+
+const authClient = new AuthClient({
+  networkId: 'testnet',
+  contractId: 'asset-manager.orderly.testnet'
+});
+
+// you can bind that to connection button
+await authClient.connect()
+
+const api = await authClient.restApi()
+const contract = await authClient.contractsApi();
+const ft = await authClient.ftClient();
+```
+
+You can also use public API as well without connection:
+
+```java
+import { AuthClient } from 'orderly-sdk';
+
+const authClient = new AuthClient({
+  networkId: 'testnet',
+  contractId: 'asset-manager.orderly.testnet',
+  debug: true
+});
+
+const pubClient = authClient.publicClient();
+await pubClient.getAvailableSymbols()
+```
+
+`near-js-api` can be imported from SDK to avoid version conflicts
+
+```java
+import { AuthClient } from 'orderly-sdk';
+
+const authClient = new AuthClient({
+  networkId: 'testnet',
+  contractId: 'asset-manager.orderly.testnet',
+  debug: true
+});
+
+const nearApi = authClient.nearJsApi
+```
