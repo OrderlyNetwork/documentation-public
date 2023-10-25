@@ -1,0 +1,88 @@
+---
+title: "Get predicted funding rate for all markets"
+---
+
+<RequestExample>
+
+```shell
+curl 'https://api.orderly.org/v1/public/funding_rates'
+```
+
+```java
+```
+
+```python
+import requests
+
+url = "https://api.orderly.org/v1/public/funding_rates"
+
+payload={}
+headers = {}
+
+response = requests.request("GET", url, headers=headers, data=payload)
+
+```
+
+```javascript
+var axios = require('axios');
+
+var config = {
+   method: 'get',
+   url: 'https://api.orderly.org/v1/public/funding_rates',
+   headers: {}
+};
+
+axios(config)
+.then(function (response) {
+   console.log(JSON.stringify(response.data));
+})
+.catch(function (error) {
+   console.log(error);
+});
+
+```
+</RequestExample>
+**Limit: 10 requests per 1 second per IP address**
+
+`GET /v1/public/funding_rates`
+
+Get predicted funding rates for all futures trading pairs.
+
+Get the : 
+* `last_funding_rate` : latest hourly funding rate for all the markets for the last funding period (dt = 8h)
+* `est_funding_rate` : rolling average of all funding rates over the last 8 hours 
+<ResponseExample>
+
+```json
+{
+    "success": true,
+    "data": {
+        "rows": [
+            {
+                "symbol": "PERP_ETH_USDC.e",
+                "est_funding_rate": 0,
+                "est_funding_rate_timestamp": 1683879975000,
+                "last_funding_rate": 0.0001,
+                "last_funding_rate_timestamp": 1683878400000,
+                "next_funding_time": 1683907200000,
+                "sum_unitary_funding": 521.367
+            },
+            {
+                "symbol": "PERP_NEAR_USDC.e",
+                "est_funding_rate": 0.02651942,
+                "est_funding_rate_timestamp": 1683879975000,
+                "last_funding_rate": 0.0075,
+                "last_funding_rate_timestamp": 1683878400000,
+                "next_funding_time": 1683907200000,
+                "sum_unitary_funding": -6.167009
+            }
+        ]
+    },
+    "timestamp": 1683879989454
+}
+```
+</ResponseExample>
+**Parameters**
+
+None
+

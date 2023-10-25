@@ -1,0 +1,39 @@
+---
+title: "Get Vault Balances"
+---
+
+Limit: 10 requests per 1 second per IP address
+
+<RequestExample>
+```bash
+curl 'https://api-evm.orderly.org/v1/public/vault_balance'
+```
+</RequestExample>
+
+`GET /v1/public/vault_balance`
+
+<ResponseExample>
+```json
+{
+  "success": true,
+  "data": {
+    "rows":[
+      {
+        "chain_id": 80001,
+        "token": "USDC",
+        "balance": 1000.12345
+      },
+      ...
+    ]
+  },
+  "timestamp": 1684811129040
+}
+```
+</ResponseExample>
+
+**Parameters**
+
+| Name     | Type   | Required | Description                       |
+|----------|--------|----------|-----------------------------------|
+| chain_id | number | N        | id of the chain you wish to query |
+| token    | string | N        | the token you wish to query       |

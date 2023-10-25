@@ -1,0 +1,99 @@
+---
+title: "Get futures info for all markets"
+---
+
+<RequestExample>
+
+```shell
+curl 'https://api.orderly.org/v1/public/futures'
+```
+
+```java
+
+```
+
+```python
+import requests
+
+url = "https://api.orderly.org/v1/public/futures"
+
+payload={}
+headers = {}
+
+response = requests.request("GET", url, headers=headers, data=payload)
+```
+
+```javascript
+var axios = require('axios');
+
+var config = {
+   method: 'get',
+   url: 'https://api.orderly.org/v1/public/futures',
+   headers: {}
+};
+
+axios(config)
+.then(function (response) {
+   console.log(JSON.stringify(response.data));
+})
+.catch(function (error) {
+   console.log(error);
+});
+
+```
+</RequestExample>
+**Limit: 10 requests per 1 second per IP address**
+
+`GET /v1/public/futures`
+
+Get basic futures information for all the markets.
+
+<ResponseExample>
+
+```json
+{
+   "success":true,
+   "data":{
+      "rows":[
+         {
+            "symbol":"PERP_ETH_USDC.e",
+            "index_price":1901.6,
+            "mark_price":1950.0,
+            "sum_unitary_funding":387.891,
+            "est_funding_rate":0.00046875,
+            "last_funding_rate":0.00046875,
+            "next_funding_time":1683270060000,
+            "open_interest":"None",
+            "24h_open":2115.0,
+            "24h_close":2115.0,
+            "24h_high":2115.0,
+            "24h_low":2115.0,
+            "24h_volumn":0.0,
+            "24h_amount":0.0
+         },
+         {
+            "symbol":"PERP_NEAR_USDC.e",
+            "index_price":1.8504,
+            "mark_price":2.05,
+            "sum_unitary_funding":-6.373816,
+            "est_funding_rate":0.0009375,
+            "last_funding_rate":0.0009375,
+            "next_funding_time":1683270060000,
+            "open_interest":"None",
+            "24h_open":1.9,
+            "24h_close":1.9,
+            "24h_high":1.9,
+            "24h_low":1.895,
+            "24h_volumn":3668.3,
+            "24h_amount":6967.76
+         }
+      ]
+   },
+   "timestamp":1683270033049
+}
+```
+</ResponseExample>
+**Parameters**
+
+None                   
+

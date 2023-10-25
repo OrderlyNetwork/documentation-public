@@ -1,0 +1,82 @@
+---
+title: "Orderbook"
+
+---
+
+- `{symbol}@orderbook` depth 100 push every 1s
+
+
+**Parameters**
+
+| Name          | Type   | Required | Description           |
+|---------------|--------|----------|-----------------------|
+| id            | string | Y        | id generate by client |
+| event         | string | Y        | subscribe/unsubscribe |
+| topic         | string | Y        | `{symbol}@orderbook`    |
+| params.symbol | string | Y        | `{symbol}`              |
+
+```json Subscribed Message
+{
+    "topic": "SPOT_WOO_USDC@orderbook",
+    "ts": 1614152140945,
+    "data": {
+        "symbol": "SPOT_WOO_USDC",
+        "asks": [
+            [
+                0.31075,
+                2379.63
+            ],
+            [
+                0.31076,
+                4818.76
+            ],
+            [
+                0.31078,
+                8496.1
+            ],
+            ...
+        ],
+        "bids": [
+            [
+                0.30891,
+                2469.98
+            ],
+            [
+                0.3089,
+                482.5
+            ],
+            [
+                0.30877,
+                20
+            ],
+            ...
+        ]
+    }
+}
+```
+<RequestExample>
+
+```bash
+{
+    "id": "clientID2",
+    "topic": "SPOT_WOO_USDC@orderbook",
+    "event": "subscribe"
+}
+```
+
+</RequestExample>
+
+
+
+<ResponseExample>
+
+```json Response
+{
+    "id": "clientID2",
+    "event": "subscribe",
+    "success": true,
+    "ts": 1609924478533
+}
+```
+
+</ResponseExample>

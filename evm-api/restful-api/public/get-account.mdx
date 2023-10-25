@@ -1,0 +1,33 @@
+---
+title: "Get Account"
+---
+Limit: 10 requests per 1 second per IP address
+
+
+<RequestExample>
+```bash
+curl 'https://api-evm.orderly.org/v1/get_account?address=0xfcc17f2b240380d56f0615e8f654e4ae3cee8957&brokerId=woofi_dex'
+```
+</RequestExample>
+`GET /v1/get_account`
+
+Check whether a particular account is registered on Orderly Network.
+
+<ResponseExample>
+```json
+{
+    "success": true,
+    "data": {
+        "user_id": 24,
+        "account_id": "0xb129e074a17dfba8d652ae1eca21c7d6bb6904f1aa693f4886d50db170933a46"
+    },
+    "timestamp": 1689146471412
+}
+```
+</ResponseExample>
+**Parameters**
+
+| Name     | Type   | Required | Description                                  |
+|----------|--------|----------|----------------------------------------------|
+| address  | string | Y        | The address of the user wallet               |
+| brokerId | string | Y        | The broker that the account is registered on |

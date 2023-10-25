@@ -1,0 +1,30 @@
+---
+title: "Get Registration Nonce"
+---
+
+Limit: 10 requests per 1 second per IP address
+
+<RequestExample>
+```bash
+curl 'https://api-evm.orderly.org/v1/registration_nonce'
+```
+</RequestExample>
+`GET /v1/registration_nonce`
+
+Retrieve a nonce used for registering an account on Orderly Network. The validity of the nonce value is 2 minutes. Each nonce can only be used once (ie for one account).
+
+<ResponseExample>
+```json
+{
+    "success": true,
+    "data": {
+        "registration_nonce": "194528949540"
+    },
+    "timestamp": 1688606744795
+}
+```
+</ResponseExample>
+**Parameters**
+
+None
+

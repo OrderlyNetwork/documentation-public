@@ -1,0 +1,73 @@
+---
+title: "Token info"
+---
+
+<RequestExample>
+
+``` shell
+curl 'https://api.orderly.org/v1/public/token'
+```
+```java
+```
+
+```python
+import requests
+
+url = "https://api.orderly.org/v1/public/token"
+
+payload={}
+headers = {}
+
+response = requests.request("GET", url, headers=headers, data=payload)
+```
+
+```javascript
+var axios = require('axios');
+
+var config = {
+   method: 'get',
+   url: 'https://api.orderly.org/v1/public/token',
+   headers: {}
+};
+
+axios(config)
+.then(function (response) {
+   console.log(JSON.stringify(response.data));
+})
+.catch(function (error) {
+   console.log(error);
+});
+
+```
+</RequestExample>
+**Limit: 10 requests per 1 second per IP address**
+
+`GET /v1/public/token`
+
+Retrives the available tokens to custody within Orderly Network.
+
+<ResponseExample>
+
+```json
+{
+    "success":true,
+    "data":{
+        "rows":[
+            {
+                "token": "NEAR", // name of token
+                "token_account_id": "near", // token account address on NEAR chain
+                "decimals": 24, // precision of the token
+                "minimum_increment": 0.00000001 // minimum increment of the token on Orderly
+            },
+            ...
+        ]
+    }
+    "timestamp":1663160261906
+}
+```
+</ResponseExample>
+
+**Parameters**
+
+None
+

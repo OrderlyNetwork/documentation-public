@@ -1,0 +1,39 @@
+---
+title: "Get unread notification information"
+---
+
+<RequestExample>
+
+```shell
+curl -X GET 'https://api.orderly.org/v1/notification/inbox/unread' \
+    -H 'Content-Type: application/x-www-form-urlencoded' \
+    -H 'orderly-timestamp: 1649920583000' \
+    -H 'orderly-account-id: testuser.near' \
+    -H 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
+    -H 'orderly-signature: JRaXrOez2OeM20AbpqANI3Rw651BV9c0vBYfvmn9P6XT3jiwWltIKOBNvqEIk+73lnUnZUYyv2m+M1KIQWmPAA==' \
+```
+</RequestExample>
+
+**Limit: 10 requests per 60 seconds**
+
+`GET /v1/notification/inbox/unread`
+
+Get the information on unread messages for the user.
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "count": 10, // number of unread messages
+    "lastId": 12345 // the id of the last unread message
+  },
+  "timestamp": 1679028707086
+}
+```
+</ResponseExample>
+**Parameters**
+
+None
+

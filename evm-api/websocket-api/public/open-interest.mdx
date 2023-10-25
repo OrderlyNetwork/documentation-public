@@ -1,0 +1,46 @@
+---
+title: "Open interest"
+---
+
+- Push interval: push every 1 second if open interest change and 10 seconds force update even if no change.
+
+```json
+{
+    "id": "clientID10",
+    "topic": "PERP_ETH_USDC.e@openinterest",
+    "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name   | Type   | Required | Description                               |
+| ------ | ------ | -------- | ----------------------------------------- |
+| id     | string | Y        | id generate by client                     |
+| event  | string | Y        | `subscribe`/`unsubscribe`                 |
+| topic  | string | N        | `{symbol}@openinterest`                   |
+
+<RequestExample>
+```json Response
+{
+   "id":"clientID10",
+   "event":"subscribe",
+   "success":true,
+   "ts":1682242071080
+}
+```
+</RequestExample>
+
+
+<ResponseExample>
+```json Subscribed Message
+{
+   "topic":"PERP_ETH_USDC.e@openinterest",
+   "ts":1682242080006,
+   "data":{
+      "symbol":"PERP_ETH_USDC.e",
+      "openInterest":1.2741
+   }
+}
+```
+</ResponseExample>

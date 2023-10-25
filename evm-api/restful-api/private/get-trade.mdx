@@ -1,0 +1,50 @@
+---
+title: "Get trade"
+---
+
+<RequestExample>
+
+``` curl
+curl 'https://api.orderly.org/v1/trade/2' \
+    -H 'Content-Type: application/x-www-form-urlencoded' \
+    -H 'orderly-timestamp: 1649920583000' \
+    -H 'orderly-account-id: testuser.near' \
+    -H 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
+    -H 'orderly-signature: 7xJQuog8SkueEQfMcxLeheXxO5Cnyza97+LsYTbVli7mJQWaEb1566heyVAgVCio2UNiJldRpsrTvvhos5WVDg=='
+```
+</RequestExample>
+
+**Limit: 10 requests per 1 second**
+
+`GET /v1/trade/:trade_id`
+
+Get specific transaction details by `trade_id`.
+
+<ResponseExample>
+
+```json
+{
+    "success": true,
+    "data": {
+        "id": 1,
+        "symbol": "SPOT_BTC_USDC.e",
+        "fee": 0.0001,
+        "fee_asset": "BTC", // fee. use Base (BTC) as unit when BUY, use Quote (USDC.e) as unit when SELL
+        "side": "BUY",
+        "order_id": 2,
+        "executed_price": 123,
+        "executed_quantity": 0.05,
+        "executed_timestamp": 1567382400000,
+        "is_maker": 1
+    },
+    "timestamp": 1639980423855
+}
+```
+</ResponseExample>
+
+**Parameters**
+
+| Name             | Type   | Required | Description                           |
+| ---------------- | ------ | -------- | --------------------------------------|
+| trade_id         | number | Y        | id of the trade                       |
+
