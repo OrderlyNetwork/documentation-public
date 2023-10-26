@@ -76,7 +76,14 @@ Follow the following steps to add a new access key on Orderly Network:
 ```
 where:
 
-| Name | Type | Required | Description | |------------|-----------|----------|---------------------------------------------------------------------------------------------------| | brokerId | string | Y | Broker ID | | chainId | int | Y | Chain ID of registering chain (within those that are supported by the Network) | | orderlyKey | string | Y | ed25519 public key | | scope | string | Y | valid scopes are read, trading; multiple scopes can be sent, comma separated | | timestamp | timestamp | Y | timestamp in UNIX milliseconds | | expiration | timestamp | Y | Expiration time of the key in UNIX milliseconds. Maximum allowed expiration is 365 days from add |
+| Name              | Type      | Required | Description                                                                    |
+|-------------------|-----------|----------|--------------------------------------------------------------------------------|
+| brokerId          | string    | Y        | Broker ID                                                                      |
+| chainId           | int       | Y        | Chain ID of registering chain (within those that are supported by the Network) |
+| orderlyKey        | string    | Y        | ed25519 public key                                                             | 
+| scope             | string    | Y        | valid scopes are read, trading; multiple scopes can be sent, comma separated   |
+| timestamp         | timestamp | Y        | timestamp in UNIX milliseconds                                                 |
+| expiration        | timestamp | Y        | Expiration time of the key in UNIX milliseconds. Maximum allowed expiration is 365 days from add |
 
 1. Send all the necessary information via Add Orderly key API
 Users can also check the validity of a particularly Orderly access key via the Get Orderly key API.
