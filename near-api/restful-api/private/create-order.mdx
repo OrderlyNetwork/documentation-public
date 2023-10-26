@@ -20,8 +20,7 @@ curl -X POST 'https://api.orderly.org/v1/order' \
 
 `POST /v1/order`
 
-Place order maker/taker, the order executed information will be update from websocket stream.
-will response immediately with an order created message.
+Place maker/taker order. Will respond immediately with an order creation message. The order execution information will be retrievable from websocket stream.
 
 `MARKET` type order behavior: it matches until the full size is executed. If the size is too large (larger than whole book) or the matching price exceeds the price limit (refer to `price_range`), then the remaining quantity will be cancelled.
 
