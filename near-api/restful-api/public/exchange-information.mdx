@@ -48,9 +48,13 @@ This endpoint provides all the values for the rules that an order need to fulfil
 ### Price filter
 
 `price` `>=` `quote_min`
+
 `price` `<=` `quote_max`
+
 `(price - quote_min) % quote_tick` should equal to zero
+
 `price` `<=` `asks[0].price * (1 + price_range)` when BUY
+
 `price` `>=` `bids[0].price * (1 - price_range)` when SELL
 
 ### Size filter
