@@ -1,0 +1,51 @@
+---
+title: "PnL Settlement"
+---
+
+Push interval: real-time push on update
+
+```json
+{
+    "id": "clientID3",
+    "topic": "settle",
+    "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name   | Type   | Required | Description               |
+| ------ | ------ | -------- |---------------------------|
+| id     | string | Y        | id generate by client     |
+| event  | string | Y        | `subscribe`/`unsubscribe` |
+| topic  | string | Y        | `settle`                  |
+
+<RequestExample>
+
+```json Response
+{
+    "id": "clientID3",
+    "event": "subscribe",
+    "success": true,
+    "ts": 1609924478533
+}
+```
+</RequestExample>
+
+<ResponseExample>
+```json Subscribed Message
+{
+    "topic": "settle",
+    "data": {
+        "id": 10001,
+        "old_balance": 4050,
+        "new_balance": 3050,
+        "settled_amount": -1000,
+        "requested_time": 1575014255089, // Unix epoch time in ms
+        "settled_time": 1575014255910 // Unix epoch time in ms
+        "status": "COMPLETED"
+    },
+    "timestamp": 1679021265398
+}
+```
+</ResponseExample>

@@ -1,0 +1,60 @@
+---
+title: "Liquidator liquidations push"
+---
+
+Push interval: push on addition/removal/update from list within 1s
+
+1 user_id can have many liquidation_ids 
+
+```json
+{
+    "id": "clientID3",
+    "topic": "liquidatorliquidations",
+    "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name   | Type   | Required | Description                              |
+| ------ | ------ | -------- | ---------------------------------------- |
+| id     | string | Y        | id generate by client                    |
+| event  | string | Y        | `subscribe`/`unsubscribe`                |
+| topic  | string | Y        | `liquidatorliquidations`            |
+
+<RequestExample>
+
+```json Response
+{
+    "id": "clientID3",
+    "event": "subscribe",
+    "success": true,
+    "ts": :1682244882617
+}
+```
+</RequestExample>
+
+<ResponseExample>
+
+```json Subscribed Message
+{
+   "topic":"liquidatorliquidations",
+   "ts":1684821114917,
+   "data":{
+      "liquidationId":1,
+      "timestamp":1684821114917,
+      "type":"liquidated",
+      "positionsByPerp":[
+         {
+            "symbol":"PERP_NEAR_USDC.e",
+            "positionQty":12.6,
+            "costPositionTransfer":20.05668,
+            "transferPrice":1.5918,
+            "liquidatorFee":0.0175,
+            "absLiquidatorFee":0.350992
+         }
+      ]
+   }
+}
+```
+</ResponseExample>

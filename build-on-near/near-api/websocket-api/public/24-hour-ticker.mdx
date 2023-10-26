@@ -1,0 +1,54 @@
+---
+title: "24h ticker"
+---
+
+Push interval: 1s
+
+```json
+{
+    "id": "clientID4",
+    "topic": "SPOT_WOO_USDC.e@ticker",
+    "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name   | Type   | Required | Description                              |
+| ------ | ------ | -------- | ---------------------------------------- |
+| id     | string | Y        | id generate by client                    |
+| event  | string | Y        | `subscribe`/`unsubscribe`                |
+| topic  | string | Y        | `{symbol}@ticker`                        |
+
+<RequestExample>
+
+```json Response
+{
+    "id": "clientID4",
+    "event": "subscribe",
+    "success": true,
+    "ts": 1609924478533
+}
+```
+</RequestExample>
+
+<ResponseExample>
+
+```json Subscribed Message
+{
+    "topic": "SPOT_WOO_USDC.e@ticker",
+    "ts": 1614152270000,
+    "data": {
+        "symbol": "SPOT_WOO_USDC.e",
+        "open": 0.16112,
+        "close": 0.32206,
+        "high": 0.33000,
+        "low": 0.14251,
+        "volume": 89040821.98,
+        "amount": 22493062.21,
+        "count": 15442
+    }
+}
+```
+
+</ResponseExample>

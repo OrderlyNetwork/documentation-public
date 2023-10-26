@@ -1,0 +1,42 @@
+---
+title: "Auth"
+---
+
+Refer to [Authenticaton](https://orderly.mintlify.app/near-api/authentication) for more details about how to sign the request with `orderly-key` and `orderly-secret`. The **request method, request path,** and **request body** are all blank. The message to sign is therefore just the **timestamp**.
+
+| Name        | Type      | Required | Description |
+|-------------|-----------|----------|-------------|
+| orderly_key | string    | Y        | Orderly Key |
+| sign        | string    | Y        | signature   |
+| timestamp   | timestamp | Y        | timestamp   |
+
+<RequestExample>
+
+```bash
+{
+    "id":"123r",
+    "event":"auth",
+    "params":{
+        "orderly_key":"ed25519:CUS69ZJOXwSV38xo...",
+        "sign":"4180da84117fc9753b...",
+        "timestamp":1621910107900
+    }
+}
+```
+
+</RequestExample>
+
+
+
+<ResponseExample>
+
+```json Response
+{
+    "id":"123r",
+    "event":"auth",
+    "success":true,
+    "ts":1621910107315
+}
+```
+
+</ResponseExample>

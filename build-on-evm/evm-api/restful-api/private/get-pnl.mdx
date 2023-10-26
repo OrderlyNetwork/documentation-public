@@ -1,0 +1,87 @@
+---
+title: "Get PnL Settlement History"
+---
+
+<RequestExample>
+
+```shell
+curl -X 'https://api.orderly.org/v1/pnl_settlement/history' \
+    -H 'Content-Type: application/json' \
+    -H 'orderly-timestamp: 1649920583000' \
+    -H 'orderly-account-id: testuser.near' \
+    -H 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
+    -H 'orderly-signature: JRaXrOez2OeM20AbpqANI3Rw651BV9c0vBYfvmn9P6XT3jiwWltIKOBNvqEIk+73lnUnZUYyv2m+M1KIQWmPAA=='
+```
+</RequestExample>
+
+**Limit: 20 requests per 60 seconds**
+
+`GET /v1/pnl_settlement/history`
+
+<ResponseExample>
+
+```json Response
+{
+    "success": true,
+    "data": {
+      "meta": {
+          "total": 670,
+          "records_per_page": 25,
+          "current_page": 1
+      },
+      "rows": [
+          {
+              "id": 10001,
+              "old_balance": 4050,
+              "new_balance": 3050,
+              "settled_amount": -1000,
+              "requested_time": "1575014255.089", // Unix epoch time in seconds
+              "settled_time": "1575014255.910" // Unix epoch time in seconds
+              "symbols": [
+                {
+                  "PERP_BTC_USDT",
+                  "settled_amount": -500,
+                },
+                {
+                  "PERP_ETH_USDT",
+                  "settled_amount": -200,
+                },
+                ...
+              ]
+          },
+          {
+              "id": 10002,
+              "old_balance": 4050,
+              "new_balance": 3050,
+              "settled_amount": -1000,
+              "requested_time": "1575014255.089", // Unix epoch time in seconds
+              "settled_time": "1575014255.910" // Unix epoch time in seconds
+              "symbols": [
+                {
+                  "PERP_BTC_USDT",
+                  "settled_amount": -500,
+                },
+                {
+                  "PERP_ETH_USDT",
+                  "settled_amount": -200,
+                },
+                ...
+              ]
+          },
+          // ....skip (total 25 items in one page)
+    ],
+  },
+  "timestamp": 1580794149000
+}
+```
+</ResponseExample>
+**Parameters**
+
+| Name    | Type      | Required | Description                                                     |
+|---------|-----------|----------| ----------------------------------------------------------------|
+| start_t | timestamp | N        | start time range that you wish to query, noted that the time stamp is a 13-digits timestamp.       |
+| end_t   | timestamp | N        | end time range that you wish to query, noted that the time stamp is a 13-digits timestamp.           |
+| page    | number    | N        |                                                                 |
+| size    | number    | N        |                                                                 |
+
+

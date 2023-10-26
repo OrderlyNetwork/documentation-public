@@ -1,0 +1,73 @@
+---
+title: "Volume statistics"
+---
+
+<RequestExample>
+
+``` shell shell
+curl 'https://api.orderly.org/v1/public/volume/stats'
+```
+
+```python python
+import requests
+
+url = "https://api.orderly.org/v1/public/volume/stats"
+
+payload={}
+headers = {}
+
+response = requests.request("GET", url, headers=headers, data=payload)
+```
+
+```javascript javascript
+var axios = require('axios');
+
+var config = {
+   method: 'get',
+   url: 'https://api.orderly.org/v1/public/volume/stats',
+   headers: {}
+};
+
+axios(config)
+.then(function (response) {
+   console.log(JSON.stringify(response.data));
+})
+.catch(function (error) {
+   console.log(error);
+});
+```
+</RequestExample>
+
+**Limit: 10 requests per 1 second per IP address**
+
+`GET /v1/public/volume/stats`
+
+Get the latest volume statistics of Orderly and its associated brokers. Note that for broker volume, the volume is counted as the sum of the maker and taker volume, while for the full Orderly platform, the volume is the total amount matched on the platform (i.e. taker and maker are not double-counted.)
+
+<ResponseExample>
+
+```json Response
+{
+    "success": true, 
+    "data": [
+        {
+            "spot_volume_ytd":1312.9,
+            "perp_volume_ytd":274148.0364,
+            "spot_volume_ltd":1212.91,
+            "perp_volume_ltd":274148.0364,
+            "spot_volume_last_7_days":0,
+            "perp_volume_last_7_days":120272.7674,
+            "spot_volume_last_30_days":899.74,
+            "perp_volume_last_30_days":300730.5454
+        }
+    ],
+    "timestamp": 1580794149000
+}
+```
+</ResponseExample>
+
+**Parameters**
+
+| Name      | Type   | Required        | Description                                                                                       |
+| --------- | ------ | --------------- | ------------------------------------------------------------------------------------------------- |
+| broker_id | string | N               | If provided, statistics will be regarding the particular broker rather than the Orderly platform. |

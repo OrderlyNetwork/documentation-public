@@ -1,0 +1,56 @@
+---
+title: "Index prices"
+---
+
+Push interval: 1s
+
+```json
+{
+    "id": "clientID7",
+    "topic": "indexprices",
+    "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name   | Type   | Required | Description      |
+| ------ | ------ | -------- |------------------|
+| id     | string | Y        | id generate by client |
+| event  | string | Y        | `subscribe`/`unsubscribe` |
+| topic  | string | N        | `indexprices`    |
+
+<RequestExample>
+
+```json Response
+{
+   "id":"clientID7",
+   "event":"subscribe",
+   "success":true,
+   "ts":1682241351985
+}
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Subscribed Message
+{
+    "topic":"indexprices",
+    "ts":1618822376000,
+    "data":[
+        {
+           "symbol":"SPOT_BTC_USDC.e",
+            "price":51234.13
+        },
+        {
+            "symbol":"SPOT_ETH_USDC.e",
+            "price":3894.34
+        },
+       ...
+    ]
+}
+```
+
+</ResponseExample>

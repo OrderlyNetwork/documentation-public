@@ -1,0 +1,48 @@
+---
+title: "Mark price"
+---
+
+Push interval: 1s
+
+```json
+{
+    "id": "clientID8",
+    "topic": "PERP_ETH_USDC.e@markprice",
+    "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name   | Type   | Required | Description                               |
+| ------ | ------ | -------- | ----------------------------------------- |
+| id     | string | Y        | id generate by client                     |
+| event  | string | Y        | `subscribe`/`unsubscribe`                 |
+| topic  | string | N        | `{symbol}@markprice`                   |
+
+<RequestExample>
+
+```json Response
+{
+   "id":"clientID8",
+   "event":"subscribe",
+   "success":true,
+   "ts":1682241795883
+}
+```
+</RequestExample>
+
+<ResponseExample>
+
+```json Subscribed Message
+{
+   "topic":"PERP_ETH_USDC.e@markprice",
+   "ts":1682241796000,
+   "data":{
+      "symbol":"PERP_ETH_USDC.e",
+      "price":2300.0
+   }
+}
+```
+
+</ResponseExample>

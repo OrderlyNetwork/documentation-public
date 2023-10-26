@@ -1,0 +1,124 @@
+---
+title: "Get TradingView localized configuration info"
+---
+Limit: 10 requests per 1 second per IP address
+
+<RequestExample>
+```bash
+curl 'https://api-evm.orderly.org/v1/tv/config?locale=en'
+```
+</RequestExample>
+
+`GET /v1/tv/config`
+
+<ResponseExample>
+```json
+{
+  "s": "ok",
+  "d": {
+    "accountSummaryRow": [
+      {
+        "id": "accountBalance",
+        "title": "Account Balance"
+      },
+      {
+        "id": "Equity",
+        "title": "Realized P/L"
+      },
+      {
+        "id": "Open Profit",
+        "title": "Unrealized P/L"
+      }
+    ],
+    "accountManager": [
+      {
+        "id": "accountSummary",
+        "title": "",
+        "columns": [
+          {
+            "id": "todayPL",
+            "title": "Today's P&L"
+          },
+          {
+            "id": "accountValue",
+            "title": "Account Value"
+          },
+          {
+            "id": "balance",
+            "title": "Balance"
+          },
+          {
+            "id": "totalMargin",
+            "title": "Margin"
+          },
+          {
+            "id": "held",
+            "title": "Held"
+          },
+          {
+            "id": "buyingPower",
+            "title": "Buying Power"
+          }
+        ]
+      }
+    ],
+    "durations": [
+      {
+        "id": "GTT",
+        "title": "Good Till Time",
+        "hasDatePicker": true,
+        "hasTimePicker": true,
+        "default": true,
+        "supportedOrderTypes": [
+          "stop",
+          "stoplimit"
+        ]
+      }
+    ],
+    "orderCustomFields": [
+      {
+        "id": "commission",
+        "title": "Commission",
+        "tooltip": "Commission Fees",
+        "alignment": "right"
+      }
+    ],
+    "orderHistoryCustomFields": [
+      {
+        "id": "commission",
+        "title": "Commission",
+        "tooltip": "Commission Fees",
+        "alignment": "right"
+      }
+    ],
+    "positionCustomFields": [
+      {
+        "id": "exchangeFee",
+        "title": "Exchange fee",
+        "tooltip": "Exchange fee for the position",
+        "alignment": "right"
+      },
+      {
+        "id": "routeFee",
+        "title": "Route fee",
+        "tooltip": "Route fee for the position",
+        "alignment": "right"
+      }
+    ],
+    "pullingInterval": {
+      "quotes": 500,
+      "orders": 500,
+      "positions": 1000,
+      "accountManager": 1000,
+      "balances": 1000
+    }
+  }
+}
+```
+</ResponseExample>
+
+
+
+| Name   | Type   | Required | Description |
+|--------|--------|----------|-------------|
+| locale | string | Y        |           |

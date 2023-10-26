@@ -1,0 +1,40 @@
+---
+title: "Reset trading key IP restriction"
+---
+
+<RequestExample>
+
+```shell
+curl -X POST 'https://api.orderly.org/v1/client/reset_trading_key_ip_restriction' \
+    -H 'Content-Type: application/json' \
+    -H 'orderly-timestamp: 1649920583000' \
+    -H 'orderly-account-id: testuser.near' \
+    -H 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
+    -H 'orderly-signature: JRaXrOez2OeM20AbpqANI3Rw651BV9c0vBYfvmn9P6XT3jiwWltIKOBNvqEIk+73lnUnZUYyv2m+M1KIQWmPAA==' \
+    -d '{"trading_key": "ODBkYTQ2MDYzMmY4YzQzY2FmMzhjZjM0MDcyNjQ0NGI3ZTZhZDMwYTQ0YjllODk0YTRiYjYyNTMxZjI0NjIzZA==", "reset_mode": "ALLOW_ALL_IPS"}'
+```
+</RequestExample>
+
+**Limit: 10 requests per 60 seconds**
+
+`POST /v1/client/reset_trading_key_ip_restriction`
+
+Reset the IP restriction of a particular trading key under the account.
+
+<ResponseExample>
+
+```json Response
+{
+    "success": true,
+    "timestamp": 1580794149000
+}
+```
+</ResponseExample>
+
+**Parameters**
+
+| Name         | Type    | Required | Description                                                                               |
+| ------------ | ------- | -------- | ------------------------------------------------------------------------------------------|
+| trading_key  | string  | Y        | The Trading Key to set the IP restriction list                                            |
+| reset_mode   | string  | Y        | The new mode of the IP restriction for this Trading Key (ALLOW_ALL_IPS, DISALLOW_ALL_IPS).|
+

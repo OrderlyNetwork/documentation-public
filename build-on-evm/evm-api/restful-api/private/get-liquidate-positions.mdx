@@ -1,0 +1,68 @@
+---
+title: "Get liquidated positions by Liquidator"
+---
+
+<RequestExample>
+
+```shell
+curl 'https://api.orderly.org/v1/client/liquidator_liquidations' \
+    -H 'Content-Type: application/x-www-form-urlencoded' \
+    -H 'orderly-timestamp: 1649920583000' \
+    -H 'orderly-account-id: testuser.near' \
+    -H 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
+    -H 'orderly-signature: FxRAdmteyzVDR0HTE+N8VbDNNcKIZfCWkEIePjlEJZz8e0iuhNGvb+KZgG6osU6t0J9d33IWYJALUhA+dnTuBg=='
+```
+</RequestExample>
+
+**Limit: 10 requests per 1 second**
+
+`GET /v1/client/liquidator_liquidations`
+
+<ResponseExample>
+
+```json Response
+{
+   "data":{
+      "meta":{
+         "current_page":1,
+         "records_per_page":25,
+         "total":20
+      },
+      "rows":[
+         {
+            "liquidation_id":1728,
+            "positions_by_perp":[
+               {
+                  "abs_liquidator_fee":1.152279,
+                  "cost_position_transfer":65.84448,
+                  "liquidator_fee":0.0175,
+                  "position_qty":41.6,
+                  "symbol":"PERP_NEAR_USDC.e",
+                  "transfer_price":1.5828
+               },
+              ...
+            ],
+            "timestamp":1685154032762,
+            "type":"liquidated"
+         },
+        ...
+      ]
+   },
+   "success":true,
+   "timestamp":1685433339866
+}
+```
+</ResponseExample>
+
+**Parameters**
+
+| Name      | Type      | Required      | Description                                                                                 |
+| ----------|-----------|---------------|---------------------------------------------------------------------------------------------|
+| symbol    | string    | N             |                                                                                             |
+| start_t   | timestamp | N             |start time range that you wish to query, noted that the time stamp is a 13-digits timestamp. |
+| end_t     | timestamp | N             |end time range that you wish to query, noted that the time stamp is a 13-digits timestamp.   |
+| page      | number    | N(default: 1) |the page you wish to query.                                                                  |
+| size      | number    | N             |Default: 60                                                                                  |
+
+
+

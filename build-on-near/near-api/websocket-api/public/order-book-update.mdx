@@ -1,0 +1,71 @@
+---
+title: "Order book update"
+---
+
+`{symbol}@orderbookupdate` updated orderbook push every 200ms
+
+```json 
+{
+    "id": "clientID2",
+    "topic": "SPOT_NEAR_USDC.e@orderbookupdate",
+    "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name   | Type   | Required | Description                                           |
+| ------ | ------ | -------- | ----------------------------------------------------- |
+| id     | string | Y        | id generate by client                                 |
+| event  | string | Y        | `subscribe`/`unsubscribe`                             |
+| topic  | string | Y        | `{symbol}@orderbookupdate`                            |
+
+<RequestExample>
+
+```json Response
+{
+    "id": "clientID2",
+    "event": "subscribe",
+    "success": true,
+    "ts": 1609924478533
+}
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Subscribed Message
+{
+    "topic":"SPOT_NEAR_USDC.e@orderbookupdate",
+    "ts":1618826337580,
+    "data":{
+        "symbol":"SPOT_NEAR_USDC.e",
+        "prevTs":1618826337380,
+        "asks":[
+            [
+                15.15,
+                3.92864
+            ],
+            [
+                15.8,
+                0
+            ],
+            ...
+        ],
+        "bids":[
+            [
+                14.2,
+                1.03895025
+            ],
+            [
+                13.6,
+                1.0807
+            ],
+            ...
+        ]
+    }
+}
+```
+
+</ResponseExample>

@@ -1,0 +1,68 @@
+---
+title: "Position push"
+---
+
+Push interval: push on update
+
+```json
+{
+    "id": "clientID3",
+    "topic": "position",
+    "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name   | Type   | Required | Description                              |
+| ------ | ------ | -------- | ---------------------------------------- |
+| id     | string | Y        | id generate by client                    |
+| event  | string | Y        | `subscribe`/`unsubscribe`                |
+| topic  | string | Y        | `position`            |
+
+<RequestExample>
+
+```json Response
+{
+    "id": "clientID3",
+    "event": "subscribe",
+    "success": true,
+    "ts": :1682244308139
+}
+```
+</RequestExample>
+
+<ResponseExample>
+
+```json Subscribed Message
+{
+   "topic":"position",
+   "ts":1684926050966,
+   "data":{
+      "positions":[
+         {
+            "symbol":"PERP_ETH_USDC.e",
+            "positionQty":3.1408,
+            "costPosition":5706.51952,
+            "lastSumUnitaryFunding":0.804,
+            "sumUnitaryFundingVersion":0,
+            "pendingLongQty":0.0,
+            "pendingShortQty":-1.0,
+            "settlePrice":1816.9,
+            "averageOpenPrice":1804.51490427,
+            "unsettledPnl":-2.79856,
+            "pnl24H":-338.90179488,
+            "fee24H":4.242423,
+            "markPrice":1816.2,
+            "estLiqPrice":0.0,
+            "version":179967,
+            "imrwithOrders":0.1,
+            "mmrwithOrders":0.05,
+            "mmr":0.05,
+            "imr":0.1
+         }
+      ]
+   }
+}
+```
+</ResponseExample>

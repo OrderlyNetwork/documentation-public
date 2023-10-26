@@ -1,0 +1,77 @@
+---
+title: "Market trades"
+---
+
+<RequestExample>
+
+```shell shell
+curl 'https://api.orderly.org/v1/public/market_trades?symbol=SPOT_ETH_USDC.e&limit=10'
+```
+
+```python python
+import requests
+
+url = "https://api.orderly.org/v1/public/market_trades?symbol=SPOT_ETH_USDC.e&limit=10"
+
+payload={}
+headers = {}
+
+response = requests.request("GET", url, headers=headers, data=payload)
+
+print(response.text)
+
+```
+```javascript javascript
+var axios = require('axios');
+
+var config = {
+   method: 'get',
+   url: 'https://api.orderly.org/v1/public/market_trades?symbol=SPOT_ETH_USDC.e&limit=10',
+   headers: {}
+};
+
+axios(config)
+.then(function (response) {
+   console.log(JSON.stringify(response.data));
+})
+.catch(function (error) {
+   console.log(error);
+});
+
+```
+</RequestExample>
+**Limit: 10 requests per 1 second per IP address**
+
+`GET /v1/public/market_trades`
+
+Get the latest market trades.
+
+<ResponseExample>
+
+```js
+{
+    "success": true,
+    "data": {
+       "rows": [
+        {
+            "symbol": "SPOT_ETH_USDC.e",
+            "side": "BUY",
+            "executed_price": 202,
+            "executed_quantity": 0.00025,
+            "executed_timestamp": 1567411795000 // Unix epoch time in milliseconds
+        },
+        // ...
+     ]
+    },
+    "timestamp": 1663313562090
+}
+```
+</ResponseExample>
+
+**Parameters**
+
+| Name   | Type   | Required        | Description                      |
+| ------ | ------ | --------------- | -------------------------------- |
+| symbol | string | Y               |                                  |
+| limit  | number | N (default: 10) | Numbers of trades want to query. |
+

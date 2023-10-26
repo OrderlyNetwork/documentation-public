@@ -1,0 +1,74 @@
+---
+title: "Get all notifications"
+---
+
+<RequestExample>
+
+```shell
+curl -X GET 'https://api.orderly.org/v1/notification/inbox/notifications' \
+    -H 'Content-Type: application/x-www-form-urlencoded' \
+    -H 'orderly-timestamp: 1649920583000' \
+    -H 'orderly-account-id: testuser.near' \
+    -H 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
+    -H 'orderly-signature: JRaXrOez2OeM20AbpqANI3Rw651BV9c0vBYfvmn9P6XT3jiwWltIKOBNvqEIk+73lnUnZUYyv2m+M1KIQWmPAA==' \
+```
+</RequestExample>
+
+**Limit: 10 requests per 60 seconds**
+
+`GET /v1/notification/inbox/notifications`
+
+Get all notifications for the user.
+
+Currently the only supported message type is the order filled message.
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "rows": [
+      {
+        "id": 12345, // notification id
+        "message_type": "ORDER_FILLED", // ORDER_FILLED
+        "email": "test@orderly.network", // email if bounded to the account
+        "application_id": "testuser.near", // wallet address of the account
+        "title": "Your order has been filled",
+        "type": "TRADE",  // TRADE / SYSTEM
+        "level": "GENERAL", // GENERAL / IMPORTANT
+        "content_summary": "Your order to buy 1 NEAR/USDC.e has been filled: 0.5/1 at 1.9876.",
+        "content": "<p>Your order to buy 1 NEAR/USDC.e has been filled: 0.5/1 at 1.9876.</p>",
+        "content_raw": { // below example is for a ORDER_FILLED content
+            "symbol": "SPOT_NEAR_USDT",
+            "side": "BUY",
+            "order_id": 1,
+            "executed_price": 1.9876, 
+            "executed_quantity": 0.5,
+            "executed_timestamp": 1567382401000 
+        },
+        "mark_read": 1, // 1 = READ, 0 = UNREAD
+        "operator": 0,
+        "created_time": 1670425970373,
+        "announcement_id": null
+      }
+    ],
+    "meta": {
+      "total": 1,
+      "records_per_page": 1,
+      "current_page": 1
+    }
+  },
+  "timestamp": 1679021265398
+}
+```
+</ResponseExample>
+
+**Parameters**
+
+| Name      | Type      | Required       | Description                                                                              |
+| --------- | --------- | -------------- | -----------------------------------------------------------------------------------------|
+| type      | string    | N              | Filter nofications by type (TRADE / SYSTEM).                                             |
+| page      | number    | N (default: 1) | the page you wish to query.                                                              |
+| size      | number    | N (default: 25)| the page size you wish to query. (max: 500)                                              |
+

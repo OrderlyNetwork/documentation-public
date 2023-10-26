@@ -1,0 +1,156 @@
+---
+title: "Release Notes"
+description: "All the API changes would be listed here."
+---
+
+## 2023-09-21
+Added Claim from insurance fund endpoint
+
+Added `max_notional` parameter to Get Insurance Fund Info and Get Account Information endpoints' response
+
+Added `futures_tier` parameter to Get Account Information endpoint
+
+## 2023-08-10
+Added Get PnL Settlement History API
+
+Added Liquidations on Account Websocket API
+
+Added `reduce-only` type of order
+
+Added `limit_price` parameter to Claim Liquidated Positions API
+
+Updated `/insurancefund` endpoint to `/insurance_fund`
+
+Updated `symbol` parameter of Get Liquidated Positions of Account API to not required
+
+## 2023-07-13
+Added get user statistics API
+
+Added get TradingView localized configuration info API
+
+Added get TradingView history bars API
+
+Added get TradingView symbol info API
+
+Added get leverage configuration API
+
+`MARKET/BUY/ASK` types of order now check for minimum notional requirement
+
+## 2023-06-13
+Updated error codes and messages for futures trading
+
+Added `volume_ltd` field to volume stats API
+
+Added `unsettled_pnl` field to get positions API
+
+Added `type` field to get liquidated positions API
+
+Replaced `imr_factor` with `imr_factor` array for info API
+
+Removed get positions under liquidation per market API
+
+Replaced `liquidationFeeLiquidator` field in Websocket API topics `liquidation` & `liquidatorLiquidation` with `liquidatorFee`
+
+Removed `liquidatedpositions` and `liquidationsaccount` topics from Websocket APIs
+
+## 2023-05-05
+Updated available symbols endpoint
+
+Updated get account information endpoint
+
+Added a new get predicted funding rate for all markets endpoint
+
+Added a new get predicted funding rate for one market endpoint
+
+Added a new get funding rate history for one market endpoint
+
+Added a new get funding rate history per hour for one market endpoint
+
+Added a new get futures info for all markets endpoint
+
+Added a new get futures for one market endpoint
+
+Added a new get positions under liquidation endpoint
+
+Added a new get positions under liquidation per perp market endpoint
+
+Added a new get liquidated positions info endpoint
+
+Added a new futures fee information endpoint
+
+Added a new get all position info endpoint
+
+Added a new get position info endpoint
+
+Added a new get one position info endpoint
+
+Added a new get funding fee history endpoint
+
+Added a new get liquidated positions by liquidator endpoint
+
+Added a new index price topic
+
+Added a new mark price topic
+
+Added a new open interest topic
+
+Added a new estimated funding rate topic
+
+Added a new liquidation push topic
+
+Added a new position push topic
+
+Added a new liquidator positions push
+
+## 2023-04-13
+Added a new batch cancel orders endpoint by client_order_id
+
+## 2023-03-23
+Updated the path for the public fee information endpoint
+
+Added a new batch cancel orders endpoint
+
+Added a new public endpoint for querying broker details
+
+Added `broker_name` to a number of orders endpoint responses
+
+Added a series of endpoints for notifications
+
+## 2023-03-02
+Added a new system maintenance status endpoint
+
+Added and modified endpoints to query Orderly/Trading keys
+
+Added endpoint to set (and override) IP restriction of trading keys
+
+Added endpoints to query user trading statistics
+
+Added endpoints to query platform statistics
+
+Added `broker_id` filtering on various transaction, order, and trade endpoints
+
+## 2023-01-19
+Added endpoints to query and manage IP restriction of trading keys
+
+Added endpoints to query current Orderly/Trading keys
+
+## 2022-12-22
+Added endpoint to manage the option to cancel orders during maintenance
+
+## 2022-11-09
+Change root domain to orderly.org
+
+Add token info REST API
+
+Add edit order REST API
+
+Add `broker_id` support on order APIs
+
+## 2022-09-07
+Add Orderly fee program endpoint
+
+## 2022-07-21
+Add bulk order function
+
+## 2022-05-25
+Initial release

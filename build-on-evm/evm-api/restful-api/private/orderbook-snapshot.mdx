@@ -1,0 +1,68 @@
+---
+title: "Orderbook snapshot"
+---
+
+<RequestExample>
+
+```shell
+curl 'https://api.orderly.org/v1/orderbook/SPOT_NEAR_USDC.e' \
+    -H 'Content-Type: application/x-www-form-urlencoded' \
+    -H 'orderly-timestamp: 1649920583000' \
+    -H 'orderly-account-id: testuser.near' \
+    -H 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
+    -H 'orderly-signature: RrNKFNOJJxfQ5M+VdAXLl/KzKPVkPf0g+J87SJLu5rnz8EgdPCafidQkBeQsQX1XpwgzOLxwogYmdYqGAguVAQ=='
+```
+</RequestExample>
+
+**Limit: 10 requests per 1 second**
+
+`GET /v1/orderbook/:symbol`
+
+Snapshot of the current orderbook. Price of asks/bids are in descending order.
+
+<ResponseExample>
+
+```json Response
+{
+    "success": true,
+    "data":{
+       "asks": [
+        {
+            "price": 10669.4,
+            "quantity": 1.56263218
+        },
+        {
+            "price": 10670.3,
+            "quantity": 0.36466977
+        },
+        {
+            "price": 10670.4,
+            "quantity": 0.06738009
+        }
+    ],
+    "bids": [
+        {
+            "price": 10669.3,
+            "quantity": 0.88159988
+        },
+        {
+            "price": 10669.2,
+            "quantity": 0.5
+        },
+        {
+            "price": 10668.9,
+            "quantity": 0.00488286
+        }
+    ],
+    "timestamp": 1564710591905 // Unix epoch time in milliseconds
+   }  
+}
+```
+</ResponseExample>
+
+**Parameters**
+
+| Name      | Type   | Required         | Description                           |
+| --------- | ------ | ---------------- | ------------------------------------- |
+| max_level | number | N (default: 100) | the levels wish to show on both side. |
+

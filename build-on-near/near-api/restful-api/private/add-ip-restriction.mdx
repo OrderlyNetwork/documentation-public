@@ -1,0 +1,40 @@
+---
+title: "Add trading key IP restriction"
+---
+
+<RequestExample>
+
+```shell
+curl -X POST 'https://api.orderly.org/v1/client/add_trading_key_ip_restriction' \
+    -H 'Content-Type: application/json' \
+    -H 'orderly-timestamp: 1649920583000' \
+    -H 'orderly-account-id: testuser.near' \
+    -H 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
+    -H 'orderly-signature: JRaXrOez2OeM20AbpqANI3Rw651BV9c0vBYfvmn9P6XT3jiwWltIKOBNvqEIk+73lnUnZUYyv2m+M1KIQWmPAA==' \
+    -d '{"trading_key": "ODBkYTQ2MDYzMmY4YzQzY2FmMzhjZjM0MDcyNjQ0NGI3ZTZhZDMwYTQ0YjllODk0YTRiYjYyNTMxZjI0NjIzZA==", "ip_restriction_list": "218.190.230.163,218.218.218.218"}'
+```
+</RequestExample>
+
+**Limit: 10 requests per 60 seconds**
+
+`POST /v1/client/add_trading_key_ip_restriction`
+
+Add IP restriction to a particular trading key under the account.
+
+<ResponseExample>
+
+```json Response
+{
+    "success": true,
+    "timestamp": 1580794149000
+}
+```
+</ResponseExample>
+
+**Parameters**
+
+| Name                | Type    | Required | Description                                                                  |
+| ------------------- | ------- | -------- | -----------------------------------------------------------------------------|
+| trading_key         | string  | Y        | The Trading Key to set the IP restriction list                               |
+| ip_restriction_list | string  | Y        | The list of IP addresses to be added to the IP restriction list, comma separated.  |
+

@@ -1,0 +1,42 @@
+---
+title: "Batch cancel orders by client_order_id"
+---
+
+<RequestExample>
+
+```shell
+curl -X DELETE 'https://api.orderly.org/v1/client/batch-order?client_order_ids=10001,10002&signature=c2e9054e4ea22110f458698247a47d9c58f41ed8e947c01d5859b7798ced1c9d130c267ffec185d25c511167199cc3e7476cd850b4cb928ff08443f97abcbdc100' \
+    -H 'Content-Type: application/x-www-form-urlencoded' \
+    -H 'orderly-timestamp: 1649920583000' \
+    -H 'orderly-account-id: testuser.near' \
+    -H 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
+    -H 'orderly-trading-key: 90b8d328cde365b3dd10b194048b677d575c2faf51790ecfa6c2fe8b0403324984b275e7bf4c486b4d713576cf20335e1230537c47aafdde0bd646af9b83a8d6' \
+    -H 'orderly-signature: wZ8RFGGUzTi7JOvLKkpeElTZ7cg7gZXqnpA9MiIEqb+ig3eX0s/txtjHqiX2986Rn1rRXTLgMRHtgA4/WcfxAg=='
+```
+</RequestExample>
+**Limit: 10 requests per 1 second**
+
+`DELETE /v1/client/batch-order?client_order_ids=:order_id_1,:order_id_2&signature=:signature`
+
+Cancel a list of orders by `client_order_id`. The maximum orders that can be cancelled within 1 batch cancel request is 10.
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "status": "CANCEL_ALL_SENT"
+  },
+  "timestamp": 1639980423855
+}
+```
+</ResponseExample>
+
+**Parameters**
+
+| Name             | Type   | Required | Description                                                                      |
+| ---------------- | ------ | -------- | -------------------------------------------------------------------------------- |
+| client_order_ids | string | Y        | list of order_ids, comma-separated, with a maximum of 10 order ids per request.  |
+| signature        | string | Y        | trading signature                                                                |
+
