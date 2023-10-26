@@ -5,8 +5,39 @@ Limit: 10 requests per 1 second per IP address
 
 
 <RequestExample>
-```bash
-curl 'https://api-evm.orderly.org/v1/get_account?address=0xfcc17f2b240380d56f0615e8f654e4ae3cee8957&brokerId=woofi_dex'
+```shell shell
+curl 'https://api-evm.orderly.org/v1/get_account?address=0xfcc17f2b240380d56f0615e8f654e4ae3cee8957&broker_id=woofi_dex'
+```
+
+```python python
+import requests
+
+url = "https://api-evm.orderly.org/v1/get_account"
+
+payload={
+    'address':'0xfcc17f2b240380d56f0615e8f654e4ae3cee8957',
+    'broker_id':'woofi_dex'
+}
+headers = {}
+
+response = requests.request("GET", url, headers=headers, data=payload)
+```
+```javascript javascript
+var axios = require('axios');
+
+var config = {
+   method: 'get',
+   url: 'https://api-evm.orderly.org/v1/get_account?address=0xfcc17f2b240380d56f0615e8f654e4ae3cee8957&brokerId=woofi_dex',
+   headers: {}
+};
+
+axios(config)
+.then(function (response) {
+   console.log(JSON.stringify(response.data));
+})
+.catch(function (error) {
+   console.log(error);
+});
 ```
 </RequestExample>
 `GET /v1/get_account`
