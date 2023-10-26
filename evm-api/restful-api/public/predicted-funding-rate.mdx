@@ -4,14 +4,12 @@ title: "Get predicted funding rate for all markets"
 
 <RequestExample>
 
-```shell
+```shell shell
 curl 'https://api.orderly.org/v1/public/funding_rates'
 ```
 
-```java
-```
 
-```python
+```python python
 import requests
 
 url = "https://api.orderly.org/v1/public/funding_rates"
@@ -23,7 +21,7 @@ response = requests.request("GET", url, headers=headers, data=payload)
 
 ```
 
-```javascript
+```javascript javascript
 var axios = require('axios');
 
 var config = {
@@ -49,8 +47,9 @@ axios(config)
 Get predicted funding rates for all futures trading pairs.
 
 Get the : 
-* `last_funding_rate` : latest hourly funding rate for all the markets for the last funding period (dt = 8h)
-* `est_funding_rate` : rolling average of all funding rates over the last 8 hours 
+`last_funding_rate` : latest hourly funding rate for all the markets for the last funding period (dt = 8h)
+
+`est_funding_rate` : rolling average of all funding rates over the last 8 hours 
 <ResponseExample>
 
 ```json

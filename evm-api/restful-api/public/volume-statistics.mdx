@@ -4,14 +4,11 @@ title: "Volume statistics"
 
 <RequestExample>
 
-``` curl
+``` shell shell
 curl 'https://api.orderly.org/v1/public/volume/stats'
 ```
 
-```java
-```
-
-```python
+```python python
 import requests
 
 url = "https://api.orderly.org/v1/public/volume/stats"
@@ -22,7 +19,7 @@ headers = {}
 response = requests.request("GET", url, headers=headers, data=payload)
 ```
 
-```javascript
+```javascript javascript
 var axios = require('axios');
 
 var config = {
@@ -44,7 +41,7 @@ axios(config)
 
 `GET /v1/public/volume/stats`
 
-Get the latest volume statistics of Orderly and its associated brokers. Note that for broker volume, the volume is counted as the sum of the maker and taker volume, while for the full Orderly platform, the volume is the total amount matched on the platform (ie taker and maker are not double-counted.)
+Get the latest volume statistics of Orderly and its associated brokers. Note that for broker volume, the volume is counted as the sum of the maker and taker volume, while for the full Orderly platform, the volume is the total amount matched on the platform (i.e. taker and maker are not double-counted.)
 
 <ResponseExample>
 

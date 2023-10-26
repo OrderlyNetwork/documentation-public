@@ -4,14 +4,11 @@ title: "Exchange information "
 
 <RequestExample>
 
-``` shell
+``` shell shell
 curl 'https://api.orderly.org/v1/public/info/PERP_BTC_USDC.e'
 ```
 
-```java
-```
-
-```python
+```python python
 import requests
 
 url = "https://api.orderly.org/v1/public/info/PERP_BTC_USDC.e"
@@ -22,7 +19,7 @@ headers = {}
 response = requests.request("GET", url, headers=headers, data=payload)
 ```
 
-```javascript
+```javascript javascript
 var axios = require('axios');
 
 var config = {
@@ -48,26 +45,31 @@ axios(config)
 
 This endpoint provides all the values for the rules that an order need to fulfil in order for it to be placed successfully. The rules are defined as follows:
 
-Price filter
+### Price filter
 
-- `price` `>=` `quote_min`
-- `price` `<=` `quote_max`
-- `(price - quote_min) % quote_tick` should equal to zero
-- `price` `<=` `asks[0].price * (1 + price_range)` when BUY
-- `price` >= `bids[0].price * (1 - price_range)` when SELL
+`price` `>=` `quote_min`
 
-Size filter
+`price` `<=` `quote_max`
 
-- `base_min` `<=` `quantity` `<=` `base_max`
-- `(quantity - base_min) % base_tick` should equal to zero
+`(price - quote_min) % quote_tick` should equal to zero
 
-Min Notional filter
+`price` `<=` `asks[0].price * (1 + price_range)` when BUY
 
-- `price * quantity` should greater than `min_notional`
+`price` >= `bids[0].price * (1 - price_range)` when SELL
 
-Risk Exposure filer
+### Size filter
 
-- Order size should be within holding threshold. See [account_info](#get-account-information)
+`base_min` `<=` `quantity` `<=` `base_max`
+
+`(quantity - base_min) % base_tick` should equal to zero
+
+### Min Notional filter
+
+`price * quantity` should greater than `min_notional`
+
+### Risk Exposure filer
+
+Order size should be within holding threshold. See [account_info](#get-account-information)
 
 <ResponseExample>
 
