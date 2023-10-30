@@ -1,11 +1,11 @@
 ---
-title: "Batch cancel orders"
+title: "Cancel order by client_order_id"
 ---
 
 <RequestExample>
 
 ```shell
-curl -X DELETE 'https://api-evm.orderly.org/v1/batch-order?order_ids=10001,10002' \
+curl -X DELETE 'https://api-evm.orderly.org/v1/order?client_order_id=115461&symbol=PERP_NEAR_USDC' \
     -H 'Content-Type: application/x-www-form-urlencoded' \
     -H 'orderly-timestamp: 1649920583000' \
     -H 'orderly-account-id: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546' \
@@ -13,12 +13,11 @@ curl -X DELETE 'https://api-evm.orderly.org/v1/batch-order?order_ids=10001,10002
     -H 'orderly-signature: wZ8RFGGUzTi7JOvLKkpeElTZ7cg7gZXqnpA9MiIEqb+ig3eX0s/txtjHqiX2986Rn1rRXTLgMRHtgA4/WcfxAg=='
 ```
 </RequestExample>
-
 **Limit: 10 requests per 1 second**
 
-`DELETE /v1/batch-order?client_order_ids=:order_id_1,:order_id_2`
+`DELETE /v1/client/order?client_order_id=:coid&symbol=:symbol`
 
-Cancel a list of orders by `order_id`. The maximum orders that can be cancelled within 1 batch cancel request is 10.
+Cancel an order by client_order_id.
 
 <ResponseExample>
 
@@ -26,17 +25,17 @@ Cancel a list of orders by `order_id`. The maximum orders that can be cancelled 
 {
   "success": true,
   "data": {
-    "status": "CANCEL_ALL_SENT"
+      "status": "CANCEL_SENT"
   },
   "timestamp": 1639980423855
 }
 ```
 </ResponseExample>
 
-
 **Parameters**
 
 | Name             | Type   | Required | Description                                                                      |
 | ---------------- | ------ | -------- | -------------------------------------------------------------------------------- |
-| order_ids        | string | Y        | list of order_ids, comma-separated, with a maximum of 10 order ids per request.  |
+| symbol           | string | Y        |                                                                                  |
+| client_order_id  | string | Y        | client_order_id of the order                                                     |
 

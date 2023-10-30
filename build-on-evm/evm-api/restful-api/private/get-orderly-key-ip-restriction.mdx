@@ -1,14 +1,14 @@
 ---
-title: "Get trading key IP restriction"
+title: "Get Orderly key IP restriction"
 ---
 
 <RequestExample>
 
 ```shell
-curl 'https://api.orderly.org/v1/client/trading_key_ip_restriction?trading_key=ODBkYTQ2MDYzMmY4YzQzY2FmMzhjZjM0MDcyNjQ0NGI3ZTZhZDMwYTQ0YjllODk0YTRiYjYyNTMxZjI0NjIzZA==' \
+curl 'https://api-evm.orderly.org/v1/client/orderly_key_ip_restriction?orderly_key=ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
     -H 'Content-Type: application/x-www-form-urlencoded' \
     -H 'orderly-timestamp: 1649920583000' \
-    -H 'orderly-account-id: testuser.near' \
+    -H 'orderly-account-id: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546' \
     -H 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
     -H 'orderly-signature: 7BWu9CKHza3AaISdUsQbfBuHn/spT6znptDbmQz0Aw+wwNB5rqX6VnzPHQm1pbGvGHhHbYFig0YJRkeMZs/NDA=='
 ```
@@ -16,9 +16,9 @@ curl 'https://api.orderly.org/v1/client/trading_key_ip_restriction?trading_key=O
 
 **Limit 10 requests per 60 seconds**
 
-`GET /v1/client/trading_key_ip_restriction`
+`GET /v1/client/orderly_key_ip_restriction`
 
-Retrieves the current IP restriction of a particular trading key.
+Retrieves the current IP restriction of a particular Orderly key.
 
 <ResponseExample>
 
@@ -26,12 +26,13 @@ Retrieves the current IP restriction of a particular trading key.
 {
     "success": true,
     "data": {
-        "account_id": "testuser.near",
-        "trading_key": "ODBkYTQ2MDYzMmY4YzQzY2FmMzhjZjM0MDcyNjQ0NGI3ZTZhZDMwYTQ0YjllODk0YTRiYjYyNTMxZjI0NjIzZA==",
+        "account_id": "0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546",
+        "orderly_key": "ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX",
         "ip_restriction_list": [
             "218.190.230.163",
             "218.218.218.218"
-        ]
+        ],
+        "tag": "some user defined tags" // Optional, could be null if there wasn't a tag
     },
     "timestamp": 1580794149000
 }
@@ -42,5 +43,5 @@ Retrieves the current IP restriction of a particular trading key.
 
 | Name        | Type      | Required       | Description                                                                       |
 | ----------- | --------- | -------------- | --------------------------------------------------------------------------------- |
-| trading_key | string    | Y              | The Trading Key to query the IP restriction list                                  |
+| orderly_key | string    | Y              | The Orderly Key to query the IP restriction list                                  |
 

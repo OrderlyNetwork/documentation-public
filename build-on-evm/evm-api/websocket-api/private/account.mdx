@@ -1,0 +1,49 @@
+---
+title: "Account"
+---
+
+Push interval: real-time push
+
+```json
+{
+    "id": "clientID3",
+    "topic": "account",
+    "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name   | Type   | Required | Description                              |
+| ------ | ------ | -------- | ---------------------------------------- |
+| id     | string | Y        | id generate by client                    |
+| event  | string | Y        | `subscribe`/`unsubscribe`                |
+| topic  | string | Y        | `balance`                                |
+
+<RequestExample>
+```json Response
+{
+    "id": "clientID3",
+    "event": "subscribe",
+    "success": true,
+    "ts": 1609924478533
+}
+```
+</RequestExample>
+
+<ResponseExample>
+```json Subscribed Message
+{
+    "accountDetail": {
+        "marginMode": "SPOT_FUTURES",
+        "futuresLeverage": 10,
+        "takerFeeRate": 10,
+        "makerFeeRate": 10,
+        "futuresTakerFeeRate": 8,
+        "futuresMakerFeeRate": 4,
+        "perpFeeTier": 1,
+        "maintenanceCancelFlag": false
+    }
+}
+```
+</ResponseExample>

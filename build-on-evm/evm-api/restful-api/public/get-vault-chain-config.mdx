@@ -1,122 +1,45 @@
 ---
-title: "Get TradingView localized configuration info"
+title: "Get vault chain config"
 ---
 
 Limit: 10 requests per 1 second per IP address
 
 <RequestExample>
-```bash
-curl 'https://api-evm.orderly.org/v1/tv/config?locale=en'
+```shell
+curl 'https://api-evm.orderly.org/v1/public/chain_info'
 ```
 </RequestExample>
-`GET /v1/tv/config`
+`GET /v1/public/chain_info`
 
 <ResponseExample>
 ```json
+
 {
-  "s": "ok",
-  "d": {
-    "accountSummaryRow": [
-      {
-        "id": "accountBalance",
-        "title": "Account Balance"
-      },
-      {
-        "id": "Equity",
-        "title": "Realized P/L"
-      },
-      {
-        "id": "Open Profit",
-        "title": "Unrealized P/L"
-      }
-    ],
-    "accountManager": [
-      {
-        "id": "accountSummary",
-        "title": "",
-        "columns": [
-          {
-            "id": "todayPL",
-            "title": "Today's P&L"
-          },
-          {
-            "id": "accountValue",
-            "title": "Account Value"
-          },
-          {
-            "id": "balance",
-            "title": "Balance"
-          },
-          {
-            "id": "totalMargin",
-            "title": "Margin"
-          },
-          {
-            "id": "held",
-            "title": "Held"
-          },
-          {
-            "id": "buyingPower",
-            "title": "Buying Power"
-          }
+    "success": true,
+    "data": {
+        "rows": [
+            {
+                "name": "Arbitrum",
+                "public_rpc_url": "https://arb1.arbitrum.io/rpc",
+                "chain_id": "42161",
+                "currency_symbol": "ETH",
+                "explorer_base_url": "https://arbiscan.io/"
+            },
+            {
+                "name": "Arbitrum Goerli",
+                "public_rpc_url": "https://goerli-rollup.arbitrum.io/rpc",
+                "chain_id": "421613",
+                "currency_symbol": "ETH",
+                "explorer_base_url": "https://goerli.arbiscan.io/"
+            }
         ]
-      }
-    ],
-    "durations": [
-      {
-        "id": "GTT",
-        "title": "Good Till Time",
-        "hasDatePicker": true,
-        "hasTimePicker": true,
-        "default": true,
-        "supportedOrderTypes": [
-          "stop",
-          "stoplimit"
-        ]
-      }
-    ],
-    "orderCustomFields": [
-      {
-        "id": "commission",
-        "title": "Commission",
-        "tooltip": "Commission Fees",
-        "alignment": "right"
-      }
-    ],
-    "orderHistoryCustomFields": [
-      {
-        "id": "commission",
-        "title": "Commission",
-        "tooltip": "Commission Fees",
-        "alignment": "right"
-      }
-    ],
-    "positionCustomFields": [
-      {
-        "id": "exchangeFee",
-        "title": "Exchange fee",
-        "tooltip": "Exchange fee for the position",
-        "alignment": "right"
-      },
-      {
-        "id": "routeFee",
-        "title": "Route fee",
-        "tooltip": "Route fee for the position",
-        "alignment": "right"
-      }
-    ],
-    "pullingInterval": {
-      "quotes": 500,
-      "orders": 500,
-      "positions": 1000,
-      "accountManager": 1000,
-      "balances": 1000
-    }
-  }
+    },
+    "timestamp": 1696823167628
 }
+
 ```
 </ResponseExample>
 
 **Parameters**
 
-No
+None
