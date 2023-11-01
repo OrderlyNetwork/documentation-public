@@ -48,11 +48,16 @@ Each account is identified by an account id, which can be calculated by
 
 4. Convert back to Hex String, the keccak256 hash of the result of (3)
 
-```lisp
-bytes addressInBytes = bytes(address)
-bytes brokerIdHashInBytes = keccak256(brokerId)
-
-accountId = Hex(keccak256(concatenate(addressInBytes, brokerIdHashInBytes)))
+```typescript
+export function getAccountId(userAddress, brokerId) {
+  const abicoder = AbiCoder.defaultAbiCoder();
+  return keccak256(
+    abicoder.encode(
+      ['address', 'bytes32'],
+      [userAddress, solidityPackedKeccak256(['string'], [brokerId])]
+    )
+  );
+}
 ```
 
 #### Authentication
@@ -122,6 +127,7 @@ Follow the following steps to add a new access key on Orderly Network:
 ```json
 {
     "brokerId": "woofi_dex",
+    "chainId": 80001,
     "orderlyKey": "ed25519:HqN9uKJioHjAJZbadgQRGzq2e7huKg6foCyNY43hWbCk",
     "scope": "trading",
     "timestamp": 1685973094398,
