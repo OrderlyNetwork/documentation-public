@@ -9,11 +9,10 @@ Orderly provides the infrastructure and tools necessary for developers to build 
 
 Builders can create their own Perps DEX on top of a low latency and shared liquidity CLOB trading infrastructure, accessible from all the main EVM chains.
 
-A trader in Polygon can trade against traders in other chains like Arbitrum or AVAX, without leaving Polygon.
+A trader on Polygon can trade against traders on other chains like Arbitrum or AVAX, without leaving Polygon.
 
 No need to bridge funds, no extra complexities. Go to your favorite dApp, connect your wallet, and start trading.
 
-EVM implementation of Orderly is still in development.
 
 ## High-level Architecture
 
@@ -40,15 +39,15 @@ A wallet owner can register an account on Orderly Network for each broker that i
 
 Each account is identified by an account id, which can be calculated by
 
-1. Converting the wallet address to bytes
-
-2. Converting the keccak256 hash of the `brokerId` string to bytes
-
-3. Concatenating (1) and (2)
-
-4. Convert back to Hex String, the keccak256 hash of the result of (3)
-
-```typescript
+<Steps>
+  <Step title="Converting the wallet address to bytes">
+  </Step>
+  <Step title="Converting the keccak256 hash of the `brokerId` string to bytes">
+  </Step>
+  <Step title="Concatenating (1) and (2)">
+  </Step>
+  <Step title="Converting back to Hex String, the keccak256 hash of the result of (3)">
+  ```typescript
 export function getAccountId(userAddress, brokerId) {
   const abicoder = AbiCoder.defaultAbiCoder();
   return keccak256(
@@ -59,6 +58,8 @@ export function getAccountId(userAddress, brokerId) {
   );
 }
 ```
+  </Step>
+</Steps>
 
 #### Authentication
 
@@ -82,21 +83,25 @@ Orderly Network uses the ed25519 elliptic curve standard for access keys. Users 
 
 Access keys can have different scopes. A `read` scope API can access all private read-only APIs, and a `trading` scope can, in addition, access all order APIs (create order, batch create order, edit order, cancel order, cancel order by client\_order-Id, cancel orders in bulk, batch cancel orders, batch cancel orders by client\_order\_id).
 
-Access keys also have expirations for security reasons. The maximum allowed expiration of an access key is \[365 days\].
+Access keys also have expirations for security reasons. The maximum allowed expiration of an access key is 365 days.
 
 ### Account Registration
 
 Follow the following steps to register an account on Orderly Network:
 
-1. Choose a valid chain/broker to register the account on
-
-2. Check if the account is already registered via `<Get account>` API
-
-3. Get a nonce from `<Get registration nonce>` API
-
-4. Sign a message from the wallet in the following format using the EIP-712 standard and obtain the signature
-
-```json
+<Steps>
+  <Step title="Choose a valid chain/broker to register the account on">
+    List of chains can be found [here](/build-on-evm/smart-contract-addresses) and supported brokers through [Get list of brokers API](/build-on-evm/evm-api/restful-api/public/get-list-of-brokers).
+  </Step>
+  <Step title="Check if the account is already registered">
+     Can be checked via [Get Account API](/build-on-evm/evm-api/restful-api/public/get-account).
+  </Step>
+  <Step title="Obatin a registration nonce">
+    Get a nonce from [Get Registration Nonce API](/build-on-evm/evm-api/restful-api/public/get-registration-nonce).
+  </Step>
+  <Step title="Obatin a signature from EIP-712">
+    Sign a message from the wallet in the following format using the EIP-712 standard and obtain the signature.
+    ```json
 {
     "brokerId": "woofi_dex",
     "chainId": 80001,
@@ -104,7 +109,6 @@ Follow the following steps to register an account on Orderly Network:
     "registrationNonce": "194528949540"
 }
 ```
-
 where:
 
 | **Name**          | **Type**  | **Required** | **Description**                                                                |
@@ -112,17 +116,23 @@ where:
 | brokerId          | string    | Y            | Broker ID, the valid list can be found \[here\]                                |
 | chainId           | int       | Y            | Chain ID of registering chain (within those that are supported by the Network) |
 | timestamp         | timestamp | Y            | timestamp in UNIX milliseconds                                                 |
-| registrationNonce | string    | Y            | Valid nonce from `<Get Registration Nonce>`                                      |
-
-5. Send all the necessary information via `<Register account>` API
+| registrationNonce | string    | Y            | Valid nonce from Get [Registration Nonce](/build-on-evm/evm-api/restful-api/public/get-registration-nonce)   |
+  </Step>
+  <Step title="Register account">
+    Send all the necessary information via [Register account API](/build-on-evm/evm-api/restful-api/public/register-account).
+  </Step>
+</Steps>
 
 ### Add access key
 
 Follow the following steps to add a new access key on Orderly Network:
 
-1. Generate an ed25519 key-pair
-
-2. Sign a message from the wallet in the following format using the EIP-712 standard and obtain the signature
+<Steps>
+  <Step title="Generate an ed25519 key-pair">
+    Any public ed25519 library can be used (such as [this one](https://www.npmjs.com/package/@noble/ed25519)).
+  </Step>
+  <Step title="Obtain signature from EIP-712">
+    Sign a message from the wallet in the following format using the EIP-712 standard and obtain the signature
 
 ```json
 {
@@ -145,52 +155,63 @@ where:
 | scope      | string    | Y            | valid scopes are read, tradingmultiple scopes can be sent, comma separated                         |
 | timestamp  | timestamp | Y            | timestamp in UNIX milliseconds                                                                     |
 | expiration | timestamp | Y            | Expiration time of the key in UNIX millisecondsMaximum allowed expiration is \[365 days\] from add |
-
-3.  Send all the necessary information via `<Add Orderly key>` API
-
-Users can also check the validity of a particularly Orderly access key via the `<Get Orderly key>` API.
+  </Step>
+  <Step title="Add Orderly key">
+     Send all the necessary information via [Add Orderly key API](/build-on-evm/evm-api/restful-api/public/add-orderly-key.mdx).
+  </Step>
+</Steps>
 
 ## Deposits / Withdrawals
 
 ### Deposit
 
-Token deposits can be made on any supported chains (list \[here\])
+Token deposits can be made on any supported chains (list [here](trade-on-orderly/supported-chains))
 
 To create a deposit request, users can follow the following steps:
 
-1. Approve spending of the token by the smart contract
-
-2. Call the `deposit` function of the smart contract, containing the following structured data
-
-```json
-struct DepositData {
-    bytes32 accountId;
-    bytes32 brokerHash;
-    bytes32 tokenHash;
-    uint128 tokenAmount;
-}
-```
-
+<Steps>
+  <Step title="Approve spending of the token by the smart contract">
+  </Step>
+  <Step title="Call the `deposit` function of the smart contract">
+    Contains the following structured data:
+    ```json
+    struct DepositData {
+      bytes32 accountId;
+      bytes32 brokerHash;
+      bytes32 tokenHash;
+      uint128 tokenAmount;
+    }
+    ```
+    where:
 | **Name**    | **Type** | **Required** | **Description**                                       |
 | ----------- | -------- | ------------ | ----------------------------------------------------- |
 | accountId   | bytes    | Y            | The account id of the user in bytes.                  |
 | brokerHash  | bytes    | Y            | The keccak256 hash of the broker id (eg "woofi\_dex") |
 | tokenHash   | bytes    | Y            | The keccak256 hash of the token string (eg “USDC“)    |
 | tokenAmount | int      | Y            | Amount of tokens to be deposited                      |
+  </Step>
+</Steps>
 
-Note that deposits will take some time to reflect depending on the origin chain, to allow for finalizing of the cross-chain transaction involved in the deposit. Once the deposit is credited, the balance will update and the transaction can be seen on the `<Get asset history>` API.
+<Note>
+Deposits will take some time to reflect depending on the origin chain, to allow for finalizing of the cross-chain transaction involved in the deposit. Once the deposit is credited, the balance will update and the transaction can be seen on the [Get asset history API](/build-on-evm/evm-api/restful-api/private/get-asset-history).
+</Note>
 
 ### Withdrawal
 
 Follow the following steps to withdraw your tokens from Orderly Network:
 
-1. Choose a valid chain to withdraw your funds to
-
-2. Check if the chain has sufficient liquidity
-
-3. Get a withdrawal nonce
-
-4. Sign an EIP-712 message in the following format
+<Steps>
+  <Step title="Choose a valid chain to withdraw your funds to">
+    A list of supported chains can be found on our [Smart Contract Addresses page](/build-on-evm/smart-contract-addresses).
+  </Step>
+  <Step title="Check if the chain has sufficient liquidity">
+    All vault contracts can be found on our [Smart Contract Addresses page](/build-on-evm/smart-contract-addresses).
+  </Step>
+  <Step title="Obtain a withdrawal nonce">
+    Get a nonce from [Get Withdrawal Nonce API](/build-on-evm/evm-api/restful-api/private/get-withdrawal-nonce).
+  </Step>
+  <Step title="Obtain a signature from EIP-712">
+    Sign an EIP-712 message in the following format
 
 ```json
 {
@@ -213,19 +234,24 @@ where:
 | receiver      | string    | Y            | Address of the receiver, which should be equal to the address of the account.                                |
 | token         | string    | Y            | The string representation of the token that is being withdrawn (eg "USDC")                                   |
 | amount        | int       | Y            | Amount of tokens to be withdrawn                                                                             |
-| withdrawNonce | int       | Y            | Valid withdrawal nonce from `<Get withdrawal nonce>`                                                        |
+| withdrawNonce | int       | Y            | Valid withdrawal nonce from [Get Withdrawal Nonce API](/build-on-evm/evm-api/restful-api/private/get-withdrawal-nonce)                                                       |
 | timestamp     | timestamp | Y            | current timestamp in UNIX milliseconds                                                                       |
-
-5. Call the request to withdraw API to complete the withdrawal request
+  </Step>
+  <Step title="Make a withdraw request">
+    Call the [Create withdraw request API](/build-on-evm/evm-api/restful-api/private/create-withdraw-request).
+  </Step>
+</Steps>
 
 ## Settle PnL
 
 Any realized and unrealized PnL accrued from open or closed positions needs to be “Settled” into the USDC balance of the account. PnL settlement can happen anytime for any account if other users trigger a settlement. Any user can also trigger PnL settlement of their own account by following these steps:
 
-1. Get a Settle PnL nonce
-
-2. Sign an EIP-712 message in the following format
-
+<Steps>
+  <Step title="Get a Settle PnL nonce">
+    Get a nonce from [Get settle PnL nonce](/build-on-evm/evm-api/restful-api/private/get-settle-pnl-nonce).
+  </Step>
+  <Step title="Obtain signature from EIP-712">
+    Sign an EIP-712 message in the following format:
 ```json
 {
     "brokerId": "woofi_dex",
@@ -241,10 +267,14 @@ where:
 | ----------- | --------- | ------------ | ------------------------------------------------------------ |
 | brokerId    | string    | Y            | Broker ID, the valid list can be found \[here\]              |
 | chainId     | int       | Y            | Chain ID of the connected chain where the message was signed |
-| settleNonce | int       | Y            | Valid withdrawal nonce from `<Get Settle PnL nonce>`           |
+| settleNonce | int       | Y            | Valid withdrawal nonce from [Get settle PnL nonce](/build-on-evm/evm-api/restful-api/private/get-settle-pnl-nonce)           |
 | timestamp   | timestamp | Y            | current timestamp in UNIX milliseconds                       |
 
-3. Call the Settle PnL API to complete the request
+  </Step>
+  <Step title="Request PnL settlement">
+    Request a PnL settlement through [Request Pnl settlement API](/build-on-evm/evm-api/restful-api/private/request-pnl-settlement).
+  </Step>
+</Steps>
 
 ## Order Placement
 
