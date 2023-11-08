@@ -1,0 +1,83 @@
+---
+title: "Deposit/Withdrawal"
+description: "Overview of deposit and withdrawal flow"
+---
+
+## Deposit
+
+Token deposits can be made on any supported chains (list [here](trade-on-orderly/supported-chains))
+
+To create a deposit request, users can follow the following steps:
+
+<Steps>
+  <Step title="Approve spending of the token by the smart contract">
+  </Step>
+  <Step title="Call the `deposit` function of the smart contract">
+    Contains the following structured data:
+    ```json
+    struct DepositData {
+      bytes32 accountId;
+      bytes32 brokerHash;
+      bytes32 tokenHash;
+      uint128 tokenAmount;
+    }
+    ```
+    where:
+| **Name**    | **Type** | **Required** | **Description**                                       |
+| ----------- | -------- | ------------ | ----------------------------------------------------- |
+| accountId   | bytes    | Y            | The account id of the user in bytes.                  |
+| brokerHash  | bytes    | Y            | The keccak256 hash of the broker id (eg "woofi\_dex") |
+| tokenHash   | bytes    | Y            | The keccak256 hash of the token string (eg “USDC“)    |
+| tokenAmount | int      | Y            | Amount of tokens to be deposited                      |
+  </Step>
+</Steps>
+
+<Note>
+Deposits will take some time to reflect depending on the origin chain, to allow for finalizing of the cross-chain transaction involved in the deposit. Once the deposit is credited, the balance will update and the transaction can be seen on the [Get asset history API](/build-on-evm/evm-api/restful-api/private/get-asset-history).
+</Note>
+
+## Withdrawal
+
+Follow the following steps to withdraw your tokens from Orderly Network:
+
+<Steps>
+  <Step title="Choose a valid chain to withdraw your funds to">
+    A list of supported chains can be found on our [Smart Contract Addresses page](/build-on-evm/smart-contract-addresses).
+  </Step>
+  <Step title="Check if the chain has sufficient liquidity">
+    All vault contracts can be found on our [Smart Contract Addresses page](/build-on-evm/smart-contract-addresses).
+  </Step>
+  <Step title="Obtain a withdrawal nonce">
+    Get a nonce from [Get Withdrawal Nonce API](/build-on-evm/evm-api/restful-api/private/get-withdrawal-nonce).
+  </Step>
+  <Step title="Obtain a signature from EIP-712">
+    Sign an EIP-712 message in the following format
+
+```json
+{
+    "brokerId": "woofi_dex",
+    "chainId": 80001,
+    "receiver": "0x036Cb579025d3535a0ADcD929D05481a3189714b",
+    "token": "USDC",
+    "amount": 1000000,
+    "withdrawNonce": 1,
+    "timestamp": 1685973017064
+}
+```
+
+where:
+
+| **Name**      | **Type**  | **Required** | **Description**                                                                                              |
+| ------------- | --------- | ------------ | ------------------------------------------------------------------------------------------------------------ |
+| brokerId      | string    | Y            | Broker ID, the valid list can be found \[here\]                                                              |
+| chainId       | int       | Y            | Chain ID of the chain that the funds should be withdrawn to (within those that are supported by the Network) |
+| receiver      | string    | Y            | Address of the receiver, which should be equal to the address of the account.                                |
+| token         | string    | Y            | The string representation of the token that is being withdrawn (eg "USDC")                                   |
+| amount        | int       | Y            | Amount of tokens to be withdrawn                                                                             |
+| withdrawNonce | int       | Y            | Valid withdrawal nonce from [Get Withdrawal Nonce API](/build-on-evm/evm-api/restful-api/private/get-withdrawal-nonce)                                                       |
+| timestamp     | timestamp | Y            | current timestamp in UNIX milliseconds                                                                       |
+  </Step>
+  <Step title="Make a withdraw request">
+    Call the [Create withdraw request API](/build-on-evm/evm-api/restful-api/private/create-withdraw-request).
+  </Step>
+</Steps>

@@ -4,15 +4,14 @@ title: "Batch create order"
 
 <RequestExample>
 
-```shell
-curl -X POST 'https://api.orderly.org/v1/order' \
+```shell cURL
+curl -X POST 'https://api-evm.orderly.org/v1/order' \
     -H 'Content-Type: application/json' \
     -H 'orderly-timestamp: 1649920583000' \
-    -H 'orderly-account-id: testuser.near' \
+    -H 'orderly-account-id: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546' \
     -H 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
-    -H 'orderly-trading-key: 90b8d328cde365b3dd10b194048b677d575c2faf51790ecfa6c2fe8b0403324984b275e7bf4c486b4d713576cf20335e1230537c47aafdde0bd646af9b83a8d6' \
     -H 'orderly-signature: MjK3qraMWTNvzvQ9GZl3HhTSpOWYPkbvbUDqErJCmQUOY5zsr33X3c9G67HdOlR4B2fpdiUXjEABDVSQ97LMBg==' \
-    -d '{"orders": [{"order_price": 3.21, "order_quantity": 0.45, "order_type": "LIMIT", "side": "BUY", "symbol": "SPOT_NEAR_USDC.e", "broker_id": "broker", "signature": "4f400f3955fc5783348c0db04447be99283a78a3b1982603b9206953d456f39c7197214a146111ec586ab79171c4bf6255c320d5261a414a17cf78b42e04859900"}, {"order_price": 3.2, "order_quantity": 0.45, "order_type": "LIMIT", "side": "BUY", "symbol": "SPOT_NEAR_USDC.e", "broker_id": "broker", "signature": "a553b00270fdf45358ad047cebcb4e9030d4512e0034bd54caacda0740b966c9652d5106ec80e4dffca21c87b0c34cb64b2c5c78f10efc8944c719d7948dc55500"}]}'
+    -d '{"orders": [{"order_price": 3.21, "order_quantity": 0.45, "order_type": "LIMIT", "side": "BUY", "symbol": "PERP_NEAR_USDC"}, {"order_price": 3.2, "order_quantity": 0.45, "order_type": "LIMIT", "side": "BUY", "symbol": "PERP_NEAR_USDC"}]}'
 ```
 </RequestExample>
 

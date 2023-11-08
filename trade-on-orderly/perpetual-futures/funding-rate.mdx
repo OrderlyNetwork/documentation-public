@@ -66,7 +66,7 @@ The Interest Rate is fixed to be 0.01% for all Perpetual Markets (assuming USDC 
 The final Funding Rate is then a combination of the Average Premium and the Interest Rate. 
 
 ```
-Funding Rate = clamp[Funding Function(Average Premium) + clamp(Interest Rate - Average Premium , 0.05%, -0.05%), Cap Funding, Floor Funding]
+Funding Rate = clamp[Funding Function(Average Premium) + clamp(Interest Rate - Average Premium , 0.03%, -0.03%), Cap Funding, Floor Funding]
 ```
 
 The funding rate is also capped and floored respectively by a `Cap Funding` and a `Floor Funding`. The specific values depend on each perpetual market. In the event of extreme market conditions, Orderly may change these parameters, which will enable the funding rate model's higher slope to kick in.
@@ -76,6 +76,7 @@ The funding rate is also capped and floored respectively by a `Cap Funding` and 
 | BTC         | 0.3%        | \-0.3%        |
 | ETH         | 0.375%      | \-0.375%      |
 | NEAR        | 0.75%       | \-0.75%       |
+| WOO        | 0.75%       | \-0.75%       |
 
 ## Funding Period
 

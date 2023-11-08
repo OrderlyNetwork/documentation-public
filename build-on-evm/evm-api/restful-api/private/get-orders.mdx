@@ -4,11 +4,11 @@ title: "Get orders"
 
 <RequestExample>
 
-```shell
-curl 'https://api.orderly.org/v1/orders?symbol=SPOT_NEAR_USDC.e&side=BUY&order_type=LIMIT&status=INCOMPLETE&start_t=1644216606000&end_t=1658470850000' \
+```shell cURL
+curl 'https://api-evm.orderly.org/v1/orders?symbol=PERP_NEAR_USDC&side=BUY&order_type=LIMIT&status=INCOMPLETE&start_t=1644216606000&end_t=1658470850000' \
     -H 'Content-Type: application/x-www-form-urlencoded' \
     -H 'orderly-timestamp: 1649920583000' \
-    -H 'orderly-account-id: testuser.near' \
+    -H 'orderly-account-id: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546' \
     -H 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
     -H 'orderly-signature: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ=='
 ```
@@ -42,20 +42,18 @@ For filter by status, one can reference special bundled statuses below for ease 
                 "user_id": 12345,
                 "price": 0.67772,
                 "type": "LIMIT",
-                "reduce_only": false,
                 "quantity": 20,
                 "amount": null,
                 "executed": 20,
                 "visible": 1,
-                "symbol": "SPOT_WOO_USDC.e",
+                "reduce_only": false,
+                "symbol": "PERP_WOO_USDC",
                 "side": "BUY",
-                "status": "FILLED", // NEW / FILLED / PARTIAL_FILLED / CANCELLED
+                "status": "FILLED", // NEW / FILLED / PARTIAL_FILLED / CANCELLED / REJECTED
                 "total_fee": 0,
-                "fee_asset": "WOO",
+                "fee_asset": "USDC",
                 "client_order_id": null,
                 "average_executed_price": 0.67772,
-                "broker_id": "broker",
-                "broker_name": "Broker Name",
                 "created_time": 1644216606000,
                 "updated_time": 1644216696000
         },

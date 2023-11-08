@@ -4,11 +4,11 @@ title: "Get all trades of a specific order"
 
 <RequestExample>
 
-```shell
-curl 'https://api.orderly.org/v1/order/10/trades' \
+```shell cURL
+curl 'https://api-evm.orderly.org/v1/order/10/trades' \
     -H 'Content-Type: application/x-www-form-urlencoded' \
     -H 'orderly-timestamp: 1649920583000' \
-    -H 'orderly-account-id: testuser.near' \
+    -H 'orderly-account-id: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546' \
     -H 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
     -H 'orderly-signature: jub5km73Rog+6J8Sq5Ff6mrSbceYUurxWFPM44uiGktUCNvpGXJnuNlvj9FRPeENfl4wd56Q7DpzVdYfTpl7Aw=='
 ```
@@ -29,7 +29,7 @@ Get specific trades of an order by `order_id`.
         "rows": [
             {
                 "id": 2,
-                "symbol": "SPOT_BTC_USDC.e",
+                "symbol": "SPOT_BTC_USDC",
                 "fee": 0.0001,
                 "fee_asset": "BTC", // fee. use Base (BTC) as unit when BUY, use Quote (USDT) as unit when SELL
                 "side": "BUY",

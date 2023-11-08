@@ -1,0 +1,135 @@
+---
+title: "Accounts/Access keys"
+description: "Overview of account and access key related actions"
+---
+
+## Account Structure
+
+A wallet owner can register an account on Orderly Network for each broker that is supported. Each wallet owner could thus have multiple accounts (that are not interlinked with each other) registered with Orderly Network.
+
+### Account ID
+
+Each account is identified by an account id, which can be calculated by
+
+<Steps>
+  <Step title="Converting the wallet address to bytes">
+  </Step>
+  <Step title="Converting the keccak256 hash of the `brokerId` string to bytes">
+  </Step>
+  <Step title="Concatenating (1) and (2)">
+  </Step>
+  <Step title="Converting back to Hex String, the keccak256 hash of the result of (3)">
+  ```typescript
+export function getAccountId(userAddress, brokerId) {
+  const abicoder = AbiCoder.defaultAbiCoder();
+  return keccak256(
+    abicoder.encode(
+      ['address', 'bytes32'],
+      [userAddress, solidityPackedKeccak256(['string'], [brokerId])]
+    )
+  );
+}
+```
+  </Step>
+</Steps>
+
+## Authentication
+
+Orderly Network relies on the [EIP-712](https://eips.ethereum.org/EIPS/eip-712) standard to authenticate wallets and accounts for critical actions, such as:
+
+* Account creation
+
+* Access key (Orderly key) addition
+
+* Withdrawal requests
+
+For these actions, wallet owners will need to sign specific messages from their wallet and pass the signature through the REST APIs to complete the action. The following sections describe the steps needed to complete these actions.
+
+In addition, depositing into Orderly Network is a direct on-chain transaction that requires signing from the wallet owner.
+
+For other actions, such as calling trading-related RESTful APIs, only the Orderly Key is required.
+
+### Access key (Orderly key)
+
+Orderly Network uses the ed25519 elliptic curve standard for access keys. Users can generate access keys using any public ed25519 libraries (such as [this one](https://www.npmjs.com/package/@noble/ed25519)) and then be added to any account through a REST API.
+
+Access keys can have different scopes. A `read` scope API can access all private read-only APIs, and a `trading` scope can, in addition, access all order APIs (create order, batch create order, edit order, cancel order, cancel order by client\_order-Id, cancel orders in bulk, batch cancel orders, batch cancel orders by client\_order\_id).
+
+Access keys also have expirations for security reasons. The maximum allowed expiration of an access key is 365 days.
+
+## Account Registration
+
+Follow the following steps to register an account on Orderly Network:
+
+<Steps>
+  <Step title="Choose a valid chain/broker to register the account on">
+    List of chains can be found [here](/build-on-evm/smart-contract-addresses) and supported brokers through [Get list of brokers API](/build-on-evm/evm-api/restful-api/public/get-list-of-brokers).
+  </Step>
+  <Step title="Check if the account is already registered">
+     Can be checked via [Get Account API](/build-on-evm/evm-api/restful-api/public/get-account).
+  </Step>
+  <Step title="Obatin a registration nonce">
+    Get a nonce from [Get Registration Nonce API](/build-on-evm/evm-api/restful-api/public/get-registration-nonce).
+  </Step>
+  <Step title="Obatin a signature from EIP-712">
+    Sign a message from the wallet in the following format using the EIP-712 standard and obtain the signature.
+    ```json
+{
+    "brokerId": "woofi_dex",
+    "chainId": 80001,
+    "timestamp": 1685973017064,
+    "registrationNonce": "194528949540"
+}
+```
+where:
+
+| **Name**          | **Type**  | **Required** | **Description**                                                                |
+| ----------------- | --------- | ------------ | ------------------------------------------------------------------------------ |
+| brokerId          | string    | Y            | Broker ID, the valid list can be found \[here\]                                |
+| chainId           | int       | Y            | Chain ID of registering chain (within those that are supported by the Network) |
+| timestamp         | timestamp | Y            | timestamp in UNIX milliseconds                                                 |
+| registrationNonce | string    | Y            | Valid nonce from Get [Registration Nonce](/build-on-evm/evm-api/restful-api/public/get-registration-nonce)   |
+  </Step>
+  <Step title="Register account">
+    Send all the necessary information via [Register account API](/build-on-evm/evm-api/restful-api/public/register-account).
+  </Step>
+</Steps>
+
+## Add access key
+
+Follow the following steps to add a new access key on Orderly Network:
+
+<Steps>
+  <Step title="Generate an ed25519 key-pair">
+    Any public ed25519 library can be used (such as [this one](https://www.npmjs.com/package/@noble/ed25519)).
+  </Step>
+  <Step title="Obtain signature from EIP-712">
+    Sign a message from the wallet in the following format using the EIP-712 standard and obtain the signature
+
+```json
+{
+    "brokerId": "woofi_dex",
+    "chainId": 80001,
+    "orderlyKey": "ed25519:HqN9uKJioHjAJZbadgQRGzq2e7huKg6foCyNY43hWbCk",
+    "scope": "trading",
+    "timestamp": 1685973094398,
+    "expiration": 1686081094398
+}
+```
+
+where:
+
+| **Name**   | **Type**  | **Required** | **Description**                                                                                    |
+| ---------- | --------- | ------------ | -------------------------------------------------------------------------------------------------- |
+| brokerId   | string    | Y            | Broker ID, the valid list can be found \[here\]                                                    |
+| chainId    | int       | Y            | Chain ID of registering chain (within those that are supported by the Network)                     |
+| orderlyKey | string    | Y            | ed25519 public key                                                                                 |
+| scope      | string    | Y            | valid scopes are `read` and `trading`. Multiple scopes can be sent, comma separated                         |
+| timestamp  | timestamp | Y            | timestamp in UNIX milliseconds                                                                     |
+| expiration | timestamp | Y            | Expiration time of the key in UNIX millisecondsMaximum allowed expiration is 365 days from add |
+  </Step>
+  <Step title="Add Orderly key">
+     Send all the necessary information via [Add Orderly key API](/build-on-evm/evm-api/restful-api/public/add-orderly-key.mdx).
+  </Step>
+</Steps>
+

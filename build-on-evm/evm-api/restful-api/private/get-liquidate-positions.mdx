@@ -4,11 +4,11 @@ title: "Get liquidated positions by Liquidator"
 
 <RequestExample>
 
-```shell
-curl 'https://api.orderly.org/v1/client/liquidator_liquidations' \
+```shell cURL
+curl 'https://api-evm.orderly.org/v1/client/liquidator_liquidations' \
     -H 'Content-Type: application/x-www-form-urlencoded' \
     -H 'orderly-timestamp: 1649920583000' \
-    -H 'orderly-account-id: testuser.near' \
+    -H 'orderly-account-id: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546' \
     -H 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
     -H 'orderly-signature: FxRAdmteyzVDR0HTE+N8VbDNNcKIZfCWkEIePjlEJZz8e0iuhNGvb+KZgG6osU6t0J9d33IWYJALUhA+dnTuBg=='
 ```
@@ -37,7 +37,7 @@ curl 'https://api.orderly.org/v1/client/liquidator_liquidations' \
                   "cost_position_transfer":65.84448,
                   "liquidator_fee":0.0175,
                   "position_qty":41.6,
-                  "symbol":"PERP_NEAR_USDC.e",
+                  "symbol":"PERP_NEAR_USDC",
                   "transfer_price":1.5828
                },
               ...

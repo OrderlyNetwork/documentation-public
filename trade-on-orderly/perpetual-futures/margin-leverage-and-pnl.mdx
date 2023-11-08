@@ -46,9 +46,10 @@ Note: We will gradually decrease Base IMR and Base MMR and increase maximum leve
 
 | Perp Market | Base IMR (max leverage) | Base MMR | IMR Factor   |
 | ----------- | ----------------------- | -------- | ------------ |
-| BTC         | 10% (10x)               | 5%       | 0.0000002512 |
-| ETH         | 10% (10x)               | 5%       | 0.0000003003 |
-| NEAR        | 10% (10x)               | 5%       | 0.0000048045 |
+| BTC-PERP         | 5% (20x)               | 2.75%       | 0.0000003517 |
+| ETH-PERP         | 5% (20x)               | 2.75%       | 0.0000003754 |
+| NEAR-PERP        | 10% (10x)               | 5%       | 0.0000025564 |
+| WOO-PERP        | 10% (10x)               | 5%       | 0.0000077523 |
 
 ## PnL (Profit and Loss)
 
@@ -74,7 +75,7 @@ Settled PnL into balance can be used for spot trading or withdrawn, but doing so
 
 The process of PnL Settlement is as follows:
 
-When account X makes a call to settle Pnl, Orderly will choose the top accounts with the largest unsettled opposing PnL. Starting from the largest account, each account's unsettled PnL will be offset with account X, until account X has no more remaining PnL to settle.
+When account X makes a call to settle PnL, Orderly will choose the top accounts with the largest unsettled opposing PnL. Starting from the largest account, each account's unsettled PnL will be offset with account X, until account X has no more remaining PnL to settle.
 
 As an Example: Account X has +20,000 USDC unsettled PnL with a balance of 100 USDC. The top 2 facing Accounts A and B have -15,000 USDC and -5,000 USDC unsettled PnL respectively: 
 

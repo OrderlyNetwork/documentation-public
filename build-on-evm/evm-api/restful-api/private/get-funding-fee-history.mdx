@@ -4,11 +4,11 @@ title: "Get funding fee history"
 
 <RequestExample>
 
-```shell
-curl 'https://api.orderly.org/v1/funding_fee/history?symbol=PERP_ETH_USDC.e&page=1&size=2' \
+```shell cURL
+curl 'https://api-evm.orderly.org/v1/funding_fee/history?symbol=PERP_ETH_USDC&page=1&size=2' \
     -H 'Content-Type: application/x-www-form-urlencoded' \
     -H 'orderly-timestamp: 1649920583000' \
-    -H 'orderly-account-id: testuser.near' \
+    -H 'orderly-account-id: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546' \
     -H 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
     -H 'orderly-signature: RO8Bv7HGfxit8TENhXTK7CCawsVFFZ0T74BXnDbMupCVkndk7UbjZFrc3zRsMX/jLrsKZXl+RgQsT4TDZ83CCw=='
 ```
@@ -28,7 +28,7 @@ Get funding fee history.
    "data":{
       "rows":[
          {
-            "symbol":"PERP_ETH_USDC.e",
+            "symbol":"PERP_ETH_USDC",
             "funding_rate":0.00046875,
             "mark_price":2100.0,
             "funding_fee":1.6e-05,

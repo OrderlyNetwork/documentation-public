@@ -8,11 +8,29 @@ Orderly implemented a tiered fee structure based on a 30-day volume (separately 
 Fees are subject to change at any time.
 </Note>
 
+## Perpetual Futures Trading Fees
+
+### EVM & NEAR
+
+| Tier | 30-day Futures volume | Maker  | Taker  |
+| ---- | --------------------- | ------ | ------ |
+| 1    | \$0 - \$500K            | 0.030% | 0.060% |
+| 2    | \$500K - \$2.5M          | 0.024% | 0.054% |
+| 3    | \$2.5M-\$10M             | 0.018% | 0.048% |
+| 4    | \$10M-\$100M            | 0.012% | 0.042% |
+| 5    | \$100M-\$250M           | 0.006% | 0.036% |
+| 6    | Above \$250M           | 0.000% | 0.030% |
+<Note>
+Future trading fees are collected in USDC.
+</Note>
+
+
+
+## Spot Trading Fees
+
 <Note>
 Brokers also have the ability to set custom fees. Please [reach out](mailto:support@orderly.network) to us if you are looking to set custom fees for your platform.
 </Note>
-
-## Spot Trading Fees
 
 | Tier | 30-day Spot volume | Maker  | Taker  |
 | ---- | ------------------ | ------ | ------ |
@@ -27,30 +45,4 @@ Brokers also have the ability to set custom fees. Please [reach out](mailto:supp
 Spot trading fees are deducted from the converted token (e.g. converting USDC to ETH will incur fees in ETH)
 </Note>
 
-## Perpetual Futures Trading Fees
 
-### EVM
-
-| Tier | 30-day Futures volume | Maker  | Taker  |
-| ---- | --------------------- | ------ | ------ |
-| 1    | \$0 - \$500K            | 0.030% | 0.060% |
-| 2    | \$500Km - \$2.5M          | 0.024% | 0.054% |
-| 3    | \$2.5M-\$10M             | 0.018% | 0.048% |
-| 4    | \$10M-\$100M            | 0.012% | 0.042% |
-| 5    | \100M-\$250M           | 0.006% | 0.036% |
-| 6    | Above \$250M           | 0.000% | 0.030% |
-
-### NEAR
-
-| Tier | 30-day Futures volume | Maker  | Taker  |
-| ---- | --------------------- | ------ | ------ |
-| 1    | \$0 - \$2.5M            | 0.040% | 0.080% |
-| 2    | \$2.5m - \$15M          | 0.036% | 0.075% |
-| 3    | \$15M-\$50M             | 0.032% | 0.070% |
-| 4    | \$50M-\$250M            | 0.020% | 0.060% |
-| 5    | \$250M-\$500M           | 0.012% | 0.050% |
-| 6    | Above \$500M           | 0.008% | 0.040% |
-
-<Note>
-Future trading fees are collected in USDC.
-</Note>

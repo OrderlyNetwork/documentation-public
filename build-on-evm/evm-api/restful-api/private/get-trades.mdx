@@ -4,11 +4,11 @@ title: "Get trades"
 
 <RequestExample>
 
-```shell
-curl 'https://api.orderly.org/v1/trades?symbol=SPOT_NEAR_USDC.e&page=1&size=10&start_t=1644216606000&end_t=1658470850000' \
+```shell cURL
+curl 'https://api-evm.orderly.org/v1/trades?symbol=PERP_NEAR_USDC&page=1&size=10&start_t=1644216606000&end_t=1658470850000' \
     -H 'Content-Type: application/x-www-form-urlencoded' \
     -H 'orderly-timestamp: 1649920583000' \
-    -H 'orderly-account-id: testuser.near' \
+    -H 'orderly-account-id: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546' \
     -H 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
     -H 'orderly-signature: oH4IO4d7SPIHd3cvfQTjKIKHbOpVgwwVxm9Llr19qDZnZoK41nVWau21+YXjTFQaYsByHgjlMOeOLapPWQt5Ag=='
 ```
@@ -34,9 +34,9 @@ Return client’s trades history within a time range.
         "rows": [
             {
                 "id": 2,
-                "symbol": "SPOT_BTC_USDT",
+                "symbol": "PERP_BTC_USDT",
                 "fee": 0.0001,
-                "fee_asset": "BTC", // fee. use Base (BTC) as unit when BUY, use Quote (USDC.e) as unit when SELL
+                "fee_asset": "USDC", 
                 "side": "BUY",
                 "order_id": 1,
                 "executed_price": 123,

@@ -4,11 +4,11 @@ title: "Get kline"
 
 <RequestExample>
 
-```shell
-curl 'https://api.orderly.org/v1/kline?symbol=SPOT_NEAR_USDC.e&type=1d&limit=10' \
+```shell cURL
+curl 'https://api-evm.orderly.org/v1/kline?symbol=SPOT_NEAR_USDC&type=1d&limit=10' \
     -H 'Content-Type: application/x-www-form-urlencoded' \
     -H 'orderly-timestamp: 1649920583000' \
-    -H 'orderly-account-id: testuser.near' \
+    -H 'orderly-account-id: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546' \
     -H 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
     -H 'orderly-signature: SymY8zYUBSOiZJkVw7u92WM+Pwv2wAPBefX2wh58JhZUswbj2PrvMuX8jBN1CmVcYxjSWgepK+4V8RzDAUbwDw=='
 ```
@@ -34,7 +34,7 @@ Get the latest klines (OHLC) of the trading pairs.
                       "high": 66176.97,
                       "volume": 23.45528526,
                       "amount": 1550436.21725288,
-                      "symbol": "SPOT_BTC_USDC.e",
+                      "symbol": "SPOT_BTC_USDC",
                       "type": "1m",
                       "start_timestamp": 1636388220000, // Unix epoch time in milliseconds
                       "end_timestamp": 1636388280000
@@ -46,7 +46,7 @@ Get the latest klines (OHLC) of the trading pairs.
                       "high": 66178.60,
                       "volume": 15.50705000,
                       "amount": 1025863.18892610,
-                      "symbol": "SPOT_BTC_USDC.e",
+                      "symbol": "SPOT_BTC_USDC",
                       "type": "1m",
                       "start_timestamp": 1636388160000,
                       "end_timestamp": 1636388220000

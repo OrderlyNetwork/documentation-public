@@ -4,11 +4,11 @@ title: "Get trade"
 
 <RequestExample>
 
-``` curl
-curl 'https://api.orderly.org/v1/trade/2' \
+``` curl cURL
+curl 'https://api-evm.orderly.org/v1/trade/2' \
     -H 'Content-Type: application/x-www-form-urlencoded' \
     -H 'orderly-timestamp: 1649920583000' \
-    -H 'orderly-account-id: testuser.near' \
+    -H 'orderly-account-id: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546' \
     -H 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
     -H 'orderly-signature: 7xJQuog8SkueEQfMcxLeheXxO5Cnyza97+LsYTbVli7mJQWaEb1566heyVAgVCio2UNiJldRpsrTvvhos5WVDg=='
 ```
@@ -27,7 +27,7 @@ Get specific transaction details by `trade_id`.
     "success": true,
     "data": {
         "id": 1,
-        "symbol": "SPOT_BTC_USDC.e",
+        "symbol": "SPOT_BTC_USDC",
         "fee": 0.0001,
         "fee_asset": "BTC", // fee. use Base (BTC) as unit when BUY, use Quote (USDC.e) as unit when SELL
         "side": "BUY",

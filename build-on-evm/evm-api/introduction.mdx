@@ -2,8 +2,6 @@
 title: "Introduction"
 ---
 
-**Orderly Network, a permissionless and modular protocol built on NEAR.**  
-
 We provide two interfaces to communicate between Orderly Network and clients. 
 
 [RESTful API interface](#restful-api): Provides sending events like create order, cancel order, fetch balance, etc.
@@ -11,13 +9,13 @@ We provide two interfaces to communicate between Orderly Network and clients.
 [Websocket interface](#websocket-api): Provides real-time orderbook data feed and order update feed.
 
 
-**Base endpoints:**
+## Base endpoints
 
-`https://api.orderly.org/` **(Mainnet)**
+`https://api-evm.orderly.org/` **(Mainnet)**
 
-`https://testnet-api.orderly.org` **(Testnet)**
+`https://testnet-api-evm.orderly.org` **(Testnet)**
 
-**General Information on REST Endpoints:**
+## General Information on REST Endpoints
 
 For `GET` and `DELETE` endpoints, parameters must be sent as a `query string`.
 
@@ -25,17 +23,17 @@ For `POST` and `PUT` endpoints, the parameters must be sent in the `request body
 
 Parameters may be sent in any order.
 
-**Authorization:**  
-All our interfaces require keys to access.  
+## Authorization 
+All our private interfaces require keys to access.  
 Please set the corresponding header in your request. See refer to [Authentication](#authentication) for more information.
 
-**Symbol:**  
+## Symbol  
 Orderly Network uses the format of `<TYPE>_<BASE>_<QUOTE>` to represent a symbol name, for example: `SPOT_NEAR_USDC.e` means that it is `NEAR_USDC.e` pair in `SPOT` trading market.
 
-**Rate Limit:**  
+## Rate Limit
 Rate limit is counted using the Orderly key. If your application reached the rate limit of certain endpoint, the server will return an error result with http code `429`. You may need wait until next time horizon.
 
-**Error Message:**  
+## Error Message 
 
 > **Errors consist of three parts: an error code, detailed message and a success flag.**
 

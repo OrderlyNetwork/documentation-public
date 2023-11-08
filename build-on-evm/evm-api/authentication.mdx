@@ -7,8 +7,6 @@ Orderly Network uses the `ed25519` elliptic curve standard for request authentic
 
 Assume the following information:
 
-tabs between columnsCompact modeLine breaks as 
-Result (click "Generate" to refresh) Copy to clipboard  Preview
 | Key                | Value                                                                                           | Description                     |
 |--------------------|-------------------------------------------------------------------------------------------------|---------------------------------|
 | orderly-account-id | 0xb336b4dc9f87302da656862ca142a8d454268ae61759bf25d986f863d8374cf1                              | Orderly account id              |
@@ -16,13 +14,26 @@ Result (click "Generate" to refresh) Copy to clipboard  Preview
 | orderly-secret     | ed25519:VNX6EELQhP4G4Zg8HtTNKjBJoCmMKFQ8es7D33NwauX49eoBiL1GUjBARcMGKPtdjFhWNF36SoCUTzJRWKn789B | retrieve from any broker FE GUI |
 | orderly-timestamp  | 1649920583000                                                                                   | Unix epoch time in milliseconds |
 
-Hash your request parameters with orderly-secret. The hashing logic is as below:
+Hash your request parameters with `orderly-secret`. The hashing logic is:
 
-If the request looks like (details on how to generate the order signature can be found above):
+First, normalize the order content:
+<Steps>
+  <Step title="Take the timestamp of the request">
+  </Step>
+  <Step title="Concatenate it with the request method and request path">
+  </Step>
+  <Step title="If the request body is not empty, concatenate the request body JSON by stringifying the JSON body.">
+  </Step>
+</Steps>
 
-POST /v1/order
+Put the signature in the request header as `orderly-signature`, timestamp as `orderly-timestamp`, and orderly key as `orderly-key`.
 
-# Body json:
+**Example request for a new order placement:**
+
+``` shell cURL
+curl -X POST 'https://api-evm.orderly.org/v1/order'
+```
+with the following body JSON:
 ```json
 {
   "symbol":"PERP_ETH_USDC",
@@ -32,22 +43,148 @@ POST /v1/order
   "side":"BUY"
 }
 ```
-First, normalize the order content:
 
-1. Take the `timestamp` of the request
-2. Concatenate it with the **request method** and **request path**
-3. If the request body is not empty, concatenate the request body JSON by stringifying the JSON body.
-
-Normalize request content. The result content would look like following:
-
-```
+<Steps>
+  <Step title="Normalize request content">
+  The result content would look like following:
+  ```
 1649920583000POST/v1/order{"symbol": "SPOT_NEAR_USDC", "order_type": "LIMIT", "order_price": 15.23, "order_quantity": 23.11, "side": "BUY"}
-Then use orderly-secret to generate a signature using the ed25519 algorithm, and encode the signature in base64 url format:
 ```
+  </Step>
+  <Step title="Generate a signature">
+  Generate a signature using the ed25519 algorithm, and encode the signature in base64 url format:
+<Tabs>
+  <Tab title="Java">
+    ```Java
+    // dependencies
+org.bitcoinj:bitcoinj-core:0.15.9
+org.bouncycastle:bcprov-jdk15to18:1.70
 
-Put the signature in the request header as orderly-signature, timestamp as orderly-timestamp, and orderly key as orderly-key.
+// Here are public/private key strings in FrontEnd 
+// private key string ed25519:VNX6EELQhP4G4Zg8HtTNKjBJoCmMKFQ8es7D33NwauX49eoBiL1GUjBARcMGKPtdjFhWNF36SoCUTzJRWKn789B
+// public key string ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
+String privateKey = "VNX6EELQhP4G4Zg8HtTNKjBJoCmMKFQ8es7D33NwauX49eoBiL1GUjBARcMGKPtdjFhWNF36SoCUTzJRWKn789B";
+String publicKey = "8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX";
 
-So the final request would look like this:
+
+//1. Decoded it into bytes array
+byte[] privateBytes = Base58.decode(privateKey);
+byte[] publicBytes = Base58.decode(publicKey);
+
+The length of privateBytes is 64， and the length of publicBytes is 32. As we know both public/private key in ed25519 should be 32. We find out the privateBytes[32-63] equals to publicBytes[0-31].
+
+//2. build private/public Key from the bytes array. In Java we use bcprov-jdk15to18.
+// use the first 32 bytes to build privateKey
+Ed25519PrivateKeyParameters privateKeyParameters = new Ed25519PrivateKeyParameters(privateBytes, 0);
+Ed25519PublicKeyParameters publicKeyParameters = new Ed25519PublicKeyParameters(publicBytes);
+
+//3. generate signature and encode it into URLSAFE Base64 (RFC4648, the '+' and '/' changed to '-' and '_' )
+public static String sign(Ed25519PrivateKeyParameters privateKey, String message) throws CryptoException {
+        byte[] messageBytes = message.getBytes(StandardCharsets.UTF_8);
+        Signer signer = new Ed25519Signer();
+        signer.init(true, privateKey);
+        signer.update(messageBytes, 0, messageBytes.length);
+        byte[] signature = signer.generateSignature();
+        return Base64.getUrlEncoder().encodeToString(signature);
+    }
+
+//4. verify signature with public key
+public static boolean verify(Ed25519PublicKeyParameters publicKey, String message, String signature) {
+        byte[] messageBytes = message.getBytes(StandardCharsets.UTF_8);
+        byte[] signatureBytes = Base64.getUrlDecoder().decode(signature);
+
+        Signer verifier = new Ed25519Signer();
+        verifier.init(false, publicKey);
+        verifier.update(messageBytes, 0, messageBytes.length);
+        return verifier.verifySignature(signatureBytes);
+    }
+
+//5. example
+String message = "1649920583000POST/v1/order{"symbol": "SPOT_NEAR_USDC", "order_type": "LIMIT", "order_price": 15.23, "order_quantity": 23.11,"side": "BUY", "signature": "fc3c41d988dd03a65a99354a7b1d311a43de6b7a7867bdbdaf228bb74a121f8e47bb15ff7f69eb19c96da222f651da53b5ab30fb7caf69a76f01ad9af06c154400"}";
+String sign = sign(privateKeyParameters, message);
+boolean verify = verify(publicKeyParameters, message, sign);
+
+//The signature is txU4R7Iw8iucV+gRCC/QxCrhevnCMyvnde34N8delsVHkFAJ3861M412PwE6ELI6m8LvqJdDjfA0dJ/EdJdQDw==
+```
+  </Tab>
+  <Tab title="Python">
+    ```Python
+    from requests import Request
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+import datetime, json, base64, base58
+
+def sign_request(self, request: Request, account_id: str, orderly_key: str, orderly_secret: str):
+  prepared = request.prepare()
+  ts = round(datetime.datetime.now().timestamp() * 1000)
+
+  json_str = ''
+  if request.json is not None:
+      json_str = json.dumps(request.json)
+
+  orderly_private_key = Ed25519PrivateKey.from_private_bytes(base58.b58decode(orderly_secret)[0:32])
+
+  signature_string = f"{ts}{request.method}{prepared.path_url}{json_str}"
+  data_bytes = bytes(signature_string, 'utf-8')
+
+  request_signature = base64.b64encode(orderly_private_key.sign(data_bytes)).decode("utf-8")
+
+  request.headers['orderly-account-id'] = account_id
+  request.headers['orderly-key'] = f'ed25519:{orderly_key}'
+  request.headers['orderly-signature'] = request_signature
+  request.headers['orderly-timestamp'] = str(ts)
+  request.headers['Content-Type'] = 'application/json' if request.json else 'application/x-www-form-urlencoded'
+  request.headers['Cache-Control'] = 'no-cache'
+
+  return request
+  ```
+  </Tab>
+  <Tab title="JavaScript">
+    ```javascript
+    import * as ed from '@noble/ed25519';
+    mport { decodeBase58, encodeBase58, ethers } from 'ethers';
+
+    export async function handleSignature(endpoint, method, urlParams, params, accountId, privateKey) {
+      const timestamp = new Date().getTime().toString();
+      const message = [timestamp, method.toUpperCase(), urlParams, params ? JSON.stringify(params) : ''].join('');
+
+      const signObj = await signatureByOrderlyKey(message, privateKey);
+
+      return {
+        'orderly-account-id': accountId,
+        'orderly-key': signObj.publicKey,
+        'orderly-timestamp': timestamp,
+        'orderly-signature': signObj.signature,
+      };
+    }
+
+    const base64url = function (aStr) {
+      return aStr.replace(/\+/g, '-').replace(/\//g, '_');
+    };
+
+
+    export async function signatureByOrderlyKey(message, privateKey) {
+      const secretKey = decodeBase58(privateKey).toString(16);
+      const u8 = Buffer.from(message);
+
+      const signature = await ed.signAsync(u8, secretKey);
+
+      const signHex = Buffer.from(signature).toString('base64');
+
+      const b64 = base64url(signHex);
+      const pubKey = await ed.getPublicKeyAsync(secretKey);
+      const publicKey = `ed25519:${ethers.encodeBase58(pubKey)}`;
+      return {
+        signature: b64,
+        publicKey,
+      };
+    }
+```
+  </Tab>
+</Tabs>
+
+  </Step>
+  <Step title="Send the request">
+  So the final request would look like this:
 
 ```json
 POST /v1/order HTTP/1.1
@@ -66,6 +203,11 @@ orderly-timestamp: 1649920583000
   "side":"BUY"
 }
 ```
+  </Step>
+</Steps>
+
+
+
 ## Security
 There have three layer checker to check if a request is valid. Orderly server only accepts the request that passes all checkers. The checker contains the following:
 

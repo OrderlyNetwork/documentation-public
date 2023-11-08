@@ -4,11 +4,11 @@ title: "Get liquidated positions of account"
 
 <RequestExample>
 
-```shell
-curl 'https://api.orderly.org/v1/liquidations' \
+```shell cURL
+curl 'https://api-evm.orderly.org/v1/liquidations' \
     -H 'Content-Type: application/x-www-form-urlencoded' \
     -H 'orderly-timestamp: 1649920583000' \
-    -H 'orderly-account-id: testuser.near' \
+    -H 'orderly-account-id: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546' \
     -H 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
     -H 'orderly-signature: FxRAdmteyzVDR0HTE+N8VbDNNcKIZfCWkEIePjlEJZz8e0iuhNGvb+KZgG6osU6t0J9d33IWYJALUhA+dnTuBg=='
 ```
@@ -36,7 +36,7 @@ curl 'https://api.orderly.org/v1/liquidations' \
           "transfer_amount_to_insurance_fund": 0,
           "positions_by_perp": [
             {
-              "symbol": "PERP_BTC_USDT",
+              "symbol": "PERP_BTC_USDC",
               "position_qty": 1.23,
               "cost_position_transfer": 1350,
               "transfer_price": 18123.43,
