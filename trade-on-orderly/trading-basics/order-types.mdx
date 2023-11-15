@@ -1,0 +1,14 @@
+---
+title: "Order Types"
+---
+There are 5 order types on Orderly:
+
+    **MARKET:** It matches until the full size is executed. If the size is too large (larger than the whole book) or the matching price exceeds the price limit (refer to `price_range`), then the remaining quantity will be canceled.
+    
+    **IOC (Immediate or Cancel):** It matches as much as possible at the order\_price. If not fully executed, then the remaining quantity will be canceled.
+    
+    **FOK (Fill or Kill):** If the order can be fully executed at the order\_price, then the order gets fully executed otherwise would be canceled without any execution.
+    
+    **POST ONLY:** If the order executes with any maker trades at the time of placement, then it will be canceled without any execution.
+    
+    **REDUCE ONLY:** Executes buy or sell orders which only reduce a current position
