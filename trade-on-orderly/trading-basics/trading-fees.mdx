@@ -2,8 +2,57 @@
 title: "Trading Fees"
 description: "Overview of trading fees"
 ---
-## Spot Fees
+## Overview
 
-## Perpetual Futures Fees
+Trading fees are the costs you pay to buy, sell, or trade assets on an exchange. These fees are charged as a percentage of the transaction value.
 
-## Gas Fees
+There are two main types of trading fees:
+
+**Maker fees:** These fees are charged to traders who place orders that add liquidity to the market (not instantly filled orders that are added to the book), such as limit orders.
+
+**Taker fees:** These fees are charged to traders who remove liquidity from the market, such as market orders.
+
+## How fees are charged
+### Spot Fees
+Spot trading fees are deducted from the converted token after every trade (e.g. converting USDC to ETH will incur fees in ETH and vice versa).
+
+### Perpetual Futures Fees
+Perpetual Futures trading fees are charged after every trade in USDC and added to the cost position.
+
+## Fee structure
+Orderly implemented a tiered fee structure based on a 30-day volume (separately for Spot and Futures). The fee structure can also be retrieved with our REST API.
+
+<Note>
+Fees are subject to change at any time.
+</Note>
+
+### Perpetual Futures Trading Fees
+
+#### EVM & NEAR
+
+| Tier | 30-day Futures volume | Maker  | Taker  |
+| ---- | --------------------- | ------ | ------ |
+| 1    | \$0 - \$500K            | 0.030% | 0.060% |
+| 2    | \$500K - \$2.5M          | 0.024% | 0.054% |
+| 3    | \$2.5M-\$10M             | 0.018% | 0.048% |
+| 4    | \$10M-\$100M            | 0.012% | 0.042% |
+| 5    | \$100M-\$250M           | 0.006% | 0.036% |
+| 6    | Above \$250M           | 0.000% | 0.030% |
+
+
+### Spot Trading Fees
+
+<Note>
+Brokers also have the ability to set custom fees. Please [reach out](mailto:support@orderly.network) to us if you are looking to set custom fees for your platform.
+</Note>
+
+#### NEAR
+
+| Tier | 30-day Spot volume | Maker  | Taker  |
+| ---- | ------------------ | ------ | ------ |
+| 1    | \$0-\$500K           | 0.100% | 0.100% |
+| 2    | \$500K-\$3M          | 0.080% | 0.090% |
+| 3    | \$3M-\$10M           | 0.060% | 0.080% |
+| 4    | \$10M-\$50M          | 0.040% | 0.070% |
+| 5    | \$50M-\$100M         | 0.020% | 0.060% |
+| 6    | Above \$100M        | 0.000% | 0.050% |
