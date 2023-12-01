@@ -33,7 +33,6 @@ export function getAccountId(userAddress, brokerId) {
   </Step>
 </Steps>
 
-
 ## Account Registration
 
 Follow the following steps to register an account on Orderly Network:
@@ -50,7 +49,8 @@ Follow the following steps to register an account on Orderly Network:
   </Step>
   <Step title="Obtain a signature from EIP-712">
     Sign a message from the wallet in the following format using the EIP-712 standard and obtain the signature.
-    ```json
+
+```json
 {
     "brokerId": "woofi_dex",
     "chainId": 80001,
@@ -71,4 +71,139 @@ where:
     Send all the necessary information via [Register account API](/build-on-evm/evm-api/restful-api/public/register-account).
   </Step>
 </Steps>
+
+### Full example
+
+<Tabs>
+    <Tab title="Java">
+```Java
+package org.web3j;
+
+import java.time.Instant;
+
+import org.apache.commons.codec.binary.Hex;
+import org.json.JSONObject;
+import org.web3j.crypto.*;
+
+import io.github.cdimascio.dotenv.Dotenv;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+public class RegisterExample {
+   public static void main(String[] args) throws Exception {
+      String baseUrl = "https://testnet-api-evm.orderly.org";
+      String brokerId = "woofi_dex";
+      int chainId = 421613;
+
+      Dotenv dotenv = Dotenv.load();
+      String pk = dotenv.get("PRIVATE_KEY");
+      Credentials credentials = Credentials.create(ECKeyPair.create(Hex.decodeHex(pk)));
+      OkHttpClient client = new OkHttpClient();
+
+      Request nonceReq = new Request.Builder()
+            .url(baseUrl + "/v1/registration_nonce")
+            .build();
+      String nonceRes;
+      try (Response response = client.newCall(nonceReq).execute()) {
+         nonceRes = response.body().string();
+      }
+      JSONObject nonceObj = new JSONObject(nonceRes);
+
+      String registrationNonce = nonceObj.getJSONObject("data").getString("registration_nonce");
+
+      JSONObject registerMessage = new JSONObject();
+      registerMessage.put("brokerId", brokerId);
+      registerMessage.put("chainId", chainId);
+      registerMessage.put("timestamp", Instant.now().toEpochMilli());
+      registerMessage.put("registrationNonce", registrationNonce);
+
+      JSONObject jsonObject = new JSONObject();
+      jsonObject.put("types", Eip712.MESSAGE_TYPES);
+      jsonObject.put("primaryType", "Registration");
+      jsonObject.put("domain", Eip712.OFF_CHAIN_DOMAIN);
+      jsonObject.put("message", registerMessage);
+
+      Sign.SignatureData signature = Sign.signTypedData(jsonObject.toString(), credentials.getEcKeyPair());
+
+      JSONObject jsonBody = new JSONObject();
+      jsonBody.put("message", registerMessage);
+      jsonBody.put("signature", Util.signatureToHashString(signature));
+      jsonBody.put("userAddress", credentials.getAddress());
+      RequestBody body = RequestBody.create(jsonBody.toString(), MediaType.get("application/json"));
+      Request registerReq = new Request.Builder()
+            .url(baseUrl + "/v1/register_account")
+            .post(body)
+            .build();
+      String registerRes;
+      try (Response response = client.newCall(registerReq).execute()) {
+         registerRes = response.body().string();
+      }
+      JSONObject registerObj = new JSONObject(registerRes);
+
+      String orderlyAccountId = registerObj.getJSONObject("data").getString("account_id");
+      System.out.println("orderlyAccountId: " + orderlyAccountId);
+   }
+}
+```
+    </Tab>
+    <Tab title="Python">
+```py
+from datetime import datetime
+import json
+import math
+import os
+import requests
+
+from eth_account import Account, messages
+
+from eip712 import MESSAGE_TYPES, get_off_chain_domain
+
+base_url = "https://testnet-api-evm.orderly.org"
+broker_id = "woofi_dex"
+chain_id = 421613
+
+account: Account = Account.from_key(os.environ.get("PRIVATE_KEY"))
+
+res = requests.get("%s/v1/registration_nonce" % base_url)
+response = json.loads(res.text)
+registration_nonce = response["data"]["registration_nonce"]
+
+d = datetime.utcnow()
+epoch = datetime(1970, 1, 1)
+timestamp = math.trunc((d - epoch).total_seconds() * 1_000)
+
+register_message = {
+    "brokerId": broker_id,
+    "chainId": chain_id,
+    "timestamp": timestamp,
+    "registrationNonce": registration_nonce,
+}
+
+encoded_data = messages.encode_typed_data(
+    domain_data=get_off_chain_domain(chain_id),
+    message_types={"Registration": MESSAGE_TYPES["Registration"]},
+    message_data=register_message,
+)
+signed_message = account.sign_message(encoded_data)
+
+res = requests.post(
+    "%s/v1/register_account" % base_url,
+    headers={"Content-Type": "application/json"},
+    json={
+        "message": register_message,
+        "signature": signed_message.signature.hex(),
+        "userAddress": account.address,
+    },
+)
+response = json.loads(res.text)
+
+orderly_account_id = response["data"]["account_id"]
+print("orderly_account_id:", orderly_account_id)
+
+```
+    </Tab>
+</Tabs>
 
