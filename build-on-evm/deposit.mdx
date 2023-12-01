@@ -1,5 +1,300 @@
 ---
 title: "Deposit"
-description: "In development..."
+description: "How to deposit"
 ---
-WIP 
+## Deposit
+
+Token deposits can be made on any supported chains (list [here](/trade-on-orderly/supported-chains))
+
+To create a deposit request, users can follow the following steps:
+
+<Steps>
+  <Step title="Approve spending of the token by the Vault smart contract">
+    Get Vault & USDC deposit address from [here](/build-on-evm/smart-contract-addresses#arbitrum-chain-id-421613).
+    All our smart contracts are verified, so you can get Vault & USDC ABI files via explorer, e.g. on Arbitrum Goerli you can copy Vault ABI from [here](https://testnet.arbiscan.io/address/0x0c554ddb6a9010ed1fd7e50d92559a06655da482#code).
+
+    <Tabs>
+      <Tab title="Java">
+        ```Java
+        String usdcAddress = "0xfd064a18f3bf249cf1f87fc203e90d8f650f2d63";
+        String vaultAddress = "0x0c554ddb6a9010ed1fd7e50d92559a06655da482";
+
+        Dotenv dotenv = Dotenv.load();
+        String pk = dotenv.get("PRIVATE_KEY");
+        Credentials credentials = Credentials.create(ECKeyPair.create(Hex.decodeHex(pk)));
+
+        Web3j web3j = Web3j.build(new HttpService("https://arbitrum-goerli.publicnode.com"));
+        DefaultGasProvider gasProvider = new DefaultGasProvider();
+
+        NativeUSDC USDC = new NativeUSDC(usdcAddress, web3j, credentials, gasProvider);
+
+        BigInteger depositAmount = new BigInteger("100000");
+
+        // approve USDC ERC-20 to be transferred to Vault contract
+        USDC.approve(vaultAddress, depositAmount).send();
+        ```
+      </Tab>
+      <Tab title="Python">
+        ```py
+        usdc_address = Web3.to_checksum_address("0xfd064a18f3bf249cf1f87fc203e90d8f650f2d63")
+        vault_address = Web3.to_checksum_address("0x0c554ddb6a9010ed1fd7e50d92559a06655da482")
+
+        account: Account = Account.from_key(os.environ.get("PRIVATE_KEY"))
+
+        w3 = Web3(Web3.HTTPProvider("https://arbitrum-goerli.publicnode.com"))
+        w3.middleware_onion.add(construct_sign_and_send_raw_middleware(account))
+
+        with open("./src/abi/NativeUSDC.json") as f:
+            abi = json.load(f)
+        usdc = w3.eth.contract(
+            address=usdc_address,
+            abi=abi,
+        )
+
+        deposit_amount = 100000
+
+        # approve USDC ERC-20 to be transferred to Vault contract
+        usdc.functions.approve(vault_address, deposit_amount).transact(
+            {"from": account.address}
+        )
+        ```
+      </Tab>
+    </Tabs>
+  </Step>
+  <Step title="Determine necessary deposit fee in WEI">
+    <Tabs>
+      <Tab title="Java">
+        ```Java
+        String brokerId = "woofi_dex";
+        String tokenId = "USDC";
+        String orderlyAccountId = "0x...";
+
+        Vault vault = new Vault(vaultAddress, web3j, credentials, gasProvider);
+
+        Keccak.Digest256 brokerHash = new Keccak.Digest256();
+        byte[] brokerIdBytes = brokerId.getBytes("UTF-8");
+        brokerHash.update(brokerIdBytes, 0, brokerIdBytes.length);
+
+        Keccak.Digest256 tokenHash = new Keccak.Digest256();
+        byte[] usdcBytes = tokenId.getBytes("UTF-8");
+        tokenHash.update(usdcBytes, 0, usdcBytes.length);
+
+        Vault.VaultDepositFE depositInput = new Vault.VaultDepositFE(
+              Hex.decodeHex(orderlyAccountId.substring(2)),
+              brokerHash.digest(),
+              tokenHash.digest(),
+              depositAmount);
+
+        // get wei deposit fee for `deposit` call
+        BigInteger depositFee = vault.getDepositFee(vaultAddress, depositInput).send();
+        ```
+      </Tab>
+      <Tab title="Python">
+        ```py
+        broker_id = "woofi_dex"
+        token_id = "USDC"
+        orderly_account_id = "0x..."
+
+        with open("./src/abi/Vault.json") as f:
+            abi = json.load(f)
+        vault = w3.eth.contract(
+            address=vault_address,
+            abi=abi,
+        )
+
+        broker_hash = w3.keccak(text=broker_id)
+        token_hash = w3.keccak(text=token_id)
+
+        deposit_input = (
+            bytes.fromhex(orderly_account_id[2:]),
+            bytes.fromhex(broker_hash.hex()[2:]),
+            bytes.fromhex(token_hash.hex()[2:]),
+            deposit_amount,
+        )
+
+        # get wei deposit fee for `deposit` call
+        deposit_fee = vault.functions.getDepositFee(
+            Web3.to_checksum_address(account.address),
+            deposit_input,
+        ).call()
+        ```
+      </Tab>
+    </Tabs>
+  </Step>
+  <Step title="Call the `deposit` function of the smart contract">
+    Contains the following structured data:
+    ```json
+    struct DepositData {
+      bytes32 accountId;
+      bytes32 brokerHash;
+      bytes32 tokenHash;
+      uint128 tokenAmount;
+    }
+    ```
+    where:
+| **Name**    | **Type** | **Required** | **Description**                                       |
+| ----------- | -------- | ------------ | ----------------------------------------------------- |
+| accountId   | bytes    | Y            | The account id of the user in bytes.                  |
+| brokerHash  | bytes    | Y            | The keccak256 hash of the broker id (eg "woofi\_dex") |
+| tokenHash   | bytes    | Y            | The keccak256 hash of the token string (eg “USDC“)    |
+| tokenAmount | int      | Y            | Amount of tokens to be deposited                      |
+
+    <Tabs>
+      <Tab title="Java">
+        ```Java
+        // deposit USDC into Vault contract
+        vault.deposit(
+              depositInput,
+              depositFee).send();
+        ```
+      </Tab>
+      <Tab title="Python">
+        ```py
+        # deposit USDC into Vault contract
+        vault.functions.deposit(deposit_input).transact(
+            {"from": account.address, "value": deposit_fee}
+        )
+        ```
+      </Tab>
+    </Tabs>
+  </Step>
+</Steps>
+
+<Note>
+Deposits will take some time to reflect depending on the origin chain, to allow for finalizing of the cross-chain transaction involved in the deposit. Once the deposit is credited, the balance will update and the transaction can be seen on the [Get asset history API](/build-on-evm/evm-api/restful-api/private/get-asset-history).
+</Note>
+
+### Full example
+
+<Tabs>
+  <Tab title="Java">
+```Java
+package org.web3j;
+
+import java.math.BigInteger;
+
+import org.apache.commons.codec.binary.Hex;
+import org.bouncycastle.jcajce.provider.digest.Keccak;
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.ECKeyPair;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.gas.DefaultGasProvider;
+import io.github.cdimascio.dotenv.Dotenv;
+
+public class DepositExample {
+   public static void main(String[] args) throws Exception {
+      String brokerId = "woofi_dex";
+      String tokenId = "USDC";
+      String orderlyAccountId = "0x...";
+
+      String usdcAddress = "0xfd064a18f3bf249cf1f87fc203e90d8f650f2d63";
+      String vaultAddress = "0x0c554ddb6a9010ed1fd7e50d92559a06655da482";
+
+      Dotenv dotenv = Dotenv.load();
+      String pk = dotenv.get("PRIVATE_KEY");
+      Credentials credentials = Credentials.create(ECKeyPair.create(Hex.decodeHex(pk)));
+
+      Web3j web3j = Web3j.build(new HttpService("https://arbitrum-goerli.publicnode.com"));
+      DefaultGasProvider gasProvider = new DefaultGasProvider();
+
+      NativeUSDC USDC = new NativeUSDC(usdcAddress, web3j, credentials, gasProvider);
+
+      BigInteger depositAmount = new BigInteger("100000");
+
+      // approve USDC ERC-20 to be transferred to Vault contract
+      USDC.approve(vaultAddress, depositAmount).send();
+
+      Vault vault = new Vault(vaultAddress, web3j, credentials, gasProvider);
+
+      Keccak.Digest256 brokerHash = new Keccak.Digest256();
+      byte[] brokerIdBytes = brokerId.getBytes("UTF-8");
+      brokerHash.update(brokerIdBytes, 0, brokerIdBytes.length);
+
+      Keccak.Digest256 tokenHash = new Keccak.Digest256();
+      byte[] usdcBytes = tokenId.getBytes("UTF-8");
+      tokenHash.update(usdcBytes, 0, usdcBytes.length);
+
+      Vault.VaultDepositFE depositInput = new Vault.VaultDepositFE(
+            Hex.decodeHex(orderlyAccountId.substring(2)),
+            brokerHash.digest(),
+            tokenHash.digest(),
+            depositAmount);
+
+      // get wei deposit fee for `deposit` call
+      BigInteger depositFee = vault.getDepositFee(vaultAddress, depositInput).send();
+
+      // deposit USDC into Vault contract
+      vault.deposit(
+            depositInput,
+            depositFee).send();
+   }
+}
+```
+  </Tab>
+  <Tab title="Python">
+```py
+import json
+import os
+
+from eth_account import Account
+from web3 import Web3
+from web3.middleware import construct_sign_and_send_raw_middleware
+
+
+broker_id = "woofi_dex"
+token_id = "USDC"
+orderly_account_id = "0x..."
+
+usdc_address = Web3.to_checksum_address("0xfd064a18f3bf249cf1f87fc203e90d8f650f2d63")
+vault_address = Web3.to_checksum_address("0x0c554ddb6a9010ed1fd7e50d92559a06655da482")
+
+account: Account = Account.from_key(os.environ.get("PRIVATE_KEY"))
+
+w3 = Web3(Web3.HTTPProvider("https://arbitrum-goerli.publicnode.com"))
+w3.middleware_onion.add(construct_sign_and_send_raw_middleware(account))
+
+with open("./src/abi/NativeUSDC.json") as f:
+    abi = json.load(f)
+usdc = w3.eth.contract(
+    address=usdc_address,
+    abi=abi,
+)
+
+deposit_amount = 100000
+
+# approve USDC ERC-20 to be transferred to Vault contract
+usdc.functions.approve(vault_address, deposit_amount).transact(
+    {"from": account.address}
+)
+
+with open("./src/abi/Vault.json") as f:
+    abi = json.load(f)
+vault = w3.eth.contract(
+    address=vault_address,
+    abi=abi,
+)
+
+broker_hash = w3.keccak(text=broker_id)
+token_hash = w3.keccak(text=token_id)
+
+deposit_input = (
+    bytes.fromhex(orderly_account_id[2:]),
+    bytes.fromhex(broker_hash.hex()[2:]),
+    bytes.fromhex(token_hash.hex()[2:]),
+    deposit_amount,
+)
+
+# get wei deposit fee for `deposit` call
+deposit_fee = vault.functions.getDepositFee(
+    Web3.to_checksum_address(account.address),
+    deposit_input,
+).call()
+
+# deposit USDC into Vault contract
+vault.functions.deposit(deposit_input).transact(
+    {"from": account.address, "value": deposit_fee}
+)
+```
+  </Tab>
+</Tabs>
