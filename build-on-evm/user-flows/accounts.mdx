@@ -16,10 +16,11 @@ Each account is identified by an account id, which can be calculated by
   </Step>
   <Step title="Converting the keccak256 hash of the `brokerId` string to bytes">
   </Step>
-  <Step title="Concatenating (1) and (2)">
+  <Step title="ABI encoding (1) and (2)">
   </Step>
   <Step title="Converting back to Hex String, the keccak256 hash of the result of (3)">
-  ```typescript
+    <CodeGroup>
+```ts TypeScript
 export function getAccountId(userAddress, brokerId) {
   const abicoder = AbiCoder.defaultAbiCoder();
   return keccak256(
@@ -30,6 +31,7 @@ export function getAccountId(userAddress, brokerId) {
   );
 }
 ```
+    </CodeGroup>
   </Step>
 </Steps>
 
@@ -46,6 +48,43 @@ Follow the following steps to register an account on Orderly Network:
   </Step>
   <Step title="Obtain a registration nonce">
     Get a nonce from [Get Registration Nonce API](/build-on-evm/evm-api/restful-api/public/get-registration-nonce).
+
+    <Accordion title="Example code">
+      <CodeGroup>
+```Java Java
+String baseUrl = "https://testnet-api-evm.orderly.org";
+
+OkHttpClient client = new OkHttpClient();
+
+Request nonceReq = new Request.Builder()
+      .url(baseUrl + "/v1/registration_nonce")
+      .build();
+String nonceRes;
+try (Response response = client.newCall(nonceReq).execute()) {
+    nonceRes = response.body().string();
+}
+JSONObject nonceObj = new JSONObject(nonceRes);
+
+String registrationNonce = nonceObj.getJSONObject("data").getString("registration_nonce");
+```
+
+```py Python
+base_url = "https://testnet-api-evm.orderly.org"
+
+res = requests.get("%s/v1/registration_nonce" % base_url)
+response = json.loads(res.text)
+registration_nonce = response["data"]["registration_nonce"]
+```
+
+```ts TypeScript
+const BASE_URL = 'https://testnet-api-evm.orderly.org';
+
+const nonceRes = await fetch(`${BASE_URL}/v1/registration_nonce`);
+const nonceJson = await nonceRes.json();
+const registrationNonce = nonceJson.data.registration_nonce as string;
+```
+      </CodeGroup>
+    </Accordion>
   </Step>
   <Step title="Obtain a signature from EIP-712">
     Sign a message from the wallet in the following format using the EIP-712 standard and obtain the signature.
@@ -62,23 +101,239 @@ where:
 
 | **Name**          | **Type**  | **Required** | **Description**                                                                |
 | ----------------- | --------- | ------------ | ------------------------------------------------------------------------------ |
-| brokerId          | string    | Y            | Broker ID, the valid list can be found \[here\]                                |
+| brokerId          | string    | Y            | Broker ID |
 | chainId           | int       | Y            | Chain ID of registering chain (within those that are supported by the Network) |
 | timestamp         | timestamp | Y            | timestamp in UNIX milliseconds                                                 |
 | registrationNonce | string    | Y            | Valid nonce from Get [Registration Nonce](/build-on-evm/evm-api/restful-api/public/get-registration-nonce)   |
+
+    <Accordion title="Example code">
+      <CodeGroup>
+```Java Java
+JSONObject MESSAGE_TYPES = new JSONObject("""
+  {
+    "EIP712Domain": [
+        {"name": "name", "type": "string"},
+        {"name": "version", "type": "string"},
+        {"name": "chainId", "type": "uint256"},
+        {"name": "verifyingContract", "type": "address"},
+    ],
+    "Registration": [
+        {"name": "brokerId", "type": "string"},
+        {"name": "chainId", "type": "uint256"},
+        {"name": "timestamp", "type": "uint64"},
+        {"name": "registrationNonce", "type": "uint256"},
+    ],
+  }""");
+
+JSONObject OFF_CHAIN_DOMAIN = new JSONObject("""
+  {
+    "name": "Orderly",
+    "version": "1",
+    "chainId": 421613,
+    "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
+  }""");
+
+String brokerId = "woofi_dex";
+int chainId = 421613;
+
+Dotenv dotenv = Dotenv.load();
+String pk = dotenv.get("PRIVATE_KEY");
+Credentials credentials = Credentials.create(ECKeyPair.create(Hex.decodeHex(pk)));
+
+JSONObject registerMessage = new JSONObject();
+registerMessage.put("brokerId", brokerId);
+registerMessage.put("chainId", chainId);
+registerMessage.put("timestamp", Instant.now().toEpochMilli());
+registerMessage.put("registrationNonce", registrationNonce);
+
+JSONObject jsonObject = new JSONObject();
+jsonObject.put("types", RegisterExample.MESSAGE_TYPES);
+jsonObject.put("primaryType", "Registration");
+jsonObject.put("domain", RegisterExample.OFF_CHAIN_DOMAIN);
+jsonObject.put("message", registerMessage);
+
+Sign.SignatureData signature = Sign.signTypedData(jsonObject.toString(), credentials.getEcKeyPair());
+```
+
+```py Python
+MESSAGE_TYPES = {
+    "EIP712Domain": [
+        {"name": "name", "type": "string"},
+        {"name": "version", "type": "string"},
+        {"name": "chainId", "type": "uint256"},
+        {"name": "verifyingContract", "type": "address"},
+    ],
+    "Registration": [
+        {"name": "brokerId", "type": "string"},
+        {"name": "chainId", "type": "uint256"},
+        {"name": "timestamp", "type": "uint64"},
+        {"name": "registrationNonce", "type": "uint256"},
+    ],
+}
+
+OFF_CHAIN_DOMAIN = {
+    "name": "Orderly",
+    "version": "1",
+    "chainId": 421613,
+    "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
+}
+
+broker_id = "woofi_dex"
+chain_id = 421613
+
+account: Account = Account.from_key(os.environ.get("PRIVATE_KEY"))
+
+d = datetime.utcnow()
+epoch = datetime(1970, 1, 1)
+timestamp = math.trunc((d - epoch).total_seconds() * 1_000)
+
+register_message = {
+    "brokerId": broker_id,
+    "chainId": chain_id,
+    "timestamp": timestamp,
+    "registrationNonce": registration_nonce,
+}
+
+encoded_data = messages.encode_typed_data(
+    domain_data=OFF_CHAIN_DOMAIN,
+    message_types={"Registration": MESSAGE_TYPES["Registration"]},
+    message_data=register_message,
+)
+signed_message = account.sign_message(encoded_data)
+```
+
+```ts TypeScript
+const MESSAGE_TYPES = {
+  EIP712Domain: [
+    { name: 'name', type: 'string' },
+    { name: 'version', type: 'string' },
+    { name: 'chainId', type: 'uint256' },
+    { name: 'verifyingContract', type: 'address' }
+  ],
+  Registration: [
+    { name: 'brokerId', type: 'string' },
+    { name: 'chainId', type: 'uint256' },
+    { name: 'timestamp', type: 'uint64' },
+    { name: 'registrationNonce', type: 'uint256' }
+  ]
+};
+
+const OFF_CHAIN_DOMAIN = {
+  name: 'Orderly',
+  version: '1',
+  chainId: 421613,
+  verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
+};
+
+const BASE_URL = 'https://testnet-api-evm.orderly.org';
+const BROKER_ID = 'woofi_dex';
+const CHAIN_ID = 421613;
+
+const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!);
+
+const registerMessage = {
+  brokerId: BROKER_ID,
+  chainId: CHAIN_ID,
+  timestamp: Date.now(),
+  registrationNonce
+};
+
+const signature = await wallet.signTypedData(
+  OFF_CHAIN_DOMAIN,
+  {
+    Registration: MESSAGE_TYPES.Registration
+  },
+  registerMessage
+);
+```
+      </CodeGroup>
+    </Accordion>
   </Step>
   <Step title="Register account">
     Send all the necessary information via [Register account API](/build-on-evm/evm-api/restful-api/public/register-account).
+
+    <Accordion title="Example code">
+      <CodeGroup>
+```Java Java
+String baseUrl = "https://testnet-api-evm.orderly.org";
+
+JSONObject jsonBody = new JSONObject();
+jsonBody.put("message", registerMessage);
+jsonBody.put("signature", RegisterExample.signatureToHashString(signature));
+jsonBody.put("userAddress", credentials.getAddress());
+RequestBody body = RequestBody.create(jsonBody.toString(), MediaType.get("application/json"));
+Request registerReq = new Request.Builder()
+      .url(baseUrl + "/v1/register_account")
+      .post(body)
+      .build();
+String registerRes;
+try (Response response = client.newCall(registerReq).execute()) {
+    registerRes = response.body().string();
+}
+JSONObject registerObj = new JSONObject(registerRes);
+
+String orderlyAccountId = registerObj.getJSONObject("data").getString("account_id");
+System.out.println("orderlyAccountId: " + orderlyAccountId);
+
+// ...
+
+public static String signatureToHashString(Sign.SignatureData signature) {
+    byte[] retval = new byte[65];
+    System.arraycopy(signature.getR(), 0, retval, 0, 32);
+    System.arraycopy(signature.getS(), 0, retval, 32, 32);
+    System.arraycopy(signature.getV(), 0, retval, 64, 1);
+    return Numeric.toHexString(retval);
+}
+```
+
+```py Python
+base_url = "https://testnet-api-evm.orderly.org"
+
+res = requests.post(
+    "%s/v1/register_account" % base_url,
+    headers={"Content-Type": "application/json"},
+    json={
+        "message": register_message,
+        "signature": signed_message.signature.hex(),
+        "userAddress": account.address,
+    },
+)
+response = json.loads(res.text)
+
+orderly_account_id = response["data"]["account_id"]
+print("orderly_account_id:", orderly_account_id)
+```
+
+```ts TypeScript
+const BASE_URL = 'https://testnet-api-evm.orderly.org';
+
+const registerRes = await fetch(`${BASE_URL}/v1/register_account`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    message: registerMessage,
+    signature,
+    userAddress: await wallet.getAddress()
+  })
+});
+const registerJson = await registerRes.json();
+if (!registerJson.success) {
+  throw new Error(registerJson.message);
+}
+const orderlyAccountId = registerJson.data.account_id;
+console.log('orderlyAccountId', orderlyAccountId);
+```
+      </CodeGroup>
+    </Accordion>
   </Step>
 </Steps>
 
 ### Full example
 
-<Tabs>
-    <Tab title="Java">
-```Java
-package org.web3j;
-
+<CodeGroup>
+```Java Java
 import java.time.Instant;
 
 import org.apache.commons.codec.binary.Hex;
@@ -93,6 +348,30 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class RegisterExample {
+   public static JSONObject MESSAGE_TYPES = new JSONObject("""
+         {
+            "EIP712Domain": [
+               {"name": "name", "type": "string"},
+               {"name": "version", "type": "string"},
+               {"name": "chainId", "type": "uint256"},
+               {"name": "verifyingContract", "type": "address"},
+            ],
+            "Registration": [
+               {"name": "brokerId", "type": "string"},
+               {"name": "chainId", "type": "uint256"},
+               {"name": "timestamp", "type": "uint64"},
+               {"name": "registrationNonce", "type": "uint256"},
+            ],
+         }""");
+
+   public static JSONObject OFF_CHAIN_DOMAIN = new JSONObject("""
+         {
+            "name": "Orderly",
+            "version": "1",
+            "chainId": 421613,
+            "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
+         }""");
+
    public static void main(String[] args) throws Exception {
       String baseUrl = "https://testnet-api-evm.orderly.org";
       String brokerId = "woofi_dex";
@@ -121,16 +400,16 @@ public class RegisterExample {
       registerMessage.put("registrationNonce", registrationNonce);
 
       JSONObject jsonObject = new JSONObject();
-      jsonObject.put("types", Eip712.MESSAGE_TYPES);
+      jsonObject.put("types", RegisterExample.MESSAGE_TYPES);
       jsonObject.put("primaryType", "Registration");
-      jsonObject.put("domain", Eip712.OFF_CHAIN_DOMAIN);
+      jsonObject.put("domain", RegisterExample.OFF_CHAIN_DOMAIN);
       jsonObject.put("message", registerMessage);
 
       Sign.SignatureData signature = Sign.signTypedData(jsonObject.toString(), credentials.getEcKeyPair());
 
       JSONObject jsonBody = new JSONObject();
       jsonBody.put("message", registerMessage);
-      jsonBody.put("signature", Util.signatureToHashString(signature));
+      jsonBody.put("signature", RegisterExample.signatureToHashString(signature));
       jsonBody.put("userAddress", credentials.getAddress());
       RequestBody body = RequestBody.create(jsonBody.toString(), MediaType.get("application/json"));
       Request registerReq = new Request.Builder()
@@ -146,11 +425,18 @@ public class RegisterExample {
       String orderlyAccountId = registerObj.getJSONObject("data").getString("account_id");
       System.out.println("orderlyAccountId: " + orderlyAccountId);
    }
+
+   public static String signatureToHashString(Sign.SignatureData signature) {
+      byte[] retval = new byte[65];
+      System.arraycopy(signature.getR(), 0, retval, 0, 32);
+      System.arraycopy(signature.getS(), 0, retval, 32, 32);
+      System.arraycopy(signature.getV(), 0, retval, 64, 1);
+      return Numeric.toHexString(retval);
+   }
 }
 ```
-    </Tab>
-    <Tab title="Python">
-```py
+
+```py Python
 from datetime import datetime
 import json
 import math
@@ -159,7 +445,28 @@ import requests
 
 from eth_account import Account, messages
 
-from eip712 import MESSAGE_TYPES, get_off_chain_domain
+
+MESSAGE_TYPES = {
+    "EIP712Domain": [
+        {"name": "name", "type": "string"},
+        {"name": "version", "type": "string"},
+        {"name": "chainId", "type": "uint256"},
+        {"name": "verifyingContract", "type": "address"},
+    ],
+    "Registration": [
+        {"name": "brokerId", "type": "string"},
+        {"name": "chainId", "type": "uint256"},
+        {"name": "timestamp", "type": "uint64"},
+        {"name": "registrationNonce", "type": "uint256"},
+    ],
+}
+
+OFF_CHAIN_DOMAIN = {
+    "name": "Orderly",
+    "version": "1",
+    "chainId": 421613,
+    "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
+}
 
 base_url = "https://testnet-api-evm.orderly.org"
 broker_id = "woofi_dex"
@@ -183,7 +490,7 @@ register_message = {
 }
 
 encoded_data = messages.encode_typed_data(
-    domain_data=get_off_chain_domain(chain_id),
+    domain_data=OFF_CHAIN_DOMAIN,
     message_types={"Registration": MESSAGE_TYPES["Registration"]},
     message_data=register_message,
 )
@@ -202,8 +509,82 @@ response = json.loads(res.text)
 
 orderly_account_id = response["data"]["account_id"]
 print("orderly_account_id:", orderly_account_id)
-
 ```
-    </Tab>
-</Tabs>
+
+```ts TypeScript
+import { config } from 'dotenv';
+import { ethers } from 'ethers';
+
+const MESSAGE_TYPES = {
+  EIP712Domain: [
+    { name: 'name', type: 'string' },
+    { name: 'version', type: 'string' },
+    { name: 'chainId', type: 'uint256' },
+    { name: 'verifyingContract', type: 'address' }
+  ],
+  Registration: [
+    { name: 'brokerId', type: 'string' },
+    { name: 'chainId', type: 'uint256' },
+    { name: 'timestamp', type: 'uint64' },
+    { name: 'registrationNonce', type: 'uint256' }
+  ]
+};
+
+const OFF_CHAIN_DOMAIN = {
+  name: 'Orderly',
+  version: '1',
+  chainId: 421613,
+  verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
+};
+
+const BASE_URL = 'https://testnet-api-evm.orderly.org';
+const BROKER_ID = 'woofi_dex';
+const CHAIN_ID = 421613;
+
+config();
+
+async function registerAccount(): Promise<void> {
+  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!);
+
+  const nonceRes = await fetch(`${BASE_URL}/v1/registration_nonce`);
+  const nonceJson = await nonceRes.json();
+  const registrationNonce = nonceJson.data.registration_nonce as string;
+
+  const registerMessage = {
+    brokerId: BROKER_ID,
+    chainId: CHAIN_ID,
+    timestamp: Date.now(),
+    registrationNonce
+  };
+
+  const signature = await wallet.signTypedData(
+    OFF_CHAIN_DOMAIN,
+    {
+      Registration: MESSAGE_TYPES.Registration
+    },
+    registerMessage
+  );
+
+  const registerRes = await fetch(`${BASE_URL}/v1/register_account`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      message: registerMessage,
+      signature,
+      userAddress: await wallet.getAddress()
+    })
+  });
+  const registerJson = await registerRes.json();
+  if (!registerJson.success) {
+    throw new Error(registerJson.message);
+  }
+  const orderlyAccountId = registerJson.data.account_id;
+  console.log('orderlyAccountId', orderlyAccountId);
+}
+
+registerAccount();
+```
+</CodeGroup>
 
