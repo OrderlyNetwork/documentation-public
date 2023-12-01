@@ -113,7 +113,8 @@
               "build-on-near/near-sdk/rest-client"
             ]
           },
-          "build-on-near/tutorial"
+          "build-on-near/tutorial",
+          "build-on-near/near-api/release-notes"
         ]
       },
 
@@ -133,135 +134,153 @@
       },
 
       {
-        "group": "Off-chain Engine API",
+        "group": "REST API",
         "pages": [
           "build-on-near/near-api/introduction",
           "build-on-near/near-api/authentication",
           "build-on-near/near-api/error-codes",
           {
-            "group": "RESTful API",
+            "group": "Key Management",
             "pages": [
-              {
-                "group": "Public",
-                "pages": [
-                  "build-on-near/near-api/restful-api/public/get-leverage-configuration",
-                  "build-on-near/near-api/restful-api/public/system",
-                  "build-on-near/near-api/restful-api/public/exchange-information",
-                  "build-on-near/near-api/restful-api/public/token-info",
-                  "build-on-near/near-api/restful-api/public/available-symbols",
-                  "build-on-near/near-api/restful-api/public/fee-information",
-                  "build-on-near/near-api/restful-api/public/future-fee-information",
-                  "build-on-near/near-api/restful-api/public/market-trades",
-                  "build-on-near/near-api/restful-api/public/volume-statistics",
-                  "build-on-near/near-api/restful-api/public/get-list-of-brokers",
-                  "build-on-near/near-api/restful-api/public/funding-rate-1",
-                  "build-on-near/near-api/restful-api/public/funding-rate-2",
-                  "build-on-near/near-api/restful-api/public/funding-rate-3",
-                  "build-on-near/near-api/restful-api/public/futures-1",
-                  "build-on-near/near-api/restful-api/public/futures-2",
-                  "build-on-near/near-api/restful-api/public/liquidation-1",
-                  "build-on-near/near-api/restful-api/public/liquidation-2",
-                  "build-on-near/near-api/restful-api/public/insurance",
-                  "build-on-near/near-api/restful-api/public/trading-view-1",
-                  "build-on-near/near-api/restful-api/public/trading-view-2",
-                  "build-on-near/near-api/restful-api/public/trading-view-3"
-                ]
-              },
-              {
-                "group": "Private",
-                "pages": [
-                  "build-on-near/near-api/restful-api/private/create-order",
-                  "build-on-near/near-api/restful-api/private/create-batch-order",
-                  "build-on-near/near-api/restful-api/private/edit-order",
-                  "build-on-near/near-api/restful-api/private/cancel-order",
-                  "build-on-near/near-api/restful-api/private/cancel-order-by-order-id",
-                  "build-on-near/near-api/restful-api/private/batch-cancel-orders",
-                  "build-on-near/near-api/restful-api/private/cancel-orders-by-order-id",
-                  "build-on-near/near-api/restful-api/private/get-order",
-                  "build-on-near/near-api/restful-api/private/get-order-by-client-id",
-                  "build-on-near/near-api/restful-api/private/get-orders",
-                  "build-on-near/near-api/restful-api/private/orderbook-snapshot",
-                  "build-on-near/near-api/restful-api/private/get-kline",
-                  "build-on-near/near-api/restful-api/private/get-trades-order",
-                  "build-on-near/near-api/restful-api/private/get-trades",
-                  "build-on-near/near-api/restful-api/private/get-trade",
-                  "build-on-near/near-api/restful-api/private/get-one-position-info",
-                  "build-on-near/near-api/restful-api/private/get-funding-fee-history",
-                  "build-on-near/near-api/restful-api/private/update-leverage-setting",
-                  "build-on-near/near-api/restful-api/private/get-liquidate-positions",
-                  "build-on-near/near-api/restful-api/private/get-liquidated-positions-2",
-                  "build-on-near/near-api/restful-api/private/claim-liquidated-positions",
-                  "build-on-near/near-api/restful-api/private/claim-from-insurance-fraud",
-                  "build-on-near/near-api/restful-api/private/get-current-holding",
-                  "build-on-near/near-api/restful-api/private/get-account-information",
-                  "build-on-near/near-api/restful-api/private/get-user-statistics",
-                  "build-on-near/near-api/restful-api/private/set-maintainance",
-                  "build-on-near/near-api/restful-api/private/get-asset-history",
-                  "build-on-near/near-api/restful-api/private/get-daily-user-volume",
-                  "build-on-near/near-api/restful-api/private/get-user-volume-statistics",
-                  "build-on-near/near-api/restful-api/private/get-pnl",
-                  "build-on-near/near-api/restful-api/private/get-trading-info",
-                  "build-on-near/near-api/restful-api/private/get-trading-key",
-                  "build-on-near/near-api/restful-api/private/add-ip-restriction",
-                  "build-on-near/near-api/restful-api/private/remove-trading-key",
-                  "build-on-near/near-api/restful-api/private/set-trading-key",
-                  "build-on-near/near-api/restful-api/private/get-ip",
-                  "build-on-near/near-api/restful-api/private/get-all-notifications",
-                  "build-on-near/near-api/restful-api/private/get-unread-notifications",
-                  "build-on-near/near-api/restful-api/private/set-read",
-                  "build-on-near/near-api/restful-api/private/set-all"
-                ]
-              }
+              "build-on-near/near-api/restful-api/private/get-trading-info",
+              "build-on-near/near-api/restful-api/private/get-trading-key",
+              "build-on-near/near-api/restful-api/private/add-ip-restriction",
+              "build-on-near/near-api/restful-api/private/remove-trading-key",
+              "build-on-near/near-api/restful-api/private/set-trading-key",
+              "build-on-near/near-api/restful-api/private/get-ip"
             ]
           },
           {
-            "group": "Websocket API",
+            "group": "Order Management",
             "pages": [
-              "build-on-near/near-api/websocket-api/introduction",
-              "build-on-near/near-api/websocket-api/ping-pong",
-              "build-on-near/near-api/websocket-api/auth",
-              {
-                "group": "Public",
-                "pages": [
-                  "build-on-near/near-api/websocket-api/public/request-orderbook",
-                  "build-on-near/near-api/websocket-api/public/orderbook",
-                  "build-on-near/near-api/websocket-api/public/order-book-update",
-                  "build-on-near/near-api/websocket-api/public/trade",
-                  "build-on-near/near-api/websocket-api/public/24-hour-ticker",
-                  "build-on-near/near-api/websocket-api/public/24-hours-tickers",
-                  "build-on-near/near-api/websocket-api/public/bbo",
-                  "build-on-near/near-api/websocket-api/public/bbos",
-                  "build-on-near/near-api/websocket-api/public/k-line",
-                  "build-on-near/near-api/websocket-api/public/index-price",
-                  "build-on-near/near-api/websocket-api/public/index-prices",
-                  "build-on-near/near-api/websocket-api/public/mark-price",
-                  "build-on-near/near-api/websocket-api/public/mark-prices",
-                  "build-on-near/near-api/websocket-api/public/open-interest",
-                  "build-on-near/near-api/websocket-api/public/estimated-funding-rate",
-                  "build-on-near/near-api/websocket-api/public/liquidation-push"
-                ]
-              },
-              {
-                "group": "Private",
-                "pages": [
-                  "build-on-near/near-api/websocket-api/private/balance",
-                  "build-on-near/near-api/websocket-api/private/execution-report",
-                  "build-on-near/near-api/websocket-api/private/execution-report-single",
-                  "build-on-near/near-api/websocket-api/private/notifications",
-                  "build-on-near/near-api/websocket-api/private/position-push",
-                  "build-on-near/near-api/websocket-api/private/liquidation-account-push",
-                  "build-on-near/near-api/websocket-api/private/liquidator",
-                  "build-on-near/near-api/websocket-api/private/pnl-settlement"
-                ]
-              },
-              "build-on-near/near-api/websocket-api/error-response"
+              "build-on-near/near-api/restful-api/private/create-order",
+              "build-on-near/near-api/restful-api/private/create-batch-order",
+              "build-on-near/near-api/restful-api/private/edit-order",
+              "build-on-near/near-api/restful-api/private/cancel-order",
+              "build-on-near/near-api/restful-api/private/cancel-order-by-order-id",
+              "build-on-near/near-api/restful-api/private/batch-cancel-orders",
+              "build-on-near/near-api/restful-api/private/cancel-orders-by-order-id"
             ]
           },
-          "build-on-near/near-api/release-notes"
+          {
+            "group": "User Data",
+            "pages": [
+              "build-on-near/near-api/restful-api/private/get-all-notifications",
+              "build-on-near/near-api/restful-api/private/get-unread-notifications",
+              "build-on-near/near-api/restful-api/private/set-read",
+              "build-on-near/near-api/restful-api/private/set-all",
+              "build-on-near/near-api/restful-api/private/get-pnl",
+              "build-on-near/near-api/restful-api/private/get-asset-history",
+              "build-on-near/near-api/restful-api/private/get-daily-user-volume",
+              "build-on-near/near-api/restful-api/private/get-user-volume-statistics",
+              "build-on-near/near-api/restful-api/private/get-account-information",
+              "build-on-near/near-api/restful-api/private/get-user-statistics",
+              "build-on-near/near-api/restful-api/private/get-current-holding",
+              "build-on-near/near-api/restful-api/private/update-leverage-setting",
+              "build-on-near/near-api/restful-api/private/get-trades-order",
+              "build-on-near/near-api/restful-api/private/get-trades",
+              "build-on-near/near-api/restful-api/private/get-trade",
+              "build-on-near/near-api/restful-api/private/get-one-position-info"
+            ]
+          },
+          {
+            "group": "Liquidations",
+            "pages": [
+              "build-on-near/near-api/restful-api/private/get-liquidate-positions",
+              "build-on-near/near-api/restful-api/private/get-liquidated-positions-2",
+              "build-on-near/near-api/restful-api/private/claim-liquidated-positions",
+              "build-on-near/near-api/restful-api/private/claim-from-insurance-fund",
+              "build-on-near/near-api/restful-api/public/liquidation-1",
+              "build-on-near/near-api/restful-api/public/liquidation-2"
+            ]
+          },
+          {
+            "group": "Market Data",
+            "pages": [
+              "build-on-near/near-api/restful-api/public/funding-rate-1",
+              "build-on-near/near-api/restful-api/public/funding-rate-2",
+              "build-on-near/near-api/restful-api/public/funding-rate-3",
+              "build-on-near/near-api/restful-api/public/futures-1",
+              "build-on-near/near-api/restful-api/public/futures-2",
+              "build-on-near/near-api/restful-api/public/market-trades",
+              "build-on-near/near-api/restful-api/private/get-funding-fee-history",
+              "build-on-near/near-api/restful-api/private/orderbook-snapshot",
+              "build-on-near/near-api/restful-api/private/get-kline",
+              "build-on-near/near-api/restful-api/private/get-order",
+              "build-on-near/near-api/restful-api/private/get-order-by-client-id",
+              "build-on-near/near-api/restful-api/private/get-orders"
+            ]
+          },
+          {
+            "group": "System Info",
+            "pages": [
+              "build-on-near/near-api/restful-api/public/get-leverage-configuration",
+              "build-on-near/near-api/restful-api/public/system",
+              "build-on-near/near-api/restful-api/public/exchange-information",
+              "build-on-near/near-api/restful-api/public/token-info",
+              "build-on-near/near-api/restful-api/public/available-symbols",
+              "build-on-near/near-api/restful-api/public/fee-information",
+              "build-on-near/near-api/restful-api/public/future-fee-information",
+              "build-on-near/near-api/restful-api/public/insurance",
+              "build-on-near/near-api/restful-api/public/volume-statistics",
+              "build-on-near/near-api/restful-api/public/get-list-of-brokers",
+              "build-on-near/near-api/restful-api/private/set-maintainance"
+            ]
+          },
+          {
+            "group": "TradingView",
+            "pages": [
+              "build-on-near/near-api/restful-api/public/trading-view-1",
+              "build-on-near/near-api/restful-api/public/trading-view-2",
+              "build-on-near/near-api/restful-api/public/trading-view-3"
+            ]
+          }
         ]
       },
 
-
+      {
+        "group": "Websocket API",
+        "pages": [
+          "build-on-near/near-api/websocket-api/introduction",
+          "build-on-near/near-api/websocket-api/ping-pong",
+          "build-on-near/near-api/websocket-api/auth",
+          "build-on-near/near-api/websocket-api/error-response",
+          {
+            "group": "Public Market Data",
+            "pages": [
+              "build-on-near/near-api/websocket-api/public/request-orderbook",
+              "build-on-near/near-api/websocket-api/public/orderbook",
+              "build-on-near/near-api/websocket-api/public/order-book-update",
+              "build-on-near/near-api/websocket-api/public/trade",
+              "build-on-near/near-api/websocket-api/public/24-hour-ticker",
+              "build-on-near/near-api/websocket-api/public/24-hours-tickers",
+              "build-on-near/near-api/websocket-api/public/bbo",
+              "build-on-near/near-api/websocket-api/public/bbos",
+              "build-on-near/near-api/websocket-api/public/k-line",
+              "build-on-near/near-api/websocket-api/public/index-price",
+              "build-on-near/near-api/websocket-api/public/index-prices",
+              "build-on-near/near-api/websocket-api/public/mark-price",
+              "build-on-near/near-api/websocket-api/public/mark-prices",
+              "build-on-near/near-api/websocket-api/public/open-interest",
+              "build-on-near/near-api/websocket-api/public/estimated-funding-rate",
+              "build-on-near/near-api/websocket-api/public/liquidation-push"
+            ]
+          },
+          {
+            "group": "Private User Data",
+            "pages": [
+              "build-on-near/near-api/websocket-api/private/balance",
+              "build-on-near/near-api/websocket-api/private/execution-report",
+              "build-on-near/near-api/websocket-api/private/execution-report-single",
+              "build-on-near/near-api/websocket-api/private/notifications",
+              "build-on-near/near-api/websocket-api/private/position-push",
+              "build-on-near/near-api/websocket-api/private/liquidation-account-push",
+              "build-on-near/near-api/websocket-api/private/liquidator",
+              "build-on-near/near-api/websocket-api/private/pnl-settlement"
+            ]
+          }
+        ]
+      },
 
       {
         "group": "Getting Started",
