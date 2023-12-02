@@ -16,7 +16,7 @@ curl -X DELETE 'https://api-evm.orderly.org/v1/order?order_id=11&symbol=PERP_NEA
 
 **Limit: 10 requests per 1 second**
 
-`DELETE /v1/order?order_id=:oid&symbol=:symbol&signature=:signature`
+`DELETE /v1/order?order_id=:oid&symbol=:symbol`
 
 Cancels a single order by `order_id`.
 
@@ -39,11 +39,10 @@ Cancels a single order by `order_id`.
 | ---------------- | ------ | -------- | -------------------------------------------------------------------------------------- |
 | symbol           | string | Y        |                                                                                        |
 | order_id         | number | Y        | id of the order                                                                        |
-| signature        | string | Y        | trading signature                                                                      |
 
 **Limit: 10 requests per 1 second**
 
-`DELETE /v1/client/order?client_order_id=:coid&symbol=:symbol&signature=:signature`
+`DELETE /v1/client/order?client_order_id=:coid&symbol=:symbol`
 
 Cancel an order by `client_order_id`.
 
@@ -66,4 +65,3 @@ Cancel an order by `client_order_id`.
 | ---------------- | ------ | -------- | ------------------------------- |
 | symbol           | string | Y        |                                 |
 | client_order_id  | string | Y        | client_order_id of the order    |
-| signature        | string | Y        | trading signature               |
