@@ -12,7 +12,7 @@ curl -X PUT 'https://api.orderly.org/v1/order' \
     -H 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
     -H 'orderly-trading-key: 90b8d328cde365b3dd10b194048b677d575c2faf51790ecfa6c2fe8b0403324984b275e7bf4c486b4d713576cf20335e1230537c47aafdde0bd646af9b83a8d6' \
     -H 'orderly-signature: MjK3qraMWTNvzvQ9GZl3HhTSpOWYPkbvbUDqErJCmQUOY5zsr33X3c9G67HdOlR4B2fpdiUXjEABDVSQ97LMBg==' \
-    -d '{“order_id": 8442069, "order_price": 3.21, "order_quantity": 0.45, "order_type": "LIMIT", "side": "BUY", "symbol": "SPOT_NEAR_USDC.e", "signature": "4f400f3955fc5783348c0db04447be99283a78a3b1982603b9206953d456f39c7197214a146111ec586ab79171c4bf6255c320d5261a414a17cf78b42e04859900"}'
+    -d '{"order_id": 8442069, "order_price": 3.21, "order_quantity": 0.45, "order_type": "LIMIT", "side": "BUY", "symbol": "SPOT_NEAR_USDC.e", "signature": "4f400f3955fc5783348c0db04447be99283a78a3b1982603b9206953d456f39c7197214a146111ec586ab79171c4bf6255c320d5261a414a17cf78b42e04859900"}'
 ```
 </RequestExample>
 **Limit: 10 request per 1 second**
@@ -52,3 +52,4 @@ The value of `reduce_only` parameter is required if it was passed along when ord
 | broker_id        | string  | N        | for broker use, has to be the same as the broker_id of the original order              |
 | reduce_only      | boolean | N        | If this is a reduce-only order                                                         |
 | signature        | string  | Y        | trading signature                                                                      |
+| order_tag        | string  | N        | optional                                                                                |

@@ -29,7 +29,7 @@ curl -X POST 'https://api-evm.orderly.org/v1/claim_insurance_fund' \
     "timestamp": 1663313562090,
     "positions_by_perp": [
       {
-        "symbol": "PERP_BTC_USDT",
+        "symbol": "PERP_BTC_USDC",
         "position_qty": 1.23,
         "cost_position_transfer": 1350,
         "transfer_price": 18123.43,
@@ -37,7 +37,7 @@ curl -X POST 'https://api-evm.orderly.org/v1/claim_insurance_fund' \
         "abs_liquidator_fee": 3520
       },
       {
-        "symbol": "PERP_ETH_USDT",
+        "symbol": "PERP_ETH_USDC",
         "position_qty": 1.23,
         "cost_position_transfer": 1300,
         "transfer_price": 1400.43,
@@ -55,6 +55,7 @@ curl -X POST 'https://api-evm.orderly.org/v1/claim_insurance_fund' \
 | Name                    | Type   | Required | Description                                |
 |-------------------------|--------|----------|--------------------------------------------|
 | liquidation_id                | number | Y        |                                            |
+| symbol                | string | Y        |                                            |
 | qty_request             | number | Y        | Quantity to be claimed from insurance fund |
 | limit_price             | number | N        |                                            |
 
