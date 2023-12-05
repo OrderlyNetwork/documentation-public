@@ -74,6 +74,5 @@ For `reduce_only` parameter, it is only available when order type is `MARKET` or
 | order_amount     | number  | N        | For `MARKET`/`ASK`/`BID` order, the order size in terms of quote currency                          |
 | visible_quantity | number  | N        | The order quantity shown on orderbook. (default: equal to `order_quantity`)                        |
 | side             | enum    | Y        | `SELL`/`BUY`                                                                                       |
-| broker_id        | string  | N        | for broker use, the id corresponding to broker                                                     |
 | reduce_only      | boolean | N        | If this is a reduce-only order                                                                     |
-| signature        | string  | Y        | trading signature                                                                                  |
+| order_tag        | string  | N        | Optional order tag. This tag does not need to be signed. Restrictions apply: (1) Cannot be empty, (2) Length \<\= 36, (3) Can only contain letters,numbers and underscore, (4) Cannot start with underscore.  |
