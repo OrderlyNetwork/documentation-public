@@ -27,8 +27,8 @@ Orderly Network uses the [`ed25519` elliptic curve standard](https://ed25519.cr.
 
     The message that you need to sign with your Orderly private key needs to be normalized to a string via this method:
 
-    - Concatenate the timestamp with the request method and request path
-    - If the request body is not empty, concatenate the request body JSON by stringifying the JSON body
+    1. Concatenate the timestamp with the request method and request path
+    2. If the request body is not empty, concatenate the request body JSON by stringifying the JSON body
 
     The resulting string could look like following:
 
@@ -359,17 +359,34 @@ export async function signAndSendRequest(
 ```
     </CodeGroup>
   </Tab>
+  <Tab title="Shell">
+  ``` shell cURL
+  curl --request POST \
+  --url https://api-evm.orderly.org/v1/order \
+  --header 'Content-Type: application/json' \
+  --header 'orderly-account-id: <orderly-account-id>' \
+  --header 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
+  --header 'orderly-signature: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==' \
+  --header 'orderly-timestamp: 1649920583000' \
+  --data '{
+  "symbol": "<symbol>",
+  "order_type": "<order_type>",
+  "side": "<side>",
+  "reduce_only": false
+}'
+```
+  </Tab>
 </Tabs>
 
 ## Security
-There have three layer checker to check if a request is valid. Orderly server only accepts the request that passes all checkers. The checker contains the following:
+There is a three-layer checker to verify a request is valid. Orderly server only accepts the request that passes all checks. The checker contains the following:
 
-### Request Timestamp checker:
+### Request Timestamp
 The request would be considered expired and get rejected if the timestamp in `orderly-timestamp` header have 300+ seconds difference from the API server time.
 
-### HMAC Parameter Signature:
+### HMAC Parameter Signature
 The request must have a `orderly-signature` header that is generate from request parameters and signed with your Orderly secret key.
 
-### Orderly Key Validity Check: 
+### Orderly Key Validity Check
 The request must have an `orderly-key` header, and the `orderly-key` has to be added to the network via the Add Key functionality, matched with the account and is still valid (not expired yet).
 
