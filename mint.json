@@ -142,10 +142,10 @@
           {
             "group": "Key Management",
             "pages": [
-              "build-on-near/near-api/restful-api/private/get-trading-info",
-              "build-on-near/near-api/restful-api/private/get-trading-key",
-              "build-on-near/near-api/restful-api/private/add-ip-restriction",
-              "build-on-near/near-api/restful-api/private/remove-trading-key",
+              "build-on-near/near-api/restful-api/private/get-current-orderlytrading-key-info",
+              "build-on-near/near-api/restful-api/private/get-trading-key-ip-restriction",
+              "build-on-near/near-api/restful-api/private/add-trading-key-ip-restriction",
+              "build-on-near/near-api/restful-api/private/remove-trading-key-ip-restriction",
               "build-on-near/near-api/restful-api/private/set-trading-key",
               "build-on-near/near-api/restful-api/private/get-ip"
             ]
@@ -154,12 +154,12 @@
             "group": "Order Management",
             "pages": [
               "build-on-near/near-api/restful-api/private/create-order",
-              "build-on-near/near-api/restful-api/private/create-batch-order",
+              "build-on-near/near-api/restful-api/private/batch-create-order",
               "build-on-near/near-api/restful-api/private/edit-order",
               "build-on-near/near-api/restful-api/private/cancel-order",
-              "build-on-near/near-api/restful-api/private/cancel-order-by-order-id",
+              "build-on-near/near-api/restful-api/private/cancel-order-by-client_order_id",
               "build-on-near/near-api/restful-api/private/batch-cancel-orders",
-              "build-on-near/near-api/restful-api/private/cancel-orders-by-order-id"
+              "build-on-near/near-api/restful-api/private/batch-cancel-orders-by-client_order_id"
             ]
           },
           {
@@ -167,17 +167,17 @@
             "pages": [
               "build-on-near/near-api/restful-api/private/get-all-notifications",
               "build-on-near/near-api/restful-api/private/get-unread-notifications",
-              "build-on-near/near-api/restful-api/private/set-read",
-              "build-on-near/near-api/restful-api/private/set-all",
-              "build-on-near/near-api/restful-api/private/get-pnl",
+              "build-on-near/near-api/restful-api/private/set-read-status-of-notifications",
+              "build-on-near/near-api/restful-api/private/set-read-status-of-all-notifications",
+              "build-on-near/near-api/restful-api/private/get-pnl-settlement-history",
               "build-on-near/near-api/restful-api/private/get-asset-history",
-              "build-on-near/near-api/restful-api/private/get-daily-user-volume",
+              "build-on-near/near-api/restful-api/private/get-user-daily-volume",
               "build-on-near/near-api/restful-api/private/get-user-volume-statistics",
               "build-on-near/near-api/restful-api/private/get-account-information",
               "build-on-near/near-api/restful-api/private/get-user-statistics",
               "build-on-near/near-api/restful-api/private/get-current-holding",
               "build-on-near/near-api/restful-api/private/update-leverage-setting",
-              "build-on-near/near-api/restful-api/private/get-trades-order",
+              "build-on-near/near-api/restful-api/private/get-all-trades-of-specific-order",
               "build-on-near/near-api/restful-api/private/get-trades",
               "build-on-near/near-api/restful-api/private/get-trade",
               "build-on-near/near-api/restful-api/private/get-one-position-info"
@@ -186,28 +186,28 @@
           {
             "group": "Liquidations",
             "pages": [
-              "build-on-near/near-api/restful-api/private/get-liquidate-positions",
-              "build-on-near/near-api/restful-api/private/get-liquidated-positions-2",
+              "build-on-near/near-api/restful-api/private/get-liquidated-positions-by-liquidator",
+              "build-on-near/near-api/restful-api/private/get-liquidated-positions-of-account",
               "build-on-near/near-api/restful-api/private/claim-liquidated-positions",
-              "build-on-near/near-api/restful-api/private/claim-from-insurance-fund",
-              "build-on-near/near-api/restful-api/public/liquidation-1",
-              "build-on-near/near-api/restful-api/public/liquidation-2"
+              "build-on-near/near-api/restful-api/private/claim-insurance-fund",
+              "build-on-near/near-api/restful-api/public/get-positions-under-liquidation-for-all-markets",
+              "build-on-near/near-api/restful-api/public/get-liquidated-positions-info"
             ]
           },
           {
             "group": "Market Data",
             "pages": [
-              "build-on-near/near-api/restful-api/public/funding-rate-1",
-              "build-on-near/near-api/restful-api/public/funding-rate-2",
-              "build-on-near/near-api/restful-api/public/funding-rate-3",
-              "build-on-near/near-api/restful-api/public/futures-1",
-              "build-on-near/near-api/restful-api/public/futures-2",
-              "build-on-near/near-api/restful-api/public/market-trades",
+              "build-on-near/near-api/restful-api/public/get-predicted-funding-rate-for-one-market",
+              "build-on-near/near-api/restful-api/public/get-predicted-funding-rates-for-all-markets",
+              "build-on-near/near-api/restful-api/public/get-funding-rate-history-for-one-market",
+              "build-on-near/near-api/restful-api/public/get-futures-info-for-one-market",
+              "build-on-near/near-api/restful-api/public/get-futures-info-for-all-markets",
+              "build-on-near/near-api/restful-api/public/get-market-trades",
               "build-on-near/near-api/restful-api/private/get-funding-fee-history",
               "build-on-near/near-api/restful-api/private/orderbook-snapshot",
               "build-on-near/near-api/restful-api/private/get-kline",
               "build-on-near/near-api/restful-api/private/get-order",
-              "build-on-near/near-api/restful-api/private/get-order-by-client-id",
+              "build-on-near/near-api/restful-api/private/get-order-by-client_order_id",
               "build-on-near/near-api/restful-api/private/get-orders"
             ]
           },
@@ -215,24 +215,24 @@
             "group": "System Info",
             "pages": [
               "build-on-near/near-api/restful-api/public/get-leverage-configuration",
-              "build-on-near/near-api/restful-api/public/system",
-              "build-on-near/near-api/restful-api/public/exchange-information",
-              "build-on-near/near-api/restful-api/public/token-info",
-              "build-on-near/near-api/restful-api/public/available-symbols",
-              "build-on-near/near-api/restful-api/public/fee-information",
-              "build-on-near/near-api/restful-api/public/future-fee-information",
-              "build-on-near/near-api/restful-api/public/insurance",
-              "build-on-near/near-api/restful-api/public/volume-statistics",
-              "build-on-near/near-api/restful-api/public/get-list-of-brokers",
-              "build-on-near/near-api/restful-api/private/set-maintainance"
+              "build-on-near/near-api/restful-api/public/get-system-maintenance-status",
+              "build-on-near/near-api/restful-api/public/get-exchange-information",
+              "build-on-near/near-api/restful-api/public/get-token-info",
+              "build-on-near/near-api/restful-api/public/get-available-symbols",
+              "build-on-near/near-api/restful-api/public/get-fee-information",
+              "build-on-near/near-api/restful-api/public/get-futures-fee-information",
+              "build-on-near/near-api/restful-api/public/get-insurance-fund-info",
+              "build-on-near/near-api/restful-api/public/get-volume-statistics",
+              "build-on-near/near-api/restful-api/public/get-broker-list",
+              "build-on-near/near-api/restful-api/private/set-maintenance-config"
             ]
           },
           {
             "group": "TradingView",
             "pages": [
-              "build-on-near/near-api/restful-api/public/trading-view-1",
-              "build-on-near/near-api/restful-api/public/trading-view-2",
-              "build-on-near/near-api/restful-api/public/trading-view-3"
+              "build-on-near/near-api/restful-api/public/get-tradingview-localized-config-info",
+              "build-on-near/near-api/restful-api/public/get-tradingview-history-bars",
+              "build-on-near/near-api/restful-api/public/get-tradingview-symbol-info"
             ]
           }
         ]
@@ -328,9 +328,9 @@
               "build-on-evm/evm-api/restful-api/public/get-orderly-key",
               "build-on-evm/evm-api/restful-api/public/add-orderly-key",
 
-              "build-on-evm/evm-api/restful-api/private/get-orderly-key-info",
+              "build-on-evm/evm-api/restful-api/private/get-current-orderly-key-info",
               "build-on-evm/evm-api/restful-api/private/get-orderly-key-ip-restriction",
-              "build-on-evm/evm-api/restful-api/private/add-ip-restriction",
+              "build-on-evm/evm-api/restful-api/private/set-orderly-key-ip-restriction",
               "build-on-evm/evm-api/restful-api/private/reset-orderly-key-ip-restriction"
             ]
           },
@@ -340,24 +340,24 @@
             "pages": [
               "build-on-evm/evm-api/restful-api/public/get-faucet-usdcs",
               "build-on-evm/evm-api/restful-api/public/get-leverage-configuration",
-              "build-on-evm/evm-api/restful-api/public/futures-1",
-              "build-on-evm/evm-api/restful-api/public/futures-2",
+              "build-on-evm/evm-api/restful-api/public/get-futures-info-for-all-markets",
+              "build-on-evm/evm-api/restful-api/public/get-futures-info-for-one-market",
 
-              "build-on-evm/evm-api/restful-api/private/set-maintainance"
+              "build-on-evm/evm-api/restful-api/private/set-maintenance-config"
             ]
           },
 
           {
             "group": "Market Info",
             "pages": [
-              "build-on-evm/evm-api/restful-api/public/token-info",
-              "build-on-evm/evm-api/restful-api/public/available-symbols",
-              "build-on-evm/evm-api/restful-api/public/future-fees-information",
-              "build-on-evm/evm-api/restful-api/public/market-trades",
-              "build-on-evm/evm-api/restful-api/public/volume-statistics",
-              "build-on-evm/evm-api/restful-api/public/predicted-funding-rate",
-              "build-on-evm/evm-api/restful-api/public/predicted-funding-rate-2",
-              "build-on-evm/evm-api/restful-api/public/funding-rate-3",
+              "build-on-evm/evm-api/restful-api/public/get-token-info",
+              "build-on-evm/evm-api/restful-api/public/get-available-symbols",
+              "build-on-evm/evm-api/restful-api/public/get-futures-fee-information",
+              "build-on-evm/evm-api/restful-api/public/get-market-trades",
+              "build-on-evm/evm-api/restful-api/public/get-volume-statistics",
+              "build-on-evm/evm-api/restful-api/public/get-predicted-funding-rate-for-one-market",
+              "build-on-evm/evm-api/restful-api/public/get-predicted-funding-rates-for-all-markets",
+              "build-on-evm/evm-api/restful-api/public/get-funding-rate-history-for-one-market",
               "build-on-evm/evm-api/restful-api/private/get-funding-fee-history",
               "build-on-evm/evm-api/restful-api/private/orderbook-snapshot",
               "build-on-evm/evm-api/restful-api/private/get-kline"
@@ -368,15 +368,15 @@
             "group": "Order Management",
             "pages": [
               "build-on-evm/evm-api/restful-api/private/create-order",
-              "build-on-evm/evm-api/restful-api/private/create-batch-order",
+              "build-on-evm/evm-api/restful-api/private/batch-create-order",
               "build-on-evm/evm-api/restful-api/private/edit-order",
               "build-on-evm/evm-api/restful-api/private/cancel-order",
-              "build-on-evm/evm-api/restful-api/private/cancel-order-by-order-id",
+              "build-on-evm/evm-api/restful-api/private/cancel-order-by-client_order_id",
               "build-on-evm/evm-api/restful-api/private/cancel-orders-in-bulk",
               "build-on-evm/evm-api/restful-api/private/batch-cancel-orders",
-              "build-on-evm/evm-api/restful-api/private/batch-cancel-orders-by-order-id",
+              "build-on-evm/evm-api/restful-api/private/batch-cancel-orders-by-client_order_id",
               "build-on-evm/evm-api/restful-api/private/get-order",
-              "build-on-evm/evm-api/restful-api/private/get-order-by-client-id",
+              "build-on-evm/evm-api/restful-api/private/get-order-by-client_order_id",
               "build-on-evm/evm-api/restful-api/private/get-orders"
             ]
           },
@@ -384,12 +384,12 @@
           {
             "group": "Liquidations",
             "pages": [
-              "build-on-evm/evm-api/restful-api/public/liquidation-1",
-              "build-on-evm/evm-api/restful-api/public/liquidation-2",
-              "build-on-evm/evm-api/restful-api/private/get-liquidate-positions",
-              "build-on-evm/evm-api/restful-api/private/get-liquidated-positions-2",
+              "build-on-evm/evm-api/restful-api/public/get-positions-under-liquidation",
+              "build-on-evm/evm-api/restful-api/public/get-liquidated-positions-info",
+              "build-on-evm/evm-api/restful-api/private/get-liquidated-positions-by-liquidator",
+              "build-on-evm/evm-api/restful-api/private/get-liquidated-positions-of-account",
               "build-on-evm/evm-api/restful-api/private/claim-liquidated-positions",
-              "build-on-evm/evm-api/restful-api/private/claim-from-insurance-fund"
+              "build-on-evm/evm-api/restful-api/private/claim-insurance-fund"
             ]
           },
           
@@ -401,7 +401,7 @@
               "build-on-evm/evm-api/restful-api/private/create-withdraw-request",
               "build-on-evm/evm-api/restful-api/private/get-settle-pnl-nonce",
               "build-on-evm/evm-api/restful-api/private/request-pnl-settlement",
-              "build-on-evm/evm-api/restful-api/private/get-pnl"
+              "build-on-evm/evm-api/restful-api/private/get-pnl-settlement-history"
             ]
           },
           
@@ -409,31 +409,31 @@
             "group": "Account/User Info",
             "pages": [
               "build-on-evm/evm-api/restful-api/private/get-asset-history",
-              "build-on-evm/evm-api/restful-api/private/get-daily-user-volume",
+              "build-on-evm/evm-api/restful-api/private/get-user-daily-volume",
               "build-on-evm/evm-api/restful-api/private/get-user-volume-statistics",
               "build-on-evm/evm-api/restful-api/private/get-current-holding",
               "build-on-evm/evm-api/restful-api/private/get-account-information",
               "build-on-evm/evm-api/restful-api/private/get-user-statistics",
               "build-on-evm/evm-api/restful-api/private/update-leverage-setting",
-              "build-on-evm/evm-api/restful-api/private/get-trades-order",
+              "build-on-evm/evm-api/restful-api/private/get-all-trades-of-specific-order",
               "build-on-evm/evm-api/restful-api/private/get-trades",
               "build-on-evm/evm-api/restful-api/private/get-trade",
-              "build-on-evm/evm-api/restful-api/private/get-all-position-info",
+              "build-on-evm/evm-api/restful-api/private/get-all-positions-info",
               "build-on-evm/evm-api/restful-api/private/get-one-position-info",
               "build-on-evm/evm-api/restful-api/private/get-all-notifications",
               "build-on-evm/evm-api/restful-api/private/get-unread-notifications",
-              "build-on-evm/evm-api/restful-api/private/set-read",
-              "build-on-evm/evm-api/restful-api/private/set-all"
+              "build-on-evm/evm-api/restful-api/private/set-read-status-of-notifications",
+              "build-on-evm/evm-api/restful-api/private/set-read-status-of-all-notifications"
             ]
           },
           {
             "group": "System",
             "pages": [
-              "build-on-evm/evm-api/restful-api/public/system-maintenance-status",
-              "build-on-evm/evm-api/restful-api/public/exchange-information",
-              "build-on-evm/evm-api/restful-api/public/get-vault-balances",
-              "build-on-evm/evm-api/restful-api/public/get-list-of-brokers",
-              "build-on-evm/evm-api/restful-api/public/insurance",
+              "build-on-evm/evm-api/restful-api/public/get-system-maintenance-status",
+              "build-on-evm/evm-api/restful-api/public/get-exchange-information",
+              "build-on-evm/evm-api/restful-api/public/get-vault-balance",
+              "build-on-evm/evm-api/restful-api/public/get-broker-list",
+              "build-on-evm/evm-api/restful-api/public/get-insurance-fund-info",
               "build-on-evm/evm-api/restful-api/public/get-vault-chain-config"
             ]
           },
@@ -441,8 +441,8 @@
           {
             "group": "TradingView",
             "pages": [
-              "build-on-evm/evm-api/restful-api/public/tradingview-localized",
-              "build-on-evm/evm-api/restful-api/public/trading-view-history",
+              "build-on-evm/evm-api/restful-api/public/get-tradingview-localized-config-info",
+              "build-on-evm/evm-api/restful-api/public/get-tradingview-history-bars",
               "build-on-evm/evm-api/restful-api/public/get-tradingview-symbol-info"
             ]
           }
