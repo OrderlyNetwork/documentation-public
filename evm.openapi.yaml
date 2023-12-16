@@ -71,7 +71,7 @@ paths:
                     timestamp: 1683270033049
       deprecated: false
       x-apifox-folder: restful_public
-      x-apifox-status: testing
+      x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251463-run
   /v1/public/fee/program:
     get:
@@ -423,7 +423,7 @@ paths:
                     timestamp: 1683879989454
       deprecated: false
       x-apifox-folder: restful_public
-      x-apifox-status: testing
+      x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251469-run
   /v1/public/funding_rate/{symbol}:
     get:
@@ -561,7 +561,7 @@ paths:
                     timestamp: 1684232331309
       deprecated: false
       x-apifox-folder: restful_public
-      x-apifox-status: testing
+      x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251471-run
   /v1/public/futures/{symbol}:
     get:
@@ -615,7 +615,7 @@ paths:
                     timestamp: 1683270228845
       deprecated: false
       x-apifox-folder: restful_public
-      x-apifox-status: testing
+      x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251472-run
   /v1/public/liquidation:
     get:
@@ -1006,7 +1006,7 @@ paths:
                     timestamp: 1685439471395
       deprecated: false
       x-apifox-folder: restful_public
-      x-apifox-status: testing
+      x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251480-run
   /v1/tv/config:
     get:
@@ -1036,7 +1036,7 @@ paths:
                 $ref: '#/components/schemas/inline_response_200_16'
       deprecated: false
       x-apifox-folder: restful_public
-      x-apifox-status: testing
+      x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251481-run
   /v1/tv/history:
     get:
@@ -1093,7 +1093,7 @@ paths:
                 $ref: '#/components/schemas/inline_response_200_17'
       deprecated: false
       x-apifox-folder: restful_public
-      x-apifox-status: testing
+      x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251482-run
   /v1/tv/symbol_info:
     get:
@@ -1123,7 +1123,7 @@ paths:
                 $ref: '#/components/schemas/inline_response_200_18'
       deprecated: false
       x-apifox-folder: restful_public
-      x-apifox-status: testing
+      x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251483-run
   /v1/positions:
     get:
@@ -3172,15 +3172,15 @@ paths:
                         public_rpc_url: https://arb1.arbitrum.io/rpc
                         chain_id: "42161"
                         currency_symbol: ETH
-                        explorer_base_url: https://arbiscan.io/
+                        explorer_base_url: https://arbiscan.io
                         vault_address: 0x816f722424B49Cf1275cc86DA9840Fbd5a6167e9
-                      - name: Arbitrum Goerli
-                        public_rpc_url: https://goerli-rollup.arbitrum.io/rpc
-                        chain_id: "421613"
+                      - name: Optimism
+                        public_rpc_url: https://optimism.publicnode.com
+                        chain_id: "10"
                         currency_symbol: ETH
-                        explorer_base_url: https://goerli.arbiscan.io/
-                        vault_address: 0xd64AeB281f3E8cd70e668b6cb24De7e532dC214D
-                    timestamp: 1698749944292
+                        explorer_base_url: https://optimistic.etherscan.io/
+                        vault_address: 0x816f722424b49cf1275cc86da9840fbd5a6167e9
+                    timestamp: 1702688517044
       deprecated: false
       x-apifox-folder: restful_public
       x-apifox-status: released
@@ -4441,6 +4441,8 @@ paths:
         **Limit: 10 requests per 1 second per IP address**
 
         `POST /v1/withdraw_request`
+
+        `verifyingContract` should use: `0x6F7a338F2aA472838dEFD3283eB360d4Dff5D203`.
       parameters:
       - name: orderly-timestamp
         in: header
@@ -4509,6 +4511,8 @@ paths:
         **Limit: 1 requests per 1 second**
 
         `POST /v1/settle_pnl`
+
+        `verifyingContract` should use: `0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC`.
       parameters:
       - name: orderly-timestamp
         in: header
@@ -6984,7 +6988,6 @@ components:
       x-apifox-ignore-properties: []
     v1withdraw_request_message:
       required:
-      - 01HGEJWHNA97DN60GEW66H4CWQ
       - amount
       - brokerId
       - chainId
@@ -7034,7 +7037,7 @@ components:
           description: The address of the wallet signing the message object via EIP-712
         verifyingContract:
           type: string
-          description: "\tAddress of the Orderly Network ledger contract"
+          description: Address of the Orderly Network ledger contract
       x-apifox-orders:
       - message
       - signature
@@ -7081,6 +7084,7 @@ components:
       - message
       - signature
       - userAddress
+      - verifyingContract
       type: object
       properties:
         message:
@@ -7091,10 +7095,14 @@ components:
         userAddress:
           type: string
           description: The address of the wallet signing the message object via EIP-712
+        verifyingContract:
+          type: string
+          description: Address of the Orderly Network ledger contract
       x-apifox-orders:
       - message
       - signature
       - userAddress
+      - verifyingContract
       x-apifox-ignore-properties: []
     inline_response_200_57:
       required:
