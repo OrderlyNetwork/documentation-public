@@ -6,9 +6,9 @@ info:
   version: 1.0.0
 servers:
 - url: https://api-evm.orderly.org
-  description: Prod Env
+  description: Mainnet
 - url: https://testnet-api-evm.orderly.network
-  description: Testing Env
+  description: Testnet
 tags:
 - name: restful_public
 - name: restful_private
@@ -33,9 +33,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_200'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      rows:
+                      - symbol: PERP_ETH_USDC
+                        index_price: 1901.6
+                        mark_price: 1950
+                        sum_unitary_funding: 387.891
+                        est_funding_rate: 4.6875E-4
+                        last_funding_rate: 4.6875E-4
+                        next_funding_time: 1683270060000
+                        open_interest: None
+                        "24h_open": 2115
+                        "24h_close": 2115
+                        "24h_high": 2115
+                        "24h_low": 2115
+                        "24h_volume": 0
+                        "24h_amount": 0
+                      - symbol: PERP_NEAR_USDC
+                        index_price: 1.8504
+                        mark_price: 2.05
+                        sum_unitary_funding: -6.373816
+                        est_funding_rate: 9.375E-4
+                        last_funding_rate: 9.375E-4
+                        next_funding_time: 1683270060000
+                        open_interest: None
+                        "24h_open": 1.9
+                        "24h_close": 1.9
+                        "24h_high": 1.9
+                        "24h_low": 1.895
+                        "24h_volume": 3668.3
+                        "24h_amount": 6967.76
+                    timestamp: 1683270033049
       deprecated: false
       x-apifox-folder: restful_public
-      x-apifox-status: testing
+      x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251463-run
   /v1/public/fee/program:
     get:
@@ -150,7 +186,7 @@ paths:
                     timestamp: 1683879531985
       deprecated: false
       x-apifox-folder: restful_public
-      x-apifox-status: testing
+      x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251465-run
   /v1/public/market_trades:
     get:
@@ -281,6 +317,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_200_4'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                    - perp_volume_ytd: 274148.0364
+                      perp_volume_ltd: 274148.0364
+                      perp_volume_last_7_days: 120272.7674
+                      perp_volume_last_30_days: 300730.5454
+                    timestamp: 1580794149000
       deprecated: false
       x-apifox-folder: restful_public
       x-apifox-status: released
@@ -352,9 +399,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_200_6'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      rows:
+                      - symbol: PERP_ETH_USDC
+                        est_funding_rate: 0
+                        est_funding_rate_timestamp: 1683879975000
+                        last_funding_rate: 1.0E-4
+                        last_funding_rate_timestamp: 1683878400000
+                        next_funding_time: 1683907200000
+                        sum_unitary_funding: 521.367
+                      - symbol: PERP_NEAR_USDC
+                        est_funding_rate: 0.02651942
+                        est_funding_rate_timestamp: 1683879975000
+                        last_funding_rate: 0.0075
+                        last_funding_rate_timestamp: 1683878400000
+                        next_funding_time: 1683907200000
+                        sum_unitary_funding: -6.167009
+                    timestamp: 1683879989454
       deprecated: false
       x-apifox-folder: restful_public
-      x-apifox-status: testing
+      x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251469-run
   /v1/public/funding_rate/{symbol}:
     get:
@@ -365,7 +434,7 @@ paths:
 
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET /v1/public/funding_rate/:symbol`
+        `GET /v1/public/funding_rate/{symbol}`
 
         Get latest funding rate for one market.
       parameters:
@@ -385,6 +454,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_200_7'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      symbol: PERP_ETH_USDC
+                      est_funding_rate: 0
+                      est_funding_rate_timestamp: 1683880020000
+                      last_funding_rate: 1.0E-4
+                      last_funding_rate_timestamp: 1683878400000
+                      next_funding_time: 1683907200000
+                      sum_unitary_funding: 521.367
+                    timestamp: 1683880025278
       deprecated: false
       x-apifox-folder: restful_public
       x-apifox-status: released
@@ -456,9 +539,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_200_8'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    data:
+                      meta:
+                        current_page: 1
+                        records_per_page: 5
+                        total: 13
+                      rows:
+                      - funding_rate: 1.0E-4
+                        funding_rate_timestamp: 1684224000000
+                        next_funding_time: 1684252800000
+                        symbol: PERP_ETH_USDC
+                      - funding_rate: 1.0E-4
+                        funding_rate_timestamp: 1684195200000
+                        next_funding_time: 1684224000000
+                        symbol: PERP_ETH_USDC
+                    success: true
+                    timestamp: 1684232331309
       deprecated: false
       x-apifox-folder: restful_public
-      x-apifox-status: testing
+      x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251471-run
   /v1/public/futures/{symbol}:
     get:
@@ -469,7 +572,7 @@ paths:
 
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET /v1/public/futures/:symbol`
+        `GET /v1/public/futures/{symbol}`
 
         Get basic futures information for one market.
       parameters:
@@ -489,15 +592,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_200_9'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      symbol: PERP_ETH_USDC
+                      index_price: 1903.8
+                      mark_price: 1950
+                      sum_unitary_funding: 387.936
+                      est_funding_rate: 4.6875E-4
+                      last_funding_rate: 4.6875E-4
+                      next_funding_time: 1683270240000
+                      open_interest: None
+                      "24h_open": 2115
+                      "24h_close": 2115
+                      "24h_high": 2115
+                      "24h_low": 2115
+                      "24h_volumn": 0
+                      "24h_amount": 0
+                    timestamp: 1683270228845
       deprecated: false
       x-apifox-folder: restful_public
-      x-apifox-status: testing
+      x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251472-run
   /v1/public/liquidation:
     get:
       tags:
       - restful_public
-      summary: Get Positions Under Liquidation for All Markets
+      summary: Get Positions Under Liquidation
       description: |
         **Limit: 10 requests per 1 second per IP address**
 
@@ -505,7 +629,7 @@ paths:
       parameters:
       - name: start_t
         in: query
-        description: ""
+        description: "start time range that you wish to query, noted that the time stamp is a 13-digits timestamp."
         required: false
         style: form
         explode: true
@@ -514,7 +638,7 @@ paths:
         example: ""
       - name: end_t
         in: query
-        description: ""
+        description: "end time range that you wish to query, noted that the time stamp is a 13-digits timestamp."
         required: false
         style: form
         explode: true
@@ -523,7 +647,7 @@ paths:
         example: ""
       - name: page
         in: query
-        description: ""
+        description: the page you wish to query.
         required: false
         style: form
         explode: true
@@ -532,7 +656,7 @@ paths:
         example: ""
       - name: size
         in: query
-        description: ""
+        description: "Default: 60"
         required: false
         style: form
         explode: true
@@ -546,9 +670,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_200_10'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      rows:
+                      - timestamp: 1685298157704
+                        type: liquidated
+                        liquidation_id: 1730
+                        positions_by_perp:
+                        - symbol: PERP_BTC_USDC
+                          position_qty: -0.22457
+                          liquidator_fee: 0.015
+                      meta:
+                        total: 20
+                        records_per_page: 25
+                        current_page: 1
+                    timestamp: 1685453109700
       deprecated: false
       x-apifox-folder: restful_public
-      x-apifox-status: testing
+      x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251473-run
   /v1/public/liquidated_positions:
     get:
@@ -613,50 +756,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_200_11'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      rows:
+                      - timestamp: 1683802462092
+                        liquidation_id: 29
+                        transfer_amount_to_insurance_fund: 0
+                        type: liquidated
+                        positions_by_perp:
+                        - symbol: PERP_ETH_USDC
+                          position_qty: 0
+                          liquidator_fee: 0.015
+                          cost_position_transfer: 0
+                          transfer_price: 1860
+                          insurance_fund_fee: 0.011999
+                          abs_liquidator_fee: 0
+                          abs_insurance_fund_fee: 0
+                      meta:
+                        total: 9
+                        records_per_page: 25
+                        current_page: 1
+                    timestamp: 1683881314470
       deprecated: false
       x-apifox-folder: restful_public
-      x-apifox-status: testing
+      x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251474-run
-  /v1/public/system_info:
-    get:
-      tags:
-      - restful_public
-      summary: Get System Maintenance Status
-      description: Retreive the current system maintenance status of Orderly Network. A return value of status = 0 means the system is functioning properly and a return value of status = 2 means the system is under maintenance.
-      parameters: []
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200_12'
-      deprecated: false
-      x-apifox-folder: restful_public
-      x-apifox-status: released
-      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251834-run
-  /v1/public/config:
-    get:
-      tags:
-      - restful_public
-      summary: Get Leverage Configuration
-      description: |2
-
-        **Limit: 10 requests per 1 second per IP address**
-
-        `GET v1/public/config`
-      parameters: []
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200_13'
-      deprecated: false
-      x-apifox-folder: restful_public
-      x-apifox-status: released
-      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251851-run
   /v1/public/info/{symbol}:
     get:
       tags:
@@ -665,7 +793,7 @@ paths:
       description: |
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET /v1/public/info/:symbol`
+        `GET /v1/public/info/{symbol}`
 
         This endpoint provides all the values for the rules that an order need to fulfil in order for it to be placed successfully. The rules are defined as follows:
 
@@ -704,7 +832,37 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_14'
+                $ref: '#/components/schemas/inline_response_200_12'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      symbol: PERP_BTC_USDC
+                      liquidation_tier: "1"
+                      quote_min: 0
+                      quote_max: 100000
+                      quote_tick: 0.1
+                      base_min: 1.0E-5
+                      base_max: 20
+                      base_tick: 1.0E-5
+                      min_notional: 1
+                      price_range: 0.02
+                      price_scope: 0.4
+                      std_liquidation_fee: 0.03
+                      liquidator_fee: 0.015
+                      claim_insurance_fund_discount: 0.0075
+                      funding_period: 8
+                      cap_funding: 3.75E-4
+                      floor_funding: -3.75E-4
+                      interest_rate: 1.0E-4
+                      created_time: 1684140107326
+                      updated_time: 1685345968053
+                      imr_factor: 2.512E-7
+                      base_mmr: 0.05
+                      base_imr: 0.1
+                    timestamp: 1685598448497
       deprecated: false
       x-apifox-folder: restful_public
       x-apifox-status: released
@@ -727,7 +885,24 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_15'
+                $ref: '#/components/schemas/inline_response_200_13'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      rows:
+                      - token: USDC
+                        token_hash: 0xd6aca1be9729c13d677335161321649cccae6a591554772516700f986f942eaa
+                        decimals: 6
+                        minimum_withdraw_amount: 1.0E-6
+                        chain_details:
+                        - chain_id: "986532"
+                          contract_address: 0xbdb2d676b35ee4ed0862614572e9f375b06c4a9a
+                          decimals: 6
+                          withdrawal_fee: 0.1
+                    timestamp: 1692161015612
       deprecated: false
       x-apifox-folder: restful_public
       x-apifox-status: released
@@ -738,6 +913,8 @@ paths:
       - restful_public
       summary: Get Available Symbols
       description: |
+        **Limit: 10 requests per 1 second per IP address**
+
         `GET /v1/public/info`
 
         Get available symbols that Orderly Network supports, and also send order rules for each symbol. The definition of rules can be found at [Exchange Infomation](#exchange-information)
@@ -748,7 +925,37 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_16'
+                $ref: '#/components/schemas/inline_response_200_14'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      rows:
+                      - symbol: PERP_BTC_USDC
+                        quote_min: 0
+                        quote_max: 100000
+                        quote_tick: 0.1
+                        base_min: 1.0E-5
+                        base_max: 20
+                        base_tick: 1.0E-5
+                        min_notional: 1
+                        price_range: 0.02
+                        price_scope: 0.4
+                        std_liquidation_fee: 0.03
+                        liquidator_fee: 0.015
+                        claim_insurance_fund_discount: 0.0075
+                        funding_period: 8
+                        cap_funding: 3.75E-4
+                        floor_funding: -3.75E-4
+                        interest_rate: 1.0E-4
+                        created_time: 1684140107326
+                        updated_time: 1685345968053
+                        imr_factor: 2.512E-7
+                        base_mmr: 0.05
+                        base_imr: 0.1
+                    timestamp: 1685590894341
       deprecated: false
       x-apifox-folder: restful_public
       x-apifox-status: released
@@ -770,10 +977,36 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_17'
+                $ref: '#/components/schemas/inline_response_200_15'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      rows:
+                      - symbol: PERP_BTC_USDC
+                        timestamp: 1685262631606
+                        position_qty: 0
+                        cost_position: -617.672835
+                        last_sum_unitary_funding: 100.56
+                        settle_price: 0
+                        average_open_price: 0
+                        pnl_24_h: 0
+                        fee_24_h: 0
+                        mark_price: 27821.8
+                      min_insurance_fund_initial_margin_ratio: 0.3
+                      min_insurance_fund_margin_ratio: 0.25
+                      margin_ratio: 10
+                      total_collateral_value: 1.0008662996861E7
+                      balance: 1.0001908678983E7
+                      free_collateral: 1.0008662996861E7
+                      total_account_value: 1.0008662996861E7
+                      total_pnl_24_h: 0
+                    timestamp: 1685439471395
       deprecated: false
       x-apifox-folder: restful_public
-      x-apifox-status: testing
+      x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251480-run
   /v1/tv/config:
     get:
@@ -800,10 +1033,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_18'
+                $ref: '#/components/schemas/inline_response_200_16'
       deprecated: false
       x-apifox-folder: restful_public
-      x-apifox-status: testing
+      x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251481-run
   /v1/tv/history:
     get:
@@ -857,10 +1090,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_19'
+                $ref: '#/components/schemas/inline_response_200_17'
       deprecated: false
       x-apifox-folder: restful_public
-      x-apifox-status: testing
+      x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251482-run
   /v1/tv/symbol_info:
     get:
@@ -887,10 +1120,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_20'
+                $ref: '#/components/schemas/inline_response_200_18'
       deprecated: false
       x-apifox-folder: restful_public
-      x-apifox-status: testing
+      x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251483-run
   /v1/positions:
     get:
@@ -944,7 +1177,43 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_21'
+                $ref: '#/components/schemas/inline_response_200_19'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    data:
+                      current_margin_ratio_with_orders: 1.2385
+                      free_collateral: 450315.09115
+                      initial_margin_ratio: 0.1
+                      initial_margin_ratio_with_orders: 0.1
+                      maintenance_margin_ratio: 0.05
+                      maintenance_margin_ratio_with_orders: 0.05
+                      margin_ratio: 1.2385
+                      open_margin_ratio: 1.2102
+                      rows:
+                      - IMR_withdraw_orders: 0.1
+                        MMR_with_orders: 0.05
+                        average_open_price: 27908.14386047
+                        cost_position: -139329.358492
+                        est_liq_price: 117335.92899428
+                        fee_24_h: 0
+                        imr: 0.1
+                        last_sum_unitary_funding: 70.38
+                        mark_price: 27794.9
+                        mmr: 0.05
+                        pending_long_qty: 0
+                        pending_short_qty: 0
+                        pnl_24_h: 0
+                        position_qty: -5
+                        settle_price: 27865.8716984
+                        symbol: PERP_BTC_USDC
+                        timestamp: 1685429350571
+                        unsettled_pnl: 354.858492
+                      total_collateral_value: 489865.71329
+                      total_pnl_24_h: 0
+                    success: true
+                    timestamp: 1685431773253
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -957,7 +1226,7 @@ paths:
       description: |
         **Limit: 30 requests per 10 second per user**
 
-        `GET /v1/position/:symbol`
+        `GET /v1/position/{symbol}`
       parameters:
       - name: symbol
         in: path
@@ -1009,7 +1278,32 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_22'
+                $ref: '#/components/schemas/inline_response_200_20'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    data:
+                      IMR_withdraw_orders: 0.1
+                      MMR_with_orders: 0.05
+                      average_open_price: 1899.8
+                      cost_position: 73999.154647
+                      est_liq_price: 0
+                      fee_24_h: 0
+                      imr: 0.1
+                      last_sum_unitary_funding: 2.901
+                      mark_price: 1901.7
+                      mmr: 0.05
+                      pending_long_qty: 0
+                      pending_short_qty: 0
+                      pnl_24_h: 0
+                      position_qty: 42
+                      settle_price: 1761.88463445
+                      symbol: PERP_ETH_USDC
+                      timestamp: 1685429350571
+                      unsettled_pnl: 5872.245353
+                    success: true
+                    timestamp: 1685431978956
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -1037,7 +1331,7 @@ paths:
         example: ""
       - name: start_t
         in: query
-        description: ""
+        description: "start time range that you wish to query, noted that the time stamp is a 13-digits timestamp."
         required: false
         style: form
         explode: true
@@ -1046,7 +1340,7 @@ paths:
         example: ""
       - name: end_t
         in: query
-        description: ""
+        description: "end time range that you wish to query, noted that the time stamp is a 13-digits timestamp."
         required: false
         style: form
         explode: true
@@ -1055,7 +1349,7 @@ paths:
         example: ""
       - name: page
         in: query
-        description: ""
+        description: the page you wish to query.
         required: false
         style: form
         explode: true
@@ -1064,7 +1358,7 @@ paths:
         example: ""
       - name: size
         in: query
-        description: ""
+        description: "Default: 60"
         required: false
         style: form
         explode: true
@@ -1113,7 +1407,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_23'
+                $ref: '#/components/schemas/inline_response_200_21'
               examples:
                 "1":
                   summary: Success
@@ -1243,7 +1537,29 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_24'
+                $ref: '#/components/schemas/inline_response_200_22'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    data:
+                      meta:
+                        current_page: 1
+                        records_per_page: 25
+                        total: 20
+                      rows:
+                      - liquidation_id: 1728
+                        positions_by_perp:
+                        - abs_liquidator_fee: 1.152279
+                          cost_position_transfer: 65.84448
+                          liquidator_fee: 0.0175
+                          position_qty: 41.6
+                          symbol: PERP_NEAR_USDC
+                          transfer_price: 1.5828
+                        timestamp: 1685154032762
+                        type: liquidated
+                    success: true
+                    timestamp: 1685433339866
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -1307,7 +1623,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_25'
+                $ref: '#/components/schemas/inline_response_200_23'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    data: {}
+                    success: true
+                    timestamp: 1685434629597
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -1409,7 +1732,30 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_26'
+                $ref: '#/components/schemas/inline_response_200_24'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      meta:
+                        total: 670
+                        records_per_page: 25
+                        current_page: 1
+                      rows:
+                      - liquidation_id: 101
+                        timestamp: 1663313562090
+                        transfer_amount_to_insurance_fund: 0
+                        positions_by_perp:
+                        - symbol: PERP_BTC_USDC
+                          position_qty: 1.23
+                          cost_position_transfer: 1350
+                          transfer_price: 18123.43
+                          liquidator_fee: 0.015
+                          insurance_fund_fee: 0.015
+                          abs_liquidation_fee: 3520
+                    timestamp: 1639980423855
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -1471,7 +1817,24 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_27'
+                $ref: '#/components/schemas/inline_response_200_25'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      liquidation_id: 101
+                      timestamp: 1663313562090
+                      type: liquidate
+                      positions_by_perp:
+                      - symbol: PERP_BTC_USDC
+                        position_qty: 1.23
+                        cost_position_transfer: 1350
+                        transfer_price: 18123.43
+                        liquidator_fee: 0.015
+                        abs_liquidator_fee: 3520
+                    timestamp: 1639980423855
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -1481,12 +1844,14 @@ paths:
       tags:
       - restful_private
       summary: Edit Order
-      description: |
+      description: |-
         **Limit: 10 request per 1 second**
 
         `PUT /v1/order`
 
         Edit a pending order by `order_id`. Only the `order_price` or `order_quantity` can be amended.
+
+        Note: This endpoint requires `trading` scope in Orderly Key.
       parameters:
       - name: orderly-timestamp
         in: header
@@ -1535,7 +1900,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_28'
+                $ref: '#/components/schemas/inline_response_200_26'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      status: EDIT_SENT
+                    timestamp: 1639980423855
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -1544,7 +1917,7 @@ paths:
       tags:
       - restful_private
       summary: Create Order
-      description: |
+      description: |-
         **Limit: 10 requests per 1 second**
 
         `POST /v1/order`
@@ -1571,6 +1944,8 @@ paths:
         `client_order_id` behavior: customized order_id, a unique id among open orders. Orders with the same `client_order_id` can be accepted only when the previous one if completed, otherwise the order will be rejected.
 
         For `MARKET`/`BID`/`ASK` order, `order_amount` is not supported when placing SELL order while `order_quantity` is not supported when placing BUY order.
+
+        Note: This endpoint requires `trading` scope in Orderly Key.
       parameters:
       - name: orderly-timestamp
         in: header
@@ -1619,7 +1994,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_29'
+                $ref: '#/components/schemas/inline_response_200_27'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      order_id: 13
+                      client_order_id: testclientid
+                      order_type: LIMIT
+                      order_price: 100.12
+                      order_quantity: 0.987654
+                      reduce_only: false
+                    timestamp: 1639980423855
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -1631,9 +2019,187 @@ paths:
       description: |
         **Limit: 10 requests per 1 second**
 
-        `DELETE /v1/order?order_id=:oid&symbol=:symbol`
+        `DELETE /v1/order?order_id={oid}&symbol={symbol}`
 
         Cancels a single order by `order_id`.
+
+        Note: This endpoint requires `trading` scope in Orderly Key.
+      parameters:
+      - name: symbol
+        in: query
+        description: ""
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: ""
+      - name: order_id
+        in: query
+        description: ""
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+        example: ""
+      - name: orderly-timestamp
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: "1649920583000"
+      - name: orderly-account-id
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546
+      - name: orderly-key
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
+      - name: orderly-signature
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_28'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      status: CANCEL_SENT
+                    timestamp: 1639980423855
+      deprecated: false
+      x-apifox-folder: restful_private
+      x-apifox-status: released
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251492-run
+  /v1/order/{order_id}:
+    get:
+      tags:
+      - restful_private
+      summary: Get Order
+      description: |
+        **Limit: 10 requests per 1 second**
+
+        `GET /v1/order/{order_id}`
+
+        Get details of a single order by `order_id`.
+      parameters:
+      - name: order_id
+        in: path
+        description: id of the order
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: orderly-timestamp
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: "1649920583000"
+      - name: orderly-account-id
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546
+      - name: orderly-key
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
+      - name: orderly-signature
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_29'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      order_id: 78151
+                      user_id: 12345
+                      price: 0.67772
+                      type: LIMIT
+                      quantity: 20
+                      executed: 20
+                      visible: 1
+                      reduce_only: false
+                      symbol: PERP_WOO_USDC
+                      side: BUY
+                      status: FILLED
+                      total_fee: 0
+                      fee_asset: WOO
+                      average_executed_price: 0.67772
+                      created_time: 1653563963000
+                      updated_time: 1653564213000
+                      order_tag: sometags
+                    timestamp: 1639980423855
+      deprecated: false
+      x-apifox-folder: restful_private
+      x-apifox-status: released
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251493-run
+  /v1/trades:
+    get:
+      tags:
+      - restful_private
+      summary: Get Trades
+      description: |
+        **Limit: 10 requests per 1 second**
+
+        `GET /v1/trades`
+
+        Return client’s trades history within a time range.
       parameters:
       - name: symbol
         in: query
@@ -1644,16 +2210,7 @@ paths:
         schema:
           type: string
         example: ""
-      - name: order_id
-        in: query
-        description: ""
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: number
-        example: ""
-      - name: signature
+      - name: broker_id
         in: query
         description: ""
         required: false
@@ -1661,6 +2218,42 @@ paths:
         explode: true
         schema:
           type: string
+        example: ""
+      - name: start_t
+        in: query
+        description: "start time range that wish to query, noted the time stamp is 13-digits timestamp."
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+        example: ""
+      - name: end_t
+        in: query
+        description: "end time range that wish to query, noted the time stamp is 13-digits timestamp."
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+        example: ""
+      - name: page
+        in: query
+        description: the page you wish to query.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+        example: ""
+      - name: size
+        in: query
+        description: "the page size you wish to query. (max: 500)"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
         example: ""
       - name: orderly-timestamp
         in: header
@@ -1705,186 +2298,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_200_30'
-      deprecated: false
-      x-apifox-folder: restful_private
-      x-apifox-status: released
-      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251492-run
-  /v1/order/{order_id}:
-    get:
-      tags:
-      - restful_private
-      summary: Get Order
-      description: |
-        **Limit: 10 requests per 1 second**
-
-        `GET /v1/order/:order_id`
-
-        Get details of a single order by `order_id`.
-      parameters:
-      - name: order_id
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: orderly-timestamp
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: "1649920583000"
-      - name: orderly-account-id
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546
-      - name: orderly-key
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
-      - name: orderly-signature
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200_31'
-      deprecated: false
-      x-apifox-folder: restful_private
-      x-apifox-status: released
-      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251493-run
-  /v1/trades:
-    get:
-      tags:
-      - restful_private
-      summary: Get Trades
-      description: |
-        **Limit: 10 requests per 1 second**
-
-        `GET /v1/trades`
-
-        Return client’s trades history within a time range.
-      parameters:
-      - name: symbol
-        in: query
-        description: ""
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-        example: ""
-      - name: broker_id
-        in: query
-        description: ""
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-        example: ""
-      - name: start_t
-        in: query
-        description: ""
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: number
-        example: ""
-      - name: end_t
-        in: query
-        description: ""
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: number
-        example: ""
-      - name: page
-        in: query
-        description: ""
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: number
-        example: ""
-      - name: size
-        in: query
-        description: ""
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: number
-        example: ""
-      - name: orderly-timestamp
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: "1649920583000"
-      - name: orderly-account-id
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546
-      - name: orderly-key
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
-      - name: orderly-signature
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200_32'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      meta:
+                        records_per_page: 25
+                        current_page: 1
+                        total: 50
+                      rows:
+                      - id: 2
+                        symbol: PERP_BTC_USDC
+                        fee: 1.0E-4
+                        fee_asset: USDC
+                        side: BUY
+                        order_id: 1
+                        executed_price: 123
+                        executed_quantity: 0.05
+                        executed_timestamp: 1567382401000
+                        is_maker: 1
+                    timestamp: 1639980423855
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -1952,7 +2387,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_33'
+                $ref: '#/components/schemas/inline_response_200_31'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      holding:
+                      - updated_time: 1580794149000
+                        token: BTC
+                        holding: -28.000752
+                        frozen: 0
+                        pending_short: -1
+                      - updated_time: 1580794149000
+                        token: USDC
+                        holding: 282485.071904
+                        frozen: 0
+                        pending_short: -2000
+                    timestamp: 1580794149000
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -2011,7 +2464,37 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_34'
+                $ref: '#/components/schemas/inline_response_200_32'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value: |-
+                    {
+                        "success": true,
+                        "data": {
+                            "account_id": "test.near",
+                            "email": "test@test.com",
+                            "account_mode":"FUTURES", //account mode
+                            "max_leverage": 5,
+                            "tier": "1",
+                            "taker_fee_rate": 0,
+                            "maker_fee_rate": 0,
+                            "futures_taker_fee_rate": 0,
+                            "futures_maker_fee_rate": 0,
+                            "imr_factor": {
+                              "PERP_BTC_USDC" : 0.0000002512,
+                              "PERP_ETH_USDC" : 0.0000003003,
+                              "PERP_NEAR_USDC": 0.0000048045
+                            },
+                            "max_notional": {
+                              "PERP_BTC_USDC" : 5000000,
+                              "PERP_ETH_USDC" : 5000000,
+                              "PERP_NEAR_USDC": 2000000
+                            },
+                            "maintenance_cancel_orders": true
+                        },
+                        "timestamp": 1580794149000
+                    }
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -2044,7 +2527,7 @@ paths:
         example: ""
       - name: side
         in: query
-        description: ""
+        description: '`BUY`/`SELL`'
         required: false
         style: form
         explode: true
@@ -2053,7 +2536,7 @@ paths:
         example: ""
       - name: order_type
         in: query
-        description: ""
+        description: '`LIMIT`/`MARKET`'
         required: false
         style: form
         explode: true
@@ -2062,16 +2545,7 @@ paths:
         example: ""
       - name: status
         in: query
-        description: ""
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
-        example: ""
-      - name: broker_id
-        in: query
-        description: ""
+        description: '`NEW`/`CANCELLED`/`PARTIAL_FILLED`/`FILLED`/`REJECTED`/`INCOMPLETE`/`COMPLETED`'
         required: false
         style: form
         explode: true
@@ -2080,7 +2554,7 @@ paths:
         example: ""
       - name: start_t
         in: query
-        description: ""
+        description: "start time range that wish to query, noted the time stamp is 13-digits timestamp."
         required: false
         style: form
         explode: true
@@ -2089,7 +2563,7 @@ paths:
         example: ""
       - name: end_t
         in: query
-        description: ""
+        description: "end time range that wish to query, noted the time stamp is 13-digits timestamp."
         required: false
         style: form
         explode: true
@@ -2098,7 +2572,7 @@ paths:
         example: ""
       - name: page
         in: query
-        description: ""
+        description: the page you wish to query.
         required: false
         style: form
         explode: true
@@ -2107,7 +2581,7 @@ paths:
         example: ""
       - name: size
         in: query
-        description: ""
+        description: "the page size you wish to query (max: 500)"
         required: false
         style: form
         explode: true
@@ -2156,7 +2630,36 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_35'
+                $ref: '#/components/schemas/inline_response_200_33'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      meta:
+                        records_per_page: 25
+                        current_page: 1
+                        total: 50
+                      rows:
+                      - order_id: 78151
+                        user_id: 12345
+                        price: 0.67772
+                        type: LIMIT
+                        quantity: 20
+                        executed: 20
+                        visible: 1
+                        reduce_only: false
+                        symbol: PERP_WOO_USDC
+                        side: BUY
+                        status: FILLED
+                        total_fee: 0
+                        fee_asset: USDC
+                        average_executed_price: 0.67772
+                        created_time: 1644216606000
+                        updated_time: 1644216696000
+                        order_tag: sometags
+                    timestamp: 1639980423855
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -2215,7 +2718,23 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_36'
+                $ref: '#/components/schemas/inline_response_200_34'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      days_since_registration: 109
+                      fees_paid_last_30_days: 0
+                      perp_fees_paid_last_30_days: 0
+                      perp_trading_volume_last_24_hours: 0
+                      perp_trading_volume_last_30_days: 0
+                      perp_trading_volume_ytd: 0
+                      trading_volume_last_24_hours: 0
+                      trading_volume_last_30_days: 0
+                      trading_volume_ytd: 459.7436
+                    timestamp: 1580794149000
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -2274,10 +2793,29 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties: {}
-                x-apifox-orders: []
-                x-apifox-ignore-properties: []
+                $ref: '#/components/schemas/inline_response_200_35'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      meta:
+                        records_per_page: 25
+                        current_page: 1
+                        total: 150
+                      rows:
+                      - id: "230707030600002"
+                        tx_id: 0x4b0714c63cc7abae72bf68e84e25860b88ca651b7d27dad1e32bf4c027fa5326
+                        side: WITHDRAW
+                        token: USDC
+                        amount: 555
+                        fee: 0
+                        trans_status: FAILED
+                        created_time: 1688699193034
+                        updated_time: 1688699193096
+                        chain_id: "986532"
+                    timestamp: 1580794149000
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -2339,11 +2877,44 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_37'
+                $ref: '#/components/schemas/inline_response_200_36'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      liquidation_id: 101
+                      timestamp: 1663313562090
+                      positions_by_perp:
+                      - symbol: PERP_ETH_USDC
+                        position_qty: 1.23
+                        cost_position_transfer: 1300
+                        transfer_price: 1400.43
+                        liquidator_fee: 0.0075
+                        abs_liquidator_fee: 3520
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251500-run
+  /v1/public/system_info:
+    get:
+      tags:
+      - restful_public
+      summary: Get System Maintenance Status
+      description: Retreive the current system maintenance status of Orderly Network. A return value of status = 0 means the system is functioning properly and a return value of status = 2 means the system is under maintenance.
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_37'
+      deprecated: false
+      x-apifox-folder: restful_public
+      x-apifox-status: released
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251834-run
   /v1/registration_nonce:
     get:
       tags:
@@ -2363,6 +2934,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_200_38'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      registration_nonce: "194528949540"
+                    timestamp: 1688606744795
       deprecated: false
       x-apifox-folder: restful_public
       x-apifox-status: released
@@ -2381,7 +2960,7 @@ paths:
       parameters:
       - name: address
         in: query
-        description: ""
+        description: The address of the user wallet
         required: true
         style: form
         explode: true
@@ -2390,7 +2969,7 @@ paths:
         example: ""
       - name: broker_id
         in: query
-        description: ""
+        description: The broker that the account is registered on
         required: true
         style: form
         explode: true
@@ -2404,6 +2983,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_200_39'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      user_id: 24
+                      account_id: 0xb129e074a17dfba8d652ae1eca21c7d6bb6904f1aa693f4886d50db170933a46
+                    timestamp: 1689146471412
       deprecated: false
       x-apifox-folder: restful_public
       x-apifox-status: released
@@ -2473,6 +3061,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_200_41'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      orderly_key: ed25519:7tEoJo5hMBKBrQsqmc8yw1xNfoQCFQBVwQT1eFafRNRf
+                      scope: "read,trading"
+                      expiration: 1689086651947
+                      tag: some user defined tags
+                    timestamp: 1689146723102
       deprecated: false
       x-apifox-folder: restful_public
       x-apifox-status: released
@@ -2501,10 +3100,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_200_42'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      orderly_key: ed25519:FRXntsPJBCy6dzKv9WPw4eYSw3rKU9Npz3T6UmvvJc9Z
       deprecated: false
       x-apifox-folder: restful_public
       x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251850-run
+  /v1/public/config:
+    get:
+      tags:
+      - restful_public
+      summary: Get Leverage Configuration
+      description: |2
+
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET v1/public/config`
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_43'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value: |-
+                    {
+                      "success": true,
+                      "data": {
+                        "available_futures_leverage": "1,2,3,4,5,10",
+                      },
+                      "timestamp": 1684811129040
+                    }
+      deprecated: false
+      x-apifox-folder: restful_public
+      x-apifox-status: released
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251851-run
   /v1/public/chain_info:
     get:
       tags:
@@ -2521,7 +3160,27 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_43'
+                $ref: '#/components/schemas/inline_response_200_44'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      rows:
+                      - name: Arbitrum
+                        public_rpc_url: https://arb1.arbitrum.io/rpc
+                        chain_id: "42161"
+                        currency_symbol: ETH
+                        explorer_base_url: https://arbiscan.io
+                        vault_address: 0x816f722424B49Cf1275cc86DA9840Fbd5a6167e9
+                      - name: Optimism
+                        public_rpc_url: https://optimism.publicnode.com
+                        chain_id: "10"
+                        currency_symbol: ETH
+                        explorer_base_url: https://optimistic.etherscan.io/
+                        vault_address: 0x816f722424b49cf1275cc86da9840fbd5a6167e9
+                    timestamp: 1702688517044
       deprecated: false
       x-apifox-folder: restful_public
       x-apifox-status: released
@@ -2531,7 +3190,7 @@ paths:
       tags:
       - restful_private
       summary: Batch Create Order
-      description: |
+      description: |-
         **Limit: 1 request per 1 second**
 
         `POST /v1/batch-order`
@@ -2539,6 +3198,8 @@ paths:
         Creates a batch of orders as a list according to the same rules as a single Create Order.
 
         Parameters for each order within the batch will be the same as the create single order. The batch of orders should be sent as a JSON array containing all the orders. The maximum number of orders that can be sent in 1 batch order request is 10. Each order within the batch order request is counted as 1 order towards the overall create order rate limit.
+
+        Note: This endpoint requires `trading` scope in Orderly Key.
       parameters:
       - name: orderly-timestamp
         in: header
@@ -2587,157 +3248,32 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_44'
+                $ref: '#/components/schemas/inline_response_200_45'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      rows:
+                      - success: true
+                        order_id: 13
+                        client_order_id: testclientid
+                        order_type: LIMIT
+                        order_price: 100.12
+                        order_quantity: 0.987654
+                      - success: true
+                        order_id: 14
+                        client_order_id: testclientid
+                        order_type: MARKET
+                        order_amount: 98.7654
+                      - success: false
+                        error_message: the order need to fit price filter
+                    timestamp: 1639980423855
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251893-run
-  /v1/client/order:
-    delete:
-      tags:
-      - restful_private
-      summary: Cancel Order By client_order_id
-      description: |
-        **Limit: 10 requests per 1 second**
-
-        `DELETE /v1/client/order?client_order_id=:coid&symbol=:symbol`
-
-        Cancel an order by `client_order_id`.
-      parameters:
-      - name: symbol
-        in: query
-        description: ""
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-        example: ""
-      - name: client_order_id
-        in: query
-        description: ""
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-        example: ""
-      - name: orderly-timestamp
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: "1649920583000"
-      - name: orderly-account-id
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546
-      - name: orderly-key
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
-      - name: orderly-signature
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200_45'
-      deprecated: false
-      x-apifox-folder: restful_private
-      x-apifox-status: released
-      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251895-run
-  /v1/client/orders:
-    delete:
-      tags:
-      - restful_private
-      summary: Cancel Orders in Bulk
-      description: |
-        **Limit: 10 requests per 1 second**
-
-        `DELETE /v1/orders?symbol=:symbol`
-
-        Cancel a list of orders, filtered by `symbol` optionally. This request will cancel all open orders within the filter criteria, and will cancel all open orders if no filter is provided.
-      parameters:
-      - name: symbol
-        in: query
-        description: ""
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-        example: ""
-      - name: orderly-timestamp
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: "1649920583000"
-      - name: orderly-account-id
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546
-      - name: orderly-key
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
-      - name: orderly-signature
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200_45'
-      deprecated: false
-      x-apifox-folder: restful_private
-      x-apifox-status: released
-      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251896-run
-  /v1/batch-orders:
     delete:
       tags:
       - restful_private
@@ -2745,9 +3281,11 @@ paths:
       description: |
         **Limit: 10 requests per 1 second**
 
-        `DELETE /v1/batch-order?order_ids=:order_id_1,:order_id_2`
+        `DELETE /v1/batch-order?order_ids={order_id1},{order_id2}`
 
         Cancel a list of orders by `order_id`. The maximum orders that can be cancelled within 1 batch cancel request is 10.
+
+        Note: This endpoint requires `trading` scope in Orderly Key.
       parameters:
       - name: order_ids
         in: query
@@ -2758,141 +3296,6 @@ paths:
         schema:
           type: string
         example: ""
-      - name: orderly-timestamp
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: "1649920583000"
-      - name: orderly-account-id
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546
-      - name: orderly-key
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
-      - name: orderly-signature
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200_45'
-      deprecated: false
-      x-apifox-folder: restful_private
-      x-apifox-status: released
-      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251897-run
-  /v1/client/batch-orders:
-    delete:
-      tags:
-      - restful_private
-      summary: Batch Cancel Orders By client_order_id
-      description: |
-        **Limit: 10 requests per 1 second**
-
-        `DELETE /v1/client/batch-order?client_order_ids=:order_id_1,:order_id_2`
-
-        Cancel a list of orders by `client_order_id`. The maximum orders that can be cancelled within 1 batch cancel request is 10.
-      parameters:
-      - name: order_ids
-        in: query
-        description: "List of order_ids, comma-separated, with a maximum of 10 order ids per request."
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-        example: ""
-      - name: orderly-timestamp
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: "1649920583000"
-      - name: orderly-account-id
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546
-      - name: orderly-key
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
-      - name: orderly-signature
-        in: header
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-        example: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200_45'
-      deprecated: false
-      x-apifox-folder: restful_private
-      x-apifox-status: released
-      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251899-run
-  /v1/client/order/{client_order_id}:
-    get:
-      tags:
-      - restful_private
-      summary: Get Order by client_order_id
-      description: |
-        **Limit: 10 requests per 1 second**
-
-        `GET /v1/client/order/:client_order_id`
-
-        Get details of a single order by `client_order_id`.
-      parameters:
-      - name: client_order_id
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
       - name: orderly-timestamp
         in: header
         description: ""
@@ -2936,6 +3339,349 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_200_46'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      status: CANCEL_ALL_SENT
+                    timestamp: 1639980423855
+      deprecated: false
+      x-apifox-folder: restful_private
+      x-apifox-status: released
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251897-run
+  /v1/client/order:
+    delete:
+      tags:
+      - restful_private
+      summary: Cancel Order By client_order_id
+      description: |
+        **Limit: 10 requests per 1 second**
+
+        `DELETE /v1/client/order?client_order_id={coid}&symbol={symbol}`
+
+        Cancel an order by `client_order_id`.
+
+        Note: This endpoint requires `trading` scope in Orderly Key.
+      parameters:
+      - name: symbol
+        in: query
+        description: ""
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: ""
+      - name: client_order_id
+        in: query
+        description: ""
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: ""
+      - name: orderly-timestamp
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: "1649920583000"
+      - name: orderly-account-id
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546
+      - name: orderly-key
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
+      - name: orderly-signature
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_46'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      status: CANCEL_SENT
+                    timestamp: 1639980423855
+      deprecated: false
+      x-apifox-folder: restful_private
+      x-apifox-status: released
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251895-run
+  /v1/client/orders:
+    delete:
+      tags:
+      - restful_private
+      summary: Cancel Orders in Bulk
+      description: |
+        **Limit: 10 requests per 1 second**
+
+        `DELETE /v1/orders?symbol={symbol}`
+
+        Cancel a list of orders, filtered by `symbol` optionally. This request will cancel all open orders within the filter criteria, and will cancel all open orders if no filter is provided.
+
+        Note: This endpoint requires `trading` scope in Orderly Key.
+      parameters:
+      - name: symbol
+        in: query
+        description: ""
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: ""
+      - name: orderly-timestamp
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: "1649920583000"
+      - name: orderly-account-id
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546
+      - name: orderly-key
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
+      - name: orderly-signature
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_46'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      status: CANCEL_ALL_SENT
+                    timestamp: 1639980423855
+      deprecated: false
+      x-apifox-folder: restful_private
+      x-apifox-status: released
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251896-run
+  /v1/client/batch-orders:
+    delete:
+      tags:
+      - restful_private
+      summary: Batch Cancel Orders By client_order_id
+      description: |
+        **Limit: 10 requests per 1 second**
+
+        `DELETE /v1/client/batch-order?client_order_ids={order_id1},{order_id2}`
+
+        Cancel a list of orders by `client_order_id`. The maximum orders that can be cancelled within 1 batch cancel request is 10.
+
+        Note: This endpoint requires `trading` scope in Orderly Key.
+      parameters:
+      - name: order_ids
+        in: query
+        description: "List of client_order_ids, comma-separated, with a maximum of 10 order ids per request."
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: ""
+      - name: orderly-timestamp
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: "1649920583000"
+      - name: orderly-account-id
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546
+      - name: orderly-key
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
+      - name: orderly-signature
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_46'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      status: CANCEL_ALL_SENT
+                    timestamp: 1639980423855
+      deprecated: false
+      x-apifox-folder: restful_private
+      x-apifox-status: released
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251899-run
+  /v1/client/order/{client_order_id}:
+    get:
+      tags:
+      - restful_private
+      summary: Get Order by client_order_id
+      description: |
+        **Limit: 10 requests per 1 second**
+
+        `GET /v1/client/order/{client_order_id}`
+
+        Get details of a single order by `client_order_id`.
+      parameters:
+      - name: client_order_id
+        in: path
+        description: client_order_id of the order
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: orderly-timestamp
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: "1649920583000"
+      - name: orderly-account-id
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546
+      - name: orderly-key
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
+      - name: orderly-signature
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_47'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      order_id: 78151
+                      user_id: 12345
+                      price: 0.67772
+                      type: LIMIT
+                      quantity: 20
+                      executed: 20
+                      visible: 1
+                      reduce_only: false
+                      symbol: PERP_WOO_USDC
+                      side: BUY
+                      status: FILLED
+                      total_fee: 0
+                      fee_asset: USDC
+                      client_order_id: "1234"
+                      average_executed_price: 0.67772
+                      created_time: 1644216606000
+                      updated_time: 1644216696000
+                      order_tag: sometags
+                    timestamp: 1639980423855
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -2962,7 +3708,7 @@ paths:
           type: string
       - name: max_level
         in: query
-        description: ""
+        description: the levels wish to show on both side.
         required: false
         style: form
         explode: true
@@ -3011,7 +3757,28 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_47'
+                $ref: '#/components/schemas/inline_response_200_48'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      asks:
+                      - price: 10669.4
+                        quantity: 1.56263218
+                      - price: 10670.3
+                        quantity: 0.36466977
+                      - price: 10670.4
+                        quantity: 0.06738009
+                      bids:
+                      - price: 10669.3
+                        quantity: 0.88159988
+                      - price: 10669.2
+                        quantity: 0.5
+                      - price: 10668.9
+                        quantity: 0.00488286
+                      timestamp: 1564710591905
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -3098,7 +3865,34 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_48'
+                $ref: '#/components/schemas/inline_response_200_49'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      rows:
+                      - open: 66166.23
+                        close: 66124.56
+                        low: 66038.06
+                        high: 66176.97
+                        volume: 23.45528526
+                        amount: 1550436.21725288
+                        symbol: PERP_BTC_USDC
+                        type: 1m
+                        start_timestamp: 1636388220000
+                        end_timestamp: 1636388280000
+                      - open: 66145.13
+                        close: 66166.24
+                        low: 66124.62
+                        high: 66178.6
+                        volume: 15.50705
+                        amount: 1025863.1889261
+                        symbol: PERP_BTC_USDC
+                        type: 1m
+                        start_timestamp: 1636388160000
+                        end_timestamp: 1636388220000
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -3165,7 +3959,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_49'
+                $ref: '#/components/schemas/inline_response_200_50'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      rows:
+                      - id: 2
+                        symbol: PERP_BTC_USDC
+                        fee: 1.0E-4
+                        fee_asset: USDC
+                        side: BUY
+                        order_id: 1
+                        executed_price: 123
+                        executed_quantity: 0.05
+                        executed_timestamp: 1567382401000
+                        is_maker: 1
+                    timestamp: 1639980423855
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -3178,13 +3990,13 @@ paths:
       description: |
         **Limit: 10 requests per 1 second**
 
-        `GET /v1/trade/:trade_id`
+        `GET /v1/trade/{trade_id}`
 
         Get specific transaction details by `trade_id`.
       parameters:
       - name: trade_id
         in: path
-        description: ""
+        description: id of the trade
         required: true
         style: simple
         explode: false
@@ -3232,7 +4044,24 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_50'
+                $ref: '#/components/schemas/inline_response_200_51'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      id: 1
+                      symbol: PERP_BTC_USDC
+                      fee: 1.0E-4
+                      fee_asset: USDC
+                      side: BUY
+                      order_id: 2
+                      executed_price: 123
+                      executed_quantity: 0.05
+                      executed_timestamp: 1567382400000
+                      is_maker: 1
+                    timestamp: 1639980423855
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -3296,10 +4125,15 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties: {}
-                x-apifox-ignore-properties: []
-                x-apifox-orders: []
+                $ref: '#/components/schemas/inline_response_200_52'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      success_alter: Success! Your change has been saved!
+                    timestamp: 1671074869440
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -3361,6 +4195,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_200_4'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                    - perp_volume_ytd: 274148.0364
+                      perp_volume_ltd: 274148.0364
+                      perp_volume_last_7_days: 120272.7674
+                      perp_volume_last_30_days: 300730.5454
+                    timestamp: 1580794149000
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -3437,7 +4282,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_51'
+                $ref: '#/components/schemas/inline_response_200_53'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                    - date: 2022-02-01
+                      perp_volume: 100.12
+                    - date: 2022-02-02
+                      perp_volume: 100.12
+                    timestamp: 1580794149000
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -3496,7 +4352,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_52'
+                $ref: '#/components/schemas/inline_response_200_54'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      withdraw_nonce: 1
+                    timestamp: 1685673968302
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -3555,7 +4419,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_53'
+                $ref: '#/components/schemas/inline_response_200_55'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      settle_nonce: 1
+                    timestamp: 1685673968302
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -3569,6 +4441,11 @@ paths:
         **Limit: 10 requests per 1 second per IP address**
 
         `POST /v1/withdraw_request`
+
+        `verifyingContract` should use: `0x6F7a338F2aA472838dEFD3283eB360d4Dff5D203`.
+        
+        Note: Minimum withdraw amount is 0.000001 USDC. 
+
       parameters:
       - name: orderly-timestamp
         in: header
@@ -3617,7 +4494,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_54'
+                $ref: '#/components/schemas/inline_response_200_56'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    timestamp: 1689075697206
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -3631,6 +4514,8 @@ paths:
         **Limit: 1 requests per 1 second**
 
         `POST /v1/settle_pnl`
+
+        `verifyingContract` should use: `0x6F7a338F2aA472838dEFD3283eB360d4Dff5D203`.
       parameters:
       - name: orderly-timestamp
         in: header
@@ -3679,7 +4564,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_55'
+                $ref: '#/components/schemas/inline_response_200_57'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      settle_pnl_id: 889
+                    timestamp: 1692246987774
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -3774,7 +4667,30 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_56'
+                $ref: '#/components/schemas/inline_response_200_58'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      meta:
+                        total: 670
+                        records_per_page: 25
+                        current_page: 1
+                      rows:
+                      - id: 10001
+                        old_balance: 4050
+                        new_balance: 3050
+                        settled_amount: -1000
+                        requested_time: 1575014255089
+                        settled_time: 1575014255910
+                        symbols:
+                        - symbol: PERP_BTC_USDC
+                          settled_amount: -500
+                        - symbol: PERP_ETH_USDC
+                          settled_amount: -200
+                    timestamp: 1580794149000
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -3842,7 +4758,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_57'
+                $ref: '#/components/schemas/inline_response_200_59'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                    - orderly_key: ed25519:B4yEc8xMjoqdUiKT5ZT1b2cUy5cggZrbMPvCrqyjkQhf
+                      key_status: ACTIVE
+                      ip_restriction_list: []
+                      ip_restricion_status: ALLOW_ALL_IPS
+                      expiration: 1689086651947
+                      tag: some user defined tags
+                    timestamp: 1580794149000
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -3910,7 +4839,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_58'
+                $ref: '#/components/schemas/inline_response_200_60'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      account_id: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546
+                      orderly_key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
+                      ip_restriction_list:
+                      - 218.190.230.163
+                      - 218.218.218.218
+                      tag: some user defined tags
+                    timestamp: 1580794149000
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -3929,7 +4871,7 @@ paths:
       parameters:
       - name: orderly_key
         in: query
-        description: "\tThe Orderly Key to set the IP restriction list."
+        description: The Orderly Key to set the IP restriction list.
         required: true
         style: form
         explode: true
@@ -3987,7 +4929,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_59'
+                $ref: '#/components/schemas/inline_response_200_61'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      ip_restriction_list:
+                      - 10.1.1.1
+                      - 10.1.1.2
+                      - 192.168.0.1-192.168.0.10
+                    timestamp: 1580794149000
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -4064,7 +5017,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_54'
+                $ref: '#/components/schemas/inline_response_200_56'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    timestamp: 1580794149000
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -4152,7 +5111,38 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_60'
+                $ref: '#/components/schemas/inline_response_200_62'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      rows:
+                      - id: 12345
+                        message_type: ORDER_FILLED
+                        email: test@orderly.network
+                        application_id: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546
+                        title: Your order has been filled
+                        type: TRADE
+                        level: GENERAL
+                        content_summary: "Your order to buy 1 NEAR-PERP has been filled: 0.5/1 at 1.9876."
+                        content: "<p>Your order to buy 1 NEAR-PERP has been filled: 0.5/1 at 1.9876.</p>"
+                        content_raw:
+                          symbol: PERP_NEAR_USDC
+                          side: BUY
+                          order_id: 1
+                          executed_price: 1.9876
+                          executed_quantity: 0.5
+                          executed_timestamp: 1567382401000
+                        mark_read: 1
+                        operator: 0
+                        created_time: 1670425970373
+                      meta:
+                        total: 1
+                        records_per_page: 1
+                        current_page: 1
+                    timestamp: 1679021265398
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -4211,7 +5201,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_61'
+                $ref: '#/components/schemas/inline_response_200_63'
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -4290,7 +5280,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_54'
+                $ref: '#/components/schemas/inline_response_200_56'
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -4358,11 +5348,100 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_54'
+                $ref: '#/components/schemas/inline_response_200_56'
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129942321-run
+  /v1/public/vault_balance:
+    get:
+      tags:
+      - restful_public
+      summary: Get Vault Balance
+      description: ""
+      parameters:
+      - name: chain_id
+        in: query
+        description: id of the chain you wish to query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: ""
+      - name: token
+        in: query
+        description: the token you wish to query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: ""
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_64'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    data:
+                      rows:
+                      - chain_id: 80001
+                        token: USDC
+                        balance: 1000.12345
+                    timestamp: 1684811129040
+      deprecated: false
+      x-apifox-folder: restful_public
+      x-apifox-status: released
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-131077702-run
+  /v1/faucet/usdc:
+    get:
+      tags:
+      - restful_public
+      summary: Get Faucet USDC(Testnet Only)
+      description: "Receive 1,000 USDC in the Testnet environment. Each account may only use the faucet a maximum of 5 times."
+      parameters:
+      - name: chain_id
+        in: query
+        description: The chain ID that the test USDC should be deposited to
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: ""
+      - name: user_address
+        in: query
+        description: The address of the user account
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: ""
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_56'
+              examples:
+                "1":
+                  summary: Successful examples
+                  value:
+                    success: true
+                    timestamp: 1688606744795
+      deprecated: false
+      x-apifox-folder: restful_public
+      x-apifox-status: released
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-132951185-run
 components:
   schemas:
     inline_response_200:
@@ -4657,42 +5736,6 @@ components:
       x-apifox-ignore-properties: []
     inline_response_200_16:
       required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_16_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
-    inline_response_200_17:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_17_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
-    inline_response_200_18:
-      required:
       - d
       - s
       type: object
@@ -4700,12 +5743,12 @@ components:
         s:
           type: string
         d:
-          $ref: '#/components/schemas/inline_response_200_18_d'
+          $ref: '#/components/schemas/inline_response_200_16_d'
       x-apifox-orders:
       - s
       - d
       x-apifox-ignore-properties: []
-    inline_response_200_19:
+    inline_response_200_17:
       required:
       - c
       - h
@@ -4753,7 +5796,7 @@ components:
       - c
       - v
       x-apifox-ignore-properties: []
-    inline_response_200_20:
+    inline_response_200_18:
       required:
       - bar-fillgaps
       - bar-source
@@ -4973,7 +6016,7 @@ components:
       - isin
       - wkn
       x-apifox-ignore-properties: []
-    inline_response_200_21:
+    inline_response_200_19:
       required:
       - data
       - success
@@ -4981,7 +6024,7 @@ components:
       type: object
       properties:
         data:
-          $ref: '#/components/schemas/inline_response_200_21_data'
+          $ref: '#/components/schemas/inline_response_200_19_data'
         success:
           type: boolean
         timestamp:
@@ -4989,6 +6032,42 @@ components:
       x-apifox-orders:
       - data
       - success
+      - timestamp
+      x-apifox-ignore-properties: []
+    inline_response_200_20:
+      required:
+      - data
+      - success
+      - timestamp
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/inline_response_200_20_data'
+        success:
+          type: boolean
+        timestamp:
+          type: number
+      x-apifox-orders:
+      - data
+      - success
+      - timestamp
+      x-apifox-ignore-properties: []
+    inline_response_200_21:
+      required:
+      - data
+      - success
+      - timestamp
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/inline_response_200_21_data'
+        timestamp:
+          type: number
+      x-apifox-orders:
+      - success
+      - data
       - timestamp
       x-apifox-ignore-properties: []
     inline_response_200_22:
@@ -5009,42 +6088,6 @@ components:
       - success
       - timestamp
       x-apifox-ignore-properties: []
-    inline_response_200_23:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_23_data'
-        timestamp:
-          type: number
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
-    inline_response_200_24:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/inline_response_200_24_data'
-        success:
-          type: boolean
-        timestamp:
-          type: number
-      x-apifox-orders:
-      - data
-      - success
-      - timestamp
-      x-apifox-ignore-properties: []
     client_leverage_body:
       required:
       - leverage
@@ -5052,11 +6095,11 @@ components:
       properties:
         leverage:
           type: integer
-          description: "One of 1,2,3,4,5,10"
+          description: "One of 1,2,3,4,5,10, 20"
       x-apifox-orders:
       - leverage
       x-apifox-ignore-properties: []
-    inline_response_200_25:
+    inline_response_200_23:
       required:
       - data
       - success
@@ -5077,7 +6120,7 @@ components:
       - success
       - timestamp
       x-apifox-ignore-properties: []
-    inline_response_200_26:
+    inline_response_200_24:
       required:
       - data
       - success
@@ -5087,7 +6130,7 @@ components:
         success:
           type: boolean
         data:
-          $ref: '#/components/schemas/inline_response_200_26_data'
+          $ref: '#/components/schemas/inline_response_200_24_data'
         timestamp:
           type: number
       x-apifox-orders:
@@ -5125,7 +6168,7 @@ components:
       - extra_liquidation_ratio
       - limit_price
       x-apifox-ignore-properties: []
-    inline_response_200_27:
+    inline_response_200_25:
       required:
       - data
       - success
@@ -5135,7 +6178,7 @@ components:
         success:
           type: boolean
         data:
-          $ref: '#/components/schemas/inline_response_200_27_data'
+          $ref: '#/components/schemas/inline_response_200_25_data'
         timestamp:
           type: number
       x-apifox-orders:
@@ -5145,17 +6188,10 @@ components:
       x-apifox-ignore-properties: []
     v1_order_body:
       required:
-      - client_order_id
-      - order_amount
       - order_id
-      - order_price
-      - order_quantity
-      - order_tag
       - order_type
-      - reduce_only
       - side
       - symbol
-      - visible_quantity
       type: object
       properties:
         order_id:
@@ -5193,7 +6229,7 @@ components:
       - side
       - order_tag
       x-apifox-ignore-properties: []
-    inline_response_200_28:
+    inline_response_200_26:
       required:
       - data
       - success
@@ -5203,7 +6239,7 @@ components:
         success:
           type: boolean
         data:
-          $ref: '#/components/schemas/inline_response_200_28_data'
+          $ref: '#/components/schemas/inline_response_200_26_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -5255,6 +6291,42 @@ components:
       - visible_quantity
       - side
       - reduce_only
+      x-apifox-ignore-properties: []
+    inline_response_200_27:
+      required:
+      - data
+      - success
+      - timestamp
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/inline_response_200_27_data'
+        timestamp:
+          type: number
+      x-apifox-orders:
+      - success
+      - data
+      - timestamp
+      x-apifox-ignore-properties: []
+    inline_response_200_28:
+      required:
+      - data
+      - success
+      - timestamp
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/inline_response_200_28_data'
+        timestamp:
+          type: number
+      x-apifox-orders:
+      - success
+      - data
+      - timestamp
       x-apifox-ignore-properties: []
     inline_response_200_29:
       required:
@@ -5358,47 +6430,44 @@ components:
         data:
           $ref: '#/components/schemas/inline_response_200_34_data'
         timestamp:
-          type: number
+          type: integer
       x-apifox-orders:
       - success
       - data
       - timestamp
       x-apifox-ignore-properties: []
     inline_response_200_35:
-      required:
-      - data
-      - success
-      - timestamp
       type: object
       properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_35_data'
-        timestamp:
+        token:
+          type: string
+          description: 'token name you want to search '
+        side:
+          type: string
+          description: '`DEPOSIT`/`WITHDRAW`  '
+        status:
+          type: string
+          description: '`NEW`/`CONFIRM`/`PROCESSING`/`COMPLETED`/`FAILED` '
+        start_t:
           type: number
+          description: "start time range that wish to query, noted the time stamp is 13-digits timestamp."
+        end_t:
+          type: number
+          description: "end time range that wish to query, noted the time stamp is 13-digits timestamp."
+        page:
+          type: number
+          description: the page you wish to query.
+        size:
+          type: number
+          description: "the page size you wish to query. (max: 500)"
       x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
-    inline_response_200_36:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_36_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
+      - token
+      - side
+      - status
+      - start_t
+      - end_t
+      - page
+      - size
       x-apifox-ignore-properties: []
     v1_claim_insurance_fund_body:
       required:
@@ -5422,7 +6491,7 @@ components:
       - qty_request
       - limit_price
       x-apifox-ignore-properties: []
-    inline_response_200_37:
+    inline_response_200_36:
       required:
       - data
       - success
@@ -5431,10 +6500,28 @@ components:
         success:
           type: boolean
         data:
-          $ref: '#/components/schemas/inline_response_200_37_data'
+          $ref: '#/components/schemas/inline_response_200_36_data'
       x-apifox-orders:
       - success
       - data
+      x-apifox-ignore-properties: []
+    inline_response_200_37:
+      required:
+      - data
+      - success
+      - timestamp
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/inline_response_200_37_data'
+        timestamp:
+          type: integer
+      x-apifox-orders:
+      - success
+      - data
+      - timestamp
       x-apifox-ignore-properties: []
     inline_response_200_38:
       required:
@@ -5566,6 +6653,7 @@ components:
           description: Chain ID of registering chain (within those that are supported by the Network)
         orderlyKey:
           type: integer
+          description: Orderly Key to be added
         scope:
           type: string
           description: Valid nonce from Get Registration Nonce
@@ -5633,48 +6721,6 @@ components:
       - data
       - timestamp
       x-apifox-ignore-properties: []
-    v1_batchorder_body:
-      required:
-      - client_order_id
-      - order_amount
-      - order_price
-      - order_quantity
-      - order_type
-      - reduce_only
-      - side
-      - symbol
-      - visible_quantity
-      type: object
-      properties:
-        symbol:
-          type: string
-        client_order_id:
-          type: string
-        order_type:
-          type: string
-        order_price:
-          type: number
-        order_quantity:
-          type: number
-        order_amount:
-          type: number
-        reduce_only:
-          type: boolean
-        visible_quantity:
-          type: number
-        side:
-          type: string
-      x-apifox-orders:
-      - symbol
-      - client_order_id
-      - order_type
-      - order_price
-      - order_quantity
-      - order_amount
-      - reduce_only
-      - visible_quantity
-      - side
-      x-apifox-ignore-properties: []
     inline_response_200_44:
       required:
       - data
@@ -5693,6 +6739,53 @@ components:
       - data
       - timestamp
       x-apifox-ignore-properties: []
+    v1_batchorder_body:
+      required:
+      - order_type
+      - side
+      - symbol
+      type: object
+      properties:
+        symbol:
+          type: string
+        client_order_id:
+          type: string
+          description: "36 length, default: null   "
+        order_type:
+          type: string
+          description: '`LIMIT`/`MARKET`/`IOC`/`FOK`/`POST_ONLY`/`ASK`/`BID`  '
+        order_price:
+          type: number
+          description: "If order_type is `MARKET`, then is not required, otherwise this parameter is required."
+        order_quantity:
+          type: number
+          description: "For `MARKET`/`ASK`/`BID` order, if `order_amount` is given, it is not required. "
+        order_amount:
+          type: number
+          description: "For `MARKET`/`ASK`/`BID` order, the order amount in terms of quote currency"
+        reduce_only:
+          type: boolean
+          description: 'Default False '
+        visible_quantity:
+          type: number
+          description: "The order quantity shown on orderbook. (default: equal to `order_quantity`)  "
+        side:
+          type: string
+          description: '`SELL`/`BUY`  '
+        order_tag:
+          type: string
+      x-apifox-orders:
+      - symbol
+      - client_order_id
+      - order_type
+      - order_price
+      - order_quantity
+      - order_amount
+      - reduce_only
+      - visible_quantity
+      - side
+      - order_tag
+      x-apifox-ignore-properties: []
     inline_response_200_45:
       required:
       - data
@@ -5703,7 +6796,7 @@ components:
         success:
           type: boolean
         data:
-          $ref: '#/components/schemas/inline_response_200_30_data'
+          $ref: '#/components/schemas/inline_response_200_45_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -5721,7 +6814,7 @@ components:
         success:
           type: boolean
         data:
-          $ref: '#/components/schemas/inline_response_200_46_data'
+          $ref: '#/components/schemas/inline_response_200_28_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -5733,15 +6826,19 @@ components:
       required:
       - data
       - success
+      - timestamp
       type: object
       properties:
         success:
           type: boolean
         data:
           $ref: '#/components/schemas/inline_response_200_47_data'
+        timestamp:
+          type: integer
       x-apifox-orders:
       - success
       - data
+      - timestamp
       x-apifox-ignore-properties: []
     inline_response_200_48:
       required:
@@ -5761,19 +6858,15 @@ components:
       required:
       - data
       - success
-      - timestamp
       type: object
       properties:
         success:
           type: boolean
         data:
           $ref: '#/components/schemas/inline_response_200_49_data'
-        timestamp:
-          type: integer
       x-apifox-orders:
       - success
       - data
-      - timestamp
       x-apifox-ignore-properties: []
     inline_response_200_50:
       required:
@@ -5793,16 +6886,6 @@ components:
       - data
       - timestamp
       x-apifox-ignore-properties: []
-    client_maintenance_config_body:
-      required:
-      - maintenance_cancel_order_flag
-      type: object
-      properties:
-        maintenance_cancel_order_flag:
-          type: boolean
-      x-apifox-orders:
-      - maintenance_cancel_order_flag
-      x-apifox-ignore-properties: []
     inline_response_200_51:
       required:
       - data
@@ -5813,15 +6896,24 @@ components:
         success:
           type: boolean
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/inline_response_200_51_data'
+          $ref: '#/components/schemas/inline_response_200_51_data'
         timestamp:
           type: integer
       x-apifox-orders:
       - success
       - data
       - timestamp
+      x-apifox-ignore-properties: []
+    client_maintenance_config_body:
+      required:
+      - maintenance_cancel_order_flag
+      type: object
+      properties:
+        maintenance_cancel_order_flag:
+          type: boolean
+          description: "if true, system will cancel all of user's pending orders during maintenance."
+      x-apifox-orders:
+      - maintenance_cancel_order_flag
       x-apifox-ignore-properties: []
     inline_response_200_52:
       required:
@@ -5851,7 +6943,45 @@ components:
         success:
           type: boolean
         data:
-          $ref: '#/components/schemas/inline_response_200_53_data'
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_53_data'
+        timestamp:
+          type: integer
+      x-apifox-orders:
+      - success
+      - data
+      - timestamp
+      x-apifox-ignore-properties: []
+    inline_response_200_54:
+      required:
+      - data
+      - success
+      - timestamp
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/inline_response_200_54_data'
+        timestamp:
+          type: integer
+      x-apifox-orders:
+      - success
+      - data
+      - timestamp
+      x-apifox-ignore-properties: []
+    inline_response_200_55:
+      required:
+      - data
+      - success
+      - timestamp
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/inline_response_200_55_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -5861,7 +6991,6 @@ components:
       x-apifox-ignore-properties: []
     v1withdraw_request_message:
       required:
-      - 01HGEJWHNA97DN60GEW66H4CWQ
       - amount
       - brokerId
       - chainId
@@ -5873,18 +7002,26 @@ components:
       properties:
         brokerId:
           type: string
+          description: Broker ID
         chainId:
           type: integer
+          description: Chain ID of registering chain (within those that are supported by the Network)
         receiver:
           type: string
+          description: Chain ID of registering chain (within those that are supported by the Network)
         token:
           type: string
+          description: The string representation of the token that is being withdrawn (eg "USDC")
         amount:
           type: integer
+          description: Amount of tokens to be withdrawn
         withdrawNonce:
           type: string
+          description: Valid withdrawal nonce from Get withdrawal nonce
         timestamp:
           type: string
+          description: current timestamp in UNIX milliseconds
+      description: Message object containing the message that is signed by the wallet owner
     v1_withdraw_request_body:
       required:
       - message
@@ -5897,17 +7034,20 @@ components:
           $ref: '#/components/schemas/v1withdraw_request_message'
         signature:
           type: string
+          description: The signature generated by signing the message object via EIP-712
         userAddress:
           type: string
+          description: The address of the wallet signing the message object via EIP-712
         verifyingContract:
           type: string
+          description: Address of the Orderly Network ledger contract
       x-apifox-orders:
       - message
       - signature
       - userAddress
       - verifyingContract
       x-apifox-ignore-properties: []
-    inline_response_200_54:
+    inline_response_200_56:
       required:
       - success
       - timestamp
@@ -5923,7 +7063,6 @@ components:
       x-apifox-ignore-properties: []
     v1settle_pnl_message:
       required:
-      - 01HGEJWHNA97DN60GEW66H4CWQ
       - brokerId
       - chainId
       - settleNonce
@@ -5932,65 +7071,41 @@ components:
       properties:
         brokerId:
           type: string
+          description: Broker ID
         chainId:
           type: integer
+          description: Chain ID of registering chain (within those that are supported by the Network)
         settleNonce:
           type: integer
+          description: Nonce from Get settle PnL Nonce
         timestamp:
           type: string
+          description: current timestamp in UNIX milliseconds
+      description: Message object containing the message that is signed by the wallet owner
     v1_settle_pnl_body:
       required:
       - message
       - signature
       - userAddress
+      - verifyingContract
       type: object
       properties:
         message:
           $ref: '#/components/schemas/v1settle_pnl_message'
         signature:
           type: string
+          description: The signature generated by signing the message object via EIP-712
         userAddress:
           type: string
+          description: The address of the wallet signing the message object via EIP-712
+        verifyingContract:
+          type: string
+          description: Address of the Orderly Network ledger contract
       x-apifox-orders:
       - message
       - signature
       - userAddress
-      x-apifox-ignore-properties: []
-    inline_response_200_55:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        timestamp:
-          type: integer
-        data:
-          $ref: '#/components/schemas/inline_response_200_55_data'
-      x-apifox-orders:
-      - success
-      - timestamp
-      - data
-      x-apifox-ignore-properties: []
-    inline_response_200_56:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_56_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
+      - verifyingContract
       x-apifox-ignore-properties: []
     inline_response_200_57:
       required:
@@ -6001,16 +7116,14 @@ components:
       properties:
         success:
           type: boolean
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/inline_response_200_57_data'
         timestamp:
           type: integer
+        data:
+          $ref: '#/components/schemas/inline_response_200_57_data'
       x-apifox-orders:
       - success
-      - data
       - timestamp
+      - data
       x-apifox-ignore-properties: []
     inline_response_200_58:
       required:
@@ -6040,7 +7153,9 @@ components:
         success:
           type: boolean
         data:
-          $ref: '#/components/schemas/inline_response_200_59_data'
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_59_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -6077,6 +7192,60 @@ components:
           type: boolean
         data:
           $ref: '#/components/schemas/inline_response_200_61_data'
+        timestamp:
+          type: integer
+      x-apifox-orders:
+      - success
+      - data
+      - timestamp
+      x-apifox-ignore-properties: []
+    inline_response_200_62:
+      required:
+      - data
+      - success
+      - timestamp
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/inline_response_200_62_data'
+        timestamp:
+          type: integer
+      x-apifox-orders:
+      - success
+      - data
+      - timestamp
+      x-apifox-ignore-properties: []
+    inline_response_200_63:
+      required:
+      - data
+      - success
+      - timestamp
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/inline_response_200_63_data'
+        timestamp:
+          type: integer
+      x-apifox-orders:
+      - success
+      - data
+      - timestamp
+      x-apifox-ignore-properties: []
+    inline_response_200_64:
+      required:
+      - data
+      - success
+      - timestamp
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/inline_response_200_64_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -6475,24 +7644,6 @@ components:
           $ref: '#/components/schemas/inline_response_200_8_data_meta'
     inline_response_200_12_data:
       required:
-      - msg
-      - status
-      type: object
-      properties:
-        status:
-          type: integer
-          description: status = 2 means exchange is under maintenance
-        msg:
-          type: string
-    inline_response_200_13_data:
-      required:
-      - available_futures_leverage
-      type: object
-      properties:
-        available_futures_leverage:
-          type: string
-    inline_response_200_14_data:
-      required:
       - base_imr
       - base_max
       - base_min
@@ -6558,7 +7709,7 @@ components:
           type: number
         base_imr:
           type: number
-    inline_response_200_15_data_rows:
+    inline_response_200_13_data_rows:
       type: object
       properties:
         token:
@@ -6573,7 +7724,7 @@ components:
         minimum_increment:
           type: number
           description: minimum increment of the token on Orderly
-    inline_response_200_15_data:
+    inline_response_200_13_data:
       required:
       - rows
       type: object
@@ -6581,8 +7732,8 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_15_data_rows'
-    inline_response_200_16_data_rows:
+            $ref: '#/components/schemas/inline_response_200_13_data_rows'
+    inline_response_200_14_data_rows:
       type: object
       properties:
         symbol:
@@ -6629,7 +7780,7 @@ components:
           type: number
         base_imr:
           type: number
-    inline_response_200_16_data:
+    inline_response_200_14_data:
       required:
       - rows
       type: object
@@ -6637,8 +7788,8 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_16_data_rows'
-    inline_response_200_17_data_rows:
+            $ref: '#/components/schemas/inline_response_200_14_data_rows'
+    inline_response_200_15_data_rows:
       required:
       - average_open_price
       - cost_position
@@ -6672,7 +7823,7 @@ components:
           type: integer
         mark_price:
           type: number
-    inline_response_200_17_data:
+    inline_response_200_15_data:
       required:
       - balance
       - free_collateral
@@ -6688,7 +7839,7 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_17_data_rows'
+            $ref: '#/components/schemas/inline_response_200_15_data_rows'
         min_insurance_fund_initial_margin_ratio:
           type: number
         min_insurance_fund_margin_ratio:
@@ -6705,7 +7856,7 @@ components:
           type: number
         total_pnl_24_h:
           type: integer
-    inline_response_200_18_d_accountSummaryRow:
+    inline_response_200_16_d_accountSummaryRow:
       required:
       - id
       - title
@@ -6715,7 +7866,7 @@ components:
           type: string
         title:
           type: string
-    inline_response_200_18_d_accountManager:
+    inline_response_200_16_d_accountManager:
       type: object
       properties:
         id:
@@ -6725,8 +7876,8 @@ components:
         columns:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_18_d_accountSummaryRow'
-    inline_response_200_18_d_durations:
+            $ref: '#/components/schemas/inline_response_200_16_d_accountSummaryRow'
+    inline_response_200_16_d_durations:
       type: object
       properties:
         id:
@@ -6743,7 +7894,7 @@ components:
           type: array
           items:
             type: string
-    inline_response_200_18_d_orderCustomFields:
+    inline_response_200_16_d_orderCustomFields:
       type: object
       properties:
         id:
@@ -6754,7 +7905,7 @@ components:
           type: string
         alignment:
           type: string
-    inline_response_200_18_d_positionCustomFields:
+    inline_response_200_16_d_positionCustomFields:
       required:
       - alignment
       - id
@@ -6770,7 +7921,7 @@ components:
           type: string
         alignment:
           type: string
-    inline_response_200_18_d_pullingInterval:
+    inline_response_200_16_d_pullingInterval:
       required:
       - accountManager
       - balances
@@ -6789,7 +7940,7 @@ components:
           type: integer
         balances:
           type: integer
-    inline_response_200_18_d:
+    inline_response_200_16_d:
       required:
       - accountManager
       - accountSummaryRow
@@ -6803,30 +7954,30 @@ components:
         accountSummaryRow:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_18_d_accountSummaryRow'
+            $ref: '#/components/schemas/inline_response_200_16_d_accountSummaryRow'
         accountManager:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_18_d_accountManager'
+            $ref: '#/components/schemas/inline_response_200_16_d_accountManager'
         durations:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_18_d_durations'
+            $ref: '#/components/schemas/inline_response_200_16_d_durations'
         orderCustomFields:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_18_d_orderCustomFields'
+            $ref: '#/components/schemas/inline_response_200_16_d_orderCustomFields'
         orderHistoryCustomFields:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_18_d_orderCustomFields'
+            $ref: '#/components/schemas/inline_response_200_16_d_orderCustomFields'
         positionCustomFields:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_18_d_positionCustomFields'
+            $ref: '#/components/schemas/inline_response_200_16_d_positionCustomFields'
         pullingInterval:
-          $ref: '#/components/schemas/inline_response_200_18_d_pullingInterval'
-    inline_response_200_21_data_rows:
+          $ref: '#/components/schemas/inline_response_200_16_d_pullingInterval'
+    inline_response_200_19_data_rows:
       type: object
       properties:
         IMR_withdraw_orders:
@@ -6865,7 +8016,7 @@ components:
           type: number
         unsettled_pnl:
           type: number
-    inline_response_200_21_data:
+    inline_response_200_19_data:
       required:
       - current_margin_ratio_with_orders
       - free_collateral
@@ -6899,12 +8050,12 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_21_data_rows'
+            $ref: '#/components/schemas/inline_response_200_19_data_rows'
         total_collateral_value:
           type: number
         total_pnl_24_h:
           type: number
-    inline_response_200_22_data:
+    inline_response_200_20_data:
       required:
       - IMR_withdraw_orders
       - MMR_with_orders
@@ -6962,7 +8113,7 @@ components:
           type: number
         unsettled_pnl:
           type: number
-    inline_response_200_23_data_rows:
+    inline_response_200_21_data_rows:
       type: object
       properties:
         symbol:
@@ -6981,7 +8132,7 @@ components:
           type: number
         updated_time:
           type: number
-    inline_response_200_23_data_meta:
+    inline_response_200_21_data_meta:
       required:
       - current_page
       - records_per_page
@@ -6994,7 +8145,7 @@ components:
           type: number
         current_page:
           type: number
-    inline_response_200_23_data:
+    inline_response_200_21_data:
       required:
       - meta
       - rows
@@ -7003,10 +8154,10 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_23_data_rows'
+            $ref: '#/components/schemas/inline_response_200_21_data_rows'
         meta:
-          $ref: '#/components/schemas/inline_response_200_23_data_meta'
-    inline_response_200_24_data_meta:
+          $ref: '#/components/schemas/inline_response_200_21_data_meta'
+    inline_response_200_22_data_meta:
       required:
       - current_page
       - records_per_page
@@ -7019,7 +8170,7 @@ components:
           type: integer
         total:
           type: integer
-    inline_response_200_24_data_positions_by_perp:
+    inline_response_200_22_data_positions_by_perp:
       type: object
       properties:
         abs_liquidator_fee:
@@ -7034,7 +8185,7 @@ components:
           type: string
         transfer_price:
           type: number
-    inline_response_200_24_data_rows:
+    inline_response_200_22_data_rows:
       type: object
       properties:
         liquidation_id:
@@ -7042,24 +8193,24 @@ components:
         positions_by_perp:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_24_data_positions_by_perp'
+            $ref: '#/components/schemas/inline_response_200_22_data_positions_by_perp'
         timestamp:
           type: number
         type:
           type: string
-    inline_response_200_24_data:
+    inline_response_200_22_data:
       required:
       - meta
       - rows
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/inline_response_200_24_data_meta'
+          $ref: '#/components/schemas/inline_response_200_22_data_meta'
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_24_data_rows'
-    inline_response_200_26_data_positions_by_perp:
+            $ref: '#/components/schemas/inline_response_200_22_data_rows'
+    inline_response_200_24_data_positions_by_perp:
       type: object
       properties:
         symbol:
@@ -7076,7 +8227,7 @@ components:
           type: number
         abs_liquidation_fee:
           type: number
-    inline_response_200_26_data_rows:
+    inline_response_200_24_data_rows:
       type: object
       properties:
         liquidation_id:
@@ -7088,8 +8239,8 @@ components:
         positions_by_perp:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_26_data_positions_by_perp'
-    inline_response_200_26_data:
+            $ref: '#/components/schemas/inline_response_200_24_data_positions_by_perp'
+    inline_response_200_24_data:
       required:
       - meta
       - rows
@@ -7100,8 +8251,8 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_26_data_rows'
-    inline_response_200_27_data_positions_by_perp:
+            $ref: '#/components/schemas/inline_response_200_24_data_rows'
+    inline_response_200_25_data_positions_by_perp:
       type: object
       properties:
         symbol:
@@ -7116,7 +8267,7 @@ components:
           type: number
         abs_liquidator_fee:
           type: number
-    inline_response_200_27_data:
+    inline_response_200_25_data:
       required:
       - liquidation_id
       - positions_by_perp
@@ -7134,8 +8285,8 @@ components:
         positions_by_perp:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_27_data_positions_by_perp'
-    inline_response_200_28_data_rows:
+            $ref: '#/components/schemas/inline_response_200_25_data_positions_by_perp'
+    inline_response_200_26_data_rows:
       required:
       - client_order_id
       - error_message
@@ -7170,7 +8321,7 @@ components:
         error_message:
           type: string
           nullable: true
-    inline_response_200_28_data:
+    inline_response_200_26_data:
       required:
       - rows
       - status
@@ -7179,10 +8330,10 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_28_data_rows'
+            $ref: '#/components/schemas/inline_response_200_26_data_rows'
         status:
           type: string
-    inline_response_200_29_data:
+    inline_response_200_27_data:
       required:
       - broker_id
       - client_order_id
@@ -7207,14 +8358,14 @@ components:
           type: string
         order_amount:
           type: number
-    inline_response_200_30_data:
+    inline_response_200_28_data:
       required:
       - status
       type: object
       properties:
         status:
           type: string
-    inline_response_200_31_data:
+    inline_response_200_29_data:
       required:
       - amount
       - average_executed_price
@@ -7278,7 +8429,7 @@ components:
           type: number
         updated_time:
           type: number
-    inline_response_200_32_data_meta:
+    inline_response_200_30_data_meta:
       required:
       - current_page
       - records_per_page
@@ -7291,7 +8442,7 @@ components:
           type: number
         total:
           type: number
-    inline_response_200_32_data_rows:
+    inline_response_200_30_data_rows:
       type: object
       properties:
         id:
@@ -7315,19 +8466,19 @@ components:
           type: number
         is_maker:
           type: number
-    inline_response_200_32_data:
+    inline_response_200_30_data:
       required:
       - meta
       - rows
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/inline_response_200_32_data_meta'
+          $ref: '#/components/schemas/inline_response_200_30_data_meta'
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_32_data_rows'
-    inline_response_200_33_data_holding:
+            $ref: '#/components/schemas/inline_response_200_30_data_rows'
+    inline_response_200_31_data_holding:
       required:
       - frozen
       - holding
@@ -7347,7 +8498,7 @@ components:
           type: number
         pending_short:
           type: number
-    inline_response_200_33_data:
+    inline_response_200_31_data:
       required:
       - holding
       type: object
@@ -7355,8 +8506,8 @@ components:
         holding:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_33_data_holding'
-    inline_response_200_34_data_imr_factor:
+            $ref: '#/components/schemas/inline_response_200_31_data_holding'
+    inline_response_200_32_data_imr_factor:
       required:
       - BTC
       - ETH
@@ -7369,7 +8520,7 @@ components:
           type: number
         NEAR:
           type: number
-    inline_response_200_34_data:
+    inline_response_200_32_data:
       required:
       - account_id
       - account_mode
@@ -7404,10 +8555,10 @@ components:
         futures_maker_fee_rate:
           type: number
         imr_factor:
-          $ref: '#/components/schemas/inline_response_200_34_data_imr_factor'
+          $ref: '#/components/schemas/inline_response_200_32_data_imr_factor'
         maintenance_cancel_orders:
           type: boolean
-    inline_response_200_35_data_meta:
+    inline_response_200_33_data_meta:
       required:
       - current_page
       - records_per_page
@@ -7420,7 +8571,7 @@ components:
           type: integer
         total:
           type: integer
-    inline_response_200_35_data_rows:
+    inline_response_200_33_data_rows:
       type: object
       properties:
         order_id:
@@ -7464,19 +8615,19 @@ components:
           type: number
         updated_time:
           type: number
-    inline_response_200_35_data:
+    inline_response_200_33_data:
       required:
       - meta
       - rows
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/inline_response_200_35_data_meta'
+          $ref: '#/components/schemas/inline_response_200_33_data_meta'
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_35_data_rows'
-    inline_response_200_36_data:
+            $ref: '#/components/schemas/inline_response_200_33_data_rows'
+    inline_response_200_34_data:
       required:
       - days_since_registration
       - fees_paid_last_30_days
@@ -7507,7 +8658,7 @@ components:
           type: integer
         trading_volume_ytd:
           type: number
-    inline_response_200_37_data_positions_by_perp:
+    inline_response_200_36_data_positions_by_perp:
       type: object
       properties:
         symbol:
@@ -7522,7 +8673,7 @@ components:
           type: number
         abs_liquidator_fee:
           type: integer
-    inline_response_200_37_data:
+    inline_response_200_36_data:
       required:
       - liquidation_id
       - positions_by_perp
@@ -7536,7 +8687,18 @@ components:
         positions_by_perp:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_37_data_positions_by_perp'
+            $ref: '#/components/schemas/inline_response_200_36_data_positions_by_perp'
+    inline_response_200_37_data:
+      required:
+      - msg
+      - status
+      type: object
+      properties:
+        status:
+          type: integer
+          description: status = 2 means exchange is under maintenance
+        msg:
+          type: string
     inline_response_200_38_data:
       required:
       - registration_nonce
@@ -7584,7 +8746,14 @@ components:
       properties:
         orderly_key:
           type: string
-    inline_response_200_43_data_rows:
+    inline_response_200_43_data:
+      required:
+      - available_futures_leverage
+      type: object
+      properties:
+        available_futures_leverage:
+          type: string
+    inline_response_200_44_data_rows:
       required:
       - chain_id
       - currency_symbol
@@ -7603,15 +8772,6 @@ components:
           type: string
         explorer_base_url:
           type: string
-    inline_response_200_43_data:
-      required:
-      - rows
-      type: object
-      properties:
-        rows:
-          type: array
-          items:
-            $ref: '#/components/schemas/inline_response_200_43_data_rows'
     inline_response_200_44_data:
       required:
       - rows
@@ -7620,8 +8780,17 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_28_data_rows'
-    inline_response_200_46_data:
+            $ref: '#/components/schemas/inline_response_200_44_data_rows'
+    inline_response_200_45_data:
+      required:
+      - rows
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_26_data_rows'
+    inline_response_200_47_data:
       required:
       - amount
       - average_executed_price
@@ -7686,7 +8855,7 @@ components:
           type: integer
         reduce_only:
           type: boolean
-    inline_response_200_47_data_asks:
+    inline_response_200_48_data_asks:
       required:
       - price
       - quantity
@@ -7696,7 +8865,7 @@ components:
           type: number
         quantity:
           type: number
-    inline_response_200_47_data:
+    inline_response_200_48_data:
       required:
       - asks
       - bids
@@ -7706,15 +8875,15 @@ components:
         asks:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_47_data_asks'
+            $ref: '#/components/schemas/inline_response_200_48_data_asks'
         bids:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_47_data_asks'
+            $ref: '#/components/schemas/inline_response_200_48_data_asks'
         timestamp:
           type: integer
           description: Unix epoch time in milliseconds
-    inline_response_200_48_data_rows:
+    inline_response_200_49_data_rows:
       required:
       - amount
       - close
@@ -7749,7 +8918,7 @@ components:
           description: Unix epoch time in milliseconds
         end_timestamp:
           type: integer
-    inline_response_200_48_data:
+    inline_response_200_49_data:
       required:
       - rows
       type: object
@@ -7757,8 +8926,8 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_48_data_rows'
-    inline_response_200_49_data_rows:
+            $ref: '#/components/schemas/inline_response_200_49_data_rows'
+    inline_response_200_50_data_rows:
       type: object
       properties:
         id:
@@ -7781,7 +8950,7 @@ components:
           type: integer
         is_maker:
           type: integer
-    inline_response_200_49_data:
+    inline_response_200_50_data:
       required:
       - rows
       type: object
@@ -7789,8 +8958,8 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_49_data_rows'
-    inline_response_200_50_data:
+            $ref: '#/components/schemas/inline_response_200_50_data_rows'
+    inline_response_200_51_data:
       required:
       - executed_price
       - executed_quantity
@@ -7824,7 +8993,14 @@ components:
           type: integer
         is_maker:
           type: integer
-    inline_response_200_51_data:
+    inline_response_200_52_data:
+      required:
+      - success_alter
+      type: object
+      properties:
+        success_alter:
+          type: string
+    inline_response_200_53_data:
       required:
       - date
       - perp_volume
@@ -7834,28 +9010,28 @@ components:
           type: string
         perp_volume:
           type: number
-    inline_response_200_52_data:
+    inline_response_200_54_data:
       required:
       - withdraw_nonce
       type: object
       properties:
         withdraw_nonce:
           type: integer
-    inline_response_200_53_data:
+    inline_response_200_55_data:
       required:
       - settle_nonce
       type: object
       properties:
         settle_nonce:
           type: integer
-    inline_response_200_55_data:
+    inline_response_200_57_data:
       required:
       - settle_pnl_id
       type: object
       properties:
         settle_pnl_id:
           type: integer
-    inline_response_200_56_data_symbols:
+    inline_response_200_58_data_symbols:
       required:
       - settled_amount
       - symbol
@@ -7865,7 +9041,7 @@ components:
           type: string
         settled_amount:
           type: integer
-    inline_response_200_56_data_rows:
+    inline_response_200_58_data_rows:
       type: object
       properties:
         id:
@@ -7885,8 +9061,8 @@ components:
         symbols:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_56_data_symbols'
-    inline_response_200_56_data:
+            $ref: '#/components/schemas/inline_response_200_58_data_symbols'
+    inline_response_200_58_data:
       required:
       - meta
       - rows
@@ -7897,8 +9073,8 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_56_data_rows'
-    inline_response_200_57_data:
+            $ref: '#/components/schemas/inline_response_200_58_data_rows'
+    inline_response_200_59_data:
       type: object
       properties:
         orderly_key:
@@ -7918,7 +9094,7 @@ components:
         tag:
           type: string
           description: "Optional, could be null if there wasn't a tag"
-    inline_response_200_58_data:
+    inline_response_200_60_data:
       required:
       - account_id
       - ip_restriction_list
@@ -7937,7 +9113,7 @@ components:
         tag:
           type: string
           description: "Optional, could be null if there wasn't a tag"
-    inline_response_200_59_data:
+    inline_response_200_61_data:
       required:
       - ip_restriction_list
       type: object
@@ -7946,7 +9122,7 @@ components:
           type: array
           items:
             type: string
-    inline_response_200_60_data_content_raw:
+    inline_response_200_62_data_content_raw:
       required:
       - executed_price
       - executed_quantity
@@ -7969,7 +9145,7 @@ components:
         executed_timestamp:
           type: integer
       description: below example is for a ORDER_FILLED content
-    inline_response_200_60_data_rows:
+    inline_response_200_62_data_rows:
       type: object
       properties:
         id:
@@ -7997,7 +9173,7 @@ components:
         content:
           type: string
         content_raw:
-          $ref: '#/components/schemas/inline_response_200_60_data_content_raw'
+          $ref: '#/components/schemas/inline_response_200_62_data_content_raw'
         mark_read:
           type: integer
           description: "1 = READ, 0 = UNREAD"
@@ -8007,7 +9183,7 @@ components:
           type: integer
         announcement_id:
           type: integer
-    inline_response_200_60_data:
+    inline_response_200_62_data:
       required:
       - meta
       - rows
@@ -8016,10 +9192,10 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_60_data_rows'
+            $ref: '#/components/schemas/inline_response_200_62_data_rows'
         meta:
           $ref: '#/components/schemas/inline_response_200_8_data_meta'
-    inline_response_200_61_data:
+    inline_response_200_63_data:
       required:
       - count
       - lastId
@@ -8030,7 +9206,7 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_60_data_rows'
+            $ref: '#/components/schemas/inline_response_200_62_data_rows'
         meta:
           $ref: '#/components/schemas/inline_response_200_8_data_meta'
         count:
@@ -8039,3 +9215,21 @@ components:
         lastId:
           type: integer
           description: the id of the last unread message
+    inline_response_200_64_data_rows:
+      type: object
+      properties:
+        chain_id:
+          type: integer
+        token:
+          type: string
+        balance:
+          type: number
+    inline_response_200_64_data:
+      required:
+      - rows
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_64_data_rows'
