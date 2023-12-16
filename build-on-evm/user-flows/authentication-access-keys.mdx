@@ -2,13 +2,14 @@
 title: "Authentication/Orderly keys"
 description: "Overview of Orderly keys and authentication"
 ---
+
 ## Authentication
 
 Orderly Network relies on the [EIP-712](https://eips.ethereum.org/EIPS/eip-712) standard to authenticate wallets and accounts for critical actions, such as:
 
 * Account creation
 
-* Access key (Orderly key) addition
+* Orderly key addition
 
 * Withdrawal requests
 
@@ -18,17 +19,15 @@ In addition, depositing into Orderly Network is a direct on-chain transaction th
 
 For other actions, such as calling trading-related RESTful APIs, only the Orderly Key is required.
 
-### Access key (Orderly key)
+## Orderly key
 
-Orderly Network uses the ed25519 elliptic curve standard for access keys. Users can generate access keys using any public ed25519 libraries (such as [this one](https://www.npmjs.com/package/@noble/ed25519)) and then be added to any account through a REST API.
+Orderly Network uses the ed25519 elliptic curve standard for Orderly keys. Users can generate Orderly keys using any public ed25519 libraries and then be added to any account through a REST API.
 
-Access keys can have different scopes. A `read` scope API can access all private read-only APIs, and a `trading` scope can, in addition, access all order APIs (create order, batch create order, edit order, cancel order, cancel order by client\_order-Id, cancel orders in bulk, batch cancel orders, batch cancel orders by client\_order\_id).
+Orderly keys can have different scopes. A `read` scope API can access all private read-only APIs, and a `trading` scope can, in addition, access all order APIs (create order, batch create order, edit order, cancel order, cancel order by client\_order-Id, cancel orders in bulk, batch cancel orders, batch cancel orders by client\_order\_id).
 
-Access keys also have expirations for security reasons. The maximum allowed expiration of an access key is 365 days.
+Orderly keys also have expirations for security reasons. The maximum allowed expiration of an Orderly key is 365 days.
 
-## Add Orderly key
-
-Follow the following steps to add a new access key on Orderly Network:
+Follow the following steps to add a new Orderly key on Orderly Network:
 
 <Steps>
   <Step title="Generate an ed25519 key-pair">
