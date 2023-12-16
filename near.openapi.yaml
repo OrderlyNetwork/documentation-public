@@ -12,7 +12,6 @@ servers:
 tags:
 - name: restful_public
 - name: restful_private
-- name: orderly-v2
 paths:
   /v1/public/futures:
     get:
@@ -4849,132 +4848,6 @@ paths:
       x-apifox-folder: restful_private
       x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3711463/apis/api-130994362-run
-  /accountid/nonce:
-    get:
-      tags:
-      - orderly-v2
-      summary: Query Nonce
-      description: ""
-      parameters:
-      - name: accountid
-        in: query
-        description: "The account ID is calculated as Keccak(Address, Keccak(Broker ID))"
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-        example: 0x8ac90dee214c99ec60cf708bd70741835dfaefe63299c3f33ee1202dd7aced9a
-      - name: nonce
-        in: query
-        description: ""
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: integer
-        example: ""
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200_54'
-              examples:
-                "1":
-                  summary: Success
-                  value:
-                    success: true
-                    accounid: 0x8ac90dee214c99ec60cf708bd70741835dfaefe63299c3f33ee1202dd7aced9a
-                    nonce: 57
-      deprecated: false
-      x-apifox-folder: orderly-v2
-      x-apifox-status: developing
-      x-run-in-apifox: https://www.apifox.cn/web/project/3711463/apis/api-130994363-run
-  /:
-    post:
-      tags:
-      - orderly-v2
-      summary: Withdraw
-      description: ""
-      parameters: []
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties: {}
-                x-apifox-orders: []
-                x-apifox-ignore-properties: []
-              examples:
-                "1":
-                  summary: EIP712-Withdraw
-                  value:
-                    domain:
-                      name: Orderly
-                      version: "1"
-                      chainId: 0xf0da4
-                      verifyingContract: 0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC
-                    message:
-                      brokerId: woofi_dex
-                      chainId: 986532
-                      receiver: 0xb2eeefb3d6922c4270d174a4020d71d8bd23c229
-                      amount: "0"
-                      nonce: 123
-                      timestamp: 1685331664861
-                    primaryType: Withdraw
-                    types:
-                      EIP712Domain:
-                      - name: name
-                        type: string
-                      - name: version
-                        type: string
-                      - name: chainId
-                        type: uint256
-                      - name: verifyingContract
-                        type: address
-                      Withdraw:
-                      - name: brokerId
-                        type: string
-                      - name: chainId
-                        type: uint256
-                      - name: receiver
-                        type: address
-                      - name: amount
-                        type: uint256
-                      - name: nonce
-                        type: uint256
-                      - name: timestamp
-                        type: uint256
-                    signature: 0x3682a9fc680f146e2fc72e7bba3450001404dd88de6e6ad8ca3a10e1413815fa5111e72d0f6633d57c944a4a25281878e09949890d293f31970d864a820377491b
-      deprecated: false
-      x-apifox-folder: orderly-v2
-      x-apifox-status: developing
-      x-run-in-apifox: https://www.apifox.cn/web/project/3711463/apis/api-130994366-run
-  /v1/withdraw_nonce:
-    get:
-      tags:
-      - orderly-v2
-      summary: 未命名接口
-      description: ""
-      parameters: []
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties: {}
-                x-apifox-orders: []
-                x-apifox-ignore-properties: []
-      deprecated: false
-      x-apifox-folder: orderly-v2
-      x-apifox-status: developing
-      x-run-in-apifox: https://www.apifox.cn/web/project/3711463/apis/api-130994367-run
   /v1/client/set_trading_key_ip_restriction:
     post:
       tags:
@@ -5047,7 +4920,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_55'
+                $ref: '#/components/schemas/inline_response_200_54'
               examples:
                 "1":
                   summary: 成功示例
@@ -5158,77 +5031,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - rows
-          type: object
-          properties:
-            rows:
-              type: array
-              items:
-                required:
-                - 24h_amount
-                - 24h_close
-                - 24h_high
-                - 24h_low
-                - 24h_open
-                - 24h_volume
-                - est_funding_rate
-                - index_price
-                - last_funding_rate
-                - mark_price
-                - next_funding_time
-                - open_interest
-                - sum_unitary_funding
-                - symbol
-                type: object
-                properties:
-                  symbol:
-                    type: string
-                  index_price:
-                    type: number
-                  mark_price:
-                    type: integer
-                  sum_unitary_funding:
-                    type: number
-                  est_funding_rate:
-                    type: number
-                  last_funding_rate:
-                    type: number
-                  next_funding_time:
-                    type: integer
-                  open_interest:
-                    type: string
-                  "24h_open":
-                    type: integer
-                  "24h_close":
-                    type: integer
-                  "24h_high":
-                    type: integer
-                  "24h_low":
-                    type: integer
-                  "24h_amount":
-                    type: integer
-                  "24h_volume":
-                    type: integer
-                x-apifox-orders:
-                - symbol
-                - index_price
-                - mark_price
-                - sum_unitary_funding
-                - est_funding_rate
-                - last_funding_rate
-                - next_funding_time
-                - open_interest
-                - 24h_open
-                - 24h_close
-                - 24h_high
-                - 24h_low
-                - 24h_amount
-                - 24h_volume
-                x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - rows
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -5246,43 +5049,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - rows
-          type: object
-          properties:
-            rows:
-              type: array
-              items:
-                required:
-                - maker_fee
-                - taker_fee
-                - tier
-                - volume_max
-                - volume_min
-                type: object
-                properties:
-                  tier:
-                    type: string
-                  maker_fee:
-                    type: string
-                  taker_fee:
-                    type: string
-                  volume_min:
-                    type: integer
-                    description: minimum 30-day volume (in USDC) required for eligibility of this tier
-                  volume_max:
-                    type: integer
-                    nullable: true
-                x-apifox-orders:
-                - tier
-                - maker_fee
-                - taker_fee
-                - volume_min
-                - volume_max
-                x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - rows
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_1_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -5300,42 +5067,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - rows
-          type: object
-          properties:
-            rows:
-              type: array
-              items:
-                required:
-                - maker_fee
-                - taker_fee
-                - tier
-                - volume_max
-                - volume_min
-                type: object
-                properties:
-                  tier:
-                    type: string
-                  maker_fee:
-                    type: string
-                  taker_fee:
-                    type: string
-                  volume_min:
-                    type: integer
-                  volume_max:
-                    type: integer
-                    nullable: true
-                x-apifox-orders:
-                - tier
-                - maker_fee
-                - taker_fee
-                - volume_min
-                - volume_max
-                x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - rows
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_2_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -5353,41 +5085,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - rows
-          type: object
-          properties:
-            rows:
-              type: array
-              items:
-                required:
-                - executed_price
-                - executed_quantity
-                - executed_timestamp
-                - side
-                - symbol
-                type: object
-                properties:
-                  symbol:
-                    type: string
-                  side:
-                    type: string
-                  executed_price:
-                    type: number
-                  executed_quantity:
-                    type: number
-                  executed_timestamp:
-                    type: number
-                x-apifox-orders:
-                - symbol
-                - side
-                - executed_price
-                - executed_quantity
-                - executed_timestamp
-                x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - rows
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_3_data'
         timestamp:
           type: number
       x-apifox-orders:
@@ -5407,22 +5105,7 @@ components:
         data:
           type: array
           items:
-            type: object
-            properties:
-              perp_volume_ytd:
-                type: number
-              perp_volume_ltd:
-                type: number
-              perp_volume_last_7_days:
-                type: number
-              perp_volume_last_30_days:
-                type: number
-            x-apifox-orders:
-            - perp_volume_ytd
-            - perp_volume_ltd
-            - perp_volume_last_7_days
-            - perp_volume_last_30_days
-            x-apifox-ignore-properties: []
+            $ref: '#/components/schemas/inline_response_200_4_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -5440,29 +5123,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - rows
-          type: object
-          properties:
-            rows:
-              type: array
-              items:
-                required:
-                - broker_id
-                - broker_name
-                type: object
-                properties:
-                  broker_id:
-                    type: string
-                  broker_name:
-                    type: string
-                x-apifox-orders:
-                - broker_id
-                - broker_name
-                x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - rows
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_5_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -5480,49 +5141,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - rows
-          type: object
-          properties:
-            rows:
-              type: array
-              items:
-                required:
-                - est_funding_rate
-                - est_funding_rate_timestamp
-                - last_funding_rate
-                - last_funding_rate_timestamp
-                - next_funding_time
-                - sum_unitary_funding
-                - symbol
-                type: object
-                properties:
-                  symbol:
-                    type: string
-                  est_funding_rate:
-                    type: integer
-                  est_funding_rate_timestamp:
-                    type: integer
-                  last_funding_rate:
-                    type: number
-                  last_funding_rate_timestamp:
-                    type: integer
-                  next_funding_time:
-                    type: integer
-                  sum_unitary_funding:
-                    type: number
-                x-apifox-orders:
-                - symbol
-                - est_funding_rate
-                - est_funding_rate_timestamp
-                - last_funding_rate
-                - last_funding_rate_timestamp
-                - next_funding_time
-                - sum_unitary_funding
-                x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - rows
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_6_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -5540,39 +5159,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - est_funding_rate
-          - est_funding_rate_timestamp
-          - last_funding_rate
-          - last_funding_rate_timestamp
-          - next_funding_time
-          - sum_unitary_funding
-          - symbol
-          type: object
-          properties:
-            symbol:
-              type: string
-            est_funding_rate:
-              type: integer
-            est_funding_rate_timestamp:
-              type: integer
-            last_funding_rate:
-              type: number
-            last_funding_rate_timestamp:
-              type: integer
-            next_funding_time:
-              type: integer
-            sum_unitary_funding:
-              type: number
-          x-apifox-orders:
-          - symbol
-          - est_funding_rate
-          - est_funding_rate_timestamp
-          - last_funding_rate
-          - last_funding_rate_timestamp
-          - next_funding_time
-          - sum_unitary_funding
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_6_data_rows'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -5590,57 +5177,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - meta
-          - rows
-          type: object
-          properties:
-            rows:
-              type: array
-              items:
-                required:
-                - funding_rate
-                - funding_rate_timestamp
-                - next_funding_time
-                - symbol
-                type: object
-                properties:
-                  symbol:
-                    type: string
-                  funding_rate:
-                    type: number
-                  funding_rate_timestamp:
-                    type: integer
-                  next_funding_time:
-                    type: integer
-                x-apifox-orders:
-                - symbol
-                - funding_rate
-                - funding_rate_timestamp
-                - next_funding_time
-                x-apifox-ignore-properties: []
-            meta:
-              required:
-              - current_page
-              - records_per_page
-              - total
-              type: object
-              properties:
-                total:
-                  type: integer
-                records_per_page:
-                  type: integer
-                current_page:
-                  type: integer
-              x-apifox-orders:
-              - total
-              - records_per_page
-              - current_page
-              x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - rows
-          - meta
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_8_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -5658,67 +5195,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - 24h_amount
-          - 24h_close
-          - 24h_high
-          - 24h_low
-          - 24h_open
-          - 24h_volume
-          - est_funding_rate
-          - index_price
-          - last_funding_rate
-          - mark_price
-          - next_funding_time
-          - open_interest
-          - sum_unitary_funding
-          - symbol
-          type: object
-          properties:
-            symbol:
-              type: string
-            index_price:
-              type: number
-            mark_price:
-              type: number
-            sum_unitary_funding:
-              type: number
-            est_funding_rate:
-              type: number
-            last_funding_rate:
-              type: number
-            next_funding_time:
-              type: number
-            open_interest:
-              type: string
-            "24h_open":
-              type: number
-            "24h_close":
-              type: number
-            "24h_high":
-              type: number
-            "24h_low":
-              type: number
-            "24h_volume":
-              type: number
-            "24h_amount":
-              type: number
-          x-apifox-orders:
-          - symbol
-          - index_price
-          - mark_price
-          - sum_unitary_funding
-          - est_funding_rate
-          - last_funding_rate
-          - next_funding_time
-          - open_interest
-          - 24h_open
-          - 24h_close
-          - 24h_high
-          - 24h_low
-          - 24h_volume
-          - 24h_amount
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_9_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -5736,66 +5213,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - meta
-          - rows
-          type: object
-          properties:
-            rows:
-              type: array
-              items:
-                type: object
-                properties:
-                  timestamp:
-                    type: integer
-                  type:
-                    type: string
-                  liquidation_id:
-                    type: integer
-                  positions_by_perp:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        symbol:
-                          type: string
-                        position_qty:
-                          type: number
-                        liquidator_fee:
-                          type: number
-                      x-apifox-orders:
-                      - symbol
-                      - position_qty
-                      - liquidator_fee
-                      x-apifox-ignore-properties: []
-                x-apifox-orders:
-                - timestamp
-                - type
-                - liquidation_id
-                - positions_by_perp
-                x-apifox-ignore-properties: []
-            meta:
-              required:
-              - current_page
-              - records_per_page
-              - total
-              type: object
-              properties:
-                total:
-                  type: integer
-                records_per_page:
-                  type: integer
-                current_page:
-                  type: integer
-              x-apifox-orders:
-              - total
-              - records_per_page
-              - current_page
-              x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - rows
-          - meta
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_10_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -5813,101 +5231,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - meta
-          - rows
-          type: object
-          properties:
-            rows:
-              type: array
-              items:
-                required:
-                - liquidation_id
-                - positions_by_perp
-                - timestamp
-                - transfer_amount_to_insurance_fund
-                type: object
-                properties:
-                  timestamp:
-                    type: integer
-                  liquidation_id:
-                    type: integer
-                  transfer_amount_to_insurance_fund:
-                    type: integer
-                  positions_by_perp:
-                    type: array
-                    items:
-                      required:
-                      - abs_insurance_fund_fee
-                      - abs_liquidation_fee
-                      - cost_position_transfer
-                      - insurance_fund_fee
-                      - liquidator_fee
-                      - position_qty
-                      - symbol
-                      - transfer_price
-                      type: object
-                      properties:
-                        symbol:
-                          type: string
-                        position_qty:
-                          type: integer
-                        liquidator_fee:
-                          type: number
-                        cost_position_transfer:
-                          type: integer
-                        transfer_price:
-                          type: integer
-                        insurance_fund_fee:
-                          type: number
-                        abs_liquidation_fee:
-                          type: number
-                        abs_insurance_fund_fee:
-                          type: integer
-                        abs_liquidator_fee:
-                          type: integer
-                      x-apifox-orders:
-                      - symbol
-                      - position_qty
-                      - liquidator_fee
-                      - cost_position_transfer
-                      - transfer_price
-                      - insurance_fund_fee
-                      - abs_liquidation_fee
-                      - abs_insurance_fund_fee
-                      - abs_liquidator_fee
-                      x-apifox-ignore-properties: []
-                  type:
-                    type: string
-                x-apifox-orders:
-                - timestamp
-                - liquidation_id
-                - transfer_amount_to_insurance_fund
-                - positions_by_perp
-                - type
-                x-apifox-ignore-properties: []
-            meta:
-              required:
-              - current_page
-              - records_per_page
-              - total
-              type: object
-              properties:
-                total:
-                  type: integer
-                records_per_page:
-                  type: integer
-                current_page:
-                  type: integer
-              x-apifox-orders:
-              - total
-              - records_per_page
-              - current_page
-              x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - rows
-          - meta
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_11_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -5925,95 +5249,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - base_imr
-          - base_max
-          - base_min
-          - base_mmr
-          - base_tick
-          - cap_funding
-          - claim_insurance_fund_discount
-          - created_time
-          - floor_funding
-          - funding_period
-          - interest_rate
-          - liquidator_fee
-          - min_notional
-          - price_range
-          - price_scope
-          - quote_max
-          - quote_min
-          - quote_tick
-          - std_liquidation_fee
-          - symbol
-          - updated_time
-          type: object
-          properties:
-            symbol:
-              type: string
-            quote_min:
-              type: integer
-            quote_max:
-              type: integer
-            quote_tick:
-              type: number
-            base_min:
-              type: number
-            base_max:
-              type: integer
-            base_tick:
-              type: number
-            min_notional:
-              type: integer
-            price_range:
-              type: number
-            price_scope:
-              type: number
-            std_liquidation_fee:
-              type: number
-            liquidator_fee:
-              type: number
-            claim_insurance_fund_discount:
-              type: number
-            funding_period:
-              type: integer
-            cap_funding:
-              type: number
-            floor_funding:
-              type: number
-            interest_rate:
-              type: number
-            created_time:
-              type: integer
-            updated_time:
-              type: integer
-            base_mmr:
-              type: number
-            base_imr:
-              type: number
-          x-apifox-orders:
-          - symbol
-          - quote_min
-          - quote_max
-          - quote_tick
-          - base_min
-          - base_max
-          - base_tick
-          - min_notional
-          - price_range
-          - price_scope
-          - std_liquidation_fee
-          - liquidator_fee
-          - claim_insurance_fund_discount
-          - funding_period
-          - cap_funding
-          - floor_funding
-          - interest_rate
-          - created_time
-          - updated_time
-          - base_mmr
-          - base_imr
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_12_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -6031,36 +5267,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - rows
-          type: object
-          properties:
-            rows:
-              type: array
-              items:
-                type: object
-                properties:
-                  token:
-                    type: string
-                    description: name of token
-                  token_account_id:
-                    type: string
-                    description: token account address on NEAR chain
-                  decimals:
-                    type: integer
-                    description: precision of the token
-                  minimum_increment:
-                    type: number
-                    description: minimum increment of the token on Orderly
-                x-apifox-orders:
-                - token
-                - token_account_id
-                - decimals
-                - minimum_increment
-                x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - rows
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_13_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -6078,86 +5285,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - rows
-          type: object
-          properties:
-            rows:
-              type: array
-              items:
-                type: object
-                properties:
-                  symbol:
-                    type: string
-                  quote_min:
-                    type: integer
-                  quote_max:
-                    type: integer
-                  quote_tick:
-                    type: number
-                  base_min:
-                    type: number
-                  base_max:
-                    type: integer
-                  base_tick:
-                    type: number
-                  min_notional:
-                    type: integer
-                  price_range:
-                    type: number
-                  price_scope:
-                    type: number
-                  std_liquidation_fee:
-                    type: number
-                  liquidator_fee:
-                    type: number
-                  claim_insurance_fund_discount:
-                    type: number
-                  funding_period:
-                    type: integer
-                  cap_funding:
-                    type: number
-                  floor_funding:
-                    type: number
-                  interest_rate:
-                    type: number
-                  created_time:
-                    type: integer
-                  updated_time:
-                    type: integer
-                  imr_factor:
-                    type: number
-                  base_mmr:
-                    type: number
-                  base_imr:
-                    type: number
-                x-apifox-orders:
-                - symbol
-                - quote_min
-                - quote_max
-                - quote_tick
-                - base_min
-                - base_max
-                - base_tick
-                - min_notional
-                - price_range
-                - price_scope
-                - std_liquidation_fee
-                - liquidator_fee
-                - claim_insurance_fund_discount
-                - funding_period
-                - cap_funding
-                - floor_funding
-                - interest_rate
-                - created_time
-                - updated_time
-                - imr_factor
-                - base_mmr
-                - base_imr
-                x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - rows
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_14_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -6175,93 +5303,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - balance
-          - free_collateral
-          - margin_ratio
-          - min_insurance_fund_initial_margin_ratio
-          - min_insurance_fund_margin_ratio
-          - rows
-          - total_account_value
-          - total_collateral_value
-          - total_pnl_24_h
-          type: object
-          properties:
-            rows:
-              type: array
-              items:
-                required:
-                - average_open_price
-                - cost_position
-                - fee_24_h
-                - last_sum_unitary_funding
-                - mark_price
-                - pnl_24_h
-                - position_qty
-                - settle_price
-                - symbol
-                - timestamp
-                type: object
-                properties:
-                  symbol:
-                    type: string
-                  timestamp:
-                    type: integer
-                  position_qty:
-                    type: integer
-                  cost_position:
-                    type: number
-                  last_sum_unitary_funding:
-                    type: number
-                  settle_price:
-                    type: integer
-                  average_open_price:
-                    type: integer
-                  pnl_24_h:
-                    type: integer
-                  fee_24_h:
-                    type: integer
-                  mark_price:
-                    type: number
-                x-apifox-orders:
-                - symbol
-                - timestamp
-                - position_qty
-                - cost_position
-                - last_sum_unitary_funding
-                - settle_price
-                - average_open_price
-                - pnl_24_h
-                - fee_24_h
-                - mark_price
-                x-apifox-ignore-properties: []
-            min_insurance_fund_initial_margin_ratio:
-              type: number
-            min_insurance_fund_margin_ratio:
-              type: number
-            margin_ratio:
-              type: integer
-            total_collateral_value:
-              type: number
-            balance:
-              type: number
-            free_collateral:
-              type: number
-            total_account_value:
-              type: number
-            total_pnl_24_h:
-              type: integer
-          x-apifox-orders:
-          - rows
-          - min_insurance_fund_initial_margin_ratio
-          - min_insurance_fund_margin_ratio
-          - margin_ratio
-          - total_collateral_value
-          - balance
-          - free_collateral
-          - total_account_value
-          - total_pnl_24_h
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_15_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -6278,186 +5320,7 @@ components:
         s:
           type: string
         d:
-          required:
-          - accountManager
-          - accountSummaryRow
-          - durations
-          - orderCustomFields
-          - orderHistoryCustomFields
-          - positionCustomFields
-          - pullingInterval
-          type: object
-          properties:
-            accountSummaryRow:
-              type: array
-              items:
-                required:
-                - id
-                - title
-                type: object
-                properties:
-                  id:
-                    type: string
-                  title:
-                    type: string
-                x-apifox-orders:
-                - id
-                - title
-                x-apifox-ignore-properties: []
-            accountManager:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  title:
-                    type: string
-                  columns:
-                    type: array
-                    items:
-                      required:
-                      - id
-                      - title
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        title:
-                          type: string
-                      x-apifox-orders:
-                      - id
-                      - title
-                      x-apifox-ignore-properties: []
-                x-apifox-orders:
-                - id
-                - title
-                - columns
-                x-apifox-ignore-properties: []
-            durations:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  title:
-                    type: string
-                  hasDatePicker:
-                    type: boolean
-                  hasTimePicker:
-                    type: boolean
-                  default:
-                    type: boolean
-                  supportedOrderTypes:
-                    type: array
-                    items:
-                      type: string
-                x-apifox-orders:
-                - id
-                - title
-                - hasDatePicker
-                - hasTimePicker
-                - default
-                - supportedOrderTypes
-                x-apifox-ignore-properties: []
-            orderCustomFields:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  title:
-                    type: string
-                  tooltip:
-                    type: string
-                  alignment:
-                    type: string
-                x-apifox-orders:
-                - id
-                - title
-                - tooltip
-                - alignment
-                x-apifox-ignore-properties: []
-            orderHistoryCustomFields:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  title:
-                    type: string
-                  tooltip:
-                    type: string
-                  alignment:
-                    type: string
-                x-apifox-orders:
-                - id
-                - title
-                - tooltip
-                - alignment
-                x-apifox-ignore-properties: []
-            positionCustomFields:
-              type: array
-              items:
-                required:
-                - alignment
-                - id
-                - title
-                - tooltip
-                type: object
-                properties:
-                  id:
-                    type: string
-                  title:
-                    type: string
-                  tooltip:
-                    type: string
-                  alignment:
-                    type: string
-                x-apifox-orders:
-                - id
-                - title
-                - tooltip
-                - alignment
-                x-apifox-ignore-properties: []
-            pullingInterval:
-              required:
-              - accountManager
-              - balances
-              - orders
-              - positions
-              - quotes
-              type: object
-              properties:
-                quotes:
-                  type: integer
-                orders:
-                  type: integer
-                positions:
-                  type: integer
-                accountManager:
-                  type: integer
-                balances:
-                  type: integer
-              x-apifox-orders:
-              - quotes
-              - orders
-              - positions
-              - accountManager
-              - balances
-              x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - accountSummaryRow
-          - accountManager
-          - durations
-          - orderCustomFields
-          - orderHistoryCustomFields
-          - positionCustomFields
-          - pullingInterval
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_16_d'
       x-apifox-orders:
       - s
       - d
@@ -6740,20 +5603,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - msg
-          - status
-          type: object
-          properties:
-            status:
-              type: integer
-              description: status = 2 means exchange is under maintenance
-            msg:
-              type: string
-          x-apifox-orders:
-          - status
-          - msg
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_19_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -6771,15 +5621,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - available_futures_leverage
-          type: object
-          properties:
-            available_futures_leverage:
-              type: string
-          x-apifox-orders:
-          - available_futures_leverage
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_20_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -6795,114 +5637,7 @@ components:
       type: object
       properties:
         data:
-          required:
-          - current_margin_ratio_with_orders
-          - free_collateral
-          - initial_margin_ratio
-          - initial_margin_ratio_with_orders
-          - maintenance_margin_ratio
-          - maintenance_margin_ratio_with_orders
-          - margin_ratio
-          - open_margin_ratio
-          - rows
-          - total_collateral_value
-          - total_pnl_24_h
-          type: object
-          properties:
-            current_margin_ratio_with_orders:
-              type: number
-            free_collateral:
-              type: number
-            initial_margin_ratio:
-              type: number
-            initial_margin_ratio_with_orders:
-              type: number
-            maintenance_margin_ratio:
-              type: number
-            maintenance_margin_ratio_with_orders:
-              type: number
-            margin_ratio:
-              type: number
-            open_margin_ratio:
-              type: number
-            rows:
-              type: array
-              items:
-                type: object
-                properties:
-                  IMR_withdraw_orders:
-                    type: number
-                  MMR_with_orders:
-                    type: number
-                  average_open_price:
-                    type: number
-                  cost_position:
-                    type: number
-                  est_liq_price:
-                    type: number
-                  fee_24_h:
-                    type: integer
-                  imr:
-                    type: number
-                  last_sum_unitary_funding:
-                    type: number
-                  mark_price:
-                    type: number
-                  mmr:
-                    type: number
-                  pending_long_qty:
-                    type: integer
-                  pending_short_qty:
-                    type: integer
-                  pnl_24_h:
-                    type: integer
-                  position_qty:
-                    type: integer
-                  settle_price:
-                    type: number
-                  symbol:
-                    type: string
-                  timestamp:
-                    type: integer
-                  unsettled_pnl:
-                    type: number
-                x-apifox-orders:
-                - IMR_withdraw_orders
-                - MMR_with_orders
-                - average_open_price
-                - cost_position
-                - est_liq_price
-                - fee_24_h
-                - imr
-                - last_sum_unitary_funding
-                - mark_price
-                - mmr
-                - pending_long_qty
-                - pending_short_qty
-                - pnl_24_h
-                - position_qty
-                - settle_price
-                - symbol
-                - timestamp
-                - unsettled_pnl
-                x-apifox-ignore-properties: []
-            total_collateral_value:
-              type: number
-            total_pnl_24_h:
-              type: integer
-          x-apifox-orders:
-          - current_margin_ratio_with_orders
-          - free_collateral
-          - initial_margin_ratio
-          - initial_margin_ratio_with_orders
-          - maintenance_margin_ratio
-          - maintenance_margin_ratio_with_orders
-          - margin_ratio
-          - open_margin_ratio
-          - rows
-          - total_collateral_value
-          - total_pnl_24_h
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_21_data'
         success:
           type: boolean
         timestamp:
@@ -6920,83 +5655,7 @@ components:
       type: object
       properties:
         data:
-          required:
-          - IMR_withdraw_orders
-          - MMR_with_orders
-          - average_open_price
-          - cost_position
-          - est_liq_price
-          - fee_24_h
-          - imr
-          - last_sum_unitary_funding
-          - mark_price
-          - mmr
-          - pending_long_qty
-          - pending_short_qty
-          - pnl_24_h
-          - position_qty
-          - settle_price
-          - symbol
-          - timestamp
-          - unsettled_pnl
-          type: object
-          properties:
-            IMR_withdraw_orders:
-              type: number
-            MMR_with_orders:
-              type: number
-            average_open_price:
-              type: number
-            cost_position:
-              type: number
-            est_liq_price:
-              type: integer
-            fee_24_h:
-              type: integer
-            imr:
-              type: number
-            last_sum_unitary_funding:
-              type: number
-            mark_price:
-              type: number
-            mmr:
-              type: number
-            pending_long_qty:
-              type: integer
-            pending_short_qty:
-              type: integer
-            pnl_24_h:
-              type: integer
-            position_qty:
-              type: integer
-            settle_price:
-              type: number
-            symbol:
-              type: string
-            timestamp:
-              type: integer
-            unsettled_pnl:
-              type: number
-          x-apifox-orders:
-          - IMR_withdraw_orders
-          - MMR_with_orders
-          - average_open_price
-          - cost_position
-          - est_liq_price
-          - fee_24_h
-          - imr
-          - last_sum_unitary_funding
-          - mark_price
-          - mmr
-          - pending_long_qty
-          - pending_short_qty
-          - pnl_24_h
-          - position_qty
-          - settle_price
-          - symbol
-          - timestamp
-          - unsettled_pnl
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_22_data'
         success:
           type: boolean
         timestamp:
@@ -7016,64 +5675,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - meta
-          - rows
-          type: object
-          properties:
-            rows:
-              type: array
-              items:
-                type: object
-                properties:
-                  symbol:
-                    type: string
-                  funding_rate:
-                    type: number
-                  mark_price:
-                    type: number
-                  funding_fee:
-                    type: number
-                  payment_type:
-                    type: string
-                  status:
-                    type: string
-                  created_time:
-                    type: number
-                  updated_time:
-                    type: number
-                x-apifox-orders:
-                - symbol
-                - funding_rate
-                - mark_price
-                - funding_fee
-                - payment_type
-                - status
-                - created_time
-                - updated_time
-                x-apifox-ignore-properties: []
-            meta:
-              required:
-              - current_page
-              - records_per_page
-              - total
-              type: object
-              properties:
-                total:
-                  type: number
-                records_per_page:
-                  type: number
-                current_page:
-                  type: number
-              x-apifox-orders:
-              - total
-              - records_per_page
-              - current_page
-              x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - rows
-          - meta
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_23_data'
         timestamp:
           type: number
       x-apifox-orders:
@@ -7089,75 +5691,7 @@ components:
       type: object
       properties:
         data:
-          required:
-          - meta
-          - rows
-          type: object
-          properties:
-            meta:
-              required:
-              - current_page
-              - records_per_page
-              - total
-              type: object
-              properties:
-                current_page:
-                  type: integer
-                records_per_page:
-                  type: integer
-                total:
-                  type: integer
-              x-apifox-orders:
-              - current_page
-              - records_per_page
-              - total
-              x-apifox-ignore-properties: []
-            rows:
-              type: array
-              items:
-                type: object
-                properties:
-                  liquidation_id:
-                    type: integer
-                  positions_by_perp:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        abs_liquidator_fee:
-                          type: number
-                        cost_position_transfer:
-                          type: number
-                        liquidator_fee:
-                          type: number
-                        position_qty:
-                          type: number
-                        symbol:
-                          type: string
-                        transfer_price:
-                          type: number
-                      x-apifox-orders:
-                      - abs_liquidator_fee
-                      - cost_position_transfer
-                      - liquidator_fee
-                      - position_qty
-                      - symbol
-                      - transfer_price
-                      x-apifox-ignore-properties: []
-                  timestamp:
-                    type: number
-                  type:
-                    type: string
-                x-apifox-orders:
-                - liquidation_id
-                - positions_by_perp
-                - timestamp
-                - type
-                x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - meta
-          - rows
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_24_data'
         success:
           type: boolean
         timestamp:
@@ -7209,78 +5743,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - meta
-          - rows
-          type: object
-          properties:
-            meta:
-              required:
-              - current_page
-              - records_per_page
-              - total
-              type: object
-              properties:
-                total:
-                  type: integer
-                records_per_page:
-                  type: integer
-                current_page:
-                  type: integer
-              x-apifox-orders:
-              - total
-              - records_per_page
-              - current_page
-              x-apifox-ignore-properties: []
-            rows:
-              type: array
-              items:
-                type: object
-                properties:
-                  liquidation_id:
-                    type: number
-                  timestamp:
-                    type: number
-                  transfer_amount_to_insurance_fund:
-                    type: number
-                  positions_by_perp:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        symbol:
-                          type: string
-                        position_qty:
-                          type: number
-                        cost_position_transfer:
-                          type: number
-                        transfer_price:
-                          type: number
-                        liquidator_fee:
-                          type: number
-                        insurance_fund_fee:
-                          type: number
-                        abs_liquidation_fee:
-                          type: number
-                      x-apifox-orders:
-                      - symbol
-                      - position_qty
-                      - cost_position_transfer
-                      - transfer_price
-                      - liquidator_fee
-                      - insurance_fund_fee
-                      - abs_liquidation_fee
-                      x-apifox-ignore-properties: []
-                x-apifox-orders:
-                - liquidation_id
-                - timestamp
-                - transfer_amount_to_insurance_fund
-                - positions_by_perp
-                x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - meta
-          - rows
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_26_data'
         timestamp:
           type: number
       x-apifox-orders:
@@ -7328,51 +5791,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - liquidation_id
-          - positions_by_perp
-          - timestamp
-          - type
-          type: object
-          properties:
-            liquidation_id:
-              type: integer
-            timestamp:
-              type: integer
-            type:
-              type: string
-              description: OR "claim"
-            positions_by_perp:
-              type: array
-              items:
-                type: object
-                properties:
-                  symbol:
-                    type: string
-                  position_qty:
-                    type: number
-                  cost_position_transfer:
-                    type: integer
-                  transfer_price:
-                    type: number
-                  liquidator_fee:
-                    type: number
-                  abs_liquidator_fee:
-                    type: integer
-                x-apifox-orders:
-                - symbol
-                - position_qty
-                - cost_position_transfer
-                - transfer_price
-                - liquidator_fee
-                - abs_liquidator_fee
-                x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - liquidation_id
-          - timestamp
-          - type
-          - positions_by_perp
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_27_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -7445,64 +5864,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - rows
-          - status
-          type: object
-          properties:
-            rows:
-              type: array
-              items:
-                required:
-                - client_order_id
-                - error_message
-                - order_amount
-                - order_id
-                - order_price
-                - order_quantity
-                - order_type
-                - success
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  order_id:
-                    type: integer
-                    nullable: true
-                  client_order_id:
-                    type: string
-                    nullable: true
-                  order_type:
-                    type: string
-                    nullable: true
-                  order_price:
-                    type: number
-                    nullable: true
-                  order_quantity:
-                    type: number
-                    nullable: true
-                  order_amount:
-                    type: number
-                    nullable: true
-                  error_message:
-                    type: string
-                    nullable: true
-                x-apifox-orders:
-                - success
-                - order_id
-                - client_order_id
-                - order_type
-                - order_price
-                - order_quantity
-                - order_amount
-                - error_message
-                x-apifox-ignore-properties: []
-            status:
-              type: string
-          x-apifox-orders:
-          - rows
-          - status
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_28_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -7571,39 +5933,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - broker_id
-          - client_order_id
-          - order_amount
-          - order_id
-          - order_price
-          - order_quantity
-          - order_type
-          type: object
-          properties:
-            order_id:
-              type: number
-            client_order_id:
-              type: string
-            order_type:
-              type: string
-            order_price:
-              type: number
-            order_quantity:
-              type: number
-            broker_id:
-              type: string
-            order_amount:
-              type: number
-          x-apifox-orders:
-          - order_id
-          - client_order_id
-          - order_type
-          - order_price
-          - order_quantity
-          - broker_id
-          - order_amount
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_29_data'
         timestamp:
           type: number
       x-apifox-orders:
@@ -7621,15 +5951,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - status
-          type: object
-          properties:
-            status:
-              type: string
-          x-apifox-orders:
-          - status
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_30_data'
         timestamp:
           type: number
       x-apifox-orders:
@@ -7647,90 +5969,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - amount
-          - average_executed_price
-          - broker_id
-          - broker_name
-          - client_order_id
-          - created_time
-          - executed
-          - fee_asset
-          - order_id
-          - price
-          - quantity
-          - side
-          - status
-          - symbol
-          - total_fee
-          - type
-          - updated_time
-          - user_id
-          - visible
-          type: object
-          properties:
-            order_id:
-              type: number
-            user_id:
-              type: number
-            price:
-              type: number
-            type:
-              type: string
-            quantity:
-              type: number
-            amount:
-              type: number
-              nullable: true
-            executed:
-              type: number
-            visible:
-              type: number
-            symbol:
-              type: string
-            side:
-              type: string
-            status:
-              type: string
-              description: NEW / FILLED / PARTIAL_FILLED / CANCELLED
-            total_fee:
-              type: number
-            fee_asset:
-              type: string
-            client_order_id:
-              type: number
-              nullable: true
-            average_executed_price:
-              type: number
-            broker_id:
-              type: string
-            broker_name:
-              type: string
-            created_time:
-              type: number
-            updated_time:
-              type: number
-          x-apifox-orders:
-          - order_id
-          - user_id
-          - price
-          - type
-          - quantity
-          - amount
-          - executed
-          - visible
-          - symbol
-          - side
-          - status
-          - total_fee
-          - fee_asset
-          - client_order_id
-          - average_executed_price
-          - broker_id
-          - broker_name
-          - created_time
-          - updated_time
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_31_data'
         timestamp:
           type: number
       x-apifox-orders:
@@ -7748,92 +5987,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - amount
-          - average_executed_price
-          - broker_id
-          - broker_name
-          - client_order_id
-          - created_time
-          - executed
-          - fee_asset
-          - order_id
-          - price
-          - quantity
-          - reduce_only
-          - side
-          - status
-          - symbol
-          - total_fee
-          - type
-          - updated_time
-          - user_id
-          - visible
-          type: object
-          properties:
-            order_id:
-              type: integer
-            user_id:
-              type: integer
-            price:
-              type: number
-            type:
-              type: string
-            quantity:
-              type: number
-            amount:
-              type: number
-            executed:
-              type: number
-            visible:
-              type: number
-            symbol:
-              type: string
-            side:
-              type: string
-            status:
-              type: string
-              description: NEW / FILLED / PARTIAL_FILLED / CANCELLED
-            total_fee:
-              type: number
-            fee_asset:
-              type: string
-            client_order_id:
-              type: string
-            average_executed_price:
-              type: number
-            broker_id:
-              type: string
-            broker_name:
-              type: string
-            created_time:
-              type: integer
-            updated_time:
-              type: integer
-            reduce_only:
-              type: boolean
-          x-apifox-orders:
-          - order_id
-          - user_id
-          - price
-          - type
-          - quantity
-          - amount
-          - executed
-          - visible
-          - symbol
-          - side
-          - status
-          - total_fee
-          - fee_asset
-          - client_order_id
-          - average_executed_price
-          - broker_id
-          - broker_name
-          - created_time
-          - updated_time
-          - reduce_only
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_32_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -7851,70 +6005,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - meta
-          - rows
-          type: object
-          properties:
-            meta:
-              required:
-              - current_page
-              - records_per_page
-              - total
-              type: object
-              properties:
-                records_per_page:
-                  type: integer
-                current_page:
-                  type: integer
-                total:
-                  type: integer
-              x-apifox-orders:
-              - records_per_page
-              - current_page
-              - total
-              x-apifox-ignore-properties: []
-            rows:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  symbol:
-                    type: string
-                  fee:
-                    type: number
-                  fee_asset:
-                    type: string
-                  side:
-                    type: string
-                  order_id:
-                    type: integer
-                  executed_price:
-                    type: integer
-                  executed_quantity:
-                    type: number
-                  executed_timestamp:
-                    type: integer
-                  is_maker:
-                    type: integer
-                x-apifox-orders:
-                - id
-                - symbol
-                - fee
-                - fee_asset
-                - side
-                - order_id
-                - executed_price
-                - executed_quantity
-                - executed_timestamp
-                - is_maker
-                x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - meta
-          - rows
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_33_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -7932,42 +6023,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - holding
-          type: object
-          properties:
-            holding:
-              type: array
-              items:
-                required:
-                - frozen
-                - holding
-                - pending_short
-                - token
-                - updated_time
-                type: object
-                properties:
-                  updated_time:
-                    type: integer
-                    description: Unix epoch time in milliseconds
-                  token:
-                    type: string
-                  holding:
-                    type: number
-                  frozen:
-                    type: integer
-                  pending_short:
-                    type: integer
-                x-apifox-orders:
-                - updated_time
-                - token
-                - holding
-                - frozen
-                - pending_short
-                x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - holding
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_34_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -7985,96 +6041,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - account_id
-          - account_mode
-          - email
-          - futures_maker_fee_rate
-          - futures_taker_fee_rate
-          - futures_tier
-          - imr_factor
-          - maintenance_cancel_orders
-          - maker_fee_rate
-          - max_leverage
-          - max_notional
-          - taker_fee_rate
-          - tier
-          type: object
-          properties:
-            account_id:
-              type: string
-            email:
-              type: string
-            account_mode:
-              type: string
-              description: account mode
-            max_leverage:
-              type: integer
-            tier:
-              type: string
-            futures_tier:
-              type: string
-            taker_fee_rate:
-              type: integer
-            maker_fee_rate:
-              type: integer
-            futures_taker_fee_rate:
-              type: integer
-            futures_maker_fee_rate:
-              type: integer
-            imr_factor:
-              required:
-              - PERP_BTC_USDC
-              - PERP_ETH_USDC
-              - PERP_NEAR_USDC
-              type: object
-              properties:
-                PERP_BTC_USDC:
-                  type: number
-                PERP_ETH_USDC:
-                  type: number
-                PERP_NEAR_USDC:
-                  type: number
-              x-apifox-orders:
-              - PERP_BTC_USDC
-              - PERP_ETH_USDC
-              - PERP_NEAR_USDC
-              x-apifox-ignore-properties: []
-            max_notional:
-              required:
-              - PERP_BTC_USDC
-              - PERP_ETH_USDC
-              - PERP_NEAR_USDC
-              type: object
-              properties:
-                PERP_BTC_USDC:
-                  type: integer
-                PERP_ETH_USDC:
-                  type: integer
-                PERP_NEAR_USDC:
-                  type: integer
-              x-apifox-orders:
-              - PERP_BTC_USDC
-              - PERP_ETH_USDC
-              - PERP_NEAR_USDC
-              x-apifox-ignore-properties: []
-            maintenance_cancel_orders:
-              type: boolean
-          x-apifox-orders:
-          - account_id
-          - email
-          - account_mode
-          - max_leverage
-          - tier
-          - futures_tier
-          - taker_fee_rate
-          - maker_fee_rate
-          - futures_taker_fee_rate
-          - futures_maker_fee_rate
-          - imr_factor
-          - max_notional
-          - maintenance_cancel_orders
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_35_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -8092,100 +6059,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - meta
-          - rows
-          type: object
-          properties:
-            meta:
-              required:
-              - current_page
-              - records_per_page
-              - total
-              type: object
-              properties:
-                records_per_page:
-                  type: integer
-                current_page:
-                  type: integer
-                total:
-                  type: integer
-              x-apifox-orders:
-              - records_per_page
-              - current_page
-              - total
-              x-apifox-ignore-properties: []
-            rows:
-              type: array
-              items:
-                type: object
-                properties:
-                  order_id:
-                    type: number
-                  user_id:
-                    type: number
-                  price:
-                    type: number
-                  type:
-                    type: string
-                  quantity:
-                    type: number
-                  amount:
-                    type: number
-                    nullable: true
-                  executed:
-                    type: number
-                  visible:
-                    type: number
-                  symbol:
-                    type: string
-                  side:
-                    type: string
-                  status:
-                    type: string
-                    description: NEW / FILLED / PARTIAL_FILLED / CANCELLED
-                  total_fee:
-                    type: number
-                  fee_asset:
-                    type: string
-                  client_order_id:
-                    type: number
-                    nullable: true
-                  average_executed_price:
-                    type: number
-                  broker_id:
-                    type: string
-                  broker_name:
-                    type: string
-                  created_time:
-                    type: number
-                  updated_time:
-                    type: number
-                x-apifox-orders:
-                - order_id
-                - user_id
-                - price
-                - type
-                - quantity
-                - amount
-                - executed
-                - visible
-                - symbol
-                - side
-                - status
-                - total_fee
-                - fee_asset
-                - client_order_id
-                - average_executed_price
-                - broker_id
-                - broker_name
-                - created_time
-                - updated_time
-                x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - meta
-          - rows
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_36_data'
         timestamp:
           type: number
       x-apifox-orders:
@@ -8203,47 +6077,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - days_since_registration
-          - fees_paid_last_30_days
-          - perp_fees_paid_last_30_days
-          - perp_trading_volume_last_24_hours
-          - perp_trading_volume_last_30_days
-          - perp_trading_volume_ytd
-          - trading_volume_last_24_hours
-          - trading_volume_last_30_days
-          - trading_volume_ytd
-          type: object
-          properties:
-            days_since_registration:
-              type: integer
-            fees_paid_last_30_days:
-              type: integer
-            perp_fees_paid_last_30_days:
-              type: integer
-            perp_trading_volume_last_24_hours:
-              type: integer
-            perp_trading_volume_last_30_days:
-              type: integer
-            perp_trading_volume_ytd:
-              type: integer
-            trading_volume_last_24_hours:
-              type: integer
-            trading_volume_last_30_days:
-              type: integer
-            trading_volume_ytd:
-              type: number
-          x-apifox-orders:
-          - days_since_registration
-          - fees_paid_last_30_days
-          - perp_fees_paid_last_30_days
-          - perp_trading_volume_last_24_hours
-          - perp_trading_volume_last_30_days
-          - perp_trading_volume_ytd
-          - trading_volume_last_24_hours
-          - trading_volume_last_30_days
-          - trading_volume_ytd
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_37_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -8304,46 +6138,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - liquidation_id
-          - positions_by_perp
-          - timestamp
-          type: object
-          properties:
-            liquidation_id:
-              type: integer
-            timestamp:
-              type: integer
-            positions_by_perp:
-              type: array
-              items:
-                type: object
-                properties:
-                  symbol:
-                    type: string
-                  position_qty:
-                    type: number
-                  cost_position_transfer:
-                    type: integer
-                  transfer_price:
-                    type: number
-                  liquidator_fee:
-                    type: number
-                  abs_liquidator_fee:
-                    type: integer
-                x-apifox-orders:
-                - symbol
-                - position_qty
-                - cost_position_transfer
-                - transfer_price
-                - liquidator_fee
-                - abs_liquidator_fee
-                x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - liquidation_id
-          - timestamp
-          - positions_by_perp
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_38_data'
       x-apifox-orders:
       - success
       - data
@@ -8402,60 +6197,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - rows
-          type: object
-          properties:
-            rows:
-              type: array
-              items:
-                required:
-                - client_order_id
-                - error_message
-                - order_amount
-                - order_id
-                - order_price
-                - order_quantity
-                - order_type
-                - success
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  order_id:
-                    type: integer
-                    nullable: true
-                  client_order_id:
-                    type: string
-                    nullable: true
-                  order_type:
-                    type: string
-                    nullable: true
-                  order_price:
-                    type: number
-                    nullable: true
-                  order_quantity:
-                    type: number
-                    nullable: true
-                  order_amount:
-                    type: number
-                    nullable: true
-                  error_message:
-                    type: string
-                    nullable: true
-                x-apifox-orders:
-                - success
-                - order_id
-                - client_order_id
-                - order_type
-                - order_price
-                - order_quantity
-                - order_amount
-                - error_message
-                x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - rows
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_39_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -8473,15 +6215,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - status
-          type: object
-          properties:
-            status:
-              type: string
-          x-apifox-orders:
-          - status
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_30_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -8498,52 +6232,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - asks
-          - bids
-          - timestamp
-          type: object
-          properties:
-            asks:
-              type: array
-              items:
-                required:
-                - price
-                - quantity
-                type: object
-                properties:
-                  price:
-                    type: number
-                  quantity:
-                    type: number
-                x-apifox-orders:
-                - price
-                - quantity
-                x-apifox-ignore-properties: []
-            bids:
-              type: array
-              items:
-                required:
-                - price
-                - quantity
-                type: object
-                properties:
-                  price:
-                    type: number
-                  quantity:
-                    type: number
-                x-apifox-orders:
-                - price
-                - quantity
-                x-apifox-ignore-properties: []
-            timestamp:
-              type: integer
-              description: Unix epoch time in milliseconds
-          x-apifox-orders:
-          - asks
-          - bids
-          - timestamp
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_41_data'
       x-apifox-orders:
       - success
       - data
@@ -8557,62 +6246,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - rows
-          type: object
-          properties:
-            rows:
-              type: array
-              items:
-                required:
-                - amount
-                - close
-                - end_timestamp
-                - high
-                - low
-                - open
-                - start_timestamp
-                - symbol
-                - type
-                - volume
-                type: object
-                properties:
-                  open:
-                    type: number
-                  close:
-                    type: number
-                  low:
-                    type: number
-                  high:
-                    type: number
-                  volume:
-                    type: number
-                  amount:
-                    type: number
-                  symbol:
-                    type: string
-                  type:
-                    type: string
-                  start_timestamp:
-                    type: integer
-                    description: Unix epoch time in milliseconds
-                  end_timestamp:
-                    type: integer
-                x-apifox-orders:
-                - open
-                - close
-                - low
-                - high
-                - volume
-                - amount
-                - symbol
-                - type
-                - start_timestamp
-                - end_timestamp
-                x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - rows
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_42_data'
       x-apifox-orders:
       - success
       - data
@@ -8627,50 +6261,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - rows
-          type: object
-          properties:
-            rows:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  symbol:
-                    type: string
-                  fee:
-                    type: number
-                  fee_asset:
-                    type: string
-                  side:
-                    type: string
-                  order_id:
-                    type: integer
-                  executed_price:
-                    type: number
-                  executed_quantity:
-                    type: number
-                  executed_timestamp:
-                    type: integer
-                  is_maker:
-                    type: integer
-                x-apifox-orders:
-                - id
-                - symbol
-                - fee
-                - fee_asset
-                - side
-                - order_id
-                - executed_price
-                - executed_quantity
-                - executed_timestamp
-                - is_maker
-                x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - rows
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_43_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -8688,51 +6279,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - executed_price
-          - executed_quantity
-          - executed_timestamp
-          - fee
-          - fee_asset
-          - id
-          - is_maker
-          - order_id
-          - side
-          - symbol
-          type: object
-          properties:
-            id:
-              type: integer
-            symbol:
-              type: string
-            fee:
-              type: number
-            fee_asset:
-              type: string
-            side:
-              type: string
-            order_id:
-              type: integer
-            executed_price:
-              type: integer
-            executed_quantity:
-              type: number
-            executed_timestamp:
-              type: integer
-            is_maker:
-              type: integer
-          x-apifox-orders:
-          - id
-          - symbol
-          - fee
-          - fee_asset
-          - side
-          - order_id
-          - executed_price
-          - executed_quantity
-          - executed_timestamp
-          - is_maker
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_44_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -8760,15 +6307,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - success_alter
-          type: object
-          properties:
-            success_alter:
-              type: string
-          x-apifox-orders:
-          - success_alter
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_45_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -8788,34 +6327,7 @@ components:
         data:
           type: array
           items:
-            type: object
-            properties:
-              spot_volume_ytd:
-                type: number
-              perp_volume_ytd:
-                type: number
-              spot_volume_ltd:
-                type: number
-              perp_volume_ltd:
-                type: number
-              spot_volume_last_7_days:
-                type: integer
-              perp_volume_last_7_days:
-                type: number
-              spot_volume_last_30_days:
-                type: number
-              perp_volume_last_30_days:
-                type: number
-            x-apifox-orders:
-            - spot_volume_ytd
-            - perp_volume_ytd
-            - spot_volume_ltd
-            - perp_volume_ltd
-            - spot_volume_last_7_days
-            - perp_volume_last_7_days
-            - spot_volume_last_30_days
-            - perp_volume_last_30_days
-            x-apifox-ignore-properties: []
+            $ref: '#/components/schemas/inline_response_200_46_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -8835,27 +6347,7 @@ components:
         data:
           type: array
           items:
-            required:
-            - broker_id
-            - date
-            - perp_volume
-            - spot_volume
-            type: object
-            properties:
-              date:
-                type: string
-              broker_id:
-                type: string
-              spot_volume:
-                type: number
-              perp_volume:
-                type: number
-            x-apifox-orders:
-            - date
-            - broker_id
-            - spot_volume
-            - perp_volume
-            x-apifox-ignore-properties: []
+            $ref: '#/components/schemas/inline_response_200_47_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -8873,83 +6365,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - meta
-          - rows
-          type: object
-          properties:
-            meta:
-              required:
-              - current_page
-              - records_per_page
-              - total
-              type: object
-              properties:
-                total:
-                  type: integer
-                records_per_page:
-                  type: integer
-                current_page:
-                  type: integer
-              x-apifox-orders:
-              - total
-              - records_per_page
-              - current_page
-              x-apifox-ignore-properties: []
-            rows:
-              type: array
-              items:
-                required:
-                - id
-                - new_balance
-                - old_balance
-                - requested_time
-                - settled_amount
-                - settled_time
-                - symbols
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  old_balance:
-                    type: integer
-                  new_balance:
-                    type: integer
-                  settled_amount:
-                    type: integer
-                  requested_time:
-                    type: string
-                  settled_time:
-                    type: string
-                  symbols:
-                    type: array
-                    items:
-                      required:
-                      - settled_amount
-                      - symbol
-                      type: object
-                      properties:
-                        symbol:
-                          type: string
-                        settled_amount:
-                          type: integer
-                      x-apifox-orders:
-                      - symbol
-                      - settled_amount
-                      x-apifox-ignore-properties: []
-                x-apifox-orders:
-                - id
-                - old_balance
-                - new_balance
-                - settled_amount
-                - requested_time
-                - settled_time
-                - symbols
-                x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - meta
-          - rows
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_48_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -8969,35 +6385,7 @@ components:
         data:
           type: array
           items:
-            required:
-            - ip_restricion_status
-            - ip_restriction_list
-            - key_status
-            - orderly_key
-            - trading_key
-            type: object
-            properties:
-              orderly_key:
-                type: string
-              trading_key:
-                type: string
-              key_status:
-                type: string
-                description: ACTIVE / REMOVING / REMOVED
-              ip_restriction_list:
-                type: array
-                items:
-                  type: string
-              ip_restricion_status:
-                type: string
-                description: ALLOW_RESTRICTION_LIST / ALLOW_ALL_IPS / DISALLOW_ALL_IPS
-            x-apifox-orders:
-            - orderly_key
-            - trading_key
-            - key_status
-            - ip_restriction_list
-            - ip_restricion_status
-            x-apifox-ignore-properties: []
+            $ref: '#/components/schemas/inline_response_200_49_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -9015,25 +6403,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - account_id
-          - ip_restriction_list
-          - trading_key
-          type: object
-          properties:
-            account_id:
-              type: string
-            trading_key:
-              type: string
-            ip_restriction_list:
-              type: array
-              items:
-                type: string
-          x-apifox-orders:
-          - account_id
-          - trading_key
-          - ip_restriction_list
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_50_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -9065,116 +6435,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - meta
-          - rows
-          type: object
-          properties:
-            rows:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  message_type:
-                    type: string
-                    description: ORDER_FILLED
-                  email:
-                    type: string
-                    description: email if bounded to the account
-                  application_id:
-                    type: string
-                    description: wallet address of the account
-                  title:
-                    type: string
-                  type:
-                    type: string
-                    description: TRADE / SYSTEM
-                  level:
-                    type: string
-                    description: GENERAL / IMPORTANT
-                  content_summary:
-                    type: string
-                  content:
-                    type: string
-                  content_raw:
-                    required:
-                    - executed_price
-                    - executed_quantity
-                    - executed_timestamp
-                    - order_id
-                    - side
-                    - symbol
-                    type: object
-                    properties:
-                      symbol:
-                        type: string
-                      side:
-                        type: string
-                      order_id:
-                        type: integer
-                      executed_price:
-                        type: number
-                      executed_quantity:
-                        type: number
-                      executed_timestamp:
-                        type: integer
-                    description: below example is for a ORDER_FILLED content
-                    x-apifox-orders:
-                    - symbol
-                    - side
-                    - order_id
-                    - executed_price
-                    - executed_quantity
-                    - executed_timestamp
-                    x-apifox-ignore-properties: []
-                  mark_read:
-                    type: integer
-                  operator:
-                    type: integer
-                  created_time:
-                    type: integer
-                  announcement_id:
-                    type: integer
-                x-apifox-orders:
-                - id
-                - message_type
-                - email
-                - application_id
-                - title
-                - type
-                - level
-                - content_summary
-                - content
-                - content_raw
-                - mark_read
-                - operator
-                - created_time
-                - announcement_id
-                x-apifox-ignore-properties: []
-            meta:
-              required:
-              - current_page
-              - records_per_page
-              - total
-              type: object
-              properties:
-                total:
-                  type: integer
-                records_per_page:
-                  type: integer
-                current_page:
-                  type: integer
-              x-apifox-orders:
-              - total
-              - records_per_page
-              - current_page
-              x-apifox-ignore-properties: []
-          x-apifox-orders:
-          - rows
-          - meta
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_52_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -9192,21 +6453,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - count
-          - lastId
-          type: object
-          properties:
-            count:
-              type: integer
-              description: number of unread messages
-            lastId:
-              type: integer
-              description: the id of the last unread message
-          x-apifox-orders:
-          - count
-          - lastId
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_53_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -9216,24 +6463,6 @@ components:
       x-apifox-ignore-properties: []
     inline_response_200_54:
       required:
-      - accounid
-      - nonce
-      - success
-      type: object
-      properties:
-        success:
-          type: boolean
-        accounid:
-          type: string
-        nonce:
-          type: number
-      x-apifox-orders:
-      - success
-      - accounid
-      - nonce
-      x-apifox-ignore-properties: []
-    inline_response_200_55:
-      required:
       - data
       - success
       - timestamp
@@ -9242,17 +6471,7 @@ components:
         success:
           type: boolean
         data:
-          required:
-          - ip_restriction_list
-          type: object
-          properties:
-            ip_restriction_list:
-              type: array
-              items:
-                type: string
-          x-apifox-orders:
-          - ip_restriction_list
-          x-apifox-ignore-properties: []
+          $ref: '#/components/schemas/inline_response_200_54_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -9260,3 +6479,1879 @@ components:
       - data
       - timestamp
       x-apifox-ignore-properties: []
+    inline_response_200_data_rows:
+      required:
+      - 24h_amount
+      - 24h_close
+      - 24h_high
+      - 24h_low
+      - 24h_open
+      - 24h_volume
+      - est_funding_rate
+      - index_price
+      - last_funding_rate
+      - mark_price
+      - next_funding_time
+      - open_interest
+      - sum_unitary_funding
+      - symbol
+      type: object
+      properties:
+        symbol:
+          type: string
+        index_price:
+          type: number
+        mark_price:
+          type: integer
+        sum_unitary_funding:
+          type: number
+        est_funding_rate:
+          type: number
+        last_funding_rate:
+          type: number
+        next_funding_time:
+          type: integer
+        open_interest:
+          type: string
+        "24h_open":
+          type: integer
+        "24h_close":
+          type: integer
+        "24h_high":
+          type: integer
+        "24h_low":
+          type: integer
+        "24h_amount":
+          type: integer
+        "24h_volume":
+          type: integer
+    inline_response_200_data:
+      required:
+      - rows
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_data_rows'
+    inline_response_200_1_data_rows:
+      required:
+      - maker_fee
+      - taker_fee
+      - tier
+      - volume_max
+      - volume_min
+      type: object
+      properties:
+        tier:
+          type: string
+        maker_fee:
+          type: string
+        taker_fee:
+          type: string
+        volume_min:
+          type: integer
+          description: minimum 30-day volume (in USDC) required for eligibility of this tier
+        volume_max:
+          type: integer
+          nullable: true
+    inline_response_200_1_data:
+      required:
+      - rows
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_1_data_rows'
+    inline_response_200_2_data_rows:
+      required:
+      - maker_fee
+      - taker_fee
+      - tier
+      - volume_max
+      - volume_min
+      type: object
+      properties:
+        tier:
+          type: string
+        maker_fee:
+          type: string
+        taker_fee:
+          type: string
+        volume_min:
+          type: integer
+        volume_max:
+          type: integer
+          nullable: true
+    inline_response_200_2_data:
+      required:
+      - rows
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_2_data_rows'
+    inline_response_200_3_data_rows:
+      required:
+      - executed_price
+      - executed_quantity
+      - executed_timestamp
+      - side
+      - symbol
+      type: object
+      properties:
+        symbol:
+          type: string
+        side:
+          type: string
+        executed_price:
+          type: number
+        executed_quantity:
+          type: number
+        executed_timestamp:
+          type: number
+    inline_response_200_3_data:
+      required:
+      - rows
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_3_data_rows'
+    inline_response_200_4_data:
+      type: object
+      properties:
+        perp_volume_ytd:
+          type: number
+        perp_volume_ltd:
+          type: number
+        perp_volume_last_7_days:
+          type: number
+        perp_volume_last_30_days:
+          type: number
+    inline_response_200_5_data_rows:
+      required:
+      - broker_id
+      - broker_name
+      type: object
+      properties:
+        broker_id:
+          type: string
+        broker_name:
+          type: string
+    inline_response_200_5_data:
+      required:
+      - rows
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_5_data_rows'
+    inline_response_200_6_data_rows:
+      required:
+      - est_funding_rate
+      - est_funding_rate_timestamp
+      - last_funding_rate
+      - last_funding_rate_timestamp
+      - next_funding_time
+      - sum_unitary_funding
+      - symbol
+      type: object
+      properties:
+        symbol:
+          type: string
+        est_funding_rate:
+          type: integer
+        est_funding_rate_timestamp:
+          type: integer
+        last_funding_rate:
+          type: number
+        last_funding_rate_timestamp:
+          type: integer
+        next_funding_time:
+          type: integer
+        sum_unitary_funding:
+          type: number
+    inline_response_200_6_data:
+      required:
+      - rows
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_6_data_rows'
+    inline_response_200_8_data_rows:
+      required:
+      - funding_rate
+      - funding_rate_timestamp
+      - next_funding_time
+      - symbol
+      type: object
+      properties:
+        symbol:
+          type: string
+        funding_rate:
+          type: number
+        funding_rate_timestamp:
+          type: integer
+        next_funding_time:
+          type: integer
+    inline_response_200_8_data_meta:
+      required:
+      - current_page
+      - records_per_page
+      - total
+      type: object
+      properties:
+        total:
+          type: integer
+        records_per_page:
+          type: integer
+        current_page:
+          type: integer
+    inline_response_200_8_data:
+      required:
+      - meta
+      - rows
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_8_data_rows'
+        meta:
+          $ref: '#/components/schemas/inline_response_200_8_data_meta'
+    inline_response_200_9_data:
+      required:
+      - 24h_amount
+      - 24h_close
+      - 24h_high
+      - 24h_low
+      - 24h_open
+      - 24h_volume
+      - est_funding_rate
+      - index_price
+      - last_funding_rate
+      - mark_price
+      - next_funding_time
+      - open_interest
+      - sum_unitary_funding
+      - symbol
+      type: object
+      properties:
+        symbol:
+          type: string
+        index_price:
+          type: number
+        mark_price:
+          type: number
+        sum_unitary_funding:
+          type: number
+        est_funding_rate:
+          type: number
+        last_funding_rate:
+          type: number
+        next_funding_time:
+          type: number
+        open_interest:
+          type: string
+        "24h_open":
+          type: number
+        "24h_close":
+          type: number
+        "24h_high":
+          type: number
+        "24h_low":
+          type: number
+        "24h_volume":
+          type: number
+        "24h_amount":
+          type: number
+    inline_response_200_10_data_positions_by_perp:
+      type: object
+      properties:
+        symbol:
+          type: string
+        position_qty:
+          type: number
+        liquidator_fee:
+          type: number
+    inline_response_200_10_data_rows:
+      type: object
+      properties:
+        timestamp:
+          type: integer
+        type:
+          type: string
+        liquidation_id:
+          type: integer
+        positions_by_perp:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_10_data_positions_by_perp'
+    inline_response_200_10_data:
+      required:
+      - meta
+      - rows
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_10_data_rows'
+        meta:
+          $ref: '#/components/schemas/inline_response_200_8_data_meta'
+    inline_response_200_11_data_positions_by_perp:
+      required:
+      - abs_insurance_fund_fee
+      - abs_liquidation_fee
+      - cost_position_transfer
+      - insurance_fund_fee
+      - liquidator_fee
+      - position_qty
+      - symbol
+      - transfer_price
+      type: object
+      properties:
+        symbol:
+          type: string
+        position_qty:
+          type: integer
+        liquidator_fee:
+          type: number
+        cost_position_transfer:
+          type: integer
+        transfer_price:
+          type: integer
+        insurance_fund_fee:
+          type: number
+        abs_liquidation_fee:
+          type: number
+        abs_insurance_fund_fee:
+          type: integer
+        abs_liquidator_fee:
+          type: integer
+    inline_response_200_11_data_rows:
+      required:
+      - liquidation_id
+      - positions_by_perp
+      - timestamp
+      - transfer_amount_to_insurance_fund
+      type: object
+      properties:
+        timestamp:
+          type: integer
+        liquidation_id:
+          type: integer
+        transfer_amount_to_insurance_fund:
+          type: integer
+        positions_by_perp:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_11_data_positions_by_perp'
+        type:
+          type: string
+    inline_response_200_11_data:
+      required:
+      - meta
+      - rows
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_11_data_rows'
+        meta:
+          $ref: '#/components/schemas/inline_response_200_8_data_meta'
+    inline_response_200_12_data:
+      required:
+      - base_imr
+      - base_max
+      - base_min
+      - base_mmr
+      - base_tick
+      - cap_funding
+      - claim_insurance_fund_discount
+      - created_time
+      - floor_funding
+      - funding_period
+      - interest_rate
+      - liquidator_fee
+      - min_notional
+      - price_range
+      - price_scope
+      - quote_max
+      - quote_min
+      - quote_tick
+      - std_liquidation_fee
+      - symbol
+      - updated_time
+      type: object
+      properties:
+        symbol:
+          type: string
+        quote_min:
+          type: integer
+        quote_max:
+          type: integer
+        quote_tick:
+          type: number
+        base_min:
+          type: number
+        base_max:
+          type: integer
+        base_tick:
+          type: number
+        min_notional:
+          type: integer
+        price_range:
+          type: number
+        price_scope:
+          type: number
+        std_liquidation_fee:
+          type: number
+        liquidator_fee:
+          type: number
+        claim_insurance_fund_discount:
+          type: number
+        funding_period:
+          type: integer
+        cap_funding:
+          type: number
+        floor_funding:
+          type: number
+        interest_rate:
+          type: number
+        created_time:
+          type: integer
+        updated_time:
+          type: integer
+        base_mmr:
+          type: number
+        base_imr:
+          type: number
+    inline_response_200_13_data_rows:
+      type: object
+      properties:
+        token:
+          type: string
+          description: name of token
+        token_account_id:
+          type: string
+          description: token account address on NEAR chain
+        decimals:
+          type: integer
+          description: precision of the token
+        minimum_increment:
+          type: number
+          description: minimum increment of the token on Orderly
+    inline_response_200_13_data:
+      required:
+      - rows
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_13_data_rows'
+    inline_response_200_14_data_rows:
+      type: object
+      properties:
+        symbol:
+          type: string
+        quote_min:
+          type: integer
+        quote_max:
+          type: integer
+        quote_tick:
+          type: number
+        base_min:
+          type: number
+        base_max:
+          type: integer
+        base_tick:
+          type: number
+        min_notional:
+          type: integer
+        price_range:
+          type: number
+        price_scope:
+          type: number
+        std_liquidation_fee:
+          type: number
+        liquidator_fee:
+          type: number
+        claim_insurance_fund_discount:
+          type: number
+        funding_period:
+          type: integer
+        cap_funding:
+          type: number
+        floor_funding:
+          type: number
+        interest_rate:
+          type: number
+        created_time:
+          type: integer
+        updated_time:
+          type: integer
+        imr_factor:
+          type: number
+        base_mmr:
+          type: number
+        base_imr:
+          type: number
+    inline_response_200_14_data:
+      required:
+      - rows
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_14_data_rows'
+    inline_response_200_15_data_rows:
+      required:
+      - average_open_price
+      - cost_position
+      - fee_24_h
+      - last_sum_unitary_funding
+      - mark_price
+      - pnl_24_h
+      - position_qty
+      - settle_price
+      - symbol
+      - timestamp
+      type: object
+      properties:
+        symbol:
+          type: string
+        timestamp:
+          type: integer
+        position_qty:
+          type: integer
+        cost_position:
+          type: number
+        last_sum_unitary_funding:
+          type: number
+        settle_price:
+          type: integer
+        average_open_price:
+          type: integer
+        pnl_24_h:
+          type: integer
+        fee_24_h:
+          type: integer
+        mark_price:
+          type: number
+    inline_response_200_15_data:
+      required:
+      - balance
+      - free_collateral
+      - margin_ratio
+      - min_insurance_fund_initial_margin_ratio
+      - min_insurance_fund_margin_ratio
+      - rows
+      - total_account_value
+      - total_collateral_value
+      - total_pnl_24_h
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_15_data_rows'
+        min_insurance_fund_initial_margin_ratio:
+          type: number
+        min_insurance_fund_margin_ratio:
+          type: number
+        margin_ratio:
+          type: integer
+        total_collateral_value:
+          type: number
+        balance:
+          type: number
+        free_collateral:
+          type: number
+        total_account_value:
+          type: number
+        total_pnl_24_h:
+          type: integer
+    inline_response_200_16_d_accountSummaryRow:
+      required:
+      - id
+      - title
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+    inline_response_200_16_d_accountManager:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_16_d_accountSummaryRow'
+    inline_response_200_16_d_durations:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        hasDatePicker:
+          type: boolean
+        hasTimePicker:
+          type: boolean
+        default:
+          type: boolean
+        supportedOrderTypes:
+          type: array
+          items:
+            type: string
+    inline_response_200_16_d_orderCustomFields:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        tooltip:
+          type: string
+        alignment:
+          type: string
+    inline_response_200_16_d_positionCustomFields:
+      required:
+      - alignment
+      - id
+      - title
+      - tooltip
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        tooltip:
+          type: string
+        alignment:
+          type: string
+    inline_response_200_16_d_pullingInterval:
+      required:
+      - accountManager
+      - balances
+      - orders
+      - positions
+      - quotes
+      type: object
+      properties:
+        quotes:
+          type: integer
+        orders:
+          type: integer
+        positions:
+          type: integer
+        accountManager:
+          type: integer
+        balances:
+          type: integer
+    inline_response_200_16_d:
+      required:
+      - accountManager
+      - accountSummaryRow
+      - durations
+      - orderCustomFields
+      - orderHistoryCustomFields
+      - positionCustomFields
+      - pullingInterval
+      type: object
+      properties:
+        accountSummaryRow:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_16_d_accountSummaryRow'
+        accountManager:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_16_d_accountManager'
+        durations:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_16_d_durations'
+        orderCustomFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_16_d_orderCustomFields'
+        orderHistoryCustomFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_16_d_orderCustomFields'
+        positionCustomFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_16_d_positionCustomFields'
+        pullingInterval:
+          $ref: '#/components/schemas/inline_response_200_16_d_pullingInterval'
+    inline_response_200_19_data:
+      required:
+      - msg
+      - status
+      type: object
+      properties:
+        status:
+          type: integer
+          description: status = 2 means exchange is under maintenance
+        msg:
+          type: string
+    inline_response_200_20_data:
+      required:
+      - available_futures_leverage
+      type: object
+      properties:
+        available_futures_leverage:
+          type: string
+    inline_response_200_21_data_rows:
+      type: object
+      properties:
+        IMR_withdraw_orders:
+          type: number
+        MMR_with_orders:
+          type: number
+        average_open_price:
+          type: number
+        cost_position:
+          type: number
+        est_liq_price:
+          type: number
+        fee_24_h:
+          type: integer
+        imr:
+          type: number
+        last_sum_unitary_funding:
+          type: number
+        mark_price:
+          type: number
+        mmr:
+          type: number
+        pending_long_qty:
+          type: integer
+        pending_short_qty:
+          type: integer
+        pnl_24_h:
+          type: integer
+        position_qty:
+          type: integer
+        settle_price:
+          type: number
+        symbol:
+          type: string
+        timestamp:
+          type: integer
+        unsettled_pnl:
+          type: number
+    inline_response_200_21_data:
+      required:
+      - current_margin_ratio_with_orders
+      - free_collateral
+      - initial_margin_ratio
+      - initial_margin_ratio_with_orders
+      - maintenance_margin_ratio
+      - maintenance_margin_ratio_with_orders
+      - margin_ratio
+      - open_margin_ratio
+      - rows
+      - total_collateral_value
+      - total_pnl_24_h
+      type: object
+      properties:
+        current_margin_ratio_with_orders:
+          type: number
+        free_collateral:
+          type: number
+        initial_margin_ratio:
+          type: number
+        initial_margin_ratio_with_orders:
+          type: number
+        maintenance_margin_ratio:
+          type: number
+        maintenance_margin_ratio_with_orders:
+          type: number
+        margin_ratio:
+          type: number
+        open_margin_ratio:
+          type: number
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_21_data_rows'
+        total_collateral_value:
+          type: number
+        total_pnl_24_h:
+          type: integer
+    inline_response_200_22_data:
+      required:
+      - IMR_withdraw_orders
+      - MMR_with_orders
+      - average_open_price
+      - cost_position
+      - est_liq_price
+      - fee_24_h
+      - imr
+      - last_sum_unitary_funding
+      - mark_price
+      - mmr
+      - pending_long_qty
+      - pending_short_qty
+      - pnl_24_h
+      - position_qty
+      - settle_price
+      - symbol
+      - timestamp
+      - unsettled_pnl
+      type: object
+      properties:
+        IMR_withdraw_orders:
+          type: number
+        MMR_with_orders:
+          type: number
+        average_open_price:
+          type: number
+        cost_position:
+          type: number
+        est_liq_price:
+          type: integer
+        fee_24_h:
+          type: integer
+        imr:
+          type: number
+        last_sum_unitary_funding:
+          type: number
+        mark_price:
+          type: number
+        mmr:
+          type: number
+        pending_long_qty:
+          type: integer
+        pending_short_qty:
+          type: integer
+        pnl_24_h:
+          type: integer
+        position_qty:
+          type: integer
+        settle_price:
+          type: number
+        symbol:
+          type: string
+        timestamp:
+          type: integer
+        unsettled_pnl:
+          type: number
+    inline_response_200_23_data_rows:
+      type: object
+      properties:
+        symbol:
+          type: string
+        funding_rate:
+          type: number
+        mark_price:
+          type: number
+        funding_fee:
+          type: number
+        payment_type:
+          type: string
+        status:
+          type: string
+        created_time:
+          type: number
+        updated_time:
+          type: number
+    inline_response_200_23_data_meta:
+      required:
+      - current_page
+      - records_per_page
+      - total
+      type: object
+      properties:
+        total:
+          type: number
+        records_per_page:
+          type: number
+        current_page:
+          type: number
+    inline_response_200_23_data:
+      required:
+      - meta
+      - rows
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_23_data_rows'
+        meta:
+          $ref: '#/components/schemas/inline_response_200_23_data_meta'
+    inline_response_200_24_data_meta:
+      required:
+      - current_page
+      - records_per_page
+      - total
+      type: object
+      properties:
+        current_page:
+          type: integer
+        records_per_page:
+          type: integer
+        total:
+          type: integer
+    inline_response_200_24_data_positions_by_perp:
+      type: object
+      properties:
+        abs_liquidator_fee:
+          type: number
+        cost_position_transfer:
+          type: number
+        liquidator_fee:
+          type: number
+        position_qty:
+          type: number
+        symbol:
+          type: string
+        transfer_price:
+          type: number
+    inline_response_200_24_data_rows:
+      type: object
+      properties:
+        liquidation_id:
+          type: integer
+        positions_by_perp:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_24_data_positions_by_perp'
+        timestamp:
+          type: number
+        type:
+          type: string
+    inline_response_200_24_data:
+      required:
+      - meta
+      - rows
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/inline_response_200_24_data_meta'
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_24_data_rows'
+    inline_response_200_26_data_positions_by_perp:
+      type: object
+      properties:
+        symbol:
+          type: string
+        position_qty:
+          type: number
+        cost_position_transfer:
+          type: number
+        transfer_price:
+          type: number
+        liquidator_fee:
+          type: number
+        insurance_fund_fee:
+          type: number
+        abs_liquidation_fee:
+          type: number
+    inline_response_200_26_data_rows:
+      type: object
+      properties:
+        liquidation_id:
+          type: number
+        timestamp:
+          type: number
+        transfer_amount_to_insurance_fund:
+          type: number
+        positions_by_perp:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_26_data_positions_by_perp'
+    inline_response_200_26_data:
+      required:
+      - meta
+      - rows
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/inline_response_200_8_data_meta'
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_26_data_rows'
+    inline_response_200_27_data_positions_by_perp:
+      type: object
+      properties:
+        symbol:
+          type: string
+        position_qty:
+          type: number
+        cost_position_transfer:
+          type: integer
+        transfer_price:
+          type: number
+        liquidator_fee:
+          type: number
+        abs_liquidator_fee:
+          type: integer
+    inline_response_200_27_data:
+      required:
+      - liquidation_id
+      - positions_by_perp
+      - timestamp
+      - type
+      type: object
+      properties:
+        liquidation_id:
+          type: integer
+        timestamp:
+          type: integer
+        type:
+          type: string
+          description: OR "claim"
+        positions_by_perp:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_27_data_positions_by_perp'
+    inline_response_200_28_data_rows:
+      required:
+      - client_order_id
+      - error_message
+      - order_amount
+      - order_id
+      - order_price
+      - order_quantity
+      - order_type
+      - success
+      type: object
+      properties:
+        success:
+          type: boolean
+        order_id:
+          type: integer
+          nullable: true
+        client_order_id:
+          type: string
+          nullable: true
+        order_type:
+          type: string
+          nullable: true
+        order_price:
+          type: number
+          nullable: true
+        order_quantity:
+          type: number
+          nullable: true
+        order_amount:
+          type: number
+          nullable: true
+        error_message:
+          type: string
+          nullable: true
+    inline_response_200_28_data:
+      required:
+      - rows
+      - status
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_28_data_rows'
+        status:
+          type: string
+    inline_response_200_29_data:
+      required:
+      - broker_id
+      - client_order_id
+      - order_amount
+      - order_id
+      - order_price
+      - order_quantity
+      - order_type
+      type: object
+      properties:
+        order_id:
+          type: number
+        client_order_id:
+          type: string
+        order_type:
+          type: string
+        order_price:
+          type: number
+        order_quantity:
+          type: number
+        broker_id:
+          type: string
+        order_amount:
+          type: number
+    inline_response_200_30_data:
+      required:
+      - status
+      type: object
+      properties:
+        status:
+          type: string
+    inline_response_200_31_data:
+      required:
+      - amount
+      - average_executed_price
+      - broker_id
+      - broker_name
+      - client_order_id
+      - created_time
+      - executed
+      - fee_asset
+      - order_id
+      - price
+      - quantity
+      - side
+      - status
+      - symbol
+      - total_fee
+      - type
+      - updated_time
+      - user_id
+      - visible
+      type: object
+      properties:
+        order_id:
+          type: number
+        user_id:
+          type: number
+        price:
+          type: number
+        type:
+          type: string
+        quantity:
+          type: number
+        amount:
+          type: number
+          nullable: true
+        executed:
+          type: number
+        visible:
+          type: number
+        symbol:
+          type: string
+        side:
+          type: string
+        status:
+          type: string
+          description: NEW / FILLED / PARTIAL_FILLED / CANCELLED
+        total_fee:
+          type: number
+        fee_asset:
+          type: string
+        client_order_id:
+          type: number
+          nullable: true
+        average_executed_price:
+          type: number
+        broker_id:
+          type: string
+        broker_name:
+          type: string
+        created_time:
+          type: number
+        updated_time:
+          type: number
+    inline_response_200_32_data:
+      required:
+      - amount
+      - average_executed_price
+      - broker_id
+      - broker_name
+      - client_order_id
+      - created_time
+      - executed
+      - fee_asset
+      - order_id
+      - price
+      - quantity
+      - reduce_only
+      - side
+      - status
+      - symbol
+      - total_fee
+      - type
+      - updated_time
+      - user_id
+      - visible
+      type: object
+      properties:
+        order_id:
+          type: integer
+        user_id:
+          type: integer
+        price:
+          type: number
+        type:
+          type: string
+        quantity:
+          type: number
+        amount:
+          type: number
+        executed:
+          type: number
+        visible:
+          type: number
+        symbol:
+          type: string
+        side:
+          type: string
+        status:
+          type: string
+          description: NEW / FILLED / PARTIAL_FILLED / CANCELLED
+        total_fee:
+          type: number
+        fee_asset:
+          type: string
+        client_order_id:
+          type: string
+        average_executed_price:
+          type: number
+        broker_id:
+          type: string
+        broker_name:
+          type: string
+        created_time:
+          type: integer
+        updated_time:
+          type: integer
+        reduce_only:
+          type: boolean
+    inline_response_200_33_data_meta:
+      required:
+      - current_page
+      - records_per_page
+      - total
+      type: object
+      properties:
+        records_per_page:
+          type: integer
+        current_page:
+          type: integer
+        total:
+          type: integer
+    inline_response_200_33_data_rows:
+      type: object
+      properties:
+        id:
+          type: integer
+        symbol:
+          type: string
+        fee:
+          type: number
+        fee_asset:
+          type: string
+        side:
+          type: string
+        order_id:
+          type: integer
+        executed_price:
+          type: integer
+        executed_quantity:
+          type: number
+        executed_timestamp:
+          type: integer
+        is_maker:
+          type: integer
+    inline_response_200_33_data:
+      required:
+      - meta
+      - rows
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/inline_response_200_33_data_meta'
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_33_data_rows'
+    inline_response_200_34_data_holding:
+      required:
+      - frozen
+      - holding
+      - pending_short
+      - token
+      - updated_time
+      type: object
+      properties:
+        updated_time:
+          type: integer
+          description: Unix epoch time in milliseconds
+        token:
+          type: string
+        holding:
+          type: number
+        frozen:
+          type: integer
+        pending_short:
+          type: integer
+    inline_response_200_34_data:
+      required:
+      - holding
+      type: object
+      properties:
+        holding:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_34_data_holding'
+    inline_response_200_35_data_imr_factor:
+      required:
+      - PERP_BTC_USDC
+      - PERP_ETH_USDC
+      - PERP_NEAR_USDC
+      type: object
+      properties:
+        PERP_BTC_USDC:
+          type: number
+        PERP_ETH_USDC:
+          type: number
+        PERP_NEAR_USDC:
+          type: number
+    inline_response_200_35_data_max_notional:
+      required:
+      - PERP_BTC_USDC
+      - PERP_ETH_USDC
+      - PERP_NEAR_USDC
+      type: object
+      properties:
+        PERP_BTC_USDC:
+          type: integer
+        PERP_ETH_USDC:
+          type: integer
+        PERP_NEAR_USDC:
+          type: integer
+    inline_response_200_35_data:
+      required:
+      - account_id
+      - account_mode
+      - email
+      - futures_maker_fee_rate
+      - futures_taker_fee_rate
+      - futures_tier
+      - imr_factor
+      - maintenance_cancel_orders
+      - maker_fee_rate
+      - max_leverage
+      - max_notional
+      - taker_fee_rate
+      - tier
+      type: object
+      properties:
+        account_id:
+          type: string
+        email:
+          type: string
+        account_mode:
+          type: string
+          description: account mode
+        max_leverage:
+          type: integer
+        tier:
+          type: string
+        futures_tier:
+          type: string
+        taker_fee_rate:
+          type: integer
+        maker_fee_rate:
+          type: integer
+        futures_taker_fee_rate:
+          type: integer
+        futures_maker_fee_rate:
+          type: integer
+        imr_factor:
+          $ref: '#/components/schemas/inline_response_200_35_data_imr_factor'
+        max_notional:
+          $ref: '#/components/schemas/inline_response_200_35_data_max_notional'
+        maintenance_cancel_orders:
+          type: boolean
+    inline_response_200_36_data_rows:
+      type: object
+      properties:
+        order_id:
+          type: number
+        user_id:
+          type: number
+        price:
+          type: number
+        type:
+          type: string
+        quantity:
+          type: number
+        amount:
+          type: number
+          nullable: true
+        executed:
+          type: number
+        visible:
+          type: number
+        symbol:
+          type: string
+        side:
+          type: string
+        status:
+          type: string
+          description: NEW / FILLED / PARTIAL_FILLED / CANCELLED
+        total_fee:
+          type: number
+        fee_asset:
+          type: string
+        client_order_id:
+          type: number
+          nullable: true
+        average_executed_price:
+          type: number
+        broker_id:
+          type: string
+        broker_name:
+          type: string
+        created_time:
+          type: number
+        updated_time:
+          type: number
+    inline_response_200_36_data:
+      required:
+      - meta
+      - rows
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/inline_response_200_33_data_meta'
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_36_data_rows'
+    inline_response_200_37_data:
+      required:
+      - days_since_registration
+      - fees_paid_last_30_days
+      - perp_fees_paid_last_30_days
+      - perp_trading_volume_last_24_hours
+      - perp_trading_volume_last_30_days
+      - perp_trading_volume_ytd
+      - trading_volume_last_24_hours
+      - trading_volume_last_30_days
+      - trading_volume_ytd
+      type: object
+      properties:
+        days_since_registration:
+          type: integer
+        fees_paid_last_30_days:
+          type: integer
+        perp_fees_paid_last_30_days:
+          type: integer
+        perp_trading_volume_last_24_hours:
+          type: integer
+        perp_trading_volume_last_30_days:
+          type: integer
+        perp_trading_volume_ytd:
+          type: integer
+        trading_volume_last_24_hours:
+          type: integer
+        trading_volume_last_30_days:
+          type: integer
+        trading_volume_ytd:
+          type: number
+    inline_response_200_38_data:
+      required:
+      - liquidation_id
+      - positions_by_perp
+      - timestamp
+      type: object
+      properties:
+        liquidation_id:
+          type: integer
+        timestamp:
+          type: integer
+        positions_by_perp:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_27_data_positions_by_perp'
+    inline_response_200_39_data:
+      required:
+      - rows
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_28_data_rows'
+    inline_response_200_41_data_asks:
+      required:
+      - price
+      - quantity
+      type: object
+      properties:
+        price:
+          type: number
+        quantity:
+          type: number
+    inline_response_200_41_data:
+      required:
+      - asks
+      - bids
+      - timestamp
+      type: object
+      properties:
+        asks:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_41_data_asks'
+        bids:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_41_data_asks'
+        timestamp:
+          type: integer
+          description: Unix epoch time in milliseconds
+    inline_response_200_42_data_rows:
+      required:
+      - amount
+      - close
+      - end_timestamp
+      - high
+      - low
+      - open
+      - start_timestamp
+      - symbol
+      - type
+      - volume
+      type: object
+      properties:
+        open:
+          type: number
+        close:
+          type: number
+        low:
+          type: number
+        high:
+          type: number
+        volume:
+          type: number
+        amount:
+          type: number
+        symbol:
+          type: string
+        type:
+          type: string
+        start_timestamp:
+          type: integer
+          description: Unix epoch time in milliseconds
+        end_timestamp:
+          type: integer
+    inline_response_200_42_data:
+      required:
+      - rows
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_42_data_rows'
+    inline_response_200_43_data_rows:
+      type: object
+      properties:
+        id:
+          type: integer
+        symbol:
+          type: string
+        fee:
+          type: number
+        fee_asset:
+          type: string
+        side:
+          type: string
+        order_id:
+          type: integer
+        executed_price:
+          type: number
+        executed_quantity:
+          type: number
+        executed_timestamp:
+          type: integer
+        is_maker:
+          type: integer
+    inline_response_200_43_data:
+      required:
+      - rows
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_43_data_rows'
+    inline_response_200_44_data:
+      required:
+      - executed_price
+      - executed_quantity
+      - executed_timestamp
+      - fee
+      - fee_asset
+      - id
+      - is_maker
+      - order_id
+      - side
+      - symbol
+      type: object
+      properties:
+        id:
+          type: integer
+        symbol:
+          type: string
+        fee:
+          type: number
+        fee_asset:
+          type: string
+        side:
+          type: string
+        order_id:
+          type: integer
+        executed_price:
+          type: integer
+        executed_quantity:
+          type: number
+        executed_timestamp:
+          type: integer
+        is_maker:
+          type: integer
+    inline_response_200_45_data:
+      required:
+      - success_alter
+      type: object
+      properties:
+        success_alter:
+          type: string
+    inline_response_200_46_data:
+      type: object
+      properties:
+        spot_volume_ytd:
+          type: number
+        perp_volume_ytd:
+          type: number
+        spot_volume_ltd:
+          type: number
+        perp_volume_ltd:
+          type: number
+        spot_volume_last_7_days:
+          type: integer
+        perp_volume_last_7_days:
+          type: number
+        spot_volume_last_30_days:
+          type: number
+        perp_volume_last_30_days:
+          type: number
+    inline_response_200_47_data:
+      required:
+      - broker_id
+      - date
+      - perp_volume
+      - spot_volume
+      type: object
+      properties:
+        date:
+          type: string
+        broker_id:
+          type: string
+        spot_volume:
+          type: number
+        perp_volume:
+          type: number
+    inline_response_200_48_data_symbols:
+      required:
+      - settled_amount
+      - symbol
+      type: object
+      properties:
+        symbol:
+          type: string
+        settled_amount:
+          type: integer
+    inline_response_200_48_data_rows:
+      required:
+      - id
+      - new_balance
+      - old_balance
+      - requested_time
+      - settled_amount
+      - settled_time
+      - symbols
+      type: object
+      properties:
+        id:
+          type: integer
+        old_balance:
+          type: integer
+        new_balance:
+          type: integer
+        settled_amount:
+          type: integer
+        requested_time:
+          type: string
+        settled_time:
+          type: string
+        symbols:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_48_data_symbols'
+    inline_response_200_48_data:
+      required:
+      - meta
+      - rows
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/inline_response_200_8_data_meta'
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_48_data_rows'
+    inline_response_200_49_data:
+      required:
+      - ip_restricion_status
+      - ip_restriction_list
+      - key_status
+      - orderly_key
+      - trading_key
+      type: object
+      properties:
+        orderly_key:
+          type: string
+        trading_key:
+          type: string
+        key_status:
+          type: string
+          description: ACTIVE / REMOVING / REMOVED
+        ip_restriction_list:
+          type: array
+          items:
+            type: string
+        ip_restricion_status:
+          type: string
+          description: ALLOW_RESTRICTION_LIST / ALLOW_ALL_IPS / DISALLOW_ALL_IPS
+    inline_response_200_50_data:
+      required:
+      - account_id
+      - ip_restriction_list
+      - trading_key
+      type: object
+      properties:
+        account_id:
+          type: string
+        trading_key:
+          type: string
+        ip_restriction_list:
+          type: array
+          items:
+            type: string
+    inline_response_200_52_data_content_raw:
+      required:
+      - executed_price
+      - executed_quantity
+      - executed_timestamp
+      - order_id
+      - side
+      - symbol
+      type: object
+      properties:
+        symbol:
+          type: string
+        side:
+          type: string
+        order_id:
+          type: integer
+        executed_price:
+          type: number
+        executed_quantity:
+          type: number
+        executed_timestamp:
+          type: integer
+      description: below example is for a ORDER_FILLED content
+    inline_response_200_52_data_rows:
+      type: object
+      properties:
+        id:
+          type: integer
+        message_type:
+          type: string
+          description: ORDER_FILLED
+        email:
+          type: string
+          description: email if bounded to the account
+        application_id:
+          type: string
+          description: wallet address of the account
+        title:
+          type: string
+        type:
+          type: string
+          description: TRADE / SYSTEM
+        level:
+          type: string
+          description: GENERAL / IMPORTANT
+        content_summary:
+          type: string
+        content:
+          type: string
+        content_raw:
+          $ref: '#/components/schemas/inline_response_200_52_data_content_raw'
+        mark_read:
+          type: integer
+        operator:
+          type: integer
+        created_time:
+          type: integer
+        announcement_id:
+          type: integer
+    inline_response_200_52_data:
+      required:
+      - meta
+      - rows
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_52_data_rows'
+        meta:
+          $ref: '#/components/schemas/inline_response_200_8_data_meta'
+    inline_response_200_53_data:
+      required:
+      - count
+      - lastId
+      type: object
+      properties:
+        count:
+          type: integer
+          description: number of unread messages
+        lastId:
+          type: integer
+          description: the id of the last unread message
+    inline_response_200_54_data:
+      required:
+      - ip_restriction_list
+      type: object
+      properties:
+        ip_restriction_list:
+          type: array
+          items:
+            type: string
