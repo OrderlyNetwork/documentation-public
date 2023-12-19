@@ -4074,6 +4074,18 @@ components:
         type: string
       example: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
   schemas:
+    BasicResponse:
+      required:
+      - success
+      - timestamp
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        timestamp:
+          type: integer
+          example: 1702989203989
     PaginationMeta:
       required:
       - current_page
@@ -4091,295 +4103,231 @@ components:
           type: integer
           example: 1
     inline_response_200:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_1:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_1_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_1_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_2:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_2_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_2_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_3:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_3_data'
-        timestamp:
-          type: number
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_3_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_4:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/inline_response_200_4_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/inline_response_200_4_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_5:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_5_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_5_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_6:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_6_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_6_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_7:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_6_data_rows'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_6_data_rows'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_8:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_8_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_8_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_9:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_9_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_9_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_10:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_10_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_10_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_11:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_11_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_11_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_12:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_12_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_12_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_13:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_13_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_13_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_14:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_14_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_14_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_15:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_15_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_15_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_16:
       required:
       - d
@@ -4663,77 +4611,61 @@ components:
       - wkn
       x-apifox-ignore-properties: []
     inline_response_200_19:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/inline_response_200_19_data'
-        success:
-          type: boolean
-        timestamp:
-          type: number
-      x-apifox-orders:
-      - data
-      - success
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_19_data'
+          x-apifox-orders:
+          - data
+          - success
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_20:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/inline_response_200_20_data'
-        success:
-          type: boolean
-        timestamp:
-          type: number
-      x-apifox-orders:
-      - data
-      - success
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_20_data'
+          x-apifox-orders:
+          - data
+          - success
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_21:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_21_data'
-        timestamp:
-          type: number
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_21_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_22:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/inline_response_200_22_data'
-        success:
-          type: boolean
-        timestamp:
-          type: number
-      x-apifox-orders:
-      - data
-      - success
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_22_data'
+          x-apifox-orders:
+          - data
+          - success
+          - timestamp
+          x-apifox-ignore-properties: []
     client_leverage_body:
       required:
       - leverage
@@ -4746,44 +4678,36 @@ components:
       - leverage
       x-apifox-ignore-properties: []
     inline_response_200_23:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        data:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
           type: object
-          properties: {}
-          x-apifox-orders: []
+          properties:
+            data:
+              type: object
+              properties: {}
+              x-apifox-orders: []
+              x-apifox-ignore-properties: []
+          x-apifox-orders:
+          - data
+          - success
+          - timestamp
           x-apifox-ignore-properties: []
-        success:
-          type: boolean
-        timestamp:
-          type: number
-      x-apifox-orders:
-      - data
-      - success
-      - timestamp
-      x-apifox-ignore-properties: []
     inline_response_200_24:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_24_data'
-        timestamp:
-          type: number
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_24_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     v1liquidation_limit_price:
       required:
       - symbol
@@ -4815,23 +4739,19 @@ components:
       - limit_price
       x-apifox-ignore-properties: []
     inline_response_200_25:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_25_data'
-        timestamp:
-          type: number
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_25_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     v1_order_body:
       required:
       - order_id
@@ -4876,23 +4796,19 @@ components:
       - order_tag
       x-apifox-ignore-properties: []
     inline_response_200_26:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_26_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_26_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     v1_order_body_1:
       required:
       - order_type
@@ -4939,149 +4855,117 @@ components:
       - reduce_only
       x-apifox-ignore-properties: []
     inline_response_200_27:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_27_data'
-        timestamp:
-          type: number
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_27_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_28:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_28_data'
-        timestamp:
-          type: number
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_28_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_29:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_29_data'
-        timestamp:
-          type: number
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_29_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_30:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_30_data'
-        timestamp:
-          type: number
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_30_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_31:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_31_data'
-        timestamp:
-          type: number
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_31_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_32:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_32_data'
-        timestamp:
-          type: number
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_32_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_33:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_33_data'
-        timestamp:
-          type: number
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_33_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_34:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_34_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_34_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_35:
       type: object
       properties:
@@ -5138,73 +5022,60 @@ components:
       - limit_price
       x-apifox-ignore-properties: []
     inline_response_200_36:
-      required:
-      - data
-      - success
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_36_data'
-      x-apifox-orders:
-      - success
-      - data
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_36_data'
+          x-apifox-orders:
+          - success
+          - data
+          x-apifox-ignore-properties: []
     inline_response_200_37:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_37_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_37_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_38:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_38_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_38_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_39:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_39_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_39_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     v1register_account_message:
       required:
       - brokerId
@@ -5246,41 +5117,33 @@ components:
       - userAddress
       x-apifox-ignore-properties: []
     inline_response_200_40:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_40_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_40_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_41:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_41_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_41_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     v1orderly_key_message:
       required:
       - brokerId
@@ -5336,55 +5199,46 @@ components:
       - tag
       x-apifox-ignore-properties: []
     inline_response_200_42:
-      required:
-      - data
-      - success
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_42_data'
-      x-apifox-orders:
-      - success
-      - data
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_42_data'
+          x-apifox-orders:
+          - success
+          - data
+          x-apifox-ignore-properties: []
     inline_response_200_43:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_43_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_43_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_44:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_44_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_44_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     v1_batchorder_body:
       required:
       - order_type
@@ -5433,123 +5287,101 @@ components:
       - order_tag
       x-apifox-ignore-properties: []
     inline_response_200_45:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_45_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_45_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_46:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_28_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_28_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_47:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_47_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_47_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_48:
-      required:
-      - data
-      - success
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_48_data'
-      x-apifox-orders:
-      - success
-      - data
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_48_data'
+          x-apifox-orders:
+          - success
+          - data
+          x-apifox-ignore-properties: []
     inline_response_200_49:
-      required:
-      - data
-      - success
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_49_data'
-      x-apifox-orders:
-      - success
-      - data
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_49_data'
+          x-apifox-orders:
+          - success
+          - data
+          x-apifox-ignore-properties: []
     inline_response_200_50:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_50_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_50_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_51:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_51_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_51_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     client_maintenance_config_body:
       required:
       - maintenance_cancel_order_flag
@@ -5562,79 +5394,63 @@ components:
       - maintenance_cancel_order_flag
       x-apifox-ignore-properties: []
     inline_response_200_52:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_52_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_52_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_53:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/inline_response_200_53_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/inline_response_200_53_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_54:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_54_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_54_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_55:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_55_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_55_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     v1withdraw_request_message:
       required:
       - amount
@@ -5694,19 +5510,21 @@ components:
       - verifyingContract
       x-apifox-ignore-properties: []
     inline_response_200_56:
-      required:
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - success
+          - timestamp
+          type: object
+          properties:
+            success:
+              type: boolean
+            timestamp:
+              type: integer
+          x-apifox-orders:
+          - success
+          - timestamp
+          x-apifox-ignore-properties: []
     v1settle_pnl_message:
       required:
       - brokerId
@@ -5754,151 +5572,119 @@ components:
       - verifyingContract
       x-apifox-ignore-properties: []
     inline_response_200_57:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        timestamp:
-          type: integer
-        data:
-          $ref: '#/components/schemas/inline_response_200_57_data'
-      x-apifox-orders:
-      - success
-      - timestamp
-      - data
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_57_data'
+          x-apifox-orders:
+          - success
+          - timestamp
+          - data
+          x-apifox-ignore-properties: []
     inline_response_200_58:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_58_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_58_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_59:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/inline_response_200_59_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/inline_response_200_59_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_60:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_60_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_60_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_61:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_61_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_61_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_62:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_62_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_62_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_63:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_63_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_63_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_64:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_64_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+          - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/inline_response_200_64_data'
+          x-apifox-orders:
+          - success
+          - data
+          - timestamp
+          x-apifox-ignore-properties: []
     inline_response_200_data_rows:
       required:
       - 24h_amount
