@@ -2141,29 +2141,66 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_35'
-              examples:
-                "1":
-                  summary: Successful examples
-                  value:
-                    success: true
-                    data:
-                      meta:
-                        records_per_page: 25
-                        current_page: 1
-                        total: 150
-                      rows:
-                      - id: "230707030600002"
-                        tx_id: 0x4b0714c63cc7abae72bf68e84e25860b88ca651b7d27dad1e32bf4c027fa5326
-                        side: WITHDRAW
-                        token: USDC
-                        amount: 555
-                        fee: 0
-                        trans_status: FAILED
-                        created_time: 1688699193034
-                        updated_time: 1688699193096
-                        chain_id: "986532"
-                    timestamp: 1580794149000
+                allOf:
+                  - $ref: '#/components/schemas/BasicResponse'
+                  - required:
+                    - data
+                    type: object
+                    properties:
+                      data:
+                        type: object
+                        required:
+                        - meta
+                        - rows
+                        properties:
+                          meta:
+                            $ref: '#/components/schemas/PaginationMeta'
+                          rows:
+                            type: array
+                            items:
+                              type: object
+                              required: 
+                              - id
+                              - tx_id
+                              - side
+                              - token
+                              - amount
+                              - fee
+                              - trans_status
+                              - created_time
+                              - updated_time
+                              - chain_id
+                              properties:
+                                id:
+                                  type: string
+                                  example: "230707030600002"
+                                tx_id:
+                                  type: string
+                                  example: "0x4b0714c63cc7abae72bf68e84e25860b88ca651b7d27dad1e32bf4c027fa5326"
+                                side:
+                                  type: string
+                                  example: "WITHDRAW"
+                                token:
+                                  type: string
+                                  example: "USDC"
+                                amount:
+                                  type: number
+                                  example: 555
+                                fee:
+                                  type: number
+                                  example: 0
+                                trans_status:
+                                  type: string
+                                  example: "FAILED"
+                                created_time:
+                                  type: number
+                                  example: 1688699193034
+                                updated_time:
+                                  type: number
+                                  example: 1688699193096
+                                chain_id:
+                                  type: string
+                                  example: "986532"
       deprecated: false
   /v1/claim_insurance_fund:
     post:
@@ -4503,30 +4540,6 @@ components:
           properties:
             data:
               $ref: '#/components/schemas/inline_response_200_34_data'
-    inline_response_200_35:
-      type: object
-      properties:
-        token:
-          type: string
-          description: 'token name you want to search '
-        side:
-          type: string
-          description: '`DEPOSIT`/`WITHDRAW`  '
-        status:
-          type: string
-          description: '`NEW`/`CONFIRM`/`PROCESSING`/`COMPLETED`/`FAILED` '
-        start_t:
-          type: number
-          description: "start time range that wish to query, noted the time stamp is 13-digits timestamp."
-        end_t:
-          type: number
-          description: "end time range that wish to query, noted the time stamp is 13-digits timestamp."
-        page:
-          type: number
-          description: the page you wish to query.
-        size:
-          type: number
-          description: "the page size you wish to query. (max: 500)"
     v1_claim_insurance_fund_body:
       required:
       - claim_id
