@@ -1410,28 +1410,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_200_22'
-              examples:
-                "1":
-                  summary: Successful examples
-                  value:
-                    data:
-                      meta:
-                        current_page: 1
-                        records_per_page: 25
-                        total: 20
-                      rows:
-                      - liquidation_id: 1728
-                        positions_by_perp:
-                        - abs_liquidator_fee: 1.152279
-                          cost_position_transfer: 65.84448
-                          liquidator_fee: 0.0175
-                          position_qty: 41.6
-                          symbol: PERP_NEAR_USDC
-                          transfer_price: 1.5828
-                        timestamp: 1685154032762
-                        type: liquidated
-                    success: true
-                    timestamp: 1685433339866
+              example:
+                data:
+                  meta:
+                    current_page: 1
+                    records_per_page: 25
+                    total: 20
+                  rows:
+                  - liquidation_id: 1728
+                    positions_by_perp:
+                    - abs_liquidator_fee: 1.152279
+                      cost_position_transfer: 65.84448
+                      liquidator_fee: 0.0175
+                      position_qty: 41.6
+                      symbol: PERP_NEAR_USDC
+                      transfer_price: 1.5828
+                    timestamp: 1685154032762
+                    type: liquidated
+                success: true
+                timestamp: 1685433339866
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -4077,6 +4074,22 @@ components:
         type: string
       example: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
   schemas:
+    PaginationMeta:
+      required:
+      - current_page
+      - records_per_page
+      - total
+      type: object
+      properties:
+        total:
+          type: integer
+          example: 9
+        records_per_page:
+          type: integer
+          example: 25
+        current_page:
+          type: integer
+          example: 1
     inline_response_200:
       required:
       - data
@@ -6108,19 +6121,6 @@ components:
           type: integer
         next_funding_time:
           type: integer
-    inline_response_200_8_data_meta:
-      required:
-      - current_page
-      - records_per_page
-      - total
-      type: object
-      properties:
-        total:
-          type: integer
-        records_per_page:
-          type: integer
-        current_page:
-          type: integer
     inline_response_200_8_data:
       required:
       - meta
@@ -6132,7 +6132,7 @@ components:
           items:
             $ref: '#/components/schemas/inline_response_200_8_data_rows'
         meta:
-          $ref: '#/components/schemas/inline_response_200_8_data_meta'
+          $ref: '#/components/schemas/PaginationMeta'
     inline_response_200_9_data:
       required:
       - 24h_amount
@@ -6212,7 +6212,7 @@ components:
           items:
             $ref: '#/components/schemas/inline_response_200_10_data_rows'
         meta:
-          $ref: '#/components/schemas/inline_response_200_8_data_meta'
+          $ref: '#/components/schemas/PaginationMeta'
     inline_response_200_11_data_positions_by_perp:
       required:
       - abs_insurance_fund_fee
@@ -6274,7 +6274,7 @@ components:
           items:
             $ref: '#/components/schemas/inline_response_200_11_data_rows'
         meta:
-          $ref: '#/components/schemas/inline_response_200_8_data_meta'
+          $ref: '#/components/schemas/PaginationMeta'
     inline_response_200_12_data:
       required:
       - base_imr
@@ -6765,19 +6765,6 @@ components:
           type: number
         updated_time:
           type: number
-    inline_response_200_21_data_meta:
-      required:
-      - current_page
-      - records_per_page
-      - total
-      type: object
-      properties:
-        total:
-          type: number
-        records_per_page:
-          type: number
-        current_page:
-          type: number
     inline_response_200_21_data:
       required:
       - meta
@@ -6789,20 +6776,7 @@ components:
           items:
             $ref: '#/components/schemas/inline_response_200_21_data_rows'
         meta:
-          $ref: '#/components/schemas/inline_response_200_21_data_meta'
-    inline_response_200_22_data_meta:
-      required:
-      - current_page
-      - records_per_page
-      - total
-      type: object
-      properties:
-        current_page:
-          type: integer
-        records_per_page:
-          type: integer
-        total:
-          type: integer
+          $ref: '#/components/schemas/PaginationMeta'
     inline_response_200_22_data_positions_by_perp:
       type: object
       properties:
@@ -6838,7 +6812,7 @@ components:
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/inline_response_200_22_data_meta'
+          $ref: '#/components/schemas/PaginationMeta'
         rows:
           type: array
           items:
@@ -6880,7 +6854,7 @@ components:
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/inline_response_200_8_data_meta'
+          $ref: '#/components/schemas/PaginationMeta'
         rows:
           type: array
           items:
@@ -7062,19 +7036,6 @@ components:
           type: number
         updated_time:
           type: number
-    inline_response_200_30_data_meta:
-      required:
-      - current_page
-      - records_per_page
-      - total
-      type: object
-      properties:
-        records_per_page:
-          type: number
-        current_page:
-          type: number
-        total:
-          type: number
     inline_response_200_30_data_rows:
       type: object
       properties:
@@ -7106,7 +7067,7 @@ components:
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/inline_response_200_30_data_meta'
+          $ref: '#/components/schemas/PaginationMeta'
         rows:
           type: array
           items:
@@ -7191,19 +7152,6 @@ components:
           $ref: '#/components/schemas/inline_response_200_32_data_imr_factor'
         maintenance_cancel_orders:
           type: boolean
-    inline_response_200_33_data_meta:
-      required:
-      - current_page
-      - records_per_page
-      - total
-      type: object
-      properties:
-        records_per_page:
-          type: integer
-        current_page:
-          type: integer
-        total:
-          type: integer
     inline_response_200_33_data_rows:
       type: object
       properties:
@@ -7255,7 +7203,7 @@ components:
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/inline_response_200_33_data_meta'
+          $ref: '#/components/schemas/PaginationMeta'
         rows:
           type: array
           items:
@@ -7702,7 +7650,7 @@ components:
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/inline_response_200_8_data_meta'
+          $ref: '#/components/schemas/PaginationMeta'
         rows:
           type: array
           items:
@@ -7827,7 +7775,7 @@ components:
           items:
             $ref: '#/components/schemas/inline_response_200_62_data_rows'
         meta:
-          $ref: '#/components/schemas/inline_response_200_8_data_meta'
+          $ref: '#/components/schemas/PaginationMeta'
     inline_response_200_63_data:
       required:
       - count
@@ -7841,7 +7789,7 @@ components:
           items:
             $ref: '#/components/schemas/inline_response_200_62_data_rows'
         meta:
-          $ref: '#/components/schemas/inline_response_200_8_data_meta'
+          $ref: '#/components/schemas/PaginationMeta'
         count:
           type: integer
           description: number of unread messages
