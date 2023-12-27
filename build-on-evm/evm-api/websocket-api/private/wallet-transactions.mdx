@@ -1,0 +1,53 @@
+---
+title: "Wallet Transactions"
+---
+
+Push interval: real-time push
+
+```json
+{
+    "id": "clientID3",
+    "topic": "wallet",
+    "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name   | Type   | Required | Description                              |
+| ------ | ------ | -------- | ---------------------------------------- |
+| id     | string | Y        | id generate by client                    |
+| event  | string | Y        | `subscribe`/`unsubscribe`                |
+| topic  | string | Y        | `wallet`                                |
+
+<RequestExample>
+```json Response
+{
+    "id": "clientID3",
+    "event": "subscribe",
+    "success": true,
+    "ts": 1609924478533
+}
+```
+</RequestExample>
+
+<ResponseExample>
+```json Subscribed Message
+{
+    "topic": "wallet",
+    "data": {
+        "id": "230707030600002",
+        "tx_id": "0x4b0714c63cc7abae72bf68e84e25860b88ca651b7d27dad1e32bf4c027fa5326",
+        "side": "WITHDRAW", // DEPOSIT / WITHDRAW
+        "token": "USDC",
+        "amount": 555,
+        "fee": 0,
+        "trans_status": "FAILED", // PENDING / PROCESSING / COMPLETED / FAILED / PENDING_REBALANCE
+        "created_time": 1688699193034,
+        "updated_time": 1688699193096,
+        "chain_id": "986532"
+    },
+    "timestamp": 1679021265398
+}
+```
+</ResponseExample>

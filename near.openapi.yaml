@@ -6,9 +6,9 @@ info:
   version: 1.0.0
 servers:
 - url: https://api.orderly.org
-  description: Mainnet
+  description: Prod Env
 - url: https://testnet-api.orderly.network
-  description: Testnet
+  description: Testing Env
 tags:
 - name: restful_public
 - name: restful_private
@@ -902,6 +902,7 @@ paths:
                     data:
                       rows:
                       - symbol: PERP_BTC_USDC.e
+                        liquidation_tier: "1"
                         quote_min: 0
                         quote_max: 100000
                         quote_tick: 0.1
@@ -1848,7 +1849,18 @@ paths:
                         transfer_price: 18123.43
                         liquidator_fee: 0.015
                         abs_liquidator_fee: 3520
-                    timestamp: 1639980423855
+                      - symbol: PERP_ETH_USDC.e
+                        position_qty: 1.23
+                        cost_position_transfer: 1350
+                        transfer_price: 1423.23
+                        liquidator_fee: 0.015
+                        abs_liquidator_fee: 3520
+                      - symbol: PERP_NEAR_USDC.e
+                        position_qty: 1.23
+                        cost_position_transfer: 1350
+                        transfer_price: 1.646
+                        liquidator_fee: 0.02
+                        abs_liquidator_fee: 3520
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -5019,6 +5031,132 @@ paths:
       x-apifox-folder: restful_private
       x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3711463/apis/api-134024709-run
+  /v1/volume/broker/daily:
+    get:
+      tags:
+      - restful_private
+      summary: Get Broker Daily Volume
+      description: |
+        **Limit 10 requests per 60 seconds**
+
+        `GET /v1/volume/user/stats`
+
+        Get the latest volume statistics of the user.
+      parameters:
+      - name: start_date
+        in: query
+        description: Format YYYY-MM-DD
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: ""
+      - name: end_date
+        in: query
+        description: Format YYYY-MM-DD
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: ""
+      - name: broker_id
+        in: query
+        description: ""
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: ""
+      - name: address
+        in: query
+        description: User's account_id
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: ""
+      - name: order_tags
+        in: query
+        description: ""
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: ""
+      - name: orderly-timestamp
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: "1649920583000"
+      - name: orderly-account-id
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: 0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546
+      - name: orderly-key
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
+      - name: orderly-signature
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_47'
+              examples:
+                "1":
+                  summary: 成功示例
+                  value: |-
+                    {
+                        "success": true,
+                        "data": [
+                            {
+                                "date": "2022-02-01",
+                                "broker_id": "woofi_dex",
+                                "spot_volume": 100.12,
+                                "perp_volume": 100.12
+                            },
+                            {
+                                "date": "2022-02-02",
+                                "broker_id": "woofi_dex",
+                                "spot_volume": 100.12,
+                                "perp_volume": 100.12,
+                            }
+                        ],
+                        "timestamp": 1580794149000
+                    }
+      deprecated: false
+      x-apifox-folder: restful_private
+      x-apifox-status: released
+      x-run-in-apifox: https://www.apifox.cn/web/project/3711463/apis/api-136974840-run
 components:
   schemas:
     inline_response_200:
@@ -5751,6 +5889,16 @@ components:
       - data
       - timestamp
       x-apifox-ignore-properties: []
+    v1liquidation_symbols:
+      required:
+      - ratio_qty_request
+      - symbol
+      type: object
+      properties:
+        symbol:
+          type: string
+        ratio_qty_request:
+          type: number
     v1liquidation_limit_price:
       required:
       - symbol
@@ -5765,10 +5913,13 @@ components:
       - limit_price
       - liquidation_id
       - ratio_qty_request
+      - symbols
       type: object
       properties:
         liquidation_id:
           type: integer
+        symbols:
+          $ref: '#/components/schemas/v1liquidation_symbols'
         ratio_qty_request:
           type: integer
         extra_liquidation_ratio:
@@ -5777,6 +5928,7 @@ components:
           $ref: '#/components/schemas/v1liquidation_limit_price'
       x-apifox-orders:
       - liquidation_id
+      - symbols
       - ratio_qty_request
       - extra_liquidation_ratio
       - limit_price
@@ -6960,9 +7112,13 @@ components:
           items:
             $ref: '#/components/schemas/inline_response_200_13_data_rows'
     inline_response_200_14_data_rows:
+      required:
+      - liquidation_tier
       type: object
       properties:
         symbol:
+          type: string
+        liquidation_tier:
           type: string
         quote_min:
           type: integer
