@@ -3289,7 +3289,7 @@ paths:
     delete:
       tags:
       - restful_private
-      summary: Batch Cancel Orders Copy
+      summary: Batch Cancel Orders
       description: |
         **Limit: 10 requests per 1 second**
 
@@ -5976,6 +5976,93 @@ paths:
       x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-136956610-run
   /v1/algo/orders:
+    delete:
+      summary: Cancel All Pending Algo Order
+      x-apifox-folder: restful_private
+      x-apifox-status: released
+      deprecated: false
+      description: |-
+        **Limit: 10 requests per 1 second**
+
+        `DELETE /v1/algo/orders?symbol=:symbol`
+      tags:
+        - restful_private
+      parameters:
+        - name: symbol
+          in: query
+          description: ''
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: orderly-timestamp
+          in: header
+          description: ''
+          required: true
+          example: '1649920583000'
+          schema:
+            type: string
+        - name: orderly-account-id
+          in: header
+          description: ''
+          required: true
+          example: '0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546'
+          schema:
+            type: string
+        - name: orderly-key
+          in: header
+          description: ''
+          required: true
+          example: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
+          schema:
+            type: string
+        - name: orderly-signature
+          in: header
+          description: ''
+          required: true
+          example: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                    required:
+                      - status
+                    x-apifox-orders:
+                      - status
+                    x-apifox-ignore-properties: [ ]
+                  timestamp:
+                    type: integer
+                required:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: [ ]
+              examples:
+                '1':
+                  summary: 成功示例
+                  value:
+                    success: true
+                    data:
+                      status: CANCEL_ALL_SENT
+                    timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-136953816-run
     get:
       tags:
       - restful_private
