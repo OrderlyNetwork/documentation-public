@@ -25,10 +25,10 @@ Parameters may be sent in any order.
 
 ## Authorization 
 All our private interfaces require keys to access.  
-Please set the corresponding header in your request. See refer to [Authentication](#authentication) for more information.
+Please set the corresponding header in your request. See refer to [Authentication](https://orderly.network/docs/build-on-evm/evm-api/authentication) for more information.
 
 ## Symbol  
-Orderly Network uses the format of `<TYPE>_<BASE>_<QUOTE>` to represent a symbol name, for example: `SPOT_NEAR_USDC.e` means that it is `NEAR_USDC.e` pair in `SPOT` trading market.
+Orderly Network uses the format of `<TYPE>_<BASE>_<QUOTE>` to represent a symbol name, for example: `PERP_NEAR_USDC` means that it is `NEAR_USDC` pair in `PERP` trading market.
 
 ## Rate Limit
 Rate limit is counted using the Orderly key. If your application reached the rate limit of certain endpoint, the server will return an error result with http code `429`. You may need wait until next time horizon.
@@ -46,4 +46,4 @@ Rate limit is counted using the Orderly key. If your application reached the rat
 ```
 
 All API will return following json when api fails, the "message" will contain the detail error message, it may be because some data are in wrong format, or other reasons.  
-Specific error codes and messages are defined in [Error Codes](#error-codes).
+Specific error codes and messages are defined in [Error Codes](https://orderly.network/docs/build-on-evm/evm-api/error-codes).
