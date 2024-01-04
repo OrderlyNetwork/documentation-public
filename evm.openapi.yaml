@@ -9968,14 +9968,25 @@ paths:
         `POST /v1/algo/order`
 
 
-        Place maker/taker order that requires an additional trigger for order
-        execution such as stop orders.
+        Place algo order maker/taker, the order executed information will be updated from websocket stream. will respond immediately with an order created message.
+
+
+        To place Stop Market order, please use `STOP` as algoType and `MARKET` as type. Please input the trigger price in triggerPrice field.
+
+
+        To place Stop Limit order, please use `STOP` as algoType and `LIMIT` as type. Please input the trigger price in triggerPrice field.
 
 
         `STOP` type order bahavior: an order to buy or sell at the market price
         once the asset has traded at or through a specified price (the "stop
         price"). If the asset reaches the stop price, the order becomes a market
         order and is filled at the next available market price.
+        
+        
+        `visible_quantity` behavior: it sets the maximum quantity to be shown on orderbook. By default, it is equal to `order_quantity`, negative number and number larger than order_quantity is not allowed. The visibility of the childOrder will inherit the parent order's visibility setting. If it sets to 0, the order would be hidden from the orderbook. It doesn't work for `MARKET` orders since orders with these types would be executed and cancelled immediately and not be shown on orderbook. For `LIMIT` order, as long as it's not complete, `visible_quantity` is the maximum quantity that is shown on the orderbook.
+        
+        
+        `client_order_id` behavior: customized order_id, a unique id among open orders. Orders with the same `client_order_id` can be accepted only when the previous one if completed, otherwise the order will be rejected.
 
 
         Note: This endpoint requires trading scope in Orderly Key.
@@ -10043,7 +10054,7 @@ paths:
                 reduce_only:
                   type: boolean
                 visible_quantity:
-                  type: boolean
+                  type: number
                   description: Default false
                 side:
                   type: string
