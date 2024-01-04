@@ -5,7 +5,7 @@ info:
   description: ""
   version: 1.0.0
 servers:
-- url: https://api-evm.orderly.org
+- url: https://api.orderly.org
   description: Mainnet
 - url: https://testnet-api.orderly.network
   description: Testnet
@@ -971,123 +971,6 @@ paths:
       x-apifox-folder: restful_public
       x-apifox-status: released
       x-run-in-apifox: https://www.apifox.cn/web/project/3711463/apis/api-130994307-run
-  /v1/tv/config:
-    get:
-      tags:
-      - restful_public
-      summary: Get TradingView Localized Config Info
-      description: |
-        **Limit: 10 requests per 1 second per IP address**
-
-        `GET /v1/tv/config`
-      parameters:
-      - name: locale
-        in: query
-        description: ""
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-        example: ""
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200_16'
-      deprecated: false
-      x-apifox-folder: restful_public
-      x-apifox-status: released
-      x-run-in-apifox: https://www.apifox.cn/web/project/3711463/apis/api-130994308-run
-  /v1/tv/history:
-    get:
-      tags:
-      - restful_public
-      summary: Get TradingView History Bars
-      description: |
-        **Limit: 10 requests per 1 second per IP address**
-
-        `GET /v1/tv/history`
-      parameters:
-      - name: symbol
-        in: query
-        description: ""
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-        example: ""
-      - name: resolution
-        in: query
-        description: ""
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-        example: ""
-      - name: from
-        in: query
-        description: ""
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-        example: ""
-      - name: to
-        in: query
-        description: ""
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-        example: ""
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200_17'
-      deprecated: false
-      x-apifox-folder: restful_public
-      x-apifox-status: released
-      x-run-in-apifox: https://www.apifox.cn/web/project/3711463/apis/api-130994309-run
-  /v1/tv/symbol_info:
-    get:
-      tags:
-      - restful_public
-      summary: Get TradingView Symbol Info
-      description: |
-        **Limit: 10 requests per 1 second per IP address**
-
-        `GET /v1/tv/symbol_info`
-      parameters:
-      - name: group
-        in: query
-        description: ""
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-        example: ""
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200_18'
-      deprecated: false
-      x-apifox-folder: restful_public
-      x-apifox-status: released
-      x-run-in-apifox: https://www.apifox.cn/web/project/3711463/apis/api-130994310-run
   /v1/public/system_info:
     get:
       tags:
@@ -1101,7 +984,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_19'
+                $ref: '#/components/schemas/inline_response_200_16'
               examples:
                 "1":
                   summary: 成功示例
@@ -1132,7 +1015,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_20'
+                $ref: '#/components/schemas/inline_response_200_17'
               examples:
                 "1":
                   summary: 成功示例
@@ -1200,7 +1083,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_21'
+                $ref: '#/components/schemas/inline_response_200_18'
               examples:
                 "1":
                   summary: 成功示例
@@ -1301,7 +1184,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_22'
+                $ref: '#/components/schemas/inline_response_200_19'
               examples:
                 "1":
                   summary: 成功示例
@@ -1430,7 +1313,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_23'
+                $ref: '#/components/schemas/inline_response_200_20'
               examples:
                 "1":
                   summary: Success
@@ -1552,7 +1435,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_24'
+                $ref: '#/components/schemas/inline_response_200_21'
               examples:
                 "1":
                   summary: 成功示例
@@ -1638,7 +1521,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_25'
+                $ref: '#/components/schemas/inline_response_200_22'
               examples:
                 "1":
                   summary: 成功示例
@@ -1747,7 +1630,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_26'
+                $ref: '#/components/schemas/inline_response_200_23'
               examples:
                 "1":
                   summary: 成功示例
@@ -1832,7 +1715,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_27'
+                $ref: '#/components/schemas/inline_response_200_24'
               examples:
                 "1":
                   summary: 成功示例
@@ -1933,7 +1816,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_28'
+                $ref: '#/components/schemas/inline_response_200_25'
               examples:
                 "1":
                   summary: 成功示例
@@ -2034,7 +1917,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_29'
+                $ref: '#/components/schemas/inline_response_200_26'
               examples:
                 "1":
                   summary: 成功示例
@@ -2141,7 +2024,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_30'
+                $ref: '#/components/schemas/inline_response_200_27'
               examples:
                 "1":
                   summary: 成功示例
@@ -2216,7 +2099,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_31'
+                $ref: '#/components/schemas/inline_response_200_28'
               examples:
                 "1":
                   summary: 成功示例
@@ -2308,7 +2191,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_32'
+                $ref: '#/components/schemas/inline_response_200_29'
               examples:
                 "1":
                   summary: 成功示例
@@ -2447,7 +2330,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_33'
+                $ref: '#/components/schemas/inline_response_200_30'
               examples:
                 "1":
                   summary: 成功示例
@@ -2537,7 +2420,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_34'
+                $ref: '#/components/schemas/inline_response_200_31'
               examples:
                 "1":
                   summary: 成功示例
@@ -2614,7 +2497,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_35'
+                $ref: '#/components/schemas/inline_response_200_32'
               examples:
                 "1":
                   summary: 成功示例
@@ -2785,7 +2668,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_36'
+                $ref: '#/components/schemas/inline_response_200_33'
               examples:
                 "1":
                   summary: 成功示例
@@ -2909,7 +2792,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_37'
+                $ref: '#/components/schemas/inline_response_200_34'
               examples:
                 "1":
                   summary: 成功示例
@@ -2976,7 +2859,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_38'
+                $ref: '#/components/schemas/inline_response_200_35'
               examples:
                 "1":
                   summary: 成功示例
@@ -3116,7 +2999,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_39'
+                $ref: '#/components/schemas/inline_response_200_36'
               examples:
                 "1":
                   summary: 成功示例
@@ -3206,7 +3089,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_40'
+                $ref: '#/components/schemas/inline_response_200_37'
               examples:
                 "1":
                   summary: 成功示例
@@ -3315,7 +3198,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_37'
+                $ref: '#/components/schemas/inline_response_200_34'
               examples:
                 "1":
                   summary: 成功示例
@@ -3418,7 +3301,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_37'
+                $ref: '#/components/schemas/inline_response_200_34'
               examples:
                 "1":
                   summary: 成功示例
@@ -3512,7 +3395,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_37'
+                $ref: '#/components/schemas/inline_response_200_34'
               examples:
                 "1":
                   summary: 成功示例
@@ -3597,7 +3480,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_41'
+                $ref: '#/components/schemas/inline_response_200_38'
               examples:
                 "1":
                   summary: 成功示例
@@ -3705,7 +3588,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_42'
+                $ref: '#/components/schemas/inline_response_200_39'
               examples:
                 "1":
                   summary: 成功示例
@@ -3799,7 +3682,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_43'
+                $ref: '#/components/schemas/inline_response_200_40'
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -3866,7 +3749,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_44'
+                $ref: '#/components/schemas/inline_response_200_41'
               examples:
                 "1":
                   summary: 成功示例
@@ -3947,7 +3830,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_45'
+                $ref: '#/components/schemas/inline_response_200_42'
               examples:
                 "1":
                   summary: 成功示例
@@ -4016,7 +3899,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_46'
+                $ref: '#/components/schemas/inline_response_200_43'
               examples:
                 "1":
                   summary: 成功示例
@@ -4108,7 +3991,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_47'
+                $ref: '#/components/schemas/inline_response_200_44'
               examples:
                 "1":
                   summary: 成功示例
@@ -4225,7 +4108,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_48'
+                $ref: '#/components/schemas/inline_response_200_45'
               examples:
                 "1":
                   summary: 成功示例
@@ -4327,7 +4210,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_49'
+                $ref: '#/components/schemas/inline_response_200_46'
               examples:
                 "1":
                   summary: 成功示例
@@ -4412,7 +4295,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_50'
+                $ref: '#/components/schemas/inline_response_200_47'
               examples:
                 "1":
                   summary: 成功示例
@@ -4501,7 +4384,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_51'
+                $ref: '#/components/schemas/inline_response_200_48'
               examples:
                 "1":
                   summary: 成功示例
@@ -4584,7 +4467,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_51'
+                $ref: '#/components/schemas/inline_response_200_48'
               examples:
                 "1":
                   summary: 成功示例
@@ -4678,7 +4561,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_52'
+                $ref: '#/components/schemas/inline_response_200_49'
               examples:
                 "1":
                   summary: 成功示例
@@ -4768,7 +4651,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_53'
+                $ref: '#/components/schemas/inline_response_200_50'
       deprecated: false
       x-apifox-folder: restful_private
       x-apifox-status: released
@@ -4847,7 +4730,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_51'
+                $ref: '#/components/schemas/inline_response_200_48'
               examples:
                 "1":
                   summary: 成功示例
@@ -4921,7 +4804,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_51'
+                $ref: '#/components/schemas/inline_response_200_48'
               examples:
                 "1":
                   summary: 成功示例
@@ -5004,7 +4887,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_54'
+                $ref: '#/components/schemas/inline_response_200_51'
               examples:
                 "1":
                   summary: 成功示例
@@ -5092,7 +4975,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_51'
+                $ref: '#/components/schemas/inline_response_200_48'
               examples:
                 "1":
                   summary: 成功示例
@@ -5202,7 +5085,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_47'
+                $ref: '#/components/schemas/inline_response_200_44'
               examples:
                 "1":
                   summary: 成功示例
@@ -5523,289 +5406,23 @@ components:
       x-apifox-ignore-properties: []
     inline_response_200_16:
       required:
-      - d
-      - s
+      - data
+      - success
+      - timestamp
       type: object
       properties:
-        s:
-          type: string
-        d:
-          $ref: '#/components/schemas/inline_response_200_16_d'
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/inline_response_200_16_data'
+        timestamp:
+          type: integer
       x-apifox-orders:
-      - s
-      - d
+      - success
+      - data
+      - timestamp
       x-apifox-ignore-properties: []
     inline_response_200_17:
-      required:
-      - c
-      - h
-      - l
-      - o
-      - s
-      - t
-      - v
-      type: object
-      properties:
-        s:
-          type: string
-        t:
-          type: array
-          items:
-            type: integer
-        o:
-          type: array
-          items:
-            oneOf:
-            - type: integer
-            - type: number
-        h:
-          type: array
-          items:
-            type: number
-        l:
-          type: array
-          items:
-            type: number
-        c:
-          type: array
-          items:
-            type: number
-        v:
-          type: array
-          items:
-            type: number
-      x-apifox-orders:
-      - s
-      - t
-      - o
-      - h
-      - l
-      - c
-      - v
-      x-apifox-ignore-properties: []
-    inline_response_200_18:
-      required:
-      - bar-fillgaps
-      - bar-source
-      - bar-transform
-      - base-currency
-      - currency
-      - description
-      - exchange-listed
-      - exchange-traded
-      - expiration
-      - fractional
-      - has-daily
-      - has-intraday
-      - has-no-volume
-      - has-weekly-and-monthly
-      - intraday-multipliers
-      - is-cfd
-      - isin
-      - minmovement
-      - minmovement2
-      - pointvalue
-      - pricescale
-      - root
-      - root-description
-      - s
-      - session-extended
-      - session-postmarket
-      - session-premarket
-      - session-regular
-      - supported-resolutions
-      - symbol
-      - ticker
-      - timezone
-      - type
-      - wkn
-      type: object
-      properties:
-        s:
-          type: string
-        symbol:
-          type: array
-          items:
-            type: string
-        description:
-          type: array
-          items:
-            type: string
-        currency:
-          type: array
-          items:
-            type: string
-        base-currency:
-          type: array
-          items:
-            oneOf:
-            - type: string
-        exchange-listed:
-          type: array
-          items:
-            type: string
-        exchange-traded:
-          type: array
-          items:
-            type: string
-        minmovement:
-          type: array
-          items:
-            type: integer
-        minmovement2:
-          type: array
-          items:
-            type: integer
-        fractional:
-          type: array
-          items:
-            type: boolean
-        pricescale:
-          type: array
-          items:
-            type: integer
-        root:
-          type: array
-          items:
-            oneOf:
-            - type: string
-            - type: "null"
-        root-description:
-          type: array
-          items:
-            oneOf:
-            - type: string
-            - type: "null"
-        has-intraday:
-          type: array
-          items:
-            type: boolean
-        has-no-volume:
-          type: array
-          items:
-            type: boolean
-        type:
-          type: array
-          items:
-            type: string
-        is-cfd:
-          type: array
-          items:
-            type: boolean
-        ticker:
-          type: array
-          items:
-            type: string
-        timezone:
-          type: array
-          items:
-            type: string
-        session-regular:
-          type: array
-          items:
-            type: string
-        session-extended:
-          type: array
-          items:
-            type: string
-        session-premarket:
-          type: array
-          items:
-            oneOf:
-            - type: string
-        session-postmarket:
-          type: array
-          items:
-            oneOf:
-            - type: string
-        supported-resolutions:
-          type: array
-          items:
-            type: array
-            items:
-              type: string
-        has-daily:
-          type: array
-          items:
-            type: boolean
-        intraday-multipliers:
-          type: array
-          items:
-            type: array
-            items:
-              type: string
-        has-weekly-and-monthly:
-          type: array
-          items:
-            type: boolean
-        pointvalue:
-          type: array
-          items:
-            oneOf:
-            - type: integer
-            - type: number
-        expiration:
-          type: array
-          items:
-            oneOf:
-            - type: integer
-        bar-source:
-          type: array
-          items:
-            type: string
-        bar-transform:
-          type: array
-          items:
-            type: string
-        bar-fillgaps:
-          type: array
-          items:
-            type: string
-        isin:
-          type: array
-          items:
-            type: string
-        wkn:
-          type: array
-          items:
-            type: string
-      x-apifox-orders:
-      - s
-      - symbol
-      - description
-      - currency
-      - base-currency
-      - exchange-listed
-      - exchange-traded
-      - minmovement
-      - minmovement2
-      - fractional
-      - pricescale
-      - root
-      - root-description
-      - has-intraday
-      - has-no-volume
-      - type
-      - is-cfd
-      - ticker
-      - timezone
-      - session-regular
-      - session-extended
-      - session-premarket
-      - session-postmarket
-      - supported-resolutions
-      - has-daily
-      - intraday-multipliers
-      - has-weekly-and-monthly
-      - pointvalue
-      - expiration
-      - bar-source
-      - bar-transform
-      - bar-fillgaps
-      - isin
-      - wkn
-      x-apifox-ignore-properties: []
-    inline_response_200_19:
       required:
       - data
       - success
@@ -5815,12 +5432,48 @@ components:
         success:
           type: boolean
         data:
-          $ref: '#/components/schemas/inline_response_200_19_data'
+          $ref: '#/components/schemas/inline_response_200_17_data'
         timestamp:
           type: integer
       x-apifox-orders:
       - success
       - data
+      - timestamp
+      x-apifox-ignore-properties: []
+    inline_response_200_18:
+      required:
+      - data
+      - success
+      - timestamp
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/inline_response_200_18_data'
+        success:
+          type: boolean
+        timestamp:
+          type: integer
+      x-apifox-orders:
+      - data
+      - success
+      - timestamp
+      x-apifox-ignore-properties: []
+    inline_response_200_19:
+      required:
+      - data
+      - success
+      - timestamp
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/inline_response_200_19_data'
+        success:
+          type: boolean
+        timestamp:
+          type: integer
+      x-apifox-orders:
+      - data
+      - success
       - timestamp
       x-apifox-ignore-properties: []
     inline_response_200_20:
@@ -5835,7 +5488,7 @@ components:
         data:
           $ref: '#/components/schemas/inline_response_200_20_data'
         timestamp:
-          type: integer
+          type: number
       x-apifox-orders:
       - success
       - data
@@ -5850,60 +5503,6 @@ components:
       properties:
         data:
           $ref: '#/components/schemas/inline_response_200_21_data'
-        success:
-          type: boolean
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - data
-      - success
-      - timestamp
-      x-apifox-ignore-properties: []
-    inline_response_200_22:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/inline_response_200_22_data'
-        success:
-          type: boolean
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - data
-      - success
-      - timestamp
-      x-apifox-ignore-properties: []
-    inline_response_200_23:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_23_data'
-        timestamp:
-          type: number
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
-    inline_response_200_24:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/inline_response_200_24_data'
         success:
           type: boolean
         timestamp:
@@ -5924,7 +5523,7 @@ components:
       x-apifox-orders:
       - leverage
       x-apifox-ignore-properties: []
-    inline_response_200_25:
+    inline_response_200_22:
       required:
       - data
       - success
@@ -5945,7 +5544,7 @@ components:
       - success
       - timestamp
       x-apifox-ignore-properties: []
-    inline_response_200_26:
+    inline_response_200_23:
       required:
       - data
       - success
@@ -5955,7 +5554,7 @@ components:
         success:
           type: boolean
         data:
-          $ref: '#/components/schemas/inline_response_200_26_data'
+          $ref: '#/components/schemas/inline_response_200_23_data'
         timestamp:
           type: number
       x-apifox-orders:
@@ -6008,7 +5607,7 @@ components:
       - extra_liquidation_ratio
       - limit_price
       x-apifox-ignore-properties: []
-    inline_response_200_27:
+    inline_response_200_24:
       required:
       - data
       - success
@@ -6018,7 +5617,7 @@ components:
         success:
           type: boolean
         data:
-          $ref: '#/components/schemas/inline_response_200_27_data'
+          $ref: '#/components/schemas/inline_response_200_24_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -6078,7 +5677,7 @@ components:
       - broker_id
       - signature
       x-apifox-ignore-properties: []
-    inline_response_200_28:
+    inline_response_200_25:
       required:
       - data
       - success
@@ -6088,7 +5687,7 @@ components:
         success:
           type: boolean
         data:
-          $ref: '#/components/schemas/inline_response_200_28_data'
+          $ref: '#/components/schemas/inline_response_200_25_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -6150,6 +5749,60 @@ components:
       - signature
       - order_tag
       x-apifox-ignore-properties: []
+    inline_response_200_26:
+      required:
+      - data
+      - success
+      - timestamp
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/inline_response_200_26_data'
+        timestamp:
+          type: number
+      x-apifox-orders:
+      - success
+      - data
+      - timestamp
+      x-apifox-ignore-properties: []
+    inline_response_200_27:
+      required:
+      - data
+      - success
+      - timestamp
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/inline_response_200_27_data'
+        timestamp:
+          type: number
+      x-apifox-orders:
+      - success
+      - data
+      - timestamp
+      x-apifox-ignore-properties: []
+    inline_response_200_28:
+      required:
+      - data
+      - success
+      - timestamp
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/inline_response_200_28_data'
+        timestamp:
+          type: number
+      x-apifox-orders:
+      - success
+      - data
+      - timestamp
+      x-apifox-ignore-properties: []
     inline_response_200_29:
       required:
       - data
@@ -6162,7 +5815,7 @@ components:
         data:
           $ref: '#/components/schemas/inline_response_200_29_data'
         timestamp:
-          type: number
+          type: integer
       x-apifox-orders:
       - success
       - data
@@ -6180,7 +5833,7 @@ components:
         data:
           $ref: '#/components/schemas/inline_response_200_30_data'
         timestamp:
-          type: number
+          type: integer
       x-apifox-orders:
       - success
       - data
@@ -6198,7 +5851,7 @@ components:
         data:
           $ref: '#/components/schemas/inline_response_200_31_data'
         timestamp:
-          type: number
+          type: integer
       x-apifox-orders:
       - success
       - data
@@ -6234,7 +5887,7 @@ components:
         data:
           $ref: '#/components/schemas/inline_response_200_33_data'
         timestamp:
-          type: integer
+          type: number
       x-apifox-orders:
       - success
       - data
@@ -6250,7 +5903,7 @@ components:
         success:
           type: boolean
         data:
-          $ref: '#/components/schemas/inline_response_200_34_data'
+          $ref: '#/components/schemas/inline_response_200_27_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -6269,60 +5922,6 @@ components:
           type: boolean
         data:
           $ref: '#/components/schemas/inline_response_200_35_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
-    inline_response_200_36:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_36_data'
-        timestamp:
-          type: number
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
-    inline_response_200_37:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_30_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
-    inline_response_200_38:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_38_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -6351,7 +5950,7 @@ components:
       - qty_request
       - limit_price
       x-apifox-ignore-properties: []
-    inline_response_200_39:
+    inline_response_200_36:
       required:
       - data
       - success
@@ -6360,7 +5959,7 @@ components:
         success:
           type: boolean
         data:
-          $ref: '#/components/schemas/inline_response_200_39_data'
+          $ref: '#/components/schemas/inline_response_200_36_data'
       x-apifox-orders:
       - success
       - data
@@ -6411,6 +6010,52 @@ components:
       - signature
       - order_tag
       x-apifox-ignore-properties: []
+    inline_response_200_37:
+      required:
+      - data
+      - success
+      - timestamp
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/inline_response_200_37_data'
+        timestamp:
+          type: integer
+      x-apifox-orders:
+      - success
+      - data
+      - timestamp
+      x-apifox-ignore-properties: []
+    inline_response_200_38:
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/inline_response_200_38_data'
+      x-apifox-orders:
+      - success
+      - data
+      x-apifox-ignore-properties: []
+    inline_response_200_39:
+      required:
+      - data
+      - success
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/inline_response_200_39_data'
+      x-apifox-orders:
+      - success
+      - data
+      x-apifox-ignore-properties: []
     inline_response_200_40:
       required:
       - data
@@ -6433,29 +6078,47 @@ components:
       required:
       - data
       - success
+      - timestamp
       type: object
       properties:
         success:
           type: boolean
         data:
           $ref: '#/components/schemas/inline_response_200_41_data'
+        timestamp:
+          type: integer
       x-apifox-orders:
       - success
       - data
+      - timestamp
+      x-apifox-ignore-properties: []
+    client_maintenance_config_body:
+      required:
+      - maintenance_cancel_order_flag
+      type: object
+      properties:
+        maintenance_cancel_order_flag:
+          type: boolean
+      x-apifox-orders:
+      - maintenance_cancel_order_flag
       x-apifox-ignore-properties: []
     inline_response_200_42:
       required:
       - data
       - success
+      - timestamp
       type: object
       properties:
         success:
           type: boolean
         data:
           $ref: '#/components/schemas/inline_response_200_42_data'
+        timestamp:
+          type: integer
       x-apifox-orders:
       - success
       - data
+      - timestamp
       x-apifox-ignore-properties: []
     inline_response_200_43:
       required:
@@ -6467,7 +6130,9 @@ components:
         success:
           type: boolean
         data:
-          $ref: '#/components/schemas/inline_response_200_43_data'
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_43_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -6485,23 +6150,15 @@ components:
         success:
           type: boolean
         data:
-          $ref: '#/components/schemas/inline_response_200_44_data'
+          type: array
+          items:
+            $ref: '#/components/schemas/inline_response_200_44_data'
         timestamp:
           type: integer
       x-apifox-orders:
       - success
       - data
       - timestamp
-      x-apifox-ignore-properties: []
-    client_maintenance_config_body:
-      required:
-      - maintenance_cancel_order_flag
-      type: object
-      properties:
-        maintenance_cancel_order_flag:
-          type: boolean
-      x-apifox-orders:
-      - maintenance_cancel_order_flag
       x-apifox-ignore-properties: []
     inline_response_200_45:
       required:
@@ -6551,9 +6208,7 @@ components:
         success:
           type: boolean
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/inline_response_200_47_data'
+          $ref: '#/components/schemas/inline_response_200_47_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -6563,20 +6218,16 @@ components:
       x-apifox-ignore-properties: []
     inline_response_200_48:
       required:
-      - data
       - success
       - timestamp
       type: object
       properties:
         success:
           type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_48_data'
         timestamp:
           type: integer
       x-apifox-orders:
       - success
-      - data
       - timestamp
       x-apifox-ignore-properties: []
     inline_response_200_49:
@@ -6589,9 +6240,7 @@ components:
         success:
           type: boolean
         data:
-          type: array
-          items:
-            $ref: '#/components/schemas/inline_response_200_49_data'
+          $ref: '#/components/schemas/inline_response_200_49_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -6619,20 +6268,6 @@ components:
       x-apifox-ignore-properties: []
     inline_response_200_51:
       required:
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - timestamp
-      x-apifox-ignore-properties: []
-    inline_response_200_52:
-      required:
       - data
       - success
       - timestamp
@@ -6641,43 +6276,7 @@ components:
         success:
           type: boolean
         data:
-          $ref: '#/components/schemas/inline_response_200_52_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
-    inline_response_200_53:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_53_data'
-        timestamp:
-          type: integer
-      x-apifox-orders:
-      - success
-      - data
-      - timestamp
-      x-apifox-ignore-properties: []
-    inline_response_200_54:
-      required:
-      - data
-      - success
-      - timestamp
-      type: object
-      properties:
-        success:
-          type: boolean
-        data:
-          $ref: '#/components/schemas/inline_response_200_54_data'
+          $ref: '#/components/schemas/inline_response_200_51_data'
         timestamp:
           type: integer
       x-apifox-orders:
@@ -7292,128 +6891,7 @@ components:
           type: number
         total_pnl_24_h:
           type: integer
-    inline_response_200_16_d_accountSummaryRow:
-      required:
-      - id
-      - title
-      type: object
-      properties:
-        id:
-          type: string
-        title:
-          type: string
-    inline_response_200_16_d_accountManager:
-      type: object
-      properties:
-        id:
-          type: string
-        title:
-          type: string
-        columns:
-          type: array
-          items:
-            $ref: '#/components/schemas/inline_response_200_16_d_accountSummaryRow'
-    inline_response_200_16_d_durations:
-      type: object
-      properties:
-        id:
-          type: string
-        title:
-          type: string
-        hasDatePicker:
-          type: boolean
-        hasTimePicker:
-          type: boolean
-        default:
-          type: boolean
-        supportedOrderTypes:
-          type: array
-          items:
-            type: string
-    inline_response_200_16_d_orderCustomFields:
-      type: object
-      properties:
-        id:
-          type: string
-        title:
-          type: string
-        tooltip:
-          type: string
-        alignment:
-          type: string
-    inline_response_200_16_d_positionCustomFields:
-      required:
-      - alignment
-      - id
-      - title
-      - tooltip
-      type: object
-      properties:
-        id:
-          type: string
-        title:
-          type: string
-        tooltip:
-          type: string
-        alignment:
-          type: string
-    inline_response_200_16_d_pullingInterval:
-      required:
-      - accountManager
-      - balances
-      - orders
-      - positions
-      - quotes
-      type: object
-      properties:
-        quotes:
-          type: integer
-        orders:
-          type: integer
-        positions:
-          type: integer
-        accountManager:
-          type: integer
-        balances:
-          type: integer
-    inline_response_200_16_d:
-      required:
-      - accountManager
-      - accountSummaryRow
-      - durations
-      - orderCustomFields
-      - orderHistoryCustomFields
-      - positionCustomFields
-      - pullingInterval
-      type: object
-      properties:
-        accountSummaryRow:
-          type: array
-          items:
-            $ref: '#/components/schemas/inline_response_200_16_d_accountSummaryRow'
-        accountManager:
-          type: array
-          items:
-            $ref: '#/components/schemas/inline_response_200_16_d_accountManager'
-        durations:
-          type: array
-          items:
-            $ref: '#/components/schemas/inline_response_200_16_d_durations'
-        orderCustomFields:
-          type: array
-          items:
-            $ref: '#/components/schemas/inline_response_200_16_d_orderCustomFields'
-        orderHistoryCustomFields:
-          type: array
-          items:
-            $ref: '#/components/schemas/inline_response_200_16_d_orderCustomFields'
-        positionCustomFields:
-          type: array
-          items:
-            $ref: '#/components/schemas/inline_response_200_16_d_positionCustomFields'
-        pullingInterval:
-          $ref: '#/components/schemas/inline_response_200_16_d_pullingInterval'
-    inline_response_200_19_data:
+    inline_response_200_16_data:
       required:
       - msg
       - status
@@ -7424,14 +6902,14 @@ components:
           description: status = 2 means exchange is under maintenance
         msg:
           type: string
-    inline_response_200_20_data:
+    inline_response_200_17_data:
       required:
       - available_futures_leverage
       type: object
       properties:
         available_futures_leverage:
           type: string
-    inline_response_200_21_data_rows:
+    inline_response_200_18_data_rows:
       type: object
       properties:
         IMR_withdraw_orders:
@@ -7470,7 +6948,7 @@ components:
           type: integer
         unsettled_pnl:
           type: number
-    inline_response_200_21_data:
+    inline_response_200_18_data:
       required:
       - current_margin_ratio_with_orders
       - free_collateral
@@ -7504,12 +6982,12 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_21_data_rows'
+            $ref: '#/components/schemas/inline_response_200_18_data_rows'
         total_collateral_value:
           type: number
         total_pnl_24_h:
           type: integer
-    inline_response_200_22_data:
+    inline_response_200_19_data:
       required:
       - IMR_withdraw_orders
       - MMR_with_orders
@@ -7567,7 +7045,7 @@ components:
           type: integer
         unsettled_pnl:
           type: number
-    inline_response_200_23_data_rows:
+    inline_response_200_20_data_rows:
       type: object
       properties:
         symbol:
@@ -7586,7 +7064,7 @@ components:
           type: number
         updated_time:
           type: number
-    inline_response_200_23_data_meta:
+    inline_response_200_20_data_meta:
       required:
       - current_page
       - records_per_page
@@ -7599,7 +7077,7 @@ components:
           type: number
         current_page:
           type: number
-    inline_response_200_23_data:
+    inline_response_200_20_data:
       required:
       - meta
       - rows
@@ -7608,10 +7086,10 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_23_data_rows'
+            $ref: '#/components/schemas/inline_response_200_20_data_rows'
         meta:
-          $ref: '#/components/schemas/inline_response_200_23_data_meta'
-    inline_response_200_24_data_meta:
+          $ref: '#/components/schemas/inline_response_200_20_data_meta'
+    inline_response_200_21_data_meta:
       required:
       - current_page
       - records_per_page
@@ -7624,7 +7102,7 @@ components:
           type: integer
         total:
           type: integer
-    inline_response_200_24_data_positions_by_perp:
+    inline_response_200_21_data_positions_by_perp:
       type: object
       properties:
         abs_liquidator_fee:
@@ -7639,7 +7117,7 @@ components:
           type: string
         transfer_price:
           type: number
-    inline_response_200_24_data_rows:
+    inline_response_200_21_data_rows:
       type: object
       properties:
         liquidation_id:
@@ -7647,24 +7125,24 @@ components:
         positions_by_perp:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_24_data_positions_by_perp'
+            $ref: '#/components/schemas/inline_response_200_21_data_positions_by_perp'
         timestamp:
           type: number
         type:
           type: string
-    inline_response_200_24_data:
+    inline_response_200_21_data:
       required:
       - meta
       - rows
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/inline_response_200_24_data_meta'
+          $ref: '#/components/schemas/inline_response_200_21_data_meta'
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_24_data_rows'
-    inline_response_200_26_data_positions_by_perp:
+            $ref: '#/components/schemas/inline_response_200_21_data_rows'
+    inline_response_200_23_data_positions_by_perp:
       type: object
       properties:
         symbol:
@@ -7681,7 +7159,7 @@ components:
           type: number
         abs_liquidation_fee:
           type: number
-    inline_response_200_26_data_rows:
+    inline_response_200_23_data_rows:
       type: object
       properties:
         liquidation_id:
@@ -7693,8 +7171,8 @@ components:
         positions_by_perp:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_26_data_positions_by_perp'
-    inline_response_200_26_data:
+            $ref: '#/components/schemas/inline_response_200_23_data_positions_by_perp'
+    inline_response_200_23_data:
       required:
       - meta
       - rows
@@ -7705,8 +7183,8 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_26_data_rows'
-    inline_response_200_27_data_positions_by_perp:
+            $ref: '#/components/schemas/inline_response_200_23_data_rows'
+    inline_response_200_24_data_positions_by_perp:
       type: object
       properties:
         symbol:
@@ -7721,7 +7199,7 @@ components:
           type: number
         abs_liquidator_fee:
           type: integer
-    inline_response_200_27_data:
+    inline_response_200_24_data:
       required:
       - liquidation_id
       - positions_by_perp
@@ -7739,8 +7217,8 @@ components:
         positions_by_perp:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_27_data_positions_by_perp'
-    inline_response_200_28_data_rows:
+            $ref: '#/components/schemas/inline_response_200_24_data_positions_by_perp'
+    inline_response_200_25_data_rows:
       required:
       - client_order_id
       - error_message
@@ -7775,7 +7253,7 @@ components:
         error_message:
           type: string
           nullable: true
-    inline_response_200_28_data:
+    inline_response_200_25_data:
       required:
       - rows
       - status
@@ -7784,10 +7262,10 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_28_data_rows'
+            $ref: '#/components/schemas/inline_response_200_25_data_rows'
         status:
           type: string
-    inline_response_200_29_data:
+    inline_response_200_26_data:
       required:
       - broker_id
       - client_order_id
@@ -7812,14 +7290,14 @@ components:
           type: string
         order_amount:
           type: number
-    inline_response_200_30_data:
+    inline_response_200_27_data:
       required:
       - status
       type: object
       properties:
         status:
           type: string
-    inline_response_200_31_data:
+    inline_response_200_28_data:
       required:
       - amount
       - average_executed_price
@@ -7883,7 +7361,7 @@ components:
           type: number
         updated_time:
           type: number
-    inline_response_200_32_data:
+    inline_response_200_29_data:
       required:
       - amount
       - average_executed_price
@@ -7948,7 +7426,7 @@ components:
           type: integer
         reduce_only:
           type: boolean
-    inline_response_200_33_data_meta:
+    inline_response_200_30_data_meta:
       required:
       - current_page
       - records_per_page
@@ -7961,7 +7439,7 @@ components:
           type: integer
         total:
           type: integer
-    inline_response_200_33_data_rows:
+    inline_response_200_30_data_rows:
       type: object
       properties:
         id:
@@ -7984,19 +7462,19 @@ components:
           type: integer
         is_maker:
           type: integer
-    inline_response_200_33_data:
+    inline_response_200_30_data:
       required:
       - meta
       - rows
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/inline_response_200_33_data_meta'
+          $ref: '#/components/schemas/inline_response_200_30_data_meta'
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_33_data_rows'
-    inline_response_200_34_data_holding:
+            $ref: '#/components/schemas/inline_response_200_30_data_rows'
+    inline_response_200_31_data_holding:
       required:
       - frozen
       - holding
@@ -8016,7 +7494,7 @@ components:
           type: integer
         pending_short:
           type: integer
-    inline_response_200_34_data:
+    inline_response_200_31_data:
       required:
       - holding
       type: object
@@ -8024,8 +7502,8 @@ components:
         holding:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_34_data_holding'
-    inline_response_200_35_data_imr_factor:
+            $ref: '#/components/schemas/inline_response_200_31_data_holding'
+    inline_response_200_32_data_imr_factor:
       required:
       - PERP_BTC_USDC
       - PERP_ETH_USDC
@@ -8038,7 +7516,7 @@ components:
           type: number
         PERP_NEAR_USDC:
           type: number
-    inline_response_200_35_data_max_notional:
+    inline_response_200_32_data_max_notional:
       required:
       - PERP_BTC_USDC
       - PERP_ETH_USDC
@@ -8051,7 +7529,7 @@ components:
           type: integer
         PERP_NEAR_USDC:
           type: integer
-    inline_response_200_35_data:
+    inline_response_200_32_data:
       required:
       - account_id
       - account_mode
@@ -8090,12 +7568,12 @@ components:
         futures_maker_fee_rate:
           type: integer
         imr_factor:
-          $ref: '#/components/schemas/inline_response_200_35_data_imr_factor'
+          $ref: '#/components/schemas/inline_response_200_32_data_imr_factor'
         max_notional:
-          $ref: '#/components/schemas/inline_response_200_35_data_max_notional'
+          $ref: '#/components/schemas/inline_response_200_32_data_max_notional'
         maintenance_cancel_orders:
           type: boolean
-    inline_response_200_36_data_rows:
+    inline_response_200_33_data_rows:
       type: object
       properties:
         order_id:
@@ -8139,19 +7617,19 @@ components:
           type: number
         updated_time:
           type: number
-    inline_response_200_36_data:
+    inline_response_200_33_data:
       required:
       - meta
       - rows
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/inline_response_200_33_data_meta'
+          $ref: '#/components/schemas/inline_response_200_30_data_meta'
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_36_data_rows'
-    inline_response_200_38_data:
+            $ref: '#/components/schemas/inline_response_200_33_data_rows'
+    inline_response_200_35_data:
       required:
       - days_since_registration
       - fees_paid_last_30_days
@@ -8182,7 +7660,7 @@ components:
           type: integer
         trading_volume_ytd:
           type: number
-    inline_response_200_39_data:
+    inline_response_200_36_data:
       required:
       - liquidation_id
       - positions_by_perp
@@ -8196,8 +7674,8 @@ components:
         positions_by_perp:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_27_data_positions_by_perp'
-    inline_response_200_40_data:
+            $ref: '#/components/schemas/inline_response_200_24_data_positions_by_perp'
+    inline_response_200_37_data:
       required:
       - rows
       type: object
@@ -8205,8 +7683,8 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_28_data_rows'
-    inline_response_200_41_data_asks:
+            $ref: '#/components/schemas/inline_response_200_25_data_rows'
+    inline_response_200_38_data_asks:
       required:
       - price
       - quantity
@@ -8216,7 +7694,7 @@ components:
           type: number
         quantity:
           type: number
-    inline_response_200_41_data:
+    inline_response_200_38_data:
       required:
       - asks
       - bids
@@ -8226,15 +7704,15 @@ components:
         asks:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_41_data_asks'
+            $ref: '#/components/schemas/inline_response_200_38_data_asks'
         bids:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_41_data_asks'
+            $ref: '#/components/schemas/inline_response_200_38_data_asks'
         timestamp:
           type: integer
           description: Unix epoch time in milliseconds
-    inline_response_200_42_data_rows:
+    inline_response_200_39_data_rows:
       required:
       - amount
       - close
@@ -8269,7 +7747,7 @@ components:
           description: Unix epoch time in milliseconds
         end_timestamp:
           type: integer
-    inline_response_200_42_data:
+    inline_response_200_39_data:
       required:
       - rows
       type: object
@@ -8277,8 +7755,8 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_42_data_rows'
-    inline_response_200_43_data_rows:
+            $ref: '#/components/schemas/inline_response_200_39_data_rows'
+    inline_response_200_40_data_rows:
       type: object
       properties:
         id:
@@ -8301,7 +7779,7 @@ components:
           type: integer
         is_maker:
           type: integer
-    inline_response_200_43_data:
+    inline_response_200_40_data:
       required:
       - rows
       type: object
@@ -8309,8 +7787,8 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_43_data_rows'
-    inline_response_200_44_data:
+            $ref: '#/components/schemas/inline_response_200_40_data_rows'
+    inline_response_200_41_data:
       required:
       - executed_price
       - executed_quantity
@@ -8344,14 +7822,14 @@ components:
           type: integer
         is_maker:
           type: integer
-    inline_response_200_45_data:
+    inline_response_200_42_data:
       required:
       - success_alter
       type: object
       properties:
         success_alter:
           type: string
-    inline_response_200_46_data:
+    inline_response_200_43_data:
       type: object
       properties:
         spot_volume_ytd:
@@ -8370,7 +7848,7 @@ components:
           type: number
         perp_volume_last_30_days:
           type: number
-    inline_response_200_47_data:
+    inline_response_200_44_data:
       required:
       - broker_id
       - date
@@ -8386,7 +7864,7 @@ components:
           type: number
         perp_volume:
           type: number
-    inline_response_200_48_data_symbols:
+    inline_response_200_45_data_symbols:
       required:
       - settled_amount
       - symbol
@@ -8396,7 +7874,7 @@ components:
           type: string
         settled_amount:
           type: integer
-    inline_response_200_48_data_rows:
+    inline_response_200_45_data_rows:
       required:
       - id
       - new_balance
@@ -8422,8 +7900,8 @@ components:
         symbols:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_48_data_symbols'
-    inline_response_200_48_data:
+            $ref: '#/components/schemas/inline_response_200_45_data_symbols'
+    inline_response_200_45_data:
       required:
       - meta
       - rows
@@ -8434,8 +7912,8 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_48_data_rows'
-    inline_response_200_49_data:
+            $ref: '#/components/schemas/inline_response_200_45_data_rows'
+    inline_response_200_46_data:
       required:
       - ip_restricion_status
       - ip_restriction_list
@@ -8458,7 +7936,7 @@ components:
         ip_restricion_status:
           type: string
           description: ALLOW_RESTRICTION_LIST / ALLOW_ALL_IPS / DISALLOW_ALL_IPS
-    inline_response_200_50_data:
+    inline_response_200_47_data:
       required:
       - account_id
       - ip_restriction_list
@@ -8473,7 +7951,7 @@ components:
           type: array
           items:
             type: string
-    inline_response_200_52_data_content_raw:
+    inline_response_200_49_data_content_raw:
       required:
       - executed_price
       - executed_quantity
@@ -8496,7 +7974,7 @@ components:
         executed_timestamp:
           type: integer
       description: below example is for a ORDER_FILLED content
-    inline_response_200_52_data_rows:
+    inline_response_200_49_data_rows:
       type: object
       properties:
         id:
@@ -8523,7 +8001,7 @@ components:
         content:
           type: string
         content_raw:
-          $ref: '#/components/schemas/inline_response_200_52_data_content_raw'
+          $ref: '#/components/schemas/inline_response_200_49_data_content_raw'
         mark_read:
           type: integer
         operator:
@@ -8532,7 +8010,7 @@ components:
           type: integer
         announcement_id:
           type: integer
-    inline_response_200_52_data:
+    inline_response_200_49_data:
       required:
       - meta
       - rows
@@ -8541,10 +8019,10 @@ components:
         rows:
           type: array
           items:
-            $ref: '#/components/schemas/inline_response_200_52_data_rows'
+            $ref: '#/components/schemas/inline_response_200_49_data_rows'
         meta:
           $ref: '#/components/schemas/inline_response_200_8_data_meta'
-    inline_response_200_53_data:
+    inline_response_200_50_data:
       required:
       - count
       - lastId
@@ -8556,7 +8034,7 @@ components:
         lastId:
           type: integer
           description: the id of the last unread message
-    inline_response_200_54_data:
+    inline_response_200_51_data:
       required:
       - ip_restriction_list
       type: object
