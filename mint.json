@@ -169,6 +169,7 @@
             "build-on-near/near-api/restful-api/private/get-pnl-settlement-history",
             "build-on-near/near-api/restful-api/private/get-asset-history",
             "build-on-near/near-api/restful-api/private/get-user-daily-volume",
+            "build-on-near/near-api/restful-api/private/get-broker-daily-volume",
             "build-on-near/near-api/restful-api/private/get-user-volume-statistics",
             "build-on-near/near-api/restful-api/private/get-account-information",
             "build-on-near/near-api/restful-api/private/get-user-statistics",
@@ -331,7 +332,7 @@
         {
           "group": "General",
           "pages": [
-            "build-on-evm/evm-api/restful-api/public/get-faucet-usdc-testnet-only",
+            "build-on-evm/evm-api/restful-api/public/get-faucet-usdctestnet-only",
             "build-on-evm/evm-api/restful-api/public/get-leverage-configuration",
             "build-on-evm/evm-api/restful-api/public/get-futures-info-for-all-markets",
             "build-on-evm/evm-api/restful-api/public/get-futures-info-for-one-market",
@@ -362,15 +363,23 @@
           "pages": [
             "build-on-evm/evm-api/restful-api/private/create-order",
             "build-on-evm/evm-api/restful-api/private/batch-create-order",
+            "build-on-evm/evm-api/restful-api/private/create-algo-order",
             "build-on-evm/evm-api/restful-api/private/edit-order",
+            "build-on-evm/evm-api/restful-api/private/edit-algo-order",
             "build-on-evm/evm-api/restful-api/private/cancel-order",
+            "build-on-evm/evm-api/restful-api/private/cancel-algo-order",
             "build-on-evm/evm-api/restful-api/private/cancel-order-by-client_order_id",
+            "build-on-evm/evm-api/restful-api/private/cancel-algo-order-by-client_order_id",
+            "build-on-evm/evm-api/restful-api/private/cancel-all-pending-algo-order",
             "build-on-evm/evm-api/restful-api/private/cancel-orders-in-bulk",
             "build-on-evm/evm-api/restful-api/private/batch-cancel-orders",
             "build-on-evm/evm-api/restful-api/private/batch-cancel-orders-by-client_order_id",
             "build-on-evm/evm-api/restful-api/private/get-order",
+            "build-on-evm/evm-api/restful-api/private/get-algo-order",
             "build-on-evm/evm-api/restful-api/private/get-order-by-client_order_id",
-            "build-on-evm/evm-api/restful-api/private/get-orders"
+            "build-on-evm/evm-api/restful-api/private/get-algo-order-by-client_order_id",
+            "build-on-evm/evm-api/restful-api/private/get-orders",
+            "build-on-evm/evm-api/restful-api/private/get-algo-orders"
           ]
         },
 
@@ -403,8 +412,10 @@
             "build-on-evm/evm-api/restful-api/private/get-asset-history",
             "build-on-evm/evm-api/restful-api/private/get-user-daily-volume",
             "build-on-evm/evm-api/restful-api/private/get-user-volume-statistics",
-            "build-on-evm/evm-api/restful-api/private/get-current-holding",
+            "build-on-evm/evm-api/restful-api/private/get-user-statistics",
+            "build-on-evm/evm-api/restful-api/private/get-user-fee-tier",
             "build-on-evm/evm-api/restful-api/private/get-account-information",
+            "build-on-evm/evm-api/restful-api/private/get-current-holding",
             "build-on-evm/evm-api/restful-api/private/get-user-statistics",
             "build-on-evm/evm-api/restful-api/private/update-leverage-setting",
             "build-on-evm/evm-api/restful-api/private/get-all-trades-of-specific-order",
@@ -415,7 +426,8 @@
             "build-on-evm/evm-api/restful-api/private/get-all-notifications",
             "build-on-evm/evm-api/restful-api/private/get-unread-notifications",
             "build-on-evm/evm-api/restful-api/private/set-read-status-of-notifications",
-            "build-on-evm/evm-api/restful-api/private/set-read-status-of-all-notifications"
+            "build-on-evm/evm-api/restful-api/private/set-read-status-of-all-notifications",
+            "build-on-evm/evm-api/restful-api/public/get-account-details"
           ]
         },
         {
@@ -478,7 +490,8 @@
             "build-on-evm/evm-api/websocket-api/private/notifications",
             "build-on-evm/evm-api/websocket-api/private/position-push",
             "build-on-evm/evm-api/websocket-api/private/liquidation-account-push",
-            "build-on-evm/evm-api/websocket-api/private/liquidator"
+            "build-on-evm/evm-api/websocket-api/private/liquidator",
+            "build-on-evm/evm-api/websocket-api/private/wallet-transactions"
           ]
         }
       ]
@@ -492,5 +505,5 @@
     "medium": "https://medium.com/@orderlynetwork"
   },
 
-  "openapi": ["/evm.openapi.yaml"]
+  "openapi": ["/evm.openapi.yaml", "/near.openapi.yaml"]
 }

@@ -2,6 +2,26 @@
 title: "Release Notes"
 description: "All the API changes would be listed here."
 ---
+## 2024-01-04
+Added get account details (GET /v1/public/account) API
+
+Added get user statistics (GET /v1/client/statistics/daily) API
+
+Added get user fee tier(GET /v1/broker/user_info) API
+
+Added withdraw_fee to each tokens in get token info(GET /v1/public/token) API
+
+Added create algo order(GET /v1/algo/order), edit algo order(PUT /v1/algo/order), cancel algo order(DELETE /v1/algo/order) and get algo order APIs(GET /v1/algo/order). Only STOP orders are supported for now.
+
+Added address and order_tag parameter in get broker daily statistics(GET /v1/volume/broker/daily) API
+
+Added liquidation_tier parameter for each symbol
+
+Added symbols array and high/low risk perps in claim liquidated positions(POST /v1/liquidation) API
+
+Added allowCrossChainWithdrawal parameter to create withdraw request(POST /v1/withdraw_request) API
+
+Added PENDING_REBALANCE status for withdrawal request(POST /v1/withdraw_request) in REST and WSS
 
 ## 2023-10-13
 Added get vault chain info API
