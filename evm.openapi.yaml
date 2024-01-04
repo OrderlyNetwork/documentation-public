@@ -6871,6 +6871,9 @@ paths:
 
         Cancel a list of orders by `order_id`. The maximum orders that can be
         cancelled within 1 batch cancel request is 10.
+        
+        
+        This endpoint will return invalid order_id error if 0 order_ids are given or all of the given order_ids are invalid. 
 
 
         Note: This endpoint requires `trading` scope in Orderly Key.
@@ -7070,6 +7073,12 @@ paths:
 
         Cancel a list of orders by `client_order_id`. The maximum orders that
         can be cancelled within 1 batch cancel request is 10.
+        
+        
+        
+        
+        This endpoint will return invalid client_order_id error if 0 client_order_ids are given or all of the given client_order_ids are invalid. 
+
 
 
         Note: This endpoint requires `trading` scope in Orderly Key.
@@ -9872,6 +9881,8 @@ paths:
                             token:
                               type: string
                             balance:
+                              type: number
+                            pending_rebalance:
                               type: number
                           x-apifox-orders:
                             - chain_id
