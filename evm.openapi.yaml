@@ -8034,6 +8034,8 @@ paths:
         **Limit 10 requests per 60 seconds**
 
         `GET /v1/volume/user/stats`
+        
+        Get the latest volume statistics of the user.
       tags:
         - restful_private
       parameters:
@@ -8128,6 +8130,10 @@ paths:
         **Limit 10 requests per 60 seconds**
 
         `GET /v1/volume/user/daily`
+        
+        Get the daily historical breakdown of the user trading volume by `broker_id`.
+
+        The provided `start_date`/`end_date` has to be within a 90-day range.
       tags:
         - restful_private
       parameters:
@@ -11858,7 +11864,12 @@ paths:
       x-apifox-folder: restful_private
       x-apifox-status: released
       deprecated: false
-      description: ''
+      description: |
+        **Limit 10 requests per 60 seconds**
+
+        `GET /v1/broker/user_info`
+
+        Get the current fee tier of a users.
       tags:
         - restful_private
       parameters:
