@@ -118,7 +118,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -464,7 +464,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -592,7 +592,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -672,7 +672,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -783,7 +783,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -884,7 +884,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -1029,7 +1029,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     data:
                       meta:
@@ -1156,7 +1156,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -1305,7 +1305,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -1491,7 +1491,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -1696,7 +1696,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -1778,12 +1778,21 @@ paths:
                                   decimals:
                                     type: integer
                                   withdrawal_fee:
-                                    type: number
+                                    type: integer
+                                  cross_chain_withdrawal_fee:
+                                    type: integer
+                                required:
+                                  - chain_id
+                                  - contract_address
+                                  - decimals
+                                  - withdrawal_fee
+                                  - cross_chain_withdrawal_fee
                                 x-apifox-orders:
                                   - chain_id
                                   - contract_address
                                   - decimals
                                   - withdrawal_fee
+                                  - cross_chain_withdrawal_fee
                                 x-apifox-ignore-properties: []
                           x-apifox-orders:
                             - token
@@ -1810,7 +1819,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -1821,11 +1830,27 @@ paths:
                           decimals: 6
                           minimum_withdraw_amount: 0.000001
                           chain_details:
-                            - chain_id: '986532'
-                              contract_address: '0xbdb2d676b35ee4ed0862614572e9f375b06c4a9a'
+                            - chain_id: '43113'
+                              contract_address: '0x5d64c9cfb0197775b4b3ad9be4d3c7976e0d8dc3'
                               decimals: 6
-                              withdrawal_fee: 0.1
-                    timestamp: 1692161015612
+                              withdrawal_fee: 2
+                              cross_chain_withdrawal_fee: 0
+                            - chain_id: '421613'
+                              contract_address: '0xfd064A18f3BF249cf1f87FC203E90D8f650f2d63'
+                              decimals: 6
+                              withdrawal_fee: 2
+                              cross_chain_withdrawal_fee: 5
+                            - chain_id: '42161'
+                              contract_address: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831'
+                              decimals: 6
+                              withdrawal_fee: 2
+                              cross_chain_withdrawal_fee: 0
+                            - chain_id: '420'
+                              contract_address: '0xe05606174bac4a6364b31bd0eca4bf4dd368f8c6'
+                              decimals: 6
+                              withdrawal_fee: 2
+                              cross_chain_withdrawal_fee: 5
+                    timestamp: 1704347258257
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251478-run
   /v1/public/info:
     get:
@@ -1955,7 +1980,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -2110,7 +2135,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -2869,7 +2894,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     data:
                       current_margin_ratio_with_orders: 1.2385
@@ -3053,7 +3078,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     data:
                       IMR_withdraw_orders: 0.1
@@ -3439,7 +3464,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     data:
                       meta:
@@ -3546,7 +3571,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     data:
                       leverage: 10
@@ -3726,7 +3751,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -3924,7 +3949,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -4170,7 +4195,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -4274,7 +4299,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -4291,6 +4316,14 @@ paths:
 
 
         `PUT /v1/order`
+
+
+        Edit a pending algo order by `order_id`. Only the price or quantity can
+        be amended.
+
+
+        Note: This endpoint requires trading scope in Orderly Key.
+
 
 
         Edit a pending order by `order_id`. Only the `order_price` or
@@ -4409,7 +4442,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -4571,7 +4604,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -4777,7 +4810,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -4911,7 +4944,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -5062,7 +5095,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -5321,7 +5354,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -5441,7 +5474,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -5557,7 +5590,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -5753,7 +5786,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -5902,7 +5935,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -5967,7 +6000,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -6027,7 +6060,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -6100,7 +6133,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -6298,7 +6331,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -6436,7 +6469,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -6489,7 +6522,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -6572,7 +6605,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -6793,7 +6826,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -6915,7 +6948,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -7015,7 +7048,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -7114,7 +7147,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -7278,7 +7311,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -7430,7 +7463,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -7592,7 +7625,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -7736,7 +7769,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -7872,7 +7905,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -7984,7 +8017,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -8001,8 +8034,6 @@ paths:
         **Limit 10 requests per 60 seconds**
 
         `GET /v1/volume/user/stats`
-
-        Get the latest volume statistics of the user.
       tags:
         - restful_private
       parameters:
@@ -8077,7 +8108,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -8103,14 +8134,14 @@ paths:
         - name: start_date
           in: query
           description: Format YYYY-MM-DD
-          required: false
+          required: true
           example: ''
           schema:
             type: string
         - name: end_date
           in: query
           description: Format YYYY-MM-DD
-          required: false
+          required: true
           example: ''
           schema:
             type: string
@@ -8182,7 +8213,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -8272,7 +8303,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -8359,7 +8390,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -8451,6 +8482,8 @@ paths:
                     timestamp:
                       type: string
                       description: current timestamp in UNIX milliseconds
+                    allowCrossChainWithdrawal:
+                      type: string
                   x-apifox-orders:
                     - brokerId
                     - chainId
@@ -8459,6 +8492,7 @@ paths:
                     - amount
                     - withdrawNonce
                     - timestamp
+                    - allowCrossChainWithdrawal
                   required:
                     - brokerId
                     - chainId
@@ -8484,20 +8518,16 @@ paths:
                 verifyingContract:
                   type: string
                   description: Address of the Orderly Network ledger contract
-                allow_cross_chain_withdrawal:
-                  type: boolean
               x-apifox-orders:
                 - message
                 - signature
                 - userAddress
                 - verifyingContract
-                - allow_cross_chain_withdrawal
               required:
                 - message
                 - signature
                 - userAddress
                 - verifyingContract
-                - allow_cross_chain_withdrawal
               x-apifox-ignore-properties: []
             example:
               message:
@@ -8533,7 +8563,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     timestamp: 1689075697206
@@ -8689,7 +8719,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -8863,7 +8893,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -8991,7 +9021,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -9102,7 +9132,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -9210,7 +9240,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -9301,7 +9331,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     timestamp: 1580794149000
@@ -9509,7 +9539,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -9626,7 +9656,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -9856,7 +9886,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -9920,7 +9950,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     timestamp: 1688606744795
@@ -9931,10 +9961,24 @@ paths:
       x-apifox-folder: restful_private
       x-apifox-status: released
       deprecated: false
-      description: |-
+      description: >-
         **Limit: 10 requests per 1 second**
 
+
         `POST /v1/algo/order`
+
+
+        Place maker/taker order that requires an additional trigger for order
+        execution such as stop orders.
+
+
+        `STOP` type order bahavior: an order to buy or sell at the market price
+        once the asset has traded at or through a specified price (the "stop
+        price"). If the asset reaches the stop price, the order becomes a market
+        order and is filled at the next available market price.
+
+
+        Note: This endpoint requires trading scope in Orderly Key.
       tags:
         - restful_private
       parameters:
@@ -9983,12 +10027,9 @@ paths:
                   description: '36 length, default: null'
                 type:
                   type: string
-                  description: LIMIT/MARKET/IOC/FOK/POST_ONLY/ASK/BID
+                  description: LIMIT/MARKET
                 price:
                   type: number
-                  description: >-
-                    If order_type is MARKET/ASK/BID, then is not required,
-                    otherwise this parameter is required.
                 quantity:
                   type: number
                   description: >-
@@ -9996,14 +10037,9 @@ paths:
                     not required.
                 trigger_price_type:
                   type: number
-                  description: >-
-                    For MARKET/ASK/BID order, the order size in terms of quote
-                    currency
+                  description: Only MARK_PRICE is available for now.
                 trigger_price:
                   type: number
-                  description: >-
-                    The order quantity shown on orderbook. (default: equal to
-                    order_quantity)
                 reduce_only:
                   type: boolean
                 visible_quantity:
@@ -10087,7 +10123,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -10195,7 +10231,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -10212,7 +10248,7 @@ paths:
 
         `DELETE /v1/algo/order?order_id=:oid&symbol=:symbol`
 
-        Cancels a single order by `order_id`.
+        Cancels a single algo order by `order_id`.
       tags:
         - restful_private
       parameters:
@@ -10292,7 +10328,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -10310,7 +10346,7 @@ paths:
 
         `DELETE /v1/algo/client/order?client_order_id=:coid&symbol=:symbol`
 
-        Cancel an order by `client_order_id`.
+        Cancel an algo order by `client_order_id`.
       tags:
         - restful_private
       parameters:
@@ -10390,7 +10426,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -10399,7 +10435,7 @@ paths:
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-136950863-run
   /v1/algo/orders:
     delete:
-      summary: Cancel All Pending Algo Order
+      summary: Cancel All Pending Algo Orders
       x-apifox-folder: restful_private
       x-apifox-status: released
       deprecated: false
@@ -10407,6 +10443,8 @@ paths:
         **Limit: 10 requests per 1 second**
 
         `DELETE /v1/algo/orders?symbol=:symbol`
+
+        Cancel all pending algo orders.
       tags:
         - restful_private
       parameters:
@@ -10479,7 +10517,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -10491,7 +10529,24 @@ paths:
       x-apifox-folder: restful_private
       x-apifox-status: released
       deprecated: false
-      description: ''
+      description: >-
+        **Limit: 10 requests per 1 second**
+
+
+        `GET /v1/algo/orders`
+
+
+        Get algo order details by customized filters.
+
+
+        For filter by status, one can reference special bundled statuses below
+        for ease of access of Open (i.e `INCOMPLETE`) orders or `COMPLETED`
+        orders.
+
+
+        `INCOMPLETE` = `NEW` + `PARTIAL_FILLED`
+
+        `COMPLETED` = `CANCELLED` + `FILLED`
       tags:
         - restful_private
       parameters:
@@ -10766,7 +10821,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -10905,6 +10960,8 @@ paths:
         **Limit: 10 requests per 1 second**
 
         `GET /v1/algo/order/:order_id`
+
+        Get details of a single algo order by order_id.
 
         Get details of a single order by `order_id`.
       tags:
@@ -11053,7 +11110,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -11088,6 +11145,8 @@ paths:
         **Limit: 10 requests per 1 second**
 
         `GET /v1/algo/client/order/:client_order_id`
+
+        Get details of a single algo order by client_order_id.
 
         Get details of a single order by `client_order_id`.
       tags:
@@ -11238,7 +11297,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -11381,7 +11440,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -11464,7 +11523,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -11600,7 +11659,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -11762,7 +11821,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
@@ -11899,7 +11958,7 @@ paths:
                 x-apifox-ignore-properties: []
               examples:
                 '1':
-                  summary: 成功示例
+                  summary: Success
                   value:
                     success: true
                     data:
