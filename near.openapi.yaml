@@ -6969,7 +6969,10 @@ paths:
 
         `GET /v1/kline`
 
-        Get the latest klines (OHLC) of the trading pairs.
+        Get the latest klines (OHLC) of the specified symbol.
+
+
+        Please note that for symbols with low trading activity, the kline might be generated through the mid price of the orderbook in addition to any executed trades on the platform.
       tags:
         - restful_private
       parameters:
