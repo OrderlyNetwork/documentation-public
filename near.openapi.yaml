@@ -7617,14 +7617,14 @@ paths:
         - name: start_date
           in: query
           description: Format YYYY-MM-DD
-          required: false
+          required: true
           example: ''
           schema:
             type: string
         - name: end_date
           in: query
           description: Format YYYY-MM-DD
-          required: false
+          required: true
           example: ''
           schema:
             type: string
@@ -9021,9 +9021,9 @@ paths:
       description: |
         **Limit 10 requests per 60 seconds**
 
-        `GET /v1/volume/user/stats`
+        `GET /v1/volume/broker/daily`
 
-        Get the latest volume statistics of the user.
+        Get broker daily statistics
       tags:
         - restful_private
       parameters:
