@@ -9023,28 +9023,31 @@ paths:
 
         `GET /v1/volume/broker/daily`
 
-        Get broker daily statistics
+        Get the daily historical breakdown of the user trading volume on specified broker.
+
+
+        The provided `start_date`/`end_date` has to be within a 90-day range.
       tags:
         - restful_private
       parameters:
         - name: start_date
           in: query
           description: Format YYYY-MM-DD
-          required: false
+          required: true
           example: ''
           schema:
             type: string
         - name: end_date
           in: query
           description: Format YYYY-MM-DD
-          required: false
+          required: true
           example: ''
           schema:
             type: string
         - name: broker_id
           in: query
           description: ''
-          required: false
+          required: true
           example: ''
           schema:
             type: string
