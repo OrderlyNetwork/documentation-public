@@ -51,7 +51,7 @@ Put the **signature** as a parameter signature, and provide the **orderly tradin
 
 ```json
 {
-  "symbol": "SPOT_NEAR_USDC",
+  "symbol": "SPOT_NEAR_USDC.e",
   "order_type": "LIMIT",
   "order_price": 15.23,
   "order_quantity": 23.11,
@@ -95,7 +95,7 @@ POST /v1/order
 # Body json:
 
 {
-  "symbol": "SPOT_NEAR_USDC",
+  "symbol": "SPOT_NEAR_USDC.e",
   "order_type": "LIMIT",
   "order_price": 15.23,
   "order_quantity": 23.11,
@@ -106,7 +106,7 @@ POST /v1/order
 Normalize request content. The result content would look like following
 
 ```
-order_price=15.23&order_quantity=23.11&order_type=LIMIT&side=BUY&symbol=SPOT_NEAR_USDC
+order_price=15.23&order_quantity=23.11&order_type=LIMIT&side=BUY&symbol=SPOT_NEAR_USDC.e
 ```
 
 ## Request Signature Example
@@ -143,7 +143,7 @@ orderly-trading-key: 90b8d328cde365b3dd10b194048b677d575c2faf51790ecfa6c2fe8b040
 orderly-signature: Z8ZgTnmMcKdfQBW62bLNON2YtMpz9riPvw-V33J3aA7_5VjaKehkQD06iAiagIMxja59bqp9L8zTLGXtBkHCCA==
 orderly-timestamp: 1649920583000
 {
-  "symbol":"SPOT_NEAR_USDC",
+  "symbol":"SPOT_NEAR_USDC.e",
   "order_type":"LIMIT",
   "order_price":15.23,
   "order_quantity":23.11,
@@ -159,7 +159,7 @@ POST /v1/order
 
 # Body json:
 {
-  "symbol":"SPOT_NEAR_USDC",
+  "symbol":"SPOT_NEAR_USDC.e",
   "order_type":"LIMIT",
   "order_price":15.23,
   "order_quantity":23.11,
@@ -171,7 +171,7 @@ POST /v1/order
 Normalize request content, The result content would look like following
 
 ```
-1649920583000POST/v1/order{"symbol": "SPOT_NEAR_USDC", "order_type": "LIMIT", "order_price": 15.23, "order_quantity": 23.11, "side": "BUY", "signature": "fc3c41d988dd03a65a99354a7b1d311a43de6b7a7867bdbdaf228bb74a121f8e47bb15ff7f69eb19c96da222f651da53b5ab30fb7caf69a76f01ad9af06c154400"}
+1649920583000POST/v1/order{"symbol": "SPOT_NEAR_USDC.e", "order_type": "LIMIT", "order_price": 15.23, "order_quantity": 23.11, "side": "BUY", "signature": "fc3c41d988dd03a65a99354a7b1d311a43de6b7a7867bdbdaf228bb74a121f8e47bb15ff7f69eb19c96da222f651da53b5ab30fb7caf69a76f01ad9af06c154400"}
 ```
 
 Then use orderly-secret to generate a signature using the ed25519 algorithm, and encode the signature in base64 url format:

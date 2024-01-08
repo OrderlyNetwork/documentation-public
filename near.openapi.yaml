@@ -706,7 +706,7 @@ paths:
         for the last funding period (dt = 8h)
 
         * `est_funding_rate` : rolling average of all funding rates over the
-        last 8 hours
+        last 8 hours 
       tags:
         - restful_public
       parameters: []
@@ -3559,7 +3559,7 @@ paths:
               properties:
                 leverage:
                   type: integer
-                  description: One of 1,2,3,4,5,10
+                  description: One of 1,2,3,4,5,10,15,20
               x-apifox-orders:
                 - leverage
               required:
@@ -4250,7 +4250,7 @@ paths:
       description: |
         **Limit: 10 requests per 1 second**
 
-        `DELETE /v1/order?order_id=:oid&symbol=:symbol`
+        `DELETE /v1/order?order_id=:order_id&symbol=:symbol`
 
         Cancels a single order by `order_id`.
       tags:
@@ -4460,7 +4460,6 @@ paths:
                 - side
                 - order_type
                 - symbol
-                - order_tag
                 - signature
               x-apifox-ignore-properties: []
       responses:
@@ -4567,36 +4566,35 @@ paths:
                     type: object
                     properties:
                       order_id:
-                        type: number
+                        type: integer
                       user_id:
-                        type: number
+                        type: integer
                       price:
                         type: number
                       type:
                         type: string
+                      reduce_only:
+                        type: boolean
                       quantity:
-                        type: number
+                        type: integer
                       amount:
                         type: number
-                        nullable: true
                       executed:
-                        type: number
+                        type: integer
                       visible:
-                        type: number
+                        type: integer
                       symbol:
                         type: string
                       side:
                         type: string
                       status:
-                        description: NEW / FILLED / PARTIAL_FILLED / CANCELLED
                         type: string
                       total_fee:
-                        type: number
+                        type: integer
                       fee_asset:
                         type: string
                       client_order_id:
-                        type: number
-                        nullable: true
+                        type: string
                       average_executed_price:
                         type: number
                       broker_id:
@@ -4604,14 +4602,15 @@ paths:
                       broker_name:
                         type: string
                       created_time:
-                        type: number
+                        type: integer
                       updated_time:
-                        type: number
+                        type: integer
                     required:
                       - order_id
                       - user_id
                       - price
                       - type
+                      - reduce_only
                       - quantity
                       - amount
                       - executed
@@ -4632,6 +4631,7 @@ paths:
                       - user_id
                       - price
                       - type
+                      - reduce_only
                       - quantity
                       - amount
                       - executed
@@ -4649,7 +4649,7 @@ paths:
                       - updated_time
                     x-apifox-ignore-properties: []
                   timestamp:
-                    type: number
+                    type: integer
                 required:
                   - success
                   - data
@@ -4758,23 +4758,24 @@ paths:
                         type: number
                       type:
                         type: string
+                      reduce_only:
+                        type: boolean
                       quantity:
-                        type: number
+                        type: integer
                       amount:
                         type: number
                       executed:
-                        type: number
+                        type: integer
                       visible:
-                        type: number
+                        type: integer
                       symbol:
                         type: string
                       side:
                         type: string
                       status:
-                        description: NEW / FILLED / PARTIAL_FILLED / CANCELLED
                         type: string
                       total_fee:
-                        type: number
+                        type: integer
                       fee_asset:
                         type: string
                       client_order_id:
@@ -4789,18 +4790,16 @@ paths:
                         type: integer
                       updated_time:
                         type: integer
-                      reduce_only:
-                        type: boolean
                     required:
                       - order_id
                       - user_id
                       - price
                       - type
+                      - reduce_only
                       - quantity
                       - amount
                       - executed
                       - visible
-                      - reduce_only
                       - symbol
                       - side
                       - status
@@ -4808,15 +4807,16 @@ paths:
                       - fee_asset
                       - client_order_id
                       - average_executed_price
-                      - created_time
-                      - updated_time
                       - broker_id
                       - broker_name
+                      - created_time
+                      - updated_time
                     x-apifox-orders:
                       - order_id
                       - user_id
                       - price
                       - type
+                      - reduce_only
                       - quantity
                       - amount
                       - executed
@@ -4832,7 +4832,6 @@ paths:
                       - broker_name
                       - created_time
                       - updated_time
-                      - reduce_only
                     x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
@@ -5091,7 +5090,7 @@ paths:
           required: false
           example: ''
           schema:
-            type: string
+            type: boolean
         - name: orderly-timestamp
           in: header
           description: ''
@@ -5260,57 +5259,56 @@ paths:
                       email:
                         type: string
                       account_mode:
-                        description: account mode
                         type: string
                       max_leverage:
-                        type: integer
+                        type: number
                       tier:
                         type: string
                       futures_tier:
                         type: string
                       taker_fee_rate:
-                        type: integer
+                        type: number
                       maker_fee_rate:
-                        type: integer
+                        type: number
                       futures_taker_fee_rate:
-                        type: integer
+                        type: number
                       futures_maker_fee_rate:
-                        type: integer
+                        type: number
                       imr_factor:
                         type: object
                         properties:
-                          PERP_BTC_USDC:
+                          PERP_BTC_USDC.e:
                             type: number
-                          PERP_ETH_USDC:
+                          PERP_ETH_USDC.e:
                             type: number
-                          PERP_NEAR_USDC:
+                          PERP_NEAR_USDC.e:
                             type: number
                         required:
-                          - PERP_BTC_USDC
-                          - PERP_ETH_USDC
-                          - PERP_NEAR_USDC
+                          - PERP_BTC_USDC.e
+                          - PERP_ETH_USDC.e
+                          - PERP_NEAR_USDC.e
                         x-apifox-orders:
-                          - PERP_BTC_USDC
-                          - PERP_ETH_USDC
-                          - PERP_NEAR_USDC
+                          - PERP_BTC_USDC.e
+                          - PERP_ETH_USDC.e
+                          - PERP_NEAR_USDC.e
                         x-apifox-ignore-properties: []
                       max_notional:
                         type: object
                         properties:
-                          PERP_BTC_USDC:
-                            type: integer
-                          PERP_ETH_USDC:
-                            type: integer
-                          PERP_NEAR_USDC:
-                            type: integer
+                          PERP_BTC_USDC.e:
+                            type: number
+                          PERP_ETH_USDC.e:
+                            type: number
+                          PERP_NEAR_USDC.e:
+                            type: number
                         required:
-                          - PERP_BTC_USDC
-                          - PERP_ETH_USDC
-                          - PERP_NEAR_USDC
+                          - PERP_BTC_USDC.e
+                          - PERP_ETH_USDC.e
+                          - PERP_NEAR_USDC.e
                         x-apifox-orders:
-                          - PERP_BTC_USDC
-                          - PERP_ETH_USDC
-                          - PERP_NEAR_USDC
+                          - PERP_BTC_USDC.e
+                          - PERP_ETH_USDC.e
+                          - PERP_NEAR_USDC.e
                         x-apifox-ignore-properties: []
                       maintenance_cancel_orders:
                         type: boolean
@@ -5537,36 +5535,35 @@ paths:
                           type: object
                           properties:
                             order_id:
-                              type: number
+                              type: integer
                             user_id:
-                              type: number
+                              type: integer
                             price:
                               type: number
                             type:
                               type: string
+                            reduce_only:
+                              type: boolean
                             quantity:
-                              type: number
+                              type: integer
                             amount:
                               type: number
-                              nullable: true
                             executed:
-                              type: number
+                              type: integer
                             visible:
-                              type: number
+                              type: integer
                             symbol:
                               type: string
                             side:
                               type: string
                             status:
-                              description: NEW / FILLED / PARTIAL_FILLED / CANCELLED
                               type: string
                             total_fee:
-                              type: number
+                              type: integer
                             fee_asset:
                               type: string
                             client_order_id:
-                              type: number
-                              nullable: true
+                              type: string
                             average_executed_price:
                               type: number
                             broker_id:
@@ -5574,14 +5571,15 @@ paths:
                             broker_name:
                               type: string
                             created_time:
-                              type: number
+                              type: integer
                             updated_time:
-                              type: number
+                              type: integer
                           x-apifox-orders:
                             - order_id
                             - user_id
                             - price
                             - type
+                            - reduce_only
                             - quantity
                             - amount
                             - executed
@@ -5606,7 +5604,7 @@ paths:
                       - rows
                     x-apifox-ignore-properties: []
                   timestamp:
-                    type: number
+                    type: integer
                 required:
                   - success
                   - data
@@ -5658,7 +5656,7 @@ paths:
         **Limit: 10 requests per 1 second**
 
 
-        `DELETE /v1/orders?symbol=:symbol`
+        `DELETE /v1/orders?symbol={symbol}`
 
 
         Cancel a list of orders, filtered by `symbol` optionally. This request
@@ -5920,7 +5918,7 @@ paths:
             type: string
         - name: status
           in: query
-          description: '`NEW`/`CONFIRM`/`PROCESSING`/`COMPLETED`/`FAILED`/`PENDING_REBALANCE`'
+          description: NEW/CONFIRM/PROCESSING/COMPLETED/FAILED
           required: false
           example: ''
           schema:
@@ -6485,16 +6483,15 @@ paths:
         **Limit: 10 requests per 1 second**
 
 
-        `DELETE /v1/batch-order?order_ids=:order_id_1,:order_id_2`
+        `DELETE /v1/batch-order?order_ids={order_id_1},{order_id_2}`
 
 
-        Cancel a list of orders by `order_id`. The maximum orders that can be
+        Cancel a list of orders by `order_ids`. The maximum orders that can be
         cancelled within 1 batch cancel request is 10.
-        
-        
-        
-        This endpoint will return invalid order_id error if 0 order_ids are given or all of the given order_ids are invalid. 
 
+
+        This endpoint will return invalid order_id error if 0 order_ids are
+        given or all of the given order_ids are invalid. 
       tags:
         - restful_private
       parameters:
@@ -6597,10 +6594,13 @@ paths:
       x-apifox-folder: restful_private
       x-apifox-status: released
       deprecated: false
-      description: |
+      description: >
         **Limit: 10 requests per 1 second**
 
-        `DELETE /v1/client/order?client_order_id=:coid&symbol=:symbol`
+
+        `DELETE
+        /v1/client/order?client_order_id={client_order_id}&symbol={symbol}`
+
 
         Cancel an order by `client_order_id`.
       tags:
@@ -6714,14 +6714,17 @@ paths:
         **Limit: 10 requests per 1 second**
 
 
-        `DELETE /v1/client/batch-order?client_order_ids=:order_id_1,:order_id_2`
+        `DELETE
+        /v1/client/batch-order?client_order_ids={order_id_1},{order_id_2}`
 
 
-        Cancel a list of orders by `client_order_id`. The maximum orders that
+        Cancel a list of orders by `client_order_ids`. The maximum orders that
         can be cancelled within 1 batch cancel request is 10.
-        
-        
-        This endpoint will return invalid client_order_id error if 0 client_order_ids are given or all of the given client_order_ids are invalid.
+
+
+        This endpoint will return invalid client_order_id error if 0
+        client_order_ids are given or all of the given client_order_ids are
+        invalid. 
       tags:
         - restful_private
       parameters:
@@ -6977,10 +6980,7 @@ paths:
 
         `GET /v1/kline`
 
-        Get the latest klines (OHLC) of the specified symbol.
-
-
-        Please note that for symbols with low trading activity, the kline might be generated through the mid price of the orderbook in addition to any executed trades on the platform.
+        Get the latest klines (OHLC) of the trading pairs.
       tags:
         - restful_private
       parameters:
@@ -7617,14 +7617,14 @@ paths:
         - name: start_date
           in: query
           description: Format YYYY-MM-DD
-          required: true
+          required: false
           example: ''
           schema:
             type: string
         - name: end_date
           in: query
           description: Format YYYY-MM-DD
-          required: true
+          required: false
           example: ''
           schema:
             type: string
@@ -9018,12 +9018,16 @@ paths:
       x-apifox-folder: restful_private
       x-apifox-status: released
       deprecated: false
-      description: |
+      description: >-
         **Limit 10 requests per 60 seconds**
+
 
         `GET /v1/volume/broker/daily`
 
-        Get the daily historical breakdown of the user trading volume on specified broker.
+
+
+        Get the daily historical breakdown of the user trading volume on
+        specified broker.
 
 
         The provided `start_date`/`end_date` has to be within a 90-day range.

@@ -1396,6 +1396,8 @@ paths:
                               type: integer
                             transfer_amount_to_insurance_fund:
                               type: integer
+                            type:
+                              type: string
                             positions_by_perp:
                               type: array
                               items:
@@ -1413,11 +1415,9 @@ paths:
                                     type: integer
                                   insurance_fund_fee:
                                     type: number
-                                  abs_liquidation_fee:
-                                    type: number
-                                  abs_insurance_fund_fee:
-                                    type: integer
                                   abs_liquidator_fee:
+                                    type: integer
+                                  abs_insurance_fund_fee:
                                     type: integer
                                 x-apifox-orders:
                                   - symbol
@@ -1426,31 +1426,14 @@ paths:
                                   - cost_position_transfer
                                   - transfer_price
                                   - insurance_fund_fee
-                                  - abs_liquidation_fee
-                                  - abs_insurance_fund_fee
                                   - abs_liquidator_fee
-                                required:
-                                  - symbol
-                                  - position_qty
-                                  - liquidator_fee
-                                  - cost_position_transfer
-                                  - transfer_price
-                                  - insurance_fund_fee
-                                  - abs_liquidation_fee
                                   - abs_insurance_fund_fee
                                 x-apifox-ignore-properties: []
-                            type:
-                              type: string
                           x-apifox-orders:
                             - timestamp
                             - liquidation_id
                             - transfer_amount_to_insurance_fund
-                            - positions_by_perp
                             - type
-                          required:
-                            - timestamp
-                            - liquidation_id
-                            - transfer_amount_to_insurance_fund
                             - positions_by_perp
                           x-apifox-ignore-properties: []
                       meta:
@@ -1565,7 +1548,7 @@ paths:
 
 
         - Order size should be within holding threshold. See
-        [account_info](#get-account-information)
+        [account_info](/build-on-evm/evm-api/restful-api/get-account-information)
       tags:
         - restful_public
       parameters:
@@ -1867,7 +1850,7 @@ paths:
 
         Get available symbols that Orderly Network supports, and also send order
         rules for each symbol. The definition of rules can be found at [Exchange
-        Infomation](#exchange-information)
+        Information](/build-on-evm/evm-api/restful-api/public/get-exchange-information)
       tags:
         - restful_public
       parameters: []
@@ -3537,7 +3520,7 @@ paths:
               properties:
                 leverage:
                   type: integer
-                  description: One of 1,2,3,4,5,10, 20
+                  description: One of 1,2,3,4,5,10,15,20
               x-apifox-orders:
                 - leverage
               required:
@@ -4156,7 +4139,7 @@ paths:
                     type: object
                     properties:
                       order_id:
-                        type: number
+                        type: integer
                       client_order_id:
                         type: string
                       order_type:
@@ -4165,13 +4148,14 @@ paths:
                         type: number
                       order_quantity:
                         type: number
-                      broker_id:
-                        type: string
                       order_amount:
                         type: number
                     required:
                       - order_id
+                      - client_order_id
                       - order_type
+                      - order_price
+                      - order_quantity
                       - order_amount
                     x-apifox-orders:
                       - order_id
@@ -4179,15 +4163,14 @@ paths:
                       - order_type
                       - order_price
                       - order_quantity
-                      - broker_id
                       - order_amount
                     x-apifox-ignore-properties: []
                   timestamp:
-                    type: number
+                    type: integer
                 required:
                   - success
-                  - timestamp
                   - data
+                  - timestamp
                 x-apifox-orders:
                   - success
                   - data
@@ -4215,7 +4198,7 @@ paths:
       description: |
         **Limit: 10 requests per 1 second**
 
-        `DELETE /v1/order?order_id={oid}&symbol={symbol}`
+        `DELETE /v1/order?order_id={order_id}&symbol={symbol}`
 
         Cancels a single order by `order_id`.
 
@@ -4316,14 +4299,6 @@ paths:
 
 
         `PUT /v1/order`
-
-
-        Edit a pending algo order by `order_id`. Only the price or quantity can
-        be amended.
-
-
-        Note: This endpoint requires trading scope in Orderly Key.
-
 
 
         Edit a pending order by `order_id`. Only the `order_price` or
@@ -4854,7 +4829,7 @@ paths:
           required: false
           example: ''
           schema:
-            type: string
+            type: boolean
         - name: orderly-timestamp
           in: header
           description: ''
@@ -5023,7 +4998,6 @@ paths:
                       email:
                         type: string
                       account_mode:
-                        description: account mode
                         type: string
                       max_leverage:
                         type: number
@@ -5040,20 +5014,38 @@ paths:
                       imr_factor:
                         type: object
                         properties:
-                          BTC:
+                          PERP_BTC_USDC:
                             type: number
-                          ETH:
+                          PERP_ETH_USDC:
                             type: number
-                          NEAR:
+                          PERP_NEAR_USDC:
                             type: number
                         required:
-                          - BTC
-                          - ETH
-                          - NEAR
+                          - PERP_BTC_USDC
+                          - PERP_ETH_USDC
+                          - PERP_NEAR_USDC
                         x-apifox-orders:
-                          - BTC
-                          - ETH
-                          - NEAR
+                          - PERP_BTC_USDC
+                          - PERP_ETH_USDC
+                          - PERP_NEAR_USDC
+                        x-apifox-ignore-properties: []
+                      max_notional:
+                        type: object
+                        properties:
+                          PERP_BTC_USDC:
+                            type: number
+                          PERP_ETH_USDC:
+                            type: number
+                          PERP_NEAR_USDC:
+                            type: number
+                        required:
+                          - PERP_BTC_USDC
+                          - PERP_ETH_USDC
+                          - PERP_NEAR_USDC
+                        x-apifox-orders:
+                          - PERP_BTC_USDC
+                          - PERP_ETH_USDC
+                          - PERP_NEAR_USDC
                         x-apifox-ignore-properties: []
                       maintenance_cancel_orders:
                         type: boolean
@@ -5068,6 +5060,7 @@ paths:
                       - futures_taker_fee_rate
                       - futures_maker_fee_rate
                       - imr_factor
+                      - max_notional
                       - maintenance_cancel_orders
                     x-apifox-orders:
                       - account_id
@@ -5080,10 +5073,11 @@ paths:
                       - futures_taker_fee_rate
                       - futures_maker_fee_rate
                       - imr_factor
+                      - max_notional
                       - maintenance_cancel_orders
                     x-apifox-ignore-properties: []
                   timestamp:
-                    type: number
+                    type: integer
                 required:
                   - success
                   - data
@@ -5273,46 +5267,43 @@ paths:
                           type: object
                           properties:
                             order_id:
-                              type: number
+                              type: integer
                             user_id:
-                              type: number
+                              type: integer
                             price:
                               type: number
                             type:
                               type: string
                             quantity:
-                              type: number
+                              type: integer
                             amount:
                               type: number
-                              nullable: true
                             executed:
-                              type: number
+                              type: integer
                             visible:
-                              type: number
+                              type: integer
+                            reduce_only:
+                              type: boolean
                             symbol:
                               type: string
                             side:
                               type: string
                             status:
-                              description: NEW / FILLED / PARTIAL_FILLED / CANCELLED
                               type: string
                             total_fee:
-                              type: number
+                              type: integer
                             fee_asset:
                               type: string
                             client_order_id:
-                              type: number
-                              nullable: true
+                              type: string
                             average_executed_price:
                               type: number
-                            broker_id:
-                              type: string
-                            broker_name:
-                              type: string
                             created_time:
-                              type: number
+                              type: integer
                             updated_time:
-                              type: number
+                              type: integer
+                            order_tag:
+                              type: string
                           x-apifox-orders:
                             - order_id
                             - user_id
@@ -5322,6 +5313,7 @@ paths:
                             - amount
                             - executed
                             - visible
+                            - reduce_only
                             - symbol
                             - side
                             - status
@@ -5329,10 +5321,9 @@ paths:
                             - fee_asset
                             - client_order_id
                             - average_executed_price
-                            - broker_id
-                            - broker_name
                             - created_time
                             - updated_time
+                            - order_tag
                           x-apifox-ignore-properties: []
                     required:
                       - meta
@@ -5342,7 +5333,7 @@ paths:
                       - rows
                     x-apifox-ignore-properties: []
                   timestamp:
-                    type: number
+                    type: integer
                 required:
                   - success
                   - data
@@ -5636,7 +5627,7 @@ paths:
             type: string
         - name: status
           in: query
-          description: '`NEW`/`CONFIRM`/`PROCESSING`/`COMPLETED`/`FAILED`/`PENDING_REBALANCE`'
+          description: '`NEW`/`CONFIRM`/`PROCESSING`/`COMPLETED`/`FAILED`'
           required: false
           example: ''
           schema:
@@ -5856,7 +5847,7 @@ paths:
             schema:
               type: object
               properties:
-                claim_id:
+                liquidation_id:
                   type: number
                 symbol:
                   type: string
@@ -5866,12 +5857,12 @@ paths:
                 limit_price:
                   type: number
               x-apifox-orders:
-                - claim_id
+                - liquidation_id
                 - symbol
                 - qty_request
                 - limit_price
               required:
-                - claim_id
+                - liquidation_id
                 - qty_request
                 - symbol
               x-apifox-ignore-properties: []
@@ -6538,7 +6529,7 @@ paths:
       description: |
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET /v1/public/vault_balance`
+        `GET /v1/public/chain_info`
       tags:
         - restful_public
       parameters: []
@@ -6647,6 +6638,8 @@ paths:
         in 1 batch order request is 10. Each order within the batch order
         request is counted as 1 order towards the overall create order rate
         limit.
+
+
 
 
         Note: This endpoint requires `trading` scope in Orderly Key.
@@ -6869,11 +6862,12 @@ paths:
         `DELETE /v1/batch-order?order_ids={order_id1},{order_id2}`
 
 
-        Cancel a list of orders by `order_id`. The maximum orders that can be
-        cancelled within 1 batch cancel request is 10.
-        
-        
-        This endpoint will return invalid order_id error if 0 order_ids are given or all of the given order_ids are invalid. 
+        Cancel a list of orders by `order_ids`. The maximum orders that can be
+        cancelled within 1 batch cancel request is 10. 
+
+
+        This endpoint will return invalid order_id error if 0 order_ids are
+        given or all of the given order_ids are invalid. 
 
 
         Note: This endpoint requires `trading` scope in Orderly Key.
@@ -6964,12 +6958,16 @@ paths:
       x-apifox-folder: restful_private
       x-apifox-status: released
       deprecated: false
-      description: |
+      description: >
         **Limit: 10 requests per 1 second**
 
-        `DELETE /v1/client/order?client_order_id={coid}&symbol={symbol}`
+
+        `DELETE
+        /v1/client/order?client_order_id={client_order_id}&symbol={symbol}`
+
 
         Cancel an order by `client_order_id`.
+
 
         Note: This endpoint requires `trading` scope in Orderly Key.
       tags:
@@ -7068,17 +7066,17 @@ paths:
         **Limit: 10 requests per 1 second**
 
 
-        `DELETE /v1/client/batch-order?client_order_ids={order_id1},{order_id2}`
+        `DELETE
+        /v1/client/batch-order?client_order_ids={client_order_id1},{client_order_id2}`
 
 
-        Cancel a list of orders by `client_order_id`. The maximum orders that
+        Cancel a list of orders by `client_order_ids`. The maximum orders that
         can be cancelled within 1 batch cancel request is 10.
-        
-        
-        
-        
-        This endpoint will return invalid client_order_id error if 0 client_order_ids are given or all of the given client_order_ids are invalid. 
 
+
+        This endpoint will return invalid client_order_id error if 0
+        client_order_ids are given or all of the given client_order_ids are
+        invalid. 
 
 
         Note: This endpoint requires `trading` scope in Orderly Key.
@@ -7498,9 +7496,10 @@ paths:
       x-apifox-folder: restful_private
       x-apifox-status: released
       deprecated: false
-      description: |
+      description: >
 
         **Limit: 10 requests per 1 second**
+
 
         `GET /v1/kline`
 
@@ -7508,7 +7507,9 @@ paths:
         Get the latest klines (OHLC) of the specified symbol.
 
 
-        Please note that for symbols with low trading activity, the kline might be generated through the mid price of the orderbook in addition to any executed trades on the platform.
+        Please note that for symbols with low trading activity, the kline might
+        be generated through the mid price of the orderbook in addition to any
+        executed trades on the platform.
       tags:
         - restful_private
       parameters:
@@ -8047,8 +8048,6 @@ paths:
         **Limit 10 requests per 60 seconds**
 
         `GET /v1/volume/user/stats`
-        
-        Get the latest volume statistics of the user.
       tags:
         - restful_private
       parameters:
@@ -8143,10 +8142,6 @@ paths:
         **Limit 10 requests per 60 seconds**
 
         `GET /v1/volume/user/daily`
-        
-        Get the daily historical breakdown of the user trading volume by `broker_id`.
-
-        The provided `start_date`/`end_date` has to be within a 90-day range.
       tags:
         - restful_private
       parameters:
@@ -9888,6 +9883,7 @@ paths:
                             - chain_id
                             - token
                             - balance
+                            - pending_rebalance
                           x-apifox-ignore-properties: []
                     required:
                       - rows
@@ -9990,25 +9986,14 @@ paths:
         `POST /v1/algo/order`
 
 
-        Place algo order maker/taker, the order executed information will be updated from websocket stream. will respond immediately with an order created message.
-
-
-        To place Stop Market order, please use `STOP` as algoType and `MARKET` as type. Please input the trigger price in triggerPrice field.
-
-
-        To place Stop Limit order, please use `STOP` as algoType and `LIMIT` as type. Please input the trigger price in triggerPrice field.
+        Place maker/taker order that requires an additional trigger for order
+        execution such as stop orders.
 
 
         `STOP` type order bahavior: an order to buy or sell at the market price
         once the asset has traded at or through a specified price (the "stop
         price"). If the asset reaches the stop price, the order becomes a market
         order and is filled at the next available market price.
-        
-        
-        `visible_quantity` behavior: it sets the maximum quantity to be shown on orderbook. By default, it is equal to `order_quantity`, negative number and number larger than order_quantity is not allowed. The visibility of the childOrder will inherit the parent order's visibility setting. If it sets to 0, the order would be hidden from the orderbook. It doesn't work for `MARKET` orders since orders with these types would be executed and cancelled immediately and not be shown on orderbook. For `LIMIT` order, as long as it's not complete, `visible_quantity` is the maximum quantity that is shown on the orderbook.
-        
-        
-        `client_order_id` behavior: customized order_id, a unique id among open orders. Orders with the same `client_order_id` can be accepted only when the previous one if completed, otherwise the order will be rejected.
 
 
         Note: This endpoint requires trading scope in Orderly Key.
@@ -10076,7 +10061,7 @@ paths:
                 reduce_only:
                   type: boolean
                 visible_quantity:
-                  type: number
+                  type: boolean
                   description: Default false
                 side:
                   type: string
@@ -10173,10 +10158,18 @@ paths:
       x-apifox-folder: restful_private
       x-apifox-status: released
       deprecated: false
-      description: |
+      description: >-
         **Limit: 10 requests per 1 second**
 
+
         `PUT /v1/algo/order`
+
+
+        Edit a pending algo order by `order_id`. Only the price or quantity can
+        be amended.
+
+
+        Note: This endpoint requires trading scope in Orderly Key.
       tags:
         - restful_private
       parameters:
@@ -10279,7 +10272,7 @@ paths:
       description: |
         **Limit: 10 requests per 1 second**
 
-        `DELETE /v1/algo/order?order_id=:oid&symbol=:symbol`
+        `DELETE /v1/algo/order?order_id={order_id}&symbol={symbol}`
 
         Cancels a single algo order by `order_id`.
       tags:
@@ -10374,10 +10367,13 @@ paths:
       x-apifox-folder: restful_private
       x-apifox-status: released
       deprecated: false
-      description: |-
+      description: >-
         **Limit: 10 requests per 1 second**
 
-        `DELETE /v1/algo/client/order?client_order_id=:coid&symbol=:symbol`
+
+        `DELETE
+        /v1/algo/client/order?client_order_id={client_order_id}&symbol={symbol}`
+
 
         Cancel an algo order by `client_order_id`.
       tags:
@@ -10475,7 +10471,7 @@ paths:
       description: |-
         **Limit: 10 requests per 1 second**
 
-        `DELETE /v1/algo/orders?symbol=:symbol`
+        `DELETE /v1/algo/orders?symbol={symbol}`
 
         Cancel all pending algo orders.
       tags:
@@ -10578,6 +10574,8 @@ paths:
 
 
         `INCOMPLETE` = `NEW` + `PARTIAL_FILLED`
+
+
 
         `COMPLETED` = `CANCELLED` + `FILLED`
       tags:
@@ -10992,11 +10990,9 @@ paths:
       description: |-
         **Limit: 10 requests per 1 second**
 
-        `GET /v1/algo/order/:order_id`
+        `GET /v1/algo/order/{order_id}`
 
         Get details of a single algo order by order_id.
-
-        Get details of a single order by `order_id`.
       tags:
         - restful_private
       parameters:
@@ -11177,11 +11173,9 @@ paths:
       description: |
         **Limit: 10 requests per 1 second**
 
-        `GET /v1/algo/client/order/:client_order_id`
+        `GET /v1/algo/client/order/{client_order_id}`
 
-        Get details of a single algo order by client_order_id.
-
-        Get details of a single order by `client_order_id`.
+        Get details of a single algo order by `client_order_id`.
       tags:
         - restful_private
       parameters:
@@ -11364,7 +11358,7 @@ paths:
       description: |
         **Limit: 10 requests per 1 second**
 
-        `GET /v1/algo/order/:order_id/trades`
+        `GET /v1/algo/order/{order_id}/trades`
 
         Get specific trades of an algo order by `order_id`.
       tags:
@@ -11505,17 +11499,10 @@ paths:
       tags:
         - restful_public
       parameters:
-        - name: address
+        - name: account_id
           in: query
-          description: The address of the user wallet
-          required: true
-          example: ''
-          schema:
-            type: string
-        - name: broker_id
-          in: query
-          description: The broker that the account is registered on
-          required: true
+          description: ''
+          required: false
           example: ''
           schema:
             type: string
@@ -11880,12 +11867,7 @@ paths:
       x-apifox-folder: restful_private
       x-apifox-status: released
       deprecated: false
-      description: |
-        **Limit 10 requests per 60 seconds**
-
-        `GET /v1/broker/user_info`
-
-        Get the current fee tier of a users.
+      description: ''
       tags:
         - restful_private
       parameters:
