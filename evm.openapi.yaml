@@ -11589,7 +11589,7 @@ paths:
         - name: broker_id
           in: query
           description: ''
-          required: true
+          required: false
           example: ''
           schema:
             type: string
@@ -11601,6 +11601,13 @@ paths:
           schema:
             type: string
         - name: order_tags
+          in: query
+          description: ''
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: aggregateBy
           in: query
           description: ''
           required: false
@@ -11642,54 +11649,123 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        date:
-                          type: string
-                        spot_volume:
-                          type: number
-                        perp_volume:
-                          type: number
-                      required:
-                        - date
-                        - spot_volume
-                        - perp_volume
-                      x-apifox-orders:
-                        - date
-                        - spot_volume
-                        - perp_volume
-                      x-apifox-ignore-properties: []
-                  timestamp:
-                    type: integer
-                required:
-                  - success
-                  - data
-                  - timestamp
-                x-apifox-orders:
-                  - success
-                  - data
-                  - timestamp
-                x-apifox-ignore-properties: []
+                {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "rows": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "date": {
+                                "type": "string"
+                              },
+                              "account_id": {
+                                "type": "string"
+                              },
+                              "perp_volume": {
+                                "type": "number"
+                              }
+                            },
+                            "required": [
+                              "date",
+                              "account_id",
+                              "perp_volume"
+                            ],
+                            "x-apifox-orders": [
+                              "date",
+                              "account_id",
+                              "perp_volume"
+                            ]
+                          }
+                        },
+                        "meta": {
+                          "type": "object",
+                          "properties": {
+                            "total": {
+                              "type": "integer"
+                            },
+                            "records_per_page": {
+                              "type": "integer"
+                            },
+                            "current_page": {
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "total",
+                            "records_per_page",
+                            "current_page"
+                          ],
+                          "x-apifox-orders": [
+                            "total",
+                            "records_per_page",
+                            "current_page"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "rows",
+                        "meta"
+                      ],
+                      "x-apifox-orders": [
+                        "rows",
+                        "meta"
+                      ]
+                    },
+                    "timestamp": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data",
+                    "timestamp"
+                  ],
+                  "x-apifox-orders": [
+                    "success",
+                    "data",
+                    "timestamp"
+                  ]
+                }
               examples:
                 '1':
                   summary: Success
                   value:
-                    success: true
-                    data:
-                      - date: '2022-02-01'
-                        spot_volume: 100.12
-                        perp_volume: 100.12
-                      - date: '2022-02-02'
-                        spot_volume: 100.12
-                        perp_volume: 100.12
-                    timestamp: 1580794149000
+                    {
+                      "success": true,
+                      "data": {
+                        "rows": [
+                          {
+                            "date": "2023-09-14",
+                            "account_id": "0x58220761ade872c94f85e62f1b24a74eec792aaa3677b6201071fd05c1698e89",
+                            "perp_volume": 451580.9523
+                          },
+                          {
+                            "date": "2023-09-15",
+                            "account_id": "0x114f583aea808c5812e16109b6c087660285a26f0a31dcc0f9b54f1a6a0fefbd",
+                            "perp_volume": 1620.1
+                          },
+                          {
+                            "date": "2023-09-15",
+                            "account_id": "0x47ab075adca7dfe9dd206eb7c50a10f7b99f4f08fa6c3abd4c170d438e15093b",
+                            "perp_volume": 82.2
+                          }
+                        ],
+                        "meta": {
+                          "total": 65,
+                          "records_per_page": 3,
+                          "current_page": 1
+                        }
+                      },
+                      "timestamp": 1696832864277
+                    }
       x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-136964758-run
   /v1/client/statistics/daily:
     get:
@@ -11867,7 +11943,14 @@ paths:
       x-apifox-folder: restful_private
       x-apifox-status: released
       deprecated: false
-      description: ''
+      description: >
+        **Limit 10 requests per 60 seconds**
+
+
+        `GET /v1/broker/user_info`
+
+
+        Get the user fee rate information. Only `address` or `account_id` should be provided, not both.
       tags:
         - restful_private
       parameters:
