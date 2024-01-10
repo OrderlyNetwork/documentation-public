@@ -5,6 +5,14 @@ title: "Orderbook"
 
 `{symbol}@orderbook` depth 100 push every 1s
 
+```json
+{
+    "id": "clientID2",
+    "topic": "SPOT_NEAR_USDC.e@orderbook",
+    "event": "subscribe"
+}
+```
+
 
 **Parameters**
 
@@ -14,6 +22,23 @@ title: "Orderbook"
 | event         | string | Y        | subscribe/unsubscribe |
 | topic         | string | Y        | `{symbol}@orderbook`    |
 | params.symbol | string | Y        | `{symbol}`              |
+
+
+<RequestExample>
+
+```json Response
+{
+    "id": "clientID2",
+    "topic": "SPOT_WOO_USDC@orderbook",
+    "event": "subscribe"
+}
+```
+
+</RequestExample>
+
+
+
+<ResponseExample>
 
 ```json Subscribed Message
 {
@@ -54,29 +79,6 @@ title: "Orderbook"
     }
 }
 ```
-<RequestExample>
-
-```bash
-{
-    "id": "clientID2",
-    "topic": "SPOT_WOO_USDC@orderbook",
-    "event": "subscribe"
-}
-```
-
-</RequestExample>
-
-
-
-<ResponseExample>
-
-```json Response
-{
-    "id": "clientID2",
-    "event": "subscribe",
-    "success": true,
-    "ts": 1609924478533
-}
 ```
 
 </ResponseExample>
