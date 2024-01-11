@@ -5855,7 +5855,21 @@ paths:
                   type: number
                   description: Quantity to be claimed from insurance fund
                 limit_price:
-                  type: number
+                  type: object
+                  properties:
+                    symbol:
+                      type: number
+                      description: The limit price for each symbol in the liquidation claim
+                  x-apifox-orders:
+                    - symbol
+                  description: >-
+                    Liquidator’s instruction to let the system reject the
+                    liquidation claim if the following condition applies: if
+                    position_qty > 0, reject if mark_price > limit_price; if
+                    position_qty < 0, reject if mark_price < limit_price
+                  required:
+                    - symbol
+                  x-apifox-ignore-properties: []
               x-apifox-orders:
                 - liquidation_id
                 - symbol
@@ -7083,7 +7097,7 @@ paths:
       tags:
         - restful_private
       parameters:
-        - name: order_ids
+        - name: client_order_ids
           in: query
           description: >-
             List of client_order_ids, comma-separated, with a maximum of 10
