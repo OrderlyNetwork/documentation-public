@@ -612,7 +612,7 @@ paths:
 
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET /v1/public/broker/name?broker_id=:broker_id`
+        `GET /v1/public/broker/name?broker_id={broker_id}`
 
         Get the list of brokers currently onboarded on Orderly Network.
       tags:
@@ -4250,7 +4250,7 @@ paths:
       description: |
         **Limit: 10 requests per 1 second**
 
-        `DELETE /v1/order?order_id=:order_id&symbol=:symbol`
+        `DELETE /v1/order?order_id={order_id}&symbol={symbol}`
 
         Cancels a single order by `order_id`.
       tags:
@@ -5918,7 +5918,7 @@ paths:
             type: string
         - name: status
           in: query
-          description: NEW/CONFIRM/PROCESSING/COMPLETED/FAILED
+          description: NEW/CONFIRM/PROCESSING/COMPLETED/FAILED/PENDING_REBALANCE
           required: false
           example: ''
           schema:
@@ -6155,7 +6155,21 @@ paths:
                 qty_request:
                   type: string
                 limit_price:
-                  type: number
+                  type: object
+                  properties:
+                    symbol:
+                      type: number
+                      description: The limit price for each symbol in the liquidation claim
+                  x-apifox-orders:
+                    - symbol
+                  description: >-
+                    Liquidator’s instruction to let the system reject the
+                    liquidation claim if the following condition applies: if
+                    position_qty > 0, reject if mark_price > limit_price; if
+                    position_qty < 0, reject if mark_price < limit_price
+                  required:
+                    - symbol
+                  x-apifox-ignore-properties: []
               x-apifox-orders:
                 - liquidation_id
                 - symbol
@@ -6715,7 +6729,7 @@ paths:
 
 
         `DELETE
-        /v1/client/batch-order?client_order_ids={order_id_1},{order_id_2}`
+        /v1/client/batch-order?client_order_ids={client_order_id_1},{client_order_id_2}`
 
 
         Cancel a list of orders by `client_order_ids`. The maximum orders that
@@ -6728,10 +6742,10 @@ paths:
       tags:
         - restful_private
       parameters:
-        - name: order_ids
+        - name: client_order_ids
           in: query
           description: >-
-            List of order_ids, comma-separated, with a maximum of 10 order ids
+            List of client_order_ids, comma-separated, with a maximum of 10 order ids
             per request.
           required: true
           example: ''
