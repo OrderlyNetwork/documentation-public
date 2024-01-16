@@ -1,0 +1,51 @@
+---
+title: "Trade"
+---
+
+Push interval: real-time push
+
+```json
+{
+    "id": "clientID3",
+    "topic": "PERP_WOO_USDC@trade",
+    "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name   | Type   | Required | Description                              |
+| ------ | ------ | -------- | ---------------------------------------- |
+| id     | string | Y        | id generate by client                    |
+| event  | string | Y        | `subscribe`/`unsubscribe`                |
+| topic  | string | Y        | `{symbol}@trade`                         |
+
+<RequestExample>
+
+```json Response
+{
+    "id": "clientID3",
+    "event": "subscribe",
+    "success": true,
+    "ts": 1609924478533
+}
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Subscribed Message
+{
+    "topic":"PERP_WOO_USDC@trade",
+    "ts":1618820361552,
+    "data":{
+        "symbol":"PERP_WOO_USDC",
+        "price":0.37988,
+        "size":300,
+        "side":"BUY"
+    }
+}
+```
+
+</ResponseExample>
