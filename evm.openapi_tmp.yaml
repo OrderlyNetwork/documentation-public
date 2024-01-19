@@ -10,6 +10,8 @@ paths:
   /v1/public/futures:
     get:
       summary: Get Futures Info for All Markets
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: |
 
@@ -82,14 +84,38 @@ paths:
                             - 24h_low
                             - 24h_volume
                             - 24h_amount
+                          x-apifox-orders:
+                            - symbol
+                            - index_price
+                            - mark_price
+                            - sum_unitary_funding
+                            - est_funding_rate
+                            - last_funding_rate
+                            - next_funding_time
+                            - open_interest
+                            - 24h_open
+                            - 24h_close
+                            - 24h_high
+                            - 24h_low
+                            - 24h_amount
+                            - 24h_volume
+                          x-apifox-ignore-properties: []
                     required:
                       - rows
+                    x-apifox-orders:
+                      - rows
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -126,9 +152,12 @@ paths:
                           24h_volume: 3668.3
                           24h_amount: 6967.76
                     timestamp: 1683270033049
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251463-run
   /v1/public/fee/program:
     get:
       summary: Get Fee Information
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: ''
       tags:
@@ -172,14 +201,29 @@ paths:
                             - taker_fee
                             - volume_min
                             - volume_max
+                          x-apifox-orders:
+                            - tier
+                            - maker_fee
+                            - taker_fee
+                            - volume_min
+                            - volume_max
+                          x-apifox-ignore-properties: []
                     required:
                       - rows
+                    x-apifox-orders:
+                      - rows
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -218,9 +262,12 @@ paths:
                           volume_min: 100000000
                           volume_max: null
                     timestamp: 1683879497125
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251464-run
   /v1/public/fee_futures/program:
     get:
       summary: Get Futures Fee Information
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
@@ -266,14 +313,29 @@ paths:
                             - taker_fee
                             - volume_min
                             - volume_max
+                          x-apifox-orders:
+                            - tier
+                            - maker_fee
+                            - taker_fee
+                            - volume_min
+                            - volume_max
+                          x-apifox-ignore-properties: []
                     required:
                       - rows
+                    x-apifox-orders:
+                      - rows
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -312,9 +374,12 @@ paths:
                           volume_min: 500000000
                           volume_max: null
                     timestamp: 1683879531985
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251465-run
   /v1/public/market_trades:
     get:
       summary: Get Market Trades
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: |
 
@@ -374,14 +439,29 @@ paths:
                             - executed_price
                             - executed_quantity
                             - executed_timestamp
+                          x-apifox-orders:
+                            - symbol
+                            - side
+                            - executed_price
+                            - executed_quantity
+                            - executed_timestamp
+                          x-apifox-ignore-properties: []
                     required:
                       - rows
+                    x-apifox-orders:
+                      - rows
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: number
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -440,9 +520,12 @@ paths:
                           executed_quantity: 200
                           executed_timestamp: 1683868045396
                     timestamp: 1683879644821
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251466-run
   /v1/public/volume/stats:
     get:
       summary: Get Volume Statistics
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: >
 
@@ -490,12 +573,23 @@ paths:
                           type: number
                         perp_volume_last_30_days:
                           type: number
+                      x-apifox-orders:
+                        - perp_volume_ytd
+                        - perp_volume_ltd
+                        - perp_volume_last_7_days
+                        - perp_volume_last_30_days
+                      x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -507,9 +601,12 @@ paths:
                         perp_volume_last_7_days: 120272.7674
                         perp_volume_last_30_days: 300730.5454
                     timestamp: 1580794149000
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251467-run
   /v1/public/broker/name:
     get:
       summary: Get Broker List
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: |
 
@@ -553,14 +650,26 @@ paths:
                           required:
                             - broker_id
                             - broker_name
+                          x-apifox-orders:
+                            - broker_id
+                            - broker_name
+                          x-apifox-ignore-properties: []
                     required:
                       - rows
+                    x-apifox-orders:
+                      - rows
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -579,9 +688,12 @@ paths:
                         - broker_id: logx
                           broker_name: 'LogX Aggregator '
                     timestamp: 1704332568163
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251468-run
   /v1/public/funding_rates:
     get:
       summary: Get Predicted Funding Rates for All Markets
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: >-
 
@@ -644,14 +756,31 @@ paths:
                             - last_funding_rate_timestamp
                             - next_funding_time
                             - sum_unitary_funding
+                          x-apifox-orders:
+                            - symbol
+                            - est_funding_rate
+                            - est_funding_rate_timestamp
+                            - last_funding_rate
+                            - last_funding_rate_timestamp
+                            - next_funding_time
+                            - sum_unitary_funding
+                          x-apifox-ignore-properties: []
                     required:
                       - rows
+                    x-apifox-orders:
+                      - rows
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -674,9 +803,12 @@ paths:
                           next_funding_time: 1683907200000
                           sum_unitary_funding: -6.167009
                     timestamp: 1683879989454
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251469-run
   /v1/public/funding_rate/{symbol}:
     get:
       summary: Get Predicted Funding Rate for One Market
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: |
 
@@ -730,12 +862,26 @@ paths:
                       - last_funding_rate_timestamp
                       - next_funding_time
                       - sum_unitary_funding
+                    x-apifox-orders:
+                      - symbol
+                      - est_funding_rate
+                      - est_funding_rate_timestamp
+                      - last_funding_rate
+                      - last_funding_rate_timestamp
+                      - next_funding_time
+                      - sum_unitary_funding
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -750,9 +896,12 @@ paths:
                       next_funding_time: 1683907200000
                       sum_unitary_funding: 521.367
                     timestamp: 1683880025278
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251470-run
   /v1/public/funding_rate_history:
     get:
       summary: Get Funding Rate History for One Market
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: |
 
@@ -836,6 +985,12 @@ paths:
                             - funding_rate_timestamp
                             - next_funding_time
                             - symbol
+                          x-apifox-orders:
+                            - symbol
+                            - funding_rate
+                            - funding_rate_timestamp
+                            - next_funding_time
+                          x-apifox-ignore-properties: []
                       meta:
                         type: object
                         properties:
@@ -849,15 +1004,29 @@ paths:
                           - current_page
                           - records_per_page
                           - total
+                        x-apifox-orders:
+                          - total
+                          - records_per_page
+                          - current_page
+                        x-apifox-ignore-properties: []
                     required:
                       - meta
                       - rows
+                    x-apifox-orders:
+                      - rows
+                      - meta
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - data
                   - success
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -878,9 +1047,12 @@ paths:
                           symbol: PERP_ETH_USDC
                     success: true
                     timestamp: 1684232331309
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251471-run
   /v1/public/futures/{symbol}:
     get:
       summary: Get Futures Info for One Market
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: |
 
@@ -955,12 +1127,33 @@ paths:
                       - 24h_low
                       - 24h_volume
                       - 24h_amount
+                    x-apifox-orders:
+                      - symbol
+                      - index_price
+                      - mark_price
+                      - sum_unitary_funding
+                      - est_funding_rate
+                      - last_funding_rate
+                      - next_funding_time
+                      - open_interest
+                      - 24h_open
+                      - 24h_close
+                      - 24h_high
+                      - 24h_low
+                      - 24h_volume
+                      - 24h_amount
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -982,9 +1175,12 @@ paths:
                       24h_volumn: 0
                       24h_amount: 0
                     timestamp: 1683270228845
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251472-run
   /v1/public/liquidation:
     get:
       summary: Get Positions Under Liquidation
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
@@ -1060,6 +1256,17 @@ paths:
                                     type: number
                                   liquidator_fee:
                                     type: number
+                                x-apifox-orders:
+                                  - symbol
+                                  - position_qty
+                                  - liquidator_fee
+                                x-apifox-ignore-properties: []
+                          x-apifox-orders:
+                            - timestamp
+                            - type
+                            - liquidation_id
+                            - positions_by_perp
+                          x-apifox-ignore-properties: []
                       meta:
                         type: object
                         properties:
@@ -1073,15 +1280,29 @@ paths:
                           - total
                           - records_per_page
                           - current_page
+                        x-apifox-orders:
+                          - total
+                          - records_per_page
+                          - current_page
+                        x-apifox-ignore-properties: []
                     required:
                       - rows
                       - meta
+                    x-apifox-orders:
+                      - rows
+                      - meta
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -1101,9 +1322,12 @@ paths:
                         records_per_page: 25
                         current_page: 1
                     timestamp: 1685453109700
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251473-run
   /v1/public/liquidated_positions:
     get:
       summary: Get Liquidated Positions Info
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: |
 
@@ -1195,6 +1419,23 @@ paths:
                                     type: integer
                                   abs_insurance_fund_fee:
                                     type: integer
+                                x-apifox-orders:
+                                  - symbol
+                                  - position_qty
+                                  - liquidator_fee
+                                  - cost_position_transfer
+                                  - transfer_price
+                                  - insurance_fund_fee
+                                  - abs_liquidator_fee
+                                  - abs_insurance_fund_fee
+                                x-apifox-ignore-properties: []
+                          x-apifox-orders:
+                            - timestamp
+                            - liquidation_id
+                            - transfer_amount_to_insurance_fund
+                            - type
+                            - positions_by_perp
+                          x-apifox-ignore-properties: []
                       meta:
                         type: object
                         properties:
@@ -1208,15 +1449,29 @@ paths:
                           - total
                           - records_per_page
                           - current_page
+                        x-apifox-orders:
+                          - total
+                          - records_per_page
+                          - current_page
+                        x-apifox-ignore-properties: []
                     required:
                       - rows
                       - meta
+                    x-apifox-orders:
+                      - rows
+                      - meta
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -1242,9 +1497,12 @@ paths:
                         records_per_page: 25
                         current_page: 1
                     timestamp: 1683881314470
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251474-run
   /v1/public/info/{symbol}:
     get:
       summary: Get Exchange Information
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: >
         **Limit: 10 requests per 1 second per IP address**
@@ -1383,12 +1641,42 @@ paths:
                       - imr_factor
                       - base_mmr
                       - base_imr
+                    x-apifox-orders:
+                      - symbol
+                      - liquidation_tier
+                      - quote_min
+                      - quote_max
+                      - quote_tick
+                      - base_min
+                      - base_max
+                      - base_tick
+                      - min_notional
+                      - price_range
+                      - price_scope
+                      - std_liquidation_fee
+                      - liquidator_fee
+                      - claim_insurance_fund_discount
+                      - funding_period
+                      - cap_funding
+                      - floor_funding
+                      - interest_rate
+                      - created_time
+                      - updated_time
+                      - imr_factor
+                      - base_mmr
+                      - base_imr
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -1419,9 +1707,12 @@ paths:
                       base_mmr: 0.05
                       base_imr: 0.1
                     timestamp: 1685598448497
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251477-run
   /v1/public/token:
     get:
       summary: Get Token Info
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
@@ -1479,14 +1770,36 @@ paths:
                                   - decimals
                                   - withdrawal_fee
                                   - cross_chain_withdrawal_fee
+                                x-apifox-orders:
+                                  - chain_id
+                                  - contract_address
+                                  - decimals
+                                  - withdrawal_fee
+                                  - cross_chain_withdrawal_fee
+                                x-apifox-ignore-properties: []
+                          x-apifox-orders:
+                            - token
+                            - token_hash
+                            - decimals
+                            - minimum_withdraw_amount
+                            - chain_details
+                          x-apifox-ignore-properties: []
                     required:
                       - rows
+                    x-apifox-orders:
+                      - rows
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -1521,9 +1834,12 @@ paths:
                               withdrawal_fee: 2
                               cross_chain_withdrawal_fee: 5
                     timestamp: 1704347258257
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251478-run
   /v1/public/info:
     get:
       summary: Get Available Symbols
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: >
         **Limit: 10 requests per 1 second per IP address**
@@ -1602,16 +1918,49 @@ paths:
                               type: number
                             base_imr:
                               type: number
+                          x-apifox-orders:
+                            - symbol
+                            - liquidation_tier
+                            - quote_min
+                            - quote_max
+                            - quote_tick
+                            - base_min
+                            - base_max
+                            - base_tick
+                            - min_notional
+                            - price_range
+                            - price_scope
+                            - std_liquidation_fee
+                            - liquidator_fee
+                            - claim_insurance_fund_discount
+                            - funding_period
+                            - cap_funding
+                            - floor_funding
+                            - interest_rate
+                            - created_time
+                            - updated_time
+                            - imr_factor
+                            - base_mmr
+                            - base_imr
                           required:
                             - liquidation_tier
+                          x-apifox-ignore-properties: []
                     required:
                       - rows
+                    x-apifox-orders:
+                      - rows
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -1643,9 +1992,12 @@ paths:
                           base_mmr: 0.05
                           base_imr: 0.1
                     timestamp: 1685590894341
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251479-run
   /v1/public/insurancefund:
     get:
       summary: Get Insurance Fund Info
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: |
 
@@ -1693,6 +2045,17 @@ paths:
                               type: integer
                             mark_price:
                               type: number
+                          x-apifox-orders:
+                            - symbol
+                            - timestamp
+                            - position_qty
+                            - cost_position
+                            - last_sum_unitary_funding
+                            - settle_price
+                            - average_open_price
+                            - pnl_24_h
+                            - fee_24_h
+                            - mark_price
                           required:
                             - symbol
                             - timestamp
@@ -1704,6 +2067,7 @@ paths:
                             - pnl_24_h
                             - fee_24_h
                             - mark_price
+                          x-apifox-ignore-properties: []
                       min_insurance_fund_initial_margin_ratio:
                         type: number
                       min_insurance_fund_margin_ratio:
@@ -1730,12 +2094,28 @@ paths:
                       - free_collateral
                       - total_account_value
                       - total_pnl_24_h
+                    x-apifox-orders:
+                      - rows
+                      - min_insurance_fund_initial_margin_ratio
+                      - min_insurance_fund_margin_ratio
+                      - margin_ratio
+                      - total_collateral_value
+                      - balance
+                      - free_collateral
+                      - total_account_value
+                      - total_pnl_24_h
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -1762,9 +2142,12 @@ paths:
                       total_account_value: 10008662.996861
                       total_pnl_24_h: 0
                     timestamp: 1685439471395
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251480-run
   /v1/tv/config:
     get:
       summary: Get TradingView Localized Config Info
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
@@ -1805,6 +2188,10 @@ paths:
                           required:
                             - id
                             - title
+                          x-apifox-orders:
+                            - id
+                            - title
+                          x-apifox-ignore-properties: []
                       accountManager:
                         type: array
                         items:
@@ -1826,6 +2213,15 @@ paths:
                                 required:
                                   - id
                                   - title
+                                x-apifox-orders:
+                                  - id
+                                  - title
+                                x-apifox-ignore-properties: []
+                          x-apifox-orders:
+                            - id
+                            - title
+                            - columns
+                          x-apifox-ignore-properties: []
                       durations:
                         type: array
                         items:
@@ -1845,6 +2241,14 @@ paths:
                               type: array
                               items:
                                 type: string
+                          x-apifox-orders:
+                            - id
+                            - title
+                            - hasDatePicker
+                            - hasTimePicker
+                            - default
+                            - supportedOrderTypes
+                          x-apifox-ignore-properties: []
                       orderCustomFields:
                         type: array
                         items:
@@ -1858,6 +2262,12 @@ paths:
                               type: string
                             alignment:
                               type: string
+                          x-apifox-orders:
+                            - id
+                            - title
+                            - tooltip
+                            - alignment
+                          x-apifox-ignore-properties: []
                       orderHistoryCustomFields:
                         type: array
                         items:
@@ -1871,6 +2281,12 @@ paths:
                               type: string
                             alignment:
                               type: string
+                          x-apifox-orders:
+                            - id
+                            - title
+                            - tooltip
+                            - alignment
+                          x-apifox-ignore-properties: []
                       positionCustomFields:
                         type: array
                         items:
@@ -1889,6 +2305,12 @@ paths:
                             - title
                             - tooltip
                             - alignment
+                          x-apifox-orders:
+                            - id
+                            - title
+                            - tooltip
+                            - alignment
+                          x-apifox-ignore-properties: []
                       pullingInterval:
                         type: object
                         properties:
@@ -1908,6 +2330,13 @@ paths:
                           - positions
                           - accountManager
                           - balances
+                        x-apifox-orders:
+                          - quotes
+                          - orders
+                          - positions
+                          - accountManager
+                          - balances
+                        x-apifox-ignore-properties: []
                     required:
                       - accountSummaryRow
                       - accountManager
@@ -1916,12 +2345,28 @@ paths:
                       - orderHistoryCustomFields
                       - positionCustomFields
                       - pullingInterval
+                    x-apifox-orders:
+                      - accountSummaryRow
+                      - accountManager
+                      - durations
+                      - orderCustomFields
+                      - orderHistoryCustomFields
+                      - positionCustomFields
+                      - pullingInterval
+                    x-apifox-ignore-properties: []
                 required:
                   - s
                   - d
+                x-apifox-orders:
+                  - s
+                  - d
+                x-apifox-ignore-properties: []
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251481-run
   /v1/tv/history:
     get:
       summary: Get TradingView History Bars
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
@@ -2002,9 +2447,21 @@ paths:
                   - l
                   - c
                   - v
+                x-apifox-orders:
+                  - s
+                  - t
+                  - o
+                  - h
+                  - l
+                  - c
+                  - v
+                x-apifox-ignore-properties: []
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251482-run
   /v1/tv/symbol_info:
     get:
       summary: Get TradingView Symbol Info
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
@@ -2209,9 +2666,48 @@ paths:
                   - bar-fillgaps
                   - isin
                   - wkn
+                x-apifox-orders:
+                  - s
+                  - symbol
+                  - description
+                  - currency
+                  - base-currency
+                  - exchange-listed
+                  - exchange-traded
+                  - minmovement
+                  - minmovement2
+                  - fractional
+                  - pricescale
+                  - root
+                  - root-description
+                  - has-intraday
+                  - has-no-volume
+                  - type
+                  - is-cfd
+                  - ticker
+                  - timezone
+                  - session-regular
+                  - session-extended
+                  - session-premarket
+                  - session-postmarket
+                  - supported-resolutions
+                  - has-daily
+                  - intraday-multipliers
+                  - has-weekly-and-monthly
+                  - pointvalue
+                  - expiration
+                  - bar-source
+                  - bar-transform
+                  - bar-fillgaps
+                  - isin
+                  - wkn
+                x-apifox-ignore-properties: []
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251483-run
   /v1/positions:
     get:
       summary: Get All Positions Info
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 30 requests per 10 second per user**
@@ -2317,6 +2813,26 @@ paths:
                               type: number
                             unsettled_pnl:
                               type: number
+                          x-apifox-orders:
+                            - IMR_withdraw_orders
+                            - MMR_with_orders
+                            - average_open_price
+                            - cost_position
+                            - est_liq_price
+                            - fee_24_h
+                            - imr
+                            - last_sum_unitary_funding
+                            - mark_price
+                            - mmr
+                            - pending_long_qty
+                            - pending_short_qty
+                            - pnl_24_h
+                            - position_qty
+                            - settle_price
+                            - symbol
+                            - timestamp
+                            - unsettled_pnl
+                          x-apifox-ignore-properties: []
                       total_collateral_value:
                         type: number
                       total_pnl_24_h:
@@ -2333,6 +2849,19 @@ paths:
                       - rows
                       - total_collateral_value
                       - total_pnl_24_h
+                    x-apifox-orders:
+                      - current_margin_ratio_with_orders
+                      - free_collateral
+                      - initial_margin_ratio
+                      - initial_margin_ratio_with_orders
+                      - maintenance_margin_ratio
+                      - maintenance_margin_ratio_with_orders
+                      - margin_ratio
+                      - open_margin_ratio
+                      - rows
+                      - total_collateral_value
+                      - total_pnl_24_h
+                    x-apifox-ignore-properties: []
                   success:
                     type: boolean
                   timestamp:
@@ -2341,6 +2870,11 @@ paths:
                   - data
                   - success
                   - timestamp
+                x-apifox-orders:
+                  - data
+                  - success
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -2377,9 +2911,12 @@ paths:
                       total_pnl_24_h: 0
                     success: true
                     timestamp: 1685431773253
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251484-run
   /v1/position/{symbol}:
     get:
       summary: Get One Position Info
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 30 requests per 10 second per user**
@@ -2489,6 +3026,26 @@ paths:
                       - symbol
                       - timestamp
                       - unsettled_pnl
+                    x-apifox-orders:
+                      - IMR_withdraw_orders
+                      - MMR_with_orders
+                      - average_open_price
+                      - cost_position
+                      - est_liq_price
+                      - fee_24_h
+                      - imr
+                      - last_sum_unitary_funding
+                      - mark_price
+                      - mmr
+                      - pending_long_qty
+                      - pending_short_qty
+                      - pnl_24_h
+                      - position_qty
+                      - settle_price
+                      - symbol
+                      - timestamp
+                      - unsettled_pnl
+                    x-apifox-ignore-properties: []
                   success:
                     type: boolean
                   timestamp:
@@ -2497,6 +3054,11 @@ paths:
                   - data
                   - success
                   - timestamp
+                x-apifox-orders:
+                  - data
+                  - success
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -2522,9 +3084,12 @@ paths:
                       unsettled_pnl: 5872.245353
                     success: true
                     timestamp: 1685431978956
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251485-run
   /v1/funding_fee/history:
     get:
       summary: Get Funding Fee History
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 20 requests per 60 second per user**
@@ -2637,6 +3202,16 @@ paths:
                               type: number
                             updated_time:
                               type: number
+                          x-apifox-orders:
+                            - symbol
+                            - funding_rate
+                            - mark_price
+                            - funding_fee
+                            - payment_type
+                            - status
+                            - created_time
+                            - updated_time
+                          x-apifox-ignore-properties: []
                       meta:
                         type: object
                         properties:
@@ -2650,15 +3225,29 @@ paths:
                           - total
                           - records_per_page
                           - current_page
+                        x-apifox-orders:
+                          - total
+                          - records_per_page
+                          - current_page
+                        x-apifox-ignore-properties: []
                     required:
                       - rows
                       - meta
+                    x-apifox-orders:
+                      - rows
+                      - meta
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: number
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -2687,9 +3276,12 @@ paths:
                         records_per_page: 2
                         current_page: 1
                     timestamp: 1682235723280
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251486-run
   /v1/client/liquidator_liquidations:
     get:
       summary: Get Liquidated Positions by Liquidator
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
@@ -2786,6 +3378,11 @@ paths:
                           - current_page
                           - records_per_page
                           - total
+                        x-apifox-orders:
+                          - current_page
+                          - records_per_page
+                          - total
+                        x-apifox-ignore-properties: []
                       rows:
                         type: array
                         items:
@@ -2810,13 +3407,31 @@ paths:
                                     type: string
                                   transfer_price:
                                     type: number
+                                x-apifox-orders:
+                                  - abs_liquidator_fee
+                                  - cost_position_transfer
+                                  - liquidator_fee
+                                  - position_qty
+                                  - symbol
+                                  - transfer_price
+                                x-apifox-ignore-properties: []
                             timestamp:
                               type: number
                             type:
                               type: string
+                          x-apifox-orders:
+                            - liquidation_id
+                            - positions_by_perp
+                            - timestamp
+                            - type
+                          x-apifox-ignore-properties: []
                     required:
                       - meta
                       - rows
+                    x-apifox-orders:
+                      - meta
+                      - rows
+                    x-apifox-ignore-properties: []
                   success:
                     type: boolean
                   timestamp:
@@ -2825,6 +3440,11 @@ paths:
                   - data
                   - success
                   - timestamp
+                x-apifox-orders:
+                  - data
+                  - success
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -2847,9 +3467,12 @@ paths:
                           type: liquidated
                     success: true
                     timestamp: 1685433339866
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251487-run
   /v1/client/leverage:
     post:
       summary: Update Leverage Setting
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 5 requests per 60 second per user**
@@ -2898,8 +3521,11 @@ paths:
                 leverage:
                   type: integer
                   description: One of 1,2,3,4,5,10,15,20
+              x-apifox-orders:
+                - leverage
               required:
                 - leverage
+              x-apifox-ignore-properties: []
       responses:
         '200':
           description: OK
@@ -2911,6 +3537,8 @@ paths:
                   data:
                     type: object
                     properties: {}
+                    x-apifox-orders: []
+                    x-apifox-ignore-properties: []
                   success:
                     type: boolean
                   timestamp:
@@ -2919,6 +3547,11 @@ paths:
                   - data
                   - success
                   - timestamp
+                x-apifox-orders:
+                  - data
+                  - success
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -2927,9 +3560,12 @@ paths:
                       leverage: 10
                     success: true
                     timestamp: 1685434629597
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251488-run
   /v1/liquidations:
     get:
       summary: Get Liquidated Positions of Account
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
@@ -3028,6 +3664,11 @@ paths:
                           - total
                           - records_per_page
                           - current_page
+                        x-apifox-orders:
+                          - total
+                          - records_per_page
+                          - current_page
+                        x-apifox-ignore-properties: []
                       rows:
                         type: array
                         items:
@@ -3058,15 +3699,39 @@ paths:
                                     type: number
                                   abs_liquidation_fee:
                                     type: number
+                                x-apifox-orders:
+                                  - symbol
+                                  - position_qty
+                                  - cost_position_transfer
+                                  - transfer_price
+                                  - liquidator_fee
+                                  - insurance_fund_fee
+                                  - abs_liquidation_fee
+                                x-apifox-ignore-properties: []
+                          x-apifox-orders:
+                            - liquidation_id
+                            - timestamp
+                            - transfer_amount_to_insurance_fund
+                            - positions_by_perp
+                          x-apifox-ignore-properties: []
                     required:
                       - meta
                       - rows
+                    x-apifox-orders:
+                      - meta
+                      - rows
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: number
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -3090,9 +3755,12 @@ paths:
                               insurance_fund_fee: 0.015
                               abs_liquidation_fee: 3520
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251489-run
   /v1/liquidation:
     post:
       summary: Claim Liquidated Positions
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 5 requests per 1 second per IP address**
@@ -3157,16 +3825,22 @@ paths:
                       description: >-
                         Only relevant if this is a liquidation of type high tier
                         (symbols with liquidation tier = 2)
+                  x-apifox-orders:
+                    - ratio_qty_request
+                    - symbol
                   required:
                     - ratio_qty_request
                     - symbol
                   description: For high risk tiers only
+                  x-apifox-ignore-properties: []
                 limit_price:
                   type: object
                   properties:
                     symbol:
                       type: number
                       description: The limit price for each symbol in the liquidation claim
+                  x-apifox-orders:
+                    - symbol
                   description: >-
                     Liquidator’s instruction to let the system reject the
                     liquidation claim if the following condition applies: if
@@ -3174,9 +3848,17 @@ paths:
                     position_qty < 0, reject if mark_price < limit_price
                   required:
                     - symbol
+                  x-apifox-ignore-properties: []
+              x-apifox-orders:
+                - liquidation_id
+                - ratio_qty_request
+                - extra_liquidation_ratio
+                - symbols
+                - limit_price
               required:
                 - liquidation_id
                 - ratio_qty_request
+              x-apifox-ignore-properties: []
       responses:
         '200':
           description: OK
@@ -3220,14 +3902,34 @@ paths:
                             - transfer_price
                             - liquidator_fee
                             - abs_liquidator_fee
+                          x-apifox-orders:
+                            - symbol
+                            - position_qty
+                            - cost_position_transfer
+                            - transfer_price
+                            - liquidator_fee
+                            - abs_liquidator_fee
+                          x-apifox-ignore-properties: []
                     required:
                       - liquidation_id
                       - timestamp
                       - type
                       - positions_by_perp
+                    x-apifox-orders:
+                      - liquidation_id
+                      - timestamp
+                      - type
+                      - positions_by_perp
+                    x-apifox-ignore-properties: []
                 required:
                   - success
                   - data
+                  - 01HJMZ5X7DNMYNWEK2QJG97XZD
+                x-apifox-orders:
+                  - 01HJMZ5X7DNMYNWEK2QJG97XZD
+                  - success
+                  - data
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -3256,9 +3958,12 @@ paths:
                           transfer_price: 1.646
                           liquidator_fee: 0.02
                           abs_liquidator_fee: 3520
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251490-run
   /v1/order:
     post:
       summary: Create Order
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: >-
         **Limit: 10 requests per 1 second**
@@ -3404,10 +4109,22 @@ paths:
                   description: Default false
                 order_tag:
                   type: string
+              x-apifox-orders:
+                - symbol
+                - client_order_id
+                - order_type
+                - order_price
+                - order_quantity
+                - order_amount
+                - visible_quantity
+                - side
+                - reduce_only
+                - order_tag
               required:
                 - symbol
                 - order_type
                 - side
+              x-apifox-ignore-properties: []
       responses:
         '200':
           description: OK
@@ -3440,12 +4157,25 @@ paths:
                       - order_price
                       - order_quantity
                       - order_amount
+                    x-apifox-orders:
+                      - order_id
+                      - client_order_id
+                      - order_type
+                      - order_price
+                      - order_quantity
+                      - order_amount
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -3459,8 +4189,11 @@ paths:
                       order_quantity: 0.987654
                       order_amount: null
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251491-run
     delete:
       summary: Cancel Order
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second**
@@ -3533,12 +4266,20 @@ paths:
                         type: string
                     required:
                       - status
+                    x-apifox-orders:
+                      - status
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: number
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -3547,8 +4288,11 @@ paths:
                     data:
                       status: CANCEL_SENT
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251492-run
     put:
       summary: Edit Order
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: >-
         **Limit: 10 request per 1 second**
@@ -3622,11 +4366,24 @@ paths:
                   type: string
                 order_tag:
                   type: string
+              x-apifox-orders:
+                - order_id
+                - symbol
+                - client_order_id
+                - order_type
+                - order_price
+                - order_quantity
+                - order_amount
+                - reduce_only
+                - visible_quantity
+                - side
+                - order_tag
               required:
                 - order_id
                 - side
                 - order_type
                 - symbol
+              x-apifox-ignore-properties: []
       responses:
         '200':
           description: OK
@@ -3644,12 +4401,20 @@ paths:
                         type: string
                     required:
                       - status
+                    x-apifox-orders:
+                      - status
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -3658,9 +4423,12 @@ paths:
                     data:
                       status: EDIT_SENT
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251894-run
   /v1/order/{order_id}:
     get:
       summary: Get Order
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second**
@@ -3777,12 +4545,38 @@ paths:
                       - created_time
                       - updated_time
                       - order_tag
+                    x-apifox-orders:
+                      - order_id
+                      - user_id
+                      - price
+                      - type
+                      - quantity
+                      - amount
+                      - executed
+                      - visible
+                      - reduce_only
+                      - symbol
+                      - side
+                      - status
+                      - total_fee
+                      - fee_asset
+                      - client_order_id
+                      - average_executed_price
+                      - created_time
+                      - updated_time
+                      - order_tag
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -3809,9 +4603,12 @@ paths:
                       updated_time: 1653564213000
                       order_tag: sometags
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251493-run
   /v1/trades:
     get:
       summary: Get Trades
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second**
@@ -3923,6 +4720,11 @@ paths:
                           - records_per_page
                           - current_page
                           - total
+                        x-apifox-orders:
+                          - records_per_page
+                          - current_page
+                          - total
+                        x-apifox-ignore-properties: []
                       rows:
                         type: array
                         items:
@@ -3951,15 +4753,36 @@ paths:
                               type: number
                             is_maker:
                               type: number
+                          x-apifox-orders:
+                            - id
+                            - symbol
+                            - fee
+                            - fee_asset
+                            - side
+                            - order_id
+                            - executed_price
+                            - executed_quantity
+                            - executed_timestamp
+                            - is_maker
+                          x-apifox-ignore-properties: []
                     required:
                       - meta
                       - rows
+                    x-apifox-orders:
+                      - meta
+                      - rows
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: number
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -3982,9 +4805,12 @@ paths:
                           executed_timestamp: 1567382401000
                           is_maker: 1
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251494-run
   /v1/client/holding:
     get:
       summary: Get Current Holding
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 seconds**
@@ -4068,14 +4894,29 @@ paths:
                             - holding
                             - frozen
                             - pending_short
+                          x-apifox-orders:
+                            - updated_time
+                            - token
+                            - holding
+                            - frozen
+                            - pending_short
+                          x-apifox-ignore-properties: []
                     required:
                       - holding
+                    x-apifox-orders:
+                      - holding
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: number
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -4094,9 +4935,12 @@ paths:
                           frozen: 0
                           pending_short: -2000
                     timestamp: 1580794149000
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251495-run
   /v1/client/info:
     get:
       summary: Get Account Information
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 60 seconds**
@@ -4180,6 +5024,11 @@ paths:
                           - PERP_BTC_USDC
                           - PERP_ETH_USDC
                           - PERP_NEAR_USDC
+                        x-apifox-orders:
+                          - PERP_BTC_USDC
+                          - PERP_ETH_USDC
+                          - PERP_NEAR_USDC
+                        x-apifox-ignore-properties: []
                       max_notional:
                         type: object
                         properties:
@@ -4193,6 +5042,11 @@ paths:
                           - PERP_BTC_USDC
                           - PERP_ETH_USDC
                           - PERP_NEAR_USDC
+                        x-apifox-orders:
+                          - PERP_BTC_USDC
+                          - PERP_ETH_USDC
+                          - PERP_NEAR_USDC
+                        x-apifox-ignore-properties: []
                       maintenance_cancel_orders:
                         type: boolean
                     required:
@@ -4208,12 +5062,31 @@ paths:
                       - imr_factor
                       - max_notional
                       - maintenance_cancel_orders
+                    x-apifox-orders:
+                      - account_id
+                      - email
+                      - account_mode
+                      - max_leverage
+                      - tier
+                      - taker_fee_rate
+                      - maker_fee_rate
+                      - futures_taker_fee_rate
+                      - futures_maker_fee_rate
+                      - imr_factor
+                      - max_notional
+                      - maintenance_cancel_orders
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -4239,9 +5112,12 @@ paths:
                         PERP_NEAR_USDC: 2000000
                       maintenance_cancel_orders: true
                     timestamp: 1580794149000
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251496-run
   /v1/orders:
     get:
       summary: Get Orders
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: >
         **Limit: 10 requests per 1 second**
@@ -4380,6 +5256,11 @@ paths:
                           - records_per_page
                           - current_page
                           - total
+                        x-apifox-orders:
+                          - records_per_page
+                          - current_page
+                          - total
+                        x-apifox-ignore-properties: []
                       rows:
                         type: array
                         items:
@@ -4423,15 +5304,45 @@ paths:
                               type: integer
                             order_tag:
                               type: string
+                          x-apifox-orders:
+                            - order_id
+                            - user_id
+                            - price
+                            - type
+                            - quantity
+                            - amount
+                            - executed
+                            - visible
+                            - reduce_only
+                            - symbol
+                            - side
+                            - status
+                            - total_fee
+                            - fee_asset
+                            - client_order_id
+                            - average_executed_price
+                            - created_time
+                            - updated_time
+                            - order_tag
+                          x-apifox-ignore-properties: []
                     required:
                       - meta
                       - rows
+                    x-apifox-orders:
+                      - meta
+                      - rows
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -4463,8 +5374,11 @@ paths:
                           updated_time: 1644216696000
                           order_tag: sometags
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251497-run
     delete:
       summary: Cancel Orders in Bulk
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: >
         **Limit: 10 requests per 1 second**
@@ -4535,12 +5449,20 @@ paths:
                         type: string
                     required:
                       - status
+                    x-apifox-orders:
+                      - status
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -4549,9 +5471,12 @@ paths:
                     data:
                       status: CANCEL_ALL_SENT
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251896-run
   /v1/client/statistics:
     get:
       summary: Get User Statistics
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 60 seconds**
@@ -4632,12 +5557,28 @@ paths:
                       - trading_volume_last_24_hours
                       - trading_volume_last_30_days
                       - trading_volume_ytd
+                    x-apifox-orders:
+                      - days_since_registration
+                      - fees_paid_last_30_days
+                      - perp_fees_paid_last_30_days
+                      - perp_trading_volume_last_24_hours
+                      - perp_trading_volume_last_30_days
+                      - perp_trading_volume_ytd
+                      - trading_volume_last_24_hours
+                      - trading_volume_last_30_days
+                      - trading_volume_ytd
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -4654,9 +5595,12 @@ paths:
                       trading_volume_last_30_days: 0
                       trading_volume_ytd: 459.7436
                     timestamp: 1580794149000
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251498-run
   /v1/asset/history:
     get:
       summary: Get Asset History
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit 10 requests per 60 seconds**
@@ -4771,6 +5715,11 @@ paths:
                           - records_per_page
                           - current_page
                           - total
+                        x-apifox-orders:
+                          - records_per_page
+                          - current_page
+                          - total
+                        x-apifox-ignore-properties: []
                       rows:
                         type: array
                         items:
@@ -4796,15 +5745,36 @@ paths:
                               type: integer
                             chain_id:
                               type: string
+                          x-apifox-orders:
+                            - id
+                            - tx_id
+                            - side
+                            - token
+                            - amount
+                            - fee
+                            - trans_status
+                            - created_time
+                            - updated_time
+                            - chain_id
+                          x-apifox-ignore-properties: []
                     required:
                       - meta
                       - rows
+                    x-apifox-orders:
+                      - meta
+                      - rows
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -4828,9 +5798,12 @@ paths:
                           updated_time: 1688699193096
                           chain_id: '986532'
                     timestamp: 1580794149000
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251499-run
   /v1/claim_insurance_fund:
     post:
       summary: Claim Insurance Fund
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 5 requests per 1 second**
@@ -4887,6 +5860,8 @@ paths:
                     symbol:
                       type: number
                       description: The limit price for each symbol in the liquidation claim
+                  x-apifox-orders:
+                    - symbol
                   description: >-
                     Liquidator’s instruction to let the system reject the
                     liquidation claim if the following condition applies: if
@@ -4894,10 +5869,17 @@ paths:
                     position_qty < 0, reject if mark_price < limit_price
                   required:
                     - symbol
+                  x-apifox-ignore-properties: []
+              x-apifox-orders:
+                - liquidation_id
+                - symbol
+                - qty_request
+                - limit_price
               required:
                 - liquidation_id
                 - qty_request
                 - symbol
+              x-apifox-ignore-properties: []
       responses:
         '200':
           description: OK
@@ -4932,13 +5914,30 @@ paths:
                               type: number
                             abs_liquidator_fee:
                               type: integer
+                          x-apifox-orders:
+                            - symbol
+                            - position_qty
+                            - cost_position_transfer
+                            - transfer_price
+                            - liquidator_fee
+                            - abs_liquidator_fee
+                          x-apifox-ignore-properties: []
                     required:
                       - liquidation_id
                       - timestamp
                       - positions_by_perp
+                    x-apifox-orders:
+                      - liquidation_id
+                      - timestamp
+                      - positions_by_perp
+                    x-apifox-ignore-properties: []
                 required:
                   - success
                   - data
+                x-apifox-orders:
+                  - success
+                  - data
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -4954,9 +5953,12 @@ paths:
                           transfer_price: 1400.43
                           liquidator_fee: 0.0075
                           abs_liquidator_fee: 3520
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251500-run
   /v1/public/system_info:
     get:
       summary: Get System Maintenance Status
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: >-
         Retreive the current system maintenance status of Orderly Network. A
@@ -4986,12 +5988,21 @@ paths:
                     required:
                       - status
                       - msg
+                    x-apifox-orders:
+                      - status
+                      - msg
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -5001,9 +6012,12 @@ paths:
                       status: 0
                       msg: System is functioning properly.
                     timestamp: 1666567425831
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251834-run
   /v1/registration_nonce:
     get:
       summary: Get Registration Nonce
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: >-
         **Limit: 10 requests per 1 second per IP address**
@@ -5035,12 +6049,20 @@ paths:
                         type: string
                     required:
                       - registration_nonce
+                    x-apifox-orders:
+                      - registration_nonce
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -5049,9 +6071,12 @@ paths:
                     data:
                       registration_nonce: '194528949540'
                     timestamp: 1688606744795
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251839-run
   /v1/get_account:
     get:
       summary: Get Account
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
@@ -5096,12 +6121,21 @@ paths:
                     required:
                       - user_id
                       - account_id
+                    x-apifox-orders:
+                      - user_id
+                      - account_id
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -5112,9 +6146,12 @@ paths:
                       account_id: >-
                         0xb129e074a17dfba8d652ae1eca21c7d6bb6904f1aa693f4886d50db170933a46
                     timestamp: 1689146471412
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251841-run
   /v1/register_account:
     post:
       summary: Register Account
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: >
         **Limit: 10 requests per 1 second per IP address**
@@ -5151,6 +6188,11 @@ paths:
                       description: timestamp in UNIX milliseconds
                     registrationNonce:
                       type: string
+                  x-apifox-orders:
+                    - brokerId
+                    - chainId
+                    - timestamp
+                    - registrationNonce
                   required:
                     - brokerId
                     - chainId
@@ -5159,6 +6201,7 @@ paths:
                   description: >-
                     Message object containing the message that is signed by the
                     wallet owner
+                  x-apifox-ignore-properties: []
                 signature:
                   type: string
                   description: >-
@@ -5169,10 +6212,15 @@ paths:
                   description: >-
                     The address of the wallet signing the message object via
                     EIP-712
+              x-apifox-orders:
+                - message
+                - signature
+                - userAddress
               required:
                 - message
                 - signature
                 - userAddress
+              x-apifox-ignore-properties: []
             example:
               message:
                 brokerId: woofi_dex
@@ -5199,15 +6247,26 @@ paths:
                         type: string
                     required:
                       - account_id
+                    x-apifox-orders:
+                      - account_id
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251844-run
   /v1/get_orderly_key:
     get:
       summary: Get Orderly Key
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
@@ -5258,12 +6317,23 @@ paths:
                       - scope
                       - expiration
                       - tag
+                    x-apifox-orders:
+                      - orderly_key
+                      - scope
+                      - expiration
+                      - tag
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -5275,9 +6345,12 @@ paths:
                       expiration: 1689086651947
                       tag: some user defined tags
                     timestamp: 1689146723102
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251846-run
   /v1/orderly_key:
     post:
       summary: Add Orderly Key
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
@@ -5319,6 +6392,13 @@ paths:
                       description: >-
                         Expiration time of the key in UNIX milliseconds. Maximum
                         allowed expiration is 365 days from add
+                  x-apifox-orders:
+                    - brokerId
+                    - chainId
+                    - orderlyKey
+                    - scope
+                    - timestamp
+                    - expiration
                   required:
                     - brokerId
                     - chainId
@@ -5329,6 +6409,7 @@ paths:
                   description: >-
                     Message object containing the message that is signed by the
                     wallet owner
+                  x-apifox-ignore-properties: []
                 signature:
                   type: string
                   description: >-
@@ -5342,10 +6423,16 @@ paths:
                 tag:
                   type: string
                   description: An optional tag of string values。
+              x-apifox-orders:
+                - message
+                - signature
+                - userAddress
+                - tag
               required:
                 - message
                 - signature
                 - userAddress
+              x-apifox-ignore-properties: []
             example:
               message:
                 brokerId: woofi_dex
@@ -5375,9 +6462,16 @@ paths:
                         type: string
                     required:
                       - orderly_key
+                    x-apifox-orders:
+                      - orderly_key
+                    x-apifox-ignore-properties: []
                 required:
                   - success
                   - data
+                x-apifox-orders:
+                  - success
+                  - data
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -5385,9 +6479,12 @@ paths:
                     success: true
                     data:
                       orderly_key: ed25519:FRXntsPJBCy6dzKv9WPw4eYSw3rKU9Npz3T6UmvvJc9Z
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251850-run
   /v1/public/config:
     get:
       summary: Get Leverage Configuration
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: |
 
@@ -5414,12 +6511,20 @@ paths:
                         type: string
                     required:
                       - available_futures_leverage
+                    x-apifox-orders:
+                      - available_futures_leverage
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -5428,9 +6533,12 @@ paths:
                     data:
                       available_futures_leverage: 1,2,3,4,5,10
                     timestamp: 1684811129040
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251851-run
   /v1/public/chain_info:
     get:
       summary: Get Vault Chain Config
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
@@ -5476,14 +6584,30 @@ paths:
                             - currency_symbol
                             - explorer_base_url
                             - vault_address
+                          x-apifox-orders:
+                            - name
+                            - public_rpc_url
+                            - chain_id
+                            - currency_symbol
+                            - explorer_base_url
+                            - vault_address
+                          x-apifox-ignore-properties: []
                     required:
                       - rows
+                    x-apifox-orders:
+                      - rows
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -5504,9 +6628,12 @@ paths:
                           explorer_base_url: https://optimistic.etherscan.io/
                           vault_address: '0x816f722424b49cf1275cc86da9840fbd5a6167e9'
                     timestamp: 1702688517044
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251853-run
   /v1/batch-order:
     post:
       summary: Batch Create Order
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: >-
         **Limit: 1 request per 1 second**
@@ -5611,13 +6738,28 @@ paths:
                           to `order_quantity`)
                       order_tag:
                         type: string
+                    x-apifox-orders:
+                      - symbol
+                      - client_order_id
+                      - order_type
+                      - order_price
+                      - order_quantity
+                      - order_amount
+                      - reduce_only
+                      - visible_quantity
+                      - side
+                      - order_tag
                     required:
                       - symbol
                       - order_type
                       - side
                       - order_amount
+                    x-apifox-ignore-properties: []
+              x-apifox-orders:
+                - orders
               required:
                 - orders
+              x-apifox-ignore-properties: []
       responses:
         '200':
           description: OK
@@ -5662,20 +6804,33 @@ paths:
                           required:
                             - success
                             - order_id
+                            - order_type
+                          x-apifox-orders:
+                            - success
+                            - order_id
                             - client_order_id
                             - order_type
                             - order_price
                             - order_quantity
                             - order_amount
                             - error_message
+                          x-apifox-ignore-properties: []
                     required:
                       - rows
+                    x-apifox-orders:
+                      - rows
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -5708,8 +6863,11 @@ paths:
                           order_amount: null
                           error_message: the order need to fit price filter
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251893-run
     delete:
       summary: Batch Cancel Orders
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: >
         **Limit: 10 requests per 1 second**
@@ -5785,12 +6943,20 @@ paths:
                         type: string
                     required:
                       - status
+                    x-apifox-orders:
+                      - status
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -5799,9 +6965,12 @@ paths:
                     data:
                       status: CANCEL_ALL_SENT
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251897-run
   /v1/client/order:
     delete:
       summary: Cancel Order By client_order_id
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: >
         **Limit: 10 requests per 1 second**
@@ -5878,12 +7047,20 @@ paths:
                         type: string
                     required:
                       - status
+                    x-apifox-orders:
+                      - status
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -5892,9 +7069,12 @@ paths:
                     data:
                       status: CANCEL_SENT
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251895-run
   /v1/client/batch-order:
     delete:
       summary: Batch Cancel Orders By client_order_id
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: >
         **Limit: 10 requests per 1 second**
@@ -5972,12 +7152,20 @@ paths:
                         type: string
                     required:
                       - status
+                    x-apifox-orders:
+                      - status
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -5986,9 +7174,12 @@ paths:
                     data:
                       status: CANCEL_ALL_SENT
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251899-run
   /v1/client/order/{client_order_id}:
     get:
       summary: Get Order by client_order_id
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second**
@@ -6105,12 +7296,40 @@ paths:
                       - created_time
                       - updated_time
                       - order_tag
+                    x-apifox-orders:
+                      - order_id
+                      - user_id
+                      - price
+                      - type
+                      - quantity
+                      - amount
+                      - executed
+                      - visible
+                      - reduce_only
+                      - symbol
+                      - side
+                      - status
+                      - total_fee
+                      - fee_asset
+                      - client_order_id
+                      - average_executed_price
+                      - created_time
+                      - updated_time
+                      - order_tag
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                  - 01HK90XGYTEB3W6J2AJ3W9HZ1C
+                x-apifox-orders:
+                  - 01HK90XGYTEB3W6J2AJ3W9HZ1C
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -6137,9 +7356,12 @@ paths:
                       updated_time: 1644216696000
                       order_tag: sometags
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251901-run
   /v1/orderbook/{symbol}:
     get:
       summary: Orderbook Snapshot
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: >
         **Limit: 10 requests per 1 second**
@@ -6221,6 +7443,10 @@ paths:
                           required:
                             - price
                             - quantity
+                          x-apifox-orders:
+                            - price
+                            - quantity
+                          x-apifox-ignore-properties: []
                       bids:
                         type: array
                         items:
@@ -6233,6 +7459,10 @@ paths:
                           required:
                             - price
                             - quantity
+                          x-apifox-orders:
+                            - price
+                            - quantity
+                          x-apifox-ignore-properties: []
                       timestamp:
                         description: Unix epoch time in milliseconds
                         type: integer
@@ -6240,9 +7470,18 @@ paths:
                       - asks
                       - bids
                       - timestamp
+                    x-apifox-orders:
+                      - asks
+                      - bids
+                      - timestamp
+                    x-apifox-ignore-properties: []
                 required:
                   - success
                   - data
+                x-apifox-orders:
+                  - success
+                  - data
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -6264,9 +7503,12 @@ paths:
                         - price: 10668.9
                           quantity: 0.00488286
                       timestamp: 1564710591905
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251907-run
   /v1/kline:
     get:
       summary: Get Kline
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: >
 
@@ -6385,11 +7627,30 @@ paths:
                             - type
                             - start_timestamp
                             - end_timestamp
+                          x-apifox-orders:
+                            - open
+                            - close
+                            - low
+                            - high
+                            - volume
+                            - amount
+                            - symbol
+                            - type
+                            - start_timestamp
+                            - end_timestamp
+                          x-apifox-ignore-properties: []
                     required:
                       - rows
+                    x-apifox-orders:
+                      - rows
+                    x-apifox-ignore-properties: []
                 required:
                   - success
                   - data
+                x-apifox-orders:
+                  - success
+                  - data
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -6417,9 +7678,12 @@ paths:
                           type: 1m
                           start_timestamp: 1636388160000
                           end_timestamp: 1636388220000
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251913-run
   /v1/order/{order_id}/trades:
     get:
       summary: Get All Trades of Specific Order
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second**
@@ -6503,14 +7767,34 @@ paths:
                               type: integer
                             is_maker:
                               type: integer
+                          x-apifox-orders:
+                            - id
+                            - symbol
+                            - fee
+                            - fee_asset
+                            - side
+                            - order_id
+                            - executed_price
+                            - executed_quantity
+                            - executed_timestamp
+                            - is_maker
+                          x-apifox-ignore-properties: []
                     required:
                       - rows
+                    x-apifox-orders:
+                      - rows
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -6529,9 +7813,12 @@ paths:
                           executed_timestamp: 1567382401000
                           is_maker: 1
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251914-run
   /v1/trade/{trade_id}:
     get:
       summary: Get Trade
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second**
@@ -6621,12 +7908,29 @@ paths:
                       - executed_quantity
                       - executed_timestamp
                       - is_maker
+                    x-apifox-orders:
+                      - id
+                      - symbol
+                      - fee
+                      - fee_asset
+                      - side
+                      - order_id
+                      - executed_price
+                      - executed_quantity
+                      - executed_timestamp
+                      - is_maker
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -6644,9 +7948,12 @@ paths:
                       executed_timestamp: 1567382400000
                       is_maker: 1
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251915-run
   /v1/client/maintenance_config:
     post:
       summary: Set Maintenance Config
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: >
         **Limit: 10 requests per 60 seconds**
@@ -6700,8 +8007,11 @@ paths:
                   description: >-
                     if true, system will cancel all of user's pending orders
                     during maintenance.
+              x-apifox-orders:
+                - maintenance_cancel_order_flag
               required:
                 - maintenance_cancel_order_flag
+              x-apifox-ignore-properties: []
       responses:
         '200':
           description: OK
@@ -6719,12 +8029,20 @@ paths:
                         type: string
                     required:
                       - success_alter
+                    x-apifox-orders:
+                      - success_alter
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -6733,9 +8051,12 @@ paths:
                     data:
                       success_alter: Success! Your change has been saved!
                     timestamp: 1671074869440
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251917-run
   /v1/volume/user/stats:
     get:
       summary: Get User Volume Statistics
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |-
         **Limit 10 requests per 60 seconds**
@@ -6796,12 +8117,23 @@ paths:
                           type: number
                         perp_volume_last_30_days:
                           type: number
+                      x-apifox-orders:
+                        - perp_volume_ytd
+                        - perp_volume_ltd
+                        - perp_volume_last_7_days
+                        - perp_volume_last_30_days
+                      x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -6813,9 +8145,12 @@ paths:
                         perp_volume_last_7_days: 120272.7674
                         perp_volume_last_30_days: 300730.5454
                     timestamp: 1580794149000
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251918-run
   /v1/volume/user/daily:
     get:
       summary: Get User Daily Volume
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit 10 requests per 60 seconds**
@@ -6889,12 +8224,21 @@ paths:
                       required:
                         - date
                         - perp_volume
+                      x-apifox-orders:
+                        - date
+                        - perp_volume
+                      x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -6906,9 +8250,12 @@ paths:
                       - date: '2022-02-02'
                         perp_volume: 100.12
                     timestamp: 1580794149000
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251919-run
   /v1/withdraw_nonce:
     get:
       summary: Get Withdrawal Nonce
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: >
         **Limit 10 requests per 1 seconds**
@@ -6968,12 +8315,20 @@ paths:
                         type: integer
                     required:
                       - withdraw_nonce
+                    x-apifox-orders:
+                      - withdraw_nonce
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -6982,9 +8337,12 @@ paths:
                     data:
                       withdraw_nonce: 1
                     timestamp: 1685673968302
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251921-run
   /v1/settle_nonce:
     get:
       summary: Get Settle PnL Nonce
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: >
         **Limit: 10 requests per 1 second**
@@ -7044,12 +8402,20 @@ paths:
                         type: integer
                     required:
                       - settle_nonce
+                    x-apifox-orders:
+                      - settle_nonce
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -7058,9 +8424,12 @@ paths:
                     data:
                       settle_nonce: 1
                     timestamp: 1685673968302
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251924-run
   /v1/withdraw_request:
     post:
       summary: Create Withdraw Request
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: >-
         **Limit: 10 requests per 1 second per IP address**
@@ -7143,6 +8512,15 @@ paths:
                       description: current timestamp in UNIX milliseconds
                     allowCrossChainWithdrawal:
                       type: boolean
+                  x-apifox-orders:
+                    - brokerId
+                    - chainId
+                    - receiver
+                    - token
+                    - amount
+                    - withdrawNonce
+                    - timestamp
+                    - allowCrossChainWithdrawal
                   required:
                     - brokerId
                     - chainId
@@ -7154,6 +8532,7 @@ paths:
                   description: >-
                     Message object containing the message that is signed by the
                     wallet owner
+                  x-apifox-ignore-properties: []
                 signature:
                   type: string
                   description: >-
@@ -7167,11 +8546,17 @@ paths:
                 verifyingContract:
                   type: string
                   description: Address of the Orderly Network ledger contract
+              x-apifox-orders:
+                - message
+                - signature
+                - userAddress
+                - verifyingContract
               required:
                 - message
                 - signature
                 - userAddress
                 - verifyingContract
+              x-apifox-ignore-properties: []
             example:
               message:
                 brokerId: woofi_dex
@@ -7200,15 +8585,22 @@ paths:
                 required:
                   - success
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
                   value:
                     success: true
                     timestamp: 1689075697206
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251925-run
   /v1/settle_pnl:
     post:
       summary: Request PnL Settlement
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: >
         **Limit: 1 requests per 1 second**
@@ -7274,6 +8666,11 @@ paths:
                     timestamp:
                       type: string
                       description: current timestamp in UNIX milliseconds
+                  x-apifox-orders:
+                    - brokerId
+                    - chainId
+                    - settleNonce
+                    - timestamp
                   required:
                     - brokerId
                     - chainId
@@ -7282,6 +8679,7 @@ paths:
                   description: >-
                     Message object containing the message that is signed by the
                     wallet owner
+                  x-apifox-ignore-properties: []
                 signature:
                   type: string
                   description: >-
@@ -7295,11 +8693,17 @@ paths:
                 verifyingContract:
                   type: string
                   description: Address of the Orderly Network ledger contract
+              x-apifox-orders:
+                - message
+                - signature
+                - userAddress
+                - verifyingContract
               required:
                 - message
                 - signature
                 - userAddress
                 - verifyingContract
+              x-apifox-ignore-properties: []
             example:
               message:
                 brokerId: woofi_dex
@@ -7329,10 +8733,18 @@ paths:
                         type: integer
                     required:
                       - settle_pnl_id
+                    x-apifox-orders:
+                      - settle_pnl_id
+                    x-apifox-ignore-properties: []
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - timestamp
+                  - data
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -7341,9 +8753,12 @@ paths:
                     data:
                       settle_pnl_id: 889
                     timestamp: 1692246987774
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251926-run
   /v1/pnl_settlement/history:
     get:
       summary: Get PnL Settlement History
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 20 requests per 1 second**
@@ -7437,6 +8852,11 @@ paths:
                           - total
                           - records_per_page
                           - current_page
+                        x-apifox-orders:
+                          - total
+                          - records_per_page
+                          - current_page
+                        x-apifox-ignore-properties: []
                       rows:
                         type: array
                         items:
@@ -7468,15 +8888,37 @@ paths:
                                 required:
                                   - symbol
                                   - settled_amount
+                                x-apifox-orders:
+                                  - symbol
+                                  - settled_amount
+                                x-apifox-ignore-properties: []
+                          x-apifox-orders:
+                            - id
+                            - old_balance
+                            - new_balance
+                            - settled_amount
+                            - requested_time
+                            - settled_time
+                            - symbols
+                          x-apifox-ignore-properties: []
                     required:
                       - meta
                       - rows
+                    x-apifox-orders:
+                      - meta
+                      - rows
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -7500,9 +8942,12 @@ paths:
                             - symbol: PERP_ETH_USDC
                               settled_amount: -200
                     timestamp: 1580794149000
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129251927-run
   /v1/client/key_info:
     get:
       summary: Get Current Orderly Key Info
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit 10 requests per 60 seconds**
@@ -7583,12 +9028,25 @@ paths:
                         tag:
                           description: Optional, could be null if there wasn't a tag
                           type: string
+                      x-apifox-orders:
+                        - orderly_key
+                        - key_status
+                        - ip_restriction_list
+                        - ip_restricion_status
+                        - expiration
+                        - tag
+                      x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -7602,9 +9060,12 @@ paths:
                         expiration: 1689086651947
                         tag: some user defined tags
                     timestamp: 1580794149000
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129942312-run
   /v1/client/orderly_key_ip_restriction:
     get:
       summary: Get Orderly Key IP Restriction
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit 10 requests per 60 seconds**
@@ -7680,12 +9141,23 @@ paths:
                       - orderly_key
                       - ip_restriction_list
                       - tag
+                    x-apifox-orders:
+                      - account_id
+                      - orderly_key
+                      - ip_restriction_list
+                      - tag
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -7700,9 +9172,12 @@ paths:
                         - 218.218.218.218
                       tag: some user defined tags
                     timestamp: 1580794149000
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129942313-run
   /v1/client/set_orderly_key_ip_restriction:
     post:
       summary: Set Orderly Key IP Restriction
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 60 seconds**
@@ -7777,12 +9252,20 @@ paths:
                           type: string
                     required:
                       - ip_restriction_list
+                    x-apifox-orders:
+                      - ip_restriction_list
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -7794,9 +9277,12 @@ paths:
                         - 10.1.1.2
                         - 192.168.0.1-192.168.0.10
                     timestamp: 1580794149000
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129942314-run
   /v1/client/reset_orderly_key_ip_restriction:
     post:
       summary: Reset Orderly Key IP Restriction
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 60 seconds**
@@ -7867,15 +9353,22 @@ paths:
                 required:
                   - success
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
                   value:
                     success: true
                     timestamp: 1580794149000
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129942316-run
   /v1/notification/inbox/notifications:
     get:
       summary: Get All Notifications
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 60 seconds**
@@ -8003,12 +9496,14 @@ paths:
                                 - executed_quantity
                                 - executed_timestamp
                               description: below example is for a ORDER_FILLED content
+                              x-apifox-orders:
                                 - symbol
                                 - side
                                 - order_id
                                 - executed_price
                                 - executed_quantity
                                 - executed_timestamp
+                              x-apifox-ignore-properties: []
                             mark_read:
                               description: 1 = READ, 0 = UNREAD
                               type: integer
@@ -8018,6 +9513,22 @@ paths:
                               type: integer
                             announcement_id:
                               type: integer
+                          x-apifox-orders:
+                            - id
+                            - message_type
+                            - email
+                            - application_id
+                            - title
+                            - type
+                            - level
+                            - content_summary
+                            - content
+                            - content_raw
+                            - mark_read
+                            - operator
+                            - created_time
+                            - announcement_id
+                          x-apifox-ignore-properties: []
                       meta:
                         type: object
                         properties:
@@ -8031,15 +9542,29 @@ paths:
                           - total
                           - records_per_page
                           - current_page
+                        x-apifox-orders:
+                          - total
+                          - records_per_page
+                          - current_page
+                        x-apifox-ignore-properties: []
                     required:
                       - rows
                       - meta
+                    x-apifox-orders:
+                      - rows
+                      - meta
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -8077,9 +9602,12 @@ paths:
                         records_per_page: 1
                         current_page: 1
                     timestamp: 1679021265398
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129942318-run
   /v1/notification/inbox/unread:
     get:
       summary: Get Unread Notifications
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 60 seconds**
@@ -8139,12 +9667,21 @@ paths:
                     required:
                       - count
                       - lastId
+                    x-apifox-orders:
+                      - count
+                      - lastId
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -8154,9 +9691,12 @@ paths:
                       count: 10
                       lastId: 12345
                     timestamp: 1679028707086
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129942319-run
   /v1/notification/inbox/mark_read:
     post:
       summary: Set Read Status of Notifications
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 60 seconds**
@@ -8227,9 +9767,16 @@ paths:
                 required:
                   - success
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - timestamp
+                x-apifox-ignore-properties: []
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129942320-run
   /v1/notification/inbox/mark_read_all:
     post:
       summary: Set Read Status of All Notifications
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 60 seconds**
@@ -8291,9 +9838,16 @@ paths:
                 required:
                   - success
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - timestamp
+                x-apifox-ignore-properties: []
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-129942321-run
   /v1/public/vault_balance:
     get:
       summary: Get Vault Balance
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: ''
       tags:
@@ -8339,14 +9893,28 @@ paths:
                               type: number
                             pending_rebalance:
                               type: number
+                          x-apifox-orders:
+                            - chain_id
+                            - token
+                            - balance
+                            - pending_rebalance
+                          x-apifox-ignore-properties: []
                     required:
                       - rows
+                    x-apifox-orders:
+                      - rows
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -8359,9 +9927,12 @@ paths:
                           balance: 1000.12345
                           pending_rebalance: 1000.12345
                     timestamp: 1684811129040
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-131077702-run
   /v1/faucet/usdc:
     get:
       summary: Get Faucet USDC(Testnet Only)
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: >-
         `GET https://testnet-operator-evm.orderly.org/v1/faucet/usdc`
@@ -8405,15 +9976,22 @@ paths:
                 required:
                   - success
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
                   value:
                     success: true
                     timestamp: 1688606744795
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-132951185-run
   /v1/algo/order:
     post:
       summary: Create Algo Order
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: >-
         **Limit: 10 requests per 1 second**
@@ -8504,12 +10082,26 @@ paths:
                   description: '`SELL`/`BUY`'
                 order_tag:
                   type: string
+              x-apifox-orders:
+                - symbol
+                - algo_type
+                - client_order_id
+                - type
+                - price
+                - quantity
+                - trigger_price_type
+                - trigger_price
+                - reduce_only
+                - visible_quantity
+                - side
+                - order_tag
               required:
                 - symbol
                 - type
                 - algo_type
                 - side
                 - quantity
+              x-apifox-ignore-properties: []
       responses:
         '200':
           description: OK
@@ -8539,18 +10131,28 @@ paths:
                         type: number
                     required:
                       - order_id
+                      - order_amount
+                      - order_type
+                    x-apifox-orders:
+                      - order_id
                       - client_order_id
                       - order_type
                       - order_price
                       - order_quantity
                       - broker_id
                       - order_amount
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: number
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -8564,8 +10166,11 @@ paths:
                       order_quantity: 0.987654
                       order_amount: null
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-136939560-run
     put:
       summary: Edit Algo Order
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: >-
         **Limit: 10 requests per 1 second**
@@ -8625,8 +10230,14 @@ paths:
                   type: number
                 trigger_price:
                   type: number
+              x-apifox-orders:
+                - order_id
+                - price
+                - quantity
+                - trigger_price
               required:
                 - order_id
+              x-apifox-ignore-properties: []
       responses:
         '200':
           description: OK
@@ -8644,12 +10255,20 @@ paths:
                         type: string
                     required:
                       - status
+                    x-apifox-orders:
+                      - status
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -8658,8 +10277,11 @@ paths:
                     data:
                       status: EDIT_SENT
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-136948004-run
     delete:
       summary: Cancel Algo Order
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second**
@@ -8730,12 +10352,20 @@ paths:
                         type: string
                     required:
                       - status
+                    x-apifox-orders:
+                      - status
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: number
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -8744,9 +10374,12 @@ paths:
                     data:
                       status: CANCEL_SENT
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-136950450-run
   /v1/algo/client/order:
     delete:
       summary: Cancel Algo Order By client_order_id
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: >-
         **Limit: 10 requests per 1 second**
@@ -8820,12 +10453,20 @@ paths:
                         type: string
                     required:
                       - status
+                    x-apifox-orders:
+                      - status
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -8834,9 +10475,12 @@ paths:
                     data:
                       status: CANCEL_SENT
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-136950863-run
   /v1/algo/orders:
     delete:
       summary: Cancel All Pending Algo Orders
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |-
         **Limit: 10 requests per 1 second**
@@ -8900,12 +10544,20 @@ paths:
                         type: string
                     required:
                       - status
+                    x-apifox-orders:
+                      - status
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -8914,8 +10566,11 @@ paths:
                     data:
                       status: CANCEL_ALL_SENT
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-136953816-run
     get:
       summary: Get Algo Orders
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: >-
         **Limit: 10 requests per 1 second**
@@ -9144,6 +10799,35 @@ paths:
                             - average_executed_price
                             - order_id
                             - price
+                          x-apifox-orders:
+                            - algo_order_id
+                            - root_algo_order_id
+                            - parent_algo_order_id
+                            - symbol
+                            - order_tag
+                            - algo_type
+                            - side
+                            - quantity
+                            - is_triggered
+                            - trigger_price
+                            - trigger_price_type
+                            - type
+                            - root_algo_status
+                            - algo_status
+                            - total_executed_quantity
+                            - visible_quantity
+                            - total_fee
+                            - fee_asset
+                            - created_time
+                            - updated_time
+                            - trigger_status
+                            - status
+                            - trigger_trade_price
+                            - trigger_time
+                            - average_executed_price
+                            - order_id
+                            - price
+                          x-apifox-ignore-properties: []
                       meta:
                         type: object
                         properties:
@@ -9157,15 +10841,29 @@ paths:
                           - total
                           - records_per_page
                           - current_page
+                        x-apifox-orders:
+                          - total
+                          - records_per_page
+                          - current_page
+                        x-apifox-ignore-properties: []
                     required:
                       - rows
                       - meta
+                    x-apifox-orders:
+                      - rows
+                      - meta
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -9296,9 +10994,12 @@ paths:
                         records_per_page: 6
                         current_page: 1
                     timestamp: 1702872287032
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-136957027-run
   /v1/algo/order/{order_id}:
     get:
       summary: Get Algo Order
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |-
         **Limit: 10 requests per 1 second**
@@ -9418,12 +11119,38 @@ paths:
                       - broker_name
                       - created_time
                       - updated_time
+                    x-apifox-orders:
+                      - order_id
+                      - user_id
+                      - price
+                      - type
+                      - quantity
+                      - amount
+                      - executed
+                      - visible
+                      - symbol
+                      - side
+                      - status
+                      - total_fee
+                      - fee_asset
+                      - client_order_id
+                      - average_executed_price
+                      - broker_id
+                      - broker_name
+                      - created_time
+                      - updated_time
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: number
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -9450,9 +11177,12 @@ paths:
                       updated_time: 1653564213000
                       order_tag: sometags
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-136956166-run
   /v1/algo/client/order/{client_order_id}:
     get:
       summary: Get Algo Order by client_order_id
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second**
@@ -9573,12 +11303,39 @@ paths:
                       - updated_time
                       - broker_id
                       - broker_name
+                    x-apifox-orders:
+                      - order_id
+                      - user_id
+                      - price
+                      - type
+                      - quantity
+                      - amount
+                      - executed
+                      - visible
+                      - symbol
+                      - side
+                      - status
+                      - total_fee
+                      - fee_asset
+                      - client_order_id
+                      - average_executed_price
+                      - broker_id
+                      - broker_name
+                      - created_time
+                      - updated_time
+                      - reduce_only
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -9605,9 +11362,12 @@ paths:
                       updated_time: 1644216696000
                       order_tag: sometags
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-136956610-run
   /v1/algo/order/{order_id}/trades:
     get:
       summary: Get All Trades of Specific Algo Order
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second**
@@ -9691,14 +11451,34 @@ paths:
                               type: integer
                             is_maker:
                               type: integer
+                          x-apifox-orders:
+                            - id
+                            - symbol
+                            - fee
+                            - fee_asset
+                            - side
+                            - order_id
+                            - executed_price
+                            - executed_quantity
+                            - executed_timestamp
+                            - is_maker
+                          x-apifox-ignore-properties: []
                     required:
                       - rows
+                    x-apifox-orders:
+                      - rows
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -9717,9 +11497,12 @@ paths:
                           executed_timestamp: 1567382401000
                           is_maker: 1
                     timestamp: 1639980423855
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-136960994-run
   /v1/public/account:
     get:
       summary: Get Account Details
+      x-apifox-folder: public
+      x-apifox-status: released
       deprecated: false
       description: |-
         **Limit: 10 requests per 1 second per IP address**
@@ -9757,12 +11540,21 @@ paths:
                     required:
                       - address
                       - broker_id
+                    x-apifox-orders:
+                      - address
+                      - broker_id
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -9772,9 +11564,12 @@ paths:
                       address: '0xfcc17f2b240380d56f0615e8f654e4ae3cee8957'
                       broker_id: woofi_pro
                     timestamp: 1689146471412
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-136964369-run
   /v1/volume/broker/daily:
     get:
       summary: Get Broker Daily Volume
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: >
         **Limit 10 requests per 60 seconds**
@@ -9805,6 +11600,13 @@ paths:
           example: ''
           schema:
             type: string
+        - name: broker_id
+          in: query
+          description: ''
+          required: false
+          example: ''
+          schema:
+            type: string
         - name: address
           in: query
           description: ''
@@ -9821,7 +11623,7 @@ paths:
             type: string
         - name: aggregateBy
           in: query
-          description: ""
+          description: ''
           required: false
           example: ''
           schema:
@@ -9860,6 +11662,92 @@ paths:
           description: OK
           content:
             application/json:
+              schema:
+                {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "rows": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "date": {
+                                "type": "string"
+                              },
+                              "account_id": {
+                                "type": "string"
+                              },
+                              "perp_volume": {
+                                "type": "number"
+                              }
+                            },
+                            "required": [
+                              "date",
+                              "account_id",
+                              "perp_volume"
+                            ],
+                            "x-apifox-orders": [
+                              "date",
+                              "account_id",
+                              "perp_volume"
+                            ]
+                          }
+                        },
+                        "meta": {
+                          "type": "object",
+                          "properties": {
+                            "total": {
+                              "type": "integer"
+                            },
+                            "records_per_page": {
+                              "type": "integer"
+                            },
+                            "current_page": {
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "total",
+                            "records_per_page",
+                            "current_page"
+                          ],
+                          "x-apifox-orders": [
+                            "total",
+                            "records_per_page",
+                            "current_page"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "rows",
+                        "meta"
+                      ],
+                      "x-apifox-orders": [
+                        "rows",
+                        "meta"
+                      ]
+                    },
+                    "timestamp": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "data",
+                    "timestamp"
+                  ],
+                  "x-apifox-orders": [
+                    "success",
+                    "data",
+                    "timestamp"
+                  ]
+                }
               examples:
                 '1':
                   summary: Success
@@ -9892,9 +11780,12 @@ paths:
                       },
                       "timestamp": 1696832864277
                     }
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-136964758-run
   /v1/client/statistics/daily:
     get:
       summary: Get User Daily Statistics
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: |
         **Limit 10 requests per 60 seconds**
@@ -9988,6 +11879,11 @@ paths:
                           - current_page
                           - records_per_page
                           - total
+                        x-apifox-orders:
+                          - current_page
+                          - records_per_page
+                          - total
+                        x-apifox-ignore-properties: []
                       rows:
                         type: array
                         items:
@@ -10008,15 +11904,31 @@ paths:
                             - perp_volume
                             - pnl
                             - account_value
+                          x-apifox-orders:
+                            - date
+                            - perp_volume
+                            - pnl
+                            - account_value
+                            - broker_id
+                          x-apifox-ignore-properties: []
                     required:
                       - meta
                       - rows
+                    x-apifox-orders:
+                      - meta
+                      - rows
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -10038,9 +11950,12 @@ paths:
                           pnl: -123.45
                           account_value: 456789.12
                     timestamp: 1580794149000
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-136967383-run
   /v1/broker/user_info:
     get:
       summary: Get User Fee Tier
+      x-apifox-folder: private
+      x-apifox-status: released
       deprecated: false
       description: ''
       tags:
@@ -10108,6 +12023,13 @@ paths:
                             - futures_taker_fee_rate
                             - fee_tier
                             - address
+                          x-apifox-orders:
+                            - account_id
+                            - futures_maker_fee_rate
+                            - futures_taker_fee_rate
+                            - fee_tier
+                            - address
+                          x-apifox-ignore-properties: []
                       meta:
                         type: object
                         properties:
@@ -10121,15 +12043,29 @@ paths:
                           - total
                           - records_per_page
                           - current_page
+                        x-apifox-orders:
+                          - total
+                          - records_per_page
+                          - current_page
+                        x-apifox-ignore-properties: []
                     required:
                       - rows
                       - meta
+                    x-apifox-orders:
+                      - rows
+                      - meta
+                    x-apifox-ignore-properties: []
                   timestamp:
                     type: integer
                 required:
                   - success
                   - data
                   - timestamp
+                x-apifox-orders:
+                  - success
+                  - data
+                  - timestamp
+                x-apifox-ignore-properties: []
               examples:
                 '1':
                   summary: Success
@@ -10160,6 +12096,7 @@ paths:
                         records_per_page: 3
                         current_page: 1
                     timestamp: 1696832864277
+      x-run-in-apifox: https://www.apifox.cn/web/project/3676626/apis/api-136973522-run
 components:
   schemas: {}
 servers:
