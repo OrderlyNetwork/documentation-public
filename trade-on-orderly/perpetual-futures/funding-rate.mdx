@@ -66,17 +66,24 @@ The Interest Rate is fixed to be 0.01% for all Perpetual Markets (assuming USDC 
 The final Funding Rate is then a combination of the Average Premium and the Interest Rate. 
 
 ```
-Funding Rate = clamp[Funding Function(Average Premium) + clamp(Interest Rate - Average Premium , 0.03%, -0.03%), Cap Funding, Floor Funding]
+Funding Rate = clamp[Funding Function(Average Premium) + clamp(Interest Rate - Funding Function(Average Premium) , Cap IR, Floor IR), Cap Funding, Floor Funding]
 ```
 
 The funding rate is also capped and floored respectively by a `Cap Funding` and a `Floor Funding`. The specific values depend on each perpetual market. In the event of extreme market conditions, Orderly may change these parameters, which will enable the funding rate model's higher slope to kick in.
 
-| Perp Market | Cap Funding | Floor Funding |
-| ----------- | ----------- | ------------- |
-| BTC         | 0.3%        | \-0.3%        |
-| ETH         | 0.375%      | \-0.375%      |
-| NEAR        | 0.75%       | \-0.75%       |
-| WOO        | 0.75%       | \-0.75%       |
+| Perp Market | Cap Funding | Floor Funding | Cap IR | Floor IR |
+| ----------- | ----------- | ------------- | ----------- | ------------- |
+| BTC         | 0.3%        | \-0.3%        | 0.03%        | \-0.03%        |
+| ETH         | 0.375%      | \-0.375%      | 0.03%      | \-0.03%      |
+| ARB        | 0.45%       | \-0.45%       | 0.01%       | \-0.01%       |
+| WOO        | 2.00%       | \-2.00%       | 0.01%        | \-0.01%       |
+| LINK        | 0.375%       | \-0.375%       | 0.01%        | \-0.01%       |
+| MATIC        | 0.45%       | \-0.45%       | 0.01%        | \-0.01%       |
+| OP        | 0.45%       | \-0.45%       | 0.01%        | \-0.01%       |
+| SOL         | 0.4875%      | \-0.4875%      | 0.01%      | \-0.01%     |
+| SUI         | 0.75%      | \-0.75%      | 0.01%       | \-0.01%      |
+| TIA         | 4.00%      | \-4.00%      | 0.02%       | \-0.02%     |
+| INJ         | 3.00%      | \-3.00%      | 0.01%       | \-0.01%     |
 
 ## Funding Period
 
