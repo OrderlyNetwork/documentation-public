@@ -3154,40 +3154,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    type: object
-                    properties:
-                      address:
-                        type: string
-                      broker_id:
-                        type: string
-                    required:
-                      - address
-                      - broker_id
-                  timestamp:
-                    type: integer
-                required:
-                  - success
-                  - data
-                  - timestamp
-              examples:
-                '1':
-                  summary: Success
-                  value:
-                    success: true
-                    data:
-                      address: '0xfcc17f2b240380d56f0615e8f654e4ae3cee8957'
-                      broker_id: woofi_pro
-                    timestamp: 1689146471412
+                $ref: '#/components/schemas/GetAccountDetailsResponse'
   /v1/volume/broker/daily:
     get:
       summary: Get Broker Daily Volume
@@ -3237,7 +3209,7 @@ paths:
             type: string
         - name: aggregateBy
           in: query
-          description: ""
+          description: "Either by `DATE` or by `ACCOUNT`"
           required: false
           example: ''
           schema:
@@ -3272,42 +3244,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
-              examples:
-                '1':
-                  summary: Success
-                  value:
-                    {
-                      "success": true,
-                      "data": {
-                        "rows": [
-                          {
-                            "date": "2023-09-14",
-                            "account_id": "0x58220761ade872c94f85e62f1b24a74eec792aaa3677b6201071fd05c1698e89",
-                            "perp_volume": 451580.9523
-                          },
-                          {
-                            "date": "2023-09-15",
-                            "account_id": "0x114f583aea808c5812e16109b6c087660285a26f0a31dcc0f9b54f1a6a0fefbd",
-                            "perp_volume": 1620.1
-                          },
-                          {
-                            "date": "2023-09-15",
-                            "account_id": "0x47ab075adca7dfe9dd206eb7c50a10f7b99f4f08fa6c3abd4c170d438e15093b",
-                            "perp_volume": 82.2
-                          }
-                        ],
-                        "meta": {
-                          "total": 65,
-                          "records_per_page": 3,
-                          "current_page": 1
-                        }
-                      },
-                      "timestamp": 1696832864277
-                    }
+              schema:
+                $ref: '#/components/schemas/GetBrokerDailyResponse'
   /v1/client/statistics/daily:
     get:
       summary: Get User Daily Statistics
@@ -3379,81 +3321,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    type: object
-                    properties:
-                      meta:
-                        type: object
-                        properties:
-                          current_page:
-                            type: integer
-                          records_per_page:
-                            type: integer
-                          total:
-                            type: integer
-                        required:
-                          - current_page
-                          - records_per_page
-                          - total
-                      rows:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            date:
-                              type: string
-                            perp_volume:
-                              type: number
-                            pnl:
-                              type: number
-                            account_value:
-                              type: number
-                            broker_id:
-                              type: string
-                          required:
-                            - date
-                            - perp_volume
-                            - pnl
-                            - account_value
-                    required:
-                      - meta
-                      - rows
-                  timestamp:
-                    type: integer
-                required:
-                  - success
-                  - data
-                  - timestamp
-              examples:
-                '1':
-                  summary: Success
-                  value:
-                    success: true
-                    data:
-                      meta:
-                        current_page: 1
-                        records_per_page: 5
-                        total: 13
-                      rows:
-                        - date: '2022-02-01'
-                          perp_volume: 100.12
-                          pnl: 123.45
-                          account_value: 456789.12
-                        - date: '2022-02-02'
-                          broker_id: woofi_dex
-                          perp_volume: 100.12
-                          pnl: -123.45
-                          account_value: 456789.12
-                    timestamp: 1580794149000
+                $ref: '#/components/schemas/GetUserDailyStatsResponse'
   /v1/broker/user_info:
     get:
       summary: Get User Fee Tier
@@ -3491,91 +3364,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    type: object
-                    properties:
-                      rows:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            account_id:
-                              type: string
-                            futures_maker_fee_rate:
-                              type: integer
-                            futures_taker_fee_rate:
-                              type: integer
-                            fee_tier:
-                              type: string
-                            address:
-                              type: string
-                          required:
-                            - account_id
-                            - futures_maker_fee_rate
-                            - futures_taker_fee_rate
-                            - fee_tier
-                            - address
-                      meta:
-                        type: object
-                        properties:
-                          total:
-                            type: integer
-                          records_per_page:
-                            type: integer
-                          current_page:
-                            type: integer
-                        required:
-                          - total
-                          - records_per_page
-                          - current_page
-                    required:
-                      - rows
-                      - meta
-                  timestamp:
-                    type: integer
-                required:
-                  - success
-                  - data
-                  - timestamp
-              examples:
-                '1':
-                  summary: Success
-                  value:
-                    success: true
-                    data:
-                      rows:
-                        - account_id: >-
-                            0x114f583aea808c5812e16109b6c087660285a26f0a31dcc0f9b54f1a6a0fefbd
-                          futures_maker_fee_rate: 123
-                          futures_taker_fee_rate: 123
-                          fee_tier: '1'
-                          address: '0xa8ec6970fec8842dd229eef170f624c3d77dab45'
-                        - account_id: >-
-                            0x114f583aea808c5812e16109b6c087660285a26f0a31dcc0f9b54f1a6a0fefbd
-                          futures_maker_fee_rate: 123
-                          futures_taker_fee_rate: 123
-                          fee_tier: '1'
-                          address: '0xa8ec6970fec8842dd229eef170f624c3d77dab45'
-                        - account_id: >-
-                            0x114f583aea808c5812e16109b6c087660285a26f0a31dcc0f9b54f1a6a0fefbd
-                          futures_maker_fee_rate: 123
-                          futures_taker_fee_rate: 123
-                          fee_tier: '1'
-                          address: '0xa8ec6970fec8842dd229eef170f624c3d77dab45'
-                      meta:
-                        total: 65
-                        records_per_page: 3
-                        current_page: 1
-                    timestamp: 1696832864277
+                $ref: '#/components/schemas/UserFeeTierResponse'
 components:
   parameters:
     orderly_timestamp:
@@ -6750,6 +6544,122 @@ components:
                       balance:
                         type: number
                         example: 1000.12345
+
+    GetAccountDetailsResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - address
+                - broker_id
+              properties:
+                address:
+                  type: string
+                  example: "0xfcc17f2b240380d56f0615e8f654e4ae3cee8957"
+                broker_id:
+                  type: string
+                  example: "woofi_pro"
+
+    GetBrokerDailyResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+          - data
+          properties:
+            data:
+              type: object
+              required:
+              - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      account_id:
+                        type: string
+                        example: "0x58220761ade872c94f85e62f1b24a74eec792aaa3677b6201071fd05c1698e89"
+                      date:
+                        type: string
+                        example: "2023-09-14"
+                      perp_volume:
+                        type: number
+                        example: 451580.9523
+
+
+
+    GetUserDailyStatsResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      account_value:
+                        type: number
+                        example: 456789.12
+                      date:
+                        type: string
+                        example: "2023-09-14"
+                      perp_volume:
+                        type: number
+                        example: 451580.9523
+                      pnl:
+                        type: number
+                        example: 123.45
+
+    UserFeeTierResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      account_id:
+                        type: string
+                        example: "0x114f583aea808c5812e16109b6c087660285a26f0a31dcc0f9b54f1a6a0fefbd"
+                      address:
+                        type: string
+                        example: "0xa8ec6970fec8842dd229eef170f624c3d77dab45"
+                      fee_tier:
+                        type: string
+                        example: "1"
+                      futures_maker_fee_rate:
+                        type: number
+                        example: 0.03
+                      futures_taker_fee_rate:
+                        type: number
+                        example: 0.01
+
+
+
+
 servers:
   - url: https://api-evm.orderly.org
     description: Mainnet
