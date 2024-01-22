@@ -62,7 +62,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FeeProgramResponse'
+                $ref: '#/components/schemas/FuturesFeeProgramResponse'
   /v1/public/market_trades:
     get:
       summary: Get Market Trades
@@ -2720,35 +2720,10 @@ paths:
       tags:
         - private
       parameters:
-        - name: orderly-timestamp
-          in: header
-          description: ''
-          required: true
-          example: '1649920583000'
-          schema:
-            type: string
-        - name: orderly-account-id
-          in: header
-          description: ''
-          required: true
-          example: '0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546'
-          schema:
-            type: string
-        - name: orderly-key
-          in: header
-          description: ''
-          required: true
-          example: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
-          schema:
-            type: string
-        - name: orderly-signature
-          in: header
-          description: ''
-          required: true
-          example: >-
-            dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
-          schema:
-            type: string
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
       requestBody:
         content:
           application/json:
@@ -2795,59 +2770,12 @@ paths:
                 - side
                 - quantity
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    type: object
-                    properties:
-                      order_id:
-                        type: number
-                      client_order_id:
-                        type: string
-                      order_type:
-                        type: string
-                      order_price:
-                        type: number
-                      order_quantity:
-                        type: number
-                      broker_id:
-                        type: string
-                      order_amount:
-                        type: number
-                    required:
-                      - order_id
-                      - client_order_id
-                      - order_type
-                      - order_price
-                      - order_quantity
-                      - broker_id
-                      - order_amount
-                  timestamp:
-                    type: number
-                required:
-                  - success
-                  - data
-                  - timestamp
-              examples:
-                '1':
-                  summary: Success
-                  value:
-                    success: true
-                    data:
-                      order_id: 13
-                      client_order_id: testclientid
-                      order_type: LIMIT
-                      order_price: 100.12
-                      order_quantity: 0.987654
-                      order_amount: null
-                    timestamp: 1639980423855
+                $ref: '#/components/schemas/PostOrderResponse'
     put:
       summary: Edit Algo Order
       deprecated: false
@@ -2866,35 +2794,10 @@ paths:
       tags:
         - private
       parameters:
-        - name: orderly-timestamp
-          in: header
-          description: ''
-          required: true
-          example: '1649920583000'
-          schema:
-            type: string
-        - name: orderly-account-id
-          in: header
-          description: ''
-          required: true
-          example: '0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546'
-          schema:
-            type: string
-        - name: orderly-key
-          in: header
-          description: ''
-          required: true
-          example: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
-          schema:
-            type: string
-        - name: orderly-signature
-          in: header
-          description: ''
-          required: true
-          example: >-
-            dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
-          schema:
-            type: string
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
       requestBody:
         content:
           application/json:
@@ -2912,36 +2815,12 @@ paths:
               required:
                 - order_id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    type: object
-                    properties:
-                      status:
-                        type: string
-                    required:
-                      - status
-                  timestamp:
-                    type: integer
-                required:
-                  - success
-                  - data
-                  - timestamp
-              examples:
-                '1':
-                  summary: Success
-                  value:
-                    success: true
-                    data:
-                      status: EDIT_SENT
-                    timestamp: 1639980423855
+                $ref: '#/components/schemas/PutOrderResponse'
     delete:
       summary: Cancel Algo Order
       deprecated: false
@@ -2968,66 +2847,17 @@ paths:
           example: ''
           schema:
             type: number
-        - name: orderly-timestamp
-          in: header
-          description: ''
-          required: true
-          example: '1649920583000'
-          schema:
-            type: string
-        - name: orderly-account-id
-          in: header
-          description: ''
-          required: true
-          example: '0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546'
-          schema:
-            type: string
-        - name: orderly-key
-          in: header
-          description: ''
-          required: true
-          example: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
-          schema:
-            type: string
-        - name: orderly-signature
-          in: header
-          description: ''
-          required: true
-          example: >-
-            dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
-          schema:
-            type: string
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    type: object
-                    properties:
-                      status:
-                        type: string
-                    required:
-                      - status
-                  timestamp:
-                    type: number
-                required:
-                  - success
-                  - data
-                  - timestamp
-              examples:
-                '1':
-                  summary: Success
-                  value:
-                    success: true
-                    data:
-                      status: CANCEL_SENT
-                    timestamp: 1639980423855
+                $ref: '#/components/schemas/DeleteOrderResponse'
   /v1/algo/client/order:
     delete:
       summary: Cancel Algo Order By client_order_id
@@ -3088,36 +2918,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    type: object
-                    properties:
-                      status:
-                        type: string
-                    required:
-                      - status
-                  timestamp:
-                    type: integer
-                required:
-                  - success
-                  - data
-                  - timestamp
-              examples:
-                '1':
-                  summary: Success
-                  value:
-                    success: true
-                    data:
-                      status: CANCEL_SENT
-                    timestamp: 1639980423855
+                $ref: '#/components/schemas/OrderStatusResponse'
   /v1/algo/orders:
     delete:
       summary: Cancel All Pending Algo Orders
@@ -3168,36 +2974,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    type: object
-                    properties:
-                      status:
-                        type: string
-                    required:
-                      - status
-                  timestamp:
-                    type: integer
-                required:
-                  - success
-                  - data
-                  - timestamp
-              examples:
-                '1':
-                  summary: Success
-                  value:
-                    success: true
-                    data:
-                      status: CANCEL_ALL_SENT
-                    timestamp: 1639980423855
+                $ref: '#/components/schemas/OrderStatusResponse'
     get:
       summary: Get Algo Orders
       deprecated: false
@@ -3329,257 +3111,13 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    type: object
-                    properties:
-                      rows:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            algo_order_id:
-                              type: integer
-                            root_algo_order_id:
-                              type: integer
-                            parent_algo_order_id:
-                              type: integer
-                            symbol:
-                              type: string
-                            order_tag:
-                              type: string
-                            algo_type:
-                              type: string
-                            side:
-                              type: string
-                            quantity:
-                              type: number
-                            is_triggered:
-                              type: boolean
-                            trigger_price:
-                              type: number
-                            trigger_price_type:
-                              type: string
-                            type:
-                              type: string
-                            root_algo_status:
-                              type: string
-                            algo_status:
-                              type: string
-                            total_executed_quantity:
-                              type: integer
-                            visible_quantity:
-                              type: number
-                            total_fee:
-                              type: integer
-                            fee_asset:
-                              type: string
-                            created_time:
-                              type: integer
-                            updated_time:
-                              type: integer
-                            trigger_status:
-                              type: string
-                            status:
-                              type: string
-                            trigger_trade_price:
-                              type: number
-                            trigger_time:
-                              type: integer
-                            average_executed_price:
-                              type: number
-                            order_id:
-                              type: integer
-                            price:
-                              type: number
-                          required:
-                            - algo_order_id
-                            - root_algo_order_id
-                            - parent_algo_order_id
-                            - symbol
-                            - order_tag
-                            - algo_type
-                            - side
-                            - quantity
-                            - is_triggered
-                            - trigger_price
-                            - trigger_price_type
-                            - type
-                            - root_algo_status
-                            - algo_status
-                            - total_executed_quantity
-                            - visible_quantity
-                            - total_fee
-                            - fee_asset
-                            - created_time
-                            - updated_time
-                            - trigger_status
-                            - status
-                            - trigger_trade_price
-                            - trigger_time
-                            - average_executed_price
-                            - order_id
-                            - price
-                      meta:
-                        type: object
-                        properties:
-                          total:
-                            type: integer
-                          records_per_page:
-                            type: integer
-                          current_page:
-                            type: integer
-                        required:
-                          - total
-                          - records_per_page
-                          - current_page
-                    required:
-                      - rows
-                      - meta
-                  timestamp:
-                    type: integer
-                required:
-                  - success
-                  - data
-                  - timestamp
-              examples:
-                '1':
-                  summary: Success
-                  value:
-                    success: true
-                    data:
-                      rows:
-                        - algo_order_id: 168400010
-                          root_algo_order_id: 168400010
-                          parent_algo_order_id: 0
-                          symbol: PERP_NEAR_USDC
-                          order_tag: test_tag
-                          algo_type: STOP_LOSS
-                          side: BUY
-                          quantity: 5.5
-                          is_triggered: false
-                          trigger_price: 2.5
-                          trigger_price_type: MARK_PRICE
-                          type: MARKET
-                          root_algo_status: NEW
-                          algo_status: NEW
-                          total_executed_quantity: 0
-                          visible_quantity: 5.5
-                          total_fee: 0
-                          fee_asset: USDC
-                          created_time: 1702871974317
-                          updated_time: 1702871974317
-                        - algo_order_id: 168400009
-                          root_algo_order_id: 168400009
-                          parent_algo_order_id: 0
-                          symbol: PERP_NEAR_USDC
-                          order_tag: test_tag
-                          algo_type: STOP_LOSS
-                          side: BUY
-                          quantity: 5.5
-                          is_triggered: false
-                          trigger_price: 2.5
-                          trigger_price_type: MARK_PRICE
-                          type: MARKET
-                          root_algo_status: CANCELLED
-                          algo_status: CANCELLED
-                          total_executed_quantity: 0
-                          visible_quantity: 5.5
-                          total_fee: 0
-                          fee_asset: USDC
-                          created_time: 1702871956936
-                          updated_time: 1702871969044
-                        - algo_order_id: 168400008
-                          root_algo_order_id: 168400008
-                          parent_algo_order_id: 0
-                          symbol: PERP_NEAR_USDC
-                          order_tag: test_tag
-                          algo_type: STOP_LOSS
-                          side: BUY
-                          quantity: 5.5
-                          is_triggered: true
-                          trigger_price: 2.23
-                          trigger_price_type: MARK_PRICE
-                          trigger_status: SUCCESS
-                          type: MARKET
-                          status: FILLED
-                          root_algo_status: FILLED
-                          algo_status: FILLED
-                          trigger_trade_price: 2.2302
-                          trigger_time: 1702871938110
-                          total_executed_quantity: 5.5
-                          visible_quantity: 5.5
-                          average_executed_price: 2.2321
-                          total_fee: 0.007366
-                          fee_asset: USDC
-                          created_time: 1702871913937
-                          updated_time: 1702871938221
-                        - algo_order_id: 168400007
-                          root_algo_order_id: 168400007
-                          parent_algo_order_id: 0
-                          symbol: PERP_NEAR_USDC
-                          order_tag: test_tag
-                          algo_type: TAKE_PROFIT
-                          side: BUY
-                          quantity: 5.5
-                          is_triggered: true
-                          trigger_price: 2.229
-                          trigger_price_type: MARK_PRICE
-                          trigger_status: SUCCESS
-                          type: MARKET
-                          status: FILLED
-                          root_algo_status: FILLED
-                          algo_status: FILLED
-                          trigger_trade_price: 2.2285
-                          trigger_time: 1702871921113
-                          total_executed_quantity: 5.5
-                          visible_quantity: 5.5
-                          average_executed_price: 2.2311
-                          total_fee: 0.007363
-                          fee_asset: USDC
-                          created_time: 1702871903182
-                          updated_time: 1702871921334
-                        - order_id: 119002765
-                          symbol: PERP_NEAR_USDC
-                          side: BUY
-                          quantity: 4.7
-                          type: LIMIT
-                          status: FILLED
-                          price: 2.3327
-                          total_executed_quantity: 4.7
-                          visible_quantity: 4.7
-                          average_executed_price: 2.3234
-                          total_fee: 0.006552
-                          fee_asset: USDC
-                          created_time: 1702819486905
-                          updated_time: 1702819486957
-                        - order_id: 119002764
-                          symbol: PERP_NEAR_USDC
-                          side: BUY
-                          quantity: 4.7
-                          type: LIMIT
-                          status: FILLED
-                          price: 2.3327
-                          total_executed_quantity: 4.7
-                          visible_quantity: 4.7
-                          average_executed_price: 2.3234
-                          total_fee: 0.006552
-                          fee_asset: USDC
-                          created_time: 1702819486269
-                          updated_time: 1702819486333
-                      meta:
-                        total: 211
-                        records_per_page: 6
-                        current_page: 1
-                    timestamp: 1702872287032
+                $ref: '#/components/schemas/AlgoOrdersResponse'
+
   /v1/algo/order/{order_id}:
     get:
       summary: Get Algo Order
@@ -3629,111 +3167,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    type: object
-                    properties:
-                      order_id:
-                        type: number
-                      user_id:
-                        type: number
-                      price:
-                        type: number
-                      type:
-                        type: string
-                      quantity:
-                        type: number
-                      amount:
-                        type: number
-                        nullable: true
-                      executed:
-                        type: number
-                      visible:
-                        type: number
-                      symbol:
-                        type: string
-                      side:
-                        type: string
-                      status:
-                        description: NEW / FILLED / PARTIAL_FILLED / CANCELLED
-                        type: string
-                      total_fee:
-                        type: number
-                      fee_asset:
-                        type: string
-                      client_order_id:
-                        type: number
-                        nullable: true
-                      average_executed_price:
-                        type: number
-                      broker_id:
-                        type: string
-                      broker_name:
-                        type: string
-                      created_time:
-                        type: number
-                      updated_time:
-                        type: number
-                    required:
-                      - order_id
-                      - user_id
-                      - price
-                      - type
-                      - quantity
-                      - amount
-                      - executed
-                      - visible
-                      - symbol
-                      - side
-                      - status
-                      - total_fee
-                      - fee_asset
-                      - client_order_id
-                      - average_executed_price
-                      - broker_id
-                      - broker_name
-                      - created_time
-                      - updated_time
-                  timestamp:
-                    type: number
-                required:
-                  - success
-                  - data
-                  - timestamp
-              examples:
-                '1':
-                  summary: Success
-                  value:
-                    success: true
-                    data:
-                      order_id: 78151
-                      user_id: 12345
-                      price: 0.67772
-                      type: LIMIT
-                      quantity: 20
-                      amount: null
-                      executed: 20
-                      visible: 1
-                      reduce_only: false
-                      symbol: PERP_WOO_USDC
-                      side: BUY
-                      status: FILLED
-                      total_fee: 0
-                      fee_asset: WOO
-                      client_order_id: null
-                      average_executed_price: 0.67772
-                      created_time: 1653563963000
-                      updated_time: 1653564213000
-                      order_tag: sometags
-                    timestamp: 1639980423855
+                $ref: '#/components/schemas/AlgoOrderResponse'
   /v1/algo/client/order/{client_order_id}:
     get:
       summary: Get Algo Order by client_order_id
@@ -3783,112 +3222,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    type: object
-                    properties:
-                      order_id:
-                        type: integer
-                      user_id:
-                        type: integer
-                      price:
-                        type: number
-                      type:
-                        type: string
-                      quantity:
-                        type: number
-                      amount:
-                        type: number
-                      executed:
-                        type: number
-                      visible:
-                        type: number
-                      symbol:
-                        type: string
-                      side:
-                        type: string
-                      status:
-                        description: NEW / FILLED / PARTIAL_FILLED / CANCELLED
-                        type: string
-                      total_fee:
-                        type: number
-                      fee_asset:
-                        type: string
-                      client_order_id:
-                        type: string
-                      average_executed_price:
-                        type: number
-                      broker_id:
-                        type: string
-                      broker_name:
-                        type: string
-                      created_time:
-                        type: integer
-                      updated_time:
-                        type: integer
-                      reduce_only:
-                        type: boolean
-                    required:
-                      - order_id
-                      - user_id
-                      - price
-                      - type
-                      - quantity
-                      - amount
-                      - executed
-                      - visible
-                      - reduce_only
-                      - symbol
-                      - side
-                      - status
-                      - total_fee
-                      - fee_asset
-                      - client_order_id
-                      - average_executed_price
-                      - created_time
-                      - updated_time
-                      - broker_id
-                      - broker_name
-                  timestamp:
-                    type: integer
-                required:
-                  - success
-                  - data
-                  - timestamp
-              examples:
-                '1':
-                  summary: Success
-                  value:
-                    success: true
-                    data:
-                      order_id: 78151
-                      user_id: 12345
-                      price: 0.67772
-                      type: LIMIT
-                      quantity: 20
-                      amount: null
-                      executed: 20
-                      visible: 1
-                      reduce_only: false
-                      symbol: PERP_WOO_USDC
-                      side: BUY
-                      status: FILLED
-                      total_fee: 0
-                      fee_asset: USDC
-                      client_order_id: '1234'
-                      average_executed_price: 0.67772
-                      created_time: 1644216606000
-                      updated_time: 1644216696000
-                      order_tag: sometags
-                    timestamp: 1639980423855
+                $ref: '#/components/schemas/AlgoClientOrderResponse'
   /v1/algo/order/{order_id}/trades:
     get:
       summary: Get All Trades of Specific Algo Order
@@ -3938,69 +3277,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  data:
-                    type: object
-                    properties:
-                      rows:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            id:
-                              type: integer
-                            symbol:
-                              type: string
-                            fee:
-                              type: number
-                            fee_asset:
-                              type: string
-                            side:
-                              type: string
-                            order_id:
-                              type: integer
-                            executed_price:
-                              type: number
-                            executed_quantity:
-                              type: number
-                            executed_timestamp:
-                              type: integer
-                            is_maker:
-                              type: integer
-                    required:
-                      - rows
-                  timestamp:
-                    type: integer
-                required:
-                  - success
-                  - data
-                  - timestamp
-              examples:
-                '1':
-                  summary: Success
-                  value:
-                    success: true
-                    data:
-                      rows:
-                        - id: 2
-                          symbol: PERP_BTC_USDC
-                          fee: 0.0001
-                          fee_asset: USDC
-                          side: BUY
-                          order_id: 1
-                          executed_price: 123
-                          executed_quantity: 0.05
-                          executed_timestamp: 1567382401000
-                          is_maker: 1
-                    timestamp: 1639980423855
+                $ref: '#/components/schemas/AlgoOrderTradesResponse'
   /v1/public/account:
     get:
       summary: Get Account Details
@@ -4617,6 +3899,46 @@ components:
           type: integer
           example: 0
 
+    FuturesFeeProgramResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - maker_fee
+                      - taker_fee
+                      - tier
+                      - volume_max
+                      - volume_min
+                    properties:
+                      tier:
+                        type: string
+                        example: "1"
+                      maker_fee:
+                        type: string
+                        example: "0.1%"
+                      taker_fee:
+                        type: string
+                        example: "0.1%"
+                      volume_min:
+                        type: integer
+                        description: minimum 30-day volume (in USDC) required for eligibility of this tier
+                        example: 100
+                      volume_max:
+                        type: integer
+                        example: 500000
+
     FeeProgramResponse:
       allOf:
         - $ref: '#/components/schemas/BasicResponse'
@@ -4651,7 +3973,7 @@ components:
                       volume_min:
                         type: integer
                         description: minimum 30-day volume (in USDC) required for eligibility of this tier
-                        example: 0
+                        example: 100
                       volume_max:
                         type: integer
                         example: 500000
@@ -5971,6 +5293,7 @@ components:
       properties:
         symbol:
           type: string
+          example: "PERP_ETH_USDC"
         client_order_id:
           type: string
           description: "36 length, default: null"
@@ -6009,9 +5332,7 @@ components:
     CreatedOrder:
       type: object
       required:
-      - broker_id
       - client_order_id
-      - order_amount
       - order_id
       - order_price
       - order_quantity
@@ -6032,11 +5353,9 @@ components:
         order_quantity:
           type: number
           example: 0.987654
-        broker_id:
-          # TODO example
-          type: string
-        order_amount:
-          type: number
+        reduce_only:
+          type: boolean
+          example: "false"
 
     DeleteOrderResponse:
       allOf:
@@ -6155,6 +5474,100 @@ components:
           type: boolean
           example: false
 
+    AlgoOrderResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+          - data
+          properties:
+            data:
+              $ref: '#/components/schemas/AlgoOrder'
+    AlgoOrder:
+      type: object
+      required:
+        - algo_order_id
+        - algo_status
+        - algo_type
+        - created_time
+        - fee_asset
+        - is_triggered
+        - order_tag
+        - parent_algo_order_id
+        - quantity
+        - root_algo_order_id
+        - root_algo_order_status
+        - side
+        - symbol
+        - total_executed_quantity
+        - total_fee
+        - trigger_price
+        - trigger_price_type
+        - type
+        - updated_time
+        - visible_quantity
+      properties:
+          algo_order_id:
+            type: number
+            example: 168400010
+          algo_status:
+            type: string
+            example: "NEW"
+          algo_type:
+            type: string
+            example: "STOP"
+          fee_asset:
+            type: string
+            example: "USDC"
+          is_triggered:
+            type: string
+            example: "false"
+          order_tag:
+            type: string
+            example: "test_tag"
+          parent_algo_order_id:
+            type: number
+            example: 0
+          quantity:
+            type: number
+            example: 5.5
+          root_algo_order_id:
+            type: number
+            example: 168400010
+          root_algo_order_status:
+            type: string
+            example: "NEW"
+          side:
+            type: string
+            example: "BUY"
+          symbol:
+            type: string
+            example: "PERP_NEAR_USDC"
+          total_executed_quantity:
+            type: number
+            example: 0
+          total_fee:
+            type: number
+            example: 0
+          trigger_price:
+            type: number
+            example: 2.5
+          trigger_price_type:
+            type: string
+            example: "MARK_PRICE"
+          type:
+            type: string
+            example: "MARKET"
+          created_time:
+            type: string
+            example: 1702871974317
+          updated_time:
+            type: string
+            example: 1702871974317
+          visible_quantity:
+            type: string
+            example: 5.5
+
     TradesResponse:
       allOf:
         - $ref: '#/components/schemas/BasicResponse'
@@ -6176,6 +5589,42 @@ components:
                     $ref: '#/components/schemas/Trade'
 
     Trade:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 2
+        symbol:
+          type: string
+          example: "PERP_BTC_USDC"
+        fee:
+          type: number
+          example: 1.0E-4
+        fee_asset:
+          type: string
+          example: "USDC"
+          description: "fee. use Base as unit when BUY, use Quote as unit when SELL"
+        side:
+          type: string
+          example: "BUY"
+        order_id:
+          type: number
+          example: 1
+        executed_price:
+          type: number
+          example: 123
+        executed_quantity:
+          type: number
+          example: 0.05
+        executed_timestamp:
+          type: number
+          example: 1567382401000
+        is_maker:
+          type: number
+          example: 1
+
+
+    AlgoTrade:
       type: object
       properties:
         id:
@@ -6336,6 +5785,26 @@ components:
                   type: array
                   items:
                     $ref: '#/components/schemas/Order'
+
+    AlgoOrdersResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - meta
+                - rows
+              properties:
+                meta:
+                  $ref: '#/components/schemas/PaginationMeta'
+                rows:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/AlgoOrder'
 
     ClientStatisticsResponse:
       allOf:
@@ -6780,6 +6249,16 @@ components:
             data:
               $ref: '#/components/schemas/Order'
 
+    AlgoClientOrderResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+            - data
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/AlgoOrder'
+
     OrderbookResponse:
       allOf:
         - $ref: '#/components/schemas/BasicResponse'
@@ -6896,6 +6375,23 @@ components:
                   type: array
                   items:
                     $ref: '#/components/schemas/Trade'
+
+    AlgoOrderTradesResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+            - data
+          type: object
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/AlgoTrade'
 
     TradeResponse:
       allOf:
