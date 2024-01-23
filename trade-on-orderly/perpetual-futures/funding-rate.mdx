@@ -26,7 +26,7 @@ I = Index Price
 
 ## Piecewise linear funding rate function
 
-For each funding period of 8 hours, Orderly calculates the Premium every 15 seconds. The number of Premium points is therefore N = 1,920 points. An Average Premium is then computed : 
+For each funding period of 8 hours, Orderly calculates the Premium every 15 seconds. The number of Premium points is therefore N = 1,920 points. An Average Premium is then computed: 
 
 ```
 Average Premium = (Premium_1 + Premium_2 + ... + Premium_N) / N
@@ -47,13 +47,13 @@ NB: x refers here to the Average Premium
 
 | Premium | Range              | Slope |
 | ------- | ------------------ | ----- |
-| Low     | \|x| < 0.5%        | 1     |
-| Medium  | 0.5% < \|x| < 1.5% | 2     |
-| Large   | 1.5% < \|x|        | 4     |
+| Low     | \|x\| < 0.5%        | 1     |
+| Medium  | 0.5% < \|x\| < 1.5% | 2     |
+| Large   | 1.5% < \|x\|        | 4     |
 
 ## Interest Rate
 
-To this funding function, we add the second component of the funding rate which is the Interest Rate. By definition, it is equal to : 
+To this funding function, we add the second component of the funding rate which is the Interest Rate. By definition, it is equal to: 
 
 ```
 Interest Rate = (USDC Interest - Underlying Base Asset interest) / Funding Interval

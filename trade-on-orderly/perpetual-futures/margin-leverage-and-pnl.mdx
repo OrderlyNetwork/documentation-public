@@ -41,8 +41,9 @@ An account will be liquidated if the Margin Ratio of the account is lower than t
 ```
 MMR i = Max(Base MMR i, Base MMR i / Base IMR i * IMR Factor i * Abs(Position Notional i)^(4/5))
 ```
-
-Note: We will gradually decrease Base IMR and Base MMR and increase maximum leverage for major markets after launch.
+<Note>
+We will gradually decrease Base IMR and Base MMR and increase maximum leverage for major markets after launch.
+</Note>
 
 | Perp Market | Base IMR (max leverage) | Base MMR | IMR Factor   |
 | ----------- | ----------------------- | -------- | ------------ |
@@ -60,13 +61,13 @@ Note: We will gradually decrease Base IMR and Base MMR and increase maximum leve
 
 ## PnL (Profit and Loss)
 
-The unrealized PnL of an open position refers to the profits or losses of that position based on the Mark Price :
+The unrealized PnL of an open position refers to the profits or losses of that position based on the Mark Price:
 
 ```
 Unrealized PnL(Perp Market i) = Position Qty * (Mark Price - Position Average Entry Price)
 ```
 
-The realized PnL refers to the profits or losses after closing a position : 
+The realized PnL refers to the profits or losses after closing a position: 
 
 ```
 Realized PnL(Perp Market i) = Position Qty * (Average Price - Position Average Entry Price)
