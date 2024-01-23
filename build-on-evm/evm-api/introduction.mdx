@@ -24,13 +24,16 @@ For `POST` and `PUT` endpoints, the parameters must be sent in the `request body
 Parameters may be sent in any order.
 
 ## Authorization 
-All our private interfaces require keys to access.  
-Please set the corresponding header in your request. See refer to [Authentication](/build-on-evm/evm-api/authentication) for more information.
+
+All our private interfaces require signing via cryptographically secure keys for authentication, also known as Orderly key.  
+Please set the corresponding header in your request. Please refer to [API authentication](/build-on-evm/evm-api/api-authentication) for more information.
 
 ## Symbol  
-Orderly Network uses the format of `<TYPE>_<BASE>_<QUOTE>` to represent a symbol name, for example: `PERP_NEAR_USDC` means that it is `NEAR_USDC` pair in `PERP` trading market.
+
+Orderly Network uses the format of `<TYPE>_<BASE>_<QUOTE>` to represent a symbol name, for example: `PERP_BTC_USDC` means that it is `BTC_USDC` pair in `PERP` trading market.
 
 ## Rate Limit
+
 Rate limit is counted using the Orderly key. If your application reached the rate limit of certain endpoint, the server will return an error result with http code `429`. You may need wait until next time horizon.
 
 ## Error Message 
