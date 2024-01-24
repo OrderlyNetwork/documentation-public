@@ -3370,6 +3370,153 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserFeeTierResponse'
+
+  /v1/broker/fee_rate/set:
+    post:
+      summary: Update User Fee Rate
+      deprecated: false
+      description: |
+        **Limit: 1 requests per second**
+
+        `POST /v1/broker/fee_rate/set`
+      tags:
+        - private
+      parameters:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                maker_fee_rate:
+                  type: number
+                  description: "Maker fee charged to users by default (0.0001 = 0.01%)"
+                taker_fee_rate:
+                  type: number
+                  description: "Taker fee charged to users by default (0.0001 = 0.01%)"
+                account_ids:
+                  type: array
+                  description: "List of account_ids for which the fees need to be changed"
+              required:
+                - maker_fee_rate
+                - taker_fee_rate
+                - account_ids
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+
+  /v1/broker/fee_rate/set_default:
+    post:
+      summary: Update User Fee Rate
+      deprecated: false
+      description: |
+        **Limit: 1 requests per second**
+
+        `POST /v1/broker/fee_rate/set_default`
+      tags:
+        - private
+      parameters:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                account_ids:
+                  type: array
+                  description: "List of account_ids for which the fees need to be changed"
+              required:
+                - account_ids
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+
+  /v1/referral/create:
+    post:
+      summary: Create Referral Code
+      deprecated: false
+      description: |
+        **Limit: 1 requests per second**
+
+        `POST /v1/broker/fee_rate/set_default`
+      tags:
+        - private
+      parameters:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                account_id:
+                  type: string
+                  description: the account id of the referrer
+                referral_code:
+                  type: string
+                  description: the referral code that admin wants to create
+                max_rebate_rate:
+                  type: number
+                  description: the referral code’s rebate rate (max 1)
+                referrer_rebate_rate:
+                  type: number
+                  description: rebate rate of referrer
+                referee_rebate_rate:
+                  type: number
+                  description: rebate rate of referee
+              required:
+                - account_id
+                - referral_code
+                - max_rebate_rate
+                - referrer_rebate_rate
+                - referee_rebate_rate
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+
+  /v1/referral/admin_info:
+    get:
+      summary: Get Referral Code Info
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/referral/admin_info`
+      tags:
+        - private
+      parameters:
+        - name: page
+          in: query
+          description:
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: size
+          in: query
+          description:
+          required: false
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetReferralCodeResponse'
 components:
   parameters:
     orderly_timestamp:
