@@ -28,41 +28,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FuturesInfoResponse'
-  /v1/public/fee/program:
-    get:
-      summary: Get Fee Information
-      deprecated: false
-      description: ''
-      tags:
-        - public
-      parameters: []
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FeeProgramResponse'
-  /v1/public/fee_futures/program:
-    get:
-      summary: Get Futures Fee Information
-      deprecated: false
-      description: |
-        **Limit: 10 requests per 1 second per IP address**
 
-        `GET /v1/public/fee_futures/program`
-
-        Get fee information for futures trading.
-      tags:
-        - public
-      parameters: []
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FuturesFeeProgramResponse'
   /v1/public/market_trades:
     get:
       summary: Get Market Trades
@@ -3517,6 +3483,275 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetReferralCodeResponse'
+
+  /v1/referral/update:
+    post:
+      summary: Update Referral Code
+      deprecated: false
+      description: |
+        **Limit: 1 requests per second**
+
+        `POST /v1/referral/update`
+      tags:
+        - private
+      parameters:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                account_id:
+                  type: string
+                  description: the account id of the referrer
+                referral_code:
+                  type: string
+                  description: the referral code that admin wants to create
+                max_rebate_rate:
+                  type: number
+                  description: the referral code’s rebate rate (max 1)
+                referrer_rebate_rate:
+                  type: number
+                  description: rebate rate of referrer
+                referee_rebate_rate:
+                  type: number
+                  description: rebate rate of referee
+              required:
+                - account_id
+                - referral_code
+                - max_rebate_rate
+                - referrer_rebate_rate
+                - referee_rebate_rate
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+
+  /v1/referral/bind:
+    post:
+      summary: Bind Referral Code
+      deprecated: false
+      description: |
+        **Limit: 1 requests per second**
+
+        `POST /v1/referral/bind`
+      tags:
+        - private
+      parameters:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                referral_code:
+                  type: string
+                  description: the referral code that admin wants to bind
+              required:
+                - referral_code
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+
+  /v1/referral/info:
+    get:
+      summary: Get Referral Info
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/referral/info`
+      tags:
+        - private
+      parameters:
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetReferralInfoResponse'
+
+  /v1/referral/referral_history:
+    get:
+      summary: Get Referral History
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/referral/referral_history`
+      tags:
+        - private
+      parameters:
+        - name: start_date
+          in: query
+          description:
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: end_date
+          in: query
+          description:
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: page
+          in: query
+          description:
+          required: false
+          example: ''
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description:
+          required: false
+          example: ''
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetReferralHistoryResponse'
+
+  /v1/referral/rebate_summary:
+    get:
+      summary: Get Referral Rebate Summary
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/referral/rebate_summary`
+      tags:
+        - private
+      parameters:
+        - name: start_date
+          in: query
+          description:
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: end_date
+          in: query
+          description:
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: page
+          in: query
+          description:
+          required: false
+          example: ''
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description:
+          required: false
+          example: ''
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRebateSummaryResponse'
+
+  /v1/referral/referee_history:
+    get:
+      summary: Get Referee History
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/referral/referee_history`
+      tags:
+        - private
+      parameters:
+        - name: start_date
+          in: query
+          description:
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: end_date
+          in: query
+          description:
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: page
+          in: query
+          description:
+          required: false
+          example: ''
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description:
+          required: false
+          example: ''
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRefereeHistoryResponse'
+
+  /v1/referral/referee_info:
+    get:
+      summary: Get Referee Info
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/referral/referee_info`
+      tags:
+        - private
+      parameters:
+        - name: page
+          in: query
+          description:
+          required: false
+          example: ''
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description:
+          required: false
+          example: ''
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRefereeInfoResponse'
 components:
   parameters:
     orderly_timestamp:
