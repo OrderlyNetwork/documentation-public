@@ -41,25 +41,33 @@ An account will be liquidated if the Margin Ratio of the account is lower than t
 ```
 MMR i = Max(Base MMR i, Base MMR i / Base IMR i * IMR Factor i * Abs(Position Notional i)^(4/5))
 ```
-
-Note: We will gradually decrease Base IMR and Base MMR and increase maximum leverage for major markets after launch.
+<Note>
+We will gradually decrease Base IMR and Base MMR and increase maximum leverage for major markets after launch.
+</Note>
 
 | Perp Market | Base IMR (max leverage) | Base MMR | IMR Factor   |
 | ----------- | ----------------------- | -------- | ------------ |
 | BTC-PERP         | 5% (20x)               | 2.75%       | 0.0000003517 |
 | ETH-PERP         | 5% (20x)               | 2.75%       | 0.0000003754 |
-| NEAR-PERP        | 10% (10x)               | 5%       | 0.0000025564 |
+| ARB-PERP        | 10% (10x)               | 5%       | 0.0000021481 |
 | WOO-PERP        | 10% (10x)               | 5%       | 0.0000077523 |
+| LINK-PERP        | 10% (10x)               | 5%       | 0.0000018182 |
+| MATIC-PERP        | 10% (10x)               | 5%       | 0.000001352 |
+| OP-PERP        | 10% (10x)               | 5%       | 0.0000021481 |
+| SOL-PERP        | 10% (10x)               | 5%       | 0.0000012291 |
+| SUI-PERP        | 10% (10x)               | 5%       | 0.0000025564 |
+| TIA-PERP        | 10% (10x)               | 5%       | 0.0000116025 |
+| INJ-PERP        | 10% (10x)               | 5%       | 0.0000021481 |
 
 ## PnL (Profit and Loss)
 
-The unrealized PnL of an open position refers to the profits or losses of that position based on the Mark Price :
+The unrealized PnL of an open position refers to the profits or losses of that position based on the Mark Price:
 
 ```
 Unrealized PnL(Perp Market i) = Position Qty * (Mark Price - Position Average Entry Price)
 ```
 
-The realized PnL refers to the profits or losses after closing a position : 
+The realized PnL refers to the profits or losses after closing a position: 
 
 ```
 Realized PnL(Perp Market i) = Position Qty * (Average Price - Position Average Entry Price)
@@ -91,4 +99,5 @@ Orderly imposes position limits per perpetual market per user. These limits will
 | ----------- | ------------------- |
 | BTC         | 5,000,000           |
 | ETH         | 5,000,000           |
-| NEAR        | 2,000,000           |
+| Alts        | 2,000,000           |
+

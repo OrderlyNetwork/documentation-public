@@ -396,13 +396,28 @@ Follow the following steps to withdraw your tokens from Orderly Network:
     A list of supported chains can be found on our [Smart Contract Addresses page](/build-on-evm/smart-contract-addresses).
   </Step>
   <Step title="Check if the chain has sufficient liquidity">
-    All vault contracts can be found on our [Smart Contract Addresses page](/build-on-evm/smart-contract-addresses).
+    Since Orderly Network is an omnichain trading infrastructure, the liquidity of withdrawn assets might need to move across chains. If there is not enough liquidity of the withdrawn asset on the target chain, then an
+    additional cross-chain transaction fee will be deducted from the user's account.
   </Step>
   <Step title="Obtain a withdrawal nonce">
     Get a nonce from [Get Withdrawal Nonce API](/build-on-evm/evm-api/restful-api/private/get-withdrawal-nonce).
   </Step>
   <Step title="Obtain a signature from EIP-712">
-    Sign an EIP-712 message in the following format
+    Sign an EIP-712 message of [message type](/build-on-evm/user-flows/wallet-authentication#message-types) `Withdraw`:
+
+```json
+"Withdraw": [
+    {"name": "brokerId", "type": "string"},
+    {"name": "chainId", "type": "uint256"},
+    {"name": "receiver", "type": "address"},
+    {"name": "token", "type": "string"},
+    {"name": "amount", "type": "uint256"},
+    {"name": "withdrawNonce", "type": "uint64"},
+    {"name": "timestamp", "type": "uint64"},
+]
+```
+
+Example:
 
 ```json
 {
@@ -432,3 +447,7 @@ where:
     Call the [Create withdraw request API](/build-on-evm/evm-api/restful-api/private/create-withdraw-request).
   </Step>
 </Steps>
+
+### Example
+
+The example code is very similar to the [Orderly key registration](/build-on-evm/user-flows/wallet-authentication#full-example), except it uses the EIP-712 [on-chain domain](/build-on-evm/user-flows/wallet-authentication#on-chain-domain) and the signed message is different.
