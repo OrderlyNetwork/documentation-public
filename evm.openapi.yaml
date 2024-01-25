@@ -2731,6 +2731,8 @@ paths:
                   type: string
                 child_orders:
                   type: array
+                  items:
+                    $ref: '#/components/schemas/CreateAlgoOrderChildRequest'
                   description: Array of `CreateAlgoOrderChildRequest`
                 CreateAlgoOrderChildRequest:
                   type: object
@@ -2753,6 +2755,8 @@ paths:
                       type: string
                     child_orders:
                       type: array
+                      items:
+                        $ref: '#/components/schemas/CreateAlgoOrderChildRequest'
                       description: Array of `CreateAlgoOrderChildRequest`
               required:
                 - symbol
@@ -2807,7 +2811,9 @@ paths:
                   type: string
                 child_orders:
                   type: array
-                  description: Array of `EditAlgoOrderChildReq`
+                  items:
+                    $ref: '#/components/schemas/EditAlgoOrderChildRequest'
+                  description: Array of `EditAlgoOrderChildRequest`
                 EditAlgoOrderChildReq:
                   type: object
                   properties:
@@ -3343,9 +3349,11 @@ paths:
       summary: Get User Fee Rates
       deprecated: false
       description: |     
-        **Limit 10 requests per 60 seconds**
+        **Limit 60 requests per 60 seconds**
 
         `GET /v1/broker/user_info`
+        
+        Scope: Only each broker_id's admin wallet can call this endpoint.
       tags:
         - private
       parameters:
@@ -3396,6 +3404,10 @@ paths:
       tags:
         - private
       parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
       requestBody:
         content:
           application/json:
@@ -3410,6 +3422,8 @@ paths:
                   description: "Taker fee charged to users by default (0.0001 = 0.01%)"
                 account_ids:
                   type: array
+                  items:
+                    type: string
                   description: "List of account_ids for which the fees need to be changed"
               required:
                 - maker_fee_rate
@@ -3434,6 +3448,10 @@ paths:
       tags:
         - private
       parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
       requestBody:
         content:
           application/json:
@@ -3442,6 +3460,8 @@ paths:
               properties:
                 account_ids:
                   type: array
+                  items:
+                    type: string
                   description: "List of account_ids for which the fees need to be changed"
               required:
                 - account_ids
@@ -3464,6 +3484,10 @@ paths:
       tags:
         - private
       parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
       requestBody:
         content:
           application/json:
@@ -3512,14 +3536,14 @@ paths:
       parameters:
         - name: page
           in: query
-          description:
+          description: ""
           required: false
           example: ''
           schema:
             type: string
         - name: size
           in: query
-          description:
+          description: ""
           required: false
           example: ''
           schema:
@@ -3543,6 +3567,10 @@ paths:
       tags:
         - private
       parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
       requestBody:
         content:
           application/json:
@@ -3589,6 +3617,10 @@ paths:
       tags:
         - private
       parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
       requestBody:
         content:
           application/json:
@@ -3619,6 +3651,10 @@ paths:
       tags:
         - private
       parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
       responses:
         "200":
           description: OK
@@ -3635,33 +3671,35 @@ paths:
         **Limit: 10 requests per second**
 
         `GET /v1/referral/referral_history`
+        
+        Provides a detailed history of referral rebates paid to the user.
       tags:
         - private
       parameters:
         - name: start_date
           in: query
-          description:
+          description: "start date range that you wish to query, in the format ‘YYYY-MM-DD’"
           required: false
           example: ''
           schema:
             type: string
         - name: end_date
           in: query
-          description:
+          description: "end date range that you wish to query, in the format ‘YYYY-MM-DD’"
           required: false
           example: ''
           schema:
             type: string
         - name: page
           in: query
-          description:
+          description: "the page you wish to query"
           required: false
           example: ''
           schema:
             type: integer
         - name: size
           in: query
-          description:
+          description: "the page size you wish to query (max: 500)"
           required: false
           example: ''
           schema:
@@ -3687,28 +3725,28 @@ paths:
       parameters:
         - name: start_date
           in: query
-          description:
+          description: ""
           required: false
           example: ''
           schema:
             type: string
         - name: end_date
           in: query
-          description:
+          description: ""
           required: false
           example: ''
           schema:
             type: string
         - name: page
           in: query
-          description:
+          description: ""
           required: false
           example: ''
           schema:
             type: integer
         - name: size
           in: query
-          description:
+          description: ""
           required: false
           example: ''
           schema:
@@ -3729,33 +3767,35 @@ paths:
         **Limit: 10 requests per second**
 
         `GET /v1/referral/referee_history`
+        
+        Provides a summary of all referee activity for the requesting user.
       tags:
         - private
       parameters:
         - name: start_date
           in: query
-          description:
+          description: "start date range that you wish to query, in the format ‘YYYY-MM-DD’"
           required: false
           example: ''
           schema:
             type: string
         - name: end_date
           in: query
-          description:
+          description: "end date range that you wish to query, in the format ‘YYYY-MM-DD’"
           required: false
           example: ''
           schema:
             type: string
         - name: page
           in: query
-          description:
+          description: "the page you wish to query"
           required: false
           example: ''
           schema:
             type: integer
         - name: size
           in: query
-          description:
+          description: "the page size you wish to query (max: 500)"
           required: false
           example: ''
           schema:
@@ -3781,14 +3821,14 @@ paths:
       parameters:
         - name: page
           in: query
-          description:
+          description: ""
           required: false
           example: ''
           schema:
             type: integer
         - name: size
           in: query
-          description:
+          description: ""
           required: false
           example: ''
           schema:
@@ -3819,10 +3859,10 @@ paths:
               properties:
                 delegateContract:
                   type: integer
-                  description:
+                  description: ""
                 chainId:
                   type: integer
-                  description:
+                  description: ""
                 brokerId:
                   type: string
                 registrationNonce:
@@ -3844,7 +3884,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BasicResponse'
+                $ref: '#/components/schemas/DelegateSignerResponse'
 
   /v1/delegate_orderly_key:
     post:
@@ -3864,10 +3904,10 @@ paths:
               properties:
                 delegateContract:
                   type: integer
-                  description:
+                  description: ""
                 chainId:
                   type: integer
-                  description:
+                  description: ""
                 timestamp:
                   type: integer
                 expiration:
@@ -3889,7 +3929,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BasicResponse'
+                $ref: '#/components/schemas/OrderlyKeyResponse'
 
   /v1/delegate_withdraw_request:
     post:
@@ -3909,10 +3949,10 @@ paths:
               properties:
                 delegateContract:
                   type: integer
-                  description:
+                  description: ""
                 chainId:
                   type: integer
-                  description:
+                  description: ""
                 brokerId:
                   type: integer
                 timestamp:
@@ -3960,10 +4000,10 @@ paths:
               properties:
                 delegateContract:
                   type: integer
-                  description:
+                  description: ""
                 chainId:
                   type: integer
-                  description:
+                  description: ""
                 brokerId:
                   type: integer
                 settleNonce:
@@ -3982,7 +4022,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BasicResponse'
+                $ref: '#/components/schemas/SettlePnlResponse'
 
   /v1/client/distribution_history:
     get:
@@ -3997,28 +4037,28 @@ paths:
       parameters:
         - name: start_t
           in: query
-          description:
+          description: ""
           required: false
           example: ''
           schema:
             type: string
         - name: end_t
           in: query
-          description:
+          description: ""
           required: false
           example: ''
           schema:
             type: string
         - name: page
           in: query
-          description:
+          description: ""
           required: false
           example: ''
           schema:
             type: integer
         - name: size
           in: query
-          description:
+          description: ""
           required: false
           example: ''
           schema:
@@ -7306,6 +7346,39 @@ components:
                       fee_tier:
                         type: string
                         example: "1"
+                      maker_fee_rate:
+                        type: number
+                        example: 0.03
+                      taker_fee_rate:
+                        type: number
+                        example: 0.01
+
+    CreateAlgoOrderChildRequest:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      account_id:
+                        type: string
+                        example: "0x114f583aea808c5812e16109b6c087660285a26f0a31dcc0f9b54f1a6a0fefbd"
+                      address:
+                        type: string
+                        example: "0xa8ec6970fec8842dd229eef170f624c3d77dab45"
+                      fee_tier:
+                        type: string
+                        example: "1"
                       futures_maker_fee_rate:
                         type: number
                         example: 0.03
@@ -7313,7 +7386,484 @@ components:
                         type: number
                         example: 0.01
 
+    EditAlgoOrderChildRequest:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      account_id:
+                        type: string
+                        example: "0x114f583aea808c5812e16109b6c087660285a26f0a31dcc0f9b54f1a6a0fefbd"
+                      address:
+                        type: string
+                        example: "0xa8ec6970fec8842dd229eef170f624c3d77dab45"
+                      fee_tier:
+                        type: string
+                        example: "1"
+                      futures_maker_fee_rate:
+                        type: number
+                        example: 0.03
+                      futures_taker_fee_rate:
+                        type: number
+                        example: 0.01
 
+    GetReferralCodeResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      account_id:
+                        type: string
+                        example: "0x114f583aea808c5812e16109b6c087660285a26f0a31dcc0f9b54f1a6a0fefbd"
+                      user_address:
+                        type: string
+                        example: "0xa8ec6970fec8842dd229eef170f624c3d77dab45"
+                      number_of_codes:
+                        type: integer
+                        example: "1"
+                      total_invites:
+                        type: integer
+                        example: 0.03
+                      total_traded:
+                        type: number
+                        example: 0.01
+                      referee_volume:
+                        type: number
+                        example: 0.01
+                      referee_fee:
+                        type: number
+                        example: 0.01
+                      referral_codes:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              type: string
+                              example: "C4"
+                            max_rebate_rate:
+                              type: number
+                              example: 0.4
+                            referrer_rebate_rate:
+                              type: number
+                              example: 0.3
+                            referee_rebate_rate:
+                              type: number
+                              example: 0.1
+                meta:
+                  type: object
+                  properties:
+                    records_per_page:
+                      type: integer
+                      example: 25
+                    current_page:
+                      type: integer
+                      example: 1
+                    total:
+                      type: integer
+                      example: 50
+
+
+    GetReferralInfoResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                referrer_info:
+                  type: object
+                  properties:
+                    1d_invites:
+                      type: integer
+                      example: 5
+                    7d_invites:
+                      type: integer
+                      example: 5
+                    30d_invites:
+                      type: integer
+                      example: 5
+                    total_invites:
+                      type: integer
+                      example: 30
+                    1d_traded:
+                      type: integer
+                      example: 5
+                    7d_traded:
+                      type: integer
+                      example: 10
+                    30d_traded:
+                      type: integer
+                      example: 20
+                    total_traded:
+                      type: integer
+                      example: 25
+                    1d_referee_volume:
+                      type: number
+                      example: 5
+                    7d_referee_volume:
+                      type: number
+                      example: 10
+                    30d_referee_volume:
+                      type: number
+                      example: 20
+                    total_referee_volume:
+                      type: number
+                      example: 30
+                    1d_referee_fee:
+                      type: number
+                      example: 5
+                    7d_referee_fee:
+                      type: number
+                      example: 10
+                    30d_referee_fee:
+                      type: number
+                      example: 20
+                    total_referee_fee:
+                      type: number
+                      example: 30
+                    referral_codes:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          code:
+                            type: string
+                            example: "C4"
+                          max_rebate_rate:
+                            type: number
+                            example: 0.4
+                          referrer_rebate_rate:
+                            type: number
+                            example: 0.3
+                          referee_rebate_rate:
+                            type: number
+                            example: 0.1
+                          total_invites:
+                            type: number
+                            example: 30
+                          total_traded:
+                            type: number
+                            example: 25
+                referee_info:
+                  type: object
+                  properties:
+                    referer_code:
+                      type: string
+                      example: "Kevin"
+                    referee_rebate_rate:
+                      type: number
+                      example: 0.1
+
+
+    GetReferralHistoryResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      account_id:
+                        type: string
+                        example: "0x114f583aea808c5812e16109b6c087660285a26f0a31dcc0f9b54f1a6a0fefbd"
+                        description: "account_id of the referee"
+                      user_address:
+                        type: string
+                        example: "0xa8ec6970fec8842dd229eef170f624c3d77dab45"
+                        description: "address of the referee"
+                      referral_code:
+                        type: string
+                        example: "C4"
+                        description: "the referral code used by the referee"
+                      volume:
+                        type: number
+                        example: 1229.12
+                        description: "the total volume traded by the referee"
+                      fee:
+                        type: number
+                        example: 12.22
+                        description: "the total trading fees paid by the referee"
+                      referral_rebate:
+                        type: number
+                        example: 2.22
+                        description: "the total referral rebate paid to the referer based on the referee's fees paid"
+                      date:
+                        type: string
+                        example: "2023-11-14"
+                        description: "the date of this entry"
+                meta:
+                  type: object
+                  properties:
+                    records_per_page:
+                      type: integer
+                      example: 25
+                    current_page:
+                      type: integer
+                      example: 1
+                    total:
+                      type: integer
+                      example: 50
+
+    GetRebateSummaryResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      referral_rebate:
+                        type: number
+                        example: 2.22
+                        description: "the total referral rebate received by the user on this day"
+                      date:
+                        type: string
+                        example: "2023-11-14"
+                        description: ""
+                meta:
+                  type: object
+                  properties:
+                    records_per_page:
+                      type: integer
+                      example: 25
+                    current_page:
+                      type: integer
+                      example: 1
+                    total:
+                      type: integer
+                      example: 50
+
+    GetRefereeHistoryResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      volume:
+                        type: number
+                        example: 1229.12
+                      fee:
+                        type: number
+                        example: 12.22
+                        description: "total fees paid by the referee on this day"
+                      referee_rebate:
+                        type: number
+                        example: 2.22
+                      date:
+                        type: string
+                        example: 2023-11-14
+                meta:
+                  type: object
+                  properties:
+                    records_per_page:
+                      type: integer
+                      example: 25
+                    current_page:
+                      type: integer
+                      example: 1
+                    total:
+                      type: integer
+                      example: 50
+
+    GetRefereeInfoResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      account_id:
+                        type: string
+                        example: "0x114f583aea808c5812e16109b6c087660285a26f0a31dcc0f9b54f1a6a0fefbd"
+                        description: "account_id of the referee"
+                      user_address:
+                        type: string
+                        example: "0xa8ec6970fec8842dd229eef170f624c3d77dab45"
+                        description: "address of the referee"
+                      register_time:
+                        type: number
+                        example: 1663936930000
+                        description: "register time of the referee"
+                      code_binding_time:
+                        type: number
+                        example: 1663936930000
+                        description: "the time the referee bind the account to this referral code"
+                      referral_code:
+                        type: string
+                        example: "C4"
+                        description: "the referral code used by the referee"
+                      volume:
+                        type: number
+                        example: 1229.12
+                        description: "the total volume traded by the referee"
+                      fee:
+                        type: number
+                        example: 12.22
+                        description: "the total trading fees paid by the referee"
+                      referral_rebate:
+                        type: number
+                        example: 2.22
+                        description: "the total referral rebate paid to the referer based on the referee's fees paid"
+                      trade_status:
+                        type: string
+                        example: "Registered"
+                        description: "`Registered` = Not traded but bind the code / `Traded` = bind the code and volume > 0"
+                meta:
+                  type: object
+                  properties:
+                    records_per_page:
+                      type: integer
+                      example: 25
+                    current_page:
+                      type: integer
+                      example: 1
+                    total:
+                      type: integer
+                      example: 50
+
+
+    GetDistributionHistoryResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 12345
+                        description: ""
+                      token:
+                        type: string
+                        example: "USDC"
+                        description: "`"
+                      type:
+                        type: string
+                        example: "REFERRAL_REBATE"
+                        description: "`REFERRAL_REBATE`/`REFEREE_REBATE`/`BROKER_FEE`"
+                      amount:
+                        type: number
+                        example: 12.12
+                        description: ""
+                      status:
+                        type: string
+                        example: "COMPLETED"
+                        description: ""
+                      created_time:
+                        type: number
+                        example: 1703511545867
+                        description: ""
+                      updated_time:
+                        type: number
+                        example: 1703511545867
+                        description: ""
+                meta:
+                  type: object
+                  properties:
+                    records_per_page:
+                      type: integer
+                      example: 25
+                    current_page:
+                      type: integer
+                      example: 1
+                    total:
+                      type: integer
+                      example: 50
+
+    DelegateSignerResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  example: 100338
+                account_id:
+                  type: string
+                  example: 0xd890c9b8b86fba7312b919e32bbabd619228b32d59f6d0f68fdf4451a684a654
+                valid_signer:
+                  type: string
+                  example: 0xc6c4c5c41efa74ebc63c675dcf7034e8382f3a42`
 
 
 servers:
