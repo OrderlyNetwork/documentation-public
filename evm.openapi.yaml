@@ -164,7 +164,7 @@ paths:
       deprecated: false
       description: |
 
-        **Limit: 10 requests per 1 second per IP address**
+        **Limit: 30 requests per 1 second per IP address**
 
         `GET /v1/public/funding_rate/{symbol}`
 
@@ -2729,6 +2729,31 @@ paths:
                   description: '`SELL`/`BUY`'
                 order_tag:
                   type: string
+                child_orders:
+                  type: array
+                  description: Array of `CreateAlgoOrderChildRequest`
+                CreateAlgoOrderChildRequest:
+                  type: object
+                  properties:
+                    symbol:
+                      type: string
+                    algo_type:
+                      type: string
+                    side:
+                      type: string
+                    type:
+                      type: string
+                    trigger_price:
+                      type: number
+                    price:
+                      type: number
+                    reduce_only:
+                      type: string
+                    trigger_price_type:
+                      type: string
+                    child_orders:
+                      type: array
+                      description: Array of `CreateAlgoOrderChildRequest`
               required:
                 - symbol
                 - type
@@ -2778,6 +2803,26 @@ paths:
                   type: number
                 trigger_price:
                   type: number
+                trigger_price_type:
+                  type: string
+                child_orders:
+                  type: array
+                  description: Array of `EditAlgoOrderChildReq`
+                EditAlgoOrderChildReq:
+                  type: object
+                  properties:
+                    order_id:
+                      type: string
+                    trigger_price:
+                      type: number
+                    price:
+                      type: number
+                    quantity:
+                      type: number
+                    is_activated:
+                      type: string
+                    trigger_price_type:
+                      type: string
               required:
                 - order_id
       responses:
@@ -3295,9 +3340,12 @@ paths:
                 $ref: '#/components/schemas/GetUserDailyStatsResponse'
   /v1/broker/user_info:
     get:
-      summary: Get User Fee Tier
+      summary: Get User Fee Rates
       deprecated: false
-      description: ''
+      description: |     
+        **Limit 10 requests per 60 seconds**
+
+        `GET /v1/broker/user_info`
       tags:
         - private
       parameters:
@@ -3752,6 +3800,236 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetRefereeInfoResponse'
+
+  /v1/delegate_signer:
+    post:
+      summary: Add Delegate Signer
+      deprecated: false
+      description: |
+        **Limit: 1 requests per second**
+
+        `POST /v1/delegate_signer`
+      tags:
+        - public
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                delegateContract:
+                  type: integer
+                  description:
+                chainId:
+                  type: integer
+                  description:
+                brokerId:
+                  type: string
+                registrationNonce:
+                  type: integer
+                timestamp:
+                  type: integer
+                txHash:
+                  type: string
+              required:
+                - delegateContract
+                - chainId
+                - brokerId
+                - registrationNonce
+                - timestamp
+                - txHash
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+
+  /v1/delegate_orderly_key:
+    post:
+      summary: Add Delegate Signer Orderly Key
+      deprecated: false
+      description: |
+        **Limit: 1 requests per second**
+
+        `POST /v1/delegate_signer_orderly_key`
+      tags:
+        - public
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                delegateContract:
+                  type: integer
+                  description:
+                chainId:
+                  type: integer
+                  description:
+                timestamp:
+                  type: integer
+                expiration:
+                  type: integer
+                orderlyKey:
+                  type: string
+                scope:
+                  type: string
+              required:
+                - delegateContract
+                - chainId
+                - timestamp
+                - expiration
+                - orderlyKey
+                - scope
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+
+  /v1/delegate_withdraw_request:
+    post:
+      summary: Delegate Signer Withdraw Request
+      deprecated: false
+      description: |
+        **Limit: 1 requests per second**
+
+        `POST /v1/delegate_withdraw_request`
+      tags:
+        - private
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                delegateContract:
+                  type: integer
+                  description:
+                chainId:
+                  type: integer
+                  description:
+                brokerId:
+                  type: integer
+                timestamp:
+                  type: integer
+                receiver:
+                  type: string
+                token:
+                  type: string
+                withdrawNonce:
+                  type: integer
+                amount:
+                  type: integer
+              required:
+                - delegateContract
+                - chainId
+                - brokerId
+                - timestamp
+                - receiver
+                - token
+                - withdrawNonce
+                - amount
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+
+  /v1/delegate_settle_pnl:
+    post:
+      summary: Delegate Signer Settle PnL
+      deprecated: false
+      description: |
+        **Limit: 1 requests per second**
+
+        `POST /v1/delegate_settle_pnl`
+      tags:
+        - private
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                delegateContract:
+                  type: integer
+                  description:
+                chainId:
+                  type: integer
+                  description:
+                brokerId:
+                  type: integer
+                settleNonce:
+                  type: integer
+                timestamp:
+                  type: integer
+              required:
+                - delegateContract
+                - chainId
+                - brokerId
+                - settleNonce
+                - timestamp
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+
+  /v1/client/distribution_history:
+    get:
+      summary: Get Distribution History
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/client/distribution_history`
+      tags:
+        - private
+      parameters:
+        - name: start_t
+          in: query
+          description:
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: end_t
+          in: query
+          description:
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: page
+          in: query
+          description:
+          required: false
+          example: ''
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description:
+          required: false
+          example: ''
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDistributionHistoryResponse'
 components:
   parameters:
     orderly_timestamp:
@@ -5766,7 +6044,6 @@ components:
               - maker_fee_rate
               - max_leverage
               - taker_fee_rate
-              - tier
               properties:
                 account_id:
                   type: string
@@ -5780,9 +6057,6 @@ components:
                 max_leverage:
                   type: number
                   example: 20
-                tier:
-                  type: string
-                  example: "1"
                 taker_fee_rate:
                   type: number
                   example: 0
