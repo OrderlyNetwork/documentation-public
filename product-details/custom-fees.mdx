@@ -1,0 +1,89 @@
+---
+title: "Custom Fee Structure"
+---
+## Introduction
+We’re thrilled to unveil the latest enhancement to our services: the Custom Trading Fee System. This innovative feature introduces a suite of flexible fee-setting options, allowing brokers to tailor fee structures to their unique user bases more effectively than ever before. By departing from the limitations of Orderly’s standard fees, brokers now have the freedom to set fees that align perfectly with their strategies and customer profiles.
+
+## Overview of Fee Structure
+Base Fee: Orderly retains 100% of the 3 bps taker fee, and there's no maker fee.
+Custom Fee: Brokers keep 100% and decide their own additional charges, respecting Orderly's base fee minimum.
+
+## User Flow for Brokers
+
+<Steps>
+  <Step title="Determining the fee tiers">
+    Brokers decide on the logic for fee tiers for their users based on specific criteria, like volume or staked tokens, ensuring flexibility and precision in fee management, or set all users under the same fee rate.
+  </Step>
+  <Step title="Calculating the fee rates">
+    After the criteria has been decided, brokers need to assign users to fee rates based on that criteria. 
+    
+    Orderly has released a tool for assigning users to fee tiers based on volume to save brokers the hastle of building it from scratch.
+    <Note>
+    The fee rate is total charged to the user (Orderly base fee + custom fee).
+
+    Cannot be less than Orderly base fee.
+    </Note>
+  </Step>
+    <Step title="Set the default fee rate">
+    Set the `default` fee rate through [POST `/v1/broker/fee_rate/default`](/build-on-evm/evm-api/restful-api/private/update-default-broker-fee).
+  </Step>
+  <Step title="Setting the fees">
+    After determining each user's fee rate, brokers need to send the updated list to Orderly at any time.
+
+    1. **For users keeping their fee rate, including default:** no update needed
+
+    2. **For users re-assigned to "default" fee rate:** send the list through [POST `/v1/broker/fee_rate/set_default`](/build-on-evm/evm-api/restful-api/private/update-default-user-fee-rate)
+    
+    3. **For users assigned to new fee rate:** send the list through [POST `/v1/broker/fee_rate/set`](/build-on-evm/evm-api/restful-api/private/update-user-fee-rate). Send updates in batches, grouped by the same `maker_fee` `taker_fee` combination.
+    <Note>
+    All users are assigned to "default" fee rate unless overriden by broker.
+    </Note>
+  </Step>
+      <Step title="Retrive user fee rates">
+    Retrieve user's fee rate through [GET `/v1/broker/user_info`](/build-on-evm/evm-api/restful-api/private/get-user-fee-rates).
+
+    Retrieve default fee rate through [GET `/v1/broker/fee_rate/default`](/build-on-evm/evm-api/restful-api/private/get-default-broker-fee).
+  </Step>
+</Steps>
+
+
+### Broker Rebate Distribution
+Brokers receive daily rebates in their fee wallet, calculated after deducting any referral rebates.
+
+
+## FAQs
+**Live Fee Rate Impact:** More broker flexibility in fee structuring.
+
+**Frequency of Fee Rate Changes:** No strict limitations, but consistency is recommended.
+
+**Impact on End Users:** Personalized and competitive fee structures.
+
+**Broker Integration Work:** Development of a dynamic fee rate assignment system.
+
+**Fee Wallet Requirements:** Currently EOA, with multisig support upcoming.
+
+
+
+
+<AccordionGroup>
+  <Accordion title="Will there be limitations on how often fee rates can be changed? ">
+There are no inherent limitations besides API rate limits, but we recommend prudent management to maintain consistency and trust with end users.
+  </Accordion>
+
+  <Accordion title="How to set fees for users?">
+Front-ends can develop a custom tiered structure based on different parameters like volume, staked tokens, etc.
+  </Accordion>
+
+  <Accordion title="Can I get help determining and setting fees for the users?">
+We have built a tool to help brokers set and assign users to volume based TimeRanges.
+  </Accordion>
+  
+  <Accordion title="How does rebate work for front-ends?">
+Front-ends keep all fees above the Orderly base fee which is 3 bps for taker and 0 bps for maker.
+  </Accordion>
+
+  <Accordion title="How are fee rebates distributed?">
+Broker fee rebates are distributed daily to broker's Orderly account registered with the wallet provided during the broker_id setup.
+  </Accordion>
+
+</AccordionGroup>

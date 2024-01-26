@@ -2677,10 +2677,13 @@ paths:
         execution such as stop orders.
 
 
-        `STOP` type order bahavior: an order to buy or sell at the market price
+        `STOP` type order bahavior: an order to buy or sell at the market/limit price
         once the asset has traded at or through a specified price (the "stop
-        price"). If the asset reaches the stop price, the order becomes a market
-        order and is filled at the next available market price.
+        price"). If the asset reaches the stop price, the order becomes a market/limit
+        order and is filled at the next available market/limit price based on if `market` or `limit` type is used.
+
+
+        To place `Positional TP/SL` order, the input fields is 2 layer and includes an array of the objects named childOrder. The take-profit or stop-loss order should be the objects in the array. For the sub-order in childOrder, please input 'CLOSE_POSITION' as type, and 'TAKE_PROFIT' or 'STOP_LOSS' in algoType field.
 
 
         Note: This endpoint requires trading scope in Orderly Key.
@@ -3488,7 +3491,7 @@ paths:
       description: |
         **Limit: 1 requests per second**
 
-        `POST /v1/broker/fee_rate/default`
+        `GET /v1/broker/fee_rate/default`
       tags:
         - private
       parameters:
