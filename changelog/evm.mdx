@@ -174,9 +174,15 @@ Only STOP orders are supported for now.
           width: "calc(80% - 30px)",
         }}
       >
-        **Introducing the deposit & withdrawal fees**
+        **Changes to deposit withdrawal flow**
+
+        Deposits and Withdrawals now require a fee to cover cross-chain message cost to/from Orderly Ledger contract.
 
 Added withdraw_fee to each tokens in get token info(GET /v1/public/token) API
+
+Added allowCrossChainWithdrawal parameter to create withdraw request(POST /v1/withdraw_request) API
+
+Added PENDING_REBALANCE status for withdrawal request(POST /v1/withdraw_request) in REST and WSS
 
       </div>
   </div>
@@ -204,7 +210,7 @@ Added get user fee tier(GET /v1/broker/user_info) API
   </div>
 
     <div style={{ display: "table-row", width: "auto" }}>
-   <Snippet file="chips/new.mdx" />
+   <Snippet file="chips/updates.mdx" />
       <div
         style={{
           float: "left",
@@ -226,4 +232,88 @@ Added symbols array and high/low risk perps in claim liquidated positions(POST /
 
 
 
+## October 13, 2023 - Major Update
 
+<div style={{ display: "table", width: "auto" }}>
+
+    <div style={{ display: "table-row", width: "auto" }}>
+   <Snippet file="chips/updates.mdx" />
+      <div
+        style={{
+          float: "left",
+          display: "table-column",
+          paddingLeft: "30px",
+          width: "calc(80% - 30px)",
+        }}
+      >
+        **Updates to APIs**
+
+Added get vault chain info API
+
+Added tag parameter for adding Orderly Key
+
+Changed symbol in get user info API from e.g BTC to PERP_BTC_USDC
+      </div>
+  </div>
+
+</div>
+
+
+## September 21, 2023 - Minor Update
+
+<div style={{ display: "table", width: "auto" }}>
+
+    <div style={{ display: "table-row", width: "auto" }}>
+   <Snippet file="chips/updates.mdx" />
+      <div
+        style={{
+          float: "left",
+          display: "table-column",
+          paddingLeft: "30px",
+          width: "calc(80% - 30px)",
+        }}
+      >
+        **Updates to APIs**
+
+Added Claim from insurance fund endpoint
+
+Added max_notional parameter to Get Insurance Fund Info and Get Account Information endpoints’ response
+
+Added futures_tier parameter to Get Account Information endpoint
+      </div>
+  </div>
+
+</div>
+
+## August 10, 2023 - Minor Update
+
+<div style={{ display: "table", width: "auto" }}>
+
+    <div style={{ display: "table-row", width: "auto" }}>
+   <Snippet file="chips/updates.mdx" />
+      <div
+        style={{
+          float: "left",
+          display: "table-column",
+          paddingLeft: "30px",
+          width: "calc(80% - 30px)",
+        }}
+      >
+        **Updates to APIs**
+
+Added Get PnL Settlement History API
+
+Added Liquidations on Account Websocket API
+
+Added reduce-only type of order
+
+Added limit_price parameter to Claim Liquidated Positions API
+
+Updated /insurancefund endpoint to /insurance_fund
+
+Updated symbol parameter of Get Liquidated Positions of Account API to not required
+
+      </div>
+  </div>
+
+</div>
