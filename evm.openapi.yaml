@@ -3398,67 +3398,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserFeeTierResponse'
 
-  /v1/broker/fee_rate/default:
-  post:
-      summary: Update default broker fee
-      deprecated: false
-      description: |
-        **Limit: 1 requests per second**
-
-        `POST /v1/broker/fee_rate/default`
-      tags:
-        - private
-      parameters:
-        - $ref: '#/components/parameters/orderly_timestamp'
-        - $ref: '#/components/parameters/orderly_account_id'
-        - $ref: '#/components/parameters/orderly_key'
-        - $ref: '#/components/parameters/orderly_signature'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                maker_fee_rate:
-                  type: number
-                  description: "Maker fee charged to users by default (0.0001 = 0.01%)"
-                taker_fee_rate:
-                  type: number
-                  description: "Taker fee charged to users by default (0.0001 = 0.01%)"
-              required:
-                - maker_fee_rate
-                - taker_fee_rate
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BasicResponse'
-
-  /v1/broker/fee_rate/default:
-  get:
-      summary: Get default broker fee
-      deprecated: false
-      description: |
-        **Limit: 1 requests per second**
-
-        `GET /v1/broker/fee_rate/default`
-      tags:
-        - private
-      parameters:
-        - $ref: '#/components/parameters/orderly_timestamp'
-        - $ref: '#/components/parameters/orderly_account_id'
-        - $ref: '#/components/parameters/orderly_key'
-        - $ref: '#/components/parameters/orderly_signature'
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BasicResponse'
-
   /v1/broker/fee_rate/set:
     post:
       summary: Update User Fee Rate
