@@ -3500,7 +3500,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BasicResponse'
+                $ref: '#/components/schemas/DefaultBrokerFeeRespose'
     post:
       summary: Update default broker fee
       deprecated: false
@@ -3546,6 +3546,8 @@ paths:
         **Limit: 1 requests per second**
 
         `POST /v1/referral/create`
+
+        Broker account authenticated
       tags:
         - private
       parameters:
@@ -3596,6 +3598,8 @@ paths:
         **Limit: 10 requests per second**
 
         `GET /v1/referral/admin_info`
+
+        Broker account authenticated
       tags:
         - private
       parameters:
@@ -3633,6 +3637,8 @@ paths:
         **Limit: 1 requests per second**
 
         `POST /v1/referral/update`
+
+        Broker account authenticated
       tags:
         - private
       parameters:
@@ -7976,6 +7982,20 @@ components:
                   type: string
                   example: 0xc6c4c5c41efa74ebc63c675dcf7034e8382f3a42`
 
+    DefaultBrokerFeeRespose:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                maker_fee_rate:
+                  type: integer
+                  example: 0.0005
+                taker_fee_rate:
+                  type: integer
+                  example: 0.001
 
 servers:
   - url: https://api-evm.orderly.org
