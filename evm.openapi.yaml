@@ -445,6 +445,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExchangeInformationResponse'
+
   /v1/public/token:
     get:
       summary: Get Token Info
@@ -3193,6 +3194,8 @@ paths:
 
 
         The provided `start_date`/`end_date` has to be within a 90-day range.
+
+        Broker account authenticated
       tags:
         - private
       parameters:
@@ -3357,6 +3360,10 @@ paths:
       tags:
         - private
       parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
         - name: account_id
           in: query
           description: ''
@@ -3473,6 +3480,66 @@ paths:
               schema:
                 $ref: '#/components/schemas/BasicResponse'
 
+
+  /v1/broker/fee_rate/default:
+    get:
+      summary: Get default broker fee
+      deprecated: false
+      description: |
+        **Limit: 1 requests per second**
+
+        `POST /v1/broker/fee_rate/default`
+      tags:
+        - private
+      parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultBrokerFeeRespose'
+    post:
+      summary: Update default broker fee
+      deprecated: false
+      description: |
+        **Limit: 1 requests per second**
+
+        `POST /v1/broker/fee_rate/default`
+      tags:
+        - private
+      parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                maker_fee_rate:
+                  type: number
+                  description: "Maker fee charged to users by default (0.0001 = 0.01%)"
+                taker_fee_rate:
+                  type: number
+                  description: "Taker fee charged to users by default (0.0001 = 0.01%)"
+              required:
+                - maker_fee_rate
+                - taker_fee_rate
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+
   /v1/referral/create:
     post:
       summary: Create Referral Code
@@ -3480,7 +3547,9 @@ paths:
       description: |
         **Limit: 1 requests per second**
 
-        `POST /v1/broker/fee_rate/set_default`
+        `POST /v1/referral/create`
+
+        Broker account authenticated
       tags:
         - private
       parameters:
@@ -3531,6 +3600,8 @@ paths:
         **Limit: 10 requests per second**
 
         `GET /v1/referral/admin_info`
+
+        Broker account authenticated
       tags:
         - private
       parameters:
@@ -3568,6 +3639,8 @@ paths:
         **Limit: 1 requests per second**
 
         `POST /v1/referral/update`
+
+        Broker account authenticated
       tags:
         - private
       parameters:
@@ -3884,7 +3957,7 @@ paths:
               properties:
                 delegateContract:
                   type: integer
-                  description: ""
+                  description: "Contract address that called delegateSigner function on the Orderly vault contract"
                 chainId:
                   type: integer
                   description: ""
@@ -3896,6 +3969,7 @@ paths:
                   type: integer
                 txHash:
                   type: string
+                  description: "tx hash of the delegateSigner transaction on the contract"
               required:
                 - delegateContract
                 - chainId
@@ -3934,7 +4008,7 @@ paths:
               properties:
                 delegateContract:
                   type: integer
-                  description: ""
+                  description: "Delegator contract address"
                 chainId:
                   type: integer
                   description: ""
@@ -3984,16 +4058,17 @@ paths:
               properties:
                 delegateContract:
                   type: integer
-                  description: ""
+                  description: "Delegator contract address"
                 chainId:
                   type: integer
-                  description: ""
+                  description: "Chain where the delegateSigner contract call was made. Cannot be any other chain"
                 brokerId:
                   type: integer
                 timestamp:
                   type: integer
                 receiver:
                   type: string
+                  description: "Delegator contract address"
                 token:
                   type: string
                 withdrawNonce:
@@ -4040,10 +4115,10 @@ paths:
               properties:
                 delegateContract:
                   type: integer
-                  description: ""
+                  description: "Delegator contract address"
                 chainId:
                   type: integer
-                  description: ""
+                  description: "Chain where the delegateSigner contract call was made. Cannot be any other chain"
                 brokerId:
                   type: integer
                 settleNonce:
@@ -7909,6 +7984,20 @@ components:
                   type: string
                   example: 0xc6c4c5c41efa74ebc63c675dcf7034e8382f3a42`
 
+    DefaultBrokerFeeRespose:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                maker_fee_rate:
+                  type: integer
+                  example: 0.0005
+                taker_fee_rate:
+                  type: integer
+                  example: 0.001
 
 servers:
   - url: https://api-evm.orderly.org
