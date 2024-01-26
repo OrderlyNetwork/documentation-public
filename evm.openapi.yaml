@@ -3871,6 +3871,11 @@ paths:
         `POST /v1/delegate_signer`
       tags:
         - public
+      parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
       requestBody:
         content:
           application/json:
@@ -3916,6 +3921,11 @@ paths:
         `POST /v1/delegate_signer_orderly_key`
       tags:
         - public
+      parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
       requestBody:
         content:
           application/json:
@@ -3961,6 +3971,11 @@ paths:
         `POST /v1/delegate_withdraw_request`
       tags:
         - private
+      parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
       requestBody:
         content:
           application/json:
@@ -4012,6 +4027,11 @@ paths:
         `POST /v1/delegate_settle_pnl`
       tags:
         - private
+      parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
       requestBody:
         content:
           application/json:
@@ -4083,6 +4103,10 @@ paths:
           example: ''
           schema:
             type: integer
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
       responses:
         "200":
           description: OK
