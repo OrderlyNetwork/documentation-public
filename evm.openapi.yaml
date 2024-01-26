@@ -2700,7 +2700,7 @@ paths:
                   type: string
                 algo_type:
                   type: string
-                  description: Only `STOP` is available for now
+                  description: "`STOP`/`TPSL`/`POSITIONAL_TPSL`"
                 client_order_id:
                   type: string
                   description: '36 length, default: null'
@@ -3439,7 +3439,7 @@ paths:
 
   /v1/broker/fee_rate/set_default:
     post:
-      summary: Update User Fee Rate
+      summary: Update Default User Fee Rate
       deprecated: false
       description: |
         **Limit: 1 requests per second**
@@ -3548,6 +3548,10 @@ paths:
           example: ''
           schema:
             type: string
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
       responses:
         "200":
           description: OK
@@ -3704,6 +3708,10 @@ paths:
           example: ''
           schema:
             type: integer
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
       responses:
         "200":
           description: OK
@@ -3751,6 +3759,10 @@ paths:
           example: ''
           schema:
             type: integer
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
       responses:
         "200":
           description: OK
@@ -3800,6 +3812,10 @@ paths:
           example: ''
           schema:
             type: integer
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
       responses:
         "200":
           description: OK
@@ -3833,6 +3849,10 @@ paths:
           example: ''
           schema:
             type: integer
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
       responses:
         "200":
           description: OK
