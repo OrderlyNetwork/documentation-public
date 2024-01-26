@@ -3480,6 +3480,27 @@ paths:
 
 
   /v1/broker/fee_rate/default:
+    get:
+      summary: Get default broker fee
+      deprecated: false
+      description: |
+        **Limit: 1 requests per second**
+
+        `POST /v1/broker/fee_rate/default`
+      tags:
+        - private
+      parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
     post:
       summary: Update default broker fee
       deprecated: false
