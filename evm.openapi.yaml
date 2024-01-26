@@ -445,6 +445,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExchangeInformationResponse'
+
   /v1/public/token:
     get:
       summary: Get Token Info
@@ -3357,6 +3358,10 @@ paths:
       tags:
         - private
       parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
         - name: account_id
           in: query
           description: ''
@@ -3392,6 +3397,67 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserFeeTierResponse'
+
+  /v1/broker/fee_rate/default:
+  post:
+      summary: Update default broker fee
+      deprecated: false
+      description: |
+        **Limit: 1 requests per second**
+
+        `POST /v1/broker/fee_rate/default`
+      tags:
+        - private
+      parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                maker_fee_rate:
+                  type: number
+                  description: "Maker fee charged to users by default (0.0001 = 0.01%)"
+                taker_fee_rate:
+                  type: number
+                  description: "Taker fee charged to users by default (0.0001 = 0.01%)"
+              required:
+                - maker_fee_rate
+                - taker_fee_rate
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+
+  /v1/broker/fee_rate/default:
+  get:
+      summary: Get default broker fee
+      deprecated: false
+      description: |
+        **Limit: 1 requests per second**
+
+        `GET /v1/broker/fee_rate/default`
+      tags:
+        - private
+      parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
 
   /v1/broker/fee_rate/set:
     post:
@@ -3480,7 +3546,7 @@ paths:
       description: |
         **Limit: 1 requests per second**
 
-        `POST /v1/broker/fee_rate/set_default`
+        `POST /v1/referral/create`
       tags:
         - private
       parameters:
@@ -3988,13 +4054,14 @@ paths:
                   description: "Delegator contract address"
                 chainId:
                   type: integer
-                  description: "Chain where the delegateSigner contract call was made."
+                  description: "Chain where the delegateSigner contract call was made. Cannot be any other chain"
                 brokerId:
                   type: integer
                 timestamp:
                   type: integer
                 receiver:
                   type: string
+                  description: "Delegator contract address"
                 token:
                   type: string
                 withdrawNonce:
@@ -4041,10 +4108,10 @@ paths:
               properties:
                 delegateContract:
                   type: integer
-                  description: ""
+                  description: "Delegator contract address"
                 chainId:
                   type: integer
-                  description: ""
+                  description: "Chain where the delegateSigner contract call was made. Cannot be any other chain"
                 brokerId:
                   type: integer
                 settleNonce:
