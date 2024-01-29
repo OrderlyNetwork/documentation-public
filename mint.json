@@ -30,6 +30,13 @@
       "url": "https://linktr.ee/orderlynetwork"
     }
   ],
+  "versions": [
+    "pre-release",
+    {
+      "name": "latest",
+      "url": "https://orderly.network/docs/getting-started/what-is-orderly-network"
+    }
+  ],
   "primaryTab": {
     "name": "Introduction"
   },
@@ -41,6 +48,10 @@
     {
       "name": "Build on NEAR",
       "url": "build-on-near"
+    },
+    {
+      "name": "Changelog",
+      "url": "changelog"
     }
   ],
   "navigation": [
@@ -87,6 +98,16 @@
         "trade-on-orderly/trading-guis"
       ]
     },
+
+    {
+      "group": "Product Details",
+      "pages": [
+        "product-details/custom-fees",
+        "product-details/delegate-signer",
+        "product-details/referral-system"
+      ]
+    },
+
     {
       "group": "Learn More",
       "pages": ["faqs", "security", "terms-of-service", "privacy-policy"]
@@ -106,8 +127,7 @@
             "build-on-near/near-sdk/rest-client"
           ]
         },
-        "build-on-near/tutorial",
-        "build-on-near/near-api/release-notes"
+        "build-on-near/tutorial"
       ]
     },
 
@@ -290,17 +310,17 @@
             "build-on-evm/user-flows/order-management"
           ]
         },
-        "build-on-evm/evm-sdk",
-        "build-on-evm/evm-api/release-notes"
+        "build-on-evm/evm-sdk"
       ]
     },
 
     {
       "group": "Smart Contract API",
       "pages": [
-        "build-on-evm/smart-contract-overview",
-        "build-on-evm/deposit",
-        "build-on-evm/smart-contract-addresses"
+        "build-on-evm/smart-contract-api/overview",
+        "build-on-evm/smart-contract-api/deposit",
+        "build-on-evm/smart-contract-api/delegation",
+        "build-on-evm/smart-contract-api/addresses"
       ]
     },
 
@@ -377,7 +397,9 @@
             "build-on-evm/evm-api/restful-api/private/get-order-by-client_order_id",
             "build-on-evm/evm-api/restful-api/private/get-algo-order-by-client_order_id",
             "build-on-evm/evm-api/restful-api/private/get-orders",
-            "build-on-evm/evm-api/restful-api/private/get-algo-orders"
+            "build-on-evm/evm-api/restful-api/private/get-algo-orders",
+            "build-on-evm/evm-api/restful-api/private/get-trades",
+            "build-on-evm/evm-api/restful-api/private/get-trade"
           ]
         },
 
@@ -410,15 +432,13 @@
             "build-on-evm/evm-api/restful-api/private/get-asset-history",
             "build-on-evm/evm-api/restful-api/private/get-user-daily-volume",
             "build-on-evm/evm-api/restful-api/private/get-user-volume-statistics",
-            "build-on-evm/evm-api/restful-api/private/get-broker-daily-volume",
             "build-on-evm/evm-api/restful-api/private/get-user-statistics",
+            "build-on-evm/evm-api/restful-api/private/get-broker-daily-volume",
             "build-on-evm/evm-api/restful-api/private/get-account-information",
             "build-on-evm/evm-api/restful-api/private/get-current-holding",
             "build-on-evm/evm-api/restful-api/private/get-user-daily-statistics",
             "build-on-evm/evm-api/restful-api/private/update-leverage-setting",
             "build-on-evm/evm-api/restful-api/private/get-all-trades-of-specific-order",
-            "build-on-evm/evm-api/restful-api/private/get-trades",
-            "build-on-evm/evm-api/restful-api/private/get-trade",
             "build-on-evm/evm-api/restful-api/private/get-all-positions-info",
             "build-on-evm/evm-api/restful-api/private/get-one-position-info",
             "build-on-evm/evm-api/restful-api/private/get-all-notifications",
@@ -467,21 +487,13 @@
         },
 
         {
-          "group": "Broker Endpoints",
-          "pages": [
-            "build-on-evm/evm-api/restful-api/private/get-broker-daily-volume",
-            "build-on-evm/evm-api/restful-api/private/get-user-fee-rates"
-          ]
-        },
-
-        {
           "group": "Fee Setting",
           "pages": [
             "build-on-evm/evm-api/restful-api/private/update-user-fee-rate",
             "build-on-evm/evm-api/restful-api/private/update-default-user-fee-rate",
             "build-on-evm/evm-api/restful-api/private/get-default-broker-fee",
-            "build-on-evm/evm-api/restful-api/private/update-default-broker-fee"
-
+            "build-on-evm/evm-api/restful-api/private/update-default-broker-fee",
+            "build-on-evm/evm-api/restful-api/private/get-user-fee-rates"
           ]
         },
 
@@ -540,6 +552,17 @@
           ]
         }
       ]
+    },
+
+
+    {
+      "group": "Updates by area",
+      "pages": ["changelog/evm", "changelog/near"]
+    },
+
+    {
+      "group": "Classification",
+      "pages": ["changelog/classification"]
     }
   ],
 

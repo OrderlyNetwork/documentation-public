@@ -1,38 +1,111 @@
 ---
-title: "Release Notes"
-description: "All the API changes would be listed here."
+title: NEAR
+description: "Additions and updates to the NEAR version"
+icon: "layer-group"
 ---
 
-## TBA
-Added Smart Contract trading support
+## [Unreleased] February 5, 2024 - Minor Update
 
-## 2024-01-04
-Added get account details (GET /v1/public/account) API
+<div style={{ display: "table", width: "auto" }}>
 
-Added get user statistics (GET /v1/client/statistics/daily) API
 
-Added get user fee tier(GET /v1/broker/user_info) API
+  <div style={{ display: "table-row", width: "auto" }}>
+   <Snippet file="chips/times.mdx" />
+      <div
+        style={{
+          float: "left",
+          display: "table-column",
+          paddingLeft: "30px",
+          width: "calc(80% - 30px)",
+        }}
+      >
 
-Added withdraw_fee to each tokens in get token info(GET /v1/public/token) API
+      TESTNET Feb 1, 2024 15:00pm (UTC +8)
 
-Added create algo order(GET /v1/algo/order), edit algo order(PUT /v1/algo/order), cancel algo order(DELETE /v1/algo/order) and get algo order APIs(GET /v1/algo/order). Only STOP orders are supported for now.
+MAINNET Feb 5, 2024 15:00pm (UTC +8)
 
-Added address and order_tag parameter in get broker daily statistics(GET /v1/volume/broker/daily) API
+      </div>
+  </div>
+
+
+  <div style={{ display: "table-row", width: "auto" }}>
+   <Snippet file="chips/updates.mdx" />
+      <div
+        style={{
+          float: "left",
+          display: "table-column",
+          paddingLeft: "30px",
+          width: "calc(80% - 30px)",
+        }}
+      >
+
+        **Updates to Index price computation**
+
+We have improved the Index price computation methodology. More information on how we compute the Index price can be found [here](trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price).
+
+      </div>
+  </div>
+
+</div>
+
+
+## January 4, 2024 - Minor Update
+
+<div style={{ display: "table", width: "auto" }}>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+   <Snippet file="chips/updates.mdx" />
+      <div
+        style={{
+          float: "left",
+          display: "table-column",
+          paddingLeft: "30px",
+          width: "calc(80% - 30px)",
+        }}
+      >
+        **Updates to APIs**
+
+Added an `address` param to broker volume API.
+
+Removed min order size for reduce only orders.
+
+      </div>
+  </div>
+
+    <div style={{ display: "table-row", width: "auto" }}>
+   <Snippet file="chips/updates.mdx" />
+      <div
+        style={{
+          float: "left",
+          display: "table-column",
+          paddingLeft: "30px",
+          width: "calc(80% - 30px)",
+        }}
+      >
+        **Introducing new liquidation model**
 
 Added liquidation_tier parameter for each symbol
 
 Added symbols array and high/low risk perps in claim liquidated positions(POST /v1/liquidation) API
 
-Added allowCrossChainWithdrawal parameter to create withdraw request(POST /v1/withdraw_request) API
+      </div>
+  </div>
 
-Added PENDING_REBALANCE status for withdrawal request(POST /v1/withdraw_request) in REST and WSS
+</div>
 
-## 2023-10-13
-Added get vault chain info API
 
-Added tag parameter for adding Orderly Key
+## 2023-10-31
+Renamed `USDC` to `USDC.e`
 
-Changed symbol in get user info API from e.g BTC to PERP_BTC_USDC
+Added symbol parameter to claim from insurance fund endpoint
+
+Added `futures_tier` to get account info endpoint
+
+Updated symbol names in the get account info endpoint
+
+Added an optional tag parameter to add Orderly Key, get Orderly key, get key info and get key IP restriction endpoints.
+
+Added `SpotFeeTier`, `FuturesFeeTier` and `maintenanceCancelFlag` to account websocket topic
 
 ## 2023-09-21
 Added Claim from insurance fund endpoint

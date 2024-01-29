@@ -1,0 +1,69 @@
+---
+title: "Delegation"
+description: "How to trade with a Smart Contract via delegation"
+---
+
+### Limitations
+
+<Warning>
+  There can also only be one EOA per Smart Contract account. If a new Delegate Signer is announced via Vault Smart Contract interaction, the old Delegate Signer will be deleted.
+
+  Smart Contract accounts are single chain accounts, restricted to only be able to deposit/withdraw from the chain the Delegate Signer call was made.
+
+  A Smart Contract account will always need an EOA to withdraw funds.
+</Warning>
+
+### Smart Contract interface
+
+In order for a Smart Contract to link a Delegate Signer, it needs to call the function `delegateSigner` as described in this interface:
+
+```sol
+function delegateSigner(VaultTypes.VaultDelegate calldata data) external;
+
+library VaultTypes {
+    struct VaultDelegate {
+        bytes32 brokerHash;
+        address delegateSigner;
+    }
+}
+```
+
+An example Smart Contract deployed on [Arbitrum Sepolia](https://sepolia.arbiscan.io/address/0xa4394b62261061c629800c6d86d153a9f38f0cbb#code) has the following code to initiate delegation:
+
+<CodeGroup>
+```sol DelegateContract.sol
+pragma solidity ^0.8.18;
+
+import "./IVault.sol";
+
+contract DelegateContract {
+    function execAction(address to, uint256 value, bytes memory action) public returns (bool success) {
+        uint256 gasLeft = gasleft();
+         assembly {
+            success := call(gasLeft, to, value, add(action, 0x20), mload(action), 0, 0)
+        }
+    }
+
+    function delegate(address vault, VaultTypes.VaultDelegate calldata data) public {
+        IVault(vault).delegateSigner(data);
+    }
+}
+```
+
+```sol IVault.sol
+pragma solidity ^0.8.18;
+
+library VaultTypes {
+    struct VaultDelegate {
+        bytes32 brokerHash;
+        address delegateSigner;
+    }
+}
+
+interface IVault {
+    function delegateSigner(VaultTypes.VaultDelegate calldata data) external;
+}
+```
+</CodeGroup>
+
+After successfully linking, the Delegate Signer can call various endpoints by signing messages via EIP-712, which are listed [here](/build-on-evm/user-flows/wallet-authentication#message-types).
