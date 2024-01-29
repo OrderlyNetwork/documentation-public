@@ -64,6 +64,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MarketTradesResponse'
+
   /v1/public/volume/stats:
     get:
       summary: Get Volume Statistics
@@ -98,6 +99,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/VolumeStatsResponse'
+
   /v1/public/broker/name:
     get:
       summary: Get Broker List
@@ -114,7 +116,7 @@ paths:
       parameters:
         - name: broker_id
           in: query
-          description: If provided, it will only output details for the particular broker.
+          description: If provided, it will only return details for the particular broker.
           required: false
           example: test_broker
           schema:
@@ -126,6 +128,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BrokerListResponse'
+
   /v1/public/funding_rates:
     get:
       summary: Get Predicted Funding Rates for All Markets
@@ -158,6 +161,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FundingRatesResponse'
+
   /v1/public/funding_rate/{symbol}:
     get:
       summary: Get Predicted Funding Rate for One Market
@@ -186,6 +190,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FundingRateResponse'
+
   /v1/public/funding_rate_history:
     get:
       summary: Get Funding Rate History for One Market
@@ -1109,13 +1114,6 @@ paths:
           example: ''
           schema:
             type: string
-        - name: broker_id
-          in: query
-          description: ''
-          required: false
-          example: ''
-          schema:
-            type: string
         - name: start_t
           in: query
           description: >-
@@ -1349,7 +1347,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderStatusResponse'
+                $ref: '#/components/schemas/DeleteAllPendingAlgoOrderResponse'
   /v1/client/statistics:
     get:
       summary: Get User Statistics
@@ -1763,7 +1761,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderStatusResponse'
+                $ref: '#/components/schemas/DeleteAllPendingAlgoOrderResponse'
   /v1/client/order:
     delete:
       summary: Cancel Order By client_order_id
@@ -1807,7 +1805,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderStatusResponse'
+                $ref: '#/components/schemas/DeleteOrderResponse'
   /v1/client/batch-order:
     delete:
       summary: Batch Cancel Orders By client_order_id
@@ -1852,7 +1850,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderStatusResponse'
+                $ref: '#/components/schemas/DeleteAllPendingAlgoOrderResponse'
   /v1/client/order/{client_order_id}:
     get:
       summary: Get Order by client_order_id
@@ -2733,31 +2731,31 @@ paths:
                   type: array
                   items:
                     $ref: '#/components/schemas/CreateAlgoOrderChildRequest'
-                  description: Array of `CreateAlgoOrderChildRequest`
-                CreateAlgoOrderChildRequest:
-                  type: object
-                  properties:
-                    symbol:
-                      type: string
-                    algo_type:
-                      type: string
-                    side:
-                      type: string
-                    type:
-                      type: string
-                    trigger_price:
-                      type: number
-                    price:
-                      type: number
-                    reduce_only:
-                      type: string
-                    trigger_price_type:
-                      type: string
-                    child_orders:
-                      type: array
-                      items:
-                        $ref: '#/components/schemas/CreateAlgoOrderChildRequest'
-                      description: Array of `CreateAlgoOrderChildRequest`
+                  description: "Array of `CreateAlgoOrderChildRequest`"
+#                CreateAlgoOrderChildRequest:
+#                  type: object
+#                  properties:
+#                    symbol:
+#                      type: string
+#                    algo_type:
+#                      type: string
+#                    side:
+#                      type: string
+#                    type:
+#                      type: string
+#                    trigger_price:
+#                      type: number
+#                    price:
+#                      type: number
+#                    reduce_only:
+#                      type: string
+#                    trigger_price_type:
+#                      type: string
+#                    child_orders:
+#                      type: array
+#                      items:
+#                        $ref: '#/components/schemas/CreateAlgoOrderChildRequest'
+#                      description: Array of `CreateAlgoOrderChildRequest`
               required:
                 - symbol
                 - type
@@ -2770,7 +2768,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PostOrderResponse'
+                $ref: '#/components/schemas/PostAlgoOrderResponse'
     put:
       summary: Edit Algo Order
       deprecated: false
@@ -2813,22 +2811,27 @@ paths:
                   type: array
                   items:
                     $ref: '#/components/schemas/EditAlgoOrderChildRequest'
-                  description: Array of `EditAlgoOrderChildRequest`
-                EditAlgoOrderChildReq:
-                  type: object
-                  properties:
-                    order_id:
-                      type: string
-                    trigger_price:
-                      type: number
-                    price:
-                      type: number
-                    quantity:
-                      type: number
-                    is_activated:
-                      type: string
-                    trigger_price_type:
-                      type: string
+                  description: "Array of `EditAlgoOrderChildRequest`"
+#                EditAlgoOrderChildReq:
+#                  type: object
+#                  properties:
+#                    order_id:
+#                      type: string
+#                    trigger_price:
+#                      type: number
+#                    price:
+#                      type: number
+#                    quantity:
+#                      type: number
+#                    is_activated:
+#                      type: string
+#                    trigger_price_type:
+#                      type: string
+#                    child_orders:
+#                      type: array
+#                      items:
+#                        object
+#                      description: Array of `EditAlgoOrderChildRequest`
               required:
                 - order_id
       responses:
@@ -2915,7 +2918,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderStatusResponse'
+                $ref: '#/components/schemas/DeleteOrderResponse'
   /v1/algo/orders:
     delete:
       summary: Cancel All Pending Algo Orders
@@ -2946,7 +2949,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderStatusResponse'
+                $ref: '#/components/schemas/DeleteAllPendingAlgoOrderResponse'
     get:
       summary: Get Algo Orders
       deprecated: false
@@ -3385,13 +3388,17 @@ paths:
           example: ''
           schema:
             type: string
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserFeeTierResponse'
+                $ref: '#/components/schemas/UserFeeRatesResponse'
 
   /v1/broker/fee_rate/set:
     post:
@@ -4115,6 +4122,234 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetDistributionHistoryResponse'
+
+  /v1/public/campaigns:
+    get:
+      summary: Get List of Campaigns
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/public/campaigns`
+      tags:
+        - public
+      parameters:
+        - name: start_t
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: integer
+        - name: end_t
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: integer
+        - name: only_show_alive
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCampaignsInfoResponse'
+
+  /v1/public/campaign/stats:
+    get:
+      summary: Get Campaign Statistics
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/public/campaign/stats`
+      tags:
+        - public
+      parameters:
+        - name: campaign_id
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: integer
+        - name: broker_id
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: symbol
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCampaignStatsResponse'
+
+  /v1/public/campaign/stats/details:
+    get:
+      summary: Get Detailed Campaign Info
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/public/campaign/stats/details`
+      tags:
+        - public
+      parameters:
+        - name: campaign_id
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: integer
+        - name: broker_id
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: symbol
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: group_by
+          in: query
+          description: "One of `BROKER` \ `SYMBOL` \ `NONE`"
+          required: false
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCampaignDetailedStatsResponse'
+
+  /v1/public/campaign/ranking:
+    get:
+      summary: Get Campaign Ranking
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/public/campaign/ranking`
+      tags:
+        - public
+      parameters:
+        - name: campaign_id
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: integer
+        - name: broker_id
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: integer
+        - name: volume
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCampaignRankingResponse'
+
+  /v1/public/campaign/user:
+    get:
+      summary: Get Campaign User Info
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/public/campaign/user`
+      tags:
+        - public
+      parameters:
+        - name: campaign_id
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: integer
+        - name: account_id
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: broker_id
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: symbol
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCampaignUserResponse'
 components:
   parameters:
     orderly_timestamp:
@@ -4453,10 +4688,10 @@ components:
                     properties:
                       broker_id:
                         type: string
-                        example: "woofi_dex"
+                        example: "woofi_pro"
                       broker_name:
                         type: string
-                        example: "WOOFi DEX"
+                        example: "WOOFi Pro"
 
     FundingRatesResponse:
       allOf:
@@ -4671,9 +4906,6 @@ components:
                             insurance_fund_fee:
                               type: number
                               example: 0.011999
-                            abs_liquidation_fee:
-                              type: number
-                              example:
                             abs_insurance_fund_fee:
                               type: integer
                               example: 0
@@ -4712,15 +4944,38 @@ components:
                       token:
                         type: string
                         description: name of token
-                      token_account_id:
-                        type: string
-                        description: token account address on NEAR chain
+                        example: USDC
                       decimals:
-                        type: integer
-                        description: precision of the token
-                      minimum_increment:
                         type: number
-                        description: minimum increment of the token on Orderly
+                        description: precision of the token
+                        example: 6
+                      minimum_withdraw_amount:
+                        type: number
+                        description: ""
+                        example: 0.000001
+                      token_hash:
+                        type: string
+                        example: "0xd6aca1be9729c13d677335161321649cccae6a591554772516700f986f942eaa"
+                      chain_details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            chain_id:
+                              type: integer
+                              example: 43113
+                            contract_address:
+                              type: string
+                              example: "0x5d64c9cfb0197775b4b3ad9be4d3c7976e0d8dc3"
+                            cross_chain_withdrawal_fee:
+                              type: integer
+                              example: 0
+                            decimals:
+                              type: integer
+                              example: 6
+                            withdraw_fee:
+                              type: number
+                              example: 2
 
     AvailableSymbolsResponse:
       allOf:
@@ -4827,6 +5082,12 @@ components:
         base_imr:
           type: number
           example: 0.1
+        imr_factor:
+          type: number
+          example: 0.0002512
+        liquidation_tier:
+          type: string
+          example: "1"
 
     InsuranceFundResponse:
       allOf:
@@ -5559,6 +5820,19 @@ components:
             symbol:
               type: number
               description: The limit price for each symbol in the liquidation claim
+        symbols:
+          type: object
+          required:
+          - ratio_qty_request
+          - symbol
+          description: "For high risk tiers only"
+          properties:
+            ratio_qty_request:
+              type: number
+              description: "Field dedicated to high risk symbols liquidations type only (symbols with liquidation tier = 2), where a liquidator can specific the ratio he wish to liquidates per symbol"
+            symbol:
+              type: string
+              description: "Only relevant if this is a liquidation of type high tier (symbols with liquidation tier = 2)"
 
     # TODO different from LiquidationResponse?
     PostLiquidationResponse:
@@ -5628,54 +5902,14 @@ components:
           properties:
             data:
               type: object
-              required:
-              - rows
-              - status
               properties:
-                rows:
-                  type: array
-                  items:
-                    type: object
-                    required:
-                    - client_order_id
-                    - error_message
-                    - order_amount
-                    - order_id
-                    - order_price
-                    - order_quantity
-                    - order_type
-                    - success
-                    properties:
-                      # TODO example
-                      success:
-                        type: boolean
-                      order_id:
-                        type: integer
-                        # TODO nullable but required
-                        nullable: true
-                      client_order_id:
-                        type: string
-                        nullable: true
-                      order_type:
-                        type: string
-                        nullable: true
-                      order_price:
-                        type: number
-                        nullable: true
-                      order_quantity:
-                        type: number
-                        nullable: true
-                      order_amount:
-                        type: number
-                        nullable: true
-                      error_message:
-                        type: string
-                        nullable: true
+                status:
+                  type: string
+                  example: "EDIT_SENT"
 
     PostOrderBody:
       required:
       - order_type
-      - reduce_only
       - side
       - symbol
       type: object
@@ -5688,7 +5922,7 @@ components:
           description: "36 length, default: null"
         order_type:
           type: string
-          description: LIMIT/MARKET/IOC/FOK/POST_ONLY/ASK/BID
+          description: "`LIMIT`/`MARKET`/`IOC`/`FOK`/`POST_ONLY`/`ASK`/`BID`"
         order_price:
           type: number
           description: "If order_type is MARKET/ASK/BID, then is not required, otherwise this parameter is required."
@@ -5703,10 +5937,12 @@ components:
           description: "The order quantity shown on orderbook. (default: equal to order_quantity)"
         side:
           type: string
-          description: SELL/BUY
+          description: "`SELL`/`BUY`"
         reduce_only:
           type: boolean
           description: Default false
+        order_tag:
+          type: string
 
     PostOrderResponse:
       allOf:
@@ -5716,16 +5952,20 @@ components:
           type: object
           properties:
             data:
+              $ref: '#/components/schemas/CreatedOrder'
+
+    PostAlgoOrderResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+            - data
+          type: object
+          properties:
+            data:
               $ref: '#/components/schemas/CreatedAlgoOrder'
 
     CreatedOrder:
       type: object
-      required:
-      - client_order_id
-      - order_id
-      - order_price
-      - order_quantity
-      - order_type
       properties:
         order_id:
           type: number
@@ -5742,9 +5982,12 @@ components:
         order_quantity:
           type: number
           example: 0.987654
-        reduce_only:
-          type: boolean
-          example: "false"
+        order_amount:
+          type: number
+          example: 0.8
+        error_message:
+          type: string
+          example: "none"
 
     CreatedAlgoOrder:
       type: object
@@ -5782,6 +6025,22 @@ components:
                 status:
                   $ref: '#/components/schemas/OrderStatus'
 
+    DeleteAllPendingAlgoOrderResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - required:
+            - data
+          type: object
+          properties:
+            data:
+              type: object
+              required:
+                - status
+              properties:
+                status:
+                  type: string
+                  example: "CANCEL_ALL_SENT"
+
     OrderStatus:
       # TODO enum
       type: string
@@ -5802,8 +6061,6 @@ components:
       required:
       - amount
       - average_executed_price
-      - broker_id
-      - broker_name
       - client_order_id
       - created_time
       - executed
@@ -5819,8 +6076,6 @@ components:
       - updated_time
       - user_id
       - visible
-      # TODO check
-      - reduce_only
       properties:
         order_id:
           type: number
@@ -5839,6 +6094,7 @@ components:
           example: 20
         amount:
           type: number
+          example: 10
           # TODO nullable & example
           nullable: true
         executed:
@@ -5859,30 +6115,24 @@ components:
           description: NEW / FILLED / PARTIAL_FILLED / CANCELLED
         total_fee:
           type: number
-          example: 0
+          example: 0.5
         fee_asset:
           type: string
           example: "WOO"
         client_order_id:
           type: number
+          example: 1
           # TODO nullable & example
           nullable: true
         average_executed_price:
           type: number
           example: 0.67772
-        broker_id:
-          type: string
-        broker_name:
-          type: string
         created_time:
           type: number
           example: 1653563963000
         updated_time:
           type: number
           example: 1653564213000
-        reduce_only:
-          type: boolean
-          example: false
 
     AlgoOrderResponse:
       allOf:
@@ -5977,6 +6227,11 @@ components:
           visible_quantity:
             type: string
             example: 5.5
+          child_orders:
+            type: array
+            items:
+              type: object
+            description: "Array of `AlgoOrder`"
 
     TradesResponse:
       allOf:
@@ -6161,15 +6416,29 @@ components:
                   # TODO
                   type: object
                   required:
-                  - BTC
-                  - ETH
-                  - NEAR
+                  - PERP_BTC_USDC
+                  - PERP_ETH_USDC
+                  - PERP_NEAR_USDC
                   properties:
-                    BTC:
+                    PERP_BTC_USDC:
                       type: number
-                    ETH:
+                    PERP_ETH_USDC:
                       type: number
-                    NEAR:
+                    PERP_NEAR_USDC:
+                      type: number
+                max_notional:
+                  # TODO
+                  type: object
+                  required:
+                    - PERP_BTC_USDC
+                    - PERP_ETH_USDC
+                    - PERP_NEAR_USDC
+                  properties:
+                    PERP_BTC_USDC:
+                      type: number
+                    PERP_ETH_USDC:
+                      type: number
+                    PERP_NEAR_USDC:
                       type: number
 
     OrdersResponse:
@@ -6236,25 +6505,25 @@ components:
                   type: integer
                   example: 109
                 fees_paid_last_30_days:
-                  type: integer
+                  type: number
                   example: 0
                 perp_fees_paid_last_30_days:
-                  type: integer
+                  type: number
                   example: 0
                 perp_trading_volume_last_24_hours:
-                  type: integer
+                  type: number
                   example: 0
                 perp_trading_volume_last_30_days:
-                  type: integer
+                  type: number
                   example: 0
                 perp_trading_volume_ytd:
-                  type: integer
+                  type: number
                   example: 0
                 trading_volume_last_24_hours:
-                  type: integer
+                  type: number
                   example: 0
                 trading_volume_last_30_days:
-                  type: integer
+                  type: number
                   example: 0
                 trading_volume_ytd:
                   type: number
@@ -6337,7 +6606,14 @@ components:
           type: number
           description: Quantity to be claimed from insurance fund
         limit_price:
-          type: number
+          type: object
+          description: "Liquidator’s instruction to let the system reject the liquidation claim if the following condition applies: if position_qty > 0, reject if mark_price > limit_price; if position_qty < 0, reject if mark_price < limit_price"
+          required:
+            - symbol
+          properties:
+            symbol:
+              type: number
+              description: "The limit price for each symbol in the liquidation claim"
 
     ClaimInsuranceFundResponse:
       allOf:
@@ -6438,7 +6714,7 @@ components:
               type: string
               description: Broker ID
             chainId:
-              type: string
+              type: integer
               description: Chain ID of registering chain (within those that are supported by the Network)
             timestamp:
               type: string
@@ -6572,7 +6848,7 @@ components:
               properties:
                 available_futures_leverage:
                   type: string
-                  example: "1,2,3,4,5,10"
+                  example: "1,2,3,4,5,10,15,20"
 
     ChainInfoResponse:
       allOf:
@@ -6856,6 +7132,7 @@ components:
                     type: number
                     example: 100.24
 
+
     WithdrawNonceReponse:
       allOf:
         - $ref: '#/components/schemas/BasicResponse'
@@ -6930,7 +7207,7 @@ components:
               type: string
               description: The string representation of the token that is being withdrawn (eg "USDC")
             amount:
-              type: integer
+              type: number
               description: Amount of tokens to be withdrawn
             withdrawNonce:
               type: string
@@ -6972,7 +7249,7 @@ components:
               type: integer
               description: Chain ID of registering chain (within those that are supported by the Network)
             settleNonce:
-              type: integer
+              type: string
               description: Nonce from Get settle PnL Nonce
             timestamp:
               type: string
@@ -7365,7 +7642,7 @@ components:
                         type: number
                         example: 123.45
 
-    UserFeeTierResponse:
+    UserFeeRatesResponse:
       allOf:
         - $ref: '#/components/schemas/BasicResponse'
         - type: object
@@ -7388,9 +7665,9 @@ components:
                       address:
                         type: string
                         example: "0xa8ec6970fec8842dd229eef170f624c3d77dab45"
-                      fee_tier:
+                      is_default_fee_rate:
                         type: string
-                        example: "1"
+                        example: "true"
                       maker_fee_rate:
                         type: number
                         example: 0.03
@@ -7399,70 +7676,50 @@ components:
                         example: 0.01
 
     CreateAlgoOrderChildRequest:
-      allOf:
-        - $ref: '#/components/schemas/BasicResponse'
-        - type: object
-          required:
-            - data
-          properties:
-            data:
-              type: object
-              required:
-                - rows
-              properties:
-                rows:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      account_id:
-                        type: string
-                        example: "0x114f583aea808c5812e16109b6c087660285a26f0a31dcc0f9b54f1a6a0fefbd"
-                      address:
-                        type: string
-                        example: "0xa8ec6970fec8842dd229eef170f624c3d77dab45"
-                      fee_tier:
-                        type: string
-                        example: "1"
-                      futures_maker_fee_rate:
-                        type: number
-                        example: 0.03
-                      futures_taker_fee_rate:
-                        type: number
-                        example: 0.01
+      type: object
+      properties:
+        symbol:
+          type: string
+        algo_type:
+          type: string
+        side:
+          type: string
+        type:
+          type: string
+        trigger_price:
+          type: number
+        price:
+          type: number
+        reduce_only:
+          type: string
+        trigger_price_type:
+          type: string
+        child_orders:
+          type: array
+          items:
+            type: object
+          description: Array of `CreateAlgoOrderChildRequest`
 
     EditAlgoOrderChildRequest:
-      allOf:
-        - $ref: '#/components/schemas/BasicResponse'
-        - type: object
-          required:
-            - data
-          properties:
-            data:
-              type: object
-              required:
-                - rows
-              properties:
-                rows:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      account_id:
-                        type: string
-                        example: "0x114f583aea808c5812e16109b6c087660285a26f0a31dcc0f9b54f1a6a0fefbd"
-                      address:
-                        type: string
-                        example: "0xa8ec6970fec8842dd229eef170f624c3d77dab45"
-                      fee_tier:
-                        type: string
-                        example: "1"
-                      futures_maker_fee_rate:
-                        type: number
-                        example: 0.03
-                      futures_taker_fee_rate:
-                        type: number
-                        example: 0.01
+      type: object
+      properties:
+        order_id:
+          type: string
+        trigger_price:
+          type: number
+        price:
+          type: number
+        quantity:
+          type: number
+        is_activated:
+          type: string
+        trigger_price_type:
+          type: string
+        child_orders:
+          type: array
+          items:
+            type: object
+          description: "Array of `EditAlgoOrderChildRequest`"
 
     GetReferralCodeResponse:
       allOf:
@@ -7909,6 +8166,133 @@ components:
                 valid_signer:
                   type: string
                   example: 0xc6c4c5c41efa74ebc63c675dcf7034e8382f3a42`
+
+    GetCampaignsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                meta:
+                  $ref: '#/components/schemas/PaginationMeta'
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: "campaign_20230806"
+                      start_time:
+                        type: integer
+                        example: 1575014255089
+                      end_time:
+                        type: integer
+                        example: 1585014255089
+
+    GetCampaignStatsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                updated_time:
+                  type: integer
+                  example: 1688371971550
+                volume:
+                  type: number
+                  example: 800.12
+                user_count:
+                  type: integer
+                  example: 10
+
+    GetCampaignDetailedStatsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                meta:
+                  $ref: '#/components/schemas/PaginationMeta'
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      broker_id:
+                        type: string
+                        example: "woofi_dex"
+                      symbol:
+                        type: string
+                        example: "PERP_NEAR_USDC"
+                      volume:
+                        type: number
+                        example: 800.12
+                      user_count:
+                        type: integer
+                        example: 10
+
+    GetCampaignRankingResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                meta:
+                  $ref: '#/components/schemas/PaginationMeta'
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      broker_id:
+                        type: string
+                        example: "woofi_dex"
+                      account_id:
+                        type: string
+                        example: "account01.eth"
+                      address:
+                        type: string
+                        example: "0xaccount01"
+                      volume:
+                        type: number
+                        example: 800.12
+                      pnl:
+                        type: number
+                        example: 800.12
+
+    GetCampaignUserResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                volume:
+                  type: number
+                  example: 1000.123
+                filled_order_count:
+                  type: integer
+                  example: 10
+                updated_time:
+                  type: integer
+                  example: 1688371971550
+                pnl:
+                  type: number
+                  example: 800.12
+
 
 
 servers:
