@@ -3480,6 +3480,69 @@ paths:
               schema:
                 $ref: '#/components/schemas/BasicResponse'
 
+  /v1/broker/fee_rate/default:
+    post:
+      summary: Update Default Broker Fee
+      deprecated: false
+      description: |
+        **Limit: 1 requests per second**
+
+        `POST /v1/broker/fee_rate/default`
+        
+        Scope: Only each broker_id’s admin wallet can call this endpoint
+      tags:
+        - private
+      parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                maker_fee_rate:
+                  type: number
+                  description: "Maker fee charged to users by default (0.0001 = 0.01%)"
+                taker_fee_rate:
+                  type: number
+                  description: "Taker fee charged to users by default (0.0001 = 0.01%)"
+              required:
+                - maker_fee_rate
+                - taker_fee_rate
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+    get:
+      summary: Get Default Broker Fee
+      deprecated: false
+      description: |
+        **Limit: 1 requests per second**
+
+        `GET /v1/broker/fee_rate/default`
+        
+        Scope: Only each broker_id’s admin wallet can call this endpoint
+      tags:
+        - private
+      parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDefaultBrokerFeesResponse'
+
   /v1/referral/create:
     post:
       summary: Create Referral Code
@@ -8293,6 +8356,20 @@ components:
                   type: number
                   example: 800.12
 
+    GetDefaultBrokerFeesResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                maker_fee_rate:
+                  type: number
+                  example: 0.0005
+                taker_fee_rate:
+                  type: number
+                  example: 0.001
 
 
 servers:
