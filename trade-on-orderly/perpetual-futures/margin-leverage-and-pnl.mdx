@@ -91,6 +91,14 @@ As an Example: Account X has +20,000 USDC unsettled PnL with a balance of 100 US
 
 * Then, settling Account X vs Account B will increase Account X's balance by 5,000 USDC and decrease Account B's balance by 5,000 USDC. Account X has a remaining unsettled PnL of 0 and a balance of 20,100 USDC. The settlement process ends since Account X has no remaining unsettled PnL.
 
+<Note>
+Settling PnL will NOT change the user's balance as displayed user balance already includes unsettled PnL in the calculation.
+
+Withdrawable balance will change after settling PnL as it doesn't include unsettled profits in the calculation.
+
+All settling PnL does is move profits into user's account so user is able to withdraw.
+</Note>
+
 ## Max notional amount
 
 Orderly imposes position limits per perpetual market per user. These limits will be increased and/or removed after Beta launch.

@@ -1,0 +1,132 @@
+---
+title: "Formulas and Definitions"
+---
+
+## Margin and Balance Formulas
+
+### Futures Margin Ratio
+
+Current margin ratio = `total_collateral_value / sum(abs(position_notional_i))`
+
+### Total Collateral
+
+Total collateral of the user (doesn't account for any pending orders, includes unsettled PnL) = `total_balance + upnl + pending_short_USDC`
+
+### Free Collateral
+
+Available collateral/balance to trade (accounts for any pending orders, includes unsettled PnL) = `collateral + upnl - total_initial_margin_with_orders - pending_short_USDC`
+
+### Portfolio Value
+
+Total potfolio value including position notionals = `USDC Balance + (non USDC assets) * mid_price + unsettled pnl`
+
+### Withdrawable Balance
+
+Collateral available to withdraw (excludes unsettled PnL) = `total_balance - total_initial_margin_with_orders - positive_upnl`
+
+Ex. 1 user's `total_balance` = 100 USDC, unsettled PnL = -40 USDC, => total_collateral is then 60 USDC. User has a position which takes up 20 USDC maintenance margin, then `free_collateral` or `withdrawable_balance` = 60 - 20 = 40 USDC
+
+Ex. 2 user's `total_balance` = 100 USDC, unsettled PnL = 40 USDC, => total_collateral is then 100 USDC. User has a position which takes up 20 USDC maintenance margin, then `free_collateral` = 100 - 20 = 80 USDC and `withdrawable_balance` = 80 - 40 = 40 USDC
+
+<Note>
+Withdrawable balance/collateral does not equal to total or free collateral.
+</Note>
+
+
+### Initial Margin Ratio
+
+```
+IMR i = Max(1 / Max Account Leverage, Base IMR i, IMR Factor i * Abs(Position Notional i)^(4/5))
+initial_margin_i = abs (position_notional_i * IMR_i)
+weighted_initial_margin_ratio_i =  abs (position_notional_i / total_notional ) * IMR_i
+initial_margin_ratio = sum (weighted_initial_margin_ratio_i)
+```
+
+### Maintenance Margin Ratio
+
+```
+MMR i = Max(Base MMR i, (Base MMR i / Base IMR i) * IMR Factor i * Abs(Position Notional i)^(4/5))
+maintenance_margin_i= abs (position_notional_i * MMR_i)
+weighted_maintenance_margin_ratio_i = abs (position_notional_i / total_notional ) * MMR_i
+maintenance_margin_ratio = sum (weighted_maintenance_margin_ratio_i)
+```
+
+## Positions PnL
+
+**Unrealized PnL** = `position_qty * (mark_price - avg_open)`
+
+ 
+
+**Liquidation Price**
+
+```
+Qi = position_qty
+
+liquidation_price  = max[( Mark Price + ( total_collateral_value - total_notional * MMR ) / ( |Qi| * MMRi - Qi )), 0]
+```
+
+ 
+
+**Notional** = `position_notional_i = abs(mark_price_i * position_qty_i)`
+
+ 
+
+**Fut Notional or Total Notional** = `sum (abs (position_notional_i))`
+
+ 
+<Note>
+Unsettled PnL is retrieved from the API and cannot be calculated
+</Note>
+
+## Order placement formulas
+
+### Max Order Quantity
+
+```
+newOrderSize  => (total_collateral_value - others_IM) * min(1/Base_IMR_i,maxLeverage_account) / markPrice maxLeverage_account
+
+IMR i = Max(1 / Max Account Leverage, Base_IMR_i, IMR Factor i * Abs(Position Notional i)^(4/5))
+
+MMR i = Max(Base MMR i, (Base MMR i / Base IMR i) * IMR Factor i * Abs(Position Notional i)^(4/5))
+
+aftertrade_IMR.i → Max(1 / Max Account Leverage, Base_IMR_i, IMR Factor i * Abs(After Trade Position Notional i)^(4/5))
+
+```
+```
+If total_collateral_value < total_initial_margin_with_orders
+    if (side == buy && position_qty >=0 ) or (side == sell && position_qty < 0)
+        return 0
+    else
+        if side == buy
+            return max( abs(position_qty) - pending_long_qty, 0 )
+        else
+            return max( position_qty + pending_short_qty, 0 )
+else
+    newOrderSize = (total_collateral_value - others_IM) * min(1/Base_IMR_i,maxLeverage_account) / markPrice
+    calculate afterTradeIM
+    newTotalIM = othersIM + afterTradeIM
+    if side = buy
+        others = -holding - pendingLongQty
+    else
+        others = holding + pendingShortQty
+    
+    if totalCollatValue >= newTotalIM
+        return max(0, newOrderSize * 99.5% + others)
+    else
+        newOrderSize_iter = ITERATE()
+        return max(0, newOrderSize_iter * 99.5% + others)
+        
+with : 
+total_collateral_value = total_balance + upnl + pending_short_USDC
+total_initial_margin_with_orders =  sum (position_notional_with_orders_i * IMR_i (with_orders))
+position_qty_with_orders_i = max[abs(position_qty + sum_position_qty_buy_orders),abs(pos_qty + sum_position_qty_sell_orders)]
+position_notional_with_orders_i = abs(mark_price_i * position_qty_with_orders_i)
+others_IM = sum[i#j)(initial_margin_with_orders_i) (where j represents the pair i on which the order is being placed)
+```
+
+### Liquidation Price
+```
+Qi = position_qty + order_qty 
+
+liquidation_price  = max( Mark Price + ( total_collateral_value - total_notional_with_order * MMR_with_order ) / ( |Qi| * MMR_with_order_i - Qi )), 0)
+```
