@@ -3333,6 +3333,8 @@ paths:
         `GET /v1/broker/user_info`
         
         Scope: Only each broker_id's admin wallet can call this endpoint.
+        
+        If `account_id` or `address` is provided, will always return the fee rate and indicate whether the user is on the broker’s default fee rate or not.
       tags:
         - private
       parameters:
@@ -3422,12 +3424,14 @@ paths:
 
   /v1/broker/fee_rate/set_default:
     post:
-      summary: Update Default User Fee Rate
+      summary: Reset User Fee Rate
       deprecated: false
       description: |
         **Limit: 1 requests per second**
 
         `POST /v1/broker/fee_rate/set_default`
+        
+        Scope: Only each broker’s admin can create the referral code for accounts that are related to the broker_id
       tags:
         - private
       parameters:
@@ -3577,6 +3581,8 @@ paths:
         **Limit: 10 requests per second**
 
         `GET /v1/referral/admin_info`
+        
+        Scope: Only each broker’s admin can create the referral code for accounts that are related to the broker_id
       tags:
         - private
       parameters:
@@ -3614,6 +3620,8 @@ paths:
         **Limit: 1 requests per second**
 
         `POST /v1/referral/update`
+        
+        Scope: Only each broker’s admin can create the referral code for accounts that are related to the broker_id
       tags:
         - private
       parameters:
@@ -8268,7 +8276,7 @@ components:
                       token:
                         type: string
                         example: "USDC"
-                        description: "`"
+                        description: ""
                       type:
                         type: string
                         example: "REFERRAL_REBATE"
