@@ -2215,7 +2215,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BasicResponse'
+                $ref: '#/components/schemas/WithdrawResponse'
   /v1/settle_pnl:
     post:
       summary: Request PnL Settlement
@@ -2698,13 +2698,13 @@ paths:
                   type: string
                 algo_type:
                   type: string
-                  description: "`STOP`/`TPSL`/`POSITIONAL_TPSL`"
+                  description: "`STOP`/`TP_SL`/`POSITIONAL_TP_SL`"
                 client_order_id:
                   type: string
                   description: '36 length, default: null'
                 type:
                   type: string
-                  description: LIMIT/MARKET
+                  description: "`LIMIT` / `MARKET`, required if `algo_type` = `STOP`"
                 price:
                   type: number
                 quantity:
@@ -2724,7 +2724,7 @@ paths:
                   description: Default false
                 side:
                   type: string
-                  description: '`SELL`/`BUY`'
+                  description: '`SELL`/`BUY`, not required if '
                 order_tag:
                   type: string
                 child_orders:
@@ -2732,30 +2732,6 @@ paths:
                   items:
                     $ref: '#/components/schemas/CreateAlgoOrderChildRequest'
                   description: "Array of `CreateAlgoOrderChildRequest`"
-#                CreateAlgoOrderChildRequest:
-#                  type: object
-#                  properties:
-#                    symbol:
-#                      type: string
-#                    algo_type:
-#                      type: string
-#                    side:
-#                      type: string
-#                    type:
-#                      type: string
-#                    trigger_price:
-#                      type: number
-#                    price:
-#                      type: number
-#                    reduce_only:
-#                      type: string
-#                    trigger_price_type:
-#                      type: string
-#                    child_orders:
-#                      type: array
-#                      items:
-#                        $ref: '#/components/schemas/CreateAlgoOrderChildRequest'
-#                      description: Array of `CreateAlgoOrderChildRequest`
               required:
                 - symbol
                 - type
@@ -3933,7 +3909,7 @@ paths:
 
   /v1/delegate_signer:
     post:
-      summary: Add Delegate Signer
+      summary: Delegate Signer
       deprecated: false
       description: |
         **Limit: 1 requests per second**
@@ -3941,39 +3917,11 @@ paths:
         `POST /v1/delegate_signer`
       tags:
         - public
-      parameters:
-        - $ref: '#/components/parameters/orderly_timestamp'
-        - $ref: '#/components/parameters/orderly_account_id'
-        - $ref: '#/components/parameters/orderly_key'
-        - $ref: '#/components/parameters/orderly_signature'
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                delegateContract:
-                  type: integer
-                  description: ""
-                chainId:
-                  type: integer
-                  description: ""
-                brokerId:
-                  type: string
-                registrationNonce:
-                  type: integer
-                timestamp:
-                  type: integer
-                txHash:
-                  type: string
-                  description: "tx hash of the delegateSigner transaction on the contract"
-              required:
-                - delegateContract
-                - chainId
-                - brokerId
-                - registrationNonce
-                - timestamp
-                - txHash
+              $ref: '#/components/schemas/DelegateSignerBody'
       responses:
         "200":
           description: OK
@@ -3989,41 +3937,14 @@ paths:
       description: |
         **Limit: 1 requests per second**
 
-        `POST /v1/delegate_signer_orderly_key`
+        `POST /v1/delegate_orderly_key`
       tags:
         - public
-      parameters:
-        - $ref: '#/components/parameters/orderly_timestamp'
-        - $ref: '#/components/parameters/orderly_account_id'
-        - $ref: '#/components/parameters/orderly_key'
-        - $ref: '#/components/parameters/orderly_signature'
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                delegateContract:
-                  type: integer
-                  description: ""
-                chainId:
-                  type: integer
-                  description: ""
-                timestamp:
-                  type: integer
-                expiration:
-                  type: integer
-                orderlyKey:
-                  type: string
-                scope:
-                  type: string
-              required:
-                - delegateContract
-                - chainId
-                - timestamp
-                - expiration
-                - orderlyKey
-                - scope
+              $ref: '#/components/schemas/DelegateOrderlyKeyBody'
       responses:
         "200":
           description: OK
@@ -4051,42 +3972,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                delegateContract:
-                  type: integer
-                  description: ""
-                chainId:
-                  type: integer
-                  description: ""
-                brokerId:
-                  type: integer
-                timestamp:
-                  type: integer
-                receiver:
-                  type: string
-                token:
-                  type: string
-                withdrawNonce:
-                  type: integer
-                amount:
-                  type: integer
-              required:
-                - delegateContract
-                - chainId
-                - brokerId
-                - timestamp
-                - receiver
-                - token
-                - withdrawNonce
-                - amount
+              $ref: '#/components/schemas/DelegateWithdrawRequestBody'
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BasicResponse'
+                $ref: '#/components/schemas/WithdrawResponse'
 
   /v1/delegate_settle_pnl:
     post:
@@ -4107,26 +4000,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                delegateContract:
-                  type: integer
-                  description: ""
-                chainId:
-                  type: integer
-                  description: ""
-                brokerId:
-                  type: integer
-                settleNonce:
-                  type: integer
-                timestamp:
-                  type: integer
-              required:
-                - delegateContract
-                - chainId
-                - brokerId
-                - settleNonce
-                - timestamp
+              $ref: '#/components/schemas/DelegateSettlePnlBody'
       responses:
         "200":
           description: OK
@@ -6758,6 +6632,55 @@ components:
                   type: string
                   example: "0xb129e074a17dfba8d652ae1eca21c7d6bb6904f1aa693f4886d50db170933a46"
 
+    DelegateSignerBody:
+      type: object
+      required:
+        - message
+        - signature
+        - userAddress
+      properties:
+        message:
+          type: object
+          required:
+            - delegateContract
+            - brokerId
+            - chainId
+            - registrationNonce
+            - timestamp
+          properties:
+            delegateContract:
+              type: string
+              example: "0xaddress"
+            brokerId:
+              type: string
+              description: Broker ID
+              example: "woofi_pro"
+            chainId:
+              type: integer
+              example: 421613
+              description: Chain ID of registering chain (within those that are supported by the Network)
+            timestamp:
+              type: integer
+              example: 1704879369551
+              description: timestamp in UNIX milliseconds
+            registrationNonce:
+              type: string
+              example: "161111791392"
+              description: Message object containing the message that is signed by the wallet owner
+            txHash:
+              type: string
+              description: ""
+              example: "0xtxhash"
+        signature:
+          type: string
+          description: The signature generated by signing the message object via EIP-712
+          example: "0x8668447f28534dc1b76566e41f5fcdeb6b131355b9cf428f3fae5c134e9a0fc55642a2771860484651e61043e8ac67a1a6e54031a4c66de44acd77c9d9b281e81b"
+        userAddress:
+          type: string
+          description: The address of the wallet signing the message object via EIP-712
+          example: "0xDd3287043493E0a08d2B348397554096728B459c"
+
+
     RegisterAccountBody:
       type: object
       required:
@@ -6834,6 +6757,58 @@ components:
                 tag:
                   type: string
 
+    DelegateOrderlyKeyBody:
+      type: object
+      required:
+        - message
+        - signature
+        - tag
+        - userAddress
+      properties:
+        message:
+          type: object
+          required:
+            - delegateContract
+            - brokerId
+            - chainId
+            - expiration
+            - orderlyKey
+            - scope
+            - timestamp
+          properties:
+            delegateContract:
+              type: string
+              description: ""
+            brokerId:
+              type: string
+              description: Broker ID
+            chainId:
+              type: integer
+              description: Chain ID of registering chain (within those that are supported by the Network)
+            orderlyKey:
+              type: integer
+              description: Orderly Key to be added
+            scope:
+              type: string
+              description: Valid nonce from Get Registration Nonce
+            timestamp:
+              type: number
+              description: timestamp in UNIX milliseconds
+            expiration:
+              type: number
+              description: Expiration time of the key in UNIX milliseconds. Maximum allowed expiration is 365 days from add
+          description: Message object containing the message that is signed by the wallet owner
+        signature:
+          type: string
+          description: The signature generated by signing the message object via EIP-712
+        userAddress:
+          type: string
+          description: The address of the wallet signing the message object via EIP-712
+        tag:
+          type: string
+          description: An optional tag of string values。
+
+
     OrderlyKeyBody:
       type: object
       required:
@@ -6893,6 +6868,9 @@ components:
               required:
               - orderly_key
               properties:
+                id:
+                  type: integer
+                  example: 123
                 orderly_key:
                   type: string
                   example: "ed25519:FRXntsPJBCy6dzKv9WPw4eYSw3rKU9Npz3T6UmvvJc9Z"
@@ -7279,6 +7257,76 @@ components:
               type: string
               description: current timestamp in UNIX milliseconds
 
+    DelegateWithdrawRequestBody:
+      required:
+        - signature
+        - userAddress
+        - verifyingContract
+        - message
+      type: object
+      properties:
+        signature:
+          type: string
+          description: The signature generated by signing the message object via EIP-712
+        userAddress:
+          type: string
+          description: The address of the wallet signing the message object via EIP-712
+        verifyingContract:
+          type: string
+          description: Address of the Orderly Network ledger contract
+        message:
+          type: object
+          description: Message object containing the message that is signed by the wallet owner
+          required:
+            - delegateContract
+            - brokerId
+            - chainId
+            - receiver
+            - token
+            - amount
+            - withdrawNonce
+            - timestamp
+          properties:
+            delegateContract:
+              type: string
+            brokerId:
+              type: string
+              description: Broker ID
+            chainId:
+              type: integer
+              description: Chain ID of registering chain (within those that are supported by the Network)
+            receiver:
+              type: string
+              description: Chain ID of registering chain (within those that are supported by the Network)
+            token:
+              type: string
+              description: The string representation of the token that is being withdrawn (eg "USDC")
+            amount:
+              type: number
+              description: Amount of tokens to be withdrawn
+            withdrawNonce:
+              type: string
+              description: Valid withdrawal nonce from Get withdrawal nonce
+            timestamp:
+              type: string
+              description: current timestamp in UNIX milliseconds
+
+    WithdrawResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+          - data
+          properties:
+            data:
+              type: object
+              required:
+              - withdraw_id
+              properties:
+                withdraw_id:
+                  type: integer
+                  example: 123
+
     SettlePnlBody:
       required:
       - signature
@@ -7305,6 +7353,48 @@ components:
           - settleNonce
           - timestamp
           properties:
+            brokerId:
+              type: string
+              description: Broker ID
+            chainId:
+              type: integer
+              description: Chain ID of registering chain (within those that are supported by the Network)
+            settleNonce:
+              type: string
+              description: Nonce from Get settle PnL Nonce
+            timestamp:
+              type: string
+              description: current timestamp in UNIX milliseconds
+
+    DelegateSettlePnlBody:
+      required:
+        - signature
+        - userAddress
+        - verifyingContract
+        - message
+      type: object
+      properties:
+        signature:
+          type: string
+          description: The signature generated by signing the message object via EIP-712
+        userAddress:
+          type: string
+          description: The address of the wallet signing the message object via EIP-712
+        verifyingContract:
+          type: string
+          description: Address of the Orderly Network ledger contract
+        message:
+          type: object
+          description: Message object containing the message that is signed by the wallet owner
+          required:
+            - delegateContract
+            - brokerId
+            - chainId
+            - settleNonce
+            - timestamp
+          properties:
+            delegateContract:
+              type: string
             brokerId:
               type: string
               description: Broker ID
@@ -8225,10 +8315,10 @@ components:
                   example: 100338
                 account_id:
                   type: string
-                  example: 0xd890c9b8b86fba7312b919e32bbabd619228b32d59f6d0f68fdf4451a684a654
+                  example: "0xd890c9b8b86fba7312b919e32bbabd619228b32d59f6d0f68fdf4451a684a654"
                 valid_signer:
                   type: string
-                  example: 0xc6c4c5c41efa74ebc63c675dcf7034e8382f3a42`
+                  example: "0xc6c4c5c41efa74ebc63c675dcf7034e8382f3a42"
 
     GetCampaignsResponse:
       allOf:
