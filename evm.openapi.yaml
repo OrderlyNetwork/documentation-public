@@ -2707,11 +2707,13 @@ paths:
                   description: "`LIMIT` / `MARKET`, required if `algo_type` = `STOP`"
                 price:
                   type: number
+                  description: "Optional for `TP_SL` and `POSTIONAL_TP_SL`"
                 quantity:
                   type: number
                   description: >-
                     For `MARKET`/`ASK`/`BID` order, if order_amount is given, it is
                     not required.
+                    Not required if type is `POSITIONAL_TP_SL`.
                 trigger_price_type:
                   type: string
                   description: Only `MARK_PRICE` is available for now.
@@ -2724,7 +2726,7 @@ paths:
                   description: Default false
                 side:
                   type: string
-                  description: '`SELL`/`BUY`, not required if '
+                  description: '`SELL`/`BUY`, required if `STOP` type'
                 order_tag:
                   type: string
                 child_orders:
@@ -2734,10 +2736,6 @@ paths:
                   description: "Array of `CreateAlgoOrderChildRequest`"
               required:
                 - symbol
-                - type
-                - algo_type
-                - side
-                - quantity
       responses:
         "200":
           description: OK
@@ -6674,8 +6672,8 @@ components:
               example: 1704879369551
               description: timestamp in UNIX milliseconds
             registrationNonce:
-              type: string
-              example: "161111791392"
+              type: integer
+              example: 161111791392
               description: Message object containing the message that is signed by the wallet owner
             txHash:
               type: string
@@ -6796,7 +6794,7 @@ components:
               type: integer
               description: Chain ID of registering chain (within those that are supported by the Network)
             orderlyKey:
-              type: integer
+              type: string
               description: Orderly Key to be added
             scope:
               type: string
@@ -6814,9 +6812,6 @@ components:
         userAddress:
           type: string
           description: The address of the wallet signing the message object via EIP-712
-        tag:
-          type: string
-          description: An optional tag of string values。
 
 
     OrderlyKeyBody:
@@ -6844,7 +6839,7 @@ components:
               type: integer
               description: Chain ID of registering chain (within those that are supported by the Network)
             orderlyKey:
-              type: integer
+              type: string
               description: Orderly Key to be added
             scope:
               type: string
@@ -7370,10 +7365,10 @@ components:
               type: integer
               description: Chain ID of registering chain (within those that are supported by the Network)
             settleNonce:
-              type: string
+              type: integer
               description: Nonce from Get settle PnL Nonce
             timestamp:
-              type: string
+              type: integer
               description: current timestamp in UNIX milliseconds
 
     DelegateSettlePnlBody:
@@ -7412,10 +7407,10 @@ components:
               type: integer
               description: Chain ID of registering chain (within those that are supported by the Network)
             settleNonce:
-              type: string
+              type: integer
               description: Nonce from Get settle PnL Nonce
             timestamp:
-              type: string
+              type: integer
               description: current timestamp in UNIX milliseconds
 
     SettlePnlResponse:
