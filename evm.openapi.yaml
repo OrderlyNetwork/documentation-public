@@ -2710,11 +2710,11 @@ paths:
                 quantity:
                   type: number
                   description: >-
-                    For MARKET/ASK/BID order, if order_amount is given, it is
+                    For `MARKET`/`ASK`/`BID` order, if order_amount is given, it is
                     not required.
                 trigger_price_type:
-                  type: number
-                  description: Only MARK_PRICE is available for now.
+                  type: string
+                  description: Only `MARK_PRICE` is available for now.
                 trigger_price:
                   type: number
                 reduce_only:
@@ -3386,6 +3386,8 @@ paths:
         **Limit: 1 requests per second**
 
         `POST /v1/broker/fee_rate/set`
+        
+        Scope: Only each broker_id's admin wallet can call this endpoint.
       tags:
         - private
       parameters:
@@ -3530,7 +3532,7 @@ paths:
       description: |
         **Limit: 1 requests per second**
 
-        `POST /v1/broker/fee_rate/set_default`
+        `POST /v1/referral/create`
       tags:
         - private
       parameters:
