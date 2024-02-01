@@ -2674,7 +2674,7 @@ paths:
         execution such as stop orders.
 
 
-        `STOP` type order bahavior: an order to buy or sell at the market price
+        `STOP` type order bahavior: an order to buy or sell at the market/limit price
         once the asset has traded at or through a specified price (the "stop
         price"). If the asset reaches the stop price, the order becomes a market
         order and is filled at the next available market price.
@@ -3170,6 +3170,8 @@ paths:
 
 
         The provided `start_date`/`end_date` has to be within a 90-day range.
+        
+        Scope: Only each broker_id’s admin wallet can call this endpoint.
       tags:
         - private
       parameters:
@@ -3385,6 +3387,8 @@ paths:
 
         `POST /v1/broker/fee_rate/set`
         
+        Send a list of accounts assigned to a new fee rate. Max 500 accounts per request.
+        
         Scope: Only each broker_id's admin wallet can call this endpoint.
       tags:
         - private
@@ -3431,6 +3435,8 @@ paths:
 
         `POST /v1/broker/fee_rate/set_default`
         
+        Assign users to a default fee rate. Only send accounts that need to be updated. Max 500 accounts per request.
+        
         Scope: Only each broker’s admin can create the referral code for accounts that are related to the broker_id
       tags:
         - private
@@ -3469,6 +3475,8 @@ paths:
 
         `POST /v1/broker/fee_rate/default`
         
+        Update the default fee rate for users assigned to a default fee rate.
+        
         Scope: Only each broker_id’s admin wallet can call this endpoint
       tags:
         - private
@@ -3506,6 +3514,8 @@ paths:
         **Limit: 1 requests per second**
 
         `GET /v1/broker/fee_rate/default`
+        
+        Get default fee rate.
         
         Scope: Only each broker_id’s admin wallet can call this endpoint
       tags:
@@ -3584,7 +3594,7 @@ paths:
 
         `GET /v1/referral/admin_info`
         
-        Scope: Only each broker’s admin can create the referral code for accounts that are related to the broker_id
+        Scope: Only each broker_id’s admin wallet can call this endpoint.
       tags:
         - private
       parameters:
@@ -3623,7 +3633,7 @@ paths:
 
         `POST /v1/referral/update`
         
-        Scope: Only each broker’s admin can create the referral code for accounts that are related to the broker_id
+        Scope: Only each broker_id’s admin wallet can call this endpoint.
       tags:
         - private
       parameters:
