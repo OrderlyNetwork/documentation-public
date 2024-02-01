@@ -14,16 +14,19 @@ Delegate Signer allows Smart Contracts to assign an EOA to sign on behalf of the
 ### Limitations
 
 <Warning>
-  An EOA that has been assigned as a Delegate Signer cannot have a regular account or balance with Orderly Network prior or during Delegate Signer flow. There can also only be one EOA per Smart Contract account. If a new Delegate Signer is announced via Vault Smart Contract interaction, the old Delegate Signer will be deleted.
+  There can only be one EOA per Smart Contract account. If a new Delegate Signer is announced via Vault Smart Contract interaction, the old Delegate Signer will be deleted.
 
   Smart Contract accounts are single chain accounts, restricted to only be able to deposit/withdraw from the chain the Delegate Signer call was made.
 
   A Smart Contract account will always need an EOA to withdraw funds.
 </Warning>
 
-### Smart Contract interface
+### Implementation
 
-In order for a Smart Contract to link a Delegate Signer, it needs to call the function `delegateSigner` as described in this interface:
+<Steps>
+  <Step title="Create delegate signer link">
+    Your Smart Contract needs to call the `delegateSigner` function on the Orderly Vault contract.
+    The interface is described below:
 
 ```sol
 function delegateSigner(VaultTypes.VaultDelegate calldata data) external;
@@ -36,9 +39,13 @@ library VaultTypes {
 }
 ```
 
-An example Smart Contract deployed on [Arbitrum Sepolia](https://sepolia.arbiscan.io/address/0xa4394b62261061c629800c6d86d153a9f38f0cbb#code) has the following code to initiate delegation:
+    <Note>
+    Latest contract ABI files can be found on our [GitHub](https://github.com/OrderlyNetwork/contract-evm-abi). All of our contracts are verified, so you can also see the ABI on their respective explorers.
+    </Note>
 
-<CodeGroup>
+    An example Smart Contract deployed on [Arbitrum Sepolia](https://sepolia.arbiscan.io/address/0xa4394b62261061c629800c6d86d153a9f38f0cbb#code) has the following code to initiate delegation:
+
+    <CodeGroup>
 ```sol DelegateContract.sol
 pragma solidity ^0.8.18;
 
@@ -72,6 +79,26 @@ interface IVault {
     function delegateSigner(VaultTypes.VaultDelegate calldata data) external;
 }
 ```
-</CodeGroup>
+    </CodeGroup>
 
-After successfully linking, the Delegate Signer can call various endpoints by signing messages via EIP-712, which are listed [here](/build-on-evm/user-flows/wallet-authentication#message-types).
+    After calling the function on your Smart Contract for the linking, you need to remember this transaction hash.
+  </Step>
+  <Step title="Accept the link from the Delegate Signer EOA">
+    Confirm the link by signing the [EIP-712](/build-on-evm/user-flows/wallet-authentication#message-types) with your Delegate Signer's wallet and send the information via [`delegate_signer` API](/build-on-evm/evm-api/restful-api/public/add-delegate-signer). You will also need to send the transaction hash from previous step.
+
+    This step will optionally create the account for the Smart Contract, if it does not yet exist. If it already exists it will just update the linked EOA account. 
+  </Step>
+  <Step title="Add Orderly Key">
+    Add Delegate Orderly Key via [REST API](/build-on-evm/user-flows/wallet-authentication#orderly-key).
+  </Step>
+  <Step title="Deploy funds">
+    You can either implement a function in your Smart Contract to call the `deposit` function of the Vault contract or you can call the `depositTo` function from any address and deposit into your Smart Contract's account wallet.
+    For the latter you will also require the `account_id` from the registration step.
+  </Step>
+  <Step title="Start Trading">
+    Start trading via regular trading APIs authenticated with above Orderly Key.
+  </Step>
+  <Step title="Settle PnL/Withdraw">
+    [Settle PnL](/build-on-evm/evm-api/restful-api/private/delegate-signer-settle-pnl) and [withdraw](/build-on-evm/evm-api/restful-api/private/delegate-signer-withdraw-request) via special Delegate Signer endpoints. Sign [EIP-712](/build-on-evm/user-flows/wallet-authentication) domains with Delegate Signer wallet.
+  </Step>
+</Steps>

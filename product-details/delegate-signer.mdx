@@ -11,29 +11,13 @@ Since Orderly Network uses [EIP-712 off-chain signatures](/build-on-evm/user-flo
 Delegate Signer allows Smart Contracts to assign an EOA to sign on behalf of them for actions requiring the EIP-712 signature. Smart Contracts assign a Delegate Signer through Orderly Network's [Vault Smart Contract](/build-on-evm/smart-contract-api/addresses) function called `delegateSigner` prior to interacting with Orderly.
 
 <Warning>
-  There can also only be one EOA per Smart Contract account. If a new Delegate Signer is announced via Vault Smart Contract interaction, the old Delegate Signer will be deleted.
+  There can only be one EOA per Smart Contract account. If a new Delegate Signer is announced via Vault Smart Contract interaction, the old Delegate Signer will be deleted.
 
   Smart Contract accounts are single chain accounts, restricted to only be able to deposit/withdraw from the chain the Delegate Signer call was made.
 
   A Smart Contract account will always need an EOA to withdraw funds.
 </Warning>
 
-## Trade with Smart Contracts
+## Technical details
 
-<Steps>
-  <Step title="Create delegate signer link">
-    Link a Delegate Signer by using the [`delegateSigner` function](/build-on-evm/smart-contract-api/delegation) on the Orderly Vault contract.
-  </Step>
-  <Step title="Accept the link from the Delegate Signer EOA">
-    Confirm the link by signing the [EIP-712](/build-on-evm/user-flows/wallet-authentication) with your Delegate Signer's wallet and send the information via [`delegate_signer` API](/build-on-evm/evm-api/restful-api/public/add-delegate-signer).
-  </Step>
-  <Step title="Add Orderly Key">
-    Add Orderly Key via [REST API](/build-on-evm/user-flows/wallet-authentication).
-  </Step>
-    <Step title="Start Trading">
-    Start trading via regular trading APIs authenticated with above Orderly Key.
-  </Step>
-      <Step title="Settle PnL/Withdraw">
-    [Settle PnL](/build-on-evm/evm-api/restful-api/private/delegate-signer-settle-pnl) and [withdraw](/build-on-evm/evm-api/restful-api/private/delegate-signer-withdraw-request) via special Delegate Signer endpoints. Sign [EIP-712](/build-on-evm/user-flows/wallet-authentication) domains with Delegate Signer wallet.
-  </Step>
-</Steps>
+The technical implementation details can be found in our [Delegate Signer documentation](/build-on-evm/smart-contract-api/delegation#implementation).
