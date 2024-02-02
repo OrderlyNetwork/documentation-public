@@ -8,7 +8,7 @@ The Ethereum Virtual Machine (EVM) differes between user accounts, also known as
 
 Since Orderly Network uses [EIP-712 off-chain signatures](/build-on-evm/user-flows/wallet-authentication) for trading, which will be sent to our backend services, a Smart Contract account cannot trade using this method. In order to allow Smart Contracts to trade on our platform, we introduce a feature called "Delegate Signer", that allows delegation of trading for a Smart Contract account to be executed by an EOA.
 
-Delegate Signer allows Smart Contracts to assign an EOA to sign on behalf of them for actions requiring the EIP-712 signature. Smart Contracts assign a Delegate Signer through Orderly Network's [Vault Smart Contract](/build-on-evm/smart-contract-api/addresses) function called `delegateSigner` prior to interacting with Orderly.
+Delegate Signer allows Smart Contracts to assign an EOA to sign on behalf of them for actions requiring the EIP-712 signature. Smart Contracts assign a Delegate Signer through Orderly Network's [Vault Smart Contract](/build-on-evm/addresses) function called `delegateSigner` prior to interacting with Orderly.
 
 ### Limitations
 
