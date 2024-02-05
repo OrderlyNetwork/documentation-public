@@ -1,0 +1,296 @@
+---
+title: EVM
+description: "Additions and updates to the EVM version"
+icon: "layer-group"
+---
+
+import { Chip } from '/snippets/chip.mdx';
+
+## February 5, 2024 - Major Update
+
+<div style={{ display: "table", width: "auto" }}>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="new" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Introducing the new referral system**
+
+      We've heard your feedback and delivered! The long-awaited Orderly Referral System is finally here, marking a significant milestone in enhancing our platform. Tailored to enrich our community, this system introduces an exciting way for our existing users to connect with new users, strengthening our network through shared rewards.
+
+      At the core of this initiative is a straightforward yet rewarding referral mechanism. Users can easily generate a personalized referral code and share it with potential new members.
+
+      All endpoints for the referral system can be found under the ["Referral Program"](/build-on-evm/evm-api/restful-api/private/create-referral-code) section.
+
+      To learn more about how the Orderly Referral System works, refer to [this article](build-on-evm/user-flows/referral-system).
+
+    </div>
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="update" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Introducing the new fee structure**
+
+      We’re thrilled to unveil the latest enhancement to our services: the Custom Trading Fee System. This innovative feature introduces a suite of flexible fee-setting options, allowing brokers to tailor fee structures to their unique user bases more effectively than ever before. By departing from the limitations of Orderly's standard fees, brokers now have the freedom to set fees that align perfectly with their strategies and customer profiles.
+
+      We believe that this new feature will significantly enhance the developer experience on our platform, offering both improved user satisfaction and a competitive edge in the dynamic trading landscape.
+
+      All fee rate settig endpoints are under the ["Fee Setting"](/build-on-evm/evm-api/restful-api/private/update-user-fee-rate) section.
+
+      The fee tiers are now deprecated from `/v1/public/fee_futures/program`, `/v1/broker/user_info` and `account` websocket.
+
+      New volume-based fee rate setting tool can be found on our [GitHub](https://github.com/OrderlyNetwork/orderly-evm-broker-fee-admin).
+
+      To learn more about how the new fee structure works, refer to [this article](build-on-evm/user-flows/custom-fees).
+      </div>
+  </div>
+
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="update" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Adding New Order Types: Take Profit/Stop Loss**
+
+      Traders can now use more order types: stop loss/take profit and positional stop loss/take.
+
+      Features include:
+
+      **1. Three Trigger Price Options:** Initially available with the Mark Price, with future expansions to include Last Price and Index Price.
+
+      **2. Auto-Cancellation of TP/SL Orders:** Take Profit (TP) and Stop Loss (SL) orders will be automatically canceled if the position is closed, ensuring more precise trade management.
+
+      **3. Two Types of TP/SL Management:**
+
+      **- Full/Entire Position TP/SL:** Apply TP/SL to the entire position with a limit of one maximum TP/SL per position.
+
+      **- Partial Position TP/SL:** Offers the flexibility to define the amount of the position to be closed, with a maximum of 10 partial TP and 10 partial SL orders on each side.
+
+      This update empowers traders to implement more dynamic and sophisticated trading strategies with enhanced risk management features. As always, we are committed to improving and expanding the capabilities of the Orderly Network to meet the evolving needs of our users.
+
+      All "algo order" endpoints are ammended to add the new order types.
+    </div>
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="new" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Introducing Smart Contract trading support**
+
+      We are excited to announce the launch of the "Delegate Signer" feature in the Orderly Network, a new feature enabling Smart Contracts to trade. 
+
+      It allows Smart Contracts to assign an Externally Owned Account (EOA) to sign trades on their behalf using the EIP-712 signature. This solves the issue of Smart Contracts' inability to sign for trades, broadening trading capabilities on the Orderly platform.
+
+      New EIP712 signature types for Delegate Signer functions can be found [here](/build-on-evm/user-flows/wallet-authentication).
+
+      New Delegate Signer function on-chain. Docs can be found [here](/build-on-evm/user-flows/wallet-authentication).
+
+      New Delegate Signer APIs under ["Delegate Signer"](/build-on-evm/evm-api/restful-api/public/add-delegate-signer) section.
+
+      Full write-up of how Delegate Signer functionality works can be found in [this article](build-on-evm/user-flows/delegate-signer).
+    </div>
+  </div>
+
+
+</div>
+
+
+## January 4, 2024 - Major Update
+
+<div style={{ display: "table", width: "auto" }}>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="new" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Introducing the new order types**
+
+      Added create algo order(GET /v1/algo/order), edit algo order(PUT /v1/algo/order), cancel algo order(DELETE /v1/algo/order) and get algo order APIs(GET /v1/algo/order). 
+
+      Only STOP orders are supported for now.
+
+    </div>
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="update" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Changes to deposit withdrawal flow**
+
+      Deposits and Withdrawals now require a fee to cover cross-chain message cost to/from Orderly Ledger contract.
+
+      Added withdraw_fee to each tokens in get token info(GET /v1/public/token) API
+
+      Added allowCrossChainWithdrawal parameter to create withdraw request(POST /v1/withdraw_request) API
+
+      Added PENDING_REBALANCE status for withdrawal request(POST /v1/withdraw_request) in REST and WSS
+    </div>
+  </div>
+
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="new" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Introducing new endpoints to retrive user data**
+
+      Added get account details (GET /v1/public/account) API
+
+      Added get user statistics (GET /v1/client/statistics/daily) API
+
+      Added get user fee tier(GET /v1/broker/user_info) API
+    </div>
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="update" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Introducing new liquidation model**
+
+      Added liquidation_tier parameter for each symbol
+
+      Added symbols array and high/low risk perps in claim liquidated positions(POST /v1/liquidation) API
+    </div>
+  </div>
+
+</div>
+
+
+
+## October 13, 2023 - Major Update
+
+<div style={{ display: "table", width: "auto" }}>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="update" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Updates to APIs**
+
+      Added get vault chain info API
+
+      Added tag parameter for adding Orderly Key
+
+      Changed symbol in get user info API from e.g BTC to PERP_BTC_USDC
+    </div>
+  </div>
+
+</div>
+
+
+## September 21, 2023 - Minor Update
+
+<div style={{ display: "table", width: "auto" }}>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="update" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Updates to APIs**
+
+      Added Claim from insurance fund endpoint
+
+      Added max_notional parameter to Get Insurance Fund Info and Get Account Information endpoints’ response
+
+      Added futures_tier parameter to Get Account Information endpoint
+    </div>
+  </div>
+
+</div>
+
+## August 10, 2023 - Minor Update
+
+<div style={{ display: "table", width: "auto" }}>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="update" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Updates to APIs**
+
+      Added Get PnL Settlement History API
+
+      Added Liquidations on Account Websocket API
+
+      Added reduce-only type of order
+
+      Added limit_price parameter to Claim Liquidated Positions API
+
+      Updated /insurancefund endpoint to /insurance_fund
+
+      Updated symbol parameter of Get Liquidated Positions of Account API to not required
+    </div>
+  </div>
+
+</div>

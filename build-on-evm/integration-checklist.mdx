@@ -1,0 +1,80 @@
+---
+title: "Integration Checklist"
+description: "Structured approach to integrating with Orderly Network"
+---
+
+## Pre-Integration
+
+### Tech Stack Selection
+
+Decide on programming languages, frameworks, and tools compatible with Orderly Network's APIs. Orderly offers the following tools to ease the integration (every tool has comprehensive documentation, code examples for each major user flow, as well as PoCs):
+
+- Directly to API
+
+- [Python connector](https://github.com/OrderlyNetwork/orderly-evm-connector-python)
+
+- TS SDK
+
+    - [React webhooks](https://sdk.orderly.network/docs/hooks/overview)
+
+    - [React UI components](https://sdk.orderly.network/components/introduction)
+
+### GTM Plan
+
+Develop a go-to-market strategy in collaboration with Orderly, including timelines and milestones.
+
+### Development Planning
+
+Outline the scope, objectives, and phases of development, ensuring alignment with Orderly Network's architecture and capabilities. 
+
+Dev kick-off call to verify the final product is in line with Orderly architecture and capabilities and establish any needed support from Orderly.
+
+## Development
+Main flows to cover:
+
+- **Broker Setup:** Get [in touch](mailto:product@orderly.network) with Orderly team to set up broker_id, broker admin wallet, and default fee rates.
+
+- **Deposit & Withdrawal Processes:** Establish secure and efficient mechanisms for handling deposits and withdrawals. Documentation [here](/build-on-evm/user-flows/withdrawal-deposit).
+
+- **Account Registration:** Registering a user account with Orderly. Each user’s wallet can have one account per broker on Orderly. Documentation [here](/build-on-evm/user-flows/accounts).
+
+- **Orderly Keys Management:** Implement creation and management of Orderly Keys for each user. Documentation [here](/build-on-evm/user-flows/wallet-authentication#orderly-key).
+
+- **Trading Functionality:** Integrate and test trading features, including order placement and execution, order types, markets, and appropriate margin/collater calculations.
+
+    - Although all information can be retrieved through the APIs, performing calculations in the front end is recommended so data is more dynamic with the market conditions.
+
+<Note>
+Submit reduce-only orders for orders reducing the position, as reduce-only orders don't count against IMR. If a user wants to close a position and the order is not submited as reduce-only, user might run into IMR requirements issues if they don't have enough margin to submit the order, preventing the user from closing the position.
+</Note>
+
+- **User Data Management:** Being able to display proper user data, like trade history, assets/collater, and open positions.
+
+- **Market Data Integration:** Integrate real-time market data feeds for accurate trading and analysis. Implement trading view charts and order book/market trades display.
+
+- **Fee Setting:** Set up a fee rate-setting system. 
+
+    - Orderly offers a tool for volume-based fee rate setting which can be found on our [GitHub](https://github.com/OrderlyNetwork/orderly-evm-broker-fee-admin).
+
+- **Settle PnL:** Implement and test the profit and loss settlement processes.
+
+- **Ensure Regulatory Compliance:** Verify that all features comply with relevant regulations and geo-block in necessary jurisdictions.
+
+## Post-integration
+**Orderly Announcements Channel:** Join the [Telegram channel](https://t.me/+VnpoOvYpJXA2ZTc1) for updates and announcements.
+
+**Maintenance Preparation:** Set up procedures for regular maintenance and updates. 
+
+    - Get maintenance notifications through our Telegram channel and check if the system is under maintenance through an [API endpoint](/build-on-evm/evm-api/restful-api/public/get-system-maintenance-status).
+
+    - Give users an option to cancel all pending orders during maintenance. Can be done through [this API](/build-on-evm/evm-api/restful-api/private/set-maintenance-config).
+
+<Warning>
+Market prices, order book, user positions, user orders, user balances, and similar data will NOT be available during maintenance.
+
+Pending orders do not get cancelled if not configured and open positions stay open during maintenance so positions can get liquidated.
+
+Trading may resume at a different price after maintenance.
+</Warning>
+
+**Tech Support Setup:** Establish a technical support system for handling user queries and technical issues. Orderly has a tech support team to handle any user or tech issues brokers may encounter.
