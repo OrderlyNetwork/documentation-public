@@ -538,14 +538,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TvConfigResponse'
-  /v1/tv/history:
+  /tv/history:
     get:
       summary: Get TradingView History Bars
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET /v1/tv/history`
+        `GET /tv/history?symbol={}&resolution={}&from={}&to={}`
       tags:
         - public
       parameters:
