@@ -1,0 +1,57 @@
+---
+title: TS SDK
+description: "Additions and updates to the TS SDK"
+icon: "layer-group"
+---
+
+import { Chip } from '/snippets/chip.mdx';
+
+## February 7, 2024 - Major Update
+
+<div style={{ display: "table", width: "auto" }}>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="update" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Updates to @orderly.network/hook v1.1.1**
+
+      We are excited to announce the release of version 1.1.1 of the @orderly.network/hook SDK. This update introduces significant changes and new features designed to enhance your development experience and the capabilities of your applications. Below is an overview of the key updates:
+
+      `useOrderEntry` Hook Enhancements:
+
+        - **Parameter Adjustments:** Now accepts an object of type `OrderEntity` with mandatory fields: `order_type`, `side`, and `symbol`.
+
+
+        - **New Return Values:** Includes `estLiqPrice` (Estimated Liquidation Price), `estLeverage` (Leverage change post-position opening), `formattedOrder` (Formatted order data), and `metaState` (Validation results and form status).
+
+        - **New `submit()` Function:** A parameter-free function to create orders via API, aiming to replace `onSubmit` in future releases.
+
+        `useWithdraw` Hook Update:
+
+        - **New `availableWithdraw` Field:** Indicates the direct withdrawal amount available without needing to settle PnL, calculated based on the unsettledPnL and freeCollateral.
+
+        `useDeposit` Hook Improvements:
+
+        - **New Return Fields:** `depositFee`, `setQuantity(quantity: number)`, and `quantity` for enhanced deposit management.
+
+        - **Simplified `deposit()` Function:** No parameters required for operation.
+
+        **Testnet Transition:** Switch from Arbitrum Goerli to Arbitrum Sepolia.
+
+        **Take Profit/Stop Loss Support:** 
+
+        - Introduction of Algo orders (stop loss) with two new methods: `updateAlgoOrder(orderId: string, order: OrderEntity)` and `cancelAlgoOrder(orderId: string, symbol?: string)`.
+        
+        - Additional return parameters to include Algo order related properties.
+
+    </div>
+  </div>
+
+</div>
