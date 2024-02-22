@@ -25,7 +25,7 @@ Orderly Network uses the [`ed25519` elliptic curve standard](https://ed25519.cr.
 
     1. Get current timestamp in milliseconds, e.g. 1649920583000
     2. Append HTTP method in uppercase, e.g. POST
-    3. Append path of request including query parameters (without base URL), e.g. /v1/order
+    3. Append path of request **including** query parameters (without base URL), e.g. /v1/orders?symbol=PERP_BTC_USDC
     4. (optional) If request has method body, JSON stringify this and append it
 
     The resulting string could look like following:
@@ -258,8 +258,11 @@ class Signer(object):
         if req.json is not None:
             json_str = json.dumps(req.json)
 
-        path = urllib.parse.urlparse(req.url).path
-        message = str(timestamp) + req.method + path + json_str
+        url = urllib.parse.urlparse(req.url)
+        message = str(timestamp) + req.method + url.path + json_str
+        if len(url.query) > 0:
+            message += "?" + url.query
+
         orderly_signature = urlsafe_b64encode(
             self._private_key.sign(message.encode())
         ).decode("utf-8")
@@ -336,7 +339,7 @@ export async function signAndSendRequest(
   const encoder = new TextEncoder();
 
   const url = new URL(input);
-  let message = `${String(timestamp)}${init?.method ?? 'GET'}${url.pathname}`;
+  let message = `${String(timestamp)}${init?.method ?? 'GET'}${url.pathname}${url.search}`;
   if (init?.body) {
     message += init.body;
   }
