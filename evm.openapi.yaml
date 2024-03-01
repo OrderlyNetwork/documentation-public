@@ -1083,6 +1083,13 @@ paths:
           required: true
           schema:
             type: string
+        - name: realized_pnl
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
         - $ref: '#/components/parameters/orderly_timestamp'
         - $ref: '#/components/parameters/orderly_account_id'
         - $ref: '#/components/parameters/orderly_key'
@@ -1264,6 +1271,20 @@ paths:
           in: query
           description: >-
             `NEW`/`CANCELLED`/`PARTIAL_FILLED`/`FILLED`/`REJECTED`/`INCOMPLETE`/`COMPLETED`
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: order_tag
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: realized_pnl
+          in: query
+          description: ""
           required: false
           example: ''
           schema:
@@ -1655,17 +1676,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConfigResponse'
-  /v1/public/chain_info:
+  /v1/public/chain_info/{broker_id}:
     get:
       summary: Get Vault Chain Config
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET /v1/public/chain_info`
+        `GET /v1/public/chain_info/{broker_id}`
       tags:
         - public
-      parameters: []
+      parameters:
+        - name: broker_id
+          in: path
+          description: return chains that supports this broker
+          required: true
+          example: ''
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -1868,6 +1896,13 @@ paths:
           in: path
           description: client_order_id of the order
           required: true
+          schema:
+            type: string
+        - name: realized_pnl
+          in: query
+          description: ""
+          required: false
+          example: ''
           schema:
             type: string
         - $ref: '#/components/parameters/orderly_timestamp'
@@ -2975,6 +3010,20 @@ paths:
           example: ''
           schema:
             type: string
+        - name: order_tag
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: realized_pnl
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
         - name: start_t
           in: query
           description: >-
@@ -3089,6 +3138,13 @@ paths:
           required: true
           schema:
             type: string
+        - name: realized_pnl
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
         - $ref: '#/components/parameters/orderly_timestamp'
         - $ref: '#/components/parameters/orderly_account_id'
         - $ref: '#/components/parameters/orderly_key'
@@ -3119,6 +3175,13 @@ paths:
           required: true
           schema:
             type: number
+        - name: realized_pnl
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
         - $ref: '#/components/parameters/orderly_timestamp'
         - $ref: '#/components/parameters/orderly_account_id'
         - $ref: '#/components/parameters/orderly_key'
@@ -3610,9 +3673,23 @@ paths:
             type: string
         - name: size
           in: query
-          description: ""
+          description: "Only one of `user_address` and `account_id` can be provided"
           required: false
           example: ''
+          schema:
+            type: string
+        - name: user_address
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: account_id
+          in: query
+          description: "Only one of `user_address` and `account_id` can be provided"
+          required: false
+          example: ""
           schema:
             type: string
         - $ref: '#/components/parameters/orderly_timestamp'
@@ -3929,6 +4006,125 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetRefereeInfoResponse'
+
+  /v1/referral/edit_split:
+    post:
+      summary: Edit Referral Code Split
+      deprecated: false
+      description: |
+        **Limit: 1 requests per second**
+
+        `POST /v1/referral/edit_split`
+      tags:
+        - private
+      parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                referral_code:
+                  type: string
+                  description: the referral code that admin wants to create
+                referrer_rebate_rate:
+                  type: number
+                  description: the rebate rate of referrer
+                referee_rebate_rate:
+                  type: number
+                  description: the rebate rate of referee
+              required:
+                - referral_code
+                - referrer_rebate_rate
+                - referee_rebate_rate
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+
+  /v1/public/points/leaderboard:
+    get:
+      summary: Get Points Leaderboard
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/points/leaderboard`
+      tags:
+        - public
+      parameters:
+        - name: start_r
+          in: query
+          description: "Starting rank you wish to query"
+          required: false
+          example: ''
+          schema:
+            type: integer
+        - name: end_r
+          in: query
+          description: "Ending rank you wish to query"
+          required: false
+          example: ''
+          schema:
+            type: integer
+        - name: epoch_id
+          in: query
+          description: "the epoch for which you want to c heck the leaderboard"
+          required: false
+          example: ''
+          schema:
+            type: integer
+        - name: page
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPointsLeaderboardResponse'
+
+  /v1/client/points:
+    get:
+      summary: Get Number of Points
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per user**
+
+        `GET /v1/client/points`
+      tags:
+        - private
+      parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPointsResponse'
 
   /v1/delegate_signer:
     post:
@@ -6033,6 +6229,7 @@ components:
       - symbol
       - total_fee
       - type
+      - realized_pnl
       - updated_time
       - user_id
       - visible
@@ -6087,6 +6284,9 @@ components:
         average_executed_price:
           type: number
           example: 0.67772
+        realized_pnl:
+          type: number
+          example: 123.456
         created_time:
           type: number
           example: 1653563963000
@@ -6178,6 +6378,9 @@ components:
           type:
             type: string
             example: "MARKET"
+          realized_pnl:
+            type: number
+            example: 123.456
           created_time:
             type: string
             example: 1702871974317
@@ -6247,6 +6450,9 @@ components:
         is_maker:
           type: number
           example: 1
+        realized_pnl:
+          type: number
+          example: 123.456
 
 
     AlgoTrade:
@@ -6954,6 +7160,11 @@ components:
                       vault_address:
                         type: string
                         example: "0x816f722424B49Cf1275cc86DA9840Fbd5a6167e9"
+                      broker_ids:
+                        type: array
+                        items:
+                          type: string
+                          example: "woofi_dex"
 
     BatchOrderResponse:
       allOf:
@@ -7782,6 +7993,18 @@ components:
                       perp_volume:
                         type: number
                         example: 451580.9523
+                      perp_maker_volume:
+                        type: number
+                        example: 123.456
+                      perp_taker_volum:
+                        type: number
+                        example: 123.456
+                      total_fee:
+                        type: number
+                        example: 123.456
+                      address:
+                        type: string
+                        example: "0x0000000000"
 
 
 
@@ -7949,6 +8172,12 @@ components:
                             referee_rebate_rate:
                               type: number
                               example: 0.1
+                            total_referrer_rebate:
+                              type: number
+                              example: 123.456
+                            total_referee_rebate:
+                              type: number
+                              example: 123.456
                 meta:
                   type: object
                   properties:
@@ -8444,6 +8673,18 @@ components:
                       pnl:
                         type: number
                         example: 800.12
+                      total_deposit_amount:
+                        type: number
+                        example: 800.12
+                      total_withdrawal_amount:
+                        type: number
+                        example: 800.12
+                      start_account_value:
+                        type: number
+                        example: 800.12
+                      end_account_value:
+                        type: number
+                        example: 800.12
 
     GetCampaignUserResponse:
       allOf:
@@ -8465,6 +8706,92 @@ components:
                 pnl:
                   type: number
                   example: 800.12
+                total_deposit_amount:
+                  type: number
+                  example: 800.12
+                total_withdrawal_amount:
+                  type: number
+                  example: 800.12
+                start_account_value:
+                  type: number
+                  example: 800.12
+                end_account_value:
+                  type: number
+                  example: 800.12
+
+    GetPointsLeaderboardResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                epoch_id:
+                  type: number
+                  example: 1
+                meta:
+                  $ref: '#/components/schemas/PaginationMeta'
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      rank:
+                        type: number
+                        example: 1
+                      tier:
+                        type: number
+                        example: 1
+                      address:
+                        type: string
+                        example: "0xfcc17f2b240380d56f0615e8f654e4ae3cee8957"
+                      points:
+                        type: number
+                        example: 15000
+                      previous_rank:
+                        type: number
+                        example: 4
+
+
+    GetPointsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                total_points:
+                  type: number
+                  example: 547
+                global_rank:
+                  type: number
+                  example: 17
+                tier:
+                  type: number
+                  example: 3
+                current_epoch_points:
+                  type: number
+                  example: 200
+                current_epoch_rank:
+                  type: number
+                  example: 3
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      rank:
+                        type: number
+                        example: 1
+                      epoch_id:
+                        type: number
+                        example: 1
+                      points:
+                        type: number
+                        example: 15000
+
 
     GetDefaultBrokerFeesResponse:
       allOf:
