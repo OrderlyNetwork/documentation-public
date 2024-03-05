@@ -6,6 +6,83 @@ icon: "layer-group"
 
 import { Chip } from '/snippets/chip.mdx';
 
+## March 5, 2024 - Patch Update
+
+<div style={{ display: "table", width: "auto" }}>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="update" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Updates to @orderly.network/hook v1.1.4**
+
+      - removed LZ scan library, no @axios dependency required.
+
+      - fixed token approval issues.
+
+      - update to `useOrderbookStream` hook to add `padding` param to not return anything if the orderbook depth is not enough.
+
+      ```JS
+      const [data] = useOrderBookStream('[symbol]', undefined, {level:10, padding:false}
+      //if 'padding' is true, the hook will return NaN to 
+      //fill the data to specified level if not enough depth
+      ```
+      - fixed WS connection issues.
+
+    </div>
+  </div>
+
+</div>
+
+
+## February 22, 2024 - Minor Update
+
+<div style={{ display: "table", width: "auto" }}>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="update" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Updates to @orderly.network/hook v1.1.3**
+
+
+**Fixes:**
+
+- The issue of incorrect Liq. price when reading margin data, now we will pass null when it's loading.
+- The issue of Orderbook display.
+- The issue of fetching incorrect symbol for mark price / symbol infos when switching symbols.
+- Numerous UI issues in the desktop SDK.
+
+**Optimizations:**
+
+- Reduced the number of API calls made during open/cancel order operations to avoid triggering rate limits.
+- Improved the order entry experience.
+
+**New Features:**
+
+
+        - Added stop order functionality in the desktop and mobile web UI.
+        
+        - Added order/position lines in the desktop web kline.
+
+    </div>
+  </div>
+
+</div>
+
+
 ## February 7, 2024 - Major Update
 
 <div style={{ display: "table", width: "auto" }}>
@@ -22,7 +99,7 @@ import { Chip } from '/snippets/chip.mdx';
     >
       **Updates to @orderly.network/hook v1.1.2**
 
-      We are excited to announce the release of version 1.1.1 of the @orderly.network/hook SDK. This update introduces significant changes and new features designed to enhance your development experience and the capabilities of your applications. Below is an overview of the key updates:
+      We are excited to announce the release of version 1.1.2 of the @orderly.network/hook SDK. This update introduces significant changes and new features designed to enhance your development experience and the capabilities of your applications. Below is an overview of the key updates:
 
       `useOrderEntry` Hook Enhancements:
 
