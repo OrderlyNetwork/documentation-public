@@ -38,7 +38,7 @@ Orderly Network uses the [`ed25519` elliptic curve standard](https://ed25519.cr.
     Use the normalized request content to generate a signature using the `ed25519` algorithm, and encode the signature in base64 url-safe format. Add the result to the request headers as `orderly-signature`.
   </Step>
   <Step title="Content type">
-    Add `Content-Type` header. All `GET` requests use `application/x-www-form-urlencoded` and `POST` uses `application/json`.
+    Add `Content-Type` header. All `GET` and `DELELTE` requests use `application/x-www-form-urlencoded`. Any other method type uses `application/json`.
   </Step>
   <Step title="Send the request">
   The final request should have following headers:
