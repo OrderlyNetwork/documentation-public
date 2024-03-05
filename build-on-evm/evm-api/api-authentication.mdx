@@ -128,10 +128,10 @@ public class Signer {
    public Request createSignedRequest(String url, String method, JSONObject json)
          throws OrderlyClientException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
       checkIsInitialized();
-      if (method == "GET") {
-         return createSignedGetRequest(url);
-      } else if (method == "POST" && json != null) {
-         return createSignedPostRequest(url, json);
+      if (method == "GET" || method == "DELETE") {
+         return createSignedFormRequest(url, method);
+      } else if ((method == "POST" || method == "PUT") && json != null) {
+         return createSignedJsonRequest(url, method, json);
       } else {
          throw new IllegalArgumentException();
       }
@@ -146,10 +146,10 @@ public class Signer {
       }
    }
 
-   private Request createSignedGetRequest(String url)
+   private Request createSignedFormRequest(String url, String method)
          throws SignatureException, UnsupportedEncodingException, InvalidKeyException {
       long timestamp = Instant.now().toEpochMilli();
-      String message = "" + timestamp + "GET" + url;
+      String message = "" + timestamp + method + url;
 
       EdDSAEngine signature = new EdDSAEngine();
       signature.initSign(privateKey);
@@ -166,12 +166,12 @@ public class Signer {
             .build();
    }
 
-   private Request createSignedPostRequest(String url, JSONObject json)
+   private Request createSignedJsonRequest(String url, String method, JSONObject json)
          throws SignatureException, UnsupportedEncodingException, InvalidKeyException {
       RequestBody body = RequestBody.create(json.toString(), MediaType.parse("application/json"));
 
       long timestamp = Instant.now().toEpochMilli();
-      String message = "" + timestamp + "POST" + url + json.toString();
+      String message = "" + timestamp + method + url + json.toString();
 
       EdDSAEngine signature = new EdDSAEngine();
       signature.initSign(privateKey);
@@ -276,9 +276,9 @@ class Signer(object):
             "orderly-signature": orderly_signature,
         }
         print(req.headers)
-        if req.method == "GET":
+        if req.method == "GET" or req.method == "DELETE":
             req.headers["Content-Type"] = "application/x-www-form-urlencoded"
-        elif req.method == "POST":
+        elif req.method == "POST" or re.method == "PUT":
             req.headers["Content-Type"] = "application/json"
 
         return req.prepare()
@@ -348,7 +348,9 @@ export async function signAndSendRequest(
   return fetch(input, {
     headers: {
       'Content-Type':
-        init?.method !== 'GET' ? 'application/json' : 'application/x-www-form-urlencoded',
+        init?.method !== 'GET' && init?.method !== 'DELETE'
+          ? 'application/json'
+          : 'application/x-www-form-urlencoded',
       'orderly-timestamp': String(timestamp),
       'orderly-account-id': orderlyAccountId,
       'orderly-key': `ed25519:${encodeBase58(await getPublicKeyAsync(privateKey))}`,
