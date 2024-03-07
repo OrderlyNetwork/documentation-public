@@ -389,7 +389,7 @@ paths:
     get:
       summary: Get Exchange Information
       deprecated: false
-      description: >
+      description: "
         **Limit: 10 requests per 1 second per IP address**
 
 
@@ -434,6 +434,7 @@ paths:
 
         - Order size should be within holding threshold. See
         [account_info](/build-on-evm/evm-api/restful-api/get-account-information)
+        "
       tags:
         - public
       parameters:
@@ -4049,14 +4050,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/BasicResponse'
 
-  /v1/public/points/leaderboard:
+  /point/epoch/leaderboard:
     get:
       summary: Get Points Leaderboard
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET /v1/public/points/leaderboard`
+        `GET /point/epoch/leaderboard`
       tags:
         - public
       parameters:
@@ -4076,7 +4077,7 @@ paths:
             type: integer
         - name: epoch_id
           in: query
-          description: "the epoch for which you want to c heck the leaderboard"
+          description: "the epoch for which you want to check the leaderboard"
           required: false
           example: ''
           schema:
@@ -4103,17 +4104,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetPointsLeaderboardResponse'
 
-  /v1/client/points:
+  /point/client/points:
     get:
       summary: Get Number of Points
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per user**
 
-        `GET /v1/client/points`
+        `GET /point/client/points`
       tags:
         - private
       parameters:
+        -
         - $ref: '#/components/parameters/orderly_timestamp'
         - $ref: '#/components/parameters/orderly_account_id'
         - $ref: '#/components/parameters/orderly_key'
@@ -6097,6 +6099,9 @@ components:
         reduce_only:
           type: boolean
           description: Default false
+        slippage:
+          type: number
+          description: "`MARKET` orders beyond this slippage will not be executed"
         order_tag:
           type: string
 
