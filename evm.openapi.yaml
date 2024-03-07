@@ -3066,7 +3066,7 @@ paths:
             type: string
         - name: algo_type
           in: query
-          description: ''
+          description: 'Supported types are `STOP`, `TPSL`, `positional_TPSL`'
           required: false
           example: ''
           schema:
@@ -4115,7 +4115,11 @@ paths:
       tags:
         - private
       parameters:
-        -
+        - name: Content-type
+          in: header
+          schema:
+            type: string
+            example: "application/json"
         - $ref: '#/components/parameters/orderly_timestamp'
         - $ref: '#/components/parameters/orderly_account_id'
         - $ref: '#/components/parameters/orderly_key'
