@@ -1084,13 +1084,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: realized_pnl
-          in: query
-          description: ""
-          required: false
-          example: ''
-          schema:
-            type: string
         - $ref: '#/components/parameters/orderly_timestamp'
         - $ref: '#/components/parameters/orderly_account_id'
         - $ref: '#/components/parameters/orderly_key'
@@ -1277,13 +1270,6 @@ paths:
           schema:
             type: string
         - name: order_tag
-          in: query
-          description: ""
-          required: false
-          example: ''
-          schema:
-            type: string
-        - name: realized_pnl
           in: query
           description: ""
           required: false
@@ -1924,13 +1910,6 @@ paths:
           in: path
           description: client_order_id of the order
           required: true
-          schema:
-            type: string
-        - name: realized_pnl
-          in: query
-          description: ""
-          required: false
-          example: ''
           schema:
             type: string
         - $ref: '#/components/parameters/orderly_timestamp'
@@ -3045,13 +3024,6 @@ paths:
           example: ''
           schema:
             type: string
-        - name: realized_pnl
-          in: query
-          description: ""
-          required: false
-          example: ''
-          schema:
-            type: string
         - name: start_t
           in: query
           description: >-
@@ -3166,13 +3138,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: realized_pnl
-          in: query
-          description: ""
-          required: false
-          example: ''
-          schema:
-            type: string
         - $ref: '#/components/parameters/orderly_timestamp'
         - $ref: '#/components/parameters/orderly_account_id'
         - $ref: '#/components/parameters/orderly_key'
@@ -3203,13 +3168,6 @@ paths:
           required: true
           schema:
             type: number
-        - name: realized_pnl
-          in: query
-          description: ""
-          required: false
-          example: ''
-          schema:
-            type: string
         - $ref: '#/components/parameters/orderly_timestamp'
         - $ref: '#/components/parameters/orderly_account_id'
         - $ref: '#/components/parameters/orderly_key'
@@ -6265,7 +6223,6 @@ components:
       - symbol
       - total_fee
       - type
-      - realized_pnl
       - updated_time
       - user_id
       - visible
@@ -6320,9 +6277,6 @@ components:
         average_executed_price:
           type: number
           example: 0.67772
-        realized_pnl:
-          type: number
-          example: 123.456
         created_time:
           type: number
           example: 1653563963000
@@ -6414,9 +6368,6 @@ components:
           type:
             type: string
             example: "MARKET"
-          realized_pnl:
-            type: number
-            example: 123.456
           created_time:
             type: string
             example: 1702871974317
@@ -6486,9 +6437,6 @@ components:
         is_maker:
           type: number
           example: 1
-        realized_pnl:
-          type: number
-          example: 123.456
 
 
     AlgoTrade:
@@ -8038,6 +7986,9 @@ components:
                       total_fee:
                         type: number
                         example: 123.456
+                      broker_fee:
+                        type: number
+                        example: 123.456
                       address:
                         type: string
                         example: "0x0000000000"
@@ -8277,6 +8228,18 @@ components:
                     total_referee_volume:
                       type: number
                       example: 30
+                    1d_referrer_rebate:
+                      type: number
+                      example: 5
+                    7d_referrer_rebate:
+                      type: number
+                      example: 10
+                    30d_referrer_rebate:
+                      type: number
+                      example: 20
+                    total_referrer_rebate:
+                      type: number
+                      example: 30
                     1d_referee_fee:
                       type: number
                       example: 5
@@ -8321,6 +8284,18 @@ components:
                     referee_rebate_rate:
                       type: number
                       example: 0.1
+                    1d_referee_rebate:
+                      type: number
+                      example: 5
+                    7d_referee_rebate:
+                      type: number
+                      example: 10
+                    30d_referee_rebate:
+                      type: number
+                      example: 20
+                    total_referee_rebate:
+                      type: number
+                      example: 30
 
 
     GetReferralHistoryResponse:
@@ -8402,6 +8377,14 @@ components:
                         type: number
                         example: 2.22
                         description: "the total referral rebate received by the user on this day"
+                      volume:
+                        type: number
+                        example: 123.456
+                        description: ""
+                      fee:
+                        type: number
+                        example: 123.456
+                        description: ""
                       date:
                         type: string
                         example: "2023-11-14"
