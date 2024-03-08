@@ -1700,14 +1700,6 @@ paths:
         `GET /v1/public/chain_info`
       tags:
         - public
-      parameters:
-        - name: broker_id
-          in: path
-          description: return chains that supports this broker
-          required: true
-          example: ''
-          schema:
-            type: string
       responses:
         "200":
           description: OK
@@ -4035,14 +4027,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/BasicResponse'
 
-  /point/epoch/leaderboard:
+  /v1/public/points/leaderboard:
     get:
       summary: Get Points Leaderboard
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET /point/epoch/leaderboard`
+        `GET /v1/public/points/leaderboard`
       tags:
         - public
       parameters:
@@ -4089,22 +4081,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetPointsLeaderboardResponse'
 
-  /point/client/points:
+  /v1/client/points:
     get:
       summary: Get Number of Points
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per user**
 
-        `GET /point/client/points`
+        `GET /v1/client/points`
       tags:
         - private
       parameters:
-        - name: Content-type
-          in: header
-          schema:
-            type: string
-            example: "application/json"
         - $ref: '#/components/parameters/orderly_timestamp'
         - $ref: '#/components/parameters/orderly_account_id'
         - $ref: '#/components/parameters/orderly_key'
@@ -4116,6 +4103,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetPointsResponse'
+
+
+  /v1/public/points/epoch:
+    get:
+      summary: Get Number of Points
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per user per IP address**
+
+        `GET /v1/public/points/epoch`
+        
+        Retrieve the number of points for past epochs and current epoch
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEpochPointsResponse'
 
   /v1/delegate_signer:
     post:
@@ -8772,6 +8780,41 @@ components:
                         type: number
                         example: 4
 
+
+    GetEpochPointsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                current_total_epoch_points:
+                  type: number
+                  example: 547
+                current_epoch_points:
+                  type: number
+                  example: 17
+                current_epoch_id:
+                  type: number
+                  example: 3
+                total_traders:
+                  type: number
+                  example: 200
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      rank:
+                        type: number
+                        example: 1
+                      epoch_id:
+                        type: number
+                        example: 1
+                      total_points:
+                        type: number
+                        example: 15000
 
     GetPointsResponse:
       allOf:
