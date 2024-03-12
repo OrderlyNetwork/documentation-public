@@ -4090,12 +4090,15 @@ paths:
 
         `GET /v1/client/points`
       tags:
-        - private
+        - public
       parameters:
-        - $ref: '#/components/parameters/orderly_timestamp'
-        - $ref: '#/components/parameters/orderly_account_id'
-        - $ref: '#/components/parameters/orderly_key'
-        - $ref: '#/components/parameters/orderly_signature'
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: 'sample_address'
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -4103,6 +4106,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetPointsResponse'
+
+  /v1/public/points/epoch_dates:
+    get:
+      summary: Get Start and End Date of All Epochs
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per user**
+
+        `GET /v1/public/points/epoch_dates`
+        
+        Retrieve the dates of all epochs
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEpochDatesResponse'
 
 
   /v1/public/points/epoch:
@@ -4552,7 +4575,6 @@ components:
     BasicResponse:
       required:
       - success
-      - timestamp
       type: object
       properties:
         success:
@@ -8815,6 +8837,29 @@ components:
                       total_points:
                         type: number
                         example: 15000
+
+    GetEpochDatesResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      epoch_start_date:
+                        type: number
+                        example: 1708905600000
+                      epoch_id:
+                        type: number
+                        example: 1
+                      epoch_end_date:
+                        type: number
+                        example: 1708992000000
 
     GetPointsResponse:
       allOf:
