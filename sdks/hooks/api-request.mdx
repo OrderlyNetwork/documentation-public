@@ -1,0 +1,233 @@
+---
+title: "API Requests"
+---
+
+Orderly provides both public and private APIs. Public APIs can be fetched directly. Private APIs require [authentication](/build-on-evm/evm-api/api-authentication) and these can be performed using hooks from `@orderly.network/hooks`.
+
+<Note>
+  **Reminder:** Most often you might not have to use the following hooks, as
+  `@orderly.network/hooks` likely implements higher level hooks on top of the request module. For
+  example, you can use `usePositionStream` for position management, and `useOrderEntry` for order
+  placement. You may consider to use these hooks if you want to build out more advanced usage of
+  Orderly, or if the provided hooks are not suitable for your use case.
+</Note>
+
+## RESTful API
+
+`@orderly.network/hooks` provides the following hooks for builders to access Orderly's RESTful APIs:
+
+- [useQuery](/sdks/hooks/basic/use-query)
+- [usePrivateQuery](/sdks/hooks/basic/use-private-query)
+- [usePrivateInfiniteQuery](/sdks/hooks/basic/use-private-infinite-query)
+- [useMutation](/sdks/hooks/basic/use-mutation)
+
+The above hooks are based on [SWR](https://swr.vercel.app/) and have the following properties:
+
+- Request responses are cached. Cached data are used in priority according to the config, and is used as a global status management.
+- Removes any duplicate requests. When request parameters are the same, it will automatically cancel the duplicate request
+- When the window is focused or when the connection is recovered, automatically retries requests.
+- Automatically retries any failed network requests.
+- For more information, please check the [official swr documentation](https://swr.vercel.app/).
+
+### Public APIs
+
+Use `useQuery` to access any public API, for example to get all available symbols on Orderly:
+
+```tsx
+export const UseQueryExample: FC = () => {
+  const { data, error, isLoading } = useQuery<API.Symbol[]>("/v1/public/info");
+
+  return (
+    <pre className="text-sm">
+      {isLoading && <div>Loading...</div>}
+      {data && <div className="text-slate-500">{JSON.stringify(data, null, 2)}</div>}
+    </pre>
+  );
+};
+```
+
+The `data` returned by `useQuery` is already serialized in JSON format. If you want to access the raw data, you can provide a `formatter` to override the default serialization of the hook. For example:
+
+```tsx
+import { useQuery } from "@orderly.network/hooks";
+
+const { data, error } = useQuery("/v1/public/info", {
+  formatter: (data) => data
+});
+```
+
+### Private APIs
+
+Use `usePrivateQuery`, `usePrivateInfiniteQuery` or `useMutation` to access any private API. These are slightly different from `useQuery`:
+
+- They have a built-in account status check. Developers do not have to check the current login status of the user. If the user has not logged in, the request will not be sent until the user status has changed to a logged in status.
+- They will automatically sign all requests using the `OrderlyKey` according to Orderly's standards.
+
+Use `usePrivateQuery` to access a private API, for example to get the current user info:
+
+```tsx
+import { usePrivateQuery } from "@orderly.network/hooks";
+
+export const UsePrivateQueryExample = () => {
+  const { data, isLoading, error } = usePrivateQuery("/v1/client/info");
+  const { state } = useAccount();
+
+  if (isLoading) return <div>loading...</div>;
+
+  return (
+    <div>
+      <div>{state.status}</div>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
+    </div>
+  );
+};
+```
+
+### Mutation
+
+**Note: `useQuery`/`usePrivateQuery` can only be used for `GET` requests.**
+
+For `POST`, `PUT` or `DELETE` requests, please use `useMutation`. For example to create a new order:
+
+```tsx
+import { useMutation } from "@orderly.network/hooks";
+
+const [createOrder, { data, error, isMutating }] = useMutation<OrderEntity, any>("/v1/order");
+```
+
+### Infinite scrolling
+
+Position list or order lists typically requires pagination to load all the data. If an infinite scrolling effect has to be implemented `usePrivateInfiniteQuery` can be used.
+
+**Slightly different from sending an incremental `page` parameter, `usePrivateInfiniteQuery` will append data from the next `page` to `data`, and not replace the current response.**
+
+For example, to get the list of orders:
+
+```tsx
+const { data: orders } = usePrivateInfiniteQuery(
+  (pageIndex: number, previousPageData) => {
+    // reached the end
+    if (previousPageData && !previousPageData.length) return null;
+
+    const search = new URLSearchParams([
+      ["size", size.toString()],
+      ["page", `${pageIndex + 1}`]
+    ]);
+
+    if (status) {
+      search.set(`status`, status);
+    }
+
+    if (symbol) {
+      search.set(`symbol`, symbol);
+    }
+
+    if (side) {
+      search.set(`side`, side);
+    }
+
+    return `/v1/orders?${search.toString()}`;
+  },
+  {
+    initialSize: 1,
+    onError: (err) => {
+      console.error("fetch failed::::", err);
+    }
+  }
+);
+```
+
+## WebSocket
+
+`@orderly.network/hooks` provides a `useWS` hook for accessing Orderly's Websocket API. `useWS` returns the `WS` instance of `@orderly.network/net`. Builders can use `WS` to subscribe, cancel, or to send messages through the Websocket.
+
+For all available topics of the Websocket, please check the [Websocket API documentation](/api).
+
+### Subscribing to public topics
+
+```typescript
+subscribe(
+    topic: string|{[key:string]:any},
+    callback: WSMessageHandler | Omit<WSMessageHandler, "onUnsubscribe">,
+    once?: boolean,
+    id?: string
+  ): unsubscribe | undefined
+
+```
+
+Subscribing to the `trade` topic:
+
+```typescript
+import { useEffect } from "react";
+import { useWS } from "@orderly.network/hooks";
+
+export const Example = () => {
+  const ws = useWS();
+
+  useEffect(() => {
+    const unsubscript = ws.subscribe(
+      {
+        id: `${symbol}@trade`,
+        event: "subscribe",
+        topic: `${symbol}@trade`,
+        ts: Date.now()
+      },
+      {
+        onMessage: (data: any) => {
+          //
+        }
+      }
+    );
+    () => {
+      // Unsubscribes when the component unloads
+      unsubscribe();
+    };
+  }, []);
+
+  //...
+};
+```
+
+### Subscribing to private topics
+
+```typescript
+subscribe(
+    topic: string|{[key:string]:any},
+    callback: WSMessageHandler | Omit<WSMessageHandler, "onUnsubscribe">,
+    once?: boolean,
+    id?: string
+  ): unsubscribe | undefined
+
+```
+
+Subscribing to the `executionreport` topic:
+
+```typescript
+import { useWS } from "@orderly.network/hooks";
+
+export const Example = () => {
+  const ws = useWS();
+
+  useEffect(() => {
+    const unsubscript = ws.privateSubscribe(
+      {
+        id: "executionreport",
+        event: "subscribe",
+        topic: "executionreport",
+        ts: Date.now()
+      },
+      {
+        onMessage: (data) => {
+          // do something
+        }
+      }
+    );
+    () => {
+      // Unsubscribes when the component unloads
+      unsubscribe();
+    };
+  }, []);
+
+  //...
+};
+```
