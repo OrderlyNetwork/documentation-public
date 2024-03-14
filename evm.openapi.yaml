@@ -389,7 +389,7 @@ paths:
     get:
       summary: Get Exchange Information
       deprecated: false
-      description: >
+      description: "
         **Limit: 10 requests per 1 second per IP address**
 
 
@@ -434,6 +434,7 @@ paths:
 
         - Order size should be within holding threshold. See
         [account_info](/build-on-evm/evm-api/restful-api/get-account-information)
+        "
       tags:
         - public
       parameters:
@@ -1268,6 +1269,13 @@ paths:
           example: ''
           schema:
             type: string
+        - name: order_tag
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
         - name: start_t
           in: query
           description: >-
@@ -1655,6 +1663,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConfigResponse'
+  /v1/public/chain_info/{broker_id}:
+    get:
+      summary: Get Supported Chains per Broker
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/chain_info/{broker_id}`
+
+        Get chains specified broker is available on.
+      tags:
+        - public
+      parameters:
+        - name: broker_id
+          in: path
+          description: return chains that supports this broker
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChainInfoResponse'
   /v1/public/chain_info:
     get:
       summary: Get Vault Chain Config
@@ -1665,7 +1700,6 @@ paths:
         `GET /v1/public/chain_info`
       tags:
         - public
-      parameters: []
       responses:
         "200":
           description: OK
@@ -2975,6 +3009,13 @@ paths:
           example: ''
           schema:
             type: string
+        - name: order_tag
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
         - name: start_t
           in: query
           description: >-
@@ -3016,7 +3057,7 @@ paths:
             type: string
         - name: algo_type
           in: query
-          description: ''
+          description: 'Supported types are `STOP`, `TPSL`, `positional_TPSL`'
           required: false
           example: ''
           schema:
@@ -3174,7 +3215,7 @@ paths:
 
         The provided `start_date`/`end_date` has to be within a 90-day range.
         
-        Scope: Only each broker_id’s admin wallet can call this endpoint.
+        Updated hourly
       tags:
         - private
       parameters:
@@ -3610,9 +3651,23 @@ paths:
             type: string
         - name: size
           in: query
-          description: ""
+          description: "Only one of `user_address` and `account_id` can be provided"
           required: false
           example: ''
+          schema:
+            type: string
+        - name: user_address
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: account_id
+          in: query
+          description: "Only one of `user_address` and `account_id` can be provided"
+          required: false
+          example: ""
           schema:
             type: string
         - $ref: '#/components/parameters/orderly_timestamp'
@@ -3929,6 +3984,169 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetRefereeInfoResponse'
+
+  /v1/referral/edit_split:
+    post:
+      summary: Edit Referral Code Split
+      deprecated: false
+      description: |
+        **Limit: 1 requests per second**
+
+        `POST /v1/referral/edit_split`
+      tags:
+        - private
+      parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                referral_code:
+                  type: string
+                  description: the referral code that admin wants to create
+                referrer_rebate_rate:
+                  type: number
+                  description: the rebate rate of referrer
+                referee_rebate_rate:
+                  type: number
+                  description: the rebate rate of referee
+              required:
+                - referral_code
+                - referrer_rebate_rate
+                - referee_rebate_rate
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
+
+  /v1/public/points/leaderboard:
+    get:
+      summary: Get Points Leaderboard
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/points/leaderboard`
+      tags:
+        - public
+      parameters:
+        - name: start_r
+          in: query
+          description: "Starting rank you wish to query"
+          required: false
+          example: ''
+          schema:
+            type: integer
+        - name: end_r
+          in: query
+          description: "Ending rank you wish to query"
+          required: false
+          example: ''
+          schema:
+            type: integer
+        - name: epoch_id
+          in: query
+          description: "the epoch for which you want to check the leaderboard"
+          required: false
+          example: ''
+          schema:
+            type: integer
+        - name: page
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPointsLeaderboardResponse'
+
+  /v1/client/points:
+    get:
+      summary: Get  User's Points
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per user**
+
+        `GET /v1/client/points`
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: 'sample_address'
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPointsResponse'
+
+  /v1/public/points/epoch_dates:
+    get:
+      summary: Get Start and End Date of All Epochs
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per user**
+
+        `GET /v1/public/points/epoch_dates`
+        
+        Retrieve the dates of all epochs
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEpochDatesResponse'
+
+
+  /v1/public/points/epoch:
+    get:
+      summary: Get Number of Points for Distribution
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per user per IP address**
+
+        `GET /v1/public/points/epoch`
+        
+        Retrieve the number of points for past epochs and current epoch
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEpochPointsResponse'
 
   /v1/delegate_signer:
     post:
@@ -4357,7 +4575,6 @@ components:
     BasicResponse:
       required:
       - success
-      - timestamp
       type: object
       properties:
         success:
@@ -5901,6 +6118,9 @@ components:
         reduce_only:
           type: boolean
           description: Default false
+        slippage:
+          type: number
+          description: "`MARKET` orders beyond this slippage will not be executed"
         order_tag:
           type: string
 
@@ -6954,6 +7174,11 @@ components:
                       vault_address:
                         type: string
                         example: "0x816f722424B49Cf1275cc86DA9840Fbd5a6167e9"
+                      broker_ids:
+                        type: array
+                        items:
+                          type: string
+                          example: "woofi_dex"
 
     BatchOrderResponse:
       allOf:
@@ -7782,6 +8007,21 @@ components:
                       perp_volume:
                         type: number
                         example: 451580.9523
+                      perp_maker_volume:
+                        type: number
+                        example: 123.456
+                      perp_taker_volum:
+                        type: number
+                        example: 123.456
+                      total_fee:
+                        type: number
+                        example: 123.456
+                      broker_fee:
+                        type: number
+                        example: 123.456
+                      address:
+                        type: string
+                        example: "0x0000000000"
 
 
 
@@ -7949,6 +8189,12 @@ components:
                             referee_rebate_rate:
                               type: number
                               example: 0.1
+                            total_referrer_rebate:
+                              type: number
+                              example: 123.456
+                            total_referee_rebate:
+                              type: number
+                              example: 123.456
                 meta:
                   type: object
                   properties:
@@ -8012,6 +8258,18 @@ components:
                     total_referee_volume:
                       type: number
                       example: 30
+                    1d_referrer_rebate:
+                      type: number
+                      example: 5
+                    7d_referrer_rebate:
+                      type: number
+                      example: 10
+                    30d_referrer_rebate:
+                      type: number
+                      example: 20
+                    total_referrer_rebate:
+                      type: number
+                      example: 30
                     1d_referee_fee:
                       type: number
                       example: 5
@@ -8056,6 +8314,18 @@ components:
                     referee_rebate_rate:
                       type: number
                       example: 0.1
+                    1d_referee_rebate:
+                      type: number
+                      example: 5
+                    7d_referee_rebate:
+                      type: number
+                      example: 10
+                    30d_referee_rebate:
+                      type: number
+                      example: 20
+                    total_referee_rebate:
+                      type: number
+                      example: 30
 
 
     GetReferralHistoryResponse:
@@ -8137,6 +8407,14 @@ components:
                         type: number
                         example: 2.22
                         description: "the total referral rebate received by the user on this day"
+                      volume:
+                        type: number
+                        example: 123.456
+                        description: ""
+                      fee:
+                        type: number
+                        example: 123.456
+                        description: ""
                       date:
                         type: string
                         example: "2023-11-14"
@@ -8444,6 +8722,18 @@ components:
                       pnl:
                         type: number
                         example: 800.12
+                      total_deposit_amount:
+                        type: number
+                        example: 800.12
+                      total_withdrawal_amount:
+                        type: number
+                        example: 800.12
+                      start_account_value:
+                        type: number
+                        example: 800.12
+                      end_account_value:
+                        type: number
+                        example: 800.12
 
     GetCampaignUserResponse:
       allOf:
@@ -8465,6 +8755,150 @@ components:
                 pnl:
                   type: number
                   example: 800.12
+                total_deposit_amount:
+                  type: number
+                  example: 800.12
+                total_withdrawal_amount:
+                  type: number
+                  example: 800.12
+                start_account_value:
+                  type: number
+                  example: 800.12
+                end_account_value:
+                  type: number
+                  example: 800.12
+
+    GetPointsLeaderboardResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                epoch_id:
+                  type: number
+                  example: 1
+                meta:
+                  $ref: '#/components/schemas/PaginationMeta'
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      rank:
+                        type: number
+                        example: 1
+                      tier:
+                        type: number
+                        example: 1
+                      address:
+                        type: string
+                        example: "0xfcc17f2b240380d56f0615e8f654e4ae3cee8957"
+                      points:
+                        type: number
+                        example: 15000
+                      previous_rank:
+                        type: number
+                        example: 4
+
+
+    GetEpochPointsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                current_total_epoch_points:
+                  type: number
+                  example: 547
+                current_epoch_points:
+                  type: number
+                  example: 17
+                current_epoch_id:
+                  type: number
+                  example: 3
+                total_traders:
+                  type: number
+                  example: 200
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      rank:
+                        type: number
+                        example: 1
+                      epoch_id:
+                        type: number
+                        example: 1
+                      total_points:
+                        type: number
+                        example: 15000
+
+    GetEpochDatesResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      epoch_start_date:
+                        type: number
+                        example: 1708905600000
+                      epoch_id:
+                        type: number
+                        example: 1
+                      epoch_end_date:
+                        type: number
+                        example: 1708992000000
+
+    GetPointsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                total_points:
+                  type: number
+                  example: 547
+                global_rank:
+                  type: number
+                  example: 17
+                tier:
+                  type: number
+                  example: 3
+                current_epoch_points:
+                  type: number
+                  example: 200
+                current_epoch_rank:
+                  type: number
+                  example: 3
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      rank:
+                        type: number
+                        example: 1
+                      epoch_id:
+                        type: number
+                        example: 1
+                      points:
+                        type: number
+                        example: 15000
+
 
     GetDefaultBrokerFeesResponse:
       allOf:
