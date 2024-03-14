@@ -1,0 +1,139 @@
+---
+title: "Account"
+---
+
+`@orderly.network/hooks` provides the following hooks for handling account-related logic:
+
+- [`useAccount`](/sdks/hooks/advanced/useAccount): Retrieves the current account info and status. You can also use this hook to get the `Account` singleton.
+- [`useCollateral`](/sdks/hooks/advanced/useCollateral): Retrieves the current balance of the account.
+- [`useLeverage`](/sdks/hooks/advanced/useLeverage): Retrieves the current account leverage.
+
+## Account status
+
+The `Account` object has the following statuses:
+
+```typescript
+export enum AccountStatusEnum {
+  NotConnected = 0,
+  Connected = 1,
+  NotSignedIn = 2,
+  SignedIn = 3,
+  DisabledTrading = 4,
+  EnableTrading = 5
+}
+```
+
+The above statuses are represented as follows:
+
+- `NotConnected`/ `Connected` - Wallet connection status, not related to Orderly. `NotConnected` means no wallet connected, `Connected` means the wallet app is connected and we know the user's wallet address.
+- `NotSignedIn` / `SignedIn` - The result from calling [`Get Account Information`](/build-on-evm/evm-api/restful-api/private/get-account-information) or [`Register Account`](/build-on-evm/evm-api/restful-api/public/register-account). `NotSignedIn` means there's no registered account associated with the wallet address and `brokerId` pair. `SignedIn` means that an account has been previously registered with the wallet address and `brokerId` pair.
+- `DisabledTrading` / `EnableTrading` - The result from calling [`Get Orderly Key`](/build-on-evm/evm-api/restful-api/public/get-orderly-key) or [`Add Orderly Key`](/build-on-evm/evm-api/restful-api/public/add-orderly-key). `DisabledTrading` means no active Orderly Key is found in the `KeyStore`. `EnableTrading` means an active Orderly Key is found in the `KeyStore` and can be used to authenticate for any private API requests.
+
+### Get account status
+
+There are two ways to get the account status. You can get it either directly from `useAccount`'s value, or through subscribing to the account status change event:
+
+- Retrieve from the `state` value in `useAccount`:
+
+```typescript
+const { state } = useAccount();
+```
+
+`state` also contains the following account info, as shown below:
+
+```typescript
+interface AccountState {
+  status: AccountStatusEnum;
+  checking: boolean;
+  accountId?: string;
+  userId?: string;
+  address?: string;
+}
+```
+
+- Subscribe to the `change:status` event in the `Account` instance. (`account` is a singleton of the `Account` instance)。
+
+```typescript
+const { account } = useAccount();
+
+const statusChangeHandler = (nextState: AccountState) => {
+  // do something
+};
+
+useEffect(() => {
+  account.on("change:status", statusChangeHandler);
+
+  return () => {
+    account.off("change:status", statusChangeHandler);
+  };
+}, []);
+```
+
+### Update account status
+
+`@orderly.network/hooks` currently does not provide the functionality for connecting wallets, **builders have to handle wallet connection logic themselves**, [refer here](#how-to-integrate-wallet).
+
+Once the user has successfully connected a wallet, use the `setAddress` method to pass the `address` to the `Account` instance. 3 additional parameters need to be passed when calling `setAddress`:
+
+- `provider` - provider according to the `EIP1193Provider` standard
+- `chain` - information regarding the connected chain, including the `id`
+- `wallet` - wallet information, including the name of the wallet app
+
+The `setAddress` method in `Account` will check the `accound_id` and the existence of any valid `OrderlyKey` from the provided `address` and update the `state`. If the `state` is `AccountStatusEnum.EnableTrading`, then the full login process in complete and the user can then access all functionalities provided by Orderly.
+
+```typescript
+const { account, state } = useAccount();
+
+//... logic for connecting wallets ...
+
+/**
+ * setAddress will return Promise<AccountStatusEnum>, and state will be updated
+ */
+const nextState = await account.setAddress("<address>", {
+  provider: provider, // EIP1193Provider, usually window.ethereum
+  chain: {
+    id: "0x1" // chain id, e.g. 0x1 for Ethereum Mainnet, it's a hex string
+  },
+  wallet: {
+    name: "" // Wallet app name, e.g. MetaMask
+  }
+});
+```
+
+## How to integrate wallet?
+
+Since `@orderly.network/hooks` only focus on processing the Orderly business logic, the hooks don't include the function of connecting to the wallet, but they can be easily integrated with third-party wallet connection libraries.
+
+Here are two examples:
+
+### web3-onboard
+
+> Web3-Onboard is the quickest and easiest way to add multi-wallet and multi-chain support to your project. [more](https://onboard.blocknative.com/docs/modules/react)
+
+TODO
+
+### WalletConnect
+
+> WalletConnect provides developer toolkits empowering you to build engaging web3 experiences. [more](https://docs.walletconnect.com/)
+
+TODO
+
+## Create account
+
+```typescript
+const { createAccount } = useAccount();
+
+const res = await createAccount();
+```
+
+## Orderly Key
+
+Creates an `OrderlyKey`. The validity of the `OrderlyKey` (in days) can be set.
+
+```typescript
+const { createOrderlyKey } = useAccount();
+
+const res = await createOrderlyKey(30);
+```
+
+After the `OrderlyKey` is successfully created, it will be stored in the `KeyStore`, and will be used for API signatures later on.

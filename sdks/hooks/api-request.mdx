@@ -145,7 +145,7 @@ For all available topics of the Websocket, please check the [Websocket API docum
 
 ### Subscribing to public topics
 
-```typescript
+```tsx
 subscribe(
     topic: string|{[key:string]:any},
     callback: WSMessageHandler | Omit<WSMessageHandler, "onUnsubscribe">,
@@ -157,7 +157,7 @@ subscribe(
 
 Subscribing to the `trade` topic:
 
-```typescript
+```tsx
 import { useEffect } from "react";
 import { useWS } from "@orderly.network/hooks";
 
@@ -190,7 +190,7 @@ export const Example = () => {
 
 ### Subscribing to private topics
 
-```typescript
+```tsx
 subscribe(
     topic: string|{[key:string]:any},
     callback: WSMessageHandler | Omit<WSMessageHandler, "onUnsubscribe">,
@@ -202,7 +202,7 @@ subscribe(
 
 Subscribing to the `executionreport` topic:
 
-```typescript
+```tsx
 import { useWS } from "@orderly.network/hooks";
 
 export const Example = () => {
