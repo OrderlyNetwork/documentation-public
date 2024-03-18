@@ -6,6 +6,137 @@ icon: "layer-group"
 
 import { Chip } from '/snippets/chip.mdx';
 
+## March 19, 2024 - Minor Update
+
+<div style={{ display: "table", width: "auto" }}>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="update" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Updates to @orderly.network/hook v1.1.6**
+
+      **Fixes:**
+
+      - fixed wrong calculations of estLiqPrice and estLeverage.
+
+      - Enhanced Position and Order list update frequency.
+
+      - Minor UI issue fixes.
+
+      **New:**
+
+      - PnL card sharing: a PnL card can be generated based on user's positions. 
+
+      ```JS
+      () => {
+        const { ref } = usePoster({
+          // backgroundColor: "#0b8c70",
+          // fontFamily: "Manrope",
+          backgroundImg: "/path/image.png",
+          color: "rgba(255, 255, 255, 0.98)",
+          profitColor: "rgb(0,181,159)",
+          lossColor: "rgb(255,103,194)",
+          brandColor: "rgb(0,181,159)",
+          data: {
+            message: "I am the best trader.",
+            domain: "broker.com",
+            updateTime: "2022-JAN-01 23:23",
+            position: {
+                symbol: "BTC-PERP",
+                currency: "USDC",
+                side: "LONG",
+                leverage: 20,
+                pnl: -1032.23,
+                ROI: -10.25,
+                informations: [
+                  { title: "Open Price", value: "59,129.12313" },
+                  { title: "Opened at", value: "Jan-01 23:23" },
+                  { title: "Mark price", value: "59,129.12313" },
+                  { title: "Quantity", value: "2" },
+                ],
+            },
+          },
+          layout: {},
+        });
+
+        return <canvas ref={ref} width={550} height={300} />;
+      };
+```
+    Either default layout can be used or one can be provided via `layout` parameter. Sample code:
+
+    ```JS
+    export const DefaultLayoutConfig: PosterLayoutConfig = {
+      domain: {
+        fontSize: 13,
+        // color: undefined,
+        position: {
+          left: 20,
+          bottom: 17,
+        },
+      },
+      message: {
+        fontSize: 20,
+        color: "white",
+        textBaseline: "top",
+          position: {
+            left: 20,
+            top: 16,
+          },
+      },
+      position: {
+        fontSize: 20,
+        color: "rgba(255,255,255,0.98)",
+        position: {
+          left: 20,
+          top: 70,
+        },
+      },
+      unrealizedPnl: {
+        fontSize: 36,
+        color: "rgba(255,255,255,0.5)",
+        secondaryColor: "rgba(255,255,255,0.5)",
+        position: {
+          left: 20,
+          top: 110,
+        },
+      },
+      informations: {
+        fontSize: 12,
+        color: "rgba(255, 255, 255, 0.8)",
+        labelColor: "rgba(255,255,255,0.36)",
+        position: {
+          left: 20,
+          top: 150,
+        },
+      },
+
+      updateTime: {
+        fontSize: 10,
+        color: "rgba(255,255,255,0.5)",
+        textAlign: "end",
+        position: {
+          right: 15,
+          bottom: 17,
+        },
+      },
+    };
+
+    ```
+
+
+    </div>
+  </div>
+
+</div>
+
+
 ## March 5, 2024 - Patch Update
 
 <div style={{ display: "table", width: "auto" }}>
