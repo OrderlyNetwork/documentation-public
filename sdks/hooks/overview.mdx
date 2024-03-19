@@ -16,40 +16,55 @@ The hooks libraries provides a series of React hooks for React developers to ens
 
 ## List of hooks
 
-### Base & Common
+### REST & WS API
 
-These basic hooks provide ways to help handle UI states and some common state management logic.
+The REST API hooks can be used to facilitate interacting with Orderly REST & Websocket APIs.
 
-- [useQuery](/sdks/hooks/api_requests#useQuery) - `GET` Public API
-- usePrivateQuery - `GET` Private API
-- usePrivateLazyInfiniteQuery - A version of `usePrivateQuery` that supports infinite scrolling
-- useLazyQuery
-- useMutation - `POST` APIs
-- useWS - WebSocket client
-- useConfig - An instance of the `ConfigStore`
-- useEventEmitter - An instance of the `EventEmitter`
-- useLocalStorage - Management (CRUD) of localStorage
-- useSessionStorage - Management (CRUD) of sessionStorage
+- [useQuery](/sdks/hooks/api/use-query) - `GET` Public API
+- [usePrivateQuery](/sdks/hooks/api/use-private-query) - `GET` Private API
+- [usePrivateInfiniteQuery](/sdks/hooks/api/use-private-infinite-query) - A version of `usePrivateQuery` that supports infinite scrolling
+- [useLazyQuery](/sdks/hooks/api/use-lazy-query)
+- [useMutation](/sdks/hooks/api/use-mutation) - `POST` APIs
+- [useWS](/sdks/hooks/api/use-ws) - WebSocket client
+
+### Common
+
+These common hooks provide ways to help handle UI states and some state management logic.
+
+- [useConfig](/sdks/hooks/common/use-config) - An instance of the `ConfigStore`
+- [useEventEmitter](/sdks/hooks/common/use-event-emitter) - An instance of the `EventEmitter`
+- [useLocalStorage](/sdks/hooks/common/use-local-storage) - Management (CRUD) of localStorage
+- [useSessionStorage](/sdks/hooks/common/use-session-storage) - Management (CRUD) of sessionStorage
 
 ### Orderly API
 
 These hooks are related to Orderly's business logic. Each hook contains usage of the Orderly API and related data calculation logic.
 
-- useAccount - Account information
-- useHoldingStream - Holding
-- useCollateral - Asset information
-- useLeverage - Leverage information
-- useMarginRatio - Margin information
-- useOrderEntry - Order placement
-- useFundingRate - Funding rate information
-- useFundingRates - Batch funding rate information
-- useChains - Chain information
-- useDeposit - Deposit helper
-- useWithdraw - Withdrawal helper
-- useSymbolsInfo - Symbol information
-- useMaxQty - Maximum trading quantity
-- useTickerStream - Symbol market data stream
-- useOrderStream - Order management
-- usePositionStream - Position management
-- useOrderbookStream - Orderbook stream
-- useMarkPricesStream - Mark prices stream
+- [useAccount](/sdks/hooks/advanced/use-account) - Account information
+- [useLeverage](/sdks/hooks/advanced/use-leverage) - Leverage information
+- [useCollateral](/sdks/hooks/advanced/use-collateral) - Asset information
+- [useMaxQty](/sdks/hooks/advanced/use-max-qty) - Maximum trading quantity
+- [useChains](/sdks/hooks/advanced/use-chains) - Chain information
+- [useDeposit](/sdks/hooks/advanced/use-deposit) - Deposit helper
+- [useWithdraw](/sdks/hooks/advanced/use-withdraw) - Withdrawal helper
+- [useMarkPrice](/sdks/hooks/advanced/use-mark-price) - Margin information
+- [useOrderEntry](/sdks/hooks/advanced/use-order-entry) - Order placement
+
+- [useMarginRatio](/sdks/hooks/advanced/use-margin-ratio) - Margin information
+- [useFundingRate](/sdks/hooks/advanced/use-funding-rate) - Funding rate information
+- [useFundingRates](/sdks/hooks/advanced/use-funding-rates) - Batch funding rate information
+- [useSymbolsInfo](/sdks/hooks/advanced/use-symbols-info) - Symbol information
+
+### Orderly Streaming API
+
+These hooks are related to Orderly's business logic. Each hook contains usage of the Orderly API and related data calculation logic. The data is updated in real-time using a Websocket connection.
+
+- [useOrderbookStream](/sdks/hooks/streaming/use-orderbook-stream) - Orderbook stream
+- [useMarketsStream](/sdks/hooks/streaming/use-markets-stream) - Listed symbols and its market data
+- [useMarkPricesStream](/sdks/hooks/streaming/use-mark-prices-stream) - Mark prices stream
+- [useMarketTradeStream](/sdks/hooks/streaming/use-market-trade-stream) - Market trades history of given symbol
+- [useOrderStream](/sdks/hooks/streaming/use-order-stream) - Order management
+- [usePositionStream](/sdks/hooks/streaming/use-position-stream) - Position management
+
+- [useHoldingStream](/sdks/hooks/streaming/use-holding-stream) - Holding
+- [useTickerStream](/sdks/hooks/streaming/use-ticker-stream) - Symbol market data stream

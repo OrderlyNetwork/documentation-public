@@ -16,10 +16,10 @@ Orderly provides both public and private APIs. Public APIs can be fetched direct
 
 `@orderly.network/hooks` provides the following hooks for builders to access Orderly's RESTful APIs:
 
-- [useQuery](/sdks/hooks/basic/use-query)
-- [usePrivateQuery](/sdks/hooks/basic/use-private-query)
-- [usePrivateInfiniteQuery](/sdks/hooks/basic/use-private-infinite-query)
-- [useMutation](/sdks/hooks/basic/use-mutation)
+- [useQuery](/sdks/hooks/api/use-query)
+- [usePrivateQuery](/sdks/hooks/api/use-private-query)
+- [usePrivateInfiniteQuery](/sdks/hooks/api/use-private-infinite-query)
+- [useMutation](/sdks/hooks/api/use-mutation)
 
 The above hooks are based on [SWR](https://swr.vercel.app/) and have the following properties:
 
@@ -141,7 +141,7 @@ const { data: orders } = usePrivateInfiniteQuery(
 
 `@orderly.network/hooks` provides a `useWS` hook for accessing Orderly's Websocket API. `useWS` returns the `WS` instance of `@orderly.network/net`. Builders can use `WS` to subscribe, cancel, or to send messages through the Websocket.
 
-For all available topics of the Websocket, please check the [Websocket API documentation](/api).
+For all available topics of the Websocket, please check the [Websocket API documentation](/build-on-evm/evm-api/websocket-api/introduction).
 
 ### Subscribing to public topics
 
