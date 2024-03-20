@@ -1,0 +1,114 @@
+[Orderly SDKs](./../README) / [Modules](./../modules) / [@orderly.network/core](./../modules/orderly_network_core) / BaseSigner
+
+# Class: BaseSigner
+
+[@orderly.network/core](./../modules/orderly_network_core).BaseSigner
+
+签名
+
+**`Example`**
+
+```ts
+const signer = new BaseSigner(keyStore);
+const payload = await signer.sign({
+ url: "https://api.orderly.io/get_account?address=0x1234567890&brokerId=orderly",
+  method: "GET",
+  data: {
+    address: "0x1234567890",
+    brokerId: "orderly",
+   },
+ });
+ ```
+
+## Implements
+
+- [`Signer`](./../interfaces/orderly_network_core.Signer)
+
+## Table of contents
+
+### Constructors
+
+- [constructor](./orderly_network_core.BaseSigner#constructor)
+
+### Properties
+
+- [keyStore](./orderly_network_core.BaseSigner#keystore)
+
+### Methods
+
+- [sign](./orderly_network_core.BaseSigner#sign)
+- [signText](./orderly_network_core.BaseSigner#signtext)
+
+## Constructors
+
+### constructor
+
+• **new BaseSigner**(`keyStore`)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `keyStore` | [`OrderlyKeyStore`](./../interfaces/orderly_network_core.OrderlyKeyStore) |
+
+#### Defined in
+
+[packages/core/src/signer.ts:43](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/signer.ts#L43)
+
+## Properties
+
+### keyStore
+
+• `Private` `Readonly` **keyStore**: [`OrderlyKeyStore`](./../interfaces/orderly_network_core.OrderlyKeyStore)
+
+#### Defined in
+
+[packages/core/src/signer.ts:43](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/signer.ts#L43)
+
+## Methods
+
+### sign
+
+▸ **sign**(`message`): `Promise`\<[`SignedMessagePayload`](./../modules/orderly_network_core#signedmessagepayload)\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `message` | [`MessageFactor`](./../modules/orderly_network_core#messagefactor) |
+
+#### Returns
+
+`Promise`\<[`SignedMessagePayload`](./../modules/orderly_network_core#signedmessagepayload)\>
+
+#### Implementation of
+
+[Signer](./../interfaces/orderly_network_core.Signer).[sign](./../interfaces/orderly_network_core.Signer#sign)
+
+#### Defined in
+
+[packages/core/src/signer.ts:45](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/signer.ts#L45)
+
+___
+
+### signText
+
+▸ **signText**(`text`): `Promise`\<\{ `publicKey`: `string` ; `signature`: `string`  }\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `text` | `string` |
+
+#### Returns
+
+`Promise`\<\{ `publicKey`: `string` ; `signature`: `string`  }\>
+
+#### Implementation of
+
+[Signer](./../interfaces/orderly_network_core.Signer).[signText](./../interfaces/orderly_network_core.Signer#signtext)
+
+#### Defined in
+
+[packages/core/src/signer.ts:66](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/signer.ts#L66)

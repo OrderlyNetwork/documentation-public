@@ -1,0 +1,229 @@
+[Orderly SDKs](./../README) / [Modules](./../modules) / [@orderly.network/core](./orderly_network_core) / utils
+
+# Namespace: utils
+
+[@orderly.network/core](./orderly_network_core).utils
+
+## Table of contents
+
+### Type Aliases
+
+- [SignatureDomain](./orderly_network_core.utils#signaturedomain)
+
+### Functions
+
+- [base64url](./orderly_network_core.utils#base64url)
+- [calculateStringHash](./orderly_network_core.utils#calculatestringhash)
+- [formatByUnits](./orderly_network_core.utils#formatbyunits)
+- [isHex](./orderly_network_core.utils#ishex)
+- [isHexString](./orderly_network_core.utils#ishexstring)
+- [parseAccountId](./orderly_network_core.utils#parseaccountid)
+- [parseBrokerHash](./orderly_network_core.utils#parsebrokerhash)
+- [parseTokenHash](./orderly_network_core.utils#parsetokenhash)
+- [parseUnits](./orderly_network_core.utils#parseunits)
+
+## Type Aliases
+
+### SignatureDomain
+
+Ƭ **SignatureDomain**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `chainId` | `number` |
+| `name` | `string` |
+| `verifyingContract` | `string` |
+| `version` | `string` |
+
+#### Defined in
+
+[packages/core/src/utils.ts:12](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/utils.ts#L12)
+
+## Functions
+
+### base64url
+
+▸ **base64url**(`aStr`): `string`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `aStr` | `string` |
+
+#### Returns
+
+`string`
+
+#### Defined in
+
+[packages/core/src/utils.ts:19](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/utils.ts#L19)
+
+___
+
+### calculateStringHash
+
+▸ **calculateStringHash**(`input`): `string`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `input` | `string` |
+
+#### Returns
+
+`string`
+
+#### Defined in
+
+[packages/core/src/utils.ts:41](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/utils.ts#L41)
+
+___
+
+### formatByUnits
+
+▸ **formatByUnits**(`amount`, `unit?`): `string`
+
+#### Parameters
+
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `amount` | `string` | `undefined` |
+| `unit` | `number` \| ``"ether"`` \| ``"gwei"`` | `"ether"` |
+
+#### Returns
+
+`string`
+
+#### Defined in
+
+[packages/core/src/utils.ts:49](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/utils.ts#L49)
+
+___
+
+### isHex
+
+▸ **isHex**(`value`): `boolean`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `value` | `string` |
+
+#### Returns
+
+`boolean`
+
+#### Defined in
+
+[packages/core/src/utils.ts:56](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/utils.ts#L56)
+
+___
+
+### isHexString
+
+▸ **isHexString**(`value`): `boolean`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `value` | `string` |
+
+#### Returns
+
+`boolean`
+
+#### Defined in
+
+[packages/core/src/utils.ts:61](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/utils.ts#L61)
+
+___
+
+### parseAccountId
+
+▸ **parseAccountId**(`userAddress`, `brokerId`): `string`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `userAddress` | `string` |
+| `brokerId` | `string` |
+
+#### Returns
+
+`string`
+
+#### Defined in
+
+[packages/core/src/utils.ts:27](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/utils.ts#L27)
+
+___
+
+### parseBrokerHash
+
+▸ **parseBrokerHash**(`brokerId`): `string`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `brokerId` | `string` |
+
+#### Returns
+
+`string`
+
+#### Defined in
+
+[packages/core/src/utils.ts:23](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/utils.ts#L23)
+
+___
+
+### parseTokenHash
+
+▸ **parseTokenHash**(`tokenSymbol`): `string`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `tokenSymbol` | `string` |
+
+#### Returns
+
+`string`
+
+#### Defined in
+
+[packages/core/src/utils.ts:37](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/utils.ts#L37)
+
+___
+
+### parseUnits
+
+▸ **parseUnits**(`value`, `unit?`): `bigint`
+
+Converts the //decimal string// %%value%% to a BigInt, assuming
+ %%unit%% decimal places. The %%unit%% may the number of decimal places
+ or the name of a unit (e.g. ``"gwei"`` for 9 decimal places).
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `value` | `string` |
+| `unit?` | `string` \| `Numeric` |
+
+#### Returns
+
+`bigint`
+
+#### Defined in
+
+node_modules/.pnpm/ethers@6.7.1/node_modules/ethers/lib.commonjs/utils/units.d.ts:14

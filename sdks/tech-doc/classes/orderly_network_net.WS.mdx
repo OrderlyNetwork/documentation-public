@@ -1,0 +1,988 @@
+[Orderly SDKs](./../README) / [Modules](./../modules) / [@orderly.network/net](./../modules/orderly_network_net) / WS
+
+# Class: WS
+
+[@orderly.network/net](./../modules/orderly_network_net).WS
+
+## Table of contents
+
+### Constructors
+
+- [constructor](./orderly_network_net.WS#constructor)
+
+### Properties
+
+- [\_eventContainer](./orderly_network_net.WS#_eventcontainer)
+- [\_eventHandlers](./orderly_network_net.WS#_eventhandlers)
+- [\_eventPrivateHandlers](./orderly_network_net.WS#_eventprivatehandlers)
+- [\_pendingPrivateSubscribe](./orderly_network_net.WS#_pendingprivatesubscribe)
+- [\_pendingPublicSubscribe](./orderly_network_net.WS#_pendingpublicsubscribe)
+- [\_privateHeartbeatTime](./orderly_network_net.WS#_privateheartbeattime)
+- [\_privateRetryCount](./orderly_network_net.WS#_privateretrycount)
+- [\_publicHeartbeatTime](./orderly_network_net.WS#_publicheartbeattime)
+- [\_publicRetryCount](./orderly_network_net.WS#_publicretrycount)
+- [\_publicSocket](./orderly_network_net.WS#_publicsocket)
+- [authenticated](./orderly_network_net.WS#authenticated)
+- [options](./orderly_network_net.WS#options)
+- [privateIsReconnecting](./orderly_network_net.WS#privateisreconnecting)
+- [privateSocket](./orderly_network_net.WS#privatesocket)
+- [publicIsReconnecting](./orderly_network_net.WS#publicisreconnecting)
+- [reconnectInterval](./orderly_network_net.WS#reconnectinterval)
+
+### Accessors
+
+- [accountId](./orderly_network_net.WS#accountid)
+- [client](./orderly_network_net.WS#client)
+
+### Methods
+
+- [authenticate](./orderly_network_net.WS#authenticate)
+- [bindEvents](./orderly_network_net.WS#bindevents)
+- [checkSocketStatus](./orderly_network_net.WS#checksocketstatus)
+- [close](./orderly_network_net.WS#close)
+- [closePrivate](./orderly_network_net.WS#closeprivate)
+- [createPrivateSC](./orderly_network_net.WS#createprivatesc)
+- [createPublicSC](./orderly_network_net.WS#createpublicsc)
+- [emit](./orderly_network_net.WS#emit)
+- [errorBoardscast](./orderly_network_net.WS#errorboardscast)
+- [generateMessage](./orderly_network_net.WS#generatemessage)
+- [getTopicKeyFromMessage](./orderly_network_net.WS#gettopickeyfrommessage)
+- [getTopicKeyFromParams](./orderly_network_net.WS#gettopickeyfromparams)
+- [handlePendingPrivateTopic](./orderly_network_net.WS#handlependingprivatetopic)
+- [off](./orderly_network_net.WS#off)
+- [on](./orderly_network_net.WS#on)
+- [onMessage](./orderly_network_net.WS#onmessage)
+- [onNetworkStatusChange](./orderly_network_net.WS#onnetworkstatuschange)
+- [onOpen](./orderly_network_net.WS#onopen)
+- [onPrivateClose](./orderly_network_net.WS#onprivateclose)
+- [onPrivateError](./orderly_network_net.WS#onprivateerror)
+- [onPrivateMessage](./orderly_network_net.WS#onprivatemessage)
+- [onPrivateOpen](./orderly_network_net.WS#onprivateopen)
+- [onPublicClose](./orderly_network_net.WS#onpublicclose)
+- [onPublicError](./orderly_network_net.WS#onpublicerror)
+- [onPublicMessage](./orderly_network_net.WS#onpublicmessage)
+- [onVisibilityChange](./orderly_network_net.WS#onvisibilitychange)
+- [onceSubscribe](./orderly_network_net.WS#oncesubscribe)
+- [openPrivate](./orderly_network_net.WS#openprivate)
+- [privateSubscribe](./orderly_network_net.WS#privatesubscribe)
+- [reconnectPrivate](./orderly_network_net.WS#reconnectprivate)
+- [reconnectPublic](./orderly_network_net.WS#reconnectpublic)
+- [send](./orderly_network_net.WS#send)
+- [subscribe](./orderly_network_net.WS#subscribe)
+- [unsubscribe](./orderly_network_net.WS#unsubscribe)
+- [unsubscribePrivate](./orderly_network_net.WS#unsubscribeprivate)
+- [unsubscribePublic](./orderly_network_net.WS#unsubscribepublic)
+
+## Constructors
+
+### constructor
+
+• **new WS**(`options`)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `options` | `WSOptions` |
+
+#### Defined in
+
+[ws/ws.ts:82](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L82)
+
+## Properties
+
+### \_eventContainer
+
+• `Private` **\_eventContainer**: `Map`\<`string`, `Set`\<`Function`\>\>
+
+#### Defined in
+
+[ws/ws.ts:60](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L60)
+
+___
+
+### \_eventHandlers
+
+• `Private` **\_eventHandlers**: `Map`\<`string`, `Topics`\>
+
+#### Defined in
+
+[ws/ws.ts:73](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L73)
+
+___
+
+### \_eventPrivateHandlers
+
+• `Private` **\_eventPrivateHandlers**: `Map`\<`string`, `Topics`\>
+
+#### Defined in
+
+[ws/ws.ts:74](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L74)
+
+___
+
+### \_pendingPrivateSubscribe
+
+• `Private` **\_pendingPrivateSubscribe**: `any`[][] = `[]`
+
+#### Defined in
+
+[ws/ws.ts:69](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L69)
+
+___
+
+### \_pendingPublicSubscribe
+
+• `Private` **\_pendingPublicSubscribe**: `any`[][] = `[]`
+
+#### Defined in
+
+[ws/ws.ts:70](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L70)
+
+___
+
+### \_privateHeartbeatTime
+
+• `Private` `Optional` **\_privateHeartbeatTime**: `number`
+
+#### Defined in
+
+[ws/ws.ts:77](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L77)
+
+___
+
+### \_privateRetryCount
+
+• `Private` **\_privateRetryCount**: `number` = `0`
+
+#### Defined in
+
+[ws/ws.ts:80](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L80)
+
+___
+
+### \_publicHeartbeatTime
+
+• `Private` `Optional` **\_publicHeartbeatTime**: `number`
+
+#### Defined in
+
+[ws/ws.ts:76](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L76)
+
+___
+
+### \_publicRetryCount
+
+• `Private` **\_publicRetryCount**: `number` = `0`
+
+#### Defined in
+
+[ws/ws.ts:79](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L79)
+
+___
+
+### \_publicSocket
+
+• `Private` **\_publicSocket**: `WebSocket`
+
+#### Defined in
+
+[ws/ws.ts:57](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L57)
+
+___
+
+### authenticated
+
+• `Private` **authenticated**: `boolean` = `false`
+
+#### Defined in
+
+[ws/ws.ts:67](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L67)
+
+___
+
+### options
+
+• `Private` **options**: `WSOptions`
+
+#### Defined in
+
+[ws/ws.ts:82](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L82)
+
+___
+
+### privateIsReconnecting
+
+• `Private` **privateIsReconnecting**: `boolean` = `false`
+
+#### Defined in
+
+[ws/ws.ts:63](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L63)
+
+___
+
+### privateSocket
+
+• `Private` `Optional` **privateSocket**: `WebSocket`
+
+#### Defined in
+
+[ws/ws.ts:58](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L58)
+
+___
+
+### publicIsReconnecting
+
+• `Private` **publicIsReconnecting**: `boolean` = `false`
+
+#### Defined in
+
+[ws/ws.ts:62](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L62)
+
+___
+
+### reconnectInterval
+
+• `Private` **reconnectInterval**: `number` = `1000`
+
+#### Defined in
+
+[ws/ws.ts:65](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L65)
+
+## Accessors
+
+### accountId
+
+• `set` **accountId**(`accountId`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `accountId` | `string` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:436](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L436)
+
+___
+
+### client
+
+• `get` **client**(): `Object`
+
+#### Returns
+
+`Object`
+
+| Name | Type |
+| :------ | :------ |
+| `private?` | `WebSocket` |
+| `public` | `WebSocket` |
+
+#### Defined in
+
+[ws/ws.ts:716](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L716)
+
+## Methods
+
+### authenticate
+
+▸ `Private` **authenticate**(`accountId`): `Promise`\<`void`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `accountId` | `string` |
+
+#### Returns
+
+`Promise`\<`void`\>
+
+#### Defined in
+
+[ws/ws.ts:438](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L438)
+
+___
+
+### bindEvents
+
+▸ `Private` **bindEvents**(): `void`
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:92](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L92)
+
+___
+
+### checkSocketStatus
+
+▸ `Private` **checkSocketStatus**(): `void`
+
+Determine the current connection status,
+1. If it is disconnected, reconnect
+2. If no message is received for too long, disconnect and reconnect actively
+3. When returning from the background and the network status changes, the following process is followed
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:128](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L128)
+
+___
+
+### close
+
+▸ **close**(): `void`
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:431](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L431)
+
+___
+
+### closePrivate
+
+▸ **closePrivate**(`code?`, `reason?`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `code?` | `number` |
+| `reason?` | `string` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:185](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L185)
+
+___
+
+### createPrivateSC
+
+▸ `Private` **createPrivateSC**(`options`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `options` | `WSOptions` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:217](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L217)
+
+___
+
+### createPublicSC
+
+▸ `Private` **createPublicSC**(`options`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `options` | `WSOptions` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:199](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L199)
+
+___
+
+### emit
+
+▸ **emit**(`eventName`, `message`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `eventName` | `string` |
+| `message` | `any` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:739](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L739)
+
+___
+
+### errorBoardscast
+
+▸ `Private` **errorBoardscast**(`error`, `eventHandlers`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `error` | `any` |
+| `eventHandlers` | `Map`\<`string`, `Topics`\> |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:410](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L410)
+
+___
+
+### generateMessage
+
+▸ `Private` **generateMessage**(`params`, `onUnsubscribe?`, `onMessage?`): [`MessageParams`, (`event`: `string`) => `any`]
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `params` | `any` |
+| `onUnsubscribe?` | (`event`: `string`) => `any` |
+| `onMessage?` | (`message`: `any`) => `any` |
+
+#### Returns
+
+[`MessageParams`, (`event`: `string`) => `any`]
+
+#### Defined in
+
+[ws/ws.ts:657](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L657)
+
+___
+
+### getTopicKeyFromMessage
+
+▸ `Private` **getTopicKeyFromMessage**(`message`): `string`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `message` | `any` |
+
+#### Returns
+
+`string`
+
+#### Defined in
+
+[ws/ws.ts:584](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L584)
+
+___
+
+### getTopicKeyFromParams
+
+▸ `Private` **getTopicKeyFromParams**(`params`): `string`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `params` | `any` |
+
+#### Returns
+
+`string`
+
+#### Defined in
+
+[ws/ws.ts:567](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L567)
+
+___
+
+### handlePendingPrivateTopic
+
+▸ `Private` **handlePendingPrivateTopic**(): `void`
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:319](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L319)
+
+___
+
+### off
+
+▸ **off**(`eventName`, `callback`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `eventName` | `string` |
+| `callback` | (`message`: `any`) => `any` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:733](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L733)
+
+___
+
+### on
+
+▸ **on**(`eventName`, `callback`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `eventName` | `string` |
+| `callback` | (`message`: `any`) => `any` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:726](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L726)
+
+___
+
+### onMessage
+
+▸ `Private` **onMessage**(`event`, `socket`, `handlerMap`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `MessageEvent`\<`any`\> |
+| `socket` | `WebSocket` |
+| `handlerMap` | `Map`\<`string`, `Topics`\> |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:256](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L256)
+
+___
+
+### onNetworkStatusChange
+
+▸ `Private` **onNetworkStatusChange**(): `void`
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:116](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L116)
+
+___
+
+### onOpen
+
+▸ `Private` **onOpen**(`event`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `Event` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:232](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L232)
+
+___
+
+### onPrivateClose
+
+▸ `Private` **onPrivateClose**(`event`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `CloseEvent` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:346](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L346)
+
+___
+
+### onPrivateError
+
+▸ `Private` **onPrivateError**(`event`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `Event` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:390](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L390)
+
+___
+
+### onPrivateMessage
+
+▸ `Private` **onPrivateMessage**(`event`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `MessageEvent`\<`any`\> |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:313](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L313)
+
+___
+
+### onPrivateOpen
+
+▸ `Private` **onPrivateOpen**(`event`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `Event` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:247](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L247)
+
+___
+
+### onPublicClose
+
+▸ `Private` **onPublicClose**(`event`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `CloseEvent` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:328](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L328)
+
+___
+
+### onPublicError
+
+▸ `Private` **onPublicError**(`event`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `Event` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:367](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L367)
+
+___
+
+### onPublicMessage
+
+▸ `Private` **onPublicMessage**(`event`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `MessageEvent`\<`any`\> |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:307](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L307)
+
+___
+
+### onVisibilityChange
+
+▸ `Private` **onVisibilityChange**(): `void`
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:106](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L106)
+
+___
+
+### onceSubscribe
+
+▸ **onceSubscribe**(`params`, `callback`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `params` | `any` |
+| `callback` | `Omit`\<`WSMessageHandler`, ``"onUnsubscribe"``\> |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:605](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L605)
+
+___
+
+### openPrivate
+
+▸ **openPrivate**(`accountId`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `accountId` | `string` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:175](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L175)
+
+___
+
+### privateSubscribe
+
+▸ **privateSubscribe**(`params`, `callback`): () => `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `params` | `any` |
+| `callback` | `WSMessageHandler` \| `Omit`\<`WSMessageHandler`, ``"onUnsubscribe"``\> |
+
+#### Returns
+
+`fn`
+
+▸ (): `void`
+
+##### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:466](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L466)
+
+___
+
+### reconnectPrivate
+
+▸ `Private` **reconnectPrivate**(): `void`
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:696](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L696)
+
+___
+
+### reconnectPublic
+
+▸ `Private` **reconnectPublic**(): `void`
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:681](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L681)
+
+___
+
+### send
+
+▸ **send**(`message`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `message` | `any` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:418](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L418)
+
+___
+
+### subscribe
+
+▸ **subscribe**(`params`, `callback`, `once?`, `id?`): `undefined` \| `unsubscribe`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `params` | `any` |
+| `callback` | `WSMessageHandler` \| `Omit`\<`WSMessageHandler`, ``"onUnsubscribe"``\> |
+| `once?` | `boolean` |
+| `id?` | `string` |
+
+#### Returns
+
+`undefined` \| `unsubscribe`
+
+#### Defined in
+
+[ws/ws.ts:505](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L505)
+
+___
+
+### unsubscribe
+
+▸ `Private` **unsubscribe**(`parmas`, `webSocket`, `handlerMap`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `parmas` | `MessageParams` |
+| `webSocket` | `WebSocket` |
+| `handlerMap` | `Map`\<`string`, `Topics`\> |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:612](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L612)
+
+___
+
+### unsubscribePrivate
+
+▸ `Private` **unsubscribePrivate**(`parmas`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `parmas` | `MessageParams` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:649](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L649)
+
+___
+
+### unsubscribePublic
+
+▸ `Private` **unsubscribePublic**(`parmas`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `parmas` | `MessageParams` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[ws/ws.ts:653](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/net/src/ws/ws.ts#L653)

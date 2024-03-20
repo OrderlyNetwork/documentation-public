@@ -1,0 +1,368 @@
+[Orderly SDKs](./../README) / [Modules](./../modules) / [@orderly.network/hooks](./../modules/orderly_network_hooks) / WalletAdapter
+
+# Interface: WalletAdapter
+
+[@orderly.network/hooks](./../modules/orderly_network_hooks).WalletAdapter
+
+## Table of contents
+
+### Properties
+
+- [formatUnits](./orderly_network_hooks.WalletAdapter#formatunits)
+- [getBalance](./orderly_network_hooks.WalletAdapter#getbalance)
+- [getTransactionRecipect](./orderly_network_hooks.WalletAdapter#gettransactionrecipect)
+- [parseUnits](./orderly_network_hooks.WalletAdapter#parseunits)
+- [pollTransactionReceiptWithBackoff](./orderly_network_hooks.WalletAdapter#polltransactionreceiptwithbackoff)
+- [send](./orderly_network_hooks.WalletAdapter#send)
+- [signTypedData](./orderly_network_hooks.WalletAdapter#signtypeddata)
+
+### Accessors
+
+- [addresses](./orderly_network_hooks.WalletAdapter#addresses)
+- [chainId](./orderly_network_hooks.WalletAdapter#chainid)
+
+### Methods
+
+- [call](./orderly_network_hooks.WalletAdapter#call)
+- [callOnChain](./orderly_network_hooks.WalletAdapter#callonchain)
+- [off](./orderly_network_hooks.WalletAdapter#off)
+- [on](./orderly_network_hooks.WalletAdapter#on)
+- [sendTransaction](./orderly_network_hooks.WalletAdapter#sendtransaction)
+
+## Properties
+
+### formatUnits
+
+• **formatUnits**: (`amount`: `string`) => `string`
+
+#### Type declaration
+
+▸ (`amount`): `string`
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `amount` | `string` |
+
+##### Returns
+
+`string`
+
+#### Defined in
+
+[packages/core/src/wallet/adapter.ts:14](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/wallet/adapter.ts#L14)
+
+___
+
+### getBalance
+
+• **getBalance**: (`userAddress`: `string`) => `Promise`\<`any`\>
+
+#### Type declaration
+
+▸ (`userAddress`): `Promise`\<`any`\>
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `userAddress` | `string` |
+
+##### Returns
+
+`Promise`\<`any`\>
+
+#### Defined in
+
+[packages/core/src/wallet/adapter.ts:42](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/wallet/adapter.ts#L42)
+
+___
+
+### getTransactionRecipect
+
+• **getTransactionRecipect**: (`txHash`: `string`) => `Promise`\<`any`\>
+
+#### Type declaration
+
+▸ (`txHash`): `Promise`\<`any`\>
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `txHash` | `string` |
+
+##### Returns
+
+`Promise`\<`any`\>
+
+#### Defined in
+
+[packages/core/src/wallet/adapter.ts:36](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/wallet/adapter.ts#L36)
+
+___
+
+### parseUnits
+
+• **parseUnits**: (`amount`: `string`) => `string`
+
+#### Type declaration
+
+▸ (`amount`): `string`
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `amount` | `string` |
+
+##### Returns
+
+`string`
+
+#### Defined in
+
+[packages/core/src/wallet/adapter.ts:13](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/wallet/adapter.ts#L13)
+
+___
+
+### pollTransactionReceiptWithBackoff
+
+• **pollTransactionReceiptWithBackoff**: (`txHash`: `string`, `baseInterval?`: `number`, `maxInterval?`: `number`, `maxRetries?`: `number`) => `Promise`\<`any`\>
+
+#### Type declaration
+
+▸ (`txHash`, `baseInterval?`, `maxInterval?`, `maxRetries?`): `Promise`\<`any`\>
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `txHash` | `string` |
+| `baseInterval?` | `number` |
+| `maxInterval?` | `number` |
+| `maxRetries?` | `number` |
+
+##### Returns
+
+`Promise`\<`any`\>
+
+#### Defined in
+
+[packages/core/src/wallet/adapter.ts:39](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/wallet/adapter.ts#L39)
+
+___
+
+### send
+
+• **send**: (`method`: `string`, `params`: `any`[] \| `Record`\<`string`, `any`\>) => `Promise`\<`any`\>
+
+#### Type declaration
+
+▸ (`method`, `params`): `Promise`\<`any`\>
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `method` | `string` |
+| `params` | `any`[] \| `Record`\<`string`, `any`\> |
+
+##### Returns
+
+`Promise`\<`any`\>
+
+#### Defined in
+
+[packages/core/src/wallet/adapter.ts:17](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/wallet/adapter.ts#L17)
+
+___
+
+### signTypedData
+
+• **signTypedData**: (`address`: `string`, `data`: `any`) => `Promise`\<`string`\>
+
+#### Type declaration
+
+▸ (`address`, `data`): `Promise`\<`string`\>
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `address` | `string` |
+| `data` | `any` |
+
+##### Returns
+
+`Promise`\<`string`\>
+
+#### Defined in
+
+[packages/core/src/wallet/adapter.ts:37](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/wallet/adapter.ts#L37)
+
+## Accessors
+
+### addresses
+
+• `get` **addresses**(): `string`
+
+#### Returns
+
+`string`
+
+#### Defined in
+
+[packages/core/src/wallet/adapter.ts:8](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/wallet/adapter.ts#L8)
+
+___
+
+### chainId
+
+• `get` **chainId**(): `number`
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[packages/core/src/wallet/adapter.ts:7](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/wallet/adapter.ts#L7)
+
+• `set` **chainId**(`chainId`): `void`
+
+Set the chain id
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `chainId` | `number` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[packages/core/src/wallet/adapter.ts:12](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/wallet/adapter.ts#L12)
+
+## Methods
+
+### call
+
+▸ **call**(`address`, `method`, `params`, `options`): `Promise`\<`any`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `address` | `string` |
+| `method` | `string` |
+| `params` | `any` |
+| `options` | `Object` |
+| `options.abi` | `any` |
+
+#### Returns
+
+`Promise`\<`any`\>
+
+#### Defined in
+
+[packages/core/src/wallet/adapter.ts:47](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/wallet/adapter.ts#L47)
+
+___
+
+### callOnChain
+
+▸ **callOnChain**(`chain`, `address`, `method`, `params`, `options`): `Promise`\<`any`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `chain` | [`NetworkInfos`](./orderly_network_types.API.NetworkInfos) |
+| `address` | `string` |
+| `method` | `string` |
+| `params` | `any` |
+| `options` | `Object` |
+| `options.abi` | `any` |
+
+#### Returns
+
+`Promise`\<`any`\>
+
+#### Defined in
+
+[packages/core/src/wallet/adapter.ts:56](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/wallet/adapter.ts#L56)
+
+___
+
+### off
+
+▸ **off**(`eventName`, `listener`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `eventName` | `any` |
+| `listener` | `any` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[packages/core/src/wallet/adapter.ts:67](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/wallet/adapter.ts#L67)
+
+___
+
+### on
+
+▸ **on**(`eventName`, `listener`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `eventName` | `any` |
+| `listener` | `any` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[packages/core/src/wallet/adapter.ts:66](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/wallet/adapter.ts#L66)
+
+___
+
+### sendTransaction
+
+▸ **sendTransaction**(`contractAddress`, `method`, `payload`, `options`): `Promise`\<`TransactionResponse`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `contractAddress` | `string` |
+| `method` | `string` |
+| `payload` | `Object` |
+| `payload.data` | `any`[] |
+| `payload.from` | `string` |
+| `payload.to?` | `string` |
+| `payload.value?` | `bigint` |
+| `options` | `Object` |
+| `options.abi` | `any` |
+
+#### Returns
+
+`Promise`\<`TransactionResponse`\>
+
+#### Defined in
+
+[packages/core/src/wallet/adapter.ts:22](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/core/src/wallet/adapter.ts#L22)

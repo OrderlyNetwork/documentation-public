@@ -1,0 +1,403 @@
+[Orderly SDKs](./../README) / [Modules](./../modules) / [@orderly.network/perp](./orderly_network_perp) / positions
+
+# Namespace: positions
+
+[@orderly.network/perp](./orderly_network_perp).positions
+
+## Table of contents
+
+### Type Aliases
+
+- [LiqPriceInputs](./orderly_network_perp.positions#liqpriceinputs)
+- [MMInputs](./orderly_network_perp.positions#mminputs)
+- [MMRInputs](./orderly_network_perp.positions#mmrinputs)
+- [TotalUnsettlementPnLInputs](./orderly_network_perp.positions#totalunsettlementpnlinputs)
+- [UnrealPnLInputs](./orderly_network_perp.positions#unrealpnlinputs)
+- [UnrealPnLROIInputs](./orderly_network_perp.positions#unrealpnlroiinputs)
+- [UnsettlementPnLInputs](./orderly_network_perp.positions#unsettlementpnlinputs)
+
+### Functions
+
+- [MMR](./orderly_network_perp.positions#mmr)
+- [liqPrice](./orderly_network_perp.positions#liqprice)
+- [maintenanceMargin](./orderly_network_perp.positions#maintenancemargin)
+- [notional](./orderly_network_perp.positions#notional)
+- [totalNotional](./orderly_network_perp.positions#totalnotional)
+- [totalUnrealizedPnL](./orderly_network_perp.positions#totalunrealizedpnl)
+- [totalUnsettlementPnL](./orderly_network_perp.positions#totalunsettlementpnl)
+- [unrealizedPnL](./orderly_network_perp.positions#unrealizedpnl)
+- [unrealizedPnLROI](./orderly_network_perp.positions#unrealizedpnlroi)
+- [unsettlementPnL](./orderly_network_perp.positions#unsettlementpnl)
+
+## Type Aliases
+
+### LiqPriceInputs
+
+Ƭ **LiqPriceInputs**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `MMR` | `number` |
+| `markPrice` | `number` |
+| `positionQty` | `number` |
+| `positions` | `Pick`\<[`PositionExt`](./../interfaces/orderly_network_types.API.PositionExt), ``"position_qty"`` \| ``"mark_price"`` \| ``"mmr"``\>[] |
+| `totalCollateral` | `number` |
+
+#### Defined in
+
+[positions.ts:89](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/positions.ts#L89)
+
+___
+
+### MMInputs
+
+Ƭ **MMInputs**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `MMR` | `number` |
+| `markPrice` | `number` |
+| `positionQty` | `number` |
+
+#### Defined in
+
+[positions.ts:130](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/positions.ts#L130)
+
+___
+
+### MMRInputs
+
+Ƭ **MMRInputs**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `IMRFactor` | `number` |
+| `IMR_factor_power` | `number` |
+| `baseIMR` | `number` |
+| `baseMMR` | `number` |
+| `positionNotional` | `number` |
+
+#### Defined in
+
+[positions.ts:213](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/positions.ts#L213)
+
+___
+
+### TotalUnsettlementPnLInputs
+
+Ƭ **TotalUnsettlementPnLInputs**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `positions` | [`Position`](./../interfaces/orderly_network_types.API.Position) & \{ `sum_unitary_funding`: `number`  }[] |
+| `sumUnitaryFunding` | `number` |
+
+#### Defined in
+
+[positions.ts:178](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/positions.ts#L178)
+
+___
+
+### UnrealPnLInputs
+
+Ƭ **UnrealPnLInputs**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `markPrice` | `number` |
+| `openPrice` | `number` |
+| `qty` | `number` |
+
+#### Defined in
+
+[positions.ts:26](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/positions.ts#L26)
+
+___
+
+### UnrealPnLROIInputs
+
+Ƭ **UnrealPnLROIInputs**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `IMR` | `number` |
+| `openPrice` | `number` |
+| `positionQty` | `number` |
+| `unrealizedPnL` | `number` |
+
+#### Defined in
+
+[positions.ts:43](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/positions.ts#L43)
+
+___
+
+### UnsettlementPnLInputs
+
+Ƭ **UnsettlementPnLInputs**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `costPosition` | `number` |
+| `lastSumUnitaryFunding` | `number` |
+| `markPrice` | `number` |
+| `positionQty` | `number` |
+| `sumUnitaryFunding` | `number` |
+
+#### Defined in
+
+[positions.ts:147](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/positions.ts#L147)
+
+## Functions
+
+### MMR
+
+▸ **MMR**(`inputs`): `number`
+
+Calculates the maintenance margin requirement (MMR) of a position.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `inputs` | [`MMRInputs`](./orderly_network_perp.positions#mmrinputs) | The inputs for calculating the MMR. |
+
+#### Returns
+
+`number`
+
+The MMR of the position.
+
+#### Defined in
+
+[positions.ts:226](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/positions.ts#L226)
+
+___
+
+### liqPrice
+
+▸ **liqPrice**(`inputs`): `number` \| ``null``
+
+Calculates the liquidation price of a single position.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `inputs` | [`LiqPriceInputs`](./orderly_network_perp.positions#liqpriceinputs) | The inputs for calculating the liquidation price. |
+
+#### Returns
+
+`number` \| ``null``
+
+The liquidation price of the position.
+
+#### Defined in
+
+[positions.ts:102](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/positions.ts#L102)
+
+___
+
+### maintenanceMargin
+
+▸ **maintenanceMargin**(`inputs`): `number`
+
+Calculates the maintenance margin of a position.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `inputs` | [`MMInputs`](./orderly_network_perp.positions#mminputs) | The inputs for calculating the maintenance margin. |
+
+#### Returns
+
+`number`
+
+The maintenance margin of the position.
+
+#### Defined in
+
+[positions.ts:141](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/positions.ts#L141)
+
+___
+
+### notional
+
+▸ **notional**(`qty`, `mark_price`): `number`
+
+Calculates the notional value of a single position.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `qty` | `number` | The quantity of the position. |
+| `mark_price` | `number` | The price of the position. |
+
+#### Returns
+
+`number`
+
+The notional value of the position.
+
+#### Defined in
+
+[positions.ts:11](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/positions.ts#L11)
+
+___
+
+### totalNotional
+
+▸ **totalNotional**(`positions`): `number`
+
+Calculates the total notional value of all positions.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `positions` | [`Position`](./../interfaces/orderly_network_types.API.Position)[] | The array of positions. |
+
+#### Returns
+
+`number`
+
+The total notional value of all positions.
+
+#### Defined in
+
+[positions.ts:20](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/positions.ts#L20)
+
+___
+
+### totalUnrealizedPnL
+
+▸ **totalUnrealizedPnL**(`positions`): `number`
+
+Calculates the total unrealized profit or loss of all positions.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `positions` | [`Position`](./../interfaces/orderly_network_types.API.Position)[] | The array of positions. |
+
+#### Returns
+
+`number`
+
+The total unrealized profit or loss of all positions.
+
+#### Defined in
+
+[positions.ts:76](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/positions.ts#L76)
+
+___
+
+### totalUnsettlementPnL
+
+▸ **totalUnsettlementPnL**(`positions`): `number`
+
+Calculates the total unrealized profit or loss of all positions.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `positions` | [`Position`](./../interfaces/orderly_network_types.API.Position) & \{ `sum_unitary_funding`: `number`  }[] | The array of positions. |
+
+#### Returns
+
+`number`
+
+The total unrealized profit or loss of all positions.
+
+#### Defined in
+
+[positions.ts:190](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/positions.ts#L190)
+
+___
+
+### unrealizedPnL
+
+▸ **unrealizedPnL**(`inputs`): `number`
+
+Calculates the unrealized profit or loss of a single position.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `inputs` | [`UnrealPnLInputs`](./orderly_network_perp.positions#unrealpnlinputs) | The inputs for calculating the unrealized profit or loss. |
+
+#### Returns
+
+`number`
+
+The unrealized profit or loss of the position.
+
+#### Defined in
+
+[positions.ts:37](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/positions.ts#L37)
+
+___
+
+### unrealizedPnLROI
+
+▸ **unrealizedPnLROI**(`inputs`): `number`
+
+Calculates the return on investment (ROI) of a single position's unrealized profit or loss.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `inputs` | [`UnrealPnLROIInputs`](./orderly_network_perp.positions#unrealpnlroiinputs) | The inputs for calculating the ROI. |
+
+#### Returns
+
+`number`
+
+The ROI of the position's unrealized profit or loss.
+
+#### Defined in
+
+[positions.ts:55](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/positions.ts#L55)
+
+___
+
+### unsettlementPnL
+
+▸ **unsettlementPnL**(`inputs`): `number`
+
+Calculates the unrealized profit or loss of each position.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `inputs` | [`UnsettlementPnLInputs`](./orderly_network_perp.positions#unsettlementpnlinputs) | The inputs for calculating the unrealized profit or loss. |
+
+#### Returns
+
+`number`
+
+The unrealized profit or loss of each position.
+
+#### Defined in
+
+[positions.ts:160](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/positions.ts#L160)

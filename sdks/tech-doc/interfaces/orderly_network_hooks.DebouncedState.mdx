@@ -1,0 +1,120 @@
+[Orderly SDKs](./../README) / [Modules](./../modules) / [@orderly.network/hooks](./../modules/orderly_network_hooks) / DebouncedState
+
+# Interface: DebouncedState\<T\>
+
+[@orderly.network/hooks](./../modules/orderly_network_hooks).DebouncedState
+
+Subsequent calls to the debounced function `debounced.callback` return the result of the last func invocation.
+Note, that if there are no previous invocations it's mean you will get undefined. You should check it in your code properly.
+
+## Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends (...`args`: `any`) => `ReturnType`\<`T`\> |
+
+## Hierarchy
+
+- [`ControlFunctions`](./orderly_network_hooks.ControlFunctions)
+
+  ↳ **`DebouncedState`**
+
+## Callable
+
+### DebouncedState
+
+▸ **DebouncedState**(`...args`): `undefined` \| `ReturnType`\<`T`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `...args` | `Parameters`\<`T`\> |
+
+#### Returns
+
+`undefined` \| `ReturnType`\<`T`\>
+
+#### Defined in
+
+node_modules/.pnpm/use-debounce@9.0.4_react@18.2.0/node_modules/use-debounce/dist/useDebouncedCallback.d.ts:36
+
+## Table of contents
+
+### Properties
+
+- [cancel](./orderly_network_hooks.DebouncedState#cancel)
+- [flush](./orderly_network_hooks.DebouncedState#flush)
+- [isPending](./orderly_network_hooks.DebouncedState#ispending)
+
+## Properties
+
+### cancel
+
+• **cancel**: () => `void`
+
+#### Type declaration
+
+▸ (): `void`
+
+Cancel pending function invocations
+
+##### Returns
+
+`void`
+
+#### Inherited from
+
+[ControlFunctions](./orderly_network_hooks.ControlFunctions).[cancel](./orderly_network_hooks.ControlFunctions#cancel)
+
+#### Defined in
+
+node_modules/.pnpm/use-debounce@9.0.4_react@18.2.0/node_modules/use-debounce/dist/useDebouncedCallback.d.ts:21
+
+___
+
+### flush
+
+• **flush**: () => `void`
+
+#### Type declaration
+
+▸ (): `void`
+
+Immediately invoke pending function invocations
+
+##### Returns
+
+`void`
+
+#### Inherited from
+
+[ControlFunctions](./orderly_network_hooks.ControlFunctions).[flush](./orderly_network_hooks.ControlFunctions#flush)
+
+#### Defined in
+
+node_modules/.pnpm/use-debounce@9.0.4_react@18.2.0/node_modules/use-debounce/dist/useDebouncedCallback.d.ts:25
+
+___
+
+### isPending
+
+• **isPending**: () => `boolean`
+
+#### Type declaration
+
+▸ (): `boolean`
+
+Returns `true` if there are any pending function invocations
+
+##### Returns
+
+`boolean`
+
+#### Inherited from
+
+[ControlFunctions](./orderly_network_hooks.ControlFunctions).[isPending](./orderly_network_hooks.ControlFunctions#ispending)
+
+#### Defined in
+
+node_modules/.pnpm/use-debounce@9.0.4_react@18.2.0/node_modules/use-debounce/dist/useDebouncedCallback.d.ts:29

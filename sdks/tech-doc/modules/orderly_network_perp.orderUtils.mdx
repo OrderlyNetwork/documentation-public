@@ -1,0 +1,184 @@
+[Orderly SDKs](./../README) / [Modules](./../modules) / [@orderly.network/perp](./orderly_network_perp) / orderUtils
+
+# Namespace: orderUtils
+
+[@orderly.network/perp](./orderly_network_perp).orderUtils
+
+## Table of contents
+
+### Type Aliases
+
+- [EstimatedLeverageInputs](./orderly_network_perp.orderUtils#estimatedleverageinputs)
+- [EstimatedLiquidationPriceInputs](./orderly_network_perp.orderUtils#estimatedliquidationpriceinputs)
+
+### Functions
+
+- [estLeverage](./orderly_network_perp.orderUtils#estleverage)
+- [estLiqPrice](./orderly_network_perp.orderUtils#estliqprice)
+- [maxPrice](./orderly_network_perp.orderUtils#maxprice)
+- [minPrice](./orderly_network_perp.orderUtils#minprice)
+- [scropePrice](./orderly_network_perp.orderUtils#scropeprice)
+
+## Type Aliases
+
+### EstimatedLeverageInputs
+
+Ƭ **EstimatedLeverageInputs**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `newOrder` | \{ `price`: `number` ; `qty`: `number` ; `symbol`: `string`  } |
+| `newOrder.price` | `number` |
+| `newOrder.qty` | `number` |
+| `newOrder.symbol` | `string` |
+| `positions` | `Pick`\<[`PositionExt`](./../interfaces/orderly_network_types.API.PositionExt), ``"position_qty"`` \| ``"mark_price"`` \| ``"symbol"``\>[] |
+| `totalCollateral` | `number` |
+
+#### Defined in
+
+[order.ts:130](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/order.ts#L130)
+
+___
+
+### EstimatedLiquidationPriceInputs
+
+Ƭ **EstimatedLiquidationPriceInputs**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `IMR_Factor` | `number` |
+| `baseIMR` | `number` |
+| `baseMMR` | `number` |
+| `markPrice` | `number` |
+| `newOrder` | \{ `price`: `number` ; `qty`: `number` ; `symbol`: `string`  } |
+| `newOrder.price` | `number` |
+| `newOrder.qty` | `number` |
+| `newOrder.symbol` | `string` |
+| `positions` | `Pick`\<[`PositionExt`](./../interfaces/orderly_network_types.API.PositionExt), ``"position_qty"`` \| ``"mark_price"`` \| ``"symbol"`` \| ``"mmr"``\>[] |
+| `totalCollateral` | `number` |
+
+#### Defined in
+
+[order.ts:34](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/order.ts#L34)
+
+## Functions
+
+### estLeverage
+
+▸ **estLeverage**(`inputs`): `number` \| ``null``
+
+Estimated leverage
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `inputs` | [`EstimatedLeverageInputs`](./orderly_network_perp.orderUtils#estimatedleverageinputs) | EstimtedLeverageInputs |
+
+#### Returns
+
+`number` \| ``null``
+
+number
+
+#### Defined in
+
+[order.ts:145](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/order.ts#L145)
+
+___
+
+### estLiqPrice
+
+▸ **estLiqPrice**(`inputs`): `number`
+
+Estimated liquidation price
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inputs` | [`EstimatedLiquidationPriceInputs`](./orderly_network_perp.orderUtils#estimatedliquidationpriceinputs) |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[order.ts:56](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/order.ts#L56)
+
+___
+
+### maxPrice
+
+▸ **maxPrice**(`markprice`, `range`): `number`
+
+Maximum price when placing an order
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `markprice` | `number` |
+| `range` | `number` |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[order.ts:8](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/order.ts#L8)
+
+___
+
+### minPrice
+
+▸ **minPrice**(`markprice`, `range`): `number`
+
+Minimum price when placing an order
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `markprice` | `number` |
+| `range` | `number` |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[order.ts:15](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/order.ts#L15)
+
+___
+
+### scropePrice
+
+▸ **scropePrice**(`price`, `scrope`, `side`): `number`
+
+Scrope price when placing an order
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `price` | `number` |
+| `scrope` | `number` |
+| `side` | ``"BUY"`` \| ``"SELL"`` |
+
+#### Returns
+
+`number`
+
+number
+
+#### Defined in
+
+[order.ts:23](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/order.ts#L23)
