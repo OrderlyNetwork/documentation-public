@@ -102,12 +102,7 @@
     },
     {
       "group": "Learn More",
-      "pages": [
-        "faqs",
-        "security",
-        "terms-of-service",
-        "privacy-policy"
-      ]
+      "pages": ["faqs", "security", "terms-of-service", "privacy-policy"]
     },
     {
       "group": "Getting Started",
@@ -291,11 +286,7 @@
     },
     {
       "group": "Getting Started",
-      "pages": [
-        "build-on-evm/building-on-evm",
-        "build-on-evm/overview",
-        "build-on-evm/addresses"
-      ]
+      "pages": ["build-on-evm/building-on-evm", "build-on-evm/overview", "build-on-evm/addresses"]
     },
     {
       "group": "User Flows",
@@ -546,15 +537,22 @@
     },
     {
       "group": "Software Development Kits",
-      "pages": [
-        "sdks/overview"
-      ]
+      "pages": ["sdks/overview"]
     },
     {
       "group": "[EVM] React Hooks SDK",
       "pages": [
         "sdks/hooks/overview",
         "sdks/hooks/setup",
+        {
+          "group": "Common Hooks",
+          "pages": [
+            "sdks/hooks/common/use-config",
+            "sdks/hooks/common/use-event-emitter",
+            "sdks/hooks/common/use-local-storage",
+            "sdks/hooks/common/use-session-storage"
+          ]
+        },
         {
           "group": "API Requests",
           "pages": [
@@ -572,7 +570,8 @@
           "pages": [
             "sdks/hooks/account/overview",
             "sdks/hooks/account/use-account",
-            "sdks/hooks/account/use-leverage"
+            "sdks/hooks/account/use-leverage",
+            "sdks/hooks/account/use-margin-ratio"
           ]
         },
         {
@@ -583,79 +582,59 @@
             "sdks/hooks/assets/use-max-qty",
             "sdks/hooks/assets/use-deposit",
             "sdks/hooks/assets/use-withdraw",
+            "sdks/hooks/assets/use-holding-stream",
             "sdks/hooks/assets/use-chains"
           ]
         },
-        "sdks/hooks/orderbook",
-        "sdks/hooks/markets",
-        "sdks/hooks/orders",
-        "sdks/hooks/positions",
         {
-          "group": "Common Hooks",
+          "group": "Market Data",
           "pages": [
-            "sdks/hooks/common/use-config",
-            "sdks/hooks/common/use-event-emitter",
-            "sdks/hooks/common/use-local-storage",
-            "sdks/hooks/common/use-session-storage"
+            "sdks/hooks/market-data/markets",
+            "sdks/hooks/market-data/use-orderbook-stream",
+            "sdks/hooks/market-data/use-mark-price-stream",
+            "sdks/hooks/market-data/use-mark-prices-stream",
+            "sdks/hooks/market-data/use-mark-price",
+            "sdks/hooks/market-data/use-market-trade-stream",
+            "sdks/hooks/market-data/use-markets-stream",
+            "sdks/hooks/market-data/use-ticker-stream",
+            "sdks/hooks/market-data/use-symbols-info"
           ]
         },
         {
-          "group": "Advanced Hooks",
+          "group": "Orders",
           "pages": [
-            "sdks/hooks/advanced/use-mark-price",
-            "sdks/hooks/advanced/use-order-entry",
-            "sdks/hooks/advanced/use-margin-ratio",
-            "sdks/hooks/advanced/use-funding-rate",
-            "sdks/hooks/advanced/use-funding-rates",
-            "sdks/hooks/advanced/use-symbols-info"
+            "sdks/hooks/orders/orders",
+            "sdks/hooks/orders/use-order-entry",
+            "sdks/hooks/orders/use-order-stream"
           ]
         },
         {
-          "group": "Streaming Hooks",
-          "pages": [
-            "sdks/hooks/streaming/use-orderbook-stream",
-            "sdks/hooks/streaming/use-markets-stream",
-            "sdks/hooks/streaming/use-mark-prices-stream",
-            "sdks/hooks/streaming/use-market-trade-stream",
-            "sdks/hooks/streaming/use-order-stream",
-            "sdks/hooks/streaming/use-position-stream",
-            "sdks/hooks/streaming/use-holding-stream",
-            "sdks/hooks/streaming/use-ticker-stream"
-          ]
-        }
+          "group": "Funding",
+          "pages": ["sdks/hooks/funding/use-funding-rate", "sdks/hooks/funding/use-funding-rates"]
+        },
+        "sdks/hooks/use-position-stream"
       ]
     },
     {
       "group": "[EVM] Core SDK",
-      "pages": [
-        "sdks/core/overview"
-      ]
+      "pages": ["sdks/core/overview"]
     },
     {
       "group": "[EVM] Perp SDK",
-      "pages": [
-        "sdks/perp/overview"
-      ]
+      "pages": ["sdks/perp/overview"]
     },
     {
       "group": "Updates by area",
-      "pages": [
-        "changelog/evm",
-        "changelog/near",
-        "changelog/sdk"
-      ]
+      "pages": ["changelog/evm", "changelog/near", "changelog/sdk"]
     },
     {
       "group": "Classification",
-      "pages": [
-        "changelog/classification"
-      ]
+      "pages": ["changelog/classification"]
     },
     {
       "group": "Technical Documentation",
       "pages": [
         "sdks/tech-doc/README",
-        "sdks/tech-doc/modules",
         {
           "group": "Modules",
           "pages": [
@@ -772,8 +751,5 @@
     "discord": "https://discord.gg/orderlynetwork",
     "medium": "https://medium.com/@orderlynetwork"
   },
-  "openapi": [
-    "/evm.openapi.yaml",
-    "/near.openapi.yaml"
-  ]
+  "openapi": ["/evm.openapi.yaml", "/near.openapi.yaml"]
 }
