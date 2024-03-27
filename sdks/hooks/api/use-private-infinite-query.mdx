@@ -2,4 +2,44 @@
 title: "usePrivateInfiniteQuery"
 ---
 
-TODO
+### Infinite scrolling
+
+Position list or order lists typically requires pagination to load all the data. If an infinite scrolling effect has to be implemented `usePrivateInfiniteQuery` can be used.
+
+**Slightly different from sending an incremental `page` parameter, `usePrivateInfiniteQuery` will append data from the next `page` to `data`, and not replace the current response.**
+
+For example, to get the list of orders:
+
+```tsx
+const { data: orders } = usePrivateInfiniteQuery(
+  (pageIndex: number, previousPageData) => {
+    // reached the end
+    if (previousPageData && !previousPageData.length) return null;
+
+    const search = new URLSearchParams([
+      ["size", size.toString()],
+      ["page", `${pageIndex + 1}`]
+    ]);
+
+    if (status) {
+      search.set(`status`, status);
+    }
+
+    if (symbol) {
+      search.set(`symbol`, symbol);
+    }
+
+    if (side) {
+      search.set(`side`, side);
+    }
+
+    return `/v1/orders?${search.toString()}`;
+  },
+  {
+    initialSize: 1,
+    onError: (err) => {
+      console.error("fetch failed::::", err);
+    }
+  }
+);
+```

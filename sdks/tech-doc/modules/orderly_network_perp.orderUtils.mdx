@@ -17,6 +17,7 @@
 - [estLiqPrice](./orderly_network_perp.orderUtils#estliqprice)
 - [maxPrice](./orderly_network_perp.orderUtils#maxprice)
 - [minPrice](./orderly_network_perp.orderUtils#minprice)
+- [orderFee](./orderly_network_perp.orderUtils#orderfee)
 - [scropePrice](./orderly_network_perp.orderUtils#scropeprice)
 
 ## Type Aliases
@@ -38,7 +39,7 @@
 
 #### Defined in
 
-[order.ts:130](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/order.ts#L130)
+[order.ts:153](https://github.com/OrderlyNetwork/js-sdk/blob/6414be9e/packages/perp/src/order.ts#L153)
 
 ___
 
@@ -58,12 +59,13 @@ ___
 | `newOrder.price` | `number` |
 | `newOrder.qty` | `number` |
 | `newOrder.symbol` | `string` |
+| `orderFee` | `number` |
 | `positions` | `Pick`\<[`PositionExt`](./../interfaces/orderly_network_types.API.PositionExt), ``"position_qty"`` \| ``"mark_price"`` \| ``"symbol"`` \| ``"mmr"``\>[] |
 | `totalCollateral` | `number` |
 
 #### Defined in
 
-[order.ts:34](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/order.ts#L34)
+[order.ts:51](https://github.com/OrderlyNetwork/js-sdk/blob/6414be9e/packages/perp/src/order.ts#L51)
 
 ## Functions
 
@@ -87,7 +89,7 @@ number
 
 #### Defined in
 
-[order.ts:145](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/order.ts#L145)
+[order.ts:171](https://github.com/OrderlyNetwork/js-sdk/blob/6414be9e/packages/perp/src/order.ts#L171)
 
 ___
 
@@ -109,7 +111,7 @@ Estimated liquidation price
 
 #### Defined in
 
-[order.ts:56](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/order.ts#L56)
+[order.ts:74](https://github.com/OrderlyNetwork/js-sdk/blob/6414be9e/packages/perp/src/order.ts#L74)
 
 ___
 
@@ -132,7 +134,7 @@ Maximum price when placing an order
 
 #### Defined in
 
-[order.ts:8](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/order.ts#L8)
+[order.ts:8](https://github.com/OrderlyNetwork/js-sdk/blob/6414be9e/packages/perp/src/order.ts#L8)
 
 ___
 
@@ -155,7 +157,32 @@ Minimum price when placing an order
 
 #### Defined in
 
-[order.ts:15](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/order.ts#L15)
+[order.ts:15](https://github.com/OrderlyNetwork/js-sdk/blob/6414be9e/packages/perp/src/order.ts#L15)
+
+___
+
+### orderFee
+
+▸ **orderFee**(`inputs`): `number`
+
+Calculate the order fee
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `inputs` | `Object` | - |
+| `inputs.futuresTakeFeeRate` | `number` | - |
+| `inputs.price` | `number` | - |
+| `inputs.qty` | `number` | Order quantity |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[order.ts:37](https://github.com/OrderlyNetwork/js-sdk/blob/6414be9e/packages/perp/src/order.ts#L37)
 
 ___
 
@@ -181,4 +208,4 @@ number
 
 #### Defined in
 
-[order.ts:23](./https://gitlab.com/orderlynetwork/orderly-fe/orderly-web/-/blob/3f38d838/packages/perp/src/order.ts#L23)
+[order.ts:23](https://github.com/OrderlyNetwork/js-sdk/blob/6414be9e/packages/perp/src/order.ts#L23)

@@ -1,21 +1,6 @@
 ---
-title: "Deposit"
+title: "useDeposit"
 ---
-
-`@orderly.network/hooks` provides the following hooks to facilitate the deposit process.
-
-- [useChains](/sdks/hooks/advanced/use-chains) - Retrieves the list of supported chains
-- [useDeposit](/sdks/hooks/advanced/use-deposit) - Contains all deposit related logic
-
-## List of supported chains
-
-`useChains` returns a list of chains, where each element contains the chain's config.
-
-```typescript
-import { useChains } from "@orderly.network/hooks";
-
-const [chains, { findByChainId }] = useChains("mainnet");
-```
 
 ## Wallet balance
 
@@ -142,38 +127,4 @@ const {
 
 // Note: No parameters need to be passed during the call
 const res = await deposit();
-```
-
-### Deposit status
-
-Subscribe to the relevant websocket topic to get updates on the deposit status.
-
-```typescript
-import { useWS } from "@orderly.network/hooks";
-
-//...
-
-export const Example = () => {
-  const ws = useWS();
-
-  useEffect(() => {
-    const unsubscribe = ws.subscribe(
-      {
-        id: "wallet",
-        event: "subscribe",
-        topic: "wallet",
-        ts: Date.now()
-      },
-      {
-        onMessage: (data: any) => {
-          //
-        }
-      }
-    );
-
-    return () => {
-      unsubscribe();
-    };
-  }, [ws]);
-};
 ```

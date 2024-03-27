@@ -2,4 +2,91 @@
 title: "useWS"
 ---
 
-TODO
+### Subscribing to public topics
+
+```tsx
+subscribe(
+    topic: string|{[key:string]:any},
+    callback: WSMessageHandler | Omit<WSMessageHandler, "onUnsubscribe">,
+    once?: boolean,
+    id?: string
+  ): unsubscribe | undefined
+
+```
+
+Subscribing to the `trade` topic:
+
+```tsx
+import { useEffect } from "react";
+import { useWS } from "@orderly.network/hooks";
+
+export const Example = () => {
+  const ws = useWS();
+
+  useEffect(() => {
+    const unsubscript = ws.subscribe(
+      {
+        id: `${symbol}@trade`,
+        event: "subscribe",
+        topic: `${symbol}@trade`,
+        ts: Date.now()
+      },
+      {
+        onMessage: (data: any) => {
+          //
+        }
+      }
+    );
+    () => {
+      // Unsubscribes when the component unloads
+      unsubscribe();
+    };
+  }, []);
+
+  //...
+};
+```
+
+### Subscribing to private topics
+
+```tsx
+subscribe(
+    topic: string|{[key:string]:any},
+    callback: WSMessageHandler | Omit<WSMessageHandler, "onUnsubscribe">,
+    once?: boolean,
+    id?: string
+  ): unsubscribe | undefined
+
+```
+
+Subscribing to the `executionreport` topic:
+
+```tsx
+import { useWS } from "@orderly.network/hooks";
+
+export const Example = () => {
+  const ws = useWS();
+
+  useEffect(() => {
+    const unsubscript = ws.privateSubscribe(
+      {
+        id: "executionreport",
+        event: "subscribe",
+        topic: "executionreport",
+        ts: Date.now()
+      },
+      {
+        onMessage: (data) => {
+          // do something
+        }
+      }
+    );
+    () => {
+      // Unsubscribes when the component unloads
+      unsubscribe();
+    };
+  }, []);
+
+  //...
+};
+```

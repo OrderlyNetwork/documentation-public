@@ -33,6 +33,7 @@ async function main() {
     fileContent = fileContent.replace(/\.md/g, "");
     // make all links relative so that they are not opened in new tab
     fileContent = fileContent.replace(/\][(]/g, "](./");
+    fileContent = fileContent.replace(/\.\/http/g, "http");
 
     const techdocFilePath = path.join(techdocPath, `${file}x`);
     const techdocDirPath = path.dirname(techdocFilePath);
