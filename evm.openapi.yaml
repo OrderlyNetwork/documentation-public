@@ -9,7 +9,7 @@ tags:
 paths:
   /v1/public/futures:
     get:
-      summary: Get Futures Info for All Markets
+      summary: Get Market Info for All Trading Pairs
       deprecated: false
       description: |
 
@@ -17,7 +17,7 @@ paths:
 
         `GET /v1/public/futures`
 
-        Get basic futures information for all the markets.
+        Get basic market information for all the trading pairs.
       tags:
         - public
       parameters: []
@@ -67,7 +67,7 @@ paths:
 
   /v1/public/volume/stats:
     get:
-      summary: Get Volume Statistics
+      summary: Get Broker Volume
       deprecated: false
       description: >
 
@@ -255,7 +255,7 @@ paths:
                 $ref: '#/components/schemas/FundingRateHistoryResponse'
   /v1/public/futures/{symbol}:
     get:
-      summary: Get Futures Info for One Market
+      summary: Get Market Info for One Trading Pair
       deprecated: false
       description: |
 
@@ -263,7 +263,7 @@ paths:
 
         `GET /v1/public/futures/{symbol}`
 
-        Get basic futures information for one market.
+        Get basic market information for one trading pair.
       tags:
         - public
       parameters:
@@ -387,7 +387,7 @@ paths:
                 $ref: '#/components/schemas/LiquidatedPositionsResponse'
   /v1/public/info/{symbol}:
     get:
-      summary: Get Exchange Information
+      summary: Get Order Rules per Market
       deprecated: false
       description: "
         **Limit: 10 requests per 1 second per IP address**
@@ -406,11 +406,11 @@ paths:
 
         - `price` >= `quote_min`
 
-        - `price` <= `quote_max`
+        - `price` =< `quote_max`
 
         - `(price - quote_min) % quote_tick` should equal to zero
 
-        - `price` <= `asks[0].price * (1 + price_range)` when BUY
+        - `price` =< `asks[0].price * (1 + price_range)` when BUY
 
         - `price` >= `bids[0].price * (1 - price_range)` when SELL
 
@@ -418,7 +418,7 @@ paths:
         Size filter
 
 
-        - `base_min` <= `quantity` <= `base_max`
+        - `base_min` =< `quantity` =< `base_max`
 
         - `(quantity - base_min) % base_tick` should equal to zero
 
@@ -453,14 +453,14 @@ paths:
                 $ref: '#/components/schemas/ExchangeInformationResponse'
   /v1/public/token:
     get:
-      summary: Get Token Info
+      summary: Get Supported Collateral Info
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
 
         `GET /v1/public/token`
 
-        Retrives the available tokens to custody within Orderly Network.
+        Retrives the available tokens to be used as collateral within Orderly Network.
       tags:
         - public
       parameters: []
@@ -1524,14 +1524,14 @@ paths:
                 $ref: '#/components/schemas/RegistrationNonceResponse'
   /v1/get_account:
     get:
-      summary: Get Account
+      summary: Check if Wallet is Registered
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
 
         `GET /v1/get_account`
 
-        Check whether a particular account is registered on Orderly Network.
+        Check whether a wallet has a registered account with provided broker_id.
       tags:
         - public
       parameters:
@@ -3173,14 +3173,14 @@ paths:
                 $ref: '#/components/schemas/AlgoOrderTradesResponse'
   /v1/public/account:
     get:
-      summary: Get Account Details
+      summary: Check if Account Exisits
       deprecated: false
       description: |-
         **Limit: 10 requests per 1 second per IP address**
 
         `GET /v1/public/account`
 
-        Get account details of given address
+        Check if provided account account is registered with Orderly Network and it's respecitive broker.
       tags:
         - public
       parameters:
