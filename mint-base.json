@@ -577,18 +577,9 @@
         "sdks/hooks/overview",
         "sdks/hooks/setup",
         {
-          "group": "Common Hooks",
-          "pages": [
-            "sdks/hooks/common/use-config",
-            "sdks/hooks/common/use-event-emitter",
-            "sdks/hooks/common/use-local-storage",
-            "sdks/hooks/common/use-session-storage"
-          ]
-        },
-        {
           "group": "API Requests",
           "pages": [
-            "sdks/hooks/api/overview",
+            "sdks/hooks/api/api",
             "sdks/hooks/api/use-query",
             "sdks/hooks/api/use-private-query",
             "sdks/hooks/api/use-private-infinite-query",
@@ -598,9 +589,19 @@
           ]
         },
         {
+          "group": "Utility",
+          "pages": [
+            "sdks/hooks/util/util",
+            "sdks/hooks/util/use-config",
+            "sdks/hooks/util/use-event-emitter",
+            "sdks/hooks/util/use-local-storage",
+            "sdks/hooks/util/use-session-storage"
+          ]
+        },
+        {
           "group": "Acount",
           "pages": [
-            "sdks/hooks/account/overview",
+            "sdks/hooks/account/account",
             "sdks/hooks/account/use-account",
             "sdks/hooks/account/use-leverage",
             "sdks/hooks/account/use-margin-ratio"
@@ -609,13 +610,13 @@
         {
           "group": "Assets",
           "pages": [
-            "sdks/hooks/assets/overview",
+            "sdks/hooks/assets/assets",
             "sdks/hooks/assets/use-collateral",
             "sdks/hooks/assets/use-max-qty",
+            "sdks/hooks/assets/use-chains",
             "sdks/hooks/assets/use-deposit",
             "sdks/hooks/assets/use-withdraw",
-            "sdks/hooks/assets/use-holding-stream",
-            "sdks/hooks/assets/use-chains"
+            "sdks/hooks/assets/use-holding-stream"
           ]
         },
         {
@@ -623,9 +624,9 @@
           "pages": [
             "sdks/hooks/market-data/markets",
             "sdks/hooks/market-data/use-orderbook-stream",
+            "sdks/hooks/market-data/use-mark-price",
             "sdks/hooks/market-data/use-mark-price-stream",
             "sdks/hooks/market-data/use-mark-prices-stream",
-            "sdks/hooks/market-data/use-mark-price",
             "sdks/hooks/market-data/use-market-trade-stream",
             "sdks/hooks/market-data/use-markets-stream",
             "sdks/hooks/market-data/use-ticker-stream",
@@ -641,10 +642,17 @@
           ]
         },
         {
-          "group": "Funding",
-          "pages": ["sdks/hooks/funding/use-funding-rate", "sdks/hooks/funding/use-funding-rates"]
+          "group": "Positions",
+          "pages": ["sdks/hooks/positions/use-position-stream"]
         },
-        "sdks/hooks/use-position-stream"
+        {
+          "group": "Funding",
+          "pages": [
+            "sdks/hooks/funding/funding",
+            "sdks/hooks/funding/use-funding-rate",
+            "sdks/hooks/funding/use-funding-rates"
+          ]
+        }
       ]
     },
 

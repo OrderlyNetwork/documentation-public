@@ -27,44 +27,51 @@ The REST API hooks can be used to facilitate interacting with Orderly REST & Web
 - [useMutation](/sdks/hooks/api/use-mutation) - `POST` APIs
 - [useWS](/sdks/hooks/api/use-ws) - WebSocket client
 
-### Common
+### Utility
 
-These common hooks provide ways to help handle UI states and some state management logic.
+These utility hooks provide ways to help handle UI states and some state management logic.
 
-- [useConfig](/sdks/hooks/common/use-config) - An instance of the `ConfigStore`
-- [useEventEmitter](/sdks/hooks/common/use-event-emitter) - An instance of the `EventEmitter`
-- [useLocalStorage](/sdks/hooks/common/use-local-storage) - Management (CRUD) of localStorage
-- [useSessionStorage](/sdks/hooks/common/use-session-storage) - Management (CRUD) of sessionStorage
+- [useConfig](/sdks/hooks/util/use-config) - An instance of the `ConfigStore`
+- [useEventEmitter](/sdks/hooks/util/use-event-emitter) - An instance of the `EventEmitter`
+- [useLocalStorage](/sdks/hooks/util/use-local-storage) - Management (CRUD) of localStorage
+- [useSessionStorage](/sdks/hooks/util/use-session-storage) - Management (CRUD) of sessionStorage
 
-### Orderly API
+### Account
 
-These hooks are related to Orderly's business logic. Each hook contains usage of the Orderly API and related data calculation logic.
+- [useAccount](/sdks/hooks/account/use-account) - Account information
+- [useLeverage](/sdks/hooks/account/use-leverage) - Leverage information
+- [useMarginRatio](/sdks/hooks/account/use-margin-ratio) - Margin information
 
-- [useAccount](/sdks/hooks/advanced/use-account) - Account information
-- [useLeverage](/sdks/hooks/advanced/use-leverage) - Leverage information
-- [useCollateral](/sdks/hooks/advanced/use-collateral) - Asset information
-- [useMaxQty](/sdks/hooks/advanced/use-max-qty) - Maximum trading quantity
-- [useChains](/sdks/hooks/advanced/use-chains) - Chain information
-- [useDeposit](/sdks/hooks/advanced/use-deposit) - Deposit helper
-- [useWithdraw](/sdks/hooks/advanced/use-withdraw) - Withdrawal helper
-- [useMarkPrice](/sdks/hooks/advanced/use-mark-price) - Margin information
-- [useOrderEntry](/sdks/hooks/advanced/use-order-entry) - Order placement
+### Assets
 
-- [useMarginRatio](/sdks/hooks/advanced/use-margin-ratio) - Margin information
-- [useFundingRate](/sdks/hooks/advanced/use-funding-rate) - Funding rate information
-- [useFundingRates](/sdks/hooks/advanced/use-funding-rates) - Batch funding rate information
-- [useSymbolsInfo](/sdks/hooks/advanced/use-symbols-info) - Symbol information
+- [useCollateral](/sdks/hooks/assets/use-collateral) - Asset information
+- [useMaxQty](/sdks/hooks/assets/use-max-qty) - Maximum trading quantity
+- [useChains](/sdks/hooks/assets/use-chains) - Chain information
+- [useDeposit](/sdks/hooks/assets/use-deposit) - Deposit helper
+- [useWithdraw](/sdks/hooks/assets/use-withdraw) - Withdrawal helper
+- [useHoldingStream](/sdks/hooks/assets/use-holding-stream) - Retrieves user's assets
 
-### Orderly Streaming API
+### Markets
 
-These hooks are related to Orderly's business logic. Each hook contains usage of the Orderly API and related data calculation logic. The data is updated in real-time using a Websocket connection.
+- [useOrderbookStream](/sdks/hooks/market-data/use-orderbook-stream) - Orderbook stream
+- [useMarkPrice](/sdks/hooks/market-data/use-mark-price) - Get the mark price of a single symbol
+- [useMarkPriceStream](/sdks/hooks/market-data/use-mark-price-stream) - Get the mark price of a single symbol
+- [useMarkPricesStream](/sdks/hooks/market-data/use-mark-prices-stream) - Get the mark price of all symbols
+- [useMarketTradeStream](/sdks/hooks/market-data/use-market-trade-stream) - Get the market trades history of a symbol
+- [useMarketsStream](/sdks/hooks/market-data/use-markets-stream) - Retrieve all listed symbols and its market data
+- [useTickerStream](sdks/hooks/market-data/use-ticker-stream) - Get the symbol market data stream
+- [useSymbolsInfo](sdks/hooks/market-data/market-data/use-symbols-info) - Get the symbol market data stream
 
-- [useOrderbookStream](/sdks/hooks/streaming/use-orderbook-stream) - Orderbook stream
-- [useMarketsStream](/sdks/hooks/streaming/use-markets-stream) - Listed symbols and its market data
-- [useMarkPricesStream](/sdks/hooks/streaming/use-mark-prices-stream) - Mark prices stream
-- [useMarketTradeStream](/sdks/hooks/streaming/use-market-trade-stream) - Market trades history of given symbol
-- [useOrderStream](/sdks/hooks/streaming/use-order-stream) - Order management
-- [usePositionStream](/sdks/hooks/streaming/use-position-stream) - Position management
+### Orders
 
-- [useHoldingStream](/sdks/hooks/streaming/use-holding-stream) - Holding
-- [useTickerStream](/sdks/hooks/streaming/use-ticker-stream) - Symbol market data stream
+- [useOrderEntry](/sdks/hooks/orders/use-order-entry) - Order placement
+- [useOrderStream](/sdks/hooks/orders/use-order-stream) - Retrieving, editing and cancelling orders
+
+### Positions
+
+- [usePositionStream](/sdks/hooks/positions/use-position-stream) - Position management
+
+### Funding
+
+- [useFundingRate](/sdks/hooks/funding/use-funding-rate) - Funding rate information
+- [useFundingRates](/sdks/hooks/funding/use-funding-rates) - Batch funding rate information
