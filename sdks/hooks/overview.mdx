@@ -26,6 +26,7 @@ The REST API hooks can be used to facilitate interacting with Orderly REST & Web
 - [useLazyQuery](/sdks/hooks/api/use-lazy-query)
 - [useMutation](/sdks/hooks/api/use-mutation) - `POST` APIs
 - [useWS](/sdks/hooks/api/use-ws) - WebSocket client
+- `useSWR` - Reexport from [this npm package](https://www.npmjs.com/package/swr)
 
 ### Utility
 
@@ -35,10 +36,15 @@ These utility hooks provide ways to help handle UI states and some state managem
 - [useEventEmitter](/sdks/hooks/util/use-event-emitter) - An instance of the `EventEmitter`
 - [useLocalStorage](/sdks/hooks/util/use-local-storage) - Management (CRUD) of localStorage
 - [useSessionStorage](/sdks/hooks/util/use-session-storage) - Management (CRUD) of sessionStorage
+- [useMediaQuery](/sdks/hooks/util/use-media-query) - Evaluates a media query to a boolean
+- `useConstant` - Reexport from [this npm package](https://www.npmjs.com/package/use-constant)
+- `useDebounce` - Reexport from [this npm package](https://www.npmjs.com/package/use-debounce)
 
 ### Account
 
-- [useAccount](/sdks/hooks/account/use-account) - Account information
+- [useAccount](/sdks/hooks/account/use-account) - Account information & manipulation
+- [useAccountInfo](/sdks/hooks/account/use-account-info) - Fetches account information
+- [useAccountInstance](/sdks/hooks/account/use-account-instance) - Returns `Account` singleton
 - [useLeverage](/sdks/hooks/account/use-leverage) - Leverage information
 - [useMarginRatio](/sdks/hooks/account/use-margin-ratio) - Margin information
 
@@ -46,7 +52,8 @@ These utility hooks provide ways to help handle UI states and some state managem
 
 - [useCollateral](/sdks/hooks/assets/use-collateral) - Asset information
 - [useMaxQty](/sdks/hooks/assets/use-max-qty) - Maximum trading quantity
-- [useChains](/sdks/hooks/assets/use-chains) - Chain information
+- [useChain](/sdks/hooks/assets/use-chain) - Chain information
+- [useChains](/sdks/hooks/assets/use-chains) - All chains information
 - [useDeposit](/sdks/hooks/assets/use-deposit) - Deposit helper
 - [useWithdraw](/sdks/hooks/assets/use-withdraw) - Withdrawal helper
 - [useHoldingStream](/sdks/hooks/assets/use-holding-stream) - Retrieves user's assets
@@ -54,10 +61,12 @@ These utility hooks provide ways to help handle UI states and some state managem
 ### Markets
 
 - [useOrderbookStream](/sdks/hooks/market-data/use-orderbook-stream) - Orderbook stream
+- [useIndexPrice](/sdks/hooks/market-data/use-index-price) - Get the index price of a single symbol
 - [useMarkPrice](/sdks/hooks/market-data/use-mark-price) - Get the mark price of a single symbol
 - [useMarkPriceStream](/sdks/hooks/market-data/use-mark-price-stream) - Get the mark price of a single symbol
 - [useMarkPricesStream](/sdks/hooks/market-data/use-mark-prices-stream) - Get the mark price of all symbols
 - [useMarketTradeStream](/sdks/hooks/market-data/use-market-trade-stream) - Get the market trades history of a symbol
+- [useMarkets](/sdks/hooks/market-data/use-markets) - Retrieve all listed symbols and its market data
 - [useMarketsStream](/sdks/hooks/market-data/use-markets-stream) - Retrieve all listed symbols and its market data
 - [useTickerStream](sdks/hooks/market-data/use-ticker-stream) - Get the symbol market data stream
 - [useSymbolsInfo](sdks/hooks/market-data/market-data/use-symbols-info) - Get the symbol market data stream
@@ -70,6 +79,7 @@ These utility hooks provide ways to help handle UI states and some state managem
 ### Positions
 
 - [usePositionStream](/sdks/hooks/positions/use-position-stream) - Position management
+- [usePoster](/sdks/hooks/positions/use-poster) - Generates a poster image based on position information
 
 ### Funding
 
