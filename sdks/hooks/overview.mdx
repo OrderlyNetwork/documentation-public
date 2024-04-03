@@ -12,6 +12,7 @@ The hooks libraries provides a series of React hooks for React developers to ens
 
 - If the hook returns an array, then the first element will be the actual data, and the second element will be an object containing some supporting functions.
 - All hooks ending with `stream` will update in real-time, via relevant Websocket subscriptions.
+- All hooks ending with `subscription` subscribe to relevant Websocket API and allow to pass in a function.
 - All hooks ending with `query` is a wrapper of an API request.
 
 ## List of hooks
@@ -26,6 +27,7 @@ The REST API hooks can be used to facilitate interacting with Orderly REST & Web
 - [useLazyQuery](/sdks/hooks/api/use-lazy-query)
 - [useMutation](/sdks/hooks/api/use-mutation) - `POST` APIs
 - [useWS](/sdks/hooks/api/use-ws) - WebSocket client
+- [useWsStatus](/sdks/hooks/api/use-ws-status) - WebSocket client status
 - `useSWR` - Reexport from [this npm package](https://www.npmjs.com/package/swr)
 
 ### Utility
@@ -45,8 +47,11 @@ These utility hooks provide ways to help handle UI states and some state managem
 - [useAccount](/sdks/hooks/account/use-account) - Account information & manipulation
 - [useAccountInfo](/sdks/hooks/account/use-account-info) - Fetches account information
 - [useAccountInstance](/sdks/hooks/account/use-account-instance) - Returns `Account` singleton
+- [useWalletConnector](/sdks/hooks/account/use-wallet-connector) - Handles wallet connection
+- [useWalletSubscription](/sdks/hooks/account/use-wallet-subscription) - Subscribe to wallet transactionsvia WebSocket
 - [useLeverage](/sdks/hooks/account/use-leverage) - Leverage information
 - [useMarginRatio](/sdks/hooks/account/use-margin-ratio) - Margin information
+- [useSettleSubscription](/sdks/hooks/account/use-settle-subscription) - Subscribe to PnL settlement via WebSocket
 
 ### Assets
 
@@ -70,6 +75,7 @@ These utility hooks provide ways to help handle UI states and some state managem
 - [useMarketsStream](/sdks/hooks/market-data/use-markets-stream) - Retrieve all listed symbols and its market data
 - [useTickerStream](sdks/hooks/market-data/use-ticker-stream) - Get the symbol market data stream
 - [useSymbolsInfo](sdks/hooks/market-data/market-data/use-symbols-info) - Get the symbol market data stream
+- [useSymbolPriceRange](sdks/hooks/market-data/market-data/use-symbol-price-range) - Get the price range for the specified symbol with an optional price
 
 ### Orders
 
