@@ -2,4 +2,34 @@
 title: "useConfig"
 ---
 
-TODO
+This hook allows to return various configuration values. Possible keys:
+
+```ts
+export type ConfigKey =
+  | "apiBaseUrl"
+  | "klineDataUrl"
+  | "privateWsUrl"
+  | "publicWsUrl"
+  | "operatorUrl"
+  | "domain"
+  | "brokerId"
+  | "networkId"
+  | "env"
+  | "PROD_URL"
+  | "markets";
+```
+
+If no key is provided, then the entire `ConfigStore` will be returned.
+
+### Example
+
+```ts
+// get specific config
+const networkId = useConfig("networkId");
+
+useEffect(() => {
+  if (networkId === "testnet") {
+    // do something
+  }
+}, [networkId]);
+```

@@ -2,4 +2,16 @@
 title: "useWsStatus"
 ---
 
-TODO
+Receive WebSocket client status.
+
+## Example
+
+```ts
+const status = useWsStatus();
+
+useEffect(() => {
+  if (status === WsNetworkStatus.Connected) {
+    // do something
+  }
+}, [status]);
+```
