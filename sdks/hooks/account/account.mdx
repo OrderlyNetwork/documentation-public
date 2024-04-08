@@ -30,3 +30,121 @@ TODO
 > WalletConnect provides developer toolkits empowering you to build engaging web3 experiences. [more](https://docs.walletconnect.com/)
 
 TODO
+
+## Get and edit account leverage
+
+Here is a small example of how to get current account leverage and how to edit max allowed leverage.
+
+<CodeGroup>
+```tsx Leverage.tsx
+import { useLeverage, useMarginRatio } from "@orderly.network/hooks";
+import { Button, Dialog } from "@radix-ui/themes";
+import { FC, PropsWithChildren, useRef, useState } from "react";
+
+import { LeverageEditor } from "./LeverageEditor";
+
+export const LeverageDialog: FC<PropsWithChildren> = (props) => {
+  const [open, setOpen] = useState(false);
+  const { currentLeverage } = useMarginRatio();
+
+  const [maxLeverage, { update, config: leverageLevers, isMutating }] = useLeverage();
+  const nextLeverage = useRef(maxLeverage ?? 0);
+
+  const onSave = (value: { leverage: number }) => {
+    return Promise.resolve().then(() => {
+      nextLeverage.current = value.leverage;
+    });
+  };
+
+  const onSubmit = () => {
+    if (nextLeverage.current === maxLeverage) return;
+    update({ leverage: nextLeverage.current }).then(
+      () => {
+        setOpen(false);
+        // display success
+      },
+      (err) => {
+        console.dir(err);
+        // display error
+      }
+    );
+  };
+
+  return (
+    <Dialog.Root open={open} onOpenChange={setOpen}>
+      <Dialog.Trigger>{props.children}</Dialog.Trigger>
+      <Dialog.Title>Account Leverage</Dialog.Title>
+      <Dialog.Content>
+        <div className="flex flex-col">
+          <div className="flex gap-1">
+            <span className="flex-1">Current:</span>
+            <span>{currentLeverage}</span>
+          </div>
+          <div className="flex flex-col gap-1">
+            <span className="flex-1">Max account leverage</span>
+            <div className="my-5 h-[80px]">
+              <LeverageEditor
+                maxLeverage={maxLeverage}
+                leverageLevers={leverageLevers}
+                onSave={onSave}
+              />
+            </div>
+          </div>
+        </div>
+        <Button
+          onClick={() => {
+            setOpen(false);
+          }}
+        >
+          Cancel
+        </Button>
+        <Button onClick={() => onSubmit()} loading={isMutating}>
+          Save
+        </Button>
+      </Dialog.Content>
+    </Dialog.Root>
+  );
+};
+```
+
+```tsx LeverageEditor.tsx
+import { Slider } from "@radix-ui/themes";
+import { FC, useMemo, useState } from "react";
+
+interface LeverageEditorProps {
+  onSave?: (value: { leverage: number }) => Promise<void>;
+  maxLeverage?: number;
+  leverageLevers: number[];
+}
+
+export const LeverageEditor: FC<LeverageEditorProps> = (props) => {
+  const { maxLeverage, leverageLevers, onSave } = props;
+
+  const [leverage, setLeverage] = useState(() => maxLeverage ?? 0);
+
+  const leverageValue = useMemo(() => {
+    const index = leverageLevers.findIndex((item) => item === leverage);
+
+    return index;
+  }, [leverage, leverageLevers]);
+
+  return (
+    <Slider
+      min={0}
+      max={leverageLevers.length - 1}
+      value={[leverageValue]}
+      onValueChange={(value) => {
+        const _value = leverageLevers[value[0]];
+        setLeverage(_value);
+      }}
+      onValueCommit={(value) => {
+        const _value = leverageLevers[value[0]];
+        onSave?.({ leverage: _value }).catch(() => {
+          setLeverage(maxLeverage ?? 1);
+        });
+      }}
+    />
+  );
+};
+```
+</CodeGroup>

@@ -2,4 +2,14 @@
 title: "useAccountInfo"
 ---
 
-TODO
+Fetch basic acccount information from API.
+
+### Example
+
+```tsx
+const { data: account, error, isLoading } = useAccountInfo();
+if (account == null || isLoading) {
+  return "Loading...";
+}
+console.log("account_id", account.account_id);
+```
