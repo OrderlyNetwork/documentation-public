@@ -4,6 +4,8 @@ title: "useWalletConnector"
 
 Get wallet connection.
 
+- [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#usewalletconnector)
+
 ```ts
 export interface WalletConnectorContextState {
   connect: () => Promise<WalletState[]>;
@@ -19,6 +21,16 @@ export interface WalletConnectorContextState {
 
 ### Example
 
-```ts
+```tsx
 const wallet = useWalletConnector();
+
+return (
+  <button
+    onClick={() => {
+      wallet.connect();
+    }}
+  >
+    Connect wallet
+  </button>
+);
 ```

@@ -4,37 +4,33 @@ title: "useDeposit"
 
 ## Wallet balance
 
+- [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#usedeposit)
+
 It is useful to display the current wallet's balance when a user wishes to deposit. The wallet balance can be retrieve using the following two methods:
 
 ### `balance`
 
 `useDeposit` returns a `balance` field which is equal to the current token balance of the wallet (ie balance not deposited). This `balance` will refresh by fetching from the chain again if `token` changes.
 
-```typescript
-import { useDeposit } from "@orderly.network/hooks";
+```tsx
+const [token, setToken] = useState<API.TokenInfo>();
+const { connectedChain } = useWalletConnector();
 
-export const Example = () => {
-  // User chooses a token on the UI
-  const [token, setToken] = useState<API.TokenInfo>();
-
-  const {
-    dst,
-    balance, // The wallet balance of the chosen token
-    allowance,
-    approve,
-    deposit,
-    isNativeToken,
-    balanceRevalidating,
-    fetchBalance
-  } = useDeposit({
-    address: token?.address,
-    decimals: token?.decimals,
-    srcToken: token?.symbol,
-    srcChainId: ""
-  });
-
-  //...
-};
+const {
+  dst,
+  balance, // The wallet balance of the chosen token
+  allowance,
+  approve,
+  deposit,
+  isNativeToken,
+  balanceRevalidating,
+  fetchBalance
+} = useDeposit({
+  address: token?.address,
+  decimals: token?.decimals,
+  srcToken: token?.symbol,
+  srcChainId: Number(connectedChain?.id)
+});
 ```
 
 ### Fetch balance

@@ -2,11 +2,13 @@
 title: "useWithdraw"
 ---
 
-## Terminology
+Withdraw helper hook.
+
+- [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#usewithdraw)
 
 ### Max withdrawable amount
 
-`maxAmount` - The maximum balance that can be withdrawn at this moment (without having to settle PnL).
+`availableWithdraw` - The maximum balance that can be withdrawn at this moment (without having to settle PnL).
 
 ### Available Balance
 
@@ -19,17 +21,28 @@ title: "useWithdraw"
 All of the above data can be retrieved through `useWithdraw`.
 
 ```typescript
-const { withdraw, isLoading, maxAmount, availableBalance, unsettledPnL } = useWithdraw();
+const { withdraw, isLoading, availableWithdraw, unsettledPnL } = useWithdraw();
 ```
 
-## Withdraw
+### Example
 
-### `useWithdraw()`
-
-```typescript
-import { useWithdraw } from "@orderly.network/hooks";
-
-const { withdraw, isLoading } = useWithdraw();
+```tsx
+const { withdraw, availableWithdraw, isLoading } = useWithdraw();
+const account = useAccountInstance();
 
 const res = await withdraw();
+return (
+  <button
+    onClick={async () => {
+      await withdraw({
+        chainId: Number(account.chainId),
+        amount: availableWithdraw.toString(),
+        token: "USDC",
+        allowCrossChainWithdraw: false
+      });
+    }}
+  >
+    Withdraw all
+  </button>
+);
 ```

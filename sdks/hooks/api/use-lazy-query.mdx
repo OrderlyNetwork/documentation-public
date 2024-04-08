@@ -2,4 +2,12 @@
 title: "useLazyQuery"
 ---
 
-TODO
+Like [useQuery](/sdks/hooks/api/use-query), but returns a `trigger` to fetch data.
+
+- [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#uselazyquery)
+
+### Example
+
+```ts
+const { data, trigger } = useLazyQuery<API.Symbol[]>("/v1/public/info");
+```
