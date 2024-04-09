@@ -2,4 +2,21 @@
 title: "useMarkets"
 ---
 
-TODO
+The `useMarkets` hook extends the [`useMarketsStream`] hook with additional functionality like saving recent views and adding to favorites.
+
+- [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#usemarkets)
+
+```ts
+enum MarketsType {
+  FAVORITES = 0,
+  RECENT = 1,
+  ALL = 2
+}
+```
+
+### Example
+
+```ts
+const [data, { addToHistory, favoriteTabs, updateFavoriteTabs, updateSymbolFavoriteState }] =
+  useMarkets(MarketsType.ALL);
+```

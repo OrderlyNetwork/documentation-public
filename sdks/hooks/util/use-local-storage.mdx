@@ -2,4 +2,28 @@
 title: "useLocalStorage"
 ---
 
-TODO
+Utility hook to store values in browser's local storage.
+
+- [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#uselocalstorage)
+
+### Example
+
+```tsx
+const [needConfirm, setNeedConfirm] = useLocalStorage("CONFIRM_ORDER", true);
+
+return (
+  <>
+    {/* ... */}
+    <label>
+      Confirm Order
+      <input
+        type="checkbox"
+        checked={needConfirm}
+        onChange={() => {
+          setNeedConfirm(!needConfirm);
+        }}
+      />
+    </label>
+  </>
+);
+```
