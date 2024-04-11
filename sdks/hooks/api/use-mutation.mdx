@@ -1,0 +1,15 @@
+---
+title: "useMutation"
+---
+
+### Mutation
+
+**Note: `useQuery`/`usePrivateQuery` can only be used for `GET` requests.**
+
+For `POST`, `PUT` or `DELETE` requests, please use `useMutation`. For example to create a new order:
+
+```tsx
+import { useMutation } from "@orderly.network/hooks";
+
+const [createOrder, { data, error, isMutating }] = useMutation<OrderEntity, any>("/v1/order");
+```

@@ -1,0 +1,29 @@
+---
+title: "useSessionStorage"
+---
+
+Utility hook to store values in browser's session storage.
+
+- [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#usesessionstorage)
+
+### Example
+
+```tsx
+const [needConfirm, setNeedConfirm] = useLocalStorage("CONFIRM_ORDER", true);
+
+return (
+  <>
+    {/* ... */}
+    <label>
+      Confirm Order
+      <input
+        type="checkbox"
+        checked={needConfirm}
+        onChange={() => {
+          setNeedConfirm(!needConfirm);
+        }}
+      />
+    </label>
+  </>
+);
+```

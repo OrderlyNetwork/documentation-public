@@ -1,0 +1,45 @@
+---
+title: "Overview"
+---
+
+Orderly provides both public and private APIs. Public APIs can be fetched directly. Private APIs require [authentication](/build-on-evm/evm-api/api-authentication) and these can be performed using hooks from `@orderly.network/hooks`.
+
+<Note>
+  **Reminder:** Most often you might not have to use the following hooks, as
+  `@orderly.network/hooks` likely implements higher level hooks on top of the request module. For
+  example, you can use `usePositionStream` for position management, and `useOrderEntry` for order
+  placement. You may consider to use these hooks if you want to build out more advanced usage of
+  Orderly, or if the provided hooks are not suitable for your use case.
+</Note>
+
+## RESTful API
+
+`@orderly.network/hooks` provides the following hooks for builders to access Orderly's RESTful APIs:
+
+- [useQuery](/sdks/hooks/api/use-query) - `GET` Public API
+- [usePrivateQuery](/sdks/hooks/api/use-private-query) - `GET` Private API
+- [usePrivateInfiniteQuery](/sdks/hooks/api/use-private-infinite-query) - A version of `usePrivateQuery` that supports infinite scrolling
+- [useLazyQuery](/sdks/hooks/api/use-lazy-query)
+- [useMutation](/sdks/hooks/api/use-mutation) - `POST` APIs
+- [useWS](/sdks/hooks/api/use-ws) - WebSocket client
+
+The above hooks are based on [SWR](https://swr.vercel.app/) and have the following properties:
+
+- Request responses are cached. Cached data are used in priority according to the config, and is used as a global status management.
+- Removes any duplicate requests. When request parameters are the same, it will automatically cancel the duplicate request
+- When the window is focused or when the connection is recovered, automatically retries requests.
+- Automatically retries any failed network requests.
+- For more information, please check the [official swr documentation](https://swr.vercel.app/).
+
+### Private APIs
+
+Use `usePrivateQuery`, `usePrivateInfiniteQuery` or `useMutation` to access any private API. These are slightly different from `useQuery`:
+
+- They have a built-in account status check. Developers do not have to check the current login status of the user. If the user has not logged in, the request will not be sent until the user status has changed to a logged in status.
+- They will automatically sign all requests using the `OrderlyKey` according to Orderly's standards.
+
+## WebSocket
+
+`@orderly.network/hooks` provides a `useWS` hook for accessing Orderly's Websocket API. `useWS` returns the `WS` instance of `@orderly.network/net`. Builders can use `WS` to subscribe, cancel, or to send messages through the Websocket.
+
+For all available topics of the Websocket, please check the [Websocket API documentation](/build-on-evm/evm-api/websocket-api/introduction).

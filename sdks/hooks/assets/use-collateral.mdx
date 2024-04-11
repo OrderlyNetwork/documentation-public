@@ -1,0 +1,25 @@
+---
+title: "useCollateral"
+---
+
+Receive collateral information such as available balance, free collateral and unsettled PnL.
+
+- [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#usecollateral)
+
+### Example
+
+```ts
+import { useCollateral } from "@orderly.network/hooks";
+
+const {
+  totalCollateral,
+  freeCollateral,
+  totalValue,
+  availableBalance,
+  unsettledPnL,
+  positions,
+  accountInfo
+} = useCollateral({
+  dp: 2 //decimalPlaces
+});
+```

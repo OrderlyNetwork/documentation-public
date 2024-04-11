@@ -1,0 +1,28 @@
+---
+title: "useEventEmitter"
+---
+
+Utility hook that lets you emit events in one Component and receive them elsewhere.
+
+- [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#useeventemitter)
+
+### Example
+
+<CodeGroup>
+```tsx Emitter.tsx
+const eventEmitter = useEventEmitter();
+const [state, setState] = useState();
+
+useEffect(() => {
+  eventEmitter.emit("state:update", state);
+}, [state]);
+```
+
+```tsx Receiver.tsx
+const eventEmitter = useEventEmitter();
+
+eventEmitter.on("state:update", (state) => {
+  // do something
+});
+```
+</CodeGroup>

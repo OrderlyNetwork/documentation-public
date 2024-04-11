@@ -1,0 +1,25 @@
+---
+title: "useWalletSubscription"
+---
+
+Subscribe to on-chain events (e.g. transaction completed) for connected wallet.
+
+- [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#usewalletsubscription)
+
+### Example
+
+```ts
+useWalletSubscription({
+  onMessage: (data: any) => {
+    const { side, transStatus } = data;
+
+    if (transStatus === "COMPLETED") {
+      let msg = `${side} completed`;
+      toast.success(msg);
+    } else if (transStatus === "FAILED") {
+      let msg = `${side} failed`;
+      toast.error(msg);
+    }
+  }
+});
+```

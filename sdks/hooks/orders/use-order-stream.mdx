@@ -1,0 +1,68 @@
+---
+title: "useOrderStream"
+---
+
+## Managing orders
+
+`useOrderStream` provides a list of orders, as well as order management functionalities.
+
+```typescript
+export const useOrderStream = ({
+  status,
+  symbol,
+  side,
+  size = 100,
+}: {
+  symbol?: string;
+  status?: OrderStatus;
+  size?: number;
+  side?: OrderSide;
+} = {}): any
+```
+
+### Order list
+
+- Supports displaying all orders or only orders related to the current symbol (controlled by the `symbol` parameter).
+- Can filter orders according to the order status or order side.
+
+```typescript
+import { useOrderStream } from "@orderly.network/hooks";
+import { OrderStatus } from "@orderly.network/types";
+
+export const Example() = >{
+  const [orders] = useOrderStream({ status: OrderStatus.INCOMPLETE });
+
+  //...
+}
+```
+
+### Editing orders
+
+```typescript
+import { useOrderStream } from "@orderly.network/hooks";
+import { OrderStatus } from "@orderly.network/types";
+
+export const Example = () => {
+  const [_, { updateOrder }] = useOrderStream({ status: OrderStatus.INCOMPLETE });
+  //...
+  const onEdit = async (id, values) => {
+    const res = await updateOrder(id, values);
+    //...
+  };
+};
+```
+
+### Cancelling orders
+
+```typescript
+import { useOrderStream } from "@orderly.network/hooks";
+
+export const Example = () => {
+  const [_, { cancelOrder }] = useOrderStream({ status: OrderStatus.NEW });
+  //...
+  const onCancel = async (orderId) => {
+    const res = await cancelOrder("<orderId>");
+    //...
+  };
+};
+```

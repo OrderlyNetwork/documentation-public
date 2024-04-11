@@ -1,0 +1,108 @@
+---
+title: "Setup"
+---
+
+You can use `@orderly.network/hooks` in two simple steps!
+
+<Steps>
+  <Step title="Installation">
+Inside your React project directory, run the following to install the SDK. You will also very likely need our Types SDK:
+
+```sh
+npm install @orderly.network/types @orderly.network/hooks
+```
+
+  </Step>
+
+  <Step title="Add OrderlyConfigProvider">
+Add the `OrderlyConfigProvider` component to your project, wrapping the root components.
+
+    <Tabs>
+      <Tab title="Default">
+
+We recommend that you use the default config in the newly created project, and provide your own `brokerId` (Please [get in touch](mailto:product@orderly.network) with the Orderly team to get your own unique `brokerId`)
+
+```tsx
+import type { FC, PropsWithChildren } from "react";
+import { OrderlyConfigProvider } from "@orderly.network/hooks";
+
+const brokerId = "<your id>";
+
+export const App: FC<PropsWithChildren> = ({ children }) => {
+  return (
+    <OrderlyConfigProvider brokerId={brokerId} networkId="mainnet">
+      {children}
+    </OrderlyConfigProvider>
+  );
+};
+```
+
+      </Tab>
+
+      <Tab title="Custom">
+
+If you are using an existing project and have already implemented the Orderly Key creation process, or have to modify the creation process for your own use cases, you can use your own `configStore` or `keyStore` via their respective property within `OrderlyConfigProvider`.
+
+```tsx
+import type { FC, PropsWithChildren } from "react";
+import { OrderlyConfigProvider } from "@orderly.network/hooks";
+import type { ConfigStore, OrderlyKeyStore } from "@orderly.network/core";
+
+const myConfigStore: ConfigStore = new <Your ConfigStore class>;
+const myKeyStore: OrderlyKeyStore = new <Your OrderlyKeyStore class>;
+
+export const App: FC<PropsWithChildren> = ({ children }) => {
+const brokerId = "<your id>";
+return (
+  <OrderlyConfigProvider configStore={myConfigStore} keyStore={myKeyStore} networkId="mainnet">
+    <children />
+  </OrderlyProvider>
+  );
+};
+```
+
+**TODO: add link to open source SDK regarding the interfaces.**
+
+      </Tab>
+    </Tabs>
+
+  </Step>
+
+  <Step title="Setup complete!">
+You can now use all the provided hooks within `@orderly.network/hooks`!
+
+```tsx
+import { useAccount } from "@orderly.network/hooks";
+
+export const UserInfo = () => {
+  const { account, state } = useAccount();
+
+  return (
+    <div>
+      <div>Address: {state.address}</div>
+    </div>
+  );
+};
+```
+
+  </Step>
+</Steps>
+
+## Environments
+
+The `networkId` property within `OrderlyConfigProvider` can be set to `mainnet` or `testnet`. The default is `mainnet`. It is not possible to change the network during runtime. If you want to do so anyway, you need to reload the page.
+
+```tsx
+import type { FC, PropsWithChildren } from "react";
+import { OrderlyConfigProvider } from "@orderly.network/hooks";
+
+const brokerId = "<your id>";
+
+export const App: FC<PropsWithChildren> = ({ children }) => {
+  return (
+    <OrderlyConfigProvider brokerId={brokerId} networkId="testnet">
+      {children}
+    </OrderlyConfigProvider>
+  );
+};
+```
