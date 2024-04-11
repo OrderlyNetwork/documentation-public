@@ -1,0 +1,33 @@
+---
+title: "useSymbolPriceRange"
+---
+
+Receive information about minimum and maximum allowed price range for an order.
+
+- [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#usesymbolpricerange)
+
+### Example
+
+```ts
+const { order, price }: { order: API.OrderExt; price: string } = props;
+
+const isAlgoOrder = order.algo_order_id !== undefined;
+
+const rangeInfo = useSymbolPriceRange(
+  order.symbol,
+  order.side,
+  isAlgoOrder ? order.trigger_price : undefined
+);
+
+const hintInfo = useMemo(() => {
+  if (!rangeInfo) return "";
+
+  if (Number(price) > rangeInfo.max) {
+    return `Price can not be greater than ${rangeInfo.max} USDC.`;
+  }
+  if (Number(price) < rangeInfo.min) {
+    return `Price can not be less than ${rangeInfo.min} USDC.`;
+  }
+  return "";
+}, [min, max, price]);
+```

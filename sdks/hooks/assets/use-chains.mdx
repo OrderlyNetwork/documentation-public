@@ -1,0 +1,19 @@
+---
+title: "useChains"
+---
+
+Receive the chains that are supported by Orderly.
+
+- [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#usechains)
+
+```typescript
+const [chains, { findByChainId }] = useChains();
+```
+
+The `findByChainId` function can be used to get the config of a particular chain by the chain id.
+
+```typescript
+const [_, { findByChainId }] = useChains();
+
+const chain = findByChainId(421613);
+```

@@ -1,0 +1,81 @@
+[Orderly SDKs](./../README) / [Modules](./../modules) / [@orderly.network/core](./../modules/orderly_network_core) / Signer
+
+# Interface: Signer
+
+[@orderly.network/core](./../modules/orderly_network_core).Signer
+
+Singer interface
+
+**`Example`**
+
+```ts
+const signer = new BaseSigner(keyStore);
+const payload = await signer.sign({
+ url: "https://api.orderly.io/get_account?address=0x1234567890&brokerId=orderly",
+  method: "GET",
+  data: {
+    address: "0x1234567890",
+    brokerId: "orderly",
+   },
+ });
+ ```
+
+## Implemented by
+
+- [`BaseSigner`](./../classes/orderly_network_core.BaseSigner)
+- [`BaseSigner`](./../classes/orderly_network_core.BaseSigner)
+
+## Table of contents
+
+### Properties
+
+- [sign](./orderly_network_core.Signer#sign)
+- [signText](./orderly_network_core.Signer#signtext)
+
+## Properties
+
+### sign
+
+• **sign**: (`data`: [`MessageFactor`](./../modules/orderly_network_core#messagefactor)) => `Promise`\<[`SignedMessagePayload`](./../modules/orderly_network_core#signedmessagepayload)\>
+
+#### Type declaration
+
+▸ (`data`): `Promise`\<[`SignedMessagePayload`](./../modules/orderly_network_core#signedmessagepayload)\>
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `data` | [`MessageFactor`](./../modules/orderly_network_core#messagefactor) |
+
+##### Returns
+
+`Promise`\<[`SignedMessagePayload`](./../modules/orderly_network_core#signedmessagepayload)\>
+
+#### Defined in
+
+[packages/core/src/signer.ts:38](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/core/src/signer.ts#L38)
+
+___
+
+### signText
+
+• **signText**: (`text`: `string`) => `Promise`\<\{ `publicKey`: `string` ; `signature`: `string`  }\>
+
+#### Type declaration
+
+▸ (`text`): `Promise`\<\{ `publicKey`: `string` ; `signature`: `string`  }\>
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `text` | `string` |
+
+##### Returns
+
+`Promise`\<\{ `publicKey`: `string` ; `signature`: `string`  }\>
+
+#### Defined in
+
+[packages/core/src/signer.ts:39](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/core/src/signer.ts#L39)

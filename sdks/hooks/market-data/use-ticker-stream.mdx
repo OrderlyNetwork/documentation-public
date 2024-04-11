@@ -1,0 +1,30 @@
+---
+title: "useTickerStream"
+---
+
+This hooks streams [market information](/sdks/tech-doc/interfaces/orderly_network_types.API.MarketInfo) data for given symbol (e.g. `PERP_BTC_USDC`).
+
+- [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#usetickerstream)
+
+### Example
+
+```tsx
+const marketInfo = useTickerStream("PERP_BTC_USDC");
+
+return (
+  <>
+    <div className="flex flex-col">
+      <div className="color-gray">Mark</div>
+      <div>{stream.mark_price}</div>
+    </div>
+    <div className="flex flex-col">
+      <div className="color-gray">Index</div>
+      <div>{stream.index_price}</div>
+    </div>
+    <div className="flex flex-col">
+      <div className="color-gray">24h volume</div>
+      <div>{stream["24h_amount"]}</div>
+    </div>
+  </>
+);
+```

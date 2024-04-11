@@ -1,0 +1,70 @@
+---
+title: "useWS"
+---
+
+Allows you to subscribe to public topics.
+
+- [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#usews)
+
+```tsx
+subscribe(
+  topic: string | { [key:string]:any },
+  callback: WSMessageHandler | Omit<WSMessageHandler, "onUnsubscribe">,
+  once?: boolean,
+  id?: string
+): unsubscribe | undefined
+```
+
+Subscribing to the `trade` topic:
+
+```tsx
+const ws = useWS();
+
+useEffect(() => {
+  const unsubscripe = ws.subscribe(
+    {
+      id: `${symbol}@trade`,
+      event: "subscribe",
+      topic: `${symbol}@trade`,
+      ts: Date.now()
+    },
+    {
+      onMessage: (data: any) => {
+        //
+      }
+    }
+  );
+  () => {
+    // Unsubscribes when the component unloads
+    unsubscribe();
+  };
+}, []);
+```
+
+### Subscribing to private topics
+
+Subscribing to the `executionreport` topic:
+
+```tsx
+const ws = useWS();
+
+useEffect(() => {
+  const unsubscript = ws.privateSubscribe(
+    {
+      id: "executionreport",
+      event: "subscribe",
+      topic: "executionreport",
+      ts: Date.now()
+    },
+    {
+      onMessage: (data) => {
+        // do something
+      }
+    }
+  );
+  () => {
+    // Unsubscribes when the component unloads
+    unsubscribe();
+  };
+}, []);
+```

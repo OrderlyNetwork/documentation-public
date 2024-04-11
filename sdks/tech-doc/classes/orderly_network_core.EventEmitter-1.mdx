@@ -1,0 +1,327 @@
+[Orderly SDKs](./../README) / [Modules](./../modules) / [@orderly.network/core](./../modules/orderly_network_core) / EventEmitter
+
+# Class: EventEmitter\<EventTypes, Context\>
+
+[@orderly.network/core](./../modules/orderly_network_core).EventEmitter
+
+Minimal `EventEmitter` interface that is molded against the Node.js
+`EventEmitter` interface.
+
+## Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `EventTypes` | extends [`ValidEventTypes`](./../modules/orderly_network_core.EventEmitter#valideventtypes) = `string` \| `symbol` |
+| `Context` | extends `any` = `any` |
+
+## Table of contents
+
+### Constructors
+
+- [constructor](./orderly_network_core.EventEmitter-1#constructor)
+
+### Properties
+
+- [prefixed](./orderly_network_core.EventEmitter-1#prefixed)
+
+### Methods
+
+- [addListener](./orderly_network_core.EventEmitter-1#addlistener)
+- [emit](./orderly_network_core.EventEmitter-1#emit)
+- [eventNames](./orderly_network_core.EventEmitter-1#eventnames)
+- [listenerCount](./orderly_network_core.EventEmitter-1#listenercount)
+- [listeners](./orderly_network_core.EventEmitter-1#listeners)
+- [off](./orderly_network_core.EventEmitter-1#off)
+- [on](./orderly_network_core.EventEmitter-1#on)
+- [once](./orderly_network_core.EventEmitter-1#once)
+- [removeAllListeners](./orderly_network_core.EventEmitter-1#removealllisteners)
+- [removeListener](./orderly_network_core.EventEmitter-1#removelistener)
+
+## Constructors
+
+### constructor
+
+• **new EventEmitter**\<`EventTypes`, `Context`\>()
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `EventTypes` | extends [`ValidEventTypes`](./../modules/orderly_network_core.EventEmitter#valideventtypes) = `string` \| `symbol` |
+| `Context` | extends `unknown` = `any` |
+
+## Properties
+
+### prefixed
+
+▪ `Static` **prefixed**: `string` \| `boolean`
+
+#### Defined in
+
+node_modules/.pnpm/eventemitter3@5.0.1/node_modules/eventemitter3/index.d.ts:9
+
+## Methods
+
+### addListener
+
+▸ **addListener**\<`T`\>(`event`, `fn`, `context?`): [`EventEmitter`](./orderly_network_core.EventEmitter-1)\<`EventTypes`, `Context`\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends `string` \| `symbol` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `T` |
+| `fn` | [`EventListener`](./../modules/orderly_network_core.EventEmitter#eventlistener)\<`EventTypes`, `T`\> |
+| `context?` | `Context` |
+
+#### Returns
+
+[`EventEmitter`](./orderly_network_core.EventEmitter-1)\<`EventTypes`, `Context`\>
+
+#### Defined in
+
+node_modules/.pnpm/eventemitter3@5.0.1/node_modules/eventemitter3/index.d.ts:45
+
+___
+
+### emit
+
+▸ **emit**\<`T`\>(`event`, `...args`): `boolean`
+
+Calls each of the listeners registered for a given event.
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends `string` \| `symbol` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `T` |
+| `...args` | `Parameters`\<[`EventListener`](./../modules/orderly_network_core.EventEmitter#eventlistener)\<`EventTypes`, `T`\>\> |
+
+#### Returns
+
+`boolean`
+
+#### Defined in
+
+node_modules/.pnpm/eventemitter3@5.0.1/node_modules/eventemitter3/index.d.ts:32
+
+___
+
+### eventNames
+
+▸ **eventNames**(): [`EventNames`](./../modules/orderly_network_core.EventEmitter#eventnames)\<`EventTypes`\>[]
+
+Return an array listing the events for which the emitter has registered
+listeners.
+
+#### Returns
+
+[`EventNames`](./../modules/orderly_network_core.EventEmitter#eventnames)\<`EventTypes`\>[]
+
+#### Defined in
+
+node_modules/.pnpm/eventemitter3@5.0.1/node_modules/eventemitter3/index.d.ts:15
+
+___
+
+### listenerCount
+
+▸ **listenerCount**(`event`): `number`
+
+Return the number of listeners listening to a given event.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | [`EventNames`](./../modules/orderly_network_core.EventEmitter#eventnames)\<`EventTypes`\> |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+node_modules/.pnpm/eventemitter3@5.0.1/node_modules/eventemitter3/index.d.ts:27
+
+___
+
+### listeners
+
+▸ **listeners**\<`T`\>(`event`): [`EventListener`](./../modules/orderly_network_core.EventEmitter#eventlistener)\<`EventTypes`, `T`\>[]
+
+Return the listeners registered for a given event.
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends `string` \| `symbol` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `T` |
+
+#### Returns
+
+[`EventListener`](./../modules/orderly_network_core.EventEmitter#eventlistener)\<`EventTypes`, `T`\>[]
+
+#### Defined in
+
+node_modules/.pnpm/eventemitter3@5.0.1/node_modules/eventemitter3/index.d.ts:20
+
+___
+
+### off
+
+▸ **off**\<`T`\>(`event`, `fn?`, `context?`, `once?`): [`EventEmitter`](./orderly_network_core.EventEmitter-1)\<`EventTypes`, `Context`\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends `string` \| `symbol` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `T` |
+| `fn?` | [`EventListener`](./../modules/orderly_network_core.EventEmitter#eventlistener)\<`EventTypes`, `T`\> |
+| `context?` | `Context` |
+| `once?` | `boolean` |
+
+#### Returns
+
+[`EventEmitter`](./orderly_network_core.EventEmitter-1)\<`EventTypes`, `Context`\>
+
+#### Defined in
+
+node_modules/.pnpm/eventemitter3@5.0.1/node_modules/eventemitter3/index.d.ts:69
+
+___
+
+### on
+
+▸ **on**\<`T`\>(`event`, `fn`, `context?`): [`EventEmitter`](./orderly_network_core.EventEmitter-1)\<`EventTypes`, `Context`\>
+
+Add a listener for a given event.
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends `string` \| `symbol` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `T` |
+| `fn` | [`EventListener`](./../modules/orderly_network_core.EventEmitter#eventlistener)\<`EventTypes`, `T`\> |
+| `context?` | `Context` |
+
+#### Returns
+
+[`EventEmitter`](./orderly_network_core.EventEmitter-1)\<`EventTypes`, `Context`\>
+
+#### Defined in
+
+node_modules/.pnpm/eventemitter3@5.0.1/node_modules/eventemitter3/index.d.ts:40
+
+___
+
+### once
+
+▸ **once**\<`T`\>(`event`, `fn`, `context?`): [`EventEmitter`](./orderly_network_core.EventEmitter-1)\<`EventTypes`, `Context`\>
+
+Add a one-time listener for a given event.
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends `string` \| `symbol` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `T` |
+| `fn` | [`EventListener`](./../modules/orderly_network_core.EventEmitter#eventlistener)\<`EventTypes`, `T`\> |
+| `context?` | `Context` |
+
+#### Returns
+
+[`EventEmitter`](./orderly_network_core.EventEmitter-1)\<`EventTypes`, `Context`\>
+
+#### Defined in
+
+node_modules/.pnpm/eventemitter3@5.0.1/node_modules/eventemitter3/index.d.ts:54
+
+___
+
+### removeAllListeners
+
+▸ **removeAllListeners**(`event?`): [`EventEmitter`](./orderly_network_core.EventEmitter-1)\<`EventTypes`, `Context`\>
+
+Remove all listeners, or those of the specified event.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event?` | [`EventNames`](./../modules/orderly_network_core.EventEmitter#eventnames)\<`EventTypes`\> |
+
+#### Returns
+
+[`EventEmitter`](./orderly_network_core.EventEmitter-1)\<`EventTypes`, `Context`\>
+
+#### Defined in
+
+node_modules/.pnpm/eventemitter3@5.0.1/node_modules/eventemitter3/index.d.ts:79
+
+___
+
+### removeListener
+
+▸ **removeListener**\<`T`\>(`event`, `fn?`, `context?`, `once?`): [`EventEmitter`](./orderly_network_core.EventEmitter-1)\<`EventTypes`, `Context`\>
+
+Remove the listeners of a given event.
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends `string` \| `symbol` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `T` |
+| `fn?` | [`EventListener`](./../modules/orderly_network_core.EventEmitter#eventlistener)\<`EventTypes`, `T`\> |
+| `context?` | `Context` |
+| `once?` | `boolean` |
+
+#### Returns
+
+[`EventEmitter`](./orderly_network_core.EventEmitter-1)\<`EventTypes`, `Context`\>
+
+#### Defined in
+
+node_modules/.pnpm/eventemitter3@5.0.1/node_modules/eventemitter3/index.d.ts:63

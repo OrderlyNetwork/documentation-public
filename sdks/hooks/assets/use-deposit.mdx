@@ -1,0 +1,126 @@
+---
+title: "useDeposit"
+---
+
+## Wallet balance
+
+- [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#usedeposit)
+
+It is useful to display the current wallet's balance when a user wishes to deposit. The wallet balance can be retrieve using the following two methods:
+
+### `balance`
+
+`useDeposit` returns a `balance` field which is equal to the current token balance of the wallet (ie balance not deposited). This `balance` will refresh by fetching from the chain again if `token` changes.
+
+```tsx
+const [token, setToken] = useState<API.TokenInfo>();
+const { connectedChain } = useWalletConnector();
+
+const {
+  dst,
+  balance, // The wallet balance of the chosen token
+  allowance,
+  approve,
+  deposit,
+  isNativeToken,
+  balanceRevalidating,
+  fetchBalance
+} = useDeposit({
+  address: token?.address,
+  decimals: token?.decimals,
+  srcToken: token?.symbol,
+  srcChainId: Number(connectedChain?.id)
+});
+```
+
+### Fetch balance
+
+`useDeposit` also has a `fetchBalance()` method to get the wallet balance. This can be used in a token list, and can be used to trigger a balance fetch directly.
+
+```typescript /fetchBalance/
+import { useDeposit } from "@orderly.network/hooks";
+
+export const Example = () => {
+  const {
+    //...
+    fetchBalance
+  } = useDeposit({
+    //...
+  });
+
+  const getBalance = async () => {
+    const balance = await fetchBalance(`0x...`, 6);
+  };
+
+  //...
+};
+```
+
+## Wallet allowance
+
+### `allowance`
+
+The current allowance authorized by the user to be used by the Orderly smart contract. This will refresh if the `token` is changed.
+
+### `approve`
+
+Call the `approve` function to authorize an allowance of the token that can be used by the Orderly smart contract. If the `quantity` is not sent, the default will be `ethers.MaxUint256`.
+
+```typescript
+const {
+  //...
+  allowance,
+  approve
+} = useDeposit({
+  //...
+});
+
+approve("<quantity?>");
+```
+
+## Deposit fee
+
+### `setQuantity`
+
+The `setQuantity` function is used to set the deposit quantity. This will trigger a recalculation of the deposit fee.
+
+<Note>
+  The `setQuantity` function is a React state dispatch function and **must** be called in a
+  rendering tick **before** the function call to `deposit` happens.
+</Note>
+
+```typescript
+const {
+  //...
+  depositFee,
+  quantity,
+  setQuantity,
+  depositFeeRevalidating
+} = useDeposit({
+  //...
+});
+
+setQuantity("<quantity>");
+```
+
+### `depositFee`
+
+The `depositFee` field is the fee that needs to be paid when depositing. This will refresh if the `quantity` is updated.
+
+## Initiate deposit
+
+### `deposit()`
+
+Call the `deposit` function from the response of `useDeposit` to initiate a deposit.
+
+```typescript
+const {
+  //...
+  deposit
+} = useDeposit({
+  //...
+});
+
+// Note: No parameters need to be passed during the call
+const res = await deposit();
+```

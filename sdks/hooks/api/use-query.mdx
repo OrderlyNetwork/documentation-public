@@ -1,0 +1,26 @@
+---
+title: "useQuery"
+---
+
+Use `useQuery` to access any public API, for example to get all available symbols on Orderly.
+
+- [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#usequery)
+
+```tsx
+const { data, error, isLoading } = useQuery<API.Symbol[]>("/v1/public/info");
+
+return (
+  <pre className="text-sm">
+    {isLoading && <div>Loading...</div>}
+    {data && <div className="text-slate-500">{JSON.stringify(data, null, 2)}</div>}
+  </pre>
+);
+```
+
+The `data` returned by `useQuery` is already serialized in JSON format. If you want to access the raw data, you can provide a `formatter` to override the default serialization of the hook. For example:
+
+```tsx
+const { data, error } = useQuery("/v1/public/info", {
+  formatter: (data) => data
+});
+```

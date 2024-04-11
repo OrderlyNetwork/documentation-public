@@ -1,0 +1,56 @@
+---
+title: "useSymbolsInfo"
+---
+
+Subscribe to all [symbols](/sdks/tech-doc/interfaces/orderly_network_types.API.SymbolExt) via Websockets.
+
+- [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#usesymbolsinfo)
+
+### Example
+
+```tsx
+const [open, setOpen] = useState(false);
+const [symbol, setSymbol] = useState<API.Symbol>();
+const symbolInfo = useSymbolsInfo();
+
+if (!symbol || symbolInfo.isNil) {
+  return "Loading...";
+}
+
+return (
+  <Dialog.Root>
+    <Dialog.Trigger>
+      <button className="py-3 font-size-4 bg-transparent hover:bg-[var(--accent-3)] cursor-pointer flex flex-items-center gap-2">
+        {symbol.symbol}
+        <CaretDownIcon />
+      </button>
+    </Dialog.Trigger>
+    <Dialog.Content className="max-w-xs" size="2">
+      <Dialog.Title>
+        <span className="mr-2">Select Symbol</span>
+      </Dialog.Title>
+
+      <div className="flex flex-col max-h-[30rem]">
+        {Object.values(symbolInfo)
+          .filter((cur) => typeof cur !== "boolean")
+          .map((cur) => {
+            if (typeof cur === "boolean") return;
+            const symbol = cur();
+            return (
+              <button
+                key={symbol.symbol}
+                className="border-rd-0 py-3 font-size-4"
+                onClick={() => {
+                  setSymbol(symbol);
+                  setOpen(false);
+                }}
+              >
+                {symbol.symbol}
+              </button>
+            );
+          })}
+      </div>
+    </Dialog.Content>
+  </Dialog.Root>
+);
+```

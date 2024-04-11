@@ -1,0 +1,150 @@
+---
+title: "Overview"
+---
+
+`@orderly.network/hooks` provides the following hooks for handling account-related logic:
+
+- [useAccount](/sdks/hooks/account/use-account): Retrieves the current account info and status. With this hook you can also create an account and create an `orderlyKey`
+- [useAccountInfo](/sdks/hooks/account/use-account-info) - Fetches account information
+- [useAccountInstance](/sdks/hooks/account/use-account-instance) - Returns `Account` singleton
+- [useWalletConnector](/sdks/hooks/account/use-wallet-connector) - Handles wallet connection
+- [useWalletSubscription](/sdks/hooks/account/use-wallet-subscription) - Subscribe to wallet transactionsvia WebSocket
+- [useLeverage](/sdks/hooks/account/use-leverage) - Retrieves the current account leverage
+- [useMarginRatio](/sdks/hooks/account/use-margin-ratio) - Margin information
+- [useSettleSubscription](/sdks/hooks/account/use-settle-subscription) - Subscribe to PnL settlement via WebSocket
+
+## How to integrate wallet?
+
+Since `@orderly.network/hooks` only focus on processing the Orderly business logic, the hooks don't include the function of connecting to the wallet, but they can be easily integrated with third-party wallet connection libraries.
+
+Here are two examples:
+
+### web3-onboard
+
+> Web3-Onboard is the quickest and easiest way to add multi-wallet and multi-chain support to your project. [more](https://onboard.blocknative.com/docs/modules/react)
+
+TODO
+
+### WalletConnect
+
+> WalletConnect provides developer toolkits empowering you to build engaging web3 experiences. [more](https://docs.walletconnect.com/)
+
+TODO
+
+## Get and edit account leverage
+
+Here is a small example of how to get current account leverage and how to edit max allowed leverage.
+
+<CodeGroup>
+```tsx Leverage.tsx
+import { useLeverage, useMarginRatio } from "@orderly.network/hooks";
+import { Button, Dialog } from "@radix-ui/themes";
+import { FC, PropsWithChildren, useRef, useState } from "react";
+
+import { LeverageEditor } from "./LeverageEditor";
+
+export const LeverageDialog: FC<PropsWithChildren> = (props) => {
+  const [open, setOpen] = useState(false);
+  const { currentLeverage } = useMarginRatio();
+
+  const [maxLeverage, { update, config: leverageLevers, isMutating }] = useLeverage();
+  const nextLeverage = useRef(maxLeverage ?? 0);
+
+  const onSave = (value: { leverage: number }) => {
+    return Promise.resolve().then(() => {
+      nextLeverage.current = value.leverage;
+    });
+  };
+
+  const onSubmit = () => {
+    if (nextLeverage.current === maxLeverage) return;
+    update({ leverage: nextLeverage.current }).then(
+      () => {
+        setOpen(false);
+        // display success
+      },
+      (err) => {
+        console.dir(err);
+        // display error
+      }
+    );
+  };
+
+  return (
+    <Dialog.Root open={open} onOpenChange={setOpen}>
+      <Dialog.Trigger>{props.children}</Dialog.Trigger>
+      <Dialog.Title>Account Leverage</Dialog.Title>
+      <Dialog.Content>
+        <div className="flex flex-col">
+          <div className="flex gap-1">
+            <span className="flex-1">Current:</span>
+            <span>{currentLeverage}</span>
+          </div>
+          <div className="flex flex-col gap-1">
+            <span className="flex-1">Max account leverage</span>
+            <div className="my-5 h-[80px]">
+              <LeverageEditor
+                maxLeverage={maxLeverage}
+                leverageLevers={leverageLevers}
+                onSave={onSave}
+              />
+            </div>
+          </div>
+        </div>
+        <Button
+          onClick={() => {
+            setOpen(false);
+          }}
+        >
+          Cancel
+        </Button>
+        <Button onClick={() => onSubmit()} loading={isMutating}>
+          Save
+        </Button>
+      </Dialog.Content>
+    </Dialog.Root>
+  );
+};
+```
+
+```tsx LeverageEditor.tsx
+import { Slider } from "@radix-ui/themes";
+import { FC, useMemo, useState } from "react";
+
+interface LeverageEditorProps {
+  onSave?: (value: { leverage: number }) => Promise<void>;
+  maxLeverage?: number;
+  leverageLevers: number[];
+}
+
+export const LeverageEditor: FC<LeverageEditorProps> = (props) => {
+  const { maxLeverage, leverageLevers, onSave } = props;
+
+  const [leverage, setLeverage] = useState(() => maxLeverage ?? 0);
+
+  const leverageValue = useMemo(() => {
+    const index = leverageLevers.findIndex((item) => item === leverage);
+
+    return index;
+  }, [leverage, leverageLevers]);
+
+  return (
+    <Slider
+      min={0}
+      max={leverageLevers.length - 1}
+      value={[leverageValue]}
+      onValueChange={(value) => {
+        const _value = leverageLevers[value[0]];
+        setLeverage(_value);
+      }}
+      onValueCommit={(value) => {
+        const _value = leverageLevers[value[0]];
+        onSave?.({ leverage: _value }).catch(() => {
+          setLeverage(maxLeverage ?? 1);
+        });
+      }}
+    />
+  );
+};
+```
+</CodeGroup>

@@ -1,0 +1,74 @@
+---
+title: "useOrderEntry"
+---
+
+## Order entry
+
+The `useOrderEntry` hook provides a variety of supporting functions according to input parameters and the prevailing market data.
+
+```typescript
+export interface OrderEntryReturn {
+  onSubmit: (values: OrderEntity) => Promise<any>;
+  maxQty: number;
+  freeCollateral: number;
+  markPrice: number;
+
+  symbolConfig: API.SymbolExt;
+  helper: {
+    calculate: (values: any, field: string, value: any) => any;
+    validator: (values: any) => any;
+  };
+}
+
+const useOrderEntry = (
+  symbol: string,
+  side: OrderSide,
+  reduceOnly: boolean = false,
+): OrderEntryReturn
+```
+
+### Real-time data
+
+`useOrderEntry` provides some real-time data that the UI will use when creating orders based on the latest market data.
+
+- `maxQty`: The maximum quantity that the user can trade based on the free collateral.
+- `freeCollateral`: The amount collateral available for trading, factoring in open positions and pending orders.
+- `markPrice`: The mark price of the symbol.
+
+### Data calculations
+
+The `useOrderEntry` hook provdes a `calculate()` function to format user's input:
+
+- Converts the input quantity into USDC
+- Truncates the input quantity and price according to the symbol's tick size
+
+```typescript
+const {
+  helper: { calculate }
+} = useOrderEntry("PERP_ETH_USDC", OrderSide.BUY, false);
+
+const newValue = calculate(values, "order_quantity", 1);
+```
+
+### Order validations
+
+Order inputs should be validated by the frontend before submitting to provide the best user experience.
+
+```typescript
+const {
+  helper: { validator }
+} = useOrderEntry("PERP_ETH_USDC", OrderSide.BUY, false);
+
+const errors = validator(values);
+```
+
+### Placing orders
+
+```typescript
+const { onSubmit } = useOrderEntry("PERP_ETH_USDC", OrderSide.BUY, false);
+
+const onSubmit = async (values) => {
+  const res = await onSubmit(values);
+  //...
+};
+```

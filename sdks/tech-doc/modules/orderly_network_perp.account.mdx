@@ -1,0 +1,833 @@
+[Orderly SDKs](./../README) / [Modules](./../modules) / [@orderly.network/perp](./orderly_network_perp) / account
+
+# Namespace: account
+
+[@orderly.network/perp](./orderly_network_perp).account
+
+## Table of contents
+
+### Type Aliases
+
+- [AccountMMRInputs](./orderly_network_perp.account#accountmmrinputs)
+- [AvailableBalanceInputs](./orderly_network_perp.account#availablebalanceinputs)
+- [FreeCollateralInputs](./orderly_network_perp.account#freecollateralinputs)
+- [IMRInputs](./orderly_network_perp.account#imrinputs)
+- [MaxQtyInputs](./orderly_network_perp.account#maxqtyinputs)
+- [OtherIMsInputs](./orderly_network_perp.account#otherimsinputs)
+- [PositionNotionalWithOrderInputs](./orderly_network_perp.account#positionnotionalwithorderinputs)
+- [PositionQtyWithOrderInputs](./orderly_network_perp.account#positionqtywithorderinputs)
+- [ResultOptions](./orderly_network_perp.account#resultoptions)
+- [TotalCollateralValueInputs](./orderly_network_perp.account#totalcollateralvalueinputs)
+- [TotalInitialMarginWithOrdersInputs](./orderly_network_perp.account#totalinitialmarginwithordersinputs)
+- [TotalMarginRatioInputs](./orderly_network_perp.account#totalmarginratioinputs)
+- [TotalUnrealizedROIInputs](./orderly_network_perp.account#totalunrealizedroiinputs)
+- [TotalValueInputs](./orderly_network_perp.account#totalvalueinputs)
+
+### Functions
+
+- [IMR](./orderly_network_perp.account#imr)
+- [MMR](./orderly_network_perp.account#mmr)
+- [availableBalance](./orderly_network_perp.account#availablebalance)
+- [buyOrdersFilter\_by\_symbol](./orderly_network_perp.account#buyordersfilter_by_symbol)
+- [currentLeverage](./orderly_network_perp.account#currentleverage)
+- [extractSymbols](./orderly_network_perp.account#extractsymbols)
+- [freeCollateral](./orderly_network_perp.account#freecollateral)
+- [getPositonsAndOrdersNotionalBySymbol](./orderly_network_perp.account#getpositonsandordersnotionalbysymbol)
+- [getQtyFromOrdersBySide](./orderly_network_perp.account#getqtyfromordersbyside)
+- [getQtyFromPositions](./orderly_network_perp.account#getqtyfrompositions)
+- [groupOrdersBySymbol](./orderly_network_perp.account#groupordersbysymbol)
+- [initialMarginWithOrder](./orderly_network_perp.account#initialmarginwithorder)
+- [maxQty](./orderly_network_perp.account#maxqty)
+- [maxQtyByLong](./orderly_network_perp.account#maxqtybylong)
+- [maxQtyByShort](./orderly_network_perp.account#maxqtybyshort)
+- [otherIMs](./orderly_network_perp.account#otherims)
+- [positionNotionalWithOrder\_by\_symbol](./orderly_network_perp.account#positionnotionalwithorder_by_symbol)
+- [positionQtyWithOrders\_by\_symbol](./orderly_network_perp.account#positionqtywithorders_by_symbol)
+- [sellOrdersFilter\_by\_symbol](./orderly_network_perp.account#sellordersfilter_by_symbol)
+- [totalCollateral](./orderly_network_perp.account#totalcollateral)
+- [totalInitialMarginWithOrders](./orderly_network_perp.account#totalinitialmarginwithorders)
+- [totalMarginRatio](./orderly_network_perp.account#totalmarginratio)
+- [totalUnrealizedROI](./orderly_network_perp.account#totalunrealizedroi)
+- [totalValue](./orderly_network_perp.account#totalvalue)
+
+## Type Aliases
+
+### AccountMMRInputs
+
+Ƭ **AccountMMRInputs**: `Object`
+
+#### Type declaration
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `positionsMMR` | `number` | - |
+| `positionsNotional` | `number` | Notional sum of all positions, positions.totalNotional() |
+
+#### Defined in
+
+[account.ts:664](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L664)
+
+___
+
+### AvailableBalanceInputs
+
+Ƭ **AvailableBalanceInputs**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `USDCHolding` | `number` |
+| `unsettlementPnL` | `number` |
+
+#### Defined in
+
+[account.ts:654](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L654)
+
+___
+
+### FreeCollateralInputs
+
+Ƭ **FreeCollateralInputs**: `Object`
+
+Total value of available collateral in the user's account (denominated in USDC).
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `totalCollateral` | `Decimal` |
+| `totalInitialMarginWithOrders` | `number` |
+
+#### Defined in
+
+[account.ts:41](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L41)
+
+___
+
+### IMRInputs
+
+Ƭ **IMRInputs**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `IMR_Factor` | `number` |
+| `IMR_factor_power?` | `number` |
+| `baseIMR` | `number` |
+| `maxLeverage` | `number` |
+| `ordersNotional` | `number` |
+| `positionNotional` | `number` |
+
+#### Defined in
+
+[account.ts:123](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L123)
+
+___
+
+### MaxQtyInputs
+
+Ƭ **MaxQtyInputs**: `Object`
+
+#### Type declaration
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `IMR_Factor` | `number` | - |
+| `baseIMR` | `number` | - |
+| `baseMaxQty` | `number` | - |
+| `buyOrdersQty` | `number` | - |
+| `markPrice` | `number` | - |
+| `maxLeverage` | `number` | - |
+| `otherIMs` | `number` | **`See`** otherIMs |
+| `positionQty` | `number` | - |
+| `sellOrdersQty` | `number` | - |
+| `symbol` | `string` | - |
+| `takerFeeRate` | `number` | - |
+| `totalCollateral` | `number` | Total collateral of the user (denominated in USDC), can be calculated from totalCollateral. **`See`** totalCollateral |
+
+#### Defined in
+
+[account.ts:429](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L429)
+
+___
+
+### OtherIMsInputs
+
+Ƭ **OtherIMsInputs**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `IMR_Factors` | \{ `[key: string]`: `number`;  } |
+| `markPrices` | \{ `[key: string]`: `number`;  } |
+| `maxLeverage` | `number` |
+| `orders` | [`Order`](./../interfaces/orderly_network_types.API.Order)[] |
+| `positions` | [`Position`](./../interfaces/orderly_network_types.API.Position)[] |
+| `symbolInfo` | `any` |
+
+#### Defined in
+
+[account.ts:342](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L342)
+
+___
+
+### PositionNotionalWithOrderInputs
+
+Ƭ **PositionNotionalWithOrderInputs**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `markPrice` | `number` |
+| `positionQtyWithOrders` | `number` |
+
+#### Defined in
+
+[account.ts:87](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L87)
+
+___
+
+### PositionQtyWithOrderInputs
+
+Ƭ **PositionQtyWithOrderInputs**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `buyOrdersQty` | `number` |
+| `positionQty` | `number` |
+| `sellOrdersQty` | `number` |
+
+#### Defined in
+
+[account.ts:100](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L100)
+
+___
+
+### ResultOptions
+
+Ƭ **ResultOptions**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `dp` | `number` |
+
+#### Defined in
+
+[account.ts:10](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L10)
+
+___
+
+### TotalCollateralValueInputs
+
+Ƭ **TotalCollateralValueInputs**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `USDCHolding` | `number` |
+| `nonUSDCHolding` | \{ `discount`: `number` ; `holding`: `number` ; `markPrice`: `number`  }[] |
+| `unsettlementPnL` | `number` |
+
+#### Defined in
+
+[account.ts:56](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L56)
+
+___
+
+### TotalInitialMarginWithOrdersInputs
+
+Ƭ **TotalInitialMarginWithOrdersInputs**: \{ `IMR_Factors`: \{ `[key: string]`: `number`;  } ; `markPrices`: \{ `[key: string]`: `number`;  } ; `orders`: [`Order`](./../interfaces/orderly_network_types.API.Order)[] ; `positions`: [`Position`](./../interfaces/orderly_network_types.API.Position)[] ; `symbolInfo`: `any`  } & `Pick`\<[`IMRInputs`](./orderly_network_perp.account#imrinputs), ``"maxLeverage"``\>
+
+#### Defined in
+
+[account.ts:228](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L228)
+
+___
+
+### TotalMarginRatioInputs
+
+Ƭ **TotalMarginRatioInputs**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `markPrices` | \{ `[key: string]`: `number`;  } |
+| `positions` | [`Position`](./../interfaces/orderly_network_types.API.Position)[] |
+| `totalCollateral` | `number` |
+
+#### Defined in
+
+[account.ts:596](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L596)
+
+___
+
+### TotalUnrealizedROIInputs
+
+Ƭ **TotalUnrealizedROIInputs**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `totalUnrealizedPnL` | `number` |
+| `totalValue` | `number` |
+
+#### Defined in
+
+[account.ts:628](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L628)
+
+___
+
+### TotalValueInputs
+
+Ƭ **TotalValueInputs**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `USDCHolding` | `number` |
+| `nonUSDCHolding` | \{ `discount`: `number` ; `holding`: `number` ; `markPrice`: `number`  }[] |
+| `totalUnsettlementPnL` | `number` |
+
+#### Defined in
+
+[account.ts:14](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L14)
+
+## Functions
+
+### IMR
+
+▸ **IMR**(`inputs`): `number`
+
+Initial margin rate for a symbol.
+Max(1 / Max Account Leverage, Base IMR i, IMR Factor i * Abs(Position Notional i + Order Notional i)^(4/5))
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inputs` | [`IMRInputs`](./orderly_network_perp.account#imrinputs) |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[account.ts:136](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L136)
+
+___
+
+### MMR
+
+▸ **MMR**(`inputs`): `number` \| ``null``
+
+total maintenance margin ratio
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `inputs` | [`AccountMMRInputs`](./orderly_network_perp.account#accountmmrinputs) | AccountMMRInputs |
+
+#### Returns
+
+`number` \| ``null``
+
+number|null
+
+#### Defined in
+
+[account.ts:679](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L679)
+
+___
+
+### availableBalance
+
+▸ **availableBalance**(`inputs`): `number`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inputs` | [`AvailableBalanceInputs`](./orderly_network_perp.account#availablebalanceinputs) |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[account.ts:658](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L658)
+
+___
+
+### buyOrdersFilter\_by\_symbol
+
+▸ **buyOrdersFilter_by_symbol**(`orders`, `symbol`): [`Order`](./../interfaces/orderly_network_types.API.Order)[]
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `orders` | [`Order`](./../interfaces/orderly_network_types.API.Order)[] |
+| `symbol` | `string` |
+
+#### Returns
+
+[`Order`](./../interfaces/orderly_network_types.API.Order)[]
+
+#### Defined in
+
+[account.ts:159](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L159)
+
+___
+
+### currentLeverage
+
+▸ **currentLeverage**(`totalMarginRatio`): `number`
+
+current account leverage
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `totalMarginRatio` | `number` |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[account.ts:647](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L647)
+
+___
+
+### extractSymbols
+
+▸ **extractSymbols**(`positions`, `orders`): `string`[]
+
+Extracts all unique symbols from positions and orders.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `positions` | `Pick`\<[`Position`](./../interfaces/orderly_network_types.API.Position), ``"symbol"``\>[] | An array of position objects. |
+| `orders` | `Pick`\<[`Order`](./../interfaces/orderly_network_types.API.Order), ``"symbol"``\>[] | An array of order objects. |
+
+#### Returns
+
+`string`[]
+
+An array of unique symbols.
+
+#### Defined in
+
+[account.ts:321](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L321)
+
+___
+
+### freeCollateral
+
+▸ **freeCollateral**(`inputs`): `Decimal`
+
+Calculate free collateral.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inputs` | [`FreeCollateralInputs`](./orderly_network_perp.account#freecollateralinputs) |
+
+#### Returns
+
+`Decimal`
+
+#### Defined in
+
+[account.ts:50](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L50)
+
+___
+
+### getPositonsAndOrdersNotionalBySymbol
+
+▸ **getPositonsAndOrdersNotionalBySymbol**(`inputs`): `number`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inputs` | `Object` |
+| `inputs.markPrice` | `number` |
+| `inputs.orders` | [`Order`](./../interfaces/orderly_network_types.API.Order)[] |
+| `inputs.positions` | [`Position`](./../interfaces/orderly_network_types.API.Position)[] |
+| `inputs.symbol` | `string` |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[account.ts:208](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L208)
+
+___
+
+### getQtyFromOrdersBySide
+
+▸ **getQtyFromOrdersBySide**(`orders`, `symbol`, `side`): `number`
+
+Get the quantity of long and short orders for a specified symbol from the list of orders.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `orders` | [`Order`](./../interfaces/orderly_network_types.API.Order)[] |
+| `symbol` | `string` |
+| `side` | [`OrderSide`](./../enums/orderly_network_types.OrderSide) |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[account.ts:194](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L194)
+
+___
+
+### getQtyFromPositions
+
+▸ **getQtyFromPositions**(`positions`, `symbol`): `number`
+
+Get the quantity of a specified symbol from the list of positions.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `positions` | [`Position`](./../interfaces/orderly_network_types.API.Position)[] |
+| `symbol` | `string` |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[account.ts:180](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L180)
+
+___
+
+### groupOrdersBySymbol
+
+▸ **groupOrdersBySymbol**(`orders`): `Object`
+
+Group orders by symbol, as a symbol can have multiple orders.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `orders` | [`Order`](./../interfaces/orderly_network_types.API.Order)[] |
+
+#### Returns
+
+`Object`
+
+#### Defined in
+
+[account.ts:301](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L301)
+
+___
+
+### initialMarginWithOrder
+
+▸ **initialMarginWithOrder**(): `void`
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[account.ts:85](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L85)
+
+___
+
+### maxQty
+
+▸ **maxQty**(`side`, `inputs`, `options?`): `number`
+
+Maximum order quantity.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `side` | [`OrderSide`](./../enums/orderly_network_types.OrderSide) |
+| `inputs` | [`MaxQtyInputs`](./orderly_network_perp.account#maxqtyinputs) |
+| `options?` | [`ResultOptions`](./orderly_network_perp.account#resultoptions) |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[account.ts:461](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L461)
+
+___
+
+### maxQtyByLong
+
+▸ **maxQtyByLong**(`inputs`, `options?`): `number`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inputs` | `Omit`\<[`MaxQtyInputs`](./orderly_network_perp.account#maxqtyinputs), ``"side"``\> |
+| `options?` | [`ResultOptions`](./orderly_network_perp.account#resultoptions) |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[account.ts:472](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L472)
+
+___
+
+### maxQtyByShort
+
+▸ **maxQtyByShort**(`inputs`, `options?`): `number`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inputs` | `Omit`\<[`MaxQtyInputs`](./orderly_network_perp.account#maxqtyinputs), ``"side"``\> |
+| `options?` | [`ResultOptions`](./orderly_network_perp.account#resultoptions) |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[account.ts:533](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L533)
+
+___
+
+### otherIMs
+
+▸ **otherIMs**(`inputs`): `number`
+
+Total margin used by other symbols (except the current symbol).
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inputs` | [`OtherIMsInputs`](./orderly_network_perp.account#otherimsinputs) |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[account.ts:356](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L356)
+
+___
+
+### positionNotionalWithOrder\_by\_symbol
+
+▸ **positionNotionalWithOrder_by_symbol**(`inputs`): `Decimal`
+
+Sum of notional value for a symbol's position and orders.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inputs` | [`PositionNotionalWithOrderInputs`](./orderly_network_perp.account#positionnotionalwithorderinputs) |
+
+#### Returns
+
+`Decimal`
+
+#### Defined in
+
+[account.ts:94](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L94)
+
+___
+
+### positionQtyWithOrders\_by\_symbol
+
+▸ **positionQtyWithOrders_by_symbol**(`inputs`): `number`
+
+Sum of position quantity and orders quantity for a symbol.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inputs` | [`PositionQtyWithOrderInputs`](./orderly_network_perp.account#positionqtywithorderinputs) |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[account.ts:110](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L110)
+
+___
+
+### sellOrdersFilter\_by\_symbol
+
+▸ **sellOrdersFilter_by_symbol**(`orders`, `symbol`): [`Order`](./../interfaces/orderly_network_types.API.Order)[]
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `orders` | [`Order`](./../interfaces/orderly_network_types.API.Order)[] |
+| `symbol` | `string` |
+
+#### Returns
+
+[`Order`](./../interfaces/orderly_network_types.API.Order)[]
+
+#### Defined in
+
+[account.ts:168](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L168)
+
+___
+
+### totalCollateral
+
+▸ **totalCollateral**(`inputs`): `Decimal`
+
+Calculate total collateral.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inputs` | [`TotalCollateralValueInputs`](./orderly_network_perp.account#totalcollateralvalueinputs) |
+
+#### Returns
+
+`Decimal`
+
+#### Defined in
+
+[account.ts:71](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L71)
+
+___
+
+### totalInitialMarginWithOrders
+
+▸ **totalInitialMarginWithOrders**(`inputs`): `number`
+
+Calculate the total initial margin used by the user (including positions and orders).
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inputs` | [`TotalInitialMarginWithOrdersInputs`](./orderly_network_perp.account#totalinitialmarginwithordersinputs) |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[account.ts:240](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L240)
+
+___
+
+### totalMarginRatio
+
+▸ **totalMarginRatio**(`inputs`, `dp?`): `number`
+
+total margin ratio
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inputs` | [`TotalMarginRatioInputs`](./orderly_network_perp.account#totalmarginratioinputs) |
+| `dp?` | `number` |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[account.ts:604](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L604)
+
+___
+
+### totalUnrealizedROI
+
+▸ **totalUnrealizedROI**(`inputs`): `number`
+
+totalUnrealizedROI
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inputs` | [`TotalUnrealizedROIInputs`](./orderly_network_perp.account#totalunrealizedroiinputs) |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[account.ts:636](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L636)
+
+___
+
+### totalValue
+
+▸ **totalValue**(`inputs`): `Decimal`
+
+User's total asset value (denominated in USDC), including assets that cannot be used as collateral.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inputs` | [`TotalValueInputs`](./orderly_network_perp.account#totalvalueinputs) |
+
+#### Returns
+
+`Decimal`
+
+#### Defined in
+
+[account.ts:28](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/perp/src/account.ts#L28)

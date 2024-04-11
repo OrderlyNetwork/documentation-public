@@ -1,0 +1,254 @@
+[Orderly SDKs](./../README) / [Modules](./../modules) / @orderly.network/types
+
+# Module: @orderly.network/types
+
+## Table of contents
+
+### Namespaces
+
+- [API](./orderly_network_types.API)
+- [WSMessage](./orderly_network_types.WSMessage)
+
+### Enumerations
+
+- [AccountStatusEnum](./../enums/orderly_network_types.AccountStatusEnum)
+- [ExchangeStatusEnum](./../enums/orderly_network_types.ExchangeStatusEnum)
+- [OrderSide](./../enums/orderly_network_types.OrderSide)
+- [OrderStatus](./../enums/orderly_network_types.OrderStatus)
+- [OrderType](./../enums/orderly_network_types.OrderType)
+- [SystemStateEnum](./../enums/orderly_network_types.SystemStateEnum)
+- [WS\_WalletStatusEnum](./../enums/orderly_network_types.WS_WalletStatusEnum)
+- [WithdrawStatus](./../enums/orderly_network_types.WithdrawStatus)
+
+### Classes
+
+- [ApiError](./../classes/orderly_network_types.ApiError)
+- [SDKError](./../classes/orderly_network_types.SDKError)
+
+### Interfaces
+
+- [ChainConfig](./../interfaces/orderly_network_types.ChainConfig)
+- [ChainInfo](./../interfaces/orderly_network_types.ChainInfo)
+- [NativeCurrency](./../interfaces/orderly_network_types.NativeCurrency)
+- [OrderEntity](./../interfaces/orderly_network_types.OrderEntity)
+
+### Type Aliases
+
+- [Chain](./orderly_network_types#chain)
+- [CurrentChain](./orderly_network_types#currentchain)
+- [NetworkId](./orderly_network_types#networkid)
+
+### Variables
+
+- [ARBITRUM\_MAINNET\_CHAINID](./orderly_network_types#arbitrum_mainnet_chainid)
+- [ARBITRUM\_MAINNET\_CHAINID\_HEX](./orderly_network_types#arbitrum_mainnet_chainid_hex)
+- [ARBITRUM\_TESTNET\_CHAINID](./orderly_network_types#arbitrum_testnet_chainid)
+- [ARBITRUM\_TESTNET\_CHAINID\_HEX](./orderly_network_types#arbitrum_testnet_chainid_hex)
+- [DEPOSIT\_FEE\_RATE](./orderly_network_types#deposit_fee_rate)
+- [MEDIA\_TABLET](./orderly_network_types#media_tablet)
+- [MaxUint256](./orderly_network_types#maxuint256)
+- [TestnetChains](./orderly_network_types#testnetchains)
+- [chainsInfoMap](./orderly_network_types#chainsinfomap)
+- [definedTypes](./orderly_network_types#definedtypes)
+- [nativeTokenAddress](./orderly_network_types#nativetokenaddress)
+- [version](./orderly_network_types#version)
+
+### Functions
+
+- [isNativeTokenChecker](./orderly_network_types#isnativetokenchecker)
+
+## Type Aliases
+
+### Chain
+
+Ƭ **Chain**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `id` | `string` |
+| `name?` | `string` |
+
+#### Defined in
+
+[packages/types/src/wallet.ts:3](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/types/src/wallet.ts#L3)
+
+___
+
+### CurrentChain
+
+Ƭ **CurrentChain**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `id` | `number` |
+| `info` | [`Chain`](./../interfaces/orderly_network_types.API.Chain) |
+
+#### Defined in
+
+[packages/types/src/wallet.ts:8](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/types/src/wallet.ts#L8)
+
+___
+
+### NetworkId
+
+Ƭ **NetworkId**: ``"testnet"`` \| ``"mainnet"``
+
+#### Defined in
+
+[packages/types/src/constants.ts:21](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/types/src/constants.ts#L21)
+
+## Variables
+
+### ARBITRUM\_MAINNET\_CHAINID
+
+• `Const` **ARBITRUM\_MAINNET\_CHAINID**: ``42161``
+
+#### Defined in
+
+[packages/types/src/constants.ts:33](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/types/src/constants.ts#L33)
+
+___
+
+### ARBITRUM\_MAINNET\_CHAINID\_HEX
+
+• `Const` **ARBITRUM\_MAINNET\_CHAINID\_HEX**: ``"0xa4b1"``
+
+#### Defined in
+
+[packages/types/src/constants.ts:34](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/types/src/constants.ts#L34)
+
+___
+
+### ARBITRUM\_TESTNET\_CHAINID
+
+• `Const` **ARBITRUM\_TESTNET\_CHAINID**: ``421614``
+
+#### Defined in
+
+[packages/types/src/constants.ts:29](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/types/src/constants.ts#L29)
+
+___
+
+### ARBITRUM\_TESTNET\_CHAINID\_HEX
+
+• `Const` **ARBITRUM\_TESTNET\_CHAINID\_HEX**: ``"0x66EEE"``
+
+#### Defined in
+
+[packages/types/src/constants.ts:30](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/types/src/constants.ts#L30)
+
+___
+
+### DEPOSIT\_FEE\_RATE
+
+• `Const` **DEPOSIT\_FEE\_RATE**: ``1.05``
+
+#### Defined in
+
+[packages/types/src/constants.ts:38](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/types/src/constants.ts#L38)
+
+___
+
+### MEDIA\_TABLET
+
+• `Const` **MEDIA\_TABLET**: ``"(max-width: 768px)"``
+
+#### Defined in
+
+[packages/types/src/constants.ts:36](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/types/src/constants.ts#L36)
+
+___
+
+### MaxUint256
+
+• `Const` **MaxUint256**: `bigint`
+
+A constant for the maximum value for a ``uint256``.
+
+#### Defined in
+
+[packages/types/src/constants.ts:43](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/types/src/constants.ts#L43)
+
+___
+
+### TestnetChains
+
+• `Const` **TestnetChains**: \{ `network_infos`: \{ `bridge_enable`: `boolean` = true; `chain_id`: `number` = 421614; `currency_symbol`: `string` = "ETH"; `est_txn_mins`: ``null`` = null; `explorer_base_url`: `string` = "https://sepolia.arbiscan.io"; `mainnet`: `boolean` = false; `name`: `string` = "Arbitrum Sepolia"; `public_rpc_url`: `string` = "https://arbitrum-sepolia.blockpi.network/v1/rpc/public"; `shortName`: `string` = "Arbitrum Sepolia" } ; `token_infos`: \{ `address`: `string` = "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d"; `decimals`: `number` = 6; `symbol`: `string` = "USDC" }[]  }[]
+
+#### Defined in
+
+[packages/types/src/chains.ts:431](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/types/src/chains.ts#L431)
+
+___
+
+### chainsInfoMap
+
+• `Const` **chainsInfoMap**: `Map`\<`number`, [`ChainConfig`](./../interfaces/orderly_network_types.ChainConfig)\>
+
+#### Defined in
+
+[packages/types/src/chains.ts:31](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/types/src/chains.ts#L31)
+
+___
+
+### definedTypes
+
+• `Const` **definedTypes**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `AddOrderlyKey` | readonly [\{ `name`: ``"brokerId"`` = "brokerId"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"orderlyKey"`` = "orderlyKey"; `type`: ``"string"`` = "string" }, \{ `name`: ``"scope"`` = "scope"; `type`: ``"string"`` = "string" }, \{ `name`: ``"timestamp"`` = "timestamp"; `type`: ``"uint64"`` = "uint64" }, \{ `name`: ``"expiration"`` = "expiration"; `type`: ``"uint64"`` = "uint64" }] |
+| `EIP712Domain` | readonly [\{ `name`: ``"name"`` = "name"; `type`: ``"string"`` = "string" }, \{ `name`: ``"version"`` = "version"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"verifyingContract"`` = "verifyingContract"; `type`: ``"address"`` = "address" }] |
+| `Registration` | readonly [\{ `name`: ``"brokerId"`` = "brokerId"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"timestamp"`` = "timestamp"; `type`: ``"uint64"`` = "uint64" }, \{ `name`: ``"registrationNonce"`` = "registrationNonce"; `type`: ``"uint256"`` = "uint256" }] |
+| `SettlePnl` | readonly [\{ `name`: ``"brokerId"`` = "brokerId"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"settleNonce"`` = "settleNonce"; `type`: ``"uint64"`` = "uint64" }, \{ `name`: ``"timestamp"`` = "timestamp"; `type`: ``"uint64"`` = "uint64" }] |
+| `Withdraw` | readonly [\{ `name`: ``"brokerId"`` = "brokerId"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"receiver"`` = "receiver"; `type`: ``"address"`` = "address" }, \{ `name`: ``"token"`` = "token"; `type`: ``"string"`` = "string" }, \{ `name`: ``"amount"`` = "amount"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"withdrawNonce"`` = "withdrawNonce"; `type`: ``"uint64"`` = "uint64" }, \{ `name`: ``"timestamp"`` = "timestamp"; `type`: ``"uint64"`` = "uint64" }] |
+
+#### Defined in
+
+[packages/types/src/sign.ts:1](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/types/src/sign.ts#L1)
+
+___
+
+### nativeTokenAddress
+
+• `Const` **nativeTokenAddress**: ``"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"``
+
+#### Defined in
+
+[packages/types/src/constants.ts:47](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/types/src/constants.ts#L47)
+
+___
+
+### version
+
+• **version**: ``"1.2.0"``
+
+#### Defined in
+
+[packages/types/src/version.ts:14](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/types/src/version.ts#L14)
+
+## Functions
+
+### isNativeTokenChecker
+
+▸ **isNativeTokenChecker**(`address`): `boolean`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `address` | `string` |
+
+#### Returns
+
+`boolean`
+
+#### Defined in
+
+[packages/types/src/constants.ts:49](https://github.com/OrderlyNetwork/js-sdk/blob/3b49bc1a/packages/types/src/constants.ts#L49)
