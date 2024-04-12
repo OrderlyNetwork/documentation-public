@@ -1,0 +1,38 @@
+---
+title: "Glossary"
+---
+**Order Book:** A list of orders to buy or sell a particular asset, organized by price and quantity.
+
+**Liquidity:** The amount of assets that are available to be traded on a particular exchange or market.
+
+**Spread:** The difference between the highest price a buyer is willing to pay (bid) and the lowest price a seller is willing to take (ask).
+
+**Basis Point (BP):** A basis point (bp) is a unit of measurement equal to one-hundredth of one percent (0.01%)
+
+**Taker Fee:** A taker fee is a fee charged to traders who execute orders that immediately remove liquidity from the order book. This type of order is typically known as a market order.
+
+**Maker Fee:** A maker fee is a fee charged to traders who place orders that add liquidity to the order book. This type of order is typically known as a limit order.
+
+**Unsettled PnL:** The portion of a perp PnL yet to be settled. Perpetual positions are “settled” between traders, transferring USDC between winning and losing positions. Settlements are made by a trader. 
+
+**Maintenance Margin:** Maintenance margin is the minimum amount of collateral that must be held in a trader's account to avoid liquidation. If a trader's margin falls below the maintenance margin requirement, their position will be liquidated.
+
+**Intial Margin:** Initial margin is the amount of collateral that must be deposited into a trader's account to open a position. The initial margin requirement varies depending on the market.
+
+**Funding Fee:** The funding fee is a periodic payment made between traders (on the long and short side) to ensure that perpetual positions remain fairly priced (close to market price of the underlying asset). The funding fee is calculated based on the difference between the index price and the mark price, as well as interest rate for leverage trading. More information of funding rates/fees can be found [here](/trade-on-orderly/perpetual-futures/funding-rate).
+
+**Cost Position:** The cost position is the average price at which a trader opened their position plus expenses (trading/funding fees). This is used to calculate the unrealized PnL of the position.
+
+**Mark Price:** The Mark Price represents the best estimate of a Perpetual Futures contract value and prevents unnecessary liquidations that would potentially be caused by market manipulation: it is less volatile than the Index Price or Last Price. The mark price is the reference price for a perpetual contract. It is derived from the prices of the underlying asset on multiple spot exchanges. More information on how we calculate mark price can found [here](/trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price#mark-price).
+
+**Index Price:** For a given contract, the Index price is the volume-weighted average of the underlying asset prices listed on major spot exchanges. More information on how we calculate index price can found [here](/trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price#index-price).
+
+**Last Price:** The Last Price refers to the last traded price.
+
+**Open Interest:** Open interest is the total number of outstanding contracts for a particular futures contract. It is a measure of the depth of the market for the contract in USDC.
+
+**Liquidation:** Liquidation refers to the forced closure of a trader's leveraged position due to insufficient margin.
+
+**Auto de-leveraging (ADL):** Auto de-leveraging (ADL) is a mechanism that automatically liquidates positions when their margin falls below a certain level if other liquidation mechanisms fail. ADL is designed to protect the exchange from losses in the event of a market crash. More details on how ADL works can be found [here](/trade-on-orderly/perpetual-futures/insurance-fund-and-adl#adl).
+
+**Insurance Fund:** The insurance fund is a pool of funds that is used to liquidate positions when their margin falls below the MMR if liquidators don't take over the position. The insurance fund is funded by liquidation fees and Orderly. More information on the Insurance Fund can be found [here](/trade-on-orderly/perpetual-futures/insurance-fund-and-adl).

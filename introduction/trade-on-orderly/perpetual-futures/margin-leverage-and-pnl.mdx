@@ -1,0 +1,119 @@
+---
+title: "Margin, Leverage & PnL"
+---
+
+## Notional Value
+
+The notional of a position corresponds to the total position size in USDC value
+
+```
+Notional Value = Position Qty * Mark Price
+```
+
+## Account Margin Ratio 
+
+The margin ratio of an account is equal to the total collateral value (ie the USDC balance + any unrealized profit/loss) divided by the total open notional of the account (the sum of the absolute notional value of all positions)
+
+For an account having positions on multiple contracts:
+
+```
+Account Margin Ratio = Total Collateral Value / Sum(Abs(Position Notional i))
+```
+
+The margin ratio defines the risk level of your account: a higher margin ratio equates to a lower risk level (with a default margin ratio set to 1000% when there are no open positions)
+
+## Initial Margin Ratio
+
+To open a new futures position or execute withdrawals, the Margin Ratio of the Account has to be higher than the Initial Margin ratio. Otherwise, the account will not be able to open any new futures position or execute withdrawals.
+
+Each Perpetual Futures market has a defined **Initial Margin Ratio** (Base IMR) and maximum leverage equal to 1/Base IMR.
+
+```
+IMR i = Max(1 / Max Account Leverage, Base IMR i, IMR Factor i * Abs(Position Notional i)^(4/5))
+```
+
+**IMR Factors** are specific coefficients used to calculate the required margin for large positions. The larger the position, the lower the actual leverage that can be used.
+
+## Maintenance Margin Ratio
+
+An account will be liquidated if the Margin Ratio of the account is lower than the Maintenance Margin Ratio required.
+
+```
+MMR i = Max(Base MMR i, Base MMR i / Base IMR i * IMR Factor i * Abs(Position Notional i)^(4/5))
+```
+<Note>
+We will gradually decrease Base IMR and Base MMR and increase maximum leverage for major markets after launch.
+</Note>
+
+| Perp Market | Base IMR (max leverage) | Base MMR | IMR Factor   |
+| ----------- | ----------------------- | -------- | ------------ |
+| BTC-PERP         | 5% (20x)               | 2.5%       | 0.0000003517 |
+| ETH-PERP         | 5% (20x)               | 2.5%       | 0.0000003754 |
+| ARB-PERP        | 10% (10x)               | 5%       | 0.0000021481 |
+| WOO-PERP        | 10% (10x)               | 5%       | 0.0000077523 |
+| LINK-PERP        | 10% (10x)               | 5%       | 0.0000018182 |
+| MATIC-PERP        | 10% (10x)               | 5%       | 0.000001352 |
+| OP-PERP        | 10% (10x)               | 5%       | 0.0000021481 |
+| SOL-PERP        | 10% (10x)               | 5%       | 0.0000012291 |
+| SUI-PERP        | 10% (10x)               | 5%       | 0.0000025564 |
+| TIA-PERP        | 10% (10x)               | 5%       | 0.0000116025 |
+| INJ-PERP        | 10% (10x)               | 5%       | 0.0000021481 |
+| AVAX-PERP        | 10% (10x)               | 5%       | 0.0000018182 |
+| JUP-PERP        | 10% (10x)               | 5%       | 0.0000103131 |
+| ORDI-PERP        | 10% (10x)               | 5%       | 0.0000041315 |
+| APT-PERP        | 10% (10x)               | 5%       | 0.0000013796 |
+| BLUR-PERP        | 10% (10x)               | 5%       | 0.0000116025 |
+| WLD-PERP        | 10% (10x)               | 5%       | 0.00000731 |
+| STRK-PERP        | 10% (10x)               | 5%       | 0.00000145 |
+
+
+## PnL (Profit and Loss)
+
+The unrealized PnL of an open position refers to the profits or losses of that position based on the Mark Price:
+
+```
+Unrealized PnL(Perp Market i) = Position Qty * (Mark Price - Position Average Entry Price)
+```
+
+The realized PnL refers to the profits or losses after closing a position: 
+
+```
+Realized PnL(Perp Market i) = Position Qty * (Average Price - Position Average Entry Price)
+```
+
+## PnL settlement
+
+Settling PnL allow traders to move their profit or loss from all perpetual markets to their balance. PnL Settlement has no impact on the Account Margin Ratio or open positions.
+
+It should be noted that settled/unsettled PnL and realized/unrealized PnL are different. PnL is realized when closing or reducing a position. The resulting realized PnL moves into the balance only when the trader triggers a PnL settlement.
+
+Settled PnL into balance can be used for spot trading or withdrawn, but doing so will impact your margin ratio.
+
+The process of PnL Settlement is as follows:
+
+When account X makes a call to settle PnL, Orderly will choose the top accounts with the largest unsettled opposing PnL. Starting from the largest account, each account's unsettled PnL will be offset with account X, until account X has no more remaining PnL to settle.
+
+As an Example: Account X has +20,000 USDC unsettled PnL with a balance of 100 USDC. The top 2 facing Accounts A and B have -15,000 USDC and -5,000 USDC unsettled PnL respectively: 
+
+* First, settling Account X vs Account A will increase Account X's balance by 15,000 USDC and decrease Account A's balance by 15,000 USDC. Account X has a remaining unsettled PnL of +5,000 USDC and a balance of 15,100 USDC.
+
+* Then, settling Account X vs Account B will increase Account X's balance by 5,000 USDC and decrease Account B's balance by 5,000 USDC. Account X has a remaining unsettled PnL of 0 and a balance of 20,100 USDC. The settlement process ends since Account X has no remaining unsettled PnL.
+
+<Note>
+Settling PnL will NOT change the user's balance as displayed user balance already includes unsettled PnL in the calculation.
+
+Withdrawable balance will change after settling PnL as it doesn't include unsettled profits in the calculation.
+
+All settling PnL does is move profits into user's account so user is able to withdraw.
+</Note>
+
+## Max notional amount
+
+Orderly imposes position limits per perpetual market per user. These limits will be increased and/or removed after Beta launch.
+
+| Perp Market | Max Notional (USDC) |
+| ----------- | ------------------- |
+| BTC         | 5,000,000           |
+| ETH         | 5,000,000           |
+| Alts        | 2,000,000           |
+
