@@ -29,10 +29,13 @@
     }
   ],
   "versions": [
-    "pre-release",
     {
       "name": "latest",
-      "url": "https://orderly.network/docs/getting-started/what-is-orderly-network"
+      "url": "https://orderly.network/docs"
+    },
+    {
+      "name": "pre-release",
+      "url": "https://staging-docs.orderly.network"
     }
   ],
   "primaryTab": {
@@ -102,7 +105,12 @@
     },
     {
       "group": "Learn More",
-      "pages": ["faqs", "security", "terms-of-service", "privacy-policy"]
+      "pages": [
+        "faqs",
+        "security",
+        "terms-of-service",
+        "privacy-policy"
+      ]
     },
     {
       "group": "Getting Started",
@@ -207,8 +215,8 @@
             "build-on-near/near-api/restful-api/public/get-predicted-funding-rate-for-one-market",
             "build-on-near/near-api/restful-api/public/get-predicted-funding-rates-for-all-markets",
             "build-on-near/near-api/restful-api/public/get-funding-rate-history-for-one-market",
-            "build-on-near/near-api/restful-api/public/get-futures-info-for-one-market",
-            "build-on-near/near-api/restful-api/public/get-futures-info-for-all-markets",
+            "build-on-near/near-api/restful-api/public/get-market-info-for-one-trading-pair",
+            "build-on-near/near-api/restful-api/public/get-market-info-for-all-trading-pairs",
             "build-on-near/near-api/restful-api/public/get-market-trades",
             "build-on-near/near-api/restful-api/private/get-funding-fee-history",
             "build-on-near/near-api/restful-api/private/orderbook-snapshot",
@@ -286,7 +294,11 @@
     },
     {
       "group": "Getting Started",
-      "pages": ["build-on-evm/building-on-evm", "build-on-evm/overview", "build-on-evm/addresses"]
+      "pages": [
+        "build-on-evm/building-on-evm",
+        "build-on-evm/overview",
+        "build-on-evm/addresses"
+      ]
     },
     {
       "group": "User Flows",
@@ -302,23 +314,17 @@
       ]
     },
     {
-      "group": "Trading API",
+      "group": "REST API",
       "pages": [
         "build-on-evm/evm-api/introduction",
         "build-on-evm/evm-api/api-authentication",
         "build-on-evm/evm-api/error-codes",
         {
-          "group": "Registration",
+          "group": "Registration/Key Management",
           "pages": [
-            "build-on-evm/evm-api/restful-api/public/get-account-details",
-            "build-on-evm/evm-api/restful-api/public/get-account",
+            "build-on-evm/evm-api/restful-api/public/check-if-wallet-is-registered",
             "build-on-evm/evm-api/restful-api/public/get-registration-nonce",
-            "build-on-evm/evm-api/restful-api/public/register-account"
-          ]
-        },
-        {
-          "group": "Key Management",
-          "pages": [
+            "build-on-evm/evm-api/restful-api/public/register-account",
             "build-on-evm/evm-api/restful-api/public/get-orderly-key",
             "build-on-evm/evm-api/restful-api/public/add-orderly-key",
             "build-on-evm/evm-api/restful-api/private/get-current-orderly-key-info",
@@ -328,8 +334,29 @@
           ]
         },
         {
-          "group": "USDC Faucet",
-          "pages": ["build-on-evm/evm-api/restful-api/public/get-faucet-usdctestnet-only"]
+          "group": "General",
+          "pages": [
+            "build-on-evm/evm-api/restful-api/public/get-faucet-usdctestnet-only",
+            "build-on-evm/evm-api/restful-api/public/get-leverage-configuration",
+            "build-on-evm/evm-api/restful-api/private/set-maintenance-config"
+          ]
+        },
+        {
+          "group": "Market Info",
+          "pages": [
+            "build-on-evm/evm-api/restful-api/public/get-supported-collateral-info",
+            "build-on-evm/evm-api/restful-api/public/get-order-rules-per-market",
+            "build-on-evm/evm-api/restful-api/public/get-available-symbols",
+            "build-on-evm/evm-api/restful-api/public/get-market-trades",
+            "build-on-evm/evm-api/restful-api/public/get-broker-volume",
+            "build-on-evm/evm-api/restful-api/public/get-predicted-funding-rate-for-one-market",
+            "build-on-evm/evm-api/restful-api/public/get-predicted-funding-rates-for-all-markets",
+            "build-on-evm/evm-api/restful-api/public/get-market-info-for-all-trading-pairs",
+            "build-on-evm/evm-api/restful-api/public/get-market-info-for-one-trading-pair",
+            "build-on-evm/evm-api/restful-api/public/get-funding-rate-history-for-one-market",
+            "build-on-evm/evm-api/restful-api/private/orderbook-snapshot",
+            "build-on-evm/evm-api/restful-api/private/get-kline"
+          ]
         },
         {
           "group": "Order Management",
@@ -344,7 +371,7 @@
             "build-on-evm/evm-api/restful-api/private/cancel-order-by-client_order_id",
             "build-on-evm/evm-api/restful-api/private/cancel-algo-order-by-client_order_id",
             "build-on-evm/evm-api/restful-api/private/cancel-all-pending-algo-orders",
-            "build-on-evm/evm-api/restful-api/private/cancel-orders-in-bulk",
+            "build-on-evm/evm-api/restful-api/private/cancel-all-pending-orders",
             "build-on-evm/evm-api/restful-api/private/batch-cancel-orders",
             "build-on-evm/evm-api/restful-api/private/batch-cancel-orders-by-client_order_id",
             "build-on-evm/evm-api/restful-api/private/get-order",
@@ -354,8 +381,7 @@
             "build-on-evm/evm-api/restful-api/private/get-orders",
             "build-on-evm/evm-api/restful-api/private/get-algo-orders",
             "build-on-evm/evm-api/restful-api/private/get-trades",
-            "build-on-evm/evm-api/restful-api/private/get-trade",
-            "build-on-evm/evm-api/restful-api/private/get-all-trades-of-specific-order"
+            "build-on-evm/evm-api/restful-api/private/get-trade"
           ]
         },
         {
@@ -370,10 +396,8 @@
           ]
         },
         {
-          "group": "Assets/Withdraw/Settle PnL",
+          "group": "Withdraw/Settle PnL",
           "pages": [
-            "build-on-evm/evm-api/restful-api/private/get-asset-history",
-            "build-on-evm/evm-api/restful-api/private/get-current-holding",
             "build-on-evm/evm-api/restful-api/private/get-withdrawal-nonce",
             "build-on-evm/evm-api/restful-api/private/create-withdraw-request",
             "build-on-evm/evm-api/restful-api/private/get-settle-pnl-nonce",
@@ -384,59 +408,83 @@
         {
           "group": "Account/User Info",
           "pages": [
+            "build-on-evm/evm-api/restful-api/private/get-asset-history",
             "build-on-evm/evm-api/restful-api/private/get-user-daily-volume",
             "build-on-evm/evm-api/restful-api/private/get-user-volume-statistics",
             "build-on-evm/evm-api/restful-api/private/get-user-statistics",
+            "build-on-evm/evm-api/restful-api/private/get-brokers-users-volumes",
             "build-on-evm/evm-api/restful-api/private/get-account-information",
-            "build-on-evm/evm-api/restful-api/private/get-user-daily-statistics"
-          ]
-        },
-        {
-          "group": "Positions",
-          "pages": [
+            "build-on-evm/evm-api/restful-api/private/get-current-holding",
+            "build-on-evm/evm-api/restful-api/private/get-user-daily-statistics",
+            "build-on-evm/evm-api/restful-api/private/update-leverage-setting",
+            "build-on-evm/evm-api/restful-api/private/get-all-trades-of-specific-order",
             "build-on-evm/evm-api/restful-api/private/get-all-positions-info",
-            "build-on-evm/evm-api/restful-api/private/get-one-position-info"
-          ]
-        },
-        {
-          "group": "Funding",
-          "pages": ["build-on-evm/evm-api/restful-api/private/get-funding-fee-history"]
-        },
-        {
-          "group": "Account Notifications",
-          "pages": [
+            "build-on-evm/evm-api/restful-api/private/get-one-position-info",
             "build-on-evm/evm-api/restful-api/private/get-all-notifications",
             "build-on-evm/evm-api/restful-api/private/get-unread-notifications",
             "build-on-evm/evm-api/restful-api/private/set-read-status-of-notifications",
-            "build-on-evm/evm-api/restful-api/private/set-read-status-of-all-notifications"
+            "build-on-evm/evm-api/restful-api/private/set-read-status-of-all-notifications",
+            "build-on-evm/evm-api/restful-api/public/check-if-account-exists",
+            "build-on-evm/evm-api/restful-api/private/get-funding-fee-history"
           ]
         },
         {
-          "group": "Account Config",
+          "group": "Referral Program",
           "pages": [
-            "build-on-evm/evm-api/restful-api/private/update-leverage-setting",
-            "build-on-evm/evm-api/restful-api/public/get-leverage-configuration",
-            "build-on-evm/evm-api/restful-api/private/set-maintenance-config"
+            "build-on-evm/evm-api/restful-api/public/check-referral-code",
+            "build-on-evm/evm-api/restful-api/public/verify-referral-code",
+            "build-on-evm/evm-api/restful-api/private/create-referral-code",
+            "build-on-evm/evm-api/restful-api/private/get-referral-code-info",
+            "build-on-evm/evm-api/restful-api/private/update-referral-code",
+            "build-on-evm/evm-api/restful-api/private/bind-referral-code",
+            "build-on-evm/evm-api/restful-api/private/get-referral-info",
+            "build-on-evm/evm-api/restful-api/private/get-referee-info",
+            "build-on-evm/evm-api/restful-api/private/get-referee-history",
+            "build-on-evm/evm-api/restful-api/private/get-referral-history",
+            "build-on-evm/evm-api/restful-api/private/get-referral-rebate-summary",
+            "build-on-evm/evm-api/restful-api/private/get-referee-rebates-summary",
+            "build-on-evm/evm-api/restful-api/private/get-distribution-history",
+            "build-on-evm/evm-api/restful-api/private/edit-referral-code-split"
+          ]
+        },
+        {
+          "group": "Points Campaign",
+          "pages": [
+            "build-on-evm/evm-api/restful-api/public/get-points-leaderboard",
+            "build-on-evm/evm-api/restful-api/public/get-users-points",
+            "build-on-evm/evm-api/restful-api/public/get-number-of-points-for-distribution",
+            "build-on-evm/evm-api/restful-api/public/get-start-and-end-date-of-all-epochs"
           ]
         },
         {
           "group": "Delegate Signer",
           "pages": [
-            "build-on-evm/evm-api/restful-api/public/add-delegate-signer",
+            "build-on-evm/evm-api/restful-api/public/delegate-signer",
             "build-on-evm/evm-api/restful-api/public/add-delegate-signer-orderly-key",
             "build-on-evm/evm-api/restful-api/private/delegate-signer-settle-pnl",
             "build-on-evm/evm-api/restful-api/private/delegate-signer-withdraw-request"
           ]
-        }
-      ]
-    },
-
-    {
-      "group": "Broker API",
-      "pages": [
+        },
         {
-          "group": "User Data",
-          "pages": ["build-on-evm/evm-api/restful-api/private/get-broker-daily-volume"]
+          "group": "System Info",
+          "pages": [
+            "build-on-evm/evm-api/restful-api/public/get-system-maintenance-status",
+            "build-on-evm/evm-api/restful-api/public/get-vault-balance",
+            "build-on-evm/evm-api/restful-api/public/get-broker-list",
+            "build-on-evm/evm-api/restful-api/public/get-insurance-fund-info",
+            "build-on-evm/evm-api/restful-api/public/get-vault-chain-config",
+            "build-on-evm/evm-api/restful-api/public/get-supported-chains-per-broker"
+          ]
+        },
+        {
+          "group": "Fee Setting",
+          "pages": [
+            "build-on-evm/evm-api/restful-api/private/update-user-fee-rate",
+            "build-on-evm/evm-api/restful-api/private/reset-user-fee-rate",
+            "build-on-evm/evm-api/restful-api/private/get-default-broker-fee",
+            "build-on-evm/evm-api/restful-api/private/update-default-broker-fee",
+            "build-on-evm/evm-api/restful-api/private/get-user-fee-rates"
+          ]
         },
         {
           "group": "Trading Campaigns",
@@ -449,91 +497,11 @@
           ]
         },
         {
-          "group": "Fee Setting",
-          "pages": [
-            "build-on-evm/evm-api/restful-api/private/update-user-fee-rate",
-            "build-on-evm/evm-api/restful-api/private/update-default-user-fee-rate",
-            "build-on-evm/evm-api/restful-api/private/get-default-broker-fee",
-            "build-on-evm/evm-api/restful-api/private/update-default-broker-fee",
-            "build-on-evm/evm-api/restful-api/private/get-user-fee-rates"
-          ]
-        },
-        {
-          "group": "System Info",
-          "pages": [
-            "build-on-evm/evm-api/restful-api/public/get-system-maintenance-status",
-            "build-on-evm/evm-api/restful-api/public/get-vault-balance",
-            "build-on-evm/evm-api/restful-api/public/get-insurance-fund-info",
-            "build-on-evm/evm-api/restful-api/public/get-vault-chain-config"
-          ]
-        },
-        {
-          "group": "Broker Info",
-          "pages": [
-            "build-on-evm/evm-api/restful-api/public/get-volume-statistics",
-            "build-on-evm/evm-api/restful-api/public/get-broker-list",
-            "build-on-evm/evm-api/restful-api/public/get-supported-chains-per-broker"
-          ]
-        },
-
-        {
-          "group": "Points Campaign",
-          "pages": [
-            "build-on-evm/evm-api/restful-api/public/get-points-leaderboard",
-            "build-on-evm/evm-api/restful-api/public/get-number-of-points",
-            "build-on-evm/evm-api/restful-api/public/get-number-of-epoch-points",
-            "build-on-evm/evm-api/restful-api/public/get-start-and-end-date-of-all-epochs"
-          ]
-        },
-        {
-          "group": "Referral Program",
-          "pages": [
-            "build-on-evm/evm-api/restful-api/private/create-referral-code",
-            "build-on-evm/evm-api/restful-api/private/get-referral-code-info",
-            "build-on-evm/evm-api/restful-api/private/update-referral-code",
-            "build-on-evm/evm-api/restful-api/private/bind-referral-code",
-            "build-on-evm/evm-api/restful-api/private/get-referral-info",
-            "build-on-evm/evm-api/restful-api/private/get-referee-info",
-            "build-on-evm/evm-api/restful-api/private/get-referee-history",
-            "build-on-evm/evm-api/restful-api/private/get-referral-history",
-            "build-on-evm/evm-api/restful-api/private/get-referral-rebate-summary",
-            "build-on-evm/evm-api/restful-api/private/get-distribution-history",
-            "build-on-evm/evm-api/restful-api/private/edit-referral-code-split"
-          ]
-        }
-      ]
-    },
-
-    {
-      "group": "Market Data API",
-      "pages": [
-        {
           "group": "TradingView",
           "pages": [
             "build-on-evm/evm-api/restful-api/public/get-tradingview-localized-config-info",
             "build-on-evm/evm-api/restful-api/public/get-tradingview-history-bars",
             "build-on-evm/evm-api/restful-api/public/get-tradingview-symbol-info"
-          ]
-        },
-        {
-          "group": "Funding Rates",
-          "pages": [
-            "build-on-evm/evm-api/restful-api/public/get-funding-rate-history-for-one-market",
-            "build-on-evm/evm-api/restful-api/public/get-predicted-funding-rate-for-one-market",
-            "build-on-evm/evm-api/restful-api/public/get-predicted-funding-rates-for-all-markets"
-          ]
-        },
-        {
-          "group": "Market Info",
-          "pages": [
-            "build-on-evm/evm-api/restful-api/public/get-token-info",
-            "build-on-evm/evm-api/restful-api/public/get-exchange-information",
-            "build-on-evm/evm-api/restful-api/public/get-available-symbols",
-            "build-on-evm/evm-api/restful-api/public/get-market-trades",
-            "build-on-evm/evm-api/restful-api/public/get-futures-info-for-all-markets",
-            "build-on-evm/evm-api/restful-api/public/get-futures-info-for-one-market",
-            "build-on-evm/evm-api/restful-api/private/orderbook-snapshot",
-            "build-on-evm/evm-api/restful-api/private/get-kline"
           ]
         }
       ]
@@ -585,7 +553,9 @@
     },
     {
       "group": "Software Development Kits",
-      "pages": ["sdks/overview"]
+      "pages": [
+        "sdks/overview"
+      ]
     },
     {
       "group": "[EVM] React Hooks SDK",
@@ -617,7 +587,7 @@
           ]
         },
         {
-          "group": "Account",
+          "group": "Acount",
           "pages": [
             "sdks/hooks/account/account",
             "sdks/hooks/account/use-account",
@@ -669,29 +639,46 @@
         },
         {
           "group": "Positions",
-          "pages": ["sdks/hooks/positions/use-position-stream", "sdks/hooks/positions/use-poster"]
+          "pages": [
+            "sdks/hooks/positions/use-position-stream",
+            "sdks/hooks/positions/use-poster"
+          ]
         },
         {
           "group": "Funding",
-          "pages": ["sdks/hooks/funding/funding", "sdks/hooks/funding/use-funding-rate"]
+          "pages": [
+            "sdks/hooks/funding/funding",
+            "sdks/hooks/funding/use-funding-rate",
+            "sdks/hooks/funding/use-funding-rates"
+          ]
         }
       ]
     },
     {
       "group": "[EVM] Core SDK",
-      "pages": ["sdks/core/overview"]
+      "pages": [
+        "sdks/core/overview"
+      ]
     },
     {
       "group": "[EVM] Perp SDK",
-      "pages": ["sdks/perp/overview"]
+      "pages": [
+        "sdks/perp/overview"
+      ]
     },
     {
       "group": "Updates by area",
-      "pages": ["changelog/evm", "changelog/near", "changelog/sdk"]
+      "pages": [
+        "changelog/evm",
+        "changelog/near",
+        "changelog/sdk"
+      ]
     },
     {
       "group": "Classification",
-      "pages": ["changelog/classification"]
+      "pages": [
+        "changelog/classification"
+      ]
     },
     {
       "group": "Technical Documentation",
@@ -814,5 +801,8 @@
     "discord": "https://discord.gg/orderlynetwork",
     "medium": "https://medium.com/@orderlynetwork"
   },
-  "openapi": ["/evm.openapi.yaml", "/near.openapi.yaml"]
+  "openapi": [
+    "/evm.openapi.yaml",
+    "/near.openapi.yaml"
+  ]
 }

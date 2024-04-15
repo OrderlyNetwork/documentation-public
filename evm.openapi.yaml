@@ -1308,6 +1308,33 @@ paths:
           example: ''
           schema:
             type: number
+        - name: sort_by
+          in: query
+          description: "If empty: 
+          
+          
+          Descending order by updated_time if user passed update_start_t or update_end_t; descending order by order_id if updated_time are the same; 
+          
+          
+          Otherwise descending order by created_time; descending order by order_id if created_time are the same;
+          
+          
+          If not empty:
+          
+          
+          If sort_by == `CREATED_TIME_DESC`, descending order by created_time. Descending order by order_id if created_time are same;
+          
+          
+          If sort_by == `CREATED_TIME_ASC`, ascending order by created_time. Ascending order by order_id if created_time are same;
+          
+          
+          If sort_by == `UPDATED_TIME_DESC`, descending order by updated_time. Descending order by order_id if updated_time are same;
+          
+          
+          If sort_by == `UPDATED_TIME_ASC`, ascending order by updated_time. Ascending order by order_id if updated_time are same;
+          "
+          schema:
+            type: string
         - $ref: '#/components/parameters/orderly_timestamp'
         - $ref: '#/components/parameters/orderly_account_id'
         - $ref: '#/components/parameters/orderly_key'
@@ -2945,7 +2972,14 @@ paths:
       parameters:
         - name: symbol
           in: query
-          description: ''
+          description: "Note: `STOP` will cancel both `TAKE_PROFIT` and `STOP_LOSS`"
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: algo_type
+          in: query
+          description: ""
           required: false
           example: ''
           schema:
@@ -3173,7 +3207,7 @@ paths:
                 $ref: '#/components/schemas/AlgoOrderTradesResponse'
   /v1/public/account:
     get:
-      summary: Check if Account Exisits
+      summary: Check if Account Exists
       deprecated: false
       description: |-
         **Limit: 10 requests per 1 second per IP address**
@@ -3682,6 +3716,58 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetReferralCodeResponse'
 
+  /v1/public/referral/check_ref_code:
+    get:
+      summary: Check Referral Code
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/public/referral/check_ref_code`
+      tags:
+        - public
+      parameters:
+        - name: account
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckReferralCodeResponse'
+
+  /v1/public/referral/verify_ref_code:
+    get:
+      summary: Verify Referral Code
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/public/referral/verify_ref_code`
+      tags:
+        - public
+      parameters:
+        - name: referral_code
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckReferralCodeResponse'
+
   /v1/referral/update:
     post:
       summary: Update Referral Code
@@ -3985,6 +4071,45 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetRefereeInfoResponse'
 
+  /v1/referral/referee_rebate_summary:
+    get:
+      summary: Get Referee Rebates Summary
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/referral/referee_rebate_summary`
+
+        Provides daily statistics on referee rebates
+      tags:
+        - private
+      parameters:
+        - name: start_date
+          in: query
+          description: "start date range that you wish to query, in the format ‘YYYY-MM-DD’"
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: end_date
+          in: query
+          description: "end date range that you wish to query, in the format ‘YYYY-MM-DD’"
+          required: false
+          example: ''
+          schema:
+            type: string
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRefereeRebateSummaryResponse'
+
   /v1/referral/edit_split:
     post:
       summary: Edit Referral Code Split
@@ -4083,7 +4208,7 @@ paths:
 
   /v1/client/points:
     get:
-      summary: Get  User's Points
+      summary: Get User's Points
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per user**
@@ -4126,6 +4251,104 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetEpochDatesResponse'
+
+  # /v1/public/tradingrewards/epoch_data:
+  #   get:
+  #     summary: Get Epochs Data
+  #     deprecated: false
+  #     description: |
+  #       **Limit: 10 requests per 1 second per user**
+
+  #       `GET /v1/public/tradingrewards/epoch_data`
+
+  #       Return data of each epoch from epoch 1 to the current epoch
+  #     tags:
+  #       - public
+  #     responses:
+  #       "200":
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/GetTradingRewardsEpochsDataResponse'
+
+
+  # /v1/public/tradingrewards/epoch_info:
+  #   get:
+  #     summary: Get Parameters of Each Epoch for All Epochs
+  #     deprecated: false
+  #     description: |
+  #       **Limit: 10 requests per 1 second per IP address**
+
+  #       `GET /v1/public/tradingrewards/epoch_info`
+  #     tags:
+  #       - public
+  #     responses:
+  #       "200":
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/GetEpochInfoResponse'
+
+  # /v1/public/tradingrewards/account_rewards_history:
+  #   get:
+  #     summary: Get Account Trading Rewards History
+  #     deprecated: false
+  #     description: |
+  #       **Limit: 10 requests per 1 second per IP address**
+
+  #       `GET /v1/public/tradingrewards/account_rewards_history`
+  #     tags:
+  #       - public
+  #     parameters:
+  #       - name: wallet_address
+  #         in: query
+  #         description: ""
+  #         required: true
+  #         example: '0x00000'
+  #         schema:
+  #           type: string
+  #       - name: broker_id
+  #         in: query
+  #         description: ""
+  #         required: true
+  #         example: woofi_pro
+  #         schema:
+  #           type: string
+  #     responses:
+  #       "200":
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/GetAccountRewardsHistoryResponse'
+
+  # /v1/public/tradingrewards/wallet_rewards_history:
+  #   get:
+  #     summary: Get Wallet Trading Rewards History
+  #     deprecated: false
+  #     description: |
+  #       **Limit: 10 requests per 1 second per IP address**
+
+  #       `GET /v1/public/tradingrewards/wallet_rewards_history`
+  #     tags:
+  #       - public
+  #     parameters:
+  #       - name: address
+  #         in: query
+  #         description: ""
+  #         required: true
+  #         example: '0x00000'
+  #         schema:
+  #           type: string
+  #     responses:
+  #       "200":
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/GetWalletRewardsHistoryResponse'
 
 
   /v1/public/points/epoch:
@@ -4261,6 +4484,16 @@ paths:
       tags:
         - private
       parameters:
+        - name: status
+          in: query
+          example: 'true'
+          schema:
+            type: string
+        - name: type
+          in: query
+          example: 'true'
+          schema:
+            type: string
         - name: start_t
           in: query
           description: ""
@@ -6243,7 +6476,8 @@ components:
       - average_executed_price
       - client_order_id
       - created_time
-      - executed
+      - executed_quantity
+      - total_executed_quantity
       - fee_asset
       - order_id
       - price
@@ -6256,6 +6490,8 @@ components:
       - updated_time
       - user_id
       - visible
+      - visible_quantity
+      - realized_pnl
       properties:
         order_id:
           type: number
@@ -6277,10 +6513,16 @@ components:
           example: 10
           # TODO nullable & example
           nullable: true
-        executed:
+        executed_quantity:
+          type: number
+          example: 20
+        total_executed_quantity:
           type: number
           example: 20
         visible:
+          type: number
+          example: 1
+        visible_quantity:
           type: number
           example: 1
         symbol:
@@ -6313,6 +6555,9 @@ components:
         updated_time:
           type: number
           example: 1653564213000
+        realized_pnl:
+          type: number
+          example: 0.0
 
     AlgoOrderResponse:
       allOf:
@@ -6383,6 +6628,9 @@ components:
           symbol:
             type: string
             example: "PERP_NEAR_USDC"
+          executed_quantity:
+            type: number
+            example: 0
           total_executed_quantity:
             type: number
             example: 0
@@ -6404,9 +6652,15 @@ components:
           updated_time:
             type: string
             example: 1702871974317
-          visible_quantity:
-            type: string
+          visible:
+            type: number
             example: 5.5
+          visible_quantity:
+            type: number
+            example: 5.5
+          realized_pnl:
+            type: number
+            example: 0.0
           child_orders:
             type: array
             items:
@@ -6467,6 +6721,9 @@ components:
         is_maker:
           type: number
           example: 1
+        realized_pnl:
+          type: number
+          example: 0.0
 
 
     AlgoTrade:
@@ -6693,10 +6950,16 @@ components:
                 perp_trading_volume_last_24_hours:
                   type: number
                   example: 0
+                perp_trading_volume_last_7_days:
+                  type: number
+                  example: 0
                 perp_trading_volume_last_30_days:
                   type: number
                   example: 0
                 perp_trading_volume_ytd:
+                  type: number
+                  example: 0
+                perp_trading_volume_ltd:
                   type: number
                   example: 0
                 trading_volume_last_24_hours:
@@ -8208,6 +8471,34 @@ components:
                       type: integer
                       example: 50
 
+    CheckReferralCodeResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                exist:
+                  type: string
+                  example: code
+                  description: "`true`/`false`"
+
+    VerifyReferralCodeResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                referral_code:
+                  type: string
+                  example: code
 
     GetReferralInfoResponse:
       allOf:
@@ -8431,6 +8722,36 @@ components:
                     total:
                       type: integer
                       example: 50
+
+    GetRefereeRebateSummaryResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      referee_rebate:
+                        type: number
+                        example: 2.22
+                        description: "the total referee rebate received by the user on this day"
+                      fee:
+                        type: number
+                        example: 123.456
+                        description: "the total fees paid by the user on this day"
+                      date:
+                        type: string
+                        example: "2023-11-14"
+                        description: ""
 
     GetRefereeHistoryResponse:
       allOf:
@@ -8860,6 +9181,185 @@ components:
                       epoch_end_date:
                         type: number
                         example: 1708992000000
+
+    # GetTradingRewardsEpochsDataResponse:
+    #   allOf:
+    #     - $ref: "#/components/schemas/BasicResponse"
+    #     - type: object
+    #       properties:
+    #         data:
+    #           type: object
+    #           properties:
+    #             rows:
+    #               type: array
+    #               items:
+    #                 type: object
+    #                 properties:
+    #                   epoch_id:
+    #                     type: number
+    #                     example: 1
+    #                   total_trader_score_major:
+    #                     type: number
+    #                     example: 8278.08333486
+    #                   total_trader_score_alts:
+    #                     type: number
+    #                     example: 20901.92612209
+    #                   epoch_token:
+    #                     type: string
+    #                     example: "ORDER"
+    #                   reward_status:
+    #                     type: string
+    #                     example: "CONFIRMED"
+    #                   r_major:
+    #                     type: number
+    #                     example: 150000
+    #                   r_alts:
+    #                     type: number
+    #                     example: 50000
+    #             total_released_trading_rewards_order:
+    #               type: number
+    #               example: 3591403.07726818
+    #             total_release_trading_rewards_escrow:
+    #               type: number
+    #               example: 0
+    #             total_burned_trading_rewards_order:
+    #               type: number
+    #               example: 408596.92273182
+    #             total_burned_trading_rewards_escrow:
+    #               type: number
+    #               example: 0
+    #             current_epoch:
+    #               type: number
+    #               example: 23
+
+    # GetEpochInfoResponse:
+    #   allOf:
+    #     - $ref: "#/components/schemas/BasicResponse"
+    #     - type: object
+    #       properties:
+    #         data:
+    #           type: object
+    #           properties:
+    #             rows:
+    #               type: array
+    #               items:
+    #                 type: object
+    #                 properties:
+    #                   epoch_id:
+    #                     type: number
+    #                     example: 1
+    #                   start_time:
+    #                     type: number
+    #                     example: 1711324800000
+    #                   end_time:
+    #                     type: number
+    #                     example: 1711411200000
+    #                   power_fees_paid_major:
+    #                     type: number
+    #                     example: 0.8
+    #                   power_fees_paid_alts:
+    #                     type: number
+    #                     example: 0.8
+    #                   power_staked_major:
+    #                     type: number
+    #                     example: 0.2
+    #                   power_staked_alts:
+    #                     type: number
+    #                     example: 0.2
+    #                   epoch_token:
+    #                     type: string
+    #                     example: "ORDER"
+    #                   max_reward_amount:
+    #                     type: number
+    #                     example: 200000
+    #                   k_constant_major:
+    #                     type: number
+    #                     example: 10
+    #                   k_constant_alts:
+    #                     type: number
+    #                     example: 10
+
+    # GetAccountRewardsHistoryResponse:
+    #   allOf:
+    #     - $ref: "#/components/schemas/BasicResponse"
+    #     - type: object
+    #       properties:
+    #         data:
+    #           type: object
+    #           properties:
+    #             rows:
+    #               type: array
+    #               items:
+    #                 type: object
+    #                 properties:
+    #                   epoch_id:
+    #                     type: number
+    #                     example: 1
+    #                   wallet_epoch_avg_staked:
+    #                     type: number
+    #                     example: 0
+    #                   trade_score_major:
+    #                     type: number
+    #                     example: 0
+    #                   trade_score_alts:
+    #                     type: number
+    #                     example: 0
+    #                   epoch_token:
+    #                     type: string
+    #                     example: "ORDER"
+    #                   rewards_status:
+    #                     type: string
+    #                     example: "Confirmed"
+    #                   r_major:
+    #                     type: number
+    #                     example: 0
+    #                   r_alts:
+    #                     type: number
+    #                     example: 0
+    #                   r_account:
+    #                     type: number
+    #                     example: 0
+    #         account_lifetime_trading_rewards_order:
+    #           type: number
+    #           example: 474.47204761
+    #         account_lifetime_trading_rewards_escrow:
+    #           type: number
+    #           example: 0
+
+    # GetWalletRewardsHistoryResponse:
+    #   allOf:
+    #     - $ref: "#/components/schemas/BasicResponse"
+    #     - type: object
+    #       properties:
+    #         data:
+    #           type: object
+    #           properties:
+    #             rows:
+    #               type: array
+    #               items:
+    #                 type: object
+    #                 properties:
+    #                   epoch_id:
+    #                     type: number
+    #                     example: 1
+    #                   wallet_epoch_avg_staked:
+    #                     type: number
+    #                     example: 0
+    #                   epoch_token:
+    #                     type: string
+    #                     example: "ORDER"
+    #                   rewards_status:
+    #                     type: string
+    #                     example: "Confirmed"
+    #                   r_wallet:
+    #                     type: number
+    #                     example: 0
+    #         wallet_lifetime_trading_rewards_order:
+    #           type: number
+    #           example: 474.47204761
+    #         wallet_lifetime_trading_rewards_escrow:
+    #           type: number
+    #           example: 0
 
     GetPointsResponse:
       allOf:
