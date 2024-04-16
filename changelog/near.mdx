@@ -3,16 +3,39 @@ title: NEAR
 description: "Additions and updates to the NEAR version"
 icon: "layer-group"
 ---
-import { Chip } from '/snippets/chip.mdx';
 
+import { Chip } from "/snippets/chip.mdx";
 
+## April 16, 2024 - Minor Update
+
+<div style={{ display: "table", width: "auto" }}>
+
+    <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="update" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Updates to index price calculation**
+
+We have made enhancements to our index price calculation. New methodology can be found on [Index price](trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price) page
+
+    </div>
+
+  </div>
+
+</div>
 
 ## March 12, 2024 - Patch Update
 
 <div style={{ display: "table", width: "auto" }}>
 
     <div style={{ display: "table-row", width: "auto" }}>
-    <Chip type="times" />
+    <Chip type="updates" />
     <div
       style={{
         float: "left",
@@ -24,9 +47,10 @@ import { Chip } from '/snippets/chip.mdx';
 
       **Performance improvements**
 
-Performance imporovements and bug patches. Improved WebSocket subscription connection to keep it more stable.
+Performance improvements and bug patches. Improved WebSocket subscription connection to keep it more stable.
 
     </div>
+
   </div>
 
 </div>
@@ -51,10 +75,10 @@ Performance imporovements and bug patches. Improved WebSocket subscription conne
 Minor performance improvements to trading functions and overall system.
 
       </div>
+
   </div>
 
 </div>
-
 
 ## January 4, 2024 - Minor Update
 
@@ -77,9 +101,11 @@ Added an `address` param to broker volume API.
 Removed min order size for reduce only orders.
 
       </div>
+
   </div>
 
     <div style={{ display: "table-row", width: "auto" }}>
+
    <Chip type="update" />
       <div
         style={{
@@ -96,12 +122,13 @@ Added liquidation_tier parameter for each symbol
 Added symbols array and high/low risk perps in claim liquidated positions(POST /v1/liquidation) API
 
       </div>
+
   </div>
 
 </div>
 
-
 ## 2023-10-31
+
 Renamed `USDC` to `USDC.e`
 
 Added symbol parameter to claim from insurance fund endpoint
@@ -115,6 +142,7 @@ Added an optional tag parameter to add Orderly Key, get Orderly key, get key inf
 Added `SpotFeeTier`, `FuturesFeeTier` and `maintenanceCancelFlag` to account websocket topic
 
 ## 2023-09-21
+
 Added Claim from insurance fund endpoint
 
 Added `max_notional` parameter to Get Insurance Fund Info and Get Account Information endpoints' response
@@ -122,6 +150,7 @@ Added `max_notional` parameter to Get Insurance Fund Info and Get Account Inform
 Added `futures_tier` parameter to Get Account Information endpoint
 
 ## 2023-08-10
+
 Added Get PnL Settlement History API
 
 Added Liquidations on Account Websocket API
@@ -135,6 +164,7 @@ Updated `/insurancefund` endpoint to `/insurance_fund`
 Updated `symbol` parameter of Get Liquidated Positions of Account API to not required
 
 ## 2023-07-13
+
 Added get user statistics API
 
 Added get TradingView localized configuration info API
@@ -148,6 +178,7 @@ Added get leverage configuration API
 `MARKET/BUY/ASK` types of order now check for minimum notional requirement
 
 ## 2023-06-13
+
 Updated error codes and messages for futures trading
 
 Added `volume_ltd` field to volume stats API
@@ -165,6 +196,7 @@ Replaced `liquidationFeeLiquidator` field in Websocket API topics `liquidation` 
 Removed `liquidatedpositions` and `liquidationsaccount` topics from Websocket APIs
 
 ## 2023-05-05
+
 Updated available symbols endpoint
 
 Updated get account information endpoint
@@ -214,9 +246,11 @@ Added a new position push topic
 Added a new liquidator positions push
 
 ## 2023-04-13
+
 Added a new batch cancel orders endpoint by client_order_id
 
 ## 2023-03-23
+
 Updated the path for the public fee information endpoint
 
 Added a new batch cancel orders endpoint
@@ -228,6 +262,7 @@ Added `broker_name` to a number of orders endpoint responses
 Added a series of endpoints for notifications
 
 ## 2023-03-02
+
 Added a new system maintenance status endpoint
 
 Added and modified endpoints to query Orderly/Trading keys
@@ -241,14 +276,17 @@ Added endpoints to query platform statistics
 Added `broker_id` filtering on various transaction, order, and trade endpoints
 
 ## 2023-01-19
+
 Added endpoints to query and manage IP restriction of trading keys
 
 Added endpoints to query current Orderly/Trading keys
 
 ## 2022-12-22
+
 Added endpoint to manage the option to cancel orders during maintenance
 
 ## 2022-11-09
+
 Change root domain to orderly.org
 
 Add token info REST API
@@ -258,10 +296,13 @@ Add edit order REST API
 Add `broker_id` support on order APIs
 
 ## 2022-09-07
+
 Add Orderly fee program endpoint
 
 ## 2022-07-21
+
 Add bulk order function
 
 ## 2022-05-25
+
 Initial release
