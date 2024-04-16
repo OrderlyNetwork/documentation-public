@@ -2683,7 +2683,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/VaultBalanceResponse'
   /v1/faucet/usdc:
-    get:
+    post:
       summary: Get Faucet USDC(Testnet Only)
       deprecated: false
       description: >-
@@ -2709,6 +2709,13 @@ paths:
         - name: user_address
           in: query
           description: The address of the user account
+          required: true
+          example: ''
+          schema:
+            type: string
+        - name: broker_id
+          in: query
+          description: Broker ID of an account
           required: true
           example: ''
           schema:
