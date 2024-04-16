@@ -1308,6 +1308,33 @@ paths:
           example: ''
           schema:
             type: number
+        - name: sort_by
+          in: query
+          description: "If empty: 
+          
+          
+          Descending order by updated_time if user passed update_start_t or update_end_t; descending order by order_id if updated_time are the same; 
+          
+          
+          Otherwise descending order by created_time; descending order by order_id if created_time are the same;
+          
+          
+          If not empty:
+          
+          
+          If sort_by == `CREATED_TIME_DESC`, descending order by created_time. Descending order by order_id if created_time are same;
+          
+          
+          If sort_by == `CREATED_TIME_ASC`, ascending order by created_time. Ascending order by order_id if created_time are same;
+          
+          
+          If sort_by == `UPDATED_TIME_DESC`, descending order by updated_time. Descending order by order_id if updated_time are same;
+          
+          
+          If sort_by == `UPDATED_TIME_ASC`, ascending order by updated_time. Ascending order by order_id if updated_time are same;
+          "
+          schema:
+            type: string
         - $ref: '#/components/parameters/orderly_timestamp'
         - $ref: '#/components/parameters/orderly_account_id'
         - $ref: '#/components/parameters/orderly_key'
@@ -2945,7 +2972,14 @@ paths:
       parameters:
         - name: symbol
           in: query
-          description: ''
+          description: "Note: `STOP` will cancel both `TAKE_PROFIT` and `STOP_LOSS`"
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: algo_type
+          in: query
+          description: ""
           required: false
           example: ''
           schema:
@@ -3173,7 +3207,7 @@ paths:
                 $ref: '#/components/schemas/AlgoOrderTradesResponse'
   /v1/public/account:
     get:
-      summary: Check if Account Exisits
+      summary: Check if Account Exists
       deprecated: false
       description: |-
         **Limit: 10 requests per 1 second per IP address**
@@ -3682,6 +3716,56 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetReferralCodeResponse'
 
+  /v1/public/referral/check_ref_code:
+    get:
+      summary: Check Referral Code
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+        `GET /v1/public/referral/check_ref_code`
+      tags:
+        - public
+      parameters:
+        - name: account
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckReferralCodeResponse'
+
+  /v1/public/referral/verify_ref_code:
+    get:
+      summary: Verify Referral Code
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+        `GET /v1/public/referral/verify_ref_code`
+      tags:
+        - public
+      parameters:
+        - name: referral_code
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckReferralCodeResponse'
+
   /v1/referral/update:
     post:
       summary: Update Referral Code
@@ -3984,6 +4068,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetRefereeInfoResponse'
+ 
+  /v1/referral/referee_rebate_summary:
+    get:
+      summary: Get Referee Rebates Summary
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+        `GET /v1/referral/referee_rebate_summary`
+        Provides daily statistics on referee rebates
+      tags:
+        - private
+      parameters:
+        - name: start_date
+          in: query
+          description: "start date range that you wish to query, in the format ‘YYYY-MM-DD’"
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: end_date
+          in: query
+          description: "end date range that you wish to query, in the format ‘YYYY-MM-DD’"
+          required: false
+          example: ''
+          schema:
+            type: string
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRefereeRebateSummaryResponse'
 
   /v1/referral/edit_split:
     post:
@@ -4083,7 +4204,7 @@ paths:
 
   /v1/client/points:
     get:
-      summary: Get  User's Points
+      summary: Get User's Points
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per user**
@@ -4261,6 +4382,16 @@ paths:
       tags:
         - private
       parameters:
+        - name: status
+          in: query
+          example: 'true'
+          schema:
+            type: string
+        - name: type
+          in: query
+          example: 'true'
+          schema:
+            type: string
         - name: start_t
           in: query
           description: ""
@@ -6243,7 +6374,8 @@ components:
       - average_executed_price
       - client_order_id
       - created_time
-      - executed
+      - executed_quantity
+      - total_executed_quantity
       - fee_asset
       - order_id
       - price
@@ -6255,7 +6387,8 @@ components:
       - type
       - updated_time
       - user_id
-      - visible
+      - visible_quantity
+      - realized_pnl
       properties:
         order_id:
           type: number
@@ -6277,10 +6410,13 @@ components:
           example: 10
           # TODO nullable & example
           nullable: true
-        executed:
+        executed_quantity:
           type: number
           example: 20
-        visible:
+        total_executed_quantity:
+          type: number
+          example: 20
+        visible_quantity:
           type: number
           example: 1
         symbol:
@@ -6313,6 +6449,9 @@ components:
         updated_time:
           type: number
           example: 1653564213000
+        realized_pnl:
+          type: number
+          example: 0.0
 
     AlgoOrderResponse:
       allOf:
@@ -6383,6 +6522,9 @@ components:
           symbol:
             type: string
             example: "PERP_NEAR_USDC"
+          executed_quantity:
+            type: number
+            example: 0
           total_executed_quantity:
             type: number
             example: 0
@@ -6405,8 +6547,11 @@ components:
             type: string
             example: 1702871974317
           visible_quantity:
-            type: string
+            type: number
             example: 5.5
+          realized_pnl:
+            type: number
+            example: 0.0
           child_orders:
             type: array
             items:
@@ -6467,6 +6612,9 @@ components:
         is_maker:
           type: number
           example: 1
+        realized_pnl:
+          type: number
+          example: 0.0
 
 
     AlgoTrade:
@@ -6693,10 +6841,16 @@ components:
                 perp_trading_volume_last_24_hours:
                   type: number
                   example: 0
+                perp_trading_volume_last_7_days:
+                  type: number
+                  example: 0
                 perp_trading_volume_last_30_days:
                   type: number
                   example: 0
                 perp_trading_volume_ytd:
+                  type: number
+                  example: 0
+                perp_trading_volume_ltd:
                   type: number
                   example: 0
                 trading_volume_last_24_hours:
@@ -8208,6 +8362,34 @@ components:
                       type: integer
                       example: 50
 
+    CheckReferralCodeResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                exist:
+                  type: string
+                  example: code
+                  description: "`true`/`false`"
+
+    VerifyReferralCodeResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                referral_code:
+                  type: string
+                  example: code
 
     GetReferralInfoResponse:
       allOf:
@@ -8431,6 +8613,36 @@ components:
                     total:
                       type: integer
                       example: 50
+
+    GetRefereeRebateSummaryResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      referee_rebate:
+                        type: number
+                        example: 2.22
+                        description: "the total referee rebate received by the user on this day"
+                      fee:
+                        type: number
+                        example: 123.456
+                        description: "the total fees paid by the user on this day"
+                      date:
+                        type: string
+                        example: "2023-11-14"
+                        description: ""
 
     GetRefereeHistoryResponse:
       allOf:
@@ -8917,7 +9129,7 @@ components:
 
 
 servers:
-  - url: https://api-evm.orderly.org
+  - url: https://api-evm.orderly.network
     description: Mainnet
   - url: https://testnet-api-evm.orderly.network
     description: Testnet
