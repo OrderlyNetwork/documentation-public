@@ -3733,7 +3733,7 @@ paths:
       tags:
         - public
       parameters:
-        - name: account
+        - name: account_id
           in: query
           description: ""
           required: true
@@ -8369,7 +8369,7 @@ components:
                       type: integer
                       example: 50
 
-    CheckReferralCodeResponse:
+    VerifyReferralCodeResponse:
       allOf:
         - $ref: '#/components/schemas/BasicResponse'
         - type: object
@@ -8384,7 +8384,7 @@ components:
                   example: code
                   description: "`true`/`false`"
 
-    VerifyReferralCodeResponse:
+    CheckReferralCodeResponse:
       allOf:
         - $ref: '#/components/schemas/BasicResponse'
         - type: object
