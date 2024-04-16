@@ -4,89 +4,8 @@ description: "Additions and updates to the EVM version"
 icon: "layer-group"
 ---
 
-import { Chip } from "/snippets/chip.mdx";
+import { Chip } from '/snippets/chip.mdx';
 
-## [Unreleased] April 16, 2024 - Minor Update
-
-<div style={{ display: "table", width: "auto" }}>
-
-      <div style={{ display: "table-row", width: "auto" }}>
-    <Chip type="times" />
-    <div
-      style={{
-        float: "left",
-        display: "table-column",
-        paddingLeft: "30px",
-        width: "calc(80% - 30px)",
-      }}
-    >
-      **TESTNET Apr 12, 2024 14:00pm (UTC +8)**
-
-      **MAINNET Apr 16, 2024 14:00pm (UTC +8)**
-
-      **Duration: 2 hours**
-
-    </div>
-
-  </div>
-
-    <div style={{ display: "table-row", width: "auto" }}>
-    <Chip type="new" />
-    <div
-      style={{
-        float: "left",
-        display: "table-column",
-        paddingLeft: "30px",
-        width: "calc(80% - 30px)",
-      }}
-    >
-      **New bracket order support**
-
-We're pleased to introduce bracket orders to Orderly Network, a feature designed to enhance your trading strategy by automatically setting stop loss and take profit orders alongside your primary trade. This functionality allows you to better manage risk and lock in profits without constant market monitoring.
-
-    </div>
-
-  </div>
-
-    <div style={{ display: "table-row", width: "auto" }}>
-    <Chip type="new" />
-    <div
-      style={{
-        float: "left",
-        display: "table-column",
-        paddingLeft: "30px",
-        width: "calc(80% - 30px)",
-      }}
-    >
-      **Traders can now see realized PnL**
-
-All order APIs now return realized PnL per position for orders closing or reducing open positions.
-
-    </div>
-
-  </div>
-
-  <div style={{ display: "table-row", width: "auto" }}>
-    <Chip type="update" />
-    <div
-      style={{
-        float: "left",
-        display: "table-column",
-        paddingLeft: "30px",
-        width: "calc(80% - 30px)",
-      }}
-    >
-      **Updated endpoints**
-
-Two new websocket topics `{broker_id}${symbol}@ticker` and `{broker_id}$tickers` to query each broker's voulme per market.
-
-Two new endpoints for verifying and checking referral codes.
-
-      </div>
-
-  </div>
-
-</div>
 
 ## March 12, 2024 - Minor Update
 
@@ -104,12 +23,11 @@ Two new endpoints for verifying and checking referral codes.
     >
       **Brokers are now chain specific**
 
-Given Orderly's growth of supported chains, we understand some projects choose to only focus on certain chains, thus brokers can now choose which chain they want to operate on.
+Given Orderly's growth of supported chains, we understand some projects choose to only focus on certain chains, thus brokers can now choose which chain they want to operate on. 
 
 Supported brokers for each chain can be retrieved through `GET /v1/public/chain_info`
 
     </div>
-
   </div>
 
     <div style={{ display: "table-row", width: "auto" }}>
@@ -124,10 +42,9 @@ Supported brokers for each chain can be retrieved through `GET /v1/public/chain_
     >
       **Automating rebates for trades with order tags**
 
-We've heard your feedback! The rebates for trades with specific order_tag can now be automated by using our refferal system. Create a refferal code and use that refferal code in order_tag when submitting orders.
+We've heard your feedback! The rebates for trades with specific order_tag can now be automated by using our refferal system. Create a refferal code and use that refferal code in order_tag when submitting orders. 
 
     </div>
-
   </div>
 
     <div style={{ display: "table-row", width: "auto" }}>
@@ -149,8 +66,8 @@ For buy market orders, this means your order will be fully or partially filled a
 For example, if the mid-price for MATIC is $1 and you place a buy market order with a 0.02% slippage, only portions of the order that meet the slippage criteria will be executed, with any remaining quantity being canceled. This precision ensures that you achieve the best possible price, according to your specified tolerance for slippage.
 
     </div>
-
   </div>
+
 
   <div style={{ display: "table-row", width: "auto" }}>
     <Chip type="update" />
@@ -167,26 +84,25 @@ For example, if the mid-price for MATIC is $1 and you place a buy market order w
 Orders with an order_tag can now be retrieved via `GET /v1/orders` & `GET /v1/algo/orders` APIs with the new order_tag parameter.
 
 Enhancements to `GET /v1/referral/info` API, adding the following data in response:
+  - **For referrers:**
 
-- **For referrers:**
+      - 1d_referrer_rebate
 
-  - 1d_referrer_rebate
+      - 7d_referrer_rebate
 
-  - 7d_referrer_rebate
+      - 30d_referrer_rebate
 
-  - 30d_referrer_rebate
+      - total_referrer_rebate
 
-  - total_referrer_rebate
+  - **For referees:** 
 
-- **For referees:**
+      - 1d_referee_rebate
 
-  - 1d_referee_rebate
+      - 7d_referee_rebate
 
-  - 7d_referee_rebate
+      - 30d_referee_rebate
 
-  - 30d_referee_rebate
-
-  - total_referee_rebate
+      - total_referee_rebate
 
 Adding volume and fees of all referrees for the refferal code in response for `GET /v1/referral/rebate_summary`
 
@@ -194,7 +110,8 @@ Adding maker and taker volume breakdown in `GET /v1/volume/broker/daily` API
 
 Brokers can now retrieve total fees collected under the criteria (given broker_id, aggregate logic, order_tag filter, and etc.) + broker rebate via`GET /v1/volume/broker/daily` API
 
-New query parameters in `GET /v1/referral/admin_info` API: - New query parameter user_address, to filter all codes of the matching user_address only (should only match 1 account since the broker_id has to match the broker admin one)
+New query parameters in `GET /v1/referral/admin_info` API:
+    - New query parameter user_address, to filter all codes of the matching user_address only (should only match 1 account since the broker_id has to match the broker admin one)
 
     - New query parameter account_id, to filter all codes of the matching account_id only
 
@@ -203,13 +120,12 @@ New query parameters in `GET /v1/referral/admin_info` API: - New query parameter
 Ability to change the referral code's rebate split via `POST /v1/referral/edit_split`
 
 Additional response fields in `GET /v1/referral/admin_info` API:
+  - total_referrer_rebate = Lifetime total referrer rebate on this code
 
-- total_referrer_rebate = Lifetime total referrer rebate on this code
-
-- total_referee_rebate = Lifetime total referee rebate on this code
+  - total_referee_rebate = Lifetime total referee rebate on this code
 
 Additional responses in `GET /v1/public/campaign/ranking` and `GET /v1/public/campaign/user` APIs:
-
+    
     - total_deposit_amount
 
     - total_withdrawal_amount
@@ -223,10 +139,11 @@ Increased update frequency of `GET /v1/volume/broker/daily` API to hourly from d
 Added address in the response for `GET /v1/volume/broker/daily`
 
       </div>
-
   </div>
 
 </div>
+
+
 
 ## February 5, 2024 - Major Update
 
@@ -253,7 +170,6 @@ Added address in the response for `GET /v1/volume/broker/daily`
       To learn more about how the Orderly Referral System works, refer to [this article](build-on-evm/user-flows/referral-system).
 
     </div>
-
   </div>
 
   <div style={{ display: "table-row", width: "auto" }}>
@@ -280,8 +196,8 @@ Added address in the response for `GET /v1/volume/broker/daily`
 
       To learn more about how the new fee structure works, refer to [this article](build-on-evm/user-flows/custom-fees).
       </div>
-
   </div>
+
 
   <div style={{ display: "table-row", width: "auto" }}>
     <Chip type="update" />
@@ -313,7 +229,6 @@ Added address in the response for `GET /v1/volume/broker/daily`
 
       All "algo order" endpoints are ammended to add the new order types.
     </div>
-
   </div>
 
   <div style={{ display: "table-row", width: "auto" }}>
@@ -328,7 +243,7 @@ Added address in the response for `GET /v1/volume/broker/daily`
     >
       **Introducing Smart Contract trading support**
 
-      We are excited to announce the launch of the "Delegate Signer" feature in the Orderly Network, a new feature enabling Smart Contracts to trade.
+      We are excited to announce the launch of the "Delegate Signer" feature in the Orderly Network, a new feature enabling Smart Contracts to trade. 
 
       It allows Smart Contracts to assign an Externally Owned Account (EOA) to sign trades on their behalf using the EIP-712 signature. This solves the issue of Smart Contracts' inability to sign for trades, broadening trading capabilities on the Orderly platform.
 
@@ -340,10 +255,11 @@ Added address in the response for `GET /v1/volume/broker/daily`
 
       Full write-up of how Delegate Signer functionality works can be found in [this article](build-on-evm/user-flows/delegate-signer).
     </div>
-
   </div>
 
+
 </div>
+
 
 ## January 4, 2024 - Major Update
 
@@ -361,12 +277,11 @@ Added address in the response for `GET /v1/volume/broker/daily`
     >
       **Introducing the new order types**
 
-      Added create algo order(GET /v1/algo/order), edit algo order(PUT /v1/algo/order), cancel algo order(DELETE /v1/algo/order) and get algo order APIs(GET /v1/algo/order).
+      Added create algo order(GET /v1/algo/order), edit algo order(PUT /v1/algo/order), cancel algo order(DELETE /v1/algo/order) and get algo order APIs(GET /v1/algo/order). 
 
       Only STOP orders are supported for now.
 
     </div>
-
   </div>
 
   <div style={{ display: "table-row", width: "auto" }}>
@@ -389,8 +304,8 @@ Added address in the response for `GET /v1/volume/broker/daily`
 
       Added PENDING_REBALANCE status for withdrawal request(POST /v1/withdraw_request) in REST and WSS
     </div>
-
   </div>
+
 
   <div style={{ display: "table-row", width: "auto" }}>
     <Chip type="new" />
@@ -410,7 +325,6 @@ Added address in the response for `GET /v1/volume/broker/daily`
 
       Added get user fee tier(GET /v1/broker/user_info) API
     </div>
-
   </div>
 
   <div style={{ display: "table-row", width: "auto" }}>
@@ -429,10 +343,11 @@ Added address in the response for `GET /v1/volume/broker/daily`
 
       Added symbols array and high/low risk perps in claim liquidated positions(POST /v1/liquidation) API
     </div>
-
   </div>
 
 </div>
+
+
 
 ## October 13, 2023 - Major Update
 
@@ -456,10 +371,10 @@ Added address in the response for `GET /v1/volume/broker/daily`
 
       Changed symbol in get user info API from e.g BTC to PERP_BTC_USDC
     </div>
-
   </div>
 
 </div>
+
 
 ## September 21, 2023 - Minor Update
 
@@ -483,7 +398,6 @@ Added address in the response for `GET /v1/volume/broker/daily`
 
       Added futures_tier parameter to Get Account Information endpoint
     </div>
-
   </div>
 
 </div>
@@ -516,7 +430,6 @@ Added address in the response for `GET /v1/volume/broker/daily`
 
       Updated symbol parameter of Get Liquidated Positions of Account API to not required
     </div>
-
   </div>
 
 </div>
