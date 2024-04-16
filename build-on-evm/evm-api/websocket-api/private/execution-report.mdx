@@ -6,30 +6,31 @@ Push interval: real-time push
 
 ```json
 {
-    "id": "clientID3",
-    "topic": "executionreport",
-    "event": "subscribe"
+  "id": "clientID3",
+  "topic": "executionreport",
+  "event": "subscribe"
 }
 ```
 
 **Parameters**
 
-| Name   | Type   | Required | Description                              |
-| ------ | ------ | -------- | ---------------------------------------- |
-| id     | string | Y        | id generate by client                    |
-| event  | string | Y        | `subscribe`/`unsubscribe`                |
-| topic  | string | Y        | `executionreport`                        |
+| Name  | Type   | Required | Description               |
+| ----- | ------ | -------- | ------------------------- |
+| id    | string | Y        | id generate by client     |
+| event | string | Y        | `subscribe`/`unsubscribe` |
+| topic | string | Y        | `executionreport`         |
 
 <RequestExample>
 
 ```json Response
 {
-    "id": "clientID3",
-    "event": "subscribe",
-    "success": true,
-    "ts": 1609924478533
+  "id": "clientID3",
+  "event": "subscribe",
+  "success": true,
+  "ts": 1609924478533
 }
 ```
+
 </RequestExample>
 <ResponseExample>
 ```json Subscribed Message
@@ -50,11 +51,11 @@ Push interval: real-time push
       "fee":0.0,
       "feeAsset":"USDC",
       "totalExecutedQuantity":0.0,
-      "avgPrice":0,
+      "avgExecutedPrice":0,
       "status":"NEW",
       "reason":"",
       "totalFee":0.0,
-      "visible":7029.0,
+      "visibleQuantity":7029.0,
       "timestamp":1704679472448,
       "maker":false
    }

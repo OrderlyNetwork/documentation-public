@@ -1,33 +1,33 @@
 ---
-title: "24h tickers"
+title: "24h tickers by broker"
 ---
 
 Push interval: 1s
 
 ```json
 {
-    "id": "clientID4",
-    "topic": "tickers",
-    "event": "subscribe"
+  "id": "clientID4",
+  "topic": "woofi_pro$tickers",
+  "event": "subscribe"
 }
 ```
 
 **Parameters**
 
-| Name   | Type   | Required | Description                              |
-| ------ | ------ | -------- | ---------------------------------------- |
-| id     | string | Y        | id generate by client                    |
-| event  | string | Y        | `subscribe`/`unsubscribe`                |
-| topic  | string | Y        | `tickers`                                |
+| Name  | Type   | Required | Description               |
+| ----- | ------ | -------- | ------------------------- |
+| id    | string | Y        | id generate by client     |
+| event | string | Y        | `subscribe`/`unsubscribe` |
+| topic | string | Y        | `{woofi_pro}$tickers`     |
 
 <RequestExample>
 
 ```json Response
 {
-    "id": "clientID4",
-    "event": "subscribe",
-    "success": true,
-    "ts": 1609924478533
+  "id": "clientID4",
+  "event": "subscribe",
+  "success": true,
+  "ts": 1609924478533
 }
 ```
 

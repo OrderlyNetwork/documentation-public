@@ -301,12 +301,45 @@
         "build-on-evm/user-flows/referral-system"
       ]
     },
+
     {
-      "group": "Trading API",
+      "group": "About APIs",
       "pages": [
         "build-on-evm/evm-api/introduction",
         "build-on-evm/evm-api/api-authentication",
-        "build-on-evm/evm-api/error-codes",
+        "build-on-evm/evm-api/error-codes"
+      ]
+    },
+
+    {
+      "group": "General API",
+      "pages": [
+        {
+          "group": "Broker Info",
+          "pages": [
+            "build-on-evm/evm-api/restful-api/public/get-volume-statistics",
+            "build-on-evm/evm-api/restful-api/public/get-broker-list",
+            "build-on-evm/evm-api/restful-api/public/get-supported-chains-per-broker"
+          ]
+        },
+        {
+          "group": "System Info",
+          "pages": [
+            "build-on-evm/evm-api/restful-api/public/get-system-maintenance-status",
+            "build-on-evm/evm-api/restful-api/public/get-vault-balance",
+            "build-on-evm/evm-api/restful-api/public/get-insurance-fund-info",
+            "build-on-evm/evm-api/restful-api/public/get-vault-chain-config"
+          ]
+        },
+        {
+          "group": "USDC Faucet",
+          "pages": ["build-on-evm/evm-api/restful-api/public/get-faucet-usdctestnet-only"]
+        }
+      ]
+    },
+    {
+      "group": "Trading API",
+      "pages": [
         {
           "group": "Registration",
           "pages": [
@@ -327,10 +360,7 @@
             "build-on-evm/evm-api/restful-api/private/reset-orderly-key-ip-restriction"
           ]
         },
-        {
-          "group": "USDC Faucet",
-          "pages": ["build-on-evm/evm-api/restful-api/public/get-faucet-usdctestnet-only"]
-        },
+
         {
           "group": "Order Management",
           "pages": [
@@ -458,23 +488,6 @@
             "build-on-evm/evm-api/restful-api/private/get-user-fee-rates"
           ]
         },
-        {
-          "group": "System Info",
-          "pages": [
-            "build-on-evm/evm-api/restful-api/public/get-system-maintenance-status",
-            "build-on-evm/evm-api/restful-api/public/get-vault-balance",
-            "build-on-evm/evm-api/restful-api/public/get-insurance-fund-info",
-            "build-on-evm/evm-api/restful-api/public/get-vault-chain-config"
-          ]
-        },
-        {
-          "group": "Broker Info",
-          "pages": [
-            "build-on-evm/evm-api/restful-api/public/get-volume-statistics",
-            "build-on-evm/evm-api/restful-api/public/get-broker-list",
-            "build-on-evm/evm-api/restful-api/public/get-supported-chains-per-broker"
-          ]
-        },
 
         {
           "group": "Points Campaign",
@@ -488,12 +501,15 @@
         {
           "group": "Referral Program",
           "pages": [
+            "build-on-evm/evm-api/restful-api/public/check-referral-code",
             "build-on-evm/evm-api/restful-api/private/create-referral-code",
+            "build-on-evm/evm-api/restful-api/public/verify-referral-code",
             "build-on-evm/evm-api/restful-api/private/get-referral-code-info",
             "build-on-evm/evm-api/restful-api/private/update-referral-code",
             "build-on-evm/evm-api/restful-api/private/bind-referral-code",
             "build-on-evm/evm-api/restful-api/private/get-referral-info",
             "build-on-evm/evm-api/restful-api/private/get-referee-info",
+            "build-on-evm/evm-api/restful-api/private/get-referee-rebate-summary",
             "build-on-evm/evm-api/restful-api/private/get-referee-history",
             "build-on-evm/evm-api/restful-api/private/get-referral-history",
             "build-on-evm/evm-api/restful-api/private/get-referral-rebate-summary",
@@ -552,7 +568,9 @@
             "build-on-evm/evm-api/websocket-api/public/order-book-update",
             "build-on-evm/evm-api/websocket-api/public/trade",
             "build-on-evm/evm-api/websocket-api/public/24-hour-ticker",
-            "build-on-evm/evm-api/websocket-api/public/24-hours-tickers",
+            "build-on-evm/evm-api/websocket-api/public/24-hour-tickers",
+            "build-on-evm/evm-api/websocket-api/public/24-hour-ticker-by-broker",
+            "build-on-evm/evm-api/websocket-api/public/24-hour-tickers-by-broker",
             "build-on-evm/evm-api/websocket-api/public/bbo",
             "build-on-evm/evm-api/websocket-api/public/bbos",
             "build-on-evm/evm-api/websocket-api/public/k-line",

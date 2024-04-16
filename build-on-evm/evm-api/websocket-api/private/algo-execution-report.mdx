@@ -6,30 +6,31 @@ Push interval: real-time push
 
 ```json
 {
-    "id": "clientID3",
-    "topic": "algoexecutionreport",
-    "event": "subscribe"
+  "id": "clientID3",
+  "topic": "algoexecutionreport",
+  "event": "subscribe"
 }
 ```
 
 **Parameters**
 
-| Name   | Type   | Required | Description                              |
-| ------ | ------ | -------- | ---------------------------------------- |
-| id     | string | Y        | id generate by client                    |
-| event  | string | Y        | `subscribe`/`unsubscribe`                |
-| topic  | string | Y        | `algoexecutionreport`                        |
+| Name  | Type   | Required | Description               |
+| ----- | ------ | -------- | ------------------------- |
+| id    | string | Y        | id generate by client     |
+| event | string | Y        | `subscribe`/`unsubscribe` |
+| topic | string | Y        | `algoexecutionreport`     |
 
 <RequestExample>
 
 ```json Response
 {
-    "id": "clientID3",
-    "event": "subscribe",
-    "success": true,
-    "ts": 1609924478533
+  "id": "clientID3",
+  "event": "subscribe",
+  "success": true,
+  "ts": 1609924478533
 }
 ```
+
 </RequestExample>
 <ResponseExample>
 ```json Subscribed Message
@@ -59,15 +60,15 @@ Push interval: real-time push
       "feeAsset":"USDC",
       "totalExecutedQuantity":0.0,
       "averageExecutedQuantity":0.0,
-      "avgPrice":0,
+      "avgExecutedPrice":0,
       "status":"NEW",
       "rootAlgoStatus": "FILLED",
       "algoStatus": "FILLED",
       "reason":"",
       "totalFee":0.0,
-      "visible":7029.0,
+      "visibleQuantity":7029.0,
       "timestamp":1704679472448,
-      "maker":false
+      "isMaker":false
    }
 }
 ```
