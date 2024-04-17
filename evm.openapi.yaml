@@ -1067,7 +1067,7 @@ paths:
                 $ref: '#/components/schemas/PutOrderResponse'
   /v1/order/{order_id}:
     get:
-      summary: Get Order
+      summary: Get Order by order_id
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second**
@@ -2979,14 +2979,14 @@ paths:
       parameters:
         - name: symbol
           in: query
-          description: "Note: `STOP` will cancel both `TAKE_PROFIT` and `STOP_LOSS`"
+          description: ""
           required: false
           example: ''
           schema:
             type: string
         - name: algo_type
           in: query
-          description: ""
+          description: "Note: `STOP` will cancel both `TAKE_PROFIT` and `STOP_LOSS`"
           required: false
           example: ''
           schema:
@@ -3124,7 +3124,7 @@ paths:
 
   /v1/algo/order/{order_id}:
     get:
-      summary: Get Algo Order
+      summary: Get Algo Order by order_id
       deprecated: false
       description: |-
         **Limit: 10 requests per 1 second**
@@ -4090,14 +4090,14 @@ paths:
         - name: start_date
           in: query
           description: "start date range that you wish to query, in the format ‘YYYY-MM-DD’"
-          required: false
+          required: true
           example: ''
           schema:
             type: string
         - name: end_date
           in: query
           description: "end date range that you wish to query, in the format ‘YYYY-MM-DD’"
-          required: false
+          required: true
           example: ''
           schema:
             type: string
