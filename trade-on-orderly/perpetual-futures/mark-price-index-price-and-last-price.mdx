@@ -4,9 +4,9 @@ title: "Mark Price, Index Price, and Last Price"
 
 ## Index Price
 
-For a given contract, the Index price is the volume-weighted average of the underlying asset prices listed on major spot exchanges. 
+For a given contract, the Index price is the volume-weighted average of the underlying asset prices listed on major spot exchanges.
 
-In order to mitigate the risk of market manipulation on one specific venue or exchanges outages or connectivity issues, Orderly undertakes the following protection measures: 
+In order to mitigate the risk of market manipulation on one specific venue or exchanges outages or connectivity issues, Orderly undertakes the following protection measures:
 
 1. If, for any source, the price deviates by more than **5%** from the median price of all sources, Orderly caps/floors the value at +/- 5%. Once the source price falls within the 5% range, its original value will be taken.
 
@@ -14,12 +14,20 @@ In order to mitigate the risk of market manipulation on one specific venue or ex
 
 3. If a specific source is not sending any price for over **10 seconds**, it will be disregarded from the Index Price calculation completely.
 
+In the Index Price calculation, the weights are computed every 5 minutes and are based on the 4-hour trading volume over the spot trading pairs of the selected centralized exchanges.
 
-The relevant exchanges for each trading pair can be find in the following table : 
+```
+Weight (CEX_i) = Volume (CEX_i) / Total Volume (CEXes)
+where:
+    Volume (CEX_i) refers to the 4-hour trading volume of the CEX i
+    Total Volume (CEXes) refers to the sum of the 4-hour trading volume accross all relevant CEXes for the specific pair
 
+```
+
+The relevant exchanges for each trading pair can be find in the following table :
 
 | Symbol | Binance | OKX | Huobi | Gateio | Bybit | Kucoin |
-|--------|---------|-----|-------|--------|-------|--------|
+| ------ | ------- | --- | ----- | ------ | ----- | ------ |
 | BTC    | X       | X   |       | X      | X     | X      |
 | ETH    | X       | X   |       | X      | X     | X      |
 | NEAR   | X       | X   | X     | X      | X     | X      |
@@ -32,20 +40,19 @@ The relevant exchanges for each trading pair can be find in the following table 
 | SUI    | X       | X   |       | X      | X     | X      |
 | TIA    | X       | X   |       | X      | X     | X      |
 | INJ    | X       | X   |       | X      | X     | X      |
-| AVAX    | X       | X   |       | X      | X     | X      |
+| AVAX   | X       | X   |       | X      | X     | X      |
 | JUP    | X       | X   |       | X      | X     | X      |
-| ORDI    | X       | X   |       | X      | X     | X      |
+| ORDI   | X       | X   |       | X      | X     | X      |
 | APT    | X       | X   |       | X      | X     | X      |
-| BLUR    | X       | X   |       | X      | X     | X      |
+| BLUR   | X       | X   |       | X      | X     | X      |
 | WLD    | X       | X   |       | X      | X     | X      |
-| STRK    | X       | X   |       | X      | X     | X      |
-
+| STRK   | X       | X   |       | X      | X     | X      |
 
 ## Mark Price
 
 The Mark Price represents the best estimate of a Perpetual Futures contract value and prevents unnecessary liquidations that would potentially be caused by market manipulation: it is less volatile than the Index Price or Last Price.
 
-First we compute the Median Price of the three following components : 
+First we compute the Median Price of the three following components :
 
 ```
 Median Price = Median(P1, P2, Futures Price)
@@ -53,13 +60,12 @@ where:
     P1 = Index Price * (1 + Last Funding Rate * Time until next Funding / dt)
     P2 = Index Price + 15 Minute Moving Average[Basis]
     Futures Price = Median(Bid0, Ask0, Last_Price)
-    
+
 Last Funding Rate is expressed on a 8h basis
 Basis = Median(Bid0, Ask0) - Index Price, calculated as a snapshot every minute
 dt = Funding Period = 8 hours
 
 ```
-
 
 Then Orderly applies a cap to the Mark Price relative to the Index Price defined by Factor (see table below) and Cap/Floor funding (cf Funding Rate section)
 
@@ -73,9 +79,8 @@ cap_funding and floor_funding depend on the perpetual market (cf Funding Rate se
 | ----------- | ------ | ----------------------------------------- |
 | BTC         | 10     | 3%                                        |
 | ETH         | 8      | 3%                                        |
-| Others        | 7      | 5.25%                                     |
+| Others      | 7      | 5.25%                                     |
 
 ## Last Price
 
 The Last Price refers to the last traded price of a Perpetual Futures contract.
-
