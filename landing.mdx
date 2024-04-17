@@ -1,0 +1,63 @@
+---
+mode: "custom"
+---
+
+export function openSearch() {
+  document.getElementById("search-bar-entry").click();
+}
+
+<div
+  className="relative w-full flex items-center justify-center"
+  style={{ height: '24rem', backgroundColor: '#00020F', overflow: 'hidden' }}
+>
+  <div style={{ flex: 'none' }}>
+    <img
+    src="/images/orderly_banner.png"
+    style={{ height: '400px', width: '2000px', pointerEvents: 'none' }}
+    />
+  </div>
+</div>
+<div style={{marginTop: '6rem', marginBottom: '8rem', maxWidth: '70rem', marginLeft: 'auto',
+    marginRight: 'auto', paddingLeft: '1.25rem',
+    paddingRight: '1.25rem' }}>
+
+<div
+  style={{
+    textAlign: "center",
+    fontSize: "24px",
+    fontWeight: "600",
+    color: "#ffffff",
+    marginBottom: "3rem",
+    topMargin: "-1rem"
+  }}
+>
+  <span className="text-primary">Choose a topic below</span>
+</div>
+
+<CardGroup cols={3}>
+  <Card title="Guides" icon="book-open" href="/introduction">
+    About Orderly Network.
+  </Card>
+  <Card title="Reference" icon="code-simple" href="/build-on-evm">
+    Comprehensive details about the Orderly API.
+  </Card>
+  <Card
+    title="Examples"
+    icon="grid-round"
+    iconType="solid"
+    href="https://github.com/OrderlyNetwork/example-dex"
+  >
+    Hands-on examples of Mintlify documentation.
+  </Card>
+  <Card title="Integrations" icon="link-simple" href="/introduction/trade-on-orderly/trading-guis">
+    A growing number of front-ends built on Orderly.
+  </Card>
+  <Card title="Tools" icon="wrench" href="/sdks">
+    Tooling and SDKs to for integrating Orderly.
+  </Card>
+  <Card title="Releases" icon="party-horn" href="/changelog">
+    News about features and changes in Orderly.
+  </Card>
+</CardGroup>
+
+</div>
