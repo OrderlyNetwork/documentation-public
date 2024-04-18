@@ -6,15 +6,15 @@ Funding Fees are cash flows that are periodically exchanged between traders hold
 
 The Funding rate is determined by two components: the Premium and the Interest Rate.
 
-## Premium calculation 
+## Premium calculation
 
 The Funding Rate is determined mainly by the Premium, which measures the deviation between the Futures price and the Index Price (ie the Basis). In order to avoid manipulation, Orderly uses Impact Bid and Ask prices, rather than the highest bid and lowest ask only.
 
-* The Impact Bid Price represents the average fill price to execute a sell order with the size of the Impact Margin Notional.
+- The Impact Bid Price represents the average fill price to execute a sell order with the size of the Impact Margin Notional.
 
-* The Impact Ask Price represents the average fill price to execute a buy order with the size of the Impact Margin Notional.
+- The Impact Ask Price represents the average fill price to execute a buy order with the size of the Impact Margin Notional.
 
-* The Impact Margin Notional is the notional available to trade with 1,000 USDC of collateral at the maximum leverage of the specific market. For example, for NEAR-USDC, the maximum leverage is 10x, so Impact Margin Notional is 10,000 USDC.
+- The Impact Margin Notional is the notional available to trade with 1,000 USDC of collateral at the maximum leverage of the specific market. For example, for NEAR-USDC, the maximum leverage is 10x, so Impact Margin Notional is 10,000 USDC.
 
 Every 15 seconds, Orderly computes the Premium index according to the following formula:
 
@@ -26,7 +26,7 @@ I = Index Price
 
 ## Piecewise linear funding rate function
 
-For each funding period of 8 hours, Orderly calculates the Premium every 15 seconds. The number of Premium points is therefore N = 1,920 points. An Average Premium is then computed: 
+For each funding period of 8 hours, Orderly calculates the Premium every 15 seconds. The number of Premium points is therefore N = 1,920 points. An Average Premium is then computed:
 
 ```
 Average Premium = (Premium_1 + Premium_2 + ... + Premium_N) / N
@@ -38,22 +38,22 @@ The **Funding Function** is defined as follows to allow for faster convergence i
 
 ```
 Funding Function(x) =
-  x , if |x| < 0.5% 
+  x , if |x| < 0.5%
   0.5%  * sign(x) + (x - 0.5% * sign(x)) * 2, if 0.5% < |x| < 1.5%
   [0.5% + (1.5% - 0.5%) * 2] * sign(x) + (x - 1.5% * sign(x)) * 4, if |x| > 1.5%
-  
+
 NB: x refers here to the Average Premium
 ```
 
-| Premium | Range              | Slope |
-| ------- | ------------------ | ----- |
+| Premium | Range               | Slope |
+| ------- | ------------------- | ----- |
 | Low     | \|x\| < 0.5%        | 1     |
 | Medium  | 0.5% < \|x\| < 1.5% | 2     |
 | Large   | 1.5% < \|x\|        | 4     |
 
 ## Interest Rate
 
-To this funding function, we add the second component of the funding rate which is the Interest Rate. By definition, it is equal to: 
+To this funding function, we add the second component of the funding rate which is the Interest Rate. By definition, it is equal to:
 
 ```
 Interest Rate = (USDC Interest - Underlying Base Asset interest) / Funding Interval
@@ -63,7 +63,7 @@ The Interest Rate is fixed to be 0.01% for all Perpetual Markets (assuming USDC 
 
 ## Final Funding Rate
 
-The final Funding Rate is then a combination of the Average Premium and the Interest Rate. 
+The final Funding Rate is then a combination of the Average Premium and the Interest Rate.
 
 ```
 Funding Rate = clamp[Funding Function(Average Premium) + clamp(Interest Rate - Funding Function(Average Premium) , Cap IR, Floor IR), Cap Funding, Floor Funding]
@@ -72,25 +72,33 @@ Funding Rate = clamp[Funding Function(Average Premium) + clamp(Interest Rate - F
 The funding rate is also capped and floored respectively by a `Cap Funding` and a `Floor Funding`. The specific values depend on each perpetual market. In the event of extreme market conditions, Orderly may change these parameters, which will enable the funding rate model's higher slope to kick in.
 
 | Perp Market | Cap Funding | Floor Funding | Cap IR | Floor IR |
-| ----------- | ----------- | ------------- | ----------- | ------------- |
-| BTC         | 0.3%        | \-0.3%        | 0.03%        | \-0.03%        |
-| ETH         | 0.375%      | \-0.375%      | 0.03%      | \-0.03%      |
-| ARB        | 0.45%       | \-0.45%       | 0.01%       | \-0.01%       |
-| WOO        | 2.00%       | \-2.00%       | 0.01%        | \-0.01%       |
-| LINK        | 0.375%       | \-0.375%       | 0.01%        | \-0.01%       |
-| MATIC        | 0.45%       | \-0.45%       | 0.01%        | \-0.01%       |
-| OP        | 0.45%       | \-0.45%       | 0.01%        | \-0.01%       |
-| SOL         | 0.4875%      | \-0.4875%      | 0.01%      | \-0.01%     |
-| SUI         | 0.75%      | \-0.75%      | 0.01%       | \-0.01%      |
-| TIA         | 4.00%      | \-4.00%      | 0.02%       | \-0.02%     |
-| INJ         | 3.00%      | \-3.00%      | 0.01%       | \-0.01%     |
-| AVAX         | 0.3750%      | \-0.375%      | 0.01%       | \-0.01%     |
-| JUP         | 4.00%      | \-4.00%      | 0.02%       | \-0.02%     |
-| ORDI         | 4.00%      | \-4.00%      | 0.02%       | \-0.02%     |
-| APT         | 0.3750%      | \-0.375%      | 0.01%       | \-0.01%     |
-| BLUR         | 2.00%      | \-2.00%      | 0.01%       | \-0.01%     |
-| WLD         | 0.75%      | \-0.75%      | 0.01%       | \-0.01%     |
-| STRK         | 4.00%      | \-4.00%      | 0.02%       | \-0.02%     |
+| ----------- | ----------- | ------------- | ------ | -------- |
+| BTC         | 0.3%        | \-0.3%        | 0.03%  | \-0.03%  |
+| ETH         | 0.375%      | \-0.375%      | 0.03%  | \-0.03%  |
+| ARB         | 0.45%       | \-0.45%       | 0.01%  | \-0.01%  |
+| WOO         | 2.00%       | \-2.00%       | 0.01%  | \-0.01%  |
+| LINK        | 0.375%      | \-0.375%      | 0.01%  | \-0.01%  |
+| MATIC       | 0.45%       | \-0.45%       | 0.01%  | \-0.01%  |
+| OP          | 0.45%       | \-0.45%       | 0.01%  | \-0.01%  |
+| SOL         | 0.4875%     | \-0.4875%     | 0.01%  | \-0.01%  |
+| SUI         | 0.75%       | \-0.75%       | 0.01%  | \-0.01%  |
+| TIA         | 4.00%       | \-4.00%       | 0.02%  | \-0.02%  |
+| INJ         | 3.00%       | \-3.00%       | 0.01%  | \-0.01%  |
+| AVAX        | 0.3750%     | \-0.375%      | 0.01%  | \-0.01%  |
+| JUP         | 4.00%       | \-4.00%       | 0.02%  | \-0.02%  |
+| ORDI        | 4.00%       | \-4.00%       | 0.02%  | \-0.02%  |
+| APT         | 0.3750%     | \-0.375%      | 0.01%  | \-0.01%  |
+| BLUR        | 2.00%       | \-2.00%       | 0.01%  | \-0.01%  |
+| WLD         | 0.75%       | \-0.75%       | 0.01%  | \-0.01%  |
+| STRK        | 4.00%       | \-4.00%       | 0.02%  | \-0.02%  |
+| SEI         | 2.00%       | \-2.00%       | 0.01%  | \-0.01%  |
+| DYM         | 4.00%       | \-4.00%       | 0.02%  | \-0.02%  |
+| ETHFI       | 4.00%       | \-4.00%       | 0.02%  | \-0.02%  |
+| FTM         | 0.45%       | \-0.45%       | 0.01%  | \-0.01%  |
+| ENA         | 4.00%       | \-4.00%       | 0.02%  | \-0.02%  |
+| W           | 4.00%       | \-4.00%       | 0.02%  | \-0.02%  |
+| WIF         | 4.00%       | \-4.00%       | 0.02%  | \-0.02%  |
+| ZEUS        | 1.50%       | \-1.50%       | 0.01%  | \-0.01%  |
 
 ## Funding Period
 
@@ -98,7 +106,7 @@ The Funding Period for Orderly is `dt = 8 hours`. The Funding Rate is expressed 
 
 ## Accrued Funding
 
-Every 8 hours, a position on a Perpetual Futures contract will accrue the following funding: 
+Every 8 hours, a position on a Perpetual Futures contract will accrue the following funding:
 
 ```
 Accrued Funding(dt) = Position Size * Mark Price * Funding Rate

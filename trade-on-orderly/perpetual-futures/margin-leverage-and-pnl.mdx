@@ -10,7 +10,7 @@ The notional of a position corresponds to the total position size in USDC value
 Notional Value = Position Qty * Mark Price
 ```
 
-## Account Margin Ratio 
+## Account Margin Ratio
 
 The margin ratio of an account is equal to the total collateral value (ie the USDC balance + any unrealized profit/loss) divided by the total open notional of the account (the sum of the absolute notional value of all positions)
 
@@ -41,31 +41,40 @@ An account will be liquidated if the Margin Ratio of the account is lower than t
 ```
 MMR i = Max(Base MMR i, Base MMR i / Base IMR i * IMR Factor i * Abs(Position Notional i)^(4/5))
 ```
+
 <Note>
-We will gradually decrease Base IMR and Base MMR and increase maximum leverage for major markets after launch.
+  We will gradually decrease Base IMR and Base MMR and increase maximum leverage for major markets
+  after launch.
 </Note>
 
 | Perp Market | Base IMR (max leverage) | Base MMR | IMR Factor   |
 | ----------- | ----------------------- | -------- | ------------ |
-| BTC-PERP         | 5% (20x)               | 2.5%       | 0.0000003517 |
-| ETH-PERP         | 5% (20x)               | 2.5%       | 0.0000003754 |
-| ARB-PERP        | 10% (10x)               | 5%       | 0.0000021481 |
-| WOO-PERP        | 10% (10x)               | 5%       | 0.0000077523 |
-| LINK-PERP        | 10% (10x)               | 5%       | 0.0000018182 |
-| MATIC-PERP        | 10% (10x)               | 5%       | 0.000001352 |
-| OP-PERP        | 10% (10x)               | 5%       | 0.0000021481 |
-| SOL-PERP        | 10% (10x)               | 5%       | 0.0000012291 |
-| SUI-PERP        | 10% (10x)               | 5%       | 0.0000025564 |
-| TIA-PERP        | 10% (10x)               | 5%       | 0.0000116025 |
-| INJ-PERP        | 10% (10x)               | 5%       | 0.0000021481 |
-| AVAX-PERP        | 10% (10x)               | 5%       | 0.0000018182 |
-| JUP-PERP        | 10% (10x)               | 5%       | 0.0000103131 |
-| ORDI-PERP        | 10% (10x)               | 5%       | 0.0000041315 |
-| APT-PERP        | 10% (10x)               | 5%       | 0.0000013796 |
-| BLUR-PERP        | 10% (10x)               | 5%       | 0.0000116025 |
-| WLD-PERP        | 10% (10x)               | 5%       | 0.00000731 |
-| STRK-PERP        | 10% (10x)               | 5%       | 0.00000145 |
-
+| BTC-PERP    | 2% (50x)                | 1.2%     | 0.000000435  |
+| ETH-PERP    | 2% (50x)                | 1.2%     | 0.0000004836 |
+| ARB-PERP    | 10% (10x)               | 5%       | 0.0000021481 |
+| WOO-PERP    | 10% (10x)               | 5%       | 0.0000077523 |
+| LINK-PERP   | 10% (10x)               | 5%       | 0.0000018182 |
+| MATIC-PERP  | 10% (10x)               | 5%       | 0.000001352  |
+| OP-PERP     | 10% (10x)               | 5%       | 0.0000021481 |
+| SOL-PERP    | 10% (10x)               | 5%       | 0.0000012291 |
+| SUI-PERP    | 10% (10x)               | 5%       | 0.0000025564 |
+| TIA-PERP    | 10% (10x)               | 5%       | 0.0000116025 |
+| INJ-PERP    | 10% (10x)               | 5%       | 0.0000021481 |
+| AVAX-PERP   | 10% (10x)               | 5%       | 0.0000018182 |
+| JUP-PERP    | 10% (10x)               | 5%       | 0.0000103131 |
+| ORDI-PERP   | 10% (10x)               | 5%       | 0.0000041315 |
+| APT-PERP    | 10% (10x)               | 5%       | 0.0000013796 |
+| BLUR-PERP   | 10% (10x)               | 5%       | 0.0000116025 |
+| WLD-PERP    | 10% (10x)               | 5%       | 0.00000731   |
+| STRK-PERP   | 10% (10x)               | 5%       | 0.00000145   |
+| SEI-PERP    | 10% (10x)               | 5%       | 0.0000018182 |
+| DYM-PERP    | 10% (10x)               | 5%       | 0.0000103131 |
+| ETHFI-PERP  | 10% (10x)               | 5%       | 0.0000175    |
+| FTM-PERP    | 10% (10x)               | 5%       | 0.00000247   |
+| ENA-PERP    | 10% (10x)               | 5%       | 0.00001462   |
+| W-PERP      | 10% (10x)               | 5%       | 0.0000020086 |
+| WIF-PERP    | 10% (10x)               | 5%       | 0.0000097705 |
+| ZEUS-PERP   | 10% (10x)               | 5%       | 0.00000714   |
 
 ## PnL (Profit and Loss)
 
@@ -75,7 +84,7 @@ The unrealized PnL of an open position refers to the profits or losses of that p
 Unrealized PnL(Perp Market i) = Position Qty * (Mark Price - Position Average Entry Price)
 ```
 
-The realized PnL refers to the profits or losses after closing a position: 
+The realized PnL refers to the profits or losses after closing a position:
 
 ```
 Realized PnL(Perp Market i) = Position Qty * (Average Price - Position Average Entry Price)
@@ -93,11 +102,11 @@ The process of PnL Settlement is as follows:
 
 When account X makes a call to settle PnL, Orderly will choose the top accounts with the largest unsettled opposing PnL. Starting from the largest account, each account's unsettled PnL will be offset with account X, until account X has no more remaining PnL to settle.
 
-As an Example: Account X has +20,000 USDC unsettled PnL with a balance of 100 USDC. The top 2 facing Accounts A and B have -15,000 USDC and -5,000 USDC unsettled PnL respectively: 
+As an Example: Account X has +20,000 USDC unsettled PnL with a balance of 100 USDC. The top 2 facing Accounts A and B have -15,000 USDC and -5,000 USDC unsettled PnL respectively:
 
-* First, settling Account X vs Account A will increase Account X's balance by 15,000 USDC and decrease Account A's balance by 15,000 USDC. Account X has a remaining unsettled PnL of +5,000 USDC and a balance of 15,100 USDC.
+- First, settling Account X vs Account A will increase Account X's balance by 15,000 USDC and decrease Account A's balance by 15,000 USDC. Account X has a remaining unsettled PnL of +5,000 USDC and a balance of 15,100 USDC.
 
-* Then, settling Account X vs Account B will increase Account X's balance by 5,000 USDC and decrease Account B's balance by 5,000 USDC. Account X has a remaining unsettled PnL of 0 and a balance of 20,100 USDC. The settlement process ends since Account X has no remaining unsettled PnL.
+- Then, settling Account X vs Account B will increase Account X's balance by 5,000 USDC and decrease Account B's balance by 5,000 USDC. Account X has a remaining unsettled PnL of 0 and a balance of 20,100 USDC. The settlement process ends since Account X has no remaining unsettled PnL.
 
 <Note>
 Settling PnL will NOT change the user's balance as displayed user balance already includes unsettled PnL in the calculation.
@@ -105,6 +114,7 @@ Settling PnL will NOT change the user's balance as displayed user balance alread
 Withdrawable balance will change after settling PnL as it doesn't include unsettled profits in the calculation.
 
 All settling PnL does is move profits into user's account so user is able to withdraw.
+
 </Note>
 
 ## Max notional amount
@@ -116,4 +126,3 @@ Orderly imposes position limits per perpetual market per user. These limits will
 | BTC         | 5,000,000           |
 | ETH         | 5,000,000           |
 | Alts        | 2,000,000           |
-
