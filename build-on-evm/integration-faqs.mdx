@@ -1,3 +1,55 @@
 ---
 title: "Integration FAQs"
 ---
+
+<AccordionGroup>
+  <Accordion title="What is Orderly?">
+Orderly Network is a combination of an orderbook-based trading infrastructure and a robust liquidity layer offering spot and perpetual futures orderbooks. Unlike traditional platforms, Orderly doesn’t have a front end; instead, it operates at the core of the ecosystem, providing essential services to projects built on top of it.
+
+Our DEX white-label solution is carefully crafted to save builders time and capital while granting access to our bootstrapped liquidity. Picture having the best features of CEXs while keeping settlements on-chain and maintaining full self-custody.
+
+With Orderly, anyone can create a trading application thanks to our seamless plug-and-play experience leveraging our liquidity and composability.
+
+Looking ahead, our grand vision is to create an omnichain protocol, connecting traders from both EVM and non-EVM chains within the same orderbook.
+
+  </Accordion>
+
+   <Accordion title="How to integrate?">
+Orderly offers multiple integration pathways: 
+- [Python connector](https://github.com/OrderlyNetwork/orderly-evm-connector-python)
+- [React hooks](sdks/hooks)
+- Direct API access
+- React UI components
+
+Documentation and examples for these can be found on their respective GitHub repositories and the official documentation site.
+
+  </Accordion>
+
+  <Accordion title="Creating a broker ID">
+Not everyone needs a broker ID.
+
+If you are an API trader please select any available broker to trade on [here](build-on-evm/evm-api/restful-api/public/get-broker-list).
+
+If you are a broker looking to host a front-end, onboard traders, and earn revenue share, you can get in touch via [email](mailto::product@orderly.network).
+
+  </Accordion>
+
+<Accordion title="Fee setting, default fees, and custom fee rates">
+  More on fees can be found [here](build-on-evm/user-flows/custom-fees)
+</Accordion>
+
+<Accordion title="Broker fee rebate distribution">
+  Fees brokers collect on top of Orderly base fee are collected by Orderly directly at the time of the trade. Rebates are then sent to each broker's admin wallet account daily.
+
+To claim the rebate, brokers need to log in on their own interface with the admin wallet and withdraw.
+
+</Accordion>
+
+<Accordion title="Broker admin wallet">
+  Broker admin wallet is a wallet provided at the time of broker ID setup and has to be an EOA.
+  Broker admin wallet is used for: - Receiving fee rebates daily - Accessing certain endpoints that
+  require broker admin authentication such as changing user fees. (Endpoints that require broker
+  admin authentication will note that in the API page description).
+</Accordion>
+
+</AccordionGroup>
