@@ -1,0 +1,30 @@
+name: Check for only allowed file changes
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18"
+
+      - name: Install PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Test for no git diff
+        run: |
+          yarn update
+          git diff --exit-code -- :^/sdks/tech-doc
