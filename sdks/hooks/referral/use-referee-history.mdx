@@ -1,0 +1,14 @@
+---
+title: "useRefereeHistory"
+---
+
+Retrieve history of a referee.
+
+```ts
+const [refereeHistory, { total, isLoading, refresh, loadMore }] = useRefereeHistory({
+  size: 10, // Number of items per page
+  startDate: "2023-01-01", // Start date in YYYY-MM-DD format
+  endDate: "2023-01-31", // End date in YYYY-MM-DD format
+  initialSize: 1 // Initially load 1 page of data
+});
+```
