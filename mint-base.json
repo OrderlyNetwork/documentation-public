@@ -330,7 +330,7 @@
         {
           "group": "Broker Info",
           "pages": [
-            "build-on-evm/evm-api/restful-api/public/get-volume-statistics",
+            "build-on-evm/evm-api/restful-api/public/get-broker-volume",
             "build-on-evm/evm-api/restful-api/public/get-broker-list",
             "build-on-evm/evm-api/restful-api/public/get-supported-chains-per-broker"
           ]
@@ -356,8 +356,8 @@
         {
           "group": "Registration",
           "pages": [
-            "build-on-evm/evm-api/restful-api/public/get-account-details",
-            "build-on-evm/evm-api/restful-api/public/get-account",
+            "build-on-evm/evm-api/restful-api/public/check-if-account-exists",
+            "build-on-evm/evm-api/restful-api/public/check-if-wallet-is-registered",
             "build-on-evm/evm-api/restful-api/public/get-registration-nonce",
             "build-on-evm/evm-api/restful-api/public/register-account"
           ]
@@ -387,7 +387,7 @@
             "build-on-evm/evm-api/restful-api/private/cancel-order-by-client_order_id",
             "build-on-evm/evm-api/restful-api/private/cancel-algo-order-by-client_order_id",
             "build-on-evm/evm-api/restful-api/private/cancel-all-pending-algo-orders",
-            "build-on-evm/evm-api/restful-api/private/cancel-orders-in-bulk",
+            "build-on-evm/evm-api/restful-api/private/cancel-all-pending-orders",
             "build-on-evm/evm-api/restful-api/private/batch-cancel-orders",
             "build-on-evm/evm-api/restful-api/private/batch-cancel-orders-by-client_order_id",
             "build-on-evm/evm-api/restful-api/private/get-order-by-order_id",
@@ -465,7 +465,7 @@
         {
           "group": "Delegate Signer",
           "pages": [
-            "build-on-evm/evm-api/restful-api/public/add-delegate-signer",
+            "build-on-evm/evm-api/restful-api/public/delegate-signer",
             "build-on-evm/evm-api/restful-api/public/add-delegate-signer-orderly-key",
             "build-on-evm/evm-api/restful-api/private/delegate-signer-settle-pnl",
             "build-on-evm/evm-api/restful-api/private/delegate-signer-withdraw-request"
@@ -479,7 +479,7 @@
       "pages": [
         {
           "group": "User Data",
-          "pages": ["build-on-evm/evm-api/restful-api/private/get-broker-daily-volume"]
+          "pages": ["build-on-evm/evm-api/restful-api/private/get-brokers-users-volumes"]
         },
         {
           "group": "Trading Campaigns",
@@ -495,7 +495,7 @@
           "group": "Fee Setting",
           "pages": [
             "build-on-evm/evm-api/restful-api/private/update-user-fee-rate",
-            "build-on-evm/evm-api/restful-api/private/update-default-user-fee-rate",
+            "build-on-evm/evm-api/restful-api/private/reset-user-fee-rate",
             "build-on-evm/evm-api/restful-api/private/get-default-broker-fee",
             "build-on-evm/evm-api/restful-api/private/update-default-broker-fee",
             "build-on-evm/evm-api/restful-api/private/get-user-fee-rates"
@@ -506,8 +506,8 @@
           "group": "Points Campaign",
           "pages": [
             "build-on-evm/evm-api/restful-api/public/get-points-leaderboard",
-            "build-on-evm/evm-api/restful-api/public/get-number-of-points",
-            "build-on-evm/evm-api/restful-api/public/get-number-of-epoch-points",
+            "build-on-evm/evm-api/restful-api/public/get-users-points",
+            "build-on-evm/evm-api/restful-api/public/get-number-of-points-for-distribution",
             "build-on-evm/evm-api/restful-api/public/get-start-and-end-date-of-all-epochs"
           ]
         },
@@ -555,12 +555,12 @@
         {
           "group": "Market Info",
           "pages": [
-            "build-on-evm/evm-api/restful-api/public/get-token-info",
-            "build-on-evm/evm-api/restful-api/public/get-exchange-information",
+            "build-on-evm/evm-api/restful-api/public/get-supported-collateral-info",
+            "build-on-evm/evm-api/restful-api/public/get-order-rules-per-market",
             "build-on-evm/evm-api/restful-api/public/get-available-symbols",
             "build-on-evm/evm-api/restful-api/public/get-market-trades",
-            "build-on-evm/evm-api/restful-api/public/get-futures-info-for-all-markets",
-            "build-on-evm/evm-api/restful-api/public/get-futures-info-for-one-market",
+            "build-on-evm/evm-api/restful-api/public/get-market-info-for-all-trading-pairs",
+            "build-on-evm/evm-api/restful-api/public/get-market-info-for-one-trading-pair",
             "build-on-evm/evm-api/restful-api/private/orderbook-snapshot",
             "build-on-evm/evm-api/restful-api/private/get-kline"
           ]
