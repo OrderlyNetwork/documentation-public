@@ -5,7 +5,7 @@ description: "Overview of deposit and withdrawal flow"
 
 ## Deposit
 
-Token deposits can be made on any supported chains (list [here](/trade-on-orderly/supported-chains))
+Token deposits can be made on any supported chains (list [here](/introduction/trade-on-orderly/supported-chains))
 
 To create a deposit request, users can follow the following steps:
 
@@ -16,6 +16,7 @@ To create a deposit request, users can follow the following steps:
 
     <Accordion title="Example code">
       <CodeGroup>
+
 ```Java Java
 String usdcAddress = "0xfd064a18f3bf249cf1f87fc203e90d8f650f2d63";
 String vaultAddress = "0x0c554ddb6a9010ed1fd7e50d92559a06655da482";
@@ -60,10 +61,10 @@ usdc.functions.approve(vault_address, deposit_amount).transact(
 ```
 
 ```ts TypeScript
-const usdcAddress = '0xfd064a18f3bf249cf1f87fc203e90d8f650f2d63';
-const vaultAddress = '0x0c554ddb6a9010ed1fd7e50d92559a06655da482';
+const usdcAddress = "0xfd064a18f3bf249cf1f87fc203e90d8f650f2d63";
+const vaultAddress = "0x0c554ddb6a9010ed1fd7e50d92559a06655da482";
 
-const provider = new ethers.JsonRpcProvider('https://arbitrum-goerli.publicnode.com');
+const provider = new ethers.JsonRpcProvider("https://arbitrum-goerli.publicnode.com");
 const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
 
 const usdcContract = NativeUSDC__factory.connect(usdcAddress, wallet);
@@ -71,8 +72,10 @@ const usdcContract = NativeUSDC__factory.connect(usdcAddress, wallet);
 const depositAmount = 100000n;
 await usdcContract.approve(vaultAddress, depositAmount);
 ```
+
       </CodeGroup>
     </Accordion>
+
   </Step>
   <Step title="Determine necessary deposit fee in WEI">
     <Accordion title="Example code">
@@ -93,14 +96,15 @@ byte[] usdcBytes = tokenId.getBytes("UTF-8");
 tokenHash.update(usdcBytes, 0, usdcBytes.length);
 
 Vault.VaultDepositFE depositInput = new Vault.VaultDepositFE(
-      Hex.decodeHex(orderlyAccountId.substring(2)),
-      brokerHash.digest(),
-      tokenHash.digest(),
-      depositAmount);
+Hex.decodeHex(orderlyAccountId.substring(2)),
+brokerHash.digest(),
+tokenHash.digest(),
+depositAmount);
 
 // get wei deposit fee for `deposit` call
 BigInteger depositFee = vault.getDepositFee(vaultAddress, depositInput).send();
-```
+
+````
 
 ```py Python
 broker_id = "woofi_dex"
@@ -129,13 +133,13 @@ deposit_fee = vault.functions.getDepositFee(
     Web3.to_checksum_address(account.address),
     deposit_input,
 ).call()
-```
+````
 
 ```ts TypeScript
-const brokerId = 'woofi_dex';
-const tokenId = 'USDC';
-const orderlyAccountId = '0x...';
-  
+const brokerId = "woofi_dex";
+const tokenId = "USDC";
+const orderlyAccountId = "0x...";
+
 const vaultContract = Vault__factory.connect(vaultAddress, wallet);
 
 const encoder = new TextEncoder();
@@ -149,8 +153,10 @@ const depositInput = {
 // get wei deposit fee for `deposit` call
 const depositFee = await vaultContract.getDepositFee(wallet.address, depositInput);
 ```
+
       </CodeGroup>
     </Accordion>
+
   </Step>
   <Step title="Call the `deposit` function of the smart contract">
     Contains the following structured data:
@@ -172,6 +178,7 @@ const depositFee = await vaultContract.getDepositFee(wallet.address, depositInpu
 
     <Accordion title="Example code">
       <CodeGroup>
+
 ```Java Java
 // deposit USDC into Vault contract
 vault.deposit(
@@ -190,13 +197,18 @@ vault.functions.deposit(deposit_input).transact(
 // deposit USDC into Vault contract
 await vaultContract.deposit(depositInput, { value: depositFee });
 ```
+
       </CodeGroup>
     </Accordion>
+
   </Step>
 </Steps>
 
 <Note>
-Deposits will take some time to reflect depending on the origin chain, to allow for finalizing of the cross-chain transaction involved in the deposit. Once the deposit is credited, the balance will update and the transaction can be seen on the [Get asset history API](/build-on-evm/evm-api/restful-api/private/get-asset-history).
+  Deposits will take some time to reflect depending on the origin chain, to allow for finalizing of
+  the cross-chain transaction involved in the deposit. Once the deposit is credited, the balance
+  will update and the transaction can be seen on the [Get asset history
+  API](/build-on-evm/evm-api/restful-api/private/get-asset-history).
 </Note>
 
 ### Full example
@@ -228,10 +240,10 @@ import org.web3j.tx.gas.DefaultGasProvider;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class DepositExample {
-   public static void main(String[] args) throws Exception {
-      String brokerId = "woofi_dex";
-      String tokenId = "USDC";
-      String orderlyAccountId = "0x...";
+public static void main(String[] args) throws Exception {
+String brokerId = "woofi_dex";
+String tokenId = "USDC";
+String orderlyAccountId = "0x...";
 
       String usdcAddress = "0xfd064a18f3bf249cf1f87fc203e90d8f650f2d63";
       String vaultAddress = "0x0c554ddb6a9010ed1fd7e50d92559a06655da482";
@@ -273,9 +285,11 @@ public class DepositExample {
       vault.deposit(
             depositInput,
             depositFee).send();
-   }
+
 }
-```
+}
+
+````
 
 ```py Python
 import json
@@ -339,26 +353,26 @@ deposit_fee = vault.functions.getDepositFee(
 vault.functions.deposit(deposit_input).transact(
     {"from": account.address, "value": deposit_fee}
 )
-```
+````
 
 ```ts TypeScript
-import { config } from 'dotenv';
-import { ethers, keccak256 } from 'ethers';
+import { config } from "dotenv";
+import { ethers, keccak256 } from "ethers";
 
-import { Vault__factory, NativeUSDC__factory } from './abi';
-import type { VaultTypes } from './abi/Vault';
+import { Vault__factory, NativeUSDC__factory } from "./abi";
+import type { VaultTypes } from "./abi/Vault";
 
-const brokerId = 'woofi_dex';
-const tokenId = 'USDC';
-const orderlyAccountId = '0x...';
+const brokerId = "woofi_dex";
+const tokenId = "USDC";
+const orderlyAccountId = "0x...";
 
-const usdcAddress = '0xfd064a18f3bf249cf1f87fc203e90d8f650f2d63';
-const vaultAddress = '0x0c554ddb6a9010ed1fd7e50d92559a06655da482';
+const usdcAddress = "0xfd064a18f3bf249cf1f87fc203e90d8f650f2d63";
+const vaultAddress = "0x0c554ddb6a9010ed1fd7e50d92559a06655da482";
 
 config();
 
 async function deposit(): Promise<void> {
-  const provider = new ethers.JsonRpcProvider('https://arbitrum-goerli.publicnode.com');
+  const provider = new ethers.JsonRpcProvider("https://arbitrum-goerli.publicnode.com");
   const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
 
   const usdcContract = NativeUSDC__factory.connect(usdcAddress, wallet);
@@ -385,6 +399,7 @@ async function deposit(): Promise<void> {
 
 deposit();
 ```
+
 </CodeGroup>
 
 ## Withdrawal
@@ -421,27 +436,28 @@ Example:
 
 ```json
 {
-    "brokerId": "woofi_dex",
-    "chainId": 80001,
-    "receiver": "0x036Cb579025d3535a0ADcD929D05481a3189714b",
-    "token": "USDC",
-    "amount": 1000000,
-    "withdrawNonce": 1,
-    "timestamp": 1685973017064
+  "brokerId": "woofi_dex",
+  "chainId": 80001,
+  "receiver": "0x036Cb579025d3535a0ADcD929D05481a3189714b",
+  "token": "USDC",
+  "amount": 1000000,
+  "withdrawNonce": 1,
+  "timestamp": 1685973017064
 }
 ```
 
 where:
 
-| **Name**      | **Type**  | **Required** | **Description**                                                                                              |
-| ------------- | --------- | ------------ | ------------------------------------------------------------------------------------------------------------ |
-| brokerId      | string    | Y            | Broker ID, the valid list can be found \[here\]                                                              |
-| chainId       | int       | Y            | Chain ID of the chain that the funds should be withdrawn to (within those that are supported by the Network) |
-| receiver      | string    | Y            | Address of the receiver, which should be equal to the address of the account.                                |
-| token         | string    | Y            | The string representation of the token that is being withdrawn (eg "USDC")                                   |
-| amount        | int       | Y            | Amount of tokens to be withdrawn                                                                             |
-| withdrawNonce | int       | Y            | Valid withdrawal nonce from [Get Withdrawal Nonce API](/build-on-evm/evm-api/restful-api/private/get-withdrawal-nonce)                                                       |
-| timestamp     | timestamp | Y            | current timestamp in UNIX milliseconds                                                                       |
+| **Name**      | **Type**  | **Required** | **Description**                                                                                                        |
+| ------------- | --------- | ------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| brokerId      | string    | Y            | Broker ID, the valid list can be found \[here\]                                                                        |
+| chainId       | int       | Y            | Chain ID of the chain that the funds should be withdrawn to (within those that are supported by the Network)           |
+| receiver      | string    | Y            | Address of the receiver, which should be equal to the address of the account.                                          |
+| token         | string    | Y            | The string representation of the token that is being withdrawn (eg "USDC")                                             |
+| amount        | int       | Y            | Amount of tokens to be withdrawn                                                                                       |
+| withdrawNonce | int       | Y            | Valid withdrawal nonce from [Get Withdrawal Nonce API](/build-on-evm/evm-api/restful-api/private/get-withdrawal-nonce) |
+| timestamp     | timestamp | Y            | current timestamp in UNIX milliseconds                                                                                 |
+
   </Step>
   <Step title="Make a withdraw request">
     Call the [Create withdraw request API](/build-on-evm/evm-api/restful-api/private/create-withdraw-request).

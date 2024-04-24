@@ -36,9 +36,13 @@
     }
   ],
   "primaryTab": {
-    "name": "Introduction"
+    "name": "Home"
   },
   "tabs": [
+    {
+      "name": "Introduction",
+      "url": "introduction"
+    },
     {
       "name": "Build on EVM",
       "url": "build-on-evm"
@@ -52,57 +56,70 @@
       "url": "sdks"
     },
     {
+      "name": "Troubleshooting",
+      "url": "troubleshooting"
+    },
+    {
       "name": "Changelog",
       "url": "changelog"
     }
   ],
   "navigation": [
     {
+      "group": "",
+      "pages": ["home"]
+    },
+    {
       "group": "Getting Started",
       "pages": [
-        "getting-started/what-is-orderly-network",
-        "getting-started/benefits",
-        "getting-started/our-mission",
-        "getting-started/roadmap"
+        "introduction/getting-started/what-is-orderly-network",
+        "introduction/getting-started/benefits",
+        "introduction/getting-started/our-mission",
+        "introduction/getting-started/roadmap"
       ]
     },
     {
       "group": "Trade on Orderly",
       "pages": [
-        "trade-on-orderly/trade-on-orderly",
-        "trade-on-orderly/trading-basics/orderbook-design",
+        "introduction/trade-on-orderly/trade-on-orderly",
+        "introduction/trade-on-orderly/trading-basics/orderbook-design",
         {
           "group": "Trading Basics",
           "pages": [
-            "trade-on-orderly/trading-basics/glossary",
-            "trade-on-orderly/trading-basics/perpetual-futures",
-            "trade-on-orderly/trading-basics/spot",
-            "trade-on-orderly/trading-basics/accounts",
-            "trade-on-orderly/trading-basics/order-types",
-            "trade-on-orderly/trading-basics/trading-fees"
+            "introduction/trade-on-orderly/trading-basics/glossary",
+            "introduction/trade-on-orderly/trading-basics/perpetual-futures",
+            "introduction/trade-on-orderly/trading-basics/spot",
+            "introduction/trade-on-orderly/trading-basics/accounts",
+            "introduction/trade-on-orderly/trading-basics/order-types",
+            "introduction/trade-on-orderly/trading-basics/trading-fees"
           ]
         },
         {
           "group": "Perpetual Futures Basics",
           "pages": [
-            "trade-on-orderly/perpetual-futures/formulas-definitions",
-            "trade-on-orderly/perpetual-futures/margin-leverage-and-pnl",
-            "trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price",
-            "trade-on-orderly/perpetual-futures/orders-price-limits",
-            "trade-on-orderly/perpetual-futures/funding-rate",
-            "trade-on-orderly/perpetual-futures/liquidations",
-            "trade-on-orderly/perpetual-futures/insurance-fund-and-adl"
+            "introduction/trade-on-orderly/perpetual-futures/formulas-definitions",
+            "introduction/trade-on-orderly/perpetual-futures/margin-leverage-and-pnl",
+            "introduction/trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price",
+            "introduction/trade-on-orderly/perpetual-futures/orders-price-limits",
+            "introduction/trade-on-orderly/perpetual-futures/funding-rate",
+            "introduction/trade-on-orderly/perpetual-futures/liquidations",
+            "introduction/trade-on-orderly/perpetual-futures/insurance-fund-and-adl"
           ]
         },
-        "trade-on-orderly/fee-structure",
-        "trade-on-orderly/supported-markets",
-        "trade-on-orderly/supported-chains",
-        "trade-on-orderly/trading-guis"
+        "introduction/trade-on-orderly/fee-structure",
+        "introduction/trade-on-orderly/supported-markets",
+        "introduction/trade-on-orderly/supported-chains",
+        "introduction/trade-on-orderly/trading-guis"
       ]
     },
     {
       "group": "Learn More",
-      "pages": ["faqs", "security", "terms-of-service", "privacy-policy"]
+      "pages": [
+        "introduction/faqs",
+        "introduction/security",
+        "introduction/terms-of-service",
+        "introduction/privacy-policy"
+      ]
     },
     {
       "group": "Getting Started",
@@ -289,6 +306,14 @@
       "pages": ["build-on-evm/building-on-evm", "build-on-evm/overview", "build-on-evm/addresses"]
     },
     {
+      "group": "Partner Support",
+      "pages": [
+        "build-on-evm/partner-support",
+        "build-on-evm/integration-checklist",
+        "build-on-evm/integration-faqs"
+      ]
+    },
+    {
       "group": "User Flows",
       "pages": [
         "build-on-evm/user-flows/accounts",
@@ -317,7 +342,7 @@
         {
           "group": "Broker Info",
           "pages": [
-            "build-on-evm/evm-api/restful-api/public/get-volume-statistics",
+            "build-on-evm/evm-api/restful-api/public/get-broker-volume",
             "build-on-evm/evm-api/restful-api/public/get-broker-list",
             "build-on-evm/evm-api/restful-api/public/get-supported-chains-per-broker"
           ]
@@ -343,8 +368,8 @@
         {
           "group": "Registration",
           "pages": [
-            "build-on-evm/evm-api/restful-api/public/get-account-details",
-            "build-on-evm/evm-api/restful-api/public/get-account",
+            "build-on-evm/evm-api/restful-api/public/check-if-account-exists",
+            "build-on-evm/evm-api/restful-api/public/check-if-wallet-is-registered",
             "build-on-evm/evm-api/restful-api/public/get-registration-nonce",
             "build-on-evm/evm-api/restful-api/public/register-account"
           ]
@@ -374,7 +399,7 @@
             "build-on-evm/evm-api/restful-api/private/cancel-order-by-client_order_id",
             "build-on-evm/evm-api/restful-api/private/cancel-algo-order-by-client_order_id",
             "build-on-evm/evm-api/restful-api/private/cancel-all-pending-algo-orders",
-            "build-on-evm/evm-api/restful-api/private/cancel-orders-in-bulk",
+            "build-on-evm/evm-api/restful-api/private/cancel-all-pending-orders",
             "build-on-evm/evm-api/restful-api/private/batch-cancel-orders",
             "build-on-evm/evm-api/restful-api/private/batch-cancel-orders-by-client_order_id",
             "build-on-evm/evm-api/restful-api/private/get-order-by-order_id",
@@ -452,7 +477,7 @@
         {
           "group": "Delegate Signer",
           "pages": [
-            "build-on-evm/evm-api/restful-api/public/add-delegate-signer",
+            "build-on-evm/evm-api/restful-api/public/delegate-signer",
             "build-on-evm/evm-api/restful-api/public/add-delegate-signer-orderly-key",
             "build-on-evm/evm-api/restful-api/private/delegate-signer-settle-pnl",
             "build-on-evm/evm-api/restful-api/private/delegate-signer-withdraw-request"
@@ -466,7 +491,7 @@
       "pages": [
         {
           "group": "User Data",
-          "pages": ["build-on-evm/evm-api/restful-api/private/get-broker-daily-volume"]
+          "pages": ["build-on-evm/evm-api/restful-api/private/get-brokers-users-volumes"]
         },
         {
           "group": "Trading Campaigns",
@@ -482,7 +507,7 @@
           "group": "Fee Setting",
           "pages": [
             "build-on-evm/evm-api/restful-api/private/update-user-fee-rate",
-            "build-on-evm/evm-api/restful-api/private/update-default-user-fee-rate",
+            "build-on-evm/evm-api/restful-api/private/reset-user-fee-rate",
             "build-on-evm/evm-api/restful-api/private/get-default-broker-fee",
             "build-on-evm/evm-api/restful-api/private/update-default-broker-fee",
             "build-on-evm/evm-api/restful-api/private/get-user-fee-rates"
@@ -493,8 +518,8 @@
           "group": "Points Campaign",
           "pages": [
             "build-on-evm/evm-api/restful-api/public/get-points-leaderboard",
-            "build-on-evm/evm-api/restful-api/public/get-number-of-points",
-            "build-on-evm/evm-api/restful-api/public/get-number-of-epoch-points",
+            "build-on-evm/evm-api/restful-api/public/get-users-points",
+            "build-on-evm/evm-api/restful-api/public/get-number-of-points-for-distribution",
             "build-on-evm/evm-api/restful-api/public/get-start-and-end-date-of-all-epochs"
           ]
         },
@@ -542,12 +567,12 @@
         {
           "group": "Market Info",
           "pages": [
-            "build-on-evm/evm-api/restful-api/public/get-token-info",
-            "build-on-evm/evm-api/restful-api/public/get-exchange-information",
+            "build-on-evm/evm-api/restful-api/public/get-supported-collateral-info",
+            "build-on-evm/evm-api/restful-api/public/get-order-rules-per-market",
             "build-on-evm/evm-api/restful-api/public/get-available-symbols",
             "build-on-evm/evm-api/restful-api/public/get-market-trades",
-            "build-on-evm/evm-api/restful-api/public/get-futures-info-for-all-markets",
-            "build-on-evm/evm-api/restful-api/public/get-futures-info-for-one-market",
+            "build-on-evm/evm-api/restful-api/public/get-market-info-for-all-trading-pairs",
+            "build-on-evm/evm-api/restful-api/public/get-market-info-for-one-trading-pair",
             "build-on-evm/evm-api/restful-api/private/orderbook-snapshot",
             "build-on-evm/evm-api/restful-api/private/get-kline"
           ]
@@ -720,6 +745,17 @@
     {
       "group": "Classification",
       "pages": ["changelog/classification"]
+    },
+    {
+      "group": "Introduction",
+      "pages": ["troubleshooting/introduction"]
+    },
+    {
+      "group": "User Issues",
+      "pages": [
+        "troubleshooting/user-issues/withdrawal-issues",
+        "troubleshooting/user-issues/deposit-issues"
+      ]
     }
   ],
   "footerSocials": {

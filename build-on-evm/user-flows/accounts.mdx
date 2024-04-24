@@ -43,14 +43,15 @@ Follow the following steps to register an account on Orderly Network:
   <Step title="Choose a valid chain/broker to register the account on">
     List of chains can be found [here](build-on-evm/addresses) and supported brokers through [Get list of brokers API](/build-on-evm/evm-api/restful-api/public/get-broker-list).
   </Step>
-  <Step title="Check if the account is already registered">
-     Can be checked via [Get Account API](/build-on-evm/evm-api/restful-api/public/get-account).
+  <Step title="Check if the wallet is already registered or account exists">
+     Check if the wallet is already registered via [this](/build-on-evm/evm-api/restful-api/public/check-if-wallet-is-registered) API or if account already exisists via [this](/build-on-evm/evm-api/restful-api/public/check-if-account-exists) API.
   </Step>
   <Step title="Obtain a registration nonce">
     Get a nonce from [Get Registration Nonce API](/build-on-evm/evm-api/restful-api/public/get-registration-nonce).
 
     <Accordion title="Example code">
       <CodeGroup>
+
 ```Java Java
 String baseUrl = "https://testnet-api-evm.orderly.org";
 
@@ -77,37 +78,41 @@ registration_nonce = response["data"]["registration_nonce"]
 ```
 
 ```ts TypeScript
-const BASE_URL = 'https://testnet-api-evm.orderly.org';
+const BASE_URL = "https://testnet-api-evm.orderly.org";
 
 const nonceRes = await fetch(`${BASE_URL}/v1/registration_nonce`);
 const nonceJson = await nonceRes.json();
 const registrationNonce = nonceJson.data.registration_nonce as string;
 ```
+
       </CodeGroup>
     </Accordion>
+
   </Step>
   <Step title="Obtain a signature from EIP-712">
     Sign a message from the wallet in the following format using the EIP-712 standard and obtain the signature.
 
 ```json
 {
-    "brokerId": "woofi_dex",
-    "chainId": 80001,
-    "timestamp": 1685973017064,
-    "registrationNonce": "194528949540"
+  "brokerId": "woofi_dex",
+  "chainId": 80001,
+  "timestamp": 1685973017064,
+  "registrationNonce": "194528949540"
 }
 ```
+
 where:
 
-| **Name**          | **Type**  | **Required** | **Description**                                                                |
-| ----------------- | --------- | ------------ | ------------------------------------------------------------------------------ |
-| brokerId          | string    | Y            | Broker ID |
-| chainId           | int       | Y            | Chain ID of registering chain (within those that are supported by the Network) |
-| timestamp         | timestamp | Y            | timestamp in UNIX milliseconds                                                 |
-| registrationNonce | string    | Y            | Valid nonce from Get [Registration Nonce](/build-on-evm/evm-api/restful-api/public/get-registration-nonce)   |
+| **Name**          | **Type**  | **Required** | **Description**                                                                                            |
+| ----------------- | --------- | ------------ | ---------------------------------------------------------------------------------------------------------- |
+| brokerId          | string    | Y            | Broker ID                                                                                                  |
+| chainId           | int       | Y            | Chain ID of registering chain (within those that are supported by the Network)                             |
+| timestamp         | timestamp | Y            | timestamp in UNIX milliseconds                                                                             |
+| registrationNonce | string    | Y            | Valid nonce from Get [Registration Nonce](/build-on-evm/evm-api/restful-api/public/get-registration-nonce) |
 
     <Accordion title="Example code">
       <CodeGroup>
+
 ```Java Java
 JSONObject MESSAGE_TYPES = new JSONObject("""
   {
@@ -205,28 +210,28 @@ signed_message = account.sign_message(encoded_data)
 ```ts TypeScript
 const MESSAGE_TYPES = {
   EIP712Domain: [
-    { name: 'name', type: 'string' },
-    { name: 'version', type: 'string' },
-    { name: 'chainId', type: 'uint256' },
-    { name: 'verifyingContract', type: 'address' }
+    { name: "name", type: "string" },
+    { name: "version", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "verifyingContract", type: "address" }
   ],
   Registration: [
-    { name: 'brokerId', type: 'string' },
-    { name: 'chainId', type: 'uint256' },
-    { name: 'timestamp', type: 'uint64' },
-    { name: 'registrationNonce', type: 'uint256' }
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "timestamp", type: "uint64" },
+    { name: "registrationNonce", type: "uint256" }
   ]
 };
 
 const OFF_CHAIN_DOMAIN = {
-  name: 'Orderly',
-  version: '1',
+  name: "Orderly",
+  version: "1",
   chainId: 421614,
-  verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
+  verifyingContract: "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"
 };
 
-const BASE_URL = 'https://testnet-api-evm.orderly.org';
-const BROKER_ID = 'woofi_dex';
+const BASE_URL = "https://testnet-api-evm.orderly.org";
+const BROKER_ID = "woofi_dex";
 const CHAIN_ID = 421614;
 
 const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!);
@@ -246,14 +251,17 @@ const signature = await wallet.signTypedData(
   registerMessage
 );
 ```
+
       </CodeGroup>
     </Accordion>
+
   </Step>
   <Step title="Register account">
     Send all the necessary information via [Register account API](/build-on-evm/evm-api/restful-api/public/register-account).
 
     <Accordion title="Example code">
       <CodeGroup>
+
 ```Java Java
 String baseUrl = "https://testnet-api-evm.orderly.org";
 
@@ -305,12 +313,12 @@ print("orderly_account_id:", orderly_account_id)
 ```
 
 ```ts TypeScript
-const BASE_URL = 'https://testnet-api-evm.orderly.org';
+const BASE_URL = "https://testnet-api-evm.orderly.org";
 
 const registerRes = await fetch(`${BASE_URL}/v1/register_account`, {
-  method: 'POST',
+  method: "POST",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json"
   },
   body: JSON.stringify({
     message: registerMessage,
@@ -323,10 +331,12 @@ if (!registerJson.success) {
   throw new Error(registerJson.message);
 }
 const orderlyAccountId = registerJson.data.account_id;
-console.log('orderlyAccountId', orderlyAccountId);
+console.log("orderlyAccountId", orderlyAccountId);
 ```
+
       </CodeGroup>
     </Accordion>
+
   </Step>
 </Steps>
 
@@ -348,34 +358,34 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class RegisterExample {
-   public static JSONObject MESSAGE_TYPES = new JSONObject("""
-         {
-            "EIP712Domain": [
-               {"name": "name", "type": "string"},
-               {"name": "version", "type": "string"},
-               {"name": "chainId", "type": "uint256"},
-               {"name": "verifyingContract", "type": "address"},
-            ],
-            "Registration": [
-               {"name": "brokerId", "type": "string"},
-               {"name": "chainId", "type": "uint256"},
-               {"name": "timestamp", "type": "uint64"},
-               {"name": "registrationNonce", "type": "uint256"},
-            ],
-         }""");
+public static JSONObject MESSAGE_TYPES = new JSONObject("""
+{
+"EIP712Domain": [
+{"name": "name", "type": "string"},
+{"name": "version", "type": "string"},
+{"name": "chainId", "type": "uint256"},
+{"name": "verifyingContract", "type": "address"},
+],
+"Registration": [
+{"name": "brokerId", "type": "string"},
+{"name": "chainId", "type": "uint256"},
+{"name": "timestamp", "type": "uint64"},
+{"name": "registrationNonce", "type": "uint256"},
+],
+}""");
 
-   public static JSONObject OFF_CHAIN_DOMAIN = new JSONObject("""
-         {
-            "name": "Orderly",
-            "version": "1",
-            "chainId": 421614,
-            "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
-         }""");
+public static JSONObject OFF_CHAIN_DOMAIN = new JSONObject("""
+{
+"name": "Orderly",
+"version": "1",
+"chainId": 421614,
+"verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
+}""");
 
-   public static void main(String[] args) throws Exception {
-      String baseUrl = "https://testnet-api-evm.orderly.org";
-      String brokerId = "woofi_dex";
-      int chainId = 421614;
+public static void main(String[] args) throws Exception {
+String baseUrl = "https://testnet-api-evm.orderly.org";
+String brokerId = "woofi_dex";
+int chainId = 421614;
 
       Dotenv dotenv = Dotenv.load();
       String pk = dotenv.get("PRIVATE_KEY");
@@ -424,17 +434,19 @@ public class RegisterExample {
 
       String orderlyAccountId = registerObj.getJSONObject("data").getString("account_id");
       System.out.println("orderlyAccountId: " + orderlyAccountId);
-   }
 
-   public static String signatureToHashString(Sign.SignatureData signature) {
-      byte[] retval = new byte[65];
-      System.arraycopy(signature.getR(), 0, retval, 0, 32);
-      System.arraycopy(signature.getS(), 0, retval, 32, 32);
-      System.arraycopy(signature.getV(), 0, retval, 64, 1);
-      return Numeric.toHexString(retval);
-   }
 }
-```
+
+public static String signatureToHashString(Sign.SignatureData signature) {
+byte[] retval = new byte[65];
+System.arraycopy(signature.getR(), 0, retval, 0, 32);
+System.arraycopy(signature.getS(), 0, retval, 32, 32);
+System.arraycopy(signature.getV(), 0, retval, 64, 1);
+return Numeric.toHexString(retval);
+}
+}
+
+````
 
 ```py Python
 from datetime import datetime
@@ -509,36 +521,36 @@ response = json.loads(res.text)
 
 orderly_account_id = response["data"]["account_id"]
 print("orderly_account_id:", orderly_account_id)
-```
+````
 
 ```ts TypeScript
-import { config } from 'dotenv';
-import { ethers } from 'ethers';
+import { config } from "dotenv";
+import { ethers } from "ethers";
 
 const MESSAGE_TYPES = {
   EIP712Domain: [
-    { name: 'name', type: 'string' },
-    { name: 'version', type: 'string' },
-    { name: 'chainId', type: 'uint256' },
-    { name: 'verifyingContract', type: 'address' }
+    { name: "name", type: "string" },
+    { name: "version", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "verifyingContract", type: "address" }
   ],
   Registration: [
-    { name: 'brokerId', type: 'string' },
-    { name: 'chainId', type: 'uint256' },
-    { name: 'timestamp', type: 'uint64' },
-    { name: 'registrationNonce', type: 'uint256' }
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "timestamp", type: "uint64" },
+    { name: "registrationNonce", type: "uint256" }
   ]
 };
 
 const OFF_CHAIN_DOMAIN = {
-  name: 'Orderly',
-  version: '1',
+  name: "Orderly",
+  version: "1",
   chainId: 421614,
-  verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
+  verifyingContract: "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"
 };
 
-const BASE_URL = 'https://testnet-api-evm.orderly.org';
-const BROKER_ID = 'woofi_dex';
+const BASE_URL = "https://testnet-api-evm.orderly.org";
+const BROKER_ID = "woofi_dex";
 const CHAIN_ID = 421614;
 
 config();
@@ -566,9 +578,9 @@ async function registerAccount(): Promise<void> {
   );
 
   const registerRes = await fetch(`${BASE_URL}/v1/register_account`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json"
     },
     body: JSON.stringify({
       message: registerMessage,
@@ -581,10 +593,10 @@ async function registerAccount(): Promise<void> {
     throw new Error(registerJson.message);
   }
   const orderlyAccountId = registerJson.data.account_id;
-  console.log('orderlyAccountId', orderlyAccountId);
+  console.log("orderlyAccountId", orderlyAccountId);
 }
 
 registerAccount();
 ```
-</CodeGroup>
 
+</CodeGroup>
