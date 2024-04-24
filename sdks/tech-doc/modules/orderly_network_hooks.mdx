@@ -9,6 +9,10 @@
 - [MarketsType](/sdks/tech-doc/enums/orderly_network_hooks.MarketsType)
 - [WsNetworkStatus](/sdks/tech-doc/enums/orderly_network_hooks.WsNetworkStatus)
 
+### Classes
+
+- [OrderFactory](/sdks/tech-doc/classes/orderly_network_hooks.OrderFactory)
+
 ### Interfaces
 
 - [CallOptions](/sdks/tech-doc/interfaces/orderly_network_hooks.CallOptions)
@@ -38,6 +42,9 @@
 - [UseChainsOptions](/sdks/tech-doc/modules/orderly_network_hooks#usechainsoptions)
 - [UseChainsReturnObject](/sdks/tech-doc/modules/orderly_network_hooks#usechainsreturnobject)
 - [UseOrderEntryMetaState](/sdks/tech-doc/modules/orderly_network_hooks#useorderentrymetastate)
+- [chainFilter](/sdks/tech-doc/modules/orderly_network_hooks#chainfilter)
+- [chainFilterFunc](/sdks/tech-doc/modules/orderly_network_hooks#chainfilterfunc)
+- [filteredChains](/sdks/tech-doc/modules/orderly_network_hooks#filteredchains)
 
 ### Variables
 
@@ -58,6 +65,7 @@
 - [OrderlyProvider](/sdks/tech-doc/modules/orderly_network_hooks#orderlyprovider)
 - [SWRConfig](/sdks/tech-doc/modules/orderly_network_hooks#swrconfig)
 - [StatusProvider](/sdks/tech-doc/modules/orderly_network_hooks#statusprovider)
+- [checkNotional](/sdks/tech-doc/modules/orderly_network_hooks#checknotional)
 - [cleanStringStyle](/sdks/tech-doc/modules/orderly_network_hooks#cleanstringstyle)
 - [parseJSON](/sdks/tech-doc/modules/orderly_network_hooks#parsejson)
 - [useAccount](/sdks/tech-doc/modules/orderly_network_hooks#useaccount)
@@ -117,7 +125,7 @@
 
 #### Defined in
 
-[packages/hooks/src/orderly/useChains.ts:9](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useChains.ts#L9)
+[packages/hooks/src/orderly/useChains.ts:15](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useChains.ts#L15)
 
 ___
 
@@ -134,7 +142,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useChains.ts:13](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useChains.ts#L13)
+[packages/hooks/src/orderly/useChains.ts:19](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useChains.ts#L19)
 
 ___
 
@@ -156,7 +164,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useCollateral.ts:16](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useCollateral.ts#L16)
+[packages/hooks/src/orderly/useCollateral.ts:16](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useCollateral.ts#L16)
 
 ___
 
@@ -180,7 +188,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/services/painter/basePaint.ts:79](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/services/painter/basePaint.ts#L79)
+[packages/hooks/src/services/painter/basePaint.ts:79](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/services/painter/basePaint.ts#L79)
 
 ___
 
@@ -190,7 +198,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useOrderbookStream.ts:12](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useOrderbookStream.ts#L12)
+[packages/hooks/src/orderly/useOrderbookStream.ts:12](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useOrderbookStream.ts#L12)
 
 ___
 
@@ -200,7 +208,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useOrderEntry.ts:72](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useOrderEntry.ts#L72)
+[packages/hooks/src/orderly/useOrderEntry.ts:72](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useOrderEntry.ts#L72)
 
 ___
 
@@ -217,7 +225,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useOrderbookStream.ts:14](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useOrderbookStream.ts#L14)
+[packages/hooks/src/orderly/useOrderbookStream.ts:14](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useOrderbookStream.ts#L14)
 
 ___
 
@@ -236,7 +244,7 @@ Configuration for the Order Book
 
 #### Defined in
 
-[packages/hooks/src/orderly/useOrderbookStream.ts:222](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useOrderbookStream.ts#L222)
+[packages/hooks/src/orderly/useOrderbookStream.ts:222](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useOrderbookStream.ts#L222)
 
 ___
 
@@ -257,7 +265,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/services/painter/basePaint.ts:63](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/services/painter/basePaint.ts#L63)
+[packages/hooks/src/services/painter/basePaint.ts:63](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/services/painter/basePaint.ts#L63)
 
 ___
 
@@ -285,7 +293,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useChains.ts:30](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useChains.ts#L30)
+[packages/hooks/src/orderly/useChains.ts:36](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useChains.ts#L36)
 
 ___
 
@@ -302,7 +310,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useChains.ts:35](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useChains.ts#L35)
+[packages/hooks/src/orderly/useChains.ts:41](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useChains.ts#L41)
 
 ___
 
@@ -320,7 +328,58 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useOrderEntry.ts:35](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useOrderEntry.ts#L35)
+[packages/hooks/src/orderly/useOrderEntry.ts:35](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useOrderEntry.ts#L35)
+
+___
+
+### chainFilter
+
+Ƭ **chainFilter**: [`filteredChains`](orderly_network_hooks#filteredchains) \| [`chainFilterFunc`](orderly_network_hooks#chainfilterfunc)
+
+#### Defined in
+
+[packages/hooks/src/orderlyContext.ts:18](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderlyContext.ts#L18)
+
+___
+
+### chainFilterFunc
+
+Ƭ **chainFilterFunc**: (`config`: [`ConfigStore`](../interfaces/orderly_network_core.ConfigStore)) => [`filteredChains`](orderly_network_hooks#filteredchains)
+
+#### Type declaration
+
+▸ (`config`): [`filteredChains`](orderly_network_hooks#filteredchains)
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `config` | [`ConfigStore`](../interfaces/orderly_network_core.ConfigStore) |
+
+##### Returns
+
+[`filteredChains`](orderly_network_hooks#filteredchains)
+
+#### Defined in
+
+[packages/hooks/src/orderlyContext.ts:16](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderlyContext.ts#L16)
+
+___
+
+### filteredChains
+
+Ƭ **filteredChains**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `mainnet?` | [`ChainConfig`](../interfaces/orderly_network_types.ChainConfig)[] |
+| `testnet?` | [`ChainConfig`](../interfaces/orderly_network_types.ChainConfig)[] |
+
+#### Defined in
+
+[packages/hooks/src/orderlyContext.ts:11](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderlyContext.ts#L11)
 
 ## Variables
 
@@ -330,7 +389,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/services/painter/layout.config.ts:3](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/services/painter/layout.config.ts#L3)
+[packages/hooks/src/services/painter/layout.config.ts:3](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/services/painter/layout.config.ts#L3)
 
 ___
 
@@ -340,7 +399,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderlyContext.ts:30](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderlyContext.ts#L30)
+[packages/hooks/src/orderlyContext.ts:37](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderlyContext.ts#L37)
 
 ___
 
@@ -350,7 +409,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/statusProvider.tsx:8](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/statusProvider.tsx#L8)
+[packages/hooks/src/statusProvider.tsx:8](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/statusProvider.tsx#L8)
 
 ___
 
@@ -360,17 +419,17 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/walletConnectorContext.tsx:35](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/walletConnectorContext.tsx#L35)
+[packages/hooks/src/walletConnectorContext.tsx:35](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/walletConnectorContext.tsx#L35)
 
 ___
 
 ### version
 
-• **version**: ``"1.2.0"``
+• **version**: ``"1.3.2"``
 
 #### Defined in
 
-[packages/hooks/src/version.ts:14](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/version.ts#L14)
+[packages/hooks/src/version.ts:14](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/version.ts#L14)
 
 ## Function Functions
 
@@ -548,7 +607,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/configProvider.tsx:48](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/configProvider.tsx#L48)
+[packages/hooks/src/configProvider.tsx:58](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/configProvider.tsx#L58)
 
 ___
 
@@ -591,7 +650,7 @@ ___
 
 #### Defined in
 
-node_modules/.pnpm/@types+react@18.2.16/node_modules/@types/react/index.d.ts:556
+node_modules/.pnpm/@types+react@18.2.21/node_modules/@types/react/index.d.ts:563
 
 ___
 
@@ -617,6 +676,28 @@ node_modules/.pnpm/@types+react@18.2.38/node_modules/@types/react/index.d.ts:567
 
 ___
 
+### checkNotional
+
+▸ **checkNotional**(`price?`, `qty?`, `minNotional?`): `string` \| `undefined`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `price?` | `string` \| `number` |
+| `qty?` | `string` \| `number` |
+| `minNotional?` | `number` |
+
+#### Returns
+
+`string` \| `undefined`
+
+#### Defined in
+
+[packages/hooks/src/utils/createOrder.ts:161](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/utils/createOrder.ts#L161)
+
+___
+
 ### cleanStringStyle
 
 ▸ **cleanStringStyle**(`str`): `string`
@@ -633,7 +714,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/utils/orderEntryHelper.ts:29](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/utils/orderEntryHelper.ts#L29)
+[packages/hooks/src/utils/orderEntryHelper.ts:29](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/utils/orderEntryHelper.ts#L29)
 
 ___
 
@@ -659,7 +740,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/utils/json.ts:1](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/utils/json.ts#L1)
+[packages/hooks/src/utils/json.ts:1](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/utils/json.ts#L1)
 
 ___
 
@@ -680,7 +761,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/useAccount.ts:6](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/useAccount.ts#L6)
+[packages/hooks/src/useAccount.ts:6](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/useAccount.ts#L6)
 
 ___
 
@@ -694,7 +775,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useAccountInfo.ts:4](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useAccountInfo.ts#L4)
+[packages/hooks/src/orderly/useAccountInfo.ts:4](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useAccountInfo.ts#L4)
 
 ___
 
@@ -708,7 +789,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/useAccountInstance.ts:6](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/useAccountInstance.ts#L6)
+[packages/hooks/src/useAccountInstance.ts:6](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/useAccountInstance.ts#L6)
 
 ___
 
@@ -728,7 +809,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/useBoolean.ts:3](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/useBoolean.ts#L3)
+[packages/hooks/src/useBoolean.ts:3](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/useBoolean.ts#L3)
 
 ___
 
@@ -753,7 +834,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useChain.ts:5](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useChain.ts#L5)
+[packages/hooks/src/orderly/useChain.ts:5](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useChain.ts#L5)
 
 ___
 
@@ -774,7 +855,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useChains.ts:40](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useChains.ts#L40)
+[packages/hooks/src/orderly/useChains.ts:46](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useChains.ts#L46)
 
 ▸ **useChains**\<`T`, `K`\>(`networkId?`, `options?`): [[`Chains`](orderly_network_hooks#chains)\<`T`, `K` extends [`UseChainsOptions`](orderly_network_hooks#usechainsoptions) ? `K`[``"pick"``] extends keyof [`Chain`](../interfaces/orderly_network_types.API.Chain) ? `K`[``"pick"``] : `undefined` : `undefined`\>, [`UseChainsReturnObject`](orderly_network_hooks#usechainsreturnobject)]
 
@@ -798,7 +879,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useChains.ts:45](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useChains.ts#L45)
+[packages/hooks/src/orderly/useChains.ts:51](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useChains.ts#L51)
 
 ___
 
@@ -819,7 +900,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useCollateral.ts:30](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useCollateral.ts#L30)
+[packages/hooks/src/orderly/useCollateral.ts:30](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useCollateral.ts#L30)
 
 ___
 
@@ -846,7 +927,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/useConfig.ts:5](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/useConfig.ts#L5)
+[packages/hooks/src/useConfig.ts:5](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/useConfig.ts#L5)
 
 ___
 
@@ -946,7 +1027,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useDeposit.ts:28](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useDeposit.ts#L28)
+[packages/hooks/src/orderly/useDeposit.ts:28](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useDeposit.ts#L28)
 
 ___
 
@@ -960,7 +1041,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/useEventEmitter.ts:4](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/useEventEmitter.ts#L4)
+[packages/hooks/src/useEventEmitter.ts:4](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/useEventEmitter.ts#L4)
 
 ___
 
@@ -991,7 +1072,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useFundingRate.ts:6](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useFundingRate.ts#L6)
+[packages/hooks/src/orderly/useFundingRate.ts:6](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useFundingRate.ts#L6)
 
 ___
 
@@ -1011,7 +1092,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useHoldingStream.ts:7](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useHoldingStream.ts#L7)
+[packages/hooks/src/orderly/useHoldingStream.ts:7](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useHoldingStream.ts#L7)
 
 ___
 
@@ -1031,7 +1112,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useIndexPrice.ts:4](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useIndexPrice.ts#L4)
+[packages/hooks/src/orderly/useIndexPrice.ts:4](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useIndexPrice.ts#L4)
 
 ___
 
@@ -1065,7 +1146,7 @@ for public api
 
 #### Defined in
 
-[packages/hooks/src/useLazyQuery.ts:15](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/useLazyQuery.ts#L15)
+[packages/hooks/src/useLazyQuery.ts:15](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/useLazyQuery.ts#L15)
 
 ___
 
@@ -1079,7 +1160,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useLeverage.ts:7](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useLeverage.ts#L7)
+[packages/hooks/src/orderly/useLeverage.ts:7](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useLeverage.ts#L7)
 
 ___
 
@@ -1106,7 +1187,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/useLocalStorage.ts:5](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/useLocalStorage.ts#L5)
+[packages/hooks/src/useLocalStorage.ts:5](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/useLocalStorage.ts#L5)
 
 ___
 
@@ -1120,7 +1201,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useMarginRatio.ts:17](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useMarginRatio.ts#L17)
+[packages/hooks/src/orderly/useMarginRatio.ts:17](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useMarginRatio.ts#L17)
 
 ___
 
@@ -1144,7 +1225,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useMarkPrice.ts:5](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useMarkPrice.ts#L5)
+[packages/hooks/src/orderly/useMarkPrice.ts:5](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useMarkPrice.ts#L5)
 
 ___
 
@@ -1158,7 +1239,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useMarkPricesStream.ts:4](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useMarkPricesStream.ts#L4)
+[packages/hooks/src/orderly/useMarkPricesStream.ts:4](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useMarkPricesStream.ts#L4)
 
 ___
 
@@ -1184,7 +1265,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useMarketTradeStream.ts:9](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useMarketTradeStream.ts#L9)
+[packages/hooks/src/orderly/useMarketTradeStream.ts:9](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useMarketTradeStream.ts#L9)
 
 ___
 
@@ -1204,7 +1285,7 @@ readonly [[`Ticker`](../interfaces/orderly_network_types.WSMessage.Ticker)[], \{
 
 #### Defined in
 
-[packages/hooks/src/orderly/useMarkets.ts:50](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useMarkets.ts#L50)
+[packages/hooks/src/orderly/useMarkets.ts:50](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useMarkets.ts#L50)
 
 ___
 
@@ -1222,7 +1303,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useMarketsStream.ts:8](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useMarketsStream.ts#L8)
+[packages/hooks/src/orderly/useMarketsStream.ts:8](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useMarketsStream.ts#L8)
 
 ___
 
@@ -1246,7 +1327,7 @@ the maximum quantity available for trading in USD
 
 #### Defined in
 
-[packages/hooks/src/orderly/useMaxQty.ts:23](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useMaxQty.ts#L23)
+[packages/hooks/src/orderly/useMaxQty.ts:23](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useMaxQty.ts#L23)
 
 ___
 
@@ -1266,7 +1347,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/useMediaQuery.ts:3](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/useMediaQuery.ts#L3)
+[packages/hooks/src/useMediaQuery.ts:3](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/useMediaQuery.ts#L3)
 
 ___
 
@@ -1297,7 +1378,7 @@ readonly [(`data`: ``null`` \| `Record`\<`string`, `any`\>, `params?`: `Record`\
 
 #### Defined in
 
-[packages/hooks/src/useMutation.ts:52](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/useMutation.ts#L52)
+[packages/hooks/src/useMutation.ts:52](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/useMutation.ts#L52)
 
 ___
 
@@ -1338,7 +1419,7 @@ const { formattedOrder, onSubmit, helper } = useOrderEntry({
 
 #### Defined in
 
-[packages/hooks/src/orderly/useOrderEntry.ts:96](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useOrderEntry.ts#L96)
+[packages/hooks/src/orderly/useOrderEntry.ts:96](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useOrderEntry.ts#L96)
 
 ▸ **useOrderEntry**(`symbol`, `side`, `reduceOnly`): `UseOrderEntryReturn`
 
@@ -1358,7 +1439,7 @@ const { formattedOrder, onSubmit, helper } = useOrderEntry({
 
 #### Defined in
 
-[packages/hooks/src/orderly/useOrderEntry.ts:103](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useOrderEntry.ts#L103)
+[packages/hooks/src/orderly/useOrderEntry.ts:103](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useOrderEntry.ts#L103)
 
 ___
 
@@ -1381,7 +1462,7 @@ readonly [``null`` \| `any`[], \{ `cancelAlgoOrder`: (`orderId`: `number`, `symb
 
 #### Defined in
 
-[packages/hooks/src/orderly/useOrderStream.ts:34](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useOrderStream.ts#L34)
+[packages/hooks/src/orderly/useOrderStream.ts:34](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useOrderStream.ts#L34)
 
 ___
 
@@ -1411,7 +1492,7 @@ React hook that returns the current orderbook for a given market
 
 #### Defined in
 
-[packages/hooks/src/orderly/useOrderbookStream.ts:235](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useOrderbookStream.ts#L235)
+[packages/hooks/src/orderly/useOrderbookStream.ts:235](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useOrderbookStream.ts#L235)
 
 ___
 
@@ -1432,7 +1513,7 @@ readonly [\{ `aggregated`: `any` ; `rows`: ``null`` \| [`PositionExt`](../interf
 
 #### Defined in
 
-[packages/hooks/src/orderly/usePositionStream.ts:27](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/usePositionStream.ts#L27)
+[packages/hooks/src/orderly/usePositionStream.ts:27](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/usePositionStream.ts#L27)
 
 ___
 
@@ -1477,7 +1558,7 @@ profitColor: "rgb(0,181,159)",
 
 #### Defined in
 
-[packages/hooks/src/usePoster.ts:20](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/usePoster.ts#L20)
+[packages/hooks/src/usePoster.ts:20](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/usePoster.ts#L20)
 
 ___
 
@@ -1496,7 +1577,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/usePreloadData.ts:4](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/usePreloadData.ts#L4)
+[packages/hooks/src/usePreloadData.ts:4](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/usePreloadData.ts#L4)
 
 ___
 
@@ -1517,7 +1598,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/usePrivateDataObserver.ts:13](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/usePrivateDataObserver.ts#L13)
+[packages/hooks/src/orderly/usePrivateDataObserver.ts:13](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/usePrivateDataObserver.ts#L13)
 
 ___
 
@@ -1538,7 +1619,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/usePrivateInfiniteQuery.ts:10](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/usePrivateInfiniteQuery.ts#L10)
+[packages/hooks/src/usePrivateInfiniteQuery.ts:10](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/usePrivateInfiniteQuery.ts#L10)
 
 ___
 
@@ -1571,7 +1652,7 @@ for private api
 
 #### Defined in
 
-[packages/hooks/src/usePrivateQuery.ts:13](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/usePrivateQuery.ts#L13)
+[packages/hooks/src/usePrivateQuery.ts:13](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/usePrivateQuery.ts#L13)
 
 ___
 
@@ -1604,7 +1685,7 @@ for public api
 
 #### Defined in
 
-[packages/hooks/src/useQuery.ts:11](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/useQuery.ts#L11)
+[packages/hooks/src/useQuery.ts:11](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/useQuery.ts#L11)
 
 ___
 
@@ -1980,7 +2061,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/useSessionStorage.ts:4](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/useSessionStorage.ts#L4)
+[packages/hooks/src/useSessionStorage.ts:4](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/useSessionStorage.ts#L4)
 
 ___
 
@@ -2001,7 +2082,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useSettleSubscription.ts:4](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useSettleSubscription.ts#L4)
+[packages/hooks/src/orderly/useSettleSubscription.ts:4](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useSettleSubscription.ts#L4)
 
 ___
 
@@ -2027,7 +2108,7 @@ PriceRange | undefined - Returns the PriceRange representing the price range or 
 
 #### Defined in
 
-[packages/hooks/src/orderly/useSymbolPriceRange.ts:19](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useSymbolPriceRange.ts#L19)
+[packages/hooks/src/orderly/useSymbolPriceRange.ts:19](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useSymbolPriceRange.ts#L19)
 
 ___
 
@@ -2041,7 +2122,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useSymbolsInfo.ts:6](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useSymbolsInfo.ts#L6)
+[packages/hooks/src/orderly/useSymbolsInfo.ts:6](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useSymbolsInfo.ts#L6)
 
 ___
 
@@ -2061,7 +2142,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useTickerStream.ts:11](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useTickerStream.ts#L11)
+[packages/hooks/src/orderly/useTickerStream.ts:11](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useTickerStream.ts#L11)
 
 ___
 
@@ -2075,7 +2156,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/useWS.ts:11](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/useWS.ts#L11)
+[packages/hooks/src/useWS.ts:11](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/useWS.ts#L11)
 
 ___
 
@@ -2089,7 +2170,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/walletConnectorContext.tsx:38](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/walletConnectorContext.tsx#L38)
+[packages/hooks/src/walletConnectorContext.tsx:38](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/walletConnectorContext.tsx#L38)
 
 ___
 
@@ -2110,7 +2191,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useWalletSubscription.ts:4](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useWalletSubscription.ts#L4)
+[packages/hooks/src/orderly/useWalletSubscription.ts:4](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useWalletSubscription.ts#L4)
 
 ___
 
@@ -2133,7 +2214,7 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/orderly/useWithdraw.ts:6](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/orderly/useWithdraw.ts#L6)
+[packages/hooks/src/orderly/useWithdraw.ts:6](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/orderly/useWithdraw.ts#L6)
 
 ___
 
@@ -2147,4 +2228,4 @@ ___
 
 #### Defined in
 
-[packages/hooks/src/useWsStatus.ts:10](https://github.com/OrderlyNetwork/js-sdk/blob/bc7eb1a/packages/hooks/src/useWsStatus.ts#L10)
+[packages/hooks/src/useWsStatus.ts:10](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/hooks/src/useWsStatus.ts#L10)

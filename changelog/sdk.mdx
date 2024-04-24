@@ -4,8 +4,59 @@ description: "Additions and updates to the TS SDK"
 icon: "layer-group"
 ---
 
-import { Chip } from '/snippets/chip.mdx';
+import { Chip } from "/snippets/chip.mdx";
 
+## April 21, 2024 - v1.3.2
+
+<div style={{ display: "table", width: "auto" }}>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="new" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Updates to @orderly.network/hook v1.3.2**
+
+      **New hooks:**
+
+      - useComission
+
+      - useDaily
+
+      - useRefereeHistory
+
+      - useRefereeInfo
+
+      **Three new referral program pages**
+
+      ### Dashboard page:
+
+      <Frame>
+        <img src="/images/referral/dashboard.png" />
+      </Frame>
+
+      ### Affiliate page:
+
+      <Frame>
+        <img src="/images/referral/affiliate.png" />
+      </Frame>
+
+      ### Trader page:
+
+      <Frame>
+        <img src="/images/referral/trader.png" />
+      </Frame>
+
+    </div>
+
+  </div>
+
+</div>
 
 ## April 2, 2024 - v1.2.0
 
@@ -37,9 +88,10 @@ import { Chip } from '/snippets/chip.mdx';
 
       - Incorrect decimal digits for estimated liquidation price in order entry.
 
-      - Updates to PnL card with design enhancements. 
+      - Updates to PnL card with design enhancements.
 
     </div>
+
   </div>
 
 </div>
@@ -67,6 +119,7 @@ import { Chip } from '/snippets/chip.mdx';
       - Minor dependency issues.
 
     </div>
+
   </div>
 
 </div>
@@ -90,6 +143,7 @@ import { Chip } from '/snippets/chip.mdx';
       -  Minor internal issues fixed.
 
     </div>
+
   </div>
 
 </div>
@@ -115,6 +169,7 @@ import { Chip } from '/snippets/chip.mdx';
       -  Dependency issues at runtime.
 
     </div>
+
   </div>
 
 </div>
@@ -145,7 +200,7 @@ import { Chip } from '/snippets/chip.mdx';
 
       **New:**
 
-      - PnL card sharing: a PnL card can be generated based on user's positions. 
+      - PnL card sharing: a PnL card can be generated based on user's positions.
 
       ```JS
       () => {
@@ -181,7 +236,8 @@ import { Chip } from '/snippets/chip.mdx';
 
         return <canvas ref={ref} width={550} height={300} />;
       };
-```
+
+````
     Either default layout can be used or one can be provided via `layout` parameter. Sample code:
 
     ```JS
@@ -274,7 +330,7 @@ import { Chip } from '/snippets/chip.mdx';
 
       ```JS
       const [data] = useOrderBookStream('[symbol]', undefined, {level:10, padding:false}
-      //if 'padding' is true, the hook will return NaN to 
+      //if 'padding' is true, the hook will return NaN to
       //fill the data to specified level if not enough depth
       ```
       - fixed WS connection issues.
@@ -318,7 +374,7 @@ import { Chip } from '/snippets/chip.mdx';
 
 
         - Added stop order functionality in the desktop and mobile web UI.
-        
+
         - Added order/position lines in the desktop web kline.
 
     </div>
@@ -366,15 +422,16 @@ import { Chip } from '/snippets/chip.mdx';
 
         **Testnet Transition:** Switch from Arbitrum Goerli to Arbitrum Sepolia.
 
-        **Stop Limit/Stop Market Support:** 
+        **Stop Limit/Stop Market Support:**
 
         - Two new order types: `STOP_MARKET` and `STOP_LIMIT`
 
         - Introduction of Algo orders (stop loss) with two new methods: `updateAlgoOrder(orderId: string, order: OrderEntity)` and `cancelAlgoOrder(orderId: string, symbol?: string)`.
-        
+
         - Additional return parameters to include Algo order related properties.
 
     </div>
   </div>
 
 </div>
+````

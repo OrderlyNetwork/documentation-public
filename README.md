@@ -31,4 +31,3 @@ file.
 If there are changes to the OpenAPI file, then it is recommended to run the update
 script after adding all changes and then modifying the `mint-base.json` file to add
 those new endpoints.
-Right now the API endpoints won't be automatically added to the mint file.
