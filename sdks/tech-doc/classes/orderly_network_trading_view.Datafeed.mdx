@@ -1,0 +1,483 @@
+[Orderly SDKs](/sdks/tech-doc/README) / [Modules](/sdks/tech-doc/modules) / [@orderly.network/trading-view](/sdks/tech-doc/modules/orderly_network_trading_view) / Datafeed
+
+# Class: Datafeed
+
+[@orderly.network/trading-view](/sdks/tech-doc/modules/orderly_network_trading_view).Datafeed
+
+## Hierarchy
+
+- `AbstractDatafeed`
+
+  ↳ **`Datafeed`**
+
+## Table of contents
+
+### Constructors
+
+- [constructor](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#constructor)
+
+### Properties
+
+- [\_configuration](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#_configuration)
+- [\_prefixId](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#_prefixid)
+- [\_publicWs](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#_publicws)
+- [\_subscribeQuoteMap](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#_subscribequotemap)
+- [market](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#market)
+- [marketRejector](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#marketrejector)
+- [marketResolver](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#marketresolver)
+
+### Methods
+
+- [\_requestConfiguration](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#_requestconfiguration)
+- [\_toUDFTicker](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#_toudfticker)
+- [getBars](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#getbars)
+- [getMarks](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#getmarks)
+- [getQuotes](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#getquotes)
+- [getServerTime](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#getservertime)
+- [getTimescaleMarks](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#gettimescalemarks)
+- [onReady](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#onready)
+- [remove](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#remove)
+- [resolveSymbol](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#resolvesymbol)
+- [searchSymbols](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#searchsymbols)
+- [subscribeBars](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#subscribebars)
+- [subscribeQuotes](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#subscribequotes)
+- [unsubscribeBars](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#unsubscribebars)
+- [unsubscribeQuotes](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#unsubscribequotes)
+
+## Constructors
+
+### constructor
+
+• **new Datafeed**(`apiUrl`, `ws`)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `apiUrl` | `string` |
+| `ws` | `any` |
+
+#### Overrides
+
+AbstractDatafeed.constructor
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:21](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L21)
+
+## Properties
+
+### \_configuration
+
+• `Protected` **\_configuration**: `UdfCompatibleConfiguration`
+
+#### Inherited from
+
+AbstractDatafeed.\_configuration
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:41](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L41)
+
+___
+
+### \_prefixId
+
+• `Private` **\_prefixId**: `number`
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:14](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L14)
+
+___
+
+### \_publicWs
+
+• `Private` **\_publicWs**: `WebsocketService`
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:15](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L15)
+
+___
+
+### \_subscribeQuoteMap
+
+• `Private` **\_subscribeQuoteMap**: `Map`\<`string`, `any`\>
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:12](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L12)
+
+___
+
+### market
+
+• `Private` `Optional` **market**: `Promise`\<`any`\>
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:17](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L17)
+
+___
+
+### marketRejector
+
+• `Private` `Optional` **marketRejector**: `Function`
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:19](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L19)
+
+___
+
+### marketResolver
+
+• `Private` `Optional` **marketResolver**: `Function`
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:18](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L18)
+
+## Methods
+
+### \_requestConfiguration
+
+▸ `Protected` **_requestConfiguration**(): `Promise`\<``null`` \| `UdfCompatibleConfiguration`\>
+
+#### Returns
+
+`Promise`\<``null`` \| `UdfCompatibleConfiguration`\>
+
+#### Inherited from
+
+AbstractDatafeed.\_requestConfiguration
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:152](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L152)
+
+___
+
+### \_toUDFTicker
+
+▸ `Private` **_toUDFTicker**(`t`): `QuoteData`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `t` | `any` |
+
+#### Returns
+
+`QuoteData`
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:93](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L93)
+
+___
+
+### getBars
+
+▸ **getBars**(`symbolInfo`, `resolution`, `periodParams`, `onResult`, `onError`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `symbolInfo` | `LibrarySymbolInfo` |
+| `resolution` | `ResolutionString` |
+| `periodParams` | `PeriodParamsWithOptionalCountback` |
+| `onResult` | `HistoryCallback` |
+| `onError` | `ErrorCallback` |
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+AbstractDatafeed.getBars
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:67](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L67)
+
+___
+
+### getMarks
+
+▸ **getMarks**(): `void`
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+AbstractDatafeed.getMarks
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:127](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L127)
+
+___
+
+### getQuotes
+
+▸ **getQuotes**(`symbols`, `onDataCallback`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `symbols` | `string`[] |
+| `onDataCallback` | `QuotesCallback` |
+
+#### Returns
+
+`void`
+
+#### Overrides
+
+AbstractDatafeed.getQuotes
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:49](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L49)
+
+___
+
+### getServerTime
+
+▸ **getServerTime**(): `void`
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+AbstractDatafeed.getServerTime
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:135](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L135)
+
+___
+
+### getTimescaleMarks
+
+▸ **getTimescaleMarks**(): `void`
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+AbstractDatafeed.getTimescaleMarks
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:131](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L131)
+
+___
+
+### onReady
+
+▸ **onReady**(`callback`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `callback` | `OnReadyCallback` |
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+AbstractDatafeed.onReady
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:91](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L91)
+
+___
+
+### remove
+
+▸ **remove**(): `void`
+
+#### Returns
+
+`void`
+
+#### Overrides
+
+AbstractDatafeed.remove
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:89](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L89)
+
+___
+
+### resolveSymbol
+
+▸ **resolveSymbol**(`symbolName`, `onResolve`, `onError`, `extension?`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `symbolName` | `string` |
+| `onResolve` | `ResolveCallback` |
+| `onError` | `ErrorCallback` |
+| `extension?` | `SymbolResolveExtension` |
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+AbstractDatafeed.resolveSymbol
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:108](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L108)
+
+___
+
+### searchSymbols
+
+▸ **searchSymbols**(`userInput`, `exchange`, `symbolType`, `onResult`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `userInput` | `string` |
+| `exchange` | `string` |
+| `symbolType` | `string` |
+| `onResult` | `SearchSymbolsCallback` |
+
+#### Returns
+
+`void`
+
+#### Inherited from
+
+AbstractDatafeed.searchSymbols
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:97](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L97)
+
+___
+
+### subscribeBars
+
+▸ **subscribeBars**(`symbolInfo`, `resolution`, `onTick`, `listenerGuid`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `symbolInfo` | `LibrarySymbolInfo` |
+| `resolution` | `ResolutionString` |
+| `onTick` | `SubscribeBarsCallback` |
+| `listenerGuid` | `string` |
+
+#### Returns
+
+`void`
+
+#### Overrides
+
+AbstractDatafeed.subscribeBars
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:41](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L41)
+
+___
+
+### subscribeQuotes
+
+▸ **subscribeQuotes**(`symbols`, `fastSymbols`, `onRealtimeCallback`, `listenerGuid`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `symbols` | `string`[] |
+| `fastSymbols` | `string`[] |
+| `onRealtimeCallback` | `QuotesCallback` |
+| `listenerGuid` | `string` |
+
+#### Returns
+
+`void`
+
+#### Overrides
+
+AbstractDatafeed.subscribeQuotes
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:75](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L75)
+
+___
+
+### unsubscribeBars
+
+▸ **unsubscribeBars**(`listenerGuid`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `listenerGuid` | `string` |
+
+#### Returns
+
+`void`
+
+#### Overrides
+
+AbstractDatafeed.unsubscribeBars
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:45](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L45)
+
+___
+
+### unsubscribeQuotes
+
+▸ **unsubscribeQuotes**(`subscriptionId`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `subscriptionId` | `string` |
+
+#### Returns
+
+`void`
+
+#### Overrides
+
+AbstractDatafeed.unsubscribeQuotes
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:82](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L82)

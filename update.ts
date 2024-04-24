@@ -66,6 +66,7 @@ async function generateTechDocs() {
   await runCommand(`git clone --depth 1 https://github.com/OrderlyNetwork/js-sdk.git ${tmpFolder}`);
   process.chdir(tmpFolder);
   await runCommand(`pnpm install --no-frozen-lockfile`);
+  await runCommand("pnpm run build");
   await runCommand("pnpm run docs");
   process.chdir(currentCwd);
   const sdkPath = path.join(tmpFolder, "docs");
