@@ -4081,6 +4081,19 @@ paths:
           example: ''
           schema:
             type: integer
+        - name: sort
+          in: query
+          description: "
+          `ascending_code_binding_time`
+          `descending_code_binding_time`
+          `ascending_referral_rebate`
+          `descending_referral_rebate`
+          `ascending_volume`
+          `descending_volume`
+          "
+          example: "ascending_volume"
+          schema:
+            type: string
         - $ref: '#/components/parameters/orderly_timestamp'
         - $ref: '#/components/parameters/orderly_account_id'
         - $ref: '#/components/parameters/orderly_key'
@@ -8748,17 +8761,6 @@ components:
                         type: string
                         example: "Registered"
                         description: "`Registered` = Not traded but bind the code / `Traded` = bind the code and volume > 0"
-                      sort:
-                        type: string
-                        example: "ascending_code_binding_time"
-                        description: "
-                        `ascending_code_binding_time`
-                        `descending_code_binding_time`
-                        `ascending_referral_rebate`
-                        `descending_referral_rebate`
-                        `ascending_volume`
-                        `descending_volume`
-                        "
                 meta:
                   type: object
                   properties:
