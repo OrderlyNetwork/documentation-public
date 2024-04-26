@@ -16,11 +16,15 @@
 ### Enumerations
 
 - [AccountStatusEnum](/sdks/tech-doc/enums/orderly_network_types.AccountStatusEnum)
+- [AlgoOrderRootType](/sdks/tech-doc/enums/orderly_network_types.AlgoOrderRootType)
+- [AlgoOrderType](/sdks/tech-doc/enums/orderly_network_types.AlgoOrderType)
 - [ExchangeStatusEnum](/sdks/tech-doc/enums/orderly_network_types.ExchangeStatusEnum)
 - [OrderSide](/sdks/tech-doc/enums/orderly_network_types.OrderSide)
 - [OrderStatus](/sdks/tech-doc/enums/orderly_network_types.OrderStatus)
 - [OrderType](/sdks/tech-doc/enums/orderly_network_types.OrderType)
+- [PositionSide](/sdks/tech-doc/enums/orderly_network_types.PositionSide)
 - [SystemStateEnum](/sdks/tech-doc/enums/orderly_network_types.SystemStateEnum)
+- [TriggerPriceType](/sdks/tech-doc/enums/orderly_network_types.TriggerPriceType)
 - [WS\_WalletStatusEnum](/sdks/tech-doc/enums/orderly_network_types.WS_WalletStatusEnum)
 - [WithdrawStatus](/sdks/tech-doc/enums/orderly_network_types.WithdrawStatus)
 
@@ -31,6 +35,7 @@
 
 ### Interfaces
 
+- [BaseAlgoOrderEntity](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity)
 - [ChainConfig](/sdks/tech-doc/interfaces/orderly_network_types.ChainConfig)
 - [ChainInfo](/sdks/tech-doc/interfaces/orderly_network_types.ChainInfo)
 - [NativeCurrency](/sdks/tech-doc/interfaces/orderly_network_types.NativeCurrency)
@@ -38,8 +43,12 @@
 
 ### Type Aliases
 
+- [AlgoOrderEntity](/sdks/tech-doc/modules/orderly_network_types#algoorderentity)
 - [CurrentChain](/sdks/tech-doc/modules/orderly_network_types#currentchain)
 - [NetworkId](/sdks/tech-doc/modules/orderly_network_types#networkid)
+- [Optional](/sdks/tech-doc/modules/orderly_network_types#optional)
+- [RequireKeys](/sdks/tech-doc/modules/orderly_network_types#requirekeys)
+- [TPSLOrderEntry](/sdks/tech-doc/modules/orderly_network_types#tpslorderentry)
 
 ### Variables
 
@@ -85,6 +94,22 @@ Renames and re-exports [ChainConfig](/sdks/tech-doc/interfaces/orderly_network_t
 
 ## Type Aliases
 
+### AlgoOrderEntity
+
+Ƭ **AlgoOrderEntity**\<`T`\>: `T` extends [`TP_SL`](/sdks/tech-doc/enums/orderly_network_types.AlgoOrderRootType#tp_sl) ? [`Optional`](/sdks/tech-doc/modules/orderly_network_types#optional)\<[`BaseAlgoOrderEntity`](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity)\<`T`\>, ``"side"`` \| ``"type"`` \| ``"trigger_price"`` \| ``"order_type"``\> : `T` extends [`POSITIONAL_TP_SL`](/sdks/tech-doc/enums/orderly_network_types.AlgoOrderRootType#positional_tp_sl) ? [`Optional`](/sdks/tech-doc/modules/orderly_network_types#optional)\<[`BaseAlgoOrderEntity`](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity)\<`T`\>, ``"side"`` \| ``"type"`` \| ``"trigger_price"`` \| ``"order_type"`` \| ``"quantity"``\> : `Omit`\<[`BaseAlgoOrderEntity`](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity)\<`T`\>, ``"child_orders"`` \| ``"order_type"``\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends [`AlgoOrderRootType`](/sdks/tech-doc/enums/orderly_network_types.AlgoOrderRootType) = [`STOP`](/sdks/tech-doc/enums/orderly_network_types.AlgoOrderRootType#stop) |
+
+#### Defined in
+
+[packages/types/src/order.ts:116](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L116)
+
+___
+
 ### CurrentChain
 
 Ƭ **CurrentChain**: `Object`
@@ -94,11 +119,11 @@ Renames and re-exports [ChainConfig](/sdks/tech-doc/interfaces/orderly_network_t
 | Name | Type |
 | :------ | :------ |
 | `id` | `number` |
-| `info` | [`Chain`](/sdks/tech-doc/interfaces/orderly_network_types.API.Chain) |
+| `info` | [`Chain`](../interfaces/orderly_network_types.API.Chain) |
 
 #### Defined in
 
-[packages/types/src/wallet.ts:8](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/wallet.ts#L8)
+[packages/types/src/wallet.ts:8](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/wallet.ts#L8)
 
 ___
 
@@ -108,7 +133,51 @@ ___
 
 #### Defined in
 
-[packages/types/src/constants.ts:21](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/constants.ts#L21)
+[packages/types/src/constants.ts:21](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/constants.ts#L21)
+
+___
+
+### Optional
+
+Ƭ **Optional**\<`T`, `K`\>: `Omit`\<`T`, `K`\> & `Partial`\<`Pick`\<`T`, `K`\>\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | `T` |
+| `K` | extends keyof `T` |
+
+#### Defined in
+
+[packages/types/src/order.ts:84](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L84)
+
+___
+
+### RequireKeys
+
+Ƭ **RequireKeys**\<`T`, `K`\>: `Required`\<`Pick`\<`T`, `K`\>\> & `Omit`\<`T`, `K`\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends `object` |
+| `K` | extends keyof `T` |
+
+#### Defined in
+
+[packages/types/src/order.ts:85](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L85)
+
+___
+
+### TPSLOrderEntry
+
+Ƭ **TPSLOrderEntry**: [`Optional`](orderly_network_types#optional)\<[`AlgoOrderEntity`](orderly_network_types#algoorderentity)\<[`TP_SL`](../enums/orderly_network_types.AlgoOrderRootType#tp_sl)\>, ``"side"`` \| ``"type"`` \| ``"trigger_price"``\>
+
+#### Defined in
+
+[packages/types/src/order.ts:130](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L130)
 
 ## Variables
 
@@ -118,7 +187,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/constants.ts:33](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/constants.ts#L33)
+[packages/types/src/constants.ts:33](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/constants.ts#L33)
 
 ___
 
@@ -128,7 +197,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/constants.ts:34](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/constants.ts#L34)
+[packages/types/src/constants.ts:34](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/constants.ts#L34)
 
 ___
 
@@ -138,7 +207,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/constants.ts:29](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/constants.ts#L29)
+[packages/types/src/constants.ts:29](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/constants.ts#L29)
 
 ___
 
@@ -148,7 +217,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/constants.ts:30](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/constants.ts#L30)
+[packages/types/src/constants.ts:30](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/constants.ts#L30)
 
 ___
 
@@ -182,7 +251,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/chains.ts:173](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/chains.ts#L173)
+[packages/types/src/chains.ts:173](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/chains.ts#L173)
 
 ___
 
@@ -216,7 +285,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/chains.ts:322](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/chains.ts#L322)
+[packages/types/src/chains.ts:322](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/chains.ts#L322)
 
 ___
 
@@ -250,7 +319,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/chains.ts:346](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/chains.ts#L346)
+[packages/types/src/chains.ts:346](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/chains.ts#L346)
 
 ___
 
@@ -284,7 +353,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/chains.ts:53](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/chains.ts#L53)
+[packages/types/src/chains.ts:53](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/chains.ts#L53)
 
 ___
 
@@ -318,7 +387,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/chains.ts:101](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/chains.ts#L101)
+[packages/types/src/chains.ts:101](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/chains.ts#L101)
 
 ___
 
@@ -352,7 +421,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/chains.ts:298](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/chains.ts#L298)
+[packages/types/src/chains.ts:298](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/chains.ts#L298)
 
 ___
 
@@ -362,7 +431,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/constants.ts:38](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/constants.ts#L38)
+[packages/types/src/constants.ts:38](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/constants.ts#L38)
 
 ___
 
@@ -396,7 +465,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/chains.ts:29](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/chains.ts#L29)
+[packages/types/src/chains.ts:29](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/chains.ts#L29)
 
 ___
 
@@ -430,7 +499,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/chains.ts:125](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/chains.ts#L125)
+[packages/types/src/chains.ts:125](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/chains.ts#L125)
 
 ___
 
@@ -464,7 +533,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/chains.ts:77](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/chains.ts#L77)
+[packages/types/src/chains.ts:77](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/chains.ts#L77)
 
 ___
 
@@ -498,7 +567,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/chains.ts:274](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/chains.ts#L274)
+[packages/types/src/chains.ts:274](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/chains.ts#L274)
 
 ___
 
@@ -508,7 +577,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/constants.ts:36](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/constants.ts#L36)
+[packages/types/src/constants.ts:36](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/constants.ts#L36)
 
 ___
 
@@ -520,7 +589,7 @@ A constant for the maximum value for a ``uint256``.
 
 #### Defined in
 
-[packages/types/src/constants.ts:43](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/constants.ts#L43)
+[packages/types/src/constants.ts:43](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/constants.ts#L43)
 
 ___
 
@@ -554,7 +623,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/chains.ts:197](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/chains.ts#L197)
+[packages/types/src/chains.ts:197](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/chains.ts#L197)
 
 ___
 
@@ -588,7 +657,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/chains.ts:370](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/chains.ts#L370)
+[packages/types/src/chains.ts:370](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/chains.ts#L370)
 
 ___
 
@@ -622,7 +691,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/chains.ts:149](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/chains.ts#L149)
+[packages/types/src/chains.ts:149](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/chains.ts#L149)
 
 ___
 
@@ -656,7 +725,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/chains.ts:250](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/chains.ts#L250)
+[packages/types/src/chains.ts:250](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/chains.ts#L250)
 
 ___
 
@@ -666,7 +735,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/chains.ts:412](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/chains.ts#L412)
+[packages/types/src/chains.ts:412](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/chains.ts#L412)
 
 ___
 
@@ -676,7 +745,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/chains.ts:394](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/chains.ts#L394)
+[packages/types/src/chains.ts:394](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/chains.ts#L394)
 
 ___
 
@@ -686,7 +755,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/chains.ts:468](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/chains.ts#L468)
+[packages/types/src/chains.ts:468](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/chains.ts#L468)
 
 ___
 
@@ -696,7 +765,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/chains.ts:469](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/chains.ts#L469)
+[packages/types/src/chains.ts:469](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/chains.ts#L469)
 
 ___
 
@@ -716,7 +785,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/sign.ts:1](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/sign.ts#L1)
+[packages/types/src/sign.ts:1](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/sign.ts#L1)
 
 ___
 
@@ -726,17 +795,17 @@ ___
 
 #### Defined in
 
-[packages/types/src/constants.ts:47](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/constants.ts#L47)
+[packages/types/src/constants.ts:47](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/constants.ts#L47)
 
 ___
 
 ### version
 
-• **version**: ``"1.3.2"``
+• **version**: ``"1.4.0"``
 
 #### Defined in
 
-[packages/types/src/version.ts:14](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/version.ts#L14)
+[packages/types/src/version.ts:14](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/version.ts#L14)
 
 ___
 
@@ -770,7 +839,7 @@ ___
 
 #### Defined in
 
-[packages/types/src/chains.ts:221](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/chains.ts#L221)
+[packages/types/src/chains.ts:221](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/chains.ts#L221)
 
 ## Functions
 
@@ -790,4 +859,4 @@ ___
 
 #### Defined in
 
-[packages/types/src/constants.ts:49](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/types/src/constants.ts#L49)
+[packages/types/src/constants.ts:49](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/constants.ts#L49)

@@ -19,6 +19,11 @@
 ### Functions
 
 - [MMR](/sdks/tech-doc/modules/orderly_network_perp.positions#mmr)
+- [estOffsetForTP](/sdks/tech-doc/modules/orderly_network_perp.positions#estoffsetfortp)
+- [estPnLForSL](/sdks/tech-doc/modules/orderly_network_perp.positions#estpnlforsl)
+- [estPnLForTP](/sdks/tech-doc/modules/orderly_network_perp.positions#estpnlfortp)
+- [estPriceForTP](/sdks/tech-doc/modules/orderly_network_perp.positions#estpricefortp)
+- [estPriceFromOffsetForTP](/sdks/tech-doc/modules/orderly_network_perp.positions#estpricefromoffsetfortp)
 - [liqPrice](/sdks/tech-doc/modules/orderly_network_perp.positions#liqprice)
 - [maintenanceMargin](/sdks/tech-doc/modules/orderly_network_perp.positions#maintenancemargin)
 - [notional](/sdks/tech-doc/modules/orderly_network_perp.positions#notional)
@@ -47,7 +52,7 @@
 
 #### Defined in
 
-[positions.ts:89](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/perp/src/positions.ts#L89)
+[positions.ts:89](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L89)
 
 ___
 
@@ -65,7 +70,7 @@ ___
 
 #### Defined in
 
-[positions.ts:130](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/perp/src/positions.ts#L130)
+[positions.ts:130](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L130)
 
 ___
 
@@ -85,7 +90,7 @@ ___
 
 #### Defined in
 
-[positions.ts:213](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/perp/src/positions.ts#L213)
+[positions.ts:213](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L213)
 
 ___
 
@@ -102,7 +107,7 @@ ___
 
 #### Defined in
 
-[positions.ts:178](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/perp/src/positions.ts#L178)
+[positions.ts:178](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L178)
 
 ___
 
@@ -120,7 +125,7 @@ ___
 
 #### Defined in
 
-[positions.ts:26](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/perp/src/positions.ts#L26)
+[positions.ts:26](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L26)
 
 ___
 
@@ -139,7 +144,7 @@ ___
 
 #### Defined in
 
-[positions.ts:43](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/perp/src/positions.ts#L43)
+[positions.ts:43](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L43)
 
 ___
 
@@ -159,7 +164,7 @@ ___
 
 #### Defined in
 
-[positions.ts:147](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/perp/src/positions.ts#L147)
+[positions.ts:147](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L147)
 
 ## Functions
 
@@ -183,7 +188,131 @@ The MMR of the position.
 
 #### Defined in
 
-[positions.ts:226](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/perp/src/positions.ts#L226)
+[positions.ts:226](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L226)
+
+___
+
+### estOffsetForTP
+
+▸ **estOffsetForTP**(`inputs`): `number`
+
+Calculates the estimated offset for take profit.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inputs` | `Object` |
+| `inputs.entryPrice` | `number` |
+| `inputs.price` | `number` |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[positions.ts:276](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L276)
+
+___
+
+### estPnLForSL
+
+▸ **estPnLForSL**(`inputs`): `number`
+
+Calculates the PnL for stop loss.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inputs` | `Object` |
+| `inputs.entryPrice` | `number` |
+| `inputs.positionQty` | `number` |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[positions.ts:296](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L296)
+
+___
+
+### estPnLForTP
+
+▸ **estPnLForTP**(`inputs`): `number`
+
+Calculates the profit or loss for take profit.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inputs` | `Object` |
+| `inputs.entryPrice` | `number` |
+| `inputs.positionQty` | `number` |
+| `inputs.price` | `number` |
+
+#### Returns
+
+`number`
+
+The profit or loss for take profit.
+
+#### Defined in
+
+[positions.ts:249](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L249)
+
+___
+
+### estPriceForTP
+
+▸ **estPriceForTP**(`inputs`): `number`
+
+Calculates the estimated price for take profit.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inputs` | `Object` |
+| `inputs.entryPrice` | `number` |
+| `inputs.pnl` | `number` |
+| `inputs.positionQty` | `number` |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[positions.ts:262](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L262)
+
+___
+
+### estPriceFromOffsetForTP
+
+▸ **estPriceFromOffsetForTP**(`inputs`): `number`
+
+Calculates the estimated price from offset for take profit.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inputs` | `Object` |
+| `inputs.entryPrice` | `number` |
+| `inputs.offset` | `number` |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[positions.ts:286](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L286)
 
 ___
 
@@ -207,7 +336,7 @@ The liquidation price of the position.
 
 #### Defined in
 
-[positions.ts:102](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/perp/src/positions.ts#L102)
+[positions.ts:102](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L102)
 
 ___
 
@@ -231,7 +360,7 @@ The maintenance margin of the position.
 
 #### Defined in
 
-[positions.ts:141](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/perp/src/positions.ts#L141)
+[positions.ts:141](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L141)
 
 ___
 
@@ -256,7 +385,7 @@ The notional value of the position.
 
 #### Defined in
 
-[positions.ts:11](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/perp/src/positions.ts#L11)
+[positions.ts:11](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L11)
 
 ___
 
@@ -280,7 +409,7 @@ The total notional value of all positions.
 
 #### Defined in
 
-[positions.ts:20](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/perp/src/positions.ts#L20)
+[positions.ts:20](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L20)
 
 ___
 
@@ -304,7 +433,7 @@ The total unrealized profit or loss of all positions.
 
 #### Defined in
 
-[positions.ts:76](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/perp/src/positions.ts#L76)
+[positions.ts:76](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L76)
 
 ___
 
@@ -328,7 +457,7 @@ The total unrealized profit or loss of all positions.
 
 #### Defined in
 
-[positions.ts:190](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/perp/src/positions.ts#L190)
+[positions.ts:190](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L190)
 
 ___
 
@@ -352,7 +481,7 @@ The unrealized profit or loss of the position.
 
 #### Defined in
 
-[positions.ts:37](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/perp/src/positions.ts#L37)
+[positions.ts:37](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L37)
 
 ___
 
@@ -376,7 +505,7 @@ The ROI of the position's unrealized profit or loss.
 
 #### Defined in
 
-[positions.ts:55](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/perp/src/positions.ts#L55)
+[positions.ts:55](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L55)
 
 ___
 
@@ -400,4 +529,4 @@ The unrealized profit or loss of each position.
 
 #### Defined in
 
-[positions.ts:160](https://github.com/OrderlyNetwork/js-sdk/blob/d47dd11/packages/perp/src/positions.ts#L160)
+[positions.ts:160](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/perp/src/positions.ts#L160)

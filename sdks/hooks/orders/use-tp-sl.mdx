@@ -1,0 +1,117 @@
+---
+title: "useTPSL"
+---
+
+## Create TP/SL Orders
+
+```typescript
+const [
+  /**
+   * Formatted TP/SL order data ready for UI display
+   * The order includes the following data:
+   * [tp/sl]_pnl: Estimated takeProfit profit
+   * [tp/sl]_offset: takeProfit 
+   * [tp/sl]_offset_percentage
+   * quantity
+   * ...
+   */
+  ComputedAlgoOrder,
+  {
+    /**
+     * Update the take profit and stop loss order, this will merge the new data with the old one
+     * key values can be: quantity|tp_trigger_price|sl_trigger_price|tp_pnl|sl_pnl|tp_offset|sl_offset|tp_offset_percentage|sl_offset_percentage
+     * 
+     * If you want to set the trigger price, you can use one of the following methods:
+     * 1. Directly set triggerPrice:
+     * setValue('tp_trigger_price',60000)
+     * 2. Set PnL, automatically calculate trigger_price:
+     * setValue('tp_pnl',100)
+     * 3. Set price offset, automatically calculate trigger_price:
+     * setValue('tp_offset', 100)
+     * 4. Set price offset percentage, automatically calculate trigger_price
+     * setValue('tp_offset_percentage',10)
+     * 
+     * Using any of the above methods to set the trigger price will calculate the corresponding pnl/offset/offset_percentage, which will be returned in the order object
+     * 
+     * When setting stop loss order, replace `tp` with `sl`
+     */
+    setValue: (key: string, value: number | string) => void;
+    setValues: (values: Partial<ComputedAlgoOrder>) => void;
+    
+    /**
+     * Submit the TP/SL order
+     */
+    submit: () => Promise<void>;
+    /**
+     * Order data validation result
+     */
+    errors: ValidateError | null;
+    /**
+     * You can manually call this method to validate the Order data. If validation passes, the order data will be returned, otherwise an error will be thrown
+     */
+    validate: () => Promise<
+      AlgoOrderEntity<
+        AlgoOrderRootType.POSITIONAL_TP_SL | AlgoOrderRootType.TP_SL
+      >
+    >;
+  }
+] = useTPSLOrder(
+  /**
+  * Position of a specific trading pair currently held by the user, must include "symbol" | "average_open_price" | "position_qty" fields;
+  */
+  position: Partial<API.PositionTPSLExt> &
+    Pick<API.PositionTPSLExt, "symbol" | "average_open_price" | "position_qty">,
+  options?: {
+    /**
+     * Default order data, required if modifying TP/SL order
+    */
+    defaultOrder?: API.AlgoOrder;
+  }
+)
+```
+
+## Update TP/SL Order
+
+### Method One
+
+```typescript
+const [ComputedAlgoOrder,{submit}] = useTPSLOrder(position,{
+  defaultOrder,// Must pass in order data
+})
+```
+
+### Method Two
+
+Using `useOrderStream` hook 
+
+```typescript
+const [_, {updateTPSLOrder}] = useOrderStream();
+updateTPSLOrder(orderId, childOrders);
+```
+
+## Cancel TP/SL Order
+
+** Using useOrderStream **
+
+### Cancel all Algo orders, including POSITIONAL_TP_SL and TP_SL orders;
+
+```typescript
+const [_, {cancelAllTPSLOrders}] = useOrderStream()
+```
+
+### Cancel TP or SL order
+
+```typescript
+const [_, {cancelTPSLChildOrder}] = useOrderStream();
+
+cancelTPSLChildOrder(childOrderId, rootAlgoOrderId);
+```
+
+## Filtering TP/SL Orders
+
+```typescript
+const [orders] = useOrderStream({
+  includes:[AlgoOrderRootType.TP_SL, AlgoOrderRootType.POSITIONAL_TP_SL], // Show only TP/SL orders
+  //excludes:[AlgoOrderRootType.TP_SL, AlgoOrderRootType.POSITIONAL_TP_SL],// Do not show TP/SL orders
+})
+```
