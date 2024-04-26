@@ -514,14 +514,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InsuranceFundResponse'
-  /v1/tv/config:
+  /tv/config:
     get:
       summary: Get TradingView Localized Config Info
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET /v1/tv/config`
+        `GET /tv/config`
       tags:
         - public
       parameters:
@@ -585,14 +585,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TvHistoryResponse'
-  /v1/tv/symbol_info:
+  /tv/symbol_info:
     get:
       summary: Get TradingView Symbol Info
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET /v1/tv/symbol_info`
+        `GET /tv/symbol_info`
       tags:
         - public
       parameters:
@@ -3295,6 +3295,23 @@ paths:
           example: ''
           schema:
             type: string
+#        - name: sort
+#          in: query
+#          description: "Allow sort by
+#
+#          `ascending_broker_fee`
+#          `descending_broker_fee`
+#          `ascending_perp_maker_volume`
+#          `descending_perp_maker_volume`
+#          `ascending_perp_taker_volume`
+#          `descending_perp_taker_volume`
+#          `ascending_perp_volume`
+#          `descending_perp_volume`
+#          `ascending_total_fee`
+#          `descending_total_fee`"
+#          required: false
+#          schema:
+#            type: string
         - name: orderly-timestamp
           in: header
           description: ''
@@ -4064,6 +4081,19 @@ paths:
           example: ''
           schema:
             type: integer
+        - name: sort
+          in: query
+          description: "
+          `ascending_code_binding_time`
+          `descending_code_binding_time`
+          `ascending_referral_rebate`
+          `descending_referral_rebate`
+          `ascending_volume`
+          `descending_volume`
+          "
+          example: "ascending_volume"
+          schema:
+            type: string
         - $ref: '#/components/parameters/orderly_timestamp'
         - $ref: '#/components/parameters/orderly_account_id'
         - $ref: '#/components/parameters/orderly_key'
@@ -4659,6 +4689,13 @@ paths:
           example: ''
           schema:
             type: string
+#        - name: order_tag
+#          in: query
+#          description: ""
+#          required: false
+#          example: ""
+#          schema:
+#            type: string
       responses:
         "200":
           description: OK
@@ -6995,8 +7032,17 @@ components:
               - status
               properties:
                 status:
-                  type: integer
-                  description: status = 2 means exchange is under maintenance
+                  type: number
+                  example: 0
+                scheduled_maintenance:
+                  type: object
+                  properties:
+                    startTime:
+                      type: number
+                      example: 1618822380000
+                    endTime:
+                      type: number
+                      example: 1618822440000
                 msg:
                   type: string
 
@@ -8459,18 +8505,6 @@ components:
                     total_referrer_rebate:
                       type: number
                       example: 30
-                    1d_referee_fee:
-                      type: number
-                      example: 5
-                    7d_referee_fee:
-                      type: number
-                      example: 10
-                    30d_referee_fee:
-                      type: number
-                      example: 20
-                    total_referee_fee:
-                      type: number
-                      example: 30
                     referral_codes:
                       type: array
                       items:
@@ -8550,10 +8584,6 @@ components:
                         type: number
                         example: 1229.12
                         description: "the total volume traded by the referee"
-                      fee:
-                        type: number
-                        example: 12.22
-                        description: "the total trading fees paid by the referee"
                       referral_rebate:
                         type: number
                         example: 2.22
@@ -8600,10 +8630,6 @@ components:
                         type: number
                         example: 123.456
                         description: ""
-                      fee:
-                        type: number
-                        example: 123.456
-                        description: ""
                       date:
                         type: string
                         example: "2023-11-14"
@@ -8642,10 +8668,6 @@ components:
                         type: number
                         example: 2.22
                         description: "the total referee rebate received by the user on this day"
-                      fee:
-                        type: number
-                        example: 123.456
-                        description: "the total fees paid by the user on this day"
                       date:
                         type: string
                         example: "2023-11-14"
@@ -8671,10 +8693,6 @@ components:
                       volume:
                         type: number
                         example: 1229.12
-                      fee:
-                        type: number
-                        example: 12.22
-                        description: "total fees paid by the referee on this day"
                       referee_rebate:
                         type: number
                         example: 2.22
@@ -8735,10 +8753,6 @@ components:
                         type: number
                         example: 1229.12
                         description: "the total volume traded by the referee"
-                      fee:
-                        type: number
-                        example: 12.22
-                        description: "the total trading fees paid by the referee"
                       referral_rebate:
                         type: number
                         example: 2.22
