@@ -1,0 +1,357 @@
+[Orderly SDKs](/sdks/tech-doc/README) / [Modules](/sdks/tech-doc/modules) / [@orderly.network/types](/sdks/tech-doc/modules/orderly_network_types) / BaseAlgoOrderEntity
+
+# Interface: BaseAlgoOrderEntity\<T\>
+
+[@orderly.network/types](/sdks/tech-doc/modules/orderly_network_types).BaseAlgoOrderEntity
+
+## Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends [`AlgoOrderRootType`](/sdks/tech-doc/enums/orderly_network_types.AlgoOrderRootType) |
+
+## Hierarchy
+
+- [`OrderEntity`](/sdks/tech-doc/interfaces/orderly_network_types.OrderEntity)
+
+  ↳ **`BaseAlgoOrderEntity`**
+
+## Table of contents
+
+### Properties
+
+- [algo\_order\_id](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#algo_order_id)
+- [algo\_type](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#algo_type)
+- [broker\_id](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#broker_id)
+- [child\_orders](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#child_orders)
+- [client\_order\_id](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#client_order_id)
+- [isStopOrder](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#isstoporder)
+- [is\_activated](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#is_activated)
+- [order\_amount](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#order_amount)
+- [order\_price](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#order_price)
+- [order\_quantity](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#order_quantity)
+- [order\_tag](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#order_tag)
+- [order\_type](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#order_type)
+- [order\_type\_ext](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#order_type_ext)
+- [price](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#price)
+- [quantity](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#quantity)
+- [reduce\_only](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#reduce_only)
+- [side](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#side)
+- [sl\_trigger\_price](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#sl_trigger_price)
+- [symbol](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#symbol)
+- [total](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#total)
+- [tp\_trigger\_price](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#tp_trigger_price)
+- [trigger\_price](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#trigger_price)
+- [trigger\_price\_type](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#trigger_price_type)
+- [type](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#type)
+- [visible\_quantity](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity#visible_quantity)
+
+## Properties
+
+### algo\_order\_id
+
+• `Optional` **algo\_order\_id**: `number`
+
+#### Defined in
+
+[packages/types/src/order.ts:99](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L99)
+
+___
+
+### algo\_type
+
+• **algo\_type**: [`AlgoOrderRootType`](../enums/orderly_network_types.AlgoOrderRootType)
+
+#### Overrides
+
+[OrderEntity](orderly_network_types.OrderEntity).[algo_type](orderly_network_types.OrderEntity#algo_type)
+
+#### Defined in
+
+[packages/types/src/order.ts:92](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L92)
+
+___
+
+### broker\_id
+
+• `Optional` **broker\_id**: `string`
+
+#### Inherited from
+
+[OrderEntity](orderly_network_types.OrderEntity).[broker_id](orderly_network_types.OrderEntity#broker_id)
+
+#### Defined in
+
+[packages/types/src/order.ts:74](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L74)
+
+___
+
+### child\_orders
+
+• **child\_orders**: `Partial`\<`Omit`\<[`AlgoOrderEntity`](../modules/orderly_network_types#algoorderentity)\<`T`\>, ``"algo_type"`` \| ``"type"``\>\> & \{ `algo_type`: [`AlgoOrderType`](../enums/orderly_network_types.AlgoOrderType) ; `type`: [`OrderType`](../enums/orderly_network_types.OrderType)  }[]
+
+#### Defined in
+
+[packages/types/src/order.ts:93](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L93)
+
+___
+
+### client\_order\_id
+
+• `Optional` **client\_order\_id**: `string`
+
+#### Defined in
+
+[packages/types/src/order.ts:100](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L100)
+
+___
+
+### isStopOrder
+
+• `Optional` **isStopOrder**: `boolean`
+
+#### Inherited from
+
+[OrderEntity](orderly_network_types.OrderEntity).[isStopOrder](orderly_network_types.OrderEntity#isstoporder)
+
+#### Defined in
+
+[packages/types/src/order.ts:79](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L79)
+
+___
+
+### is\_activated
+
+• `Optional` **is\_activated**: `boolean`
+
+#### Defined in
+
+[packages/types/src/order.ts:111](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L111)
+
+___
+
+### order\_amount
+
+• `Optional` **order\_amount**: `number`
+
+#### Inherited from
+
+[OrderEntity](orderly_network_types.OrderEntity).[order_amount](orderly_network_types.OrderEntity#order_amount)
+
+#### Defined in
+
+[packages/types/src/order.ts:69](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L69)
+
+___
+
+### order\_price
+
+• `Optional` **order\_price**: `string` \| `number`
+
+#### Inherited from
+
+[OrderEntity](orderly_network_types.OrderEntity).[order_price](orderly_network_types.OrderEntity#order_price)
+
+#### Defined in
+
+[packages/types/src/order.ts:67](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L67)
+
+___
+
+### order\_quantity
+
+• `Optional` **order\_quantity**: `string` \| `number`
+
+#### Inherited from
+
+[OrderEntity](orderly_network_types.OrderEntity).[order_quantity](orderly_network_types.OrderEntity#order_quantity)
+
+#### Defined in
+
+[packages/types/src/order.ts:68](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L68)
+
+___
+
+### order\_tag
+
+• `Optional` **order\_tag**: `string`
+
+#### Overrides
+
+[OrderEntity](orderly_network_types.OrderEntity).[order_tag](orderly_network_types.OrderEntity#order_tag)
+
+#### Defined in
+
+[packages/types/src/order.ts:101](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L101)
+
+___
+
+### order\_type
+
+• **order\_type**: [`OrderType`](../enums/orderly_network_types.OrderType)
+
+#### Inherited from
+
+[OrderEntity](orderly_network_types.OrderEntity).[order_type](orderly_network_types.OrderEntity#order_type)
+
+#### Defined in
+
+[packages/types/src/order.ts:64](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L64)
+
+___
+
+### order\_type\_ext
+
+• `Optional` **order\_type\_ext**: [`OrderType`](../enums/orderly_network_types.OrderType)
+
+#### Inherited from
+
+[OrderEntity](orderly_network_types.OrderEntity).[order_type_ext](orderly_network_types.OrderEntity#order_type_ext)
+
+#### Defined in
+
+[packages/types/src/order.ts:66](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L66)
+
+___
+
+### price
+
+• `Optional` **price**: `string` \| `number`
+
+#### Defined in
+
+[packages/types/src/order.ts:102](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L102)
+
+___
+
+### quantity
+
+• **quantity**: `string` \| `number`
+
+#### Defined in
+
+[packages/types/src/order.ts:103](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L103)
+
+___
+
+### reduce\_only
+
+• `Optional` **reduce\_only**: `boolean`
+
+#### Overrides
+
+[OrderEntity](orderly_network_types.OrderEntity).[reduce_only](orderly_network_types.OrderEntity#reduce_only)
+
+#### Defined in
+
+[packages/types/src/order.ts:104](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L104)
+
+___
+
+### side
+
+• **side**: [`OrderSide`](../enums/orderly_network_types.OrderSide)
+
+#### Overrides
+
+[OrderEntity](orderly_network_types.OrderEntity).[side](orderly_network_types.OrderEntity#side)
+
+#### Defined in
+
+[packages/types/src/order.ts:105](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L105)
+
+___
+
+### sl\_trigger\_price
+
+• `Optional` **sl\_trigger\_price**: `string` \| `number`
+
+#### Defined in
+
+[packages/types/src/order.ts:113](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L113)
+
+___
+
+### symbol
+
+• **symbol**: `string`
+
+#### Overrides
+
+[OrderEntity](orderly_network_types.OrderEntity).[symbol](orderly_network_types.OrderEntity#symbol)
+
+#### Defined in
+
+[packages/types/src/order.ts:106](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L106)
+
+___
+
+### total
+
+• `Optional` **total**: `string` \| `number`
+
+#### Inherited from
+
+[OrderEntity](orderly_network_types.OrderEntity).[total](orderly_network_types.OrderEntity#total)
+
+#### Defined in
+
+[packages/types/src/order.ts:77](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L77)
+
+___
+
+### tp\_trigger\_price
+
+• `Optional` **tp\_trigger\_price**: `string` \| `number`
+
+#### Defined in
+
+[packages/types/src/order.ts:112](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L112)
+
+___
+
+### trigger\_price
+
+• **trigger\_price**: `string` \| `number`
+
+#### Overrides
+
+[OrderEntity](orderly_network_types.OrderEntity).[trigger_price](orderly_network_types.OrderEntity#trigger_price)
+
+#### Defined in
+
+[packages/types/src/order.ts:107](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L107)
+
+___
+
+### trigger\_price\_type
+
+• **trigger\_price\_type**: [`MARK_PRICE`](../enums/orderly_network_types.TriggerPriceType#mark_price)
+
+#### Defined in
+
+[packages/types/src/order.ts:108](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L108)
+
+___
+
+### type
+
+• **type**: [`OrderType`](../enums/orderly_network_types.OrderType)
+
+#### Defined in
+
+[packages/types/src/order.ts:109](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L109)
+
+___
+
+### visible\_quantity
+
+• `Optional` **visible\_quantity**: `number`
+
+#### Overrides
+
+[OrderEntity](orderly_network_types.OrderEntity).[visible_quantity](orderly_network_types.OrderEntity#visible_quantity)
+
+#### Defined in
+
+[packages/types/src/order.ts:110](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/types/src/order.ts#L110)
