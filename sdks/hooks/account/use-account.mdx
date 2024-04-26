@@ -24,6 +24,18 @@ const res = await createOrderlyKey(30);
 
 After the `OrderlyKey` is successfully created, it will be stored in the `KeyStore`, and will be used for API signatures later on.
 
+## KeyStore
+
+The [`KeyStore` instance](/sdks/tech-doc/interfaces/orderly_network_core.OrderlyKeyStore) is responsible for storing the Orderly private key, which is used for trading.
+By default the key will be stored in local Storage, but a custom `KeyStore` implementation can be given to `OrderlyConfigProvider` like explained [here](/sdks/hooks/setup).
+
+```ts
+const { account } = useAccount();
+account.keyStore.getOrderlyKey();
+account.keyStore.cleanAllKey(address);
+// ...
+```
+
 ## Account status
 
 The `Account` object has the following statuses:
