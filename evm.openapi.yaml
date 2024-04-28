@@ -1512,6 +1512,12 @@ paths:
       summary: Get System Maintenance Status
       deprecated: false
       description: >-
+        **Limit: 1 requests per 1 second per IP address**
+        
+        
+        `GET /v1/public/system_info`
+        
+        
         Retreive the current system maintenance status of Orderly Network. A
         return value of status = 0 means the system is functioning properly and
         a return value of status = 2 means the system is under maintenance.
@@ -3274,6 +3280,18 @@ paths:
           example: ''
           schema:
             type: string
+        - name: page
+          in: query
+          required: false
+          example: ''
+          schema:
+            type: number
+        - name: size
+          in: query
+          required: false
+          example: ''
+          schema:
+            type: number
         - name: address
           in: query
           description: ''
@@ -4422,11 +4440,13 @@ paths:
         - name: status
           in: query
           example: 'true'
+          description: "One of `CREATED`/`SPLIT`/`COMPLETED`"
           schema:
             type: string
         - name: type
           in: query
           example: 'true'
+          description: "One of `BROKER_FEE`/`REFEREE_REBATE`/`REFERRER_REBATE`"
           schema:
             type: string
         - name: start_t
@@ -4672,6 +4692,13 @@ paths:
           in: query
           description: ""
           required: false
+          example: ''
+          schema:
+            type: string
+        - name: user_address
+          in: query
+          description: ""
+          reuqired: false
           example: ''
           schema:
             type: string
@@ -5001,22 +5028,20 @@ components:
           - data
           properties:
             data:
-              type: array
-              items:
-                type: object
-                properties:
-                  perp_volume_ytd:
-                    type: number
-                    example: 274148.0364
-                  perp_volume_ltd:
-                    type: number
-                    example: 274148.0364
-                  perp_volume_last_7_days:
-                    type: number
-                    example: 120272.7674
-                  perp_volume_last_30_days:
-                    type: number
-                    example: 300730.5454
+              type: object
+              properties:
+                perp_volume_ytd:
+                  type: number
+                  example: 274148.0364
+                perp_volume_ltd:
+                  type: number
+                  example: 274148.0364
+                perp_volume_last_7_days:
+                  type: number
+                  example: 120272.7674
+                perp_volume_last_30_days:
+                  type: number
+                  example: 300730.5454
 
     BrokerListResponse:
       allOf:
@@ -6041,9 +6066,11 @@ components:
                       payment_type:
                         type: string
                         example: "Pay"
+                        description: "`Receive`/`Pay`"
                       status:
                         type: string
                         example: "Accrued"
+                        description: "`Accured`/`Settled`"
                       created_time:
                         type: number
                         example: 1682235722003
@@ -8229,6 +8256,18 @@ components:
                       address:
                         type: string
                         example: "0x0000000000"
+                meta:
+                  type: object
+                  properties:
+                    records_per_page:
+                      type: integer
+                      example: 25
+                    current_page:
+                      type: integer
+                      example: 1
+                    total:
+                      type: integer
+                      example: 50
 
 
 
