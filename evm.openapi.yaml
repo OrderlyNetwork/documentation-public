@@ -514,14 +514,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InsuranceFundResponse'
-  /tv/config:
+  /v1/tv/config:
     get:
       summary: Get TradingView Localized Config Info
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET /tv/config`
+        `GET /v1/tv/config`
       tags:
         - public
       parameters:
@@ -539,14 +539,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TvConfigResponse'
-  /tv/history:
+  /v1/tv/history:
     get:
       summary: Get TradingView History Bars
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET /tv/history?symbol={}&resolution={}&from={}&to={}`
+        `GET /v1/tv/history?symbol={}&resolution={}&from={}&to={}`
       tags:
         - public
       parameters:
@@ -585,14 +585,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TvHistoryResponse'
-  /tv/symbol_info:
+  /v1/tv/symbol_info:
     get:
       summary: Get TradingView Symbol Info
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET /tv/symbol_info`
+        `GET /v1/tv/symbol_info`
       tags:
         - public
       parameters:
@@ -4698,7 +4698,7 @@ paths:
         - name: user_address
           in: query
           description: ""
-          reuqired: false
+          required: false
           example: ''
           schema:
             type: string
