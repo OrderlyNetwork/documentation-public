@@ -460,16 +460,16 @@ paths:
 
         `GET /v1/public/token`
 
-        Retrives the available tokens to be used as collateral within Orderly Network.
+        Retrieves the available tokens to be used as collateral within Orderly Network.
       tags:
         - public
-      parameters: []
-#        - name: chain_id
-#          in: query
-#          description: 'Filter results by chain_id'
-#          required: false
-#          schema:
-#            type: string
+      parameters:
+        - name: chain_id
+          in: query
+          description: 'Filter results by chain_id'
+          required: false
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -5369,9 +5369,10 @@ components:
                             withdraw_fee:
                               type: number
                               example: 2
-#                            display_name:
-#                              type: string
-#                              example: "USDC"
+                            display_name:
+                              type: string
+                              description: "`USDC.e` for `Mantle` chain"
+                              example: "USDC"
 
     AvailableSymbolsResponse:
       allOf:
@@ -7432,25 +7433,25 @@ components:
                         items:
                           type: string
                           example: "woofi_dex"
-                      token_info:
-                        type: object
-                        properties:
-                          token_name:
-                            type: string
-                            example: "USDC"
-                            description: "`USDC.e` for `Mantle` chain only"
-                          contract_address:
-                            type: string
-                            example: "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d"
-                          decimals:
-                            type: number
-                            example: 6
-                          withdrawal_fee:
-                            type: number
-                            example: 2
-                          cross_chain_withdrawal_fee:
-                            type: number
-                            example: 5
+#                      token_info:
+#                        type: object
+#                        properties:
+#                          token_name:
+#                            type: string
+#                            example: "USDC"
+#                            description: "`USDC.e` for `Mantle` chain only"
+#                          contract_address:
+#                            type: string
+#                            example: "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d"
+#                          decimals:
+#                            type: number
+#                            example: 6
+#                          withdrawal_fee:
+#                            type: number
+#                            example: 2
+#                          cross_chain_withdrawal_fee:
+#                            type: number
+#                            example: 5
 
     BatchOrderResponse:
       allOf:
