@@ -56,7 +56,7 @@
 
 #### Defined in
 
-[packages/core/src/configStore/configStore.ts:1](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/core/src/configStore/configStore.ts#L1)
+[packages/core/src/configStore/configStore.ts:1](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/core/src/configStore/configStore.ts#L1)
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/signer.ts:7](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/core/src/signer.ts#L7)
+[packages/core/src/signer.ts:7](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/core/src/signer.ts#L7)
 
 ___
 
@@ -93,7 +93,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/signer.ts:15](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/core/src/signer.ts#L15)
+[packages/core/src/signer.ts:15](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/core/src/signer.ts#L15)
 
 ___
 
@@ -112,7 +112,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/wallet/adapter.ts:75](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/core/src/wallet/adapter.ts#L75)
+[packages/core/src/wallet/adapter.ts:75](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/core/src/wallet/adapter.ts#L75)
 
 ___
 
@@ -136,13 +136,13 @@ ___
 
 #### Defined in
 
-[packages/core/src/wallet/adapter.ts:81](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/core/src/wallet/adapter.ts#L81)
+[packages/core/src/wallet/adapter.ts:81](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/core/src/wallet/adapter.ts#L81)
 
 ## Functions
 
 ### generateAddOrderlyKeyMessage
 
-▸ **generateAddOrderlyKeyMessage**(`inputs`): readonly [\{ `brokerId`: `string` ; `chainId`: `number` ; `expiration`: `number` ; `orderlyKey`: `string` = publicKey; `scope`: `string` = "read,trading"; `timestamp`: `number` = now }, \{ `domain`: \{ `chainId`: `number` ; `name`: `string` = "Orderly"; `verifyingContract`: `string` ; `version`: `string` = "1" } ; `message`: \{ `brokerId`: `string` ; `chainId`: `number` ; `expiration`: `number` ; `orderlyKey`: `string` = publicKey; `scope`: `string` = "read,trading"; `timestamp`: `number` = now } ; `primaryType`: ``"Registration"`` \| ``"EIP712Domain"`` \| ``"Withdraw"`` \| ``"AddOrderlyKey"`` \| ``"SettlePnl"`` ; `types`: \{ `EIP712Domain`: readonly [\{ `name`: ``"name"`` = "name"; `type`: ``"string"`` = "string" }, \{ `name`: ``"version"`` = "version"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"verifyingContract"`` = "verifyingContract"; `type`: ``"address"`` = "address" }] = definedTypes.EIP712Domain } = typeDefinition }]
+▸ **generateAddOrderlyKeyMessage**(`inputs`): readonly [\{ `brokerId`: `string` ; `chainId`: `number` ; `expiration`: `number` ; `orderlyKey`: `string` = publicKey; `scope`: `string` = "read,trading"; `timestamp`: `number`  }, \{ `domain`: \{ `chainId`: `number` ; `name`: `string` = "Orderly"; `verifyingContract`: `string` ; `version`: `string` = "1" } ; `message`: \{ `brokerId`: `string` ; `chainId`: `number` ; `expiration`: `number` ; `orderlyKey`: `string` = publicKey; `scope`: `string` = "read,trading"; `timestamp`: `number`  } ; `primaryType`: ``"Registration"`` \| ``"EIP712Domain"`` \| ``"Withdraw"`` \| ``"AddOrderlyKey"`` \| ``"SettlePnl"`` ; `types`: \{ `EIP712Domain`: readonly [\{ `name`: ``"name"`` = "name"; `type`: ``"string"`` = "string" }, \{ `name`: ``"version"`` = "version"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"verifyingContract"`` = "verifyingContract"; `type`: ``"address"`` = "address" }] = definedTypes.EIP712Domain } = typeDefinition }]
 
 generate `addOrderlyKey` data and to be signed message structure
 
@@ -156,20 +156,21 @@ generate `addOrderlyKey` data and to be signed message structure
 | `inputs.expiration?` | `number` |
 | `inputs.primaryType` | ``"Registration"`` \| ``"EIP712Domain"`` \| ``"Withdraw"`` \| ``"AddOrderlyKey"`` \| ``"SettlePnl"`` |
 | `inputs.publicKey` | `string` |
+| `inputs.timestamp?` | `number` |
 
 #### Returns
 
-readonly [\{ `brokerId`: `string` ; `chainId`: `number` ; `expiration`: `number` ; `orderlyKey`: `string` = publicKey; `scope`: `string` = "read,trading"; `timestamp`: `number` = now }, \{ `domain`: \{ `chainId`: `number` ; `name`: `string` = "Orderly"; `verifyingContract`: `string` ; `version`: `string` = "1" } ; `message`: \{ `brokerId`: `string` ; `chainId`: `number` ; `expiration`: `number` ; `orderlyKey`: `string` = publicKey; `scope`: `string` = "read,trading"; `timestamp`: `number` = now } ; `primaryType`: ``"Registration"`` \| ``"EIP712Domain"`` \| ``"Withdraw"`` \| ``"AddOrderlyKey"`` \| ``"SettlePnl"`` ; `types`: \{ `EIP712Domain`: readonly [\{ `name`: ``"name"`` = "name"; `type`: ``"string"`` = "string" }, \{ `name`: ``"version"`` = "version"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"verifyingContract"`` = "verifyingContract"; `type`: ``"address"`` = "address" }] = definedTypes.EIP712Domain } = typeDefinition }]
+readonly [\{ `brokerId`: `string` ; `chainId`: `number` ; `expiration`: `number` ; `orderlyKey`: `string` = publicKey; `scope`: `string` = "read,trading"; `timestamp`: `number`  }, \{ `domain`: \{ `chainId`: `number` ; `name`: `string` = "Orderly"; `verifyingContract`: `string` ; `version`: `string` = "1" } ; `message`: \{ `brokerId`: `string` ; `chainId`: `number` ; `expiration`: `number` ; `orderlyKey`: `string` = publicKey; `scope`: `string` = "read,trading"; `timestamp`: `number`  } ; `primaryType`: ``"Registration"`` \| ``"EIP712Domain"`` \| ``"Withdraw"`` \| ``"AddOrderlyKey"`` \| ``"SettlePnl"`` ; `types`: \{ `EIP712Domain`: readonly [\{ `name`: ``"name"`` = "name"; `type`: ``"string"`` = "string" }, \{ `name`: ``"version"`` = "version"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"verifyingContract"`` = "verifyingContract"; `type`: ``"address"`` = "address" }] = definedTypes.EIP712Domain } = typeDefinition }]
 
 #### Defined in
 
-[packages/core/src/helper.ts:76](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/core/src/helper.ts#L76)
+[packages/core/src/helper.ts:82](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/core/src/helper.ts#L82)
 
 ___
 
 ### generateRegisterAccountMessage
 
-▸ **generateRegisterAccountMessage**(`inputs`): readonly [\{ `brokerId`: `string` ; `chainId`: `number` ; `registrationNonce`: `number` ; `timestamp`: `number` = now }, \{ `domain`: \{ `chainId`: `number` ; `name`: `string` = "Orderly"; `verifyingContract`: `string` ; `version`: `string` = "1" } ; `message`: \{ `brokerId`: `string` ; `chainId`: `number` ; `registrationNonce`: `number` ; `timestamp`: `number` = now } ; `primaryType`: `string` ; `types`: \{ `EIP712Domain`: readonly [\{ `name`: ``"name"`` = "name"; `type`: ``"string"`` = "string" }, \{ `name`: ``"version"`` = "version"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"verifyingContract"`` = "verifyingContract"; `type`: ``"address"`` = "address" }] = definedTypes.EIP712Domain; `Registration`: readonly [\{ `name`: ``"brokerId"`` = "brokerId"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"timestamp"`` = "timestamp"; `type`: ``"uint64"`` = "uint64" }, \{ `name`: ``"registrationNonce"`` = "registrationNonce"; `type`: ``"uint256"`` = "uint256" }]  } = typeDefinition }]
+▸ **generateRegisterAccountMessage**(`inputs`): readonly [\{ `brokerId`: `string` ; `chainId`: `number` ; `registrationNonce`: `number` ; `timestamp`: `number`  }, \{ `domain`: \{ `chainId`: `number` ; `name`: `string` = "Orderly"; `verifyingContract`: `string` ; `version`: `string` = "1" } ; `message`: \{ `brokerId`: `string` ; `chainId`: `number` ; `registrationNonce`: `number` ; `timestamp`: `number`  } ; `primaryType`: `string` ; `types`: \{ `EIP712Domain`: readonly [\{ `name`: ``"name"`` = "name"; `type`: ``"string"`` = "string" }, \{ `name`: ``"version"`` = "version"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"verifyingContract"`` = "verifyingContract"; `type`: ``"address"`` = "address" }] = definedTypes.EIP712Domain; `Registration`: readonly [\{ `name`: ``"brokerId"`` = "brokerId"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"timestamp"`` = "timestamp"; `type`: ``"uint64"`` = "uint64" }, \{ `name`: ``"registrationNonce"`` = "registrationNonce"; `type`: ``"uint256"`` = "uint256" }]  } = typeDefinition }]
 
 generate `registerAccount` data and to be signed message structure
 
@@ -181,14 +182,15 @@ generate `registerAccount` data and to be signed message structure
 | `inputs.brokerId` | `string` |
 | `inputs.chainId` | `number` |
 | `inputs.registrationNonce` | `number` |
+| `inputs.timestamp?` | `number` |
 
 #### Returns
 
-readonly [\{ `brokerId`: `string` ; `chainId`: `number` ; `registrationNonce`: `number` ; `timestamp`: `number` = now }, \{ `domain`: \{ `chainId`: `number` ; `name`: `string` = "Orderly"; `verifyingContract`: `string` ; `version`: `string` = "1" } ; `message`: \{ `brokerId`: `string` ; `chainId`: `number` ; `registrationNonce`: `number` ; `timestamp`: `number` = now } ; `primaryType`: `string` ; `types`: \{ `EIP712Domain`: readonly [\{ `name`: ``"name"`` = "name"; `type`: ``"string"`` = "string" }, \{ `name`: ``"version"`` = "version"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"verifyingContract"`` = "verifyingContract"; `type`: ``"address"`` = "address" }] = definedTypes.EIP712Domain; `Registration`: readonly [\{ `name`: ``"brokerId"`` = "brokerId"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"timestamp"`` = "timestamp"; `type`: ``"uint64"`` = "uint64" }, \{ `name`: ``"registrationNonce"`` = "registrationNonce"; `type`: ``"uint256"`` = "uint256" }]  } = typeDefinition }]
+readonly [\{ `brokerId`: `string` ; `chainId`: `number` ; `registrationNonce`: `number` ; `timestamp`: `number`  }, \{ `domain`: \{ `chainId`: `number` ; `name`: `string` = "Orderly"; `verifyingContract`: `string` ; `version`: `string` = "1" } ; `message`: \{ `brokerId`: `string` ; `chainId`: `number` ; `registrationNonce`: `number` ; `timestamp`: `number`  } ; `primaryType`: `string` ; `types`: \{ `EIP712Domain`: readonly [\{ `name`: ``"name"`` = "name"; `type`: ``"string"`` = "string" }, \{ `name`: ``"version"`` = "version"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"verifyingContract"`` = "verifyingContract"; `type`: ``"address"`` = "address" }] = definedTypes.EIP712Domain; `Registration`: readonly [\{ `name`: ``"brokerId"`` = "brokerId"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"timestamp"`` = "timestamp"; `type`: ``"uint64"`` = "uint64" }, \{ `name`: ``"registrationNonce"`` = "registrationNonce"; `type`: ``"uint256"`` = "uint256" }]  } = typeDefinition }]
 
 #### Defined in
 
-[packages/core/src/helper.ts:43](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/core/src/helper.ts#L43)
+[packages/core/src/helper.ts:43](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/core/src/helper.ts#L43)
 
 ___
 
@@ -214,7 +216,7 @@ readonly [\{ `brokerId`: `string` ; `chainId`: `number` = chainId; `settleNonce`
 
 #### Defined in
 
-[packages/core/src/helper.ts:119](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/core/src/helper.ts#L119)
+[packages/core/src/helper.ts:127](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/core/src/helper.ts#L127)
 
 ___
 
@@ -228,7 +230,7 @@ ___
 
 #### Defined in
 
-[packages/core/src/helper.ts:15](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/core/src/helper.ts#L15)
+[packages/core/src/helper.ts:15](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/core/src/helper.ts#L15)
 
 ___
 
@@ -248,4 +250,4 @@ ___
 
 #### Defined in
 
-[packages/core/src/helper.ts:6](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/core/src/helper.ts#L6)
+[packages/core/src/helper.ts:6](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/core/src/helper.ts#L6)
