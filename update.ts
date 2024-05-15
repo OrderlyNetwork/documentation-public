@@ -63,7 +63,7 @@ async function updateOpenApi() {
 async function generateTechDocs() {
   const currentCwd = process.cwd();
   const tmpFolder = await fs.mkdtemp(path.join(tmpdir(), "js-sdk-"));
-  await runCommand(`git clone --depth 1 https://github.com/OrderlyNetwork/js-sdk.git ${tmpFolder}`);
+  await runCommand(`git clone --depth 1 --branch docs https://github.com/OrderlyNetwork/js-sdk.git ${tmpFolder}`);
   process.chdir(tmpFolder);
   await runCommand(`pnpm install --no-frozen-lockfile`);
   await runCommand("pnpm run build");
