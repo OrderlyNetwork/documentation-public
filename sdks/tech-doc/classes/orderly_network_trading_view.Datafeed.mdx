@@ -22,9 +22,9 @@
 - [\_prefixId](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#_prefixid)
 - [\_publicWs](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#_publicws)
 - [\_subscribeQuoteMap](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#_subscribequotemap)
-- [market](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#market)
-- [marketRejector](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#marketrejector)
-- [marketResolver](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#marketresolver)
+- [bbosMap](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#bbosmap)
+- [eventBus](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#eventbus)
+- [tickersMap](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#tickersmap)
 
 ### Methods
 
@@ -34,6 +34,7 @@
 - [getMarks](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#getmarks)
 - [getQuotes](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#getquotes)
 - [getServerTime](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#getservertime)
+- [getSubscriptionId](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#getsubscriptionid)
 - [getTimescaleMarks](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#gettimescalemarks)
 - [onReady](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#onready)
 - [remove](/sdks/tech-doc/classes/orderly_network_trading_view.Datafeed#remove)
@@ -63,7 +64,7 @@ AbstractDatafeed.constructor
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/datafeed.ts:21](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L21)
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:22](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L22)
 
 ## Properties
 
@@ -77,7 +78,7 @@ AbstractDatafeed.\_configuration
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:41](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L41)
+[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:41](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L41)
 
 ___
 
@@ -87,7 +88,7 @@ ___
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/datafeed.ts:14](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L14)
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:15](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L15)
 
 ___
 
@@ -97,7 +98,7 @@ ___
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/datafeed.ts:15](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L15)
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:16](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L16)
 
 ___
 
@@ -107,37 +108,37 @@ ___
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/datafeed.ts:12](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L12)
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:13](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L13)
 
 ___
 
-### market
+### bbosMap
 
-• `Private` `Optional` **market**: `Promise`\<`any`\>
+• `Private` **bbosMap**: `Map`\<`string`, `any`\>
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/datafeed.ts:17](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L17)
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:18](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L18)
 
 ___
 
-### marketRejector
+### eventBus
 
-• `Private` `Optional` **marketRejector**: `Function`
+• `Private` **eventBus**: `MultiBroadcastEventBus`
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/datafeed.ts:19](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L19)
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:20](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L20)
 
 ___
 
-### marketResolver
+### tickersMap
 
-• `Private` `Optional` **marketResolver**: `Function`
+• `Private` **tickersMap**: `Map`\<`string`, `any`\>
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/datafeed.ts:18](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L18)
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:19](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L19)
 
 ## Methods
 
@@ -155,7 +156,7 @@ AbstractDatafeed.\_requestConfiguration
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:152](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L152)
+[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:152](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L152)
 
 ___
 
@@ -175,7 +176,7 @@ ___
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/datafeed.ts:93](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L93)
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:155](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L155)
 
 ___
 
@@ -203,7 +204,7 @@ AbstractDatafeed.getBars
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:67](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L67)
+[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:67](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L67)
 
 ___
 
@@ -221,7 +222,7 @@ AbstractDatafeed.getMarks
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:127](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L127)
+[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:127](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L127)
 
 ___
 
@@ -246,7 +247,7 @@ AbstractDatafeed.getQuotes
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/datafeed.ts:49](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L49)
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:81](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L81)
 
 ___
 
@@ -264,7 +265,27 @@ AbstractDatafeed.getServerTime
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:135](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L135)
+[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:135](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L135)
+
+___
+
+### getSubscriptionId
+
+▸ `Private` **getSubscriptionId**(`listenerGuid`): `string`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `listenerGuid` | `string` |
+
+#### Returns
+
+`string`
+
+#### Defined in
+
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:69](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L69)
 
 ___
 
@@ -282,7 +303,7 @@ AbstractDatafeed.getTimescaleMarks
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:131](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L131)
+[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:131](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L131)
 
 ___
 
@@ -306,7 +327,7 @@ AbstractDatafeed.onReady
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:91](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L91)
+[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:91](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L91)
 
 ___
 
@@ -324,7 +345,7 @@ AbstractDatafeed.remove
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/datafeed.ts:89](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L89)
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:65](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L65)
 
 ___
 
@@ -351,7 +372,7 @@ AbstractDatafeed.resolveSymbol
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:108](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L108)
+[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:108](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L108)
 
 ___
 
@@ -378,7 +399,7 @@ AbstractDatafeed.searchSymbols
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:97](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L97)
+[tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts:97](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/abstract-datafeed.ts#L97)
 
 ___
 
@@ -405,7 +426,7 @@ AbstractDatafeed.subscribeBars
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/datafeed.ts:41](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L41)
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:73](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L73)
 
 ___
 
@@ -432,7 +453,7 @@ AbstractDatafeed.subscribeQuotes
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/datafeed.ts:75](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L75)
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:115](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L115)
 
 ___
 
@@ -456,19 +477,19 @@ AbstractDatafeed.unsubscribeBars
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/datafeed.ts:45](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L45)
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:77](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L77)
 
 ___
 
 ### unsubscribeQuotes
 
-▸ **unsubscribeQuotes**(`subscriptionId`): `void`
+▸ **unsubscribeQuotes**(`listenerGuid`): `void`
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `subscriptionId` | `string` |
+| `listenerGuid` | `string` |
 
 #### Returns
 
@@ -480,4 +501,4 @@ AbstractDatafeed.unsubscribeQuotes
 
 #### Defined in
 
-[tradingView/tradingViewAdapter/datafeed/datafeed.ts:82](https://github.com/OrderlyNetwork/js-sdk/blob/91fd031/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L82)
+[tradingView/tradingViewAdapter/datafeed/datafeed.ts:145](https://github.com/OrderlyNetwork/js-sdk/blob/b90fff4/packages/trading-view/src/tradingView/tradingViewAdapter/datafeed/datafeed.ts#L145)
