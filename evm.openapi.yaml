@@ -1703,23 +1703,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConfigResponse'
-  /v1/public/chain_info/{broker_id}:
+  /v1/public/chain_info:
     get:
       summary: Get Supported Chains per Broker
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET /v1/public/chain_info/{broker_id}`
+        `GET /v1/public/chain_info`
 
         Get chains specified broker is available on.
       tags:
         - public
       parameters:
         - name: broker_id
-          in: path
+          in: query
           description: return chains that supports this broker
-          required: true
+          required: false
           example: ''
           schema:
             type: string
@@ -1730,23 +1730,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChainInfoResponse'
-  /v1/public/chain_info:
-    get:
-      summary: Get Vault Chain Config
-      deprecated: false
-      description: |
-        **Limit: 10 requests per 1 second per IP address**
-
-        `GET /v1/public/chain_info`
-      tags:
-        - public
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChainInfoResponse'
+#  /v1/public/chain_info:
+#    get:
+#      summary: Get Vault Chain Config
+#      deprecated: false
+#      description: |
+#        **Limit: 10 requests per 1 second per IP address**
+#
+#        `GET /v1/public/chain_info`
+#      tags:
+#        - public
+#      responses:
+#        "200":
+#          description: OK
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/ChainInfoResponse'
   /v1/batch-order:
     post:
       summary: Batch Create Order
