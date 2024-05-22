@@ -1684,6 +1684,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderlyKeyResponse'
+
+  /v1/client/remove_orderly_key:
+    post:
+      summary: Remove Orderly Key
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `POST /v1/client/remove_orderly_key`
+
+        Remove an Orderly key from an account, deactivating it from all usage
+      tags:
+        - private
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveOrderlyKeyBody'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicResponse'
   /v1/public/config:
     get:
       summary: Get Leverage Configuration
@@ -1785,9 +1811,12 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/OrderBody'
+              type: object
+              properties:
+                orders:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/OrderBody'
       responses:
         "200":
           description: OK
@@ -4704,7 +4733,7 @@ paths:
           example: ''
           schema:
             type: string
-        - name: user_address
+        - name: address
           in: query
           description: ""
           required: false
@@ -7349,6 +7378,15 @@ components:
         tag:
           type: string
           description: An optional tag of string values。
+
+    RemoveOrderlyKeyBody:
+      type: object
+      required:
+      - orderly_key
+      properties:
+        orderly_key:
+          type: string
+          description: The Orderly key to be removed from the account   
 
     OrderlyKeyResponse:
       allOf:

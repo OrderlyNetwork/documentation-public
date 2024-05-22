@@ -4,7 +4,29 @@ Documentation on Orderly Network.
 
 Suggestions and edits welcome through Pull Requests / Issues.
 
-## Update script
+# Edit Approvals
+Changes for new chains, new listings and minor changes that don't involve OpenAPI spec changes will be approved and merged by Jacob.
+
+For major changes with openAPI spec file changes, Slava to approve the PR.
+
+SDK changes and merges are approved by Mario.
+
+## Change SOP
+
+### New chains:
+- add contract addresses: https://orderly.network/docs/build-on-evm/addresses
+- add chain here: https://orderly.network/docs/introduction/trade-on-orderly/supported-chains
+
+### New listings:
+- add market here: https://orderly.network/docs/introduction/trade-on-orderly/supported-markets
+- add exchanges for new market: https://orderly.network/docs/introduction/trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price
+- add funding for the pairL https://orderly.network/docs/introduction/trade-on-orderly/perpetual-futures/funding-rate
+- add margin for the pair: https://orderly.network/docs/introduction/trade-on-orderly/perpetual-futures/margin-leverage-and-pnl
+
+### New broker:
+- add broker under "/introduction/trade-on-orderly/brokers.mdx"
+
+## API or nav changes that require mint.json edit need to run "Update script"
 
 The update script will check for OpenAPI documentation and technical documentation
 changes and always needs to be run, when a change to `mint.json` is required.
@@ -20,6 +42,11 @@ In order to run the script, do the following:
 - Install Nodejs, Yarn and PNPM
 - Install dependencies via: `yarn`
 - Run update script: `yarn update`
+
+
+<Note>
+    Pre-release changes will be pushed to staging branch. Staging will be merged to main once the release is complete and all changes are in production.
+</Note>
 
 ## FAQ
 

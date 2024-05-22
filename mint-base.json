@@ -32,7 +32,7 @@
     "latest",
     {
       "name": "pre-release",
-      "url": "https://staging-docs.orderly.network/getting-started/what-is-orderly-network"
+      "url": "https://staging-docs.orderly.network/home"
     }
   ],
   "primaryTab": {
@@ -109,7 +109,7 @@
         "introduction/trade-on-orderly/fee-structure",
         "introduction/trade-on-orderly/supported-markets",
         "introduction/trade-on-orderly/supported-chains",
-        "introduction/trade-on-orderly/trading-guis"
+        "introduction/trade-on-orderly/brokers"
       ]
     },
     {
@@ -362,8 +362,9 @@
         }
       ]
     },
+
     {
-      "group": "Trading API",
+      "group": "User API",
       "pages": [
         {
           "group": "Registration",
@@ -379,13 +380,55 @@
           "pages": [
             "build-on-evm/evm-api/restful-api/public/get-orderly-key",
             "build-on-evm/evm-api/restful-api/public/add-orderly-key",
+            "build-on-evm/evm-api/restful-api/private/remove-orderly-key",
             "build-on-evm/evm-api/restful-api/private/get-current-orderly-key-info",
             "build-on-evm/evm-api/restful-api/private/get-orderly-key-ip-restriction",
             "build-on-evm/evm-api/restful-api/private/set-orderly-key-ip-restriction",
             "build-on-evm/evm-api/restful-api/private/reset-orderly-key-ip-restriction"
           ]
         },
+        {
+          "group": "Account/User Info",
+          "pages": [
+            "build-on-evm/evm-api/restful-api/private/get-user-daily-volume",
+            "build-on-evm/evm-api/restful-api/private/get-user-volume-statistics",
+            "build-on-evm/evm-api/restful-api/private/get-user-statistics",
+            "build-on-evm/evm-api/restful-api/private/get-account-information",
+            "build-on-evm/evm-api/restful-api/private/get-user-daily-statistics"
+          ]
+        },
+        {
+          "group": "Account Notifications",
+          "pages": [
+            "build-on-evm/evm-api/restful-api/private/get-all-notifications",
+            "build-on-evm/evm-api/restful-api/private/get-unread-notifications",
+            "build-on-evm/evm-api/restful-api/private/set-read-status-of-notifications",
+            "build-on-evm/evm-api/restful-api/private/set-read-status-of-all-notifications"
+          ]
+        },
+        {
+          "group": "Account Config",
+          "pages": [
+            "build-on-evm/evm-api/restful-api/private/update-leverage-setting",
+            "build-on-evm/evm-api/restful-api/public/get-leverage-configuration",
+            "build-on-evm/evm-api/restful-api/private/set-maintenance-config"
+          ]
+        },
+        {
+          "group": "Delegate Signer",
+          "pages": [
+            "build-on-evm/evm-api/restful-api/public/delegate-signer",
+            "build-on-evm/evm-api/restful-api/public/add-delegate-signer-orderly-key",
+            "build-on-evm/evm-api/restful-api/private/delegate-signer-settle-pnl",
+            "build-on-evm/evm-api/restful-api/private/delegate-signer-withdraw-request"
+          ]
+        }
+      ]
+    },
 
+    {
+      "group": "Trading API",
+      "pages": [
         {
           "group": "Order Management",
           "pages": [
@@ -436,16 +479,7 @@
             "build-on-evm/evm-api/restful-api/private/get-pnl-settlement-history"
           ]
         },
-        {
-          "group": "Account/User Info",
-          "pages": [
-            "build-on-evm/evm-api/restful-api/private/get-user-daily-volume",
-            "build-on-evm/evm-api/restful-api/private/get-user-volume-statistics",
-            "build-on-evm/evm-api/restful-api/private/get-user-statistics",
-            "build-on-evm/evm-api/restful-api/private/get-account-information",
-            "build-on-evm/evm-api/restful-api/private/get-user-daily-statistics"
-          ]
-        },
+
         {
           "group": "Positions",
           "pages": [
@@ -456,32 +490,6 @@
         {
           "group": "Funding",
           "pages": ["build-on-evm/evm-api/restful-api/private/get-funding-fee-history"]
-        },
-        {
-          "group": "Account Notifications",
-          "pages": [
-            "build-on-evm/evm-api/restful-api/private/get-all-notifications",
-            "build-on-evm/evm-api/restful-api/private/get-unread-notifications",
-            "build-on-evm/evm-api/restful-api/private/set-read-status-of-notifications",
-            "build-on-evm/evm-api/restful-api/private/set-read-status-of-all-notifications"
-          ]
-        },
-        {
-          "group": "Account Config",
-          "pages": [
-            "build-on-evm/evm-api/restful-api/private/update-leverage-setting",
-            "build-on-evm/evm-api/restful-api/public/get-leverage-configuration",
-            "build-on-evm/evm-api/restful-api/private/set-maintenance-config"
-          ]
-        },
-        {
-          "group": "Delegate Signer",
-          "pages": [
-            "build-on-evm/evm-api/restful-api/public/delegate-signer",
-            "build-on-evm/evm-api/restful-api/public/add-delegate-signer-orderly-key",
-            "build-on-evm/evm-api/restful-api/private/delegate-signer-settle-pnl",
-            "build-on-evm/evm-api/restful-api/private/delegate-signer-withdraw-request"
-          ]
         }
       ]
     },
@@ -719,6 +727,19 @@
         {
           "group": "Funding",
           "pages": ["sdks/hooks/funding/funding", "sdks/hooks/funding/use-funding-rate"]
+        },
+        {
+          "group": "Referral",
+          "pages": [
+            "sdks/hooks/referral/referral",
+            "sdks/hooks/referral/use-check-referral-code",
+            "sdks/hooks/referral/use-get-referral-code",
+            "sdks/hooks/referral/use-daily",
+            "sdks/hooks/referral/use-referee-info",
+            "sdks/hooks/referral/use-referee-rebate-summary",
+            "sdks/hooks/referral/use-referral-info",
+            "sdks/hooks/referral/use-referral-rebate-summary"
+          ]
         }
       ]
     },
@@ -729,15 +750,6 @@
     {
       "group": "[EVM] Perp SDK",
       "pages": ["sdks/perp/overview"]
-    },
-    {
-      "group": "[EVM] Referral SDK",
-      "pages": [
-        "sdks/referral/referral",
-        "sdks/referral/use-distribution",
-        "sdks/referral/use-referee-history",
-        "sdks/referral/use-referee-info"
-      ]
     },
     {
       "group": "Updates by area",
