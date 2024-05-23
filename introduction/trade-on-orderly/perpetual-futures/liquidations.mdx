@@ -2,7 +2,7 @@
 title: "Liquidations"
 ---
 
-An account is subject to liquidation if its Account Margin Ratio falls below its Maintenance Margin Ratio. Orderly uses the [Mark Price](/trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price#mark-price) to represent a contract's estimated value. As it derives from multiple reputable spot exchanges (see [Index Price](/trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price#index-price)) and the funding rate, it is less volatile than the [Last Price](/trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price#last-price) and discourages bad actors from manipulating the market price to trigger liquidations.
+An account is subject to liquidation if its Account Margin Ratio falls below its Maintenance Margin Ratio. Orderly uses the [Mark Price](/introduction/trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price#mark-price) to represent a contract's estimated value. As it derives from multiple reputable spot exchanges (see [Index Price](/introduction/trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price#index-price)) and the funding rate, it is less volatile than the [Last Price](/introduction/trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price#last-price) and discourages bad actors from manipulating the market price to trigger liquidations.
 
 When an account is under liquidation, its current open orders are automatically cancelled and its USDC balance is frozen.
 
@@ -16,7 +16,7 @@ Orderly adopts a decentralized liquidation model where positions are transferred
 
 ## Liquidation Trigger
 
-A liquidation is triggered if the Account Margin Ratio (AMR) is below the Maintenance Margin Ratio (MMR) required for the account (see [here](/trade-on-orderly/perpetual-futures/margin-leverage-and-pnl#maintenance-margin-ratio) for more details).
+A liquidation is triggered if the Account Margin Ratio (AMR) is below the Maintenance Margin Ratio (MMR) required for the account (see [here](/introduction/trade-on-orderly/perpetual-futures/margin-leverage-and-pnl#maintenance-margin-ratio) for more details).
 
 ## Liquidation Tiers 
 
@@ -64,7 +64,7 @@ Liquidator Fee = Sum[Liquidator Fee(Asset i) * Abs(Notional i)]
 
 * If the Account Margin Ratio is between User Liquidation Fee and Liquidator Fee, then a fee equal to `0.5 * User Liquidation Fee` is paid to the liquidator, and the remaining account margin is transferred to the insurance fund.
 
-* In the unlikely scenario that the remaining margin of the account cannot cover the Liquidator Fee, the account's balance and positions are transferred to the insurance fund. Those positions can still be claimed by liquidators (see [Insurance Fund & ADL](/trade-on-orderly/perpetual-futures/insurance-fund-and-adl)).
+* In the unlikely scenario that the remaining margin of the account cannot cover the Liquidator Fee, the account's balance and positions are transferred to the insurance fund. Those positions can still be claimed by liquidators (see [Insurance Fund & ADL](/introduction/trade-on-orderly/perpetual-futures/insurance-fund-and-adl)).
 
 ## Full vs Partial Liquidator Takeover
 
