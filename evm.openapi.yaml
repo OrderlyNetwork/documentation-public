@@ -460,10 +460,16 @@ paths:
 
         `GET /v1/public/token`
 
-        Retrives the available tokens to be used as collateral within Orderly Network.
+        Retrieves the available tokens to be used as collateral within Orderly Network.
       tags:
         - public
-      parameters: []
+      parameters:
+        - name: chain_id
+          in: query
+          description: 'Filter results by chain_id'
+          required: false
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -980,6 +986,7 @@ paths:
         - $ref: '#/components/parameters/orderly_account_id'
         - $ref: '#/components/parameters/orderly_key'
         - $ref: '#/components/parameters/orderly_signature'
+        - $ref: '#/components/parameters/recv_window_header'
       requestBody:
         content:
           application/json:
@@ -1722,23 +1729,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConfigResponse'
-  /v1/public/chain_info/{broker_id}:
+  /v1/public/chain_info:
     get:
       summary: Get Supported Chains per Broker
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET /v1/public/chain_info/{broker_id}`
+        `GET /v1/public/chain_info`
 
         Get chains specified broker is available on.
       tags:
         - public
       parameters:
         - name: broker_id
-          in: path
+          in: query
           description: return chains that supports this broker
-          required: true
+          required: false
           example: ''
           schema:
             type: string
@@ -1749,23 +1756,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChainInfoResponse'
-  /v1/public/chain_info:
-    get:
-      summary: Get Vault Chain Config
-      deprecated: false
-      description: |
-        **Limit: 10 requests per 1 second per IP address**
-
-        `GET /v1/public/chain_info`
-      tags:
-        - public
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChainInfoResponse'
+#  /v1/public/chain_info:
+#    get:
+#      summary: Get Vault Chain Config
+#      deprecated: false
+#      description: |
+#        **Limit: 10 requests per 1 second per IP address**
+#
+#        `GET /v1/public/chain_info`
+#      tags:
+#        - public
+#      responses:
+#        "200":
+#          description: OK
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/ChainInfoResponse'
   /v1/batch-order:
     post:
       summary: Batch Create Order
@@ -1799,6 +1806,7 @@ paths:
         - $ref: '#/components/parameters/orderly_account_id'
         - $ref: '#/components/parameters/orderly_key'
         - $ref: '#/components/parameters/orderly_signature'
+        - $ref: '#/components/parameters/recv_window_header'
       requestBody:
         content:
           application/json:
@@ -2794,6 +2802,7 @@ paths:
         - $ref: '#/components/parameters/orderly_account_id'
         - $ref: '#/components/parameters/orderly_key'
         - $ref: '#/components/parameters/orderly_signature'
+        - $ref: '#/components/parameters/recv_window_header'
       requestBody:
         content:
           application/json:
@@ -3342,23 +3351,23 @@ paths:
           example: ''
           schema:
             type: string
-#        - name: sort
-#          in: query
-#          description: "Allow sort by
-#
-#          `ascending_broker_fee`
-#          `descending_broker_fee`
-#          `ascending_perp_maker_volume`
-#          `descending_perp_maker_volume`
-#          `ascending_perp_taker_volume`
-#          `descending_perp_taker_volume`
-#          `ascending_perp_volume`
-#          `descending_perp_volume`
-#          `ascending_total_fee`
-#          `descending_total_fee`"
-#          required: false
-#          schema:
-#            type: string
+        - name: sort
+          in: query
+          description: "Allow sort by
+
+          `ascending_broker_fee`
+          `descending_broker_fee`
+          `ascending_perp_maker_volume`
+          `descending_perp_maker_volume`
+          `ascending_perp_taker_volume`
+          `descending_perp_taker_volume`
+          `ascending_perp_volume`
+          `descending_perp_volume`
+          `ascending_total_fee`
+          `descending_total_fee`"
+          required: false
+          schema:
+            type: string
         - name: orderly-timestamp
           in: header
           description: ''
@@ -4745,13 +4754,13 @@ paths:
           example: ''
           schema:
             type: string
-#        - name: order_tag
-#          in: query
-#          description: ""
-#          required: false
-#          example: ""
-#          schema:
-#            type: string
+        - name: order_tag
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -4801,7 +4810,14 @@ components:
       schema:
         type: string
       example: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
-
+    recv_window_header:
+      name: x-recv-window
+      in: header
+      description: "Use this parameter to control the timeout threshold for placing order, unit in miliseconds"
+      required: false
+      schema:
+        type: number
+      example: 20
   schemas:
     BasicResponse:
       required:
@@ -5382,6 +5398,10 @@ components:
                             withdraw_fee:
                               type: number
                               example: 2
+                            display_name:
+                              type: string
+                              description: "`USDC.e` for `Mantle` chain"
+                              example: "USDC"
 
     AvailableSymbolsResponse:
       allOf:
@@ -7451,6 +7471,25 @@ components:
                         items:
                           type: string
                           example: "woofi_dex"
+#                      token_info:
+#                        type: object
+#                        properties:
+#                          token_name:
+#                            type: string
+#                            example: "USDC"
+#                            description: "`USDC.e` for `Mantle` chain only"
+#                          contract_address:
+#                            type: string
+#                            example: "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d"
+#                          decimals:
+#                            type: number
+#                            example: 6
+#                          withdrawal_fee:
+#                            type: number
+#                            example: 2
+#                          cross_chain_withdrawal_fee:
+#                            type: number
+#                            example: 5
 
     BatchOrderResponse:
       allOf:
