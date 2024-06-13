@@ -1596,6 +1596,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetAccountResponse'
+
+  /v1/get_broker:
+    get:
+      summary: Check if Address is Registered
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/get_broker`
+
+        Check whether an address is registered already.
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: The address of the user
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBrokerResponse'
   /v1/register_account:
     post:
       summary: Register Account
@@ -6374,6 +6402,9 @@ components:
           description: "`MARKET` orders beyond this slippage will not be executed"
         order_tag:
           type: string
+        level:
+          type: number
+          description: "Integer value from `0` to `4`. This parameter controls the wether to present the price of bid0 to bid4 or ask0 to ask4. Only allowed when `order_type` is `BID` or `ASK`."
 
     PostOrderResponse:
       allOf:
@@ -7157,6 +7188,23 @@ components:
                 account_id:
                   type: string
                   example: "0xb129e074a17dfba8d652ae1eca21c7d6bb6904f1aa693f4886d50db170933a46"
+
+    GetBrokerResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                broker_id:
+                  type: array
+                  items:
+                    type: string
+                    example: "woofi_pro"
+
 
     DelegateSignerBody:
       type: object
