@@ -4796,6 +4796,197 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetCampaignUserResponse'
+
+
+
+  /v1/staking/balance:
+    get:
+      summary: Get Wallet's Current Staked Balance
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/staking/balance`
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWalletStakedBalanceResponse'
+
+
+  /v1/public/trading_rewards/epoch_info:
+    get:
+      summary: Get Parameters of Each Epoch for All Epochs
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/public/trading_rewards/epoch_info`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetParameterOfEachEpochForAllEpochsResponse'
+
+
+  /v1/public/trading_rewards/broker_allocation_history:
+    get:
+      summary: Get Broker Allocation History
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+        
+        
+        Return each epoch from Epoch 1 to last completed epoch.
+        
+
+        `GET /v1/public/trading_rewards/broker_allocation_history`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBrokerAllocationHistoryResponse'
+
+
+  /v1/public/trading_rewards/wallet_rewards_history:
+    get:
+      summary: Get Wallet Trading Rewards History
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+
+        Return each epoch from Epoch 1 to last completed epoch.
+
+
+        `GET /v1/public/trading_rewards/wallet_rewards_history`
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWalletRewardsHistoryResponse'
+
+
+  /v1/public/trading_rewards/account_rewards_history:
+    get:
+      summary: Get Account Trading Rewards History
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+
+        Return each epoch from Epoch 1 to last completed epoch.
+
+
+        `GET /v1/public/trading_rewards/account_rewards_history`
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAccountRewardsHistoryResponse'
+
+
+  /v1/public/market_making_rewards/epoch_info:
+    get:
+      summary: Get Parameters of Each MM Epoch for All MM Epochs
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/public/market_making_rewards/epoch_info`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetParameterOfEachMMEpochForAllMMEpochsResponse'
+
+
+  /v1/public/market_making_rewards/group_rewards_history:
+    get:
+      summary: Get Wallet Group Market Making Rewards History
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+
+        Return each epoch from Epoch 1 to last completed epoch.
+
+
+        `GET /v1/public/market_making_rewards/group_rewards_history`
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+        - name: symbol
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWalletGroupMarketMakingRewardsHistory'
+
+
 components:
   parameters:
     orderly_timestamp:
@@ -9311,6 +9502,265 @@ components:
                 taker_fee_rate:
                   type: number
                   example: 0.001
+
+    GetWalletStakedBalanceResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                total_staked_balance:
+                  type: number
+                  example: 10000
+                total_staked_order:
+                  type: number
+                  example: 2000
+                total_staked_esorder:
+                  type: number
+                  example: 8000
+
+    GetParameterOfEachEpochForAllEpochsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                current_epoch:
+                  type: number
+                  example: 23
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      epoch_id:
+                        type: number
+                        example: 2
+                      start_time:
+                        type: number
+                        example: 1711411200000
+                      end_time:
+                        type: number
+                        example: 1711497600000
+                      power_fees_paid_major:
+                        type: number
+                        example: 0.8
+                      power_fees_paid_alts:
+                        type: number
+                        example: 0.8
+                      power_staked_major:
+                        type: number
+                        example: 0.2
+                      power_staked_alts:
+                        type: number
+                        example: 0.2
+                      epoch_token:
+                        type: string
+                        example: "ORDER"
+                      max_reward_amount:
+                        type: number
+                        example: 200000
+                      k_constant_major:
+                        type: number
+                        example: 10
+                      k_constant_alts:
+                        type: number
+                        example: 10
+
+    GetBrokerAllocationHistoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      epoch_id:
+                        type: number
+                        example: 2
+                      rewards:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            broker_id:
+                              type: string
+                              example: "woofi_pro"
+                            epoch_token:
+                              type: string
+                              example: "ORDER"
+                            pct_allocation:
+                              type: number
+                              example: 0.2
+                            rewards_allocation:
+                              type: number
+                              example: 100
+
+    GetWalletRewardsHistoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                wallet_lifetime_trading_rewards_order:
+                  type: number
+                  example: 3378176.44849794
+                wallet_lifetime_trading_rewards_escrow:
+                  type: number
+                  example: 0
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      epoch_id:
+                        type: number
+                        example: 2
+                      wallet_epoch_avg_staked:
+                        type: number
+                        example: 0
+                      max_reward_amount:
+                        type: number
+                        example: 200000
+                      epoch_token:
+                        type: string
+                        example: "ORDER"
+                      reward_status:
+                        type: string
+                        example: "PENDING"
+                      r_wallet:
+                        type: string
+                        example: 199712.92309234
+
+    GetAccountRewardsHistoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      epoch_id:
+                        type: number
+                        example: 2
+                      broker:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            broker_id:
+                              type: string
+                              example: "woofi_pro"
+                            wallet_epoch_avg_staked:
+                              type: number
+                              example: 2
+                            trader_score_major:
+                              type: number
+                              example: 2
+                            trader_score_alts:
+                              type: number
+                              example: 2
+                            epoch_token:
+                              type: string
+                              example: "ORDER"
+                            reward_status:
+                              type: string
+                              example: "Confirmed"
+                            r_major:
+                              type: number
+                              example: 2
+                            r_alts:
+                              type: number
+                              example: 2
+                            r_account:
+                              type: number
+                              example: 2
+
+    GetWalletGroupMarketMakingRewardsHistory:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                group_lifetime_trading_rewards_order:
+                  type: number
+                  example: 3378176.44849794
+                group_lifetime_trading_rewards_escrow:
+                  type: number
+                  example: 0
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      epoch_id:
+                        type: number
+                        example: 2
+                      group_epoch_avg_staked:
+                        type: number
+                        example: 0
+                      max_reward_amount:
+                        type: number
+                        example: 200000
+                      epoch_token:
+                        type: string
+                        example: "ORDER"
+                      reward_status:
+                        type: string
+                        example: "PENDING"
+                      total_reward:
+                        type: number
+                        example: 10
+
+    GetParameterOfEachMMEpochForAllMMEpochsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                current_epoch:
+                  type: number
+                  example: 23
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      epoch_id:
+                        type: number
+                        example: 2
+                      start_time:
+                        type: number
+                        example: 1711411200000
+                      end_time:
+                        type: number
+                        example: 1711497600000
+                      epoch_token:
+                        type: string
+                        example: "ORDER"
+                      max_reward_amount:
+                        type: number
+                        example: 200000
 
 
 servers:
