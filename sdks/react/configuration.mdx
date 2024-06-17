@@ -9,7 +9,7 @@ The following parameters need to be configured when using `@orderly.network/reac
 **All components within `@orderly.network/react` needs to be used within `OrderlyAppProvider`**. This component provides global configuration for the App, and provides real-time state, data, and [`Account`](/sdks/tech-doc/classes/orderly_network_core.Account) management through [`@orderly.network/hooks`](/sdks/hooks/overview).
 
 ```tsx
-import { Desposit, OrderlyAppProvider } from "@orderly.network/react";
+import { Deposit, OrderlyAppProvider } from "@orderly.network/react";
 
 export default function Trading() {
   return (
@@ -19,7 +19,7 @@ export default function Trading() {
       brokerName="<Your name>"
       appIcons={...}
     >
-      <Desposit />
+      <Deposit />
     </OrderlyAppProvider>
   );
 }
@@ -74,6 +74,33 @@ Whether Testnet chains are included.
 
 The callback function when the user switches between the mainnet and testnet will be invoked upon successful network switch. The function takes the switched network ID as a parameter.
 
+If your app switches between testnet and mainnet, then you will have to do a full page reload for the Orderly SDK to work properly:
+
+```tsx
+const networkId = (localStorage.getItem("orderly-networkId") ?? "mainnet") as NetworkId;
+
+const onChainChanged = useCallback(
+  (chainId, isTestnet) => {
+    localStorage.setItem("orderly-networkId", isTestnet ? "testnet" : "mainnet");
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
+  },
+  [props.symbol]
+);
+// ...
+
+return (
+  <OrderlyAppProvider
+    networkId={networkId}
+    onChainChanged={onChainChanged}
+    // ...
+  >
+    {/* ... */}
+  </OrderlyAppProvider>
+);
+```
+
 <hr className="mt-5 border-base-500" />
 
 The following properties will be passed through to the `OrderlyConfigProvider` component. For more information about the configuration of `OrderlyConfigProvider`, please refer to [the technical documentation](/sdks/tech-doc/interfaces/orderly_network_hooks.ConfigProviderProps).
@@ -104,6 +131,26 @@ The network ID, possible values are `mainnet` and `testnet`.
 - Type: `OrderlyKeyStore` - [API](/sdks/tech-doc/interfaces/orderly_network_core.OrderlyKeyStore)
 - Required: false
 - Default: `new BaseOrderlyKeyPair()` - [API](/sdks/tech-doc/classes/orderly_network_core.BaseKeyStore)
+
+### chainFilter
+
+- Type: `filteredChains | filterChainsFunc` - [API](/sdks/tech-doc/modules/orderly_network_hooks#chainfilter)
+- Required: `false`
+- Default: all supported chains by Orderly Network
+
+It is recommended to provide your own list of supported chains:
+
+```tsx
+import { Arbitrum, Base, Ethereum } from "@orderly.network/types";
+
+// ...
+
+return (
+  <OrderlyAppProvider chainFilter={{ mainnet: [Arbitrum, Base, Ethereum] }}>
+    {/* ... */}
+  </OrderlyAppProvider>
+);
+```
 
 ## WalletConnectorContext
 

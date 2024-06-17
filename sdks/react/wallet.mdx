@@ -29,10 +29,21 @@ Wrap your component with the `ConnectorProvider` component, which should typical
 
 ```tsx
 import { ConnectorProvider } from "@orderly.network/web3-onboard";
+import injectedModule from "@web3-onboard/injected-wallets";
 
 export const App = () => {
   return (
-    <ConnectorProvider apiKey="<Your web3-onboard's api key>" options={`metadata`}>
+    <ConnectorProvider
+      apiKey="<Your web3-onboard's api key>"
+      options={{
+        wallets: [injectedModule()],
+        appMetadata: {
+          name: "Orderly",
+          icon: "/Orderly.svg",
+          description: "Orderly"
+        }
+      }}
+    >
       {/* components */}
     </ConnectorProvider>
   );
