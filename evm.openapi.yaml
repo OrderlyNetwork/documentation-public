@@ -489,8 +489,7 @@ paths:
 
 
         Get available symbols that Orderly Network supports, and also send order
-        rules for each symbol. The definition of rules can be found at [Exchange
-        Information](/build-on-evm/evm-api/restful-api/public/get-exchange-information)
+        rules for each symbol. The definition of rules can be found at [Get Order Rules per Market](/build-on-evm/evm-api/restful-api/public/get-order-rules-per-market)
       tags:
         - public
       parameters: []
@@ -3829,7 +3828,9 @@ paths:
       summary: Check Referral Code
       deprecated: false
       description: |
-        **Limit: 10 requests per second**
+        **Limit: 10 requests per 1 second per IP address**
+        
+        
         `GET /v1/public/referral/check_ref_code`
       tags:
         - public
@@ -3855,6 +3856,8 @@ paths:
       deprecated: false
       description: |
         **Limit: 10 requests per second**
+        
+        
         `GET /v1/public/referral/verify_ref_code`
       tags:
         - public
@@ -4147,6 +4150,7 @@ paths:
       description: |
         **Limit: 10 requests per second**
 
+
         `GET /v1/referral/referee_info`
       tags:
         - private
@@ -4196,7 +4200,11 @@ paths:
       deprecated: false
       description: |
         **Limit: 10 requests per second**
+        
+        
         `GET /v1/referral/referee_rebate_summary`
+        
+        
         Provides daily statistics on referee rebates
       tags:
         - private
@@ -4947,6 +4955,89 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetParameterOfEachMMEpochForAllMMEpochsResponse'
+
+
+  /v1/public/market_making_rewards/current_epoch_estimate:
+    get:
+      summary: Get Market Maker's Estimated Trading Rewards During Current Epoch
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        `GET /v1/public/market_making_rewards/current_epoch_estimate`
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMMCurrentEpochEstimateResponse'
+
+
+  /v1/public/trading_rewards/current_epoch_broker_estimate:
+    get:
+      summary: Get Current Epoch Estimate by Broker
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+        
+        
+        Get all broker’s estimated rewards allocation during the current epoch
+
+
+        `GET /v1/public/trading_rewards/current_epoch_broker_estimate`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCurrentEpochBrokerEstimateResponse'
+
+
+  /v1/public/trading_rewards/current_epoch_estimate:
+    get:
+      summary: Get Current Epoch Estimate
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        Get user’s estimated trading rewards during the current epoch
+
+
+        `GET /v1/public/trading_rewards/current_epoch_estimate`
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCurrentEpochEstimateResponse'
+
 
 
   /v1/public/market_making_rewards/group_rewards_history:
@@ -9729,6 +9820,86 @@ components:
                       total_reward:
                         type: number
                         example: 10
+
+
+    GetCurrentEpochBrokerEstimateResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      broker_id:
+                        type: string
+                        example: "woofi_pro"
+                      est_pct_allocation:
+                        type: number
+                        example: 0.2
+                      est_allocation:
+                        type: number
+                        example: 8278.08333486
+
+
+    GetCurrentEpochEstimateResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                est_trading_volume:
+                  type: number
+                  example: 120
+                est_avg_stake:
+                  type: number
+                  example: 55
+                est_stake_boost:
+                  type: number
+                  example: 2.228807384
+                est_r_wallet:
+                  type: number
+                  example: 17.4236779074
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      broker_id:
+                        type: string
+                        example: "woofi_pro"
+                      est_r_account:
+                        type: number
+                        example: 13.4236779074
+
+
+    GetMMCurrentEpochEstimateResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                est_maker_volume:
+                  type: number
+                  example: 120
+                est_avg_stake:
+                  type: number
+                  example: 55
+                est_stake_boost:
+                  type: number
+                  example: 2.228807384
+                est_r_wallet:
+                  type: number
+                  example: 17.4236779074
+
 
     GetParameterOfEachMMEpochForAllMMEpochsResponse:
       allOf:
