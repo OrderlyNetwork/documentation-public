@@ -4959,7 +4959,7 @@ paths:
 
   /v1/public/market_making_rewards/current_epoch_estimate:
     get:
-      summary: Get Market Maker's Estimated Trading Rewards During Current Epoch
+      summary: Get Market Maker Current Epoch Estimate
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
@@ -9791,10 +9791,10 @@ components:
             data:
               type: object
               properties:
-                group_lifetime_trading_rewards_order:
+                group_lifetime_mm_rewards_order:
                   type: number
                   example: 3378176.44849794
-                group_lifetime_trading_rewards_escrow:
+                group_lifetime_mm_rewards_escrow:
                   type: number
                   example: 0
                 rows:
@@ -9805,7 +9805,7 @@ components:
                       epoch_id:
                         type: number
                         example: 2
-                      group_epoch_avg_staked:
+                      epoch_avg_staked:
                         type: number
                         example: 0
                       max_reward_amount:
