@@ -4,7 +4,7 @@ title: "Wallet connect"
 
 `@orderly.network/react` is an application layer of the Orderly API. It is mainly responsible for rendering the UI, handling user interaction events, and completing trading actions. Therefore, it does not include built-in wallet connection functionality.
 
-In places where wallet connection needs to be handled, `@orderly.network/react` utilizes React's context mechanism to obtain information about the currently connected wallet or call wallet connection functions provided by the context. To facilitate this, `@orderly.network/hooks` defines a context named `WalletConnectorContext`. Any component that implements the `WalletConnectorContext.Provider` defined in [`WalletConnectorContextState`](/) can serve as the wallet connection component for the app. Please refer to [this link](#custom-wallet-connection-provider) for more details.
+In places where wallet connection needs to be handled, `@orderly.network/react` utilizes React's context mechanism to obtain information about the currently connected wallet or call wallet connection functions provided by the context. To facilitate this, `@orderly.network/hooks` defines a context named `WalletConnectorContext`. Any component that implements the `WalletConnectorContext.Provider` defined in `WalletConnectorContextState` can serve as the wallet connection component for the app. Please refer to [this link](#custom-wallet-connection-provider) for more details.
 
 ## Using the wallet connection component provided by Orderly
 
@@ -81,7 +81,7 @@ After defining the component, you also need to add this component to the parent 
 
 ### Interface & Context
 
-```typescript copy
+```ts
 export type ConnectedChain = {
   id: string;
 };
