@@ -4834,6 +4834,121 @@ paths:
                 $ref: '#/components/schemas/GetWalletStakedBalanceResponse'
 
 
+  /v1/staking/unstake_details:
+    get:
+      summary: Get Unstaking ORDER details
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/staking/unstake_details`
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUnstakeDetailsResponse'
+
+
+  /v1/staking/overview:
+    get:
+      summary: Get Staking Overview
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+        
+
+        `GET /v1/staking/overview`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStakingOverviewResponse'
+
+
+  /v1/staking/valor/batch_info:
+    get:
+      summary: Get Valor Batch Info
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        `GET /v1/staking/valor/batch_info`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetValorBatchInfoResponse'
+
+
+  /v1/staking/valor/pool_info:
+    get:
+      summary: Get Valor Pool Info
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        `GET /v1/staking/valor/pool_info`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetValorPoolInfoResponse'
+
+
+  /v1/staking/valor/redeem:
+    get:
+      summary: Get Valor Redeem Info
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        `GET /v1/staking/valor/redeem`
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetValorRedeemInfoResponse'
+
+
   /v1/public/trading_rewards/epoch_info:
     get:
       summary: Get Parameters of Each Epoch for All Epochs
@@ -4851,6 +4966,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetParameterOfEachEpochForAllEpochsResponse'
+
+
+  /v1/public/trading_rewards/epoch_data:
+    get:
+      summary: Get Epochs Data
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+        
+        
+        Get data of each epoch from epoch 1 to current epoch
+        
+
+        `GET /v1/public/trading_rewards/epoch_data`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEpochsDataResponse'
 
 
   /v1/public/trading_rewards/broker_allocation_history:
@@ -9612,6 +9750,118 @@ components:
                   type: number
                   example: 8000
 
+    GetUnstakeDetailsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                total_unstake_order:
+                  type: number
+                  example: 500
+                unstaked_end_time:
+                  type: number
+                  example: 1684671623456
+
+    GetStakingOverviewResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                total_stake:
+                  type: number
+                  example: 845599630.06
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      date:
+                        type: string
+                        example: "2023-05-20"
+                      usd_reward:
+                        type: number
+                        example: 1268.34
+                      total_staked_usd:
+                        type: number
+                        example: 117654321.99
+
+
+    GetValorBatchInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      batch_id:
+                        type: number
+                        example: 1
+                      batch_start_time:
+                        type: number
+                        example: 1684502400000
+                      batch_end_time:
+                        type: number
+                        example: 1684588800000
+
+
+    GetValorPoolInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                valor_price_usdc:
+                  type: number
+                  example: 50
+                treasury_pool_value:
+                  type: number
+                  example: 20000
+                next_settlement_date:
+                  type: string
+                  example: "2024-06-15"
+
+
+    GetValorRedeemInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                redeeming_valor_amount:
+                  type: number
+                  example: 1000
+                chain_details:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      chain_id:
+                        type: number
+                        example: 1
+                      pending_usdc:
+                        type: number
+                        example: 5000
+                      available_usdc:
+                        type: number
+                        example: 1500
+
+
     GetParameterOfEachEpochForAllEpochsResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
@@ -9661,6 +9911,49 @@ components:
                       k_constant_alts:
                         type: number
                         example: 10
+
+
+    GetEpochsDataResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                total_released_trading_rewards_order:
+                  type: number
+                  example: 3591403.07726818
+                total_released_trading_rewards_escrow:
+                  type: number
+                  example: 0
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      epoch_id:
+                        type: number
+                        example: 2
+                      total_trader_score_major:
+                        type: number
+                        example: 8278.08333486
+                      total_trader_score_alts:
+                        type: number
+                        example: 20901.92612209
+                      epoch_token:
+                        type: string
+                        example: "ORDER"
+                      reward_status:
+                        type: string
+                        example: "Confirmed"
+                      r_major:
+                        type: number
+                        example: 150000
+                      r_alts:
+                        type: number
+                        example: 50000
+
 
     GetBrokerAllocationHistoryResponse:
       allOf:
