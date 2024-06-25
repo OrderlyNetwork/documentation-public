@@ -6,8 +6,51 @@ icon: "layer-group"
 
 import { Chip } from "/snippets/chip.mdx";
 
+## June 25th, 2024 - Minor Update
 
-## [Unreleased] May 28th, 2024 - Minor Update
+<div style={{ display: "table", width: "auto" }}>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="times" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Testnet: June 21, 2024 14:00pm (UTC +8)**
+
+      **Mainnet: June 25, 2024 14:00pm (UTC +8)**
+    </div>
+
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="update" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Updates**
+
+      - Adding optional `level` parameter to /v1/order POST body, which allows to use the price of bid0 to bid4 or ask0 to ask4
+
+      - Adding optional `post_only_adjust` parameter to /v1/order POST body. Default value is false. If it is set to true, then it will adjust price to 1 tick close to current best price. Only supported for `POST_ONLY` type orders
+
+      - Performance improvements
+    </div>
+
+  </div>
+  
+</div>
+
+## May 28th, 2024 - Minor Update
 
 <div style={{ display: "table", width: "auto" }}>
 
@@ -28,7 +71,6 @@ import { Chip } from "/snippets/chip.mdx";
     </div>
 
   </div>
-
 
     <div style={{ display: "table-row", width: "auto" }}>
     <Chip type="new" />
@@ -70,7 +112,7 @@ import { Chip } from "/snippets/chip.mdx";
 
       - Add sort parameter to GET referee endpoint
 
-      - Performance improvemets
+      - Performance improvements
 
 
 
