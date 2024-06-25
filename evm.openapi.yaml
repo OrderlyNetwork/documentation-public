@@ -6824,7 +6824,10 @@ components:
           type: string
         level:
           type: number
-          description: "Integer value from `0` to `4`. This parameter controls the wether to present the price of bid0 to bid4 or ask0 to ask4. Only allowed when `order_type` is `BID` or `ASK`."
+          description: "Integer value from `0` to `4`. This parameter controls wether to present the price of bid0 to bid4 or ask0 to ask4. Only allowed when `order_type` is `BID` or `ASK`."
+        post_only_adjust:
+          type: boolean
+          description: "If set to true, then price will be adjusted to 1 tick close to current best price. Only supported for `POST_ONLY` type orders"
 
     PostOrderResponse:
       allOf:
