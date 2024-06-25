@@ -489,8 +489,7 @@ paths:
 
 
         Get available symbols that Orderly Network supports, and also send order
-        rules for each symbol. The definition of rules can be found at [Exchange
-        Information](/build-on-evm/evm-api/restful-api/public/get-exchange-information)
+        rules for each symbol. The definition of rules can be found at [Get Order Rules per Market](/build-on-evm/evm-api/restful-api/public/get-order-rules-per-market)
       tags:
         - public
       parameters: []
@@ -1596,6 +1595,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetAccountResponse'
+
+  /v1/get_broker:
+    get:
+      summary: Check if Address is Registered
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/get_broker`
+
+        Check whether an address is registered already.
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: The address of the user
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBrokerResponse'
   /v1/register_account:
     post:
       summary: Register Account
@@ -3801,7 +3828,9 @@ paths:
       summary: Check Referral Code
       deprecated: false
       description: |
-        **Limit: 10 requests per second**
+        **Limit: 10 requests per 1 second per IP address**
+        
+        
         `GET /v1/public/referral/check_ref_code`
       tags:
         - public
@@ -3827,6 +3856,8 @@ paths:
       deprecated: false
       description: |
         **Limit: 10 requests per second**
+        
+        
         `GET /v1/public/referral/verify_ref_code`
       tags:
         - public
@@ -4119,6 +4150,7 @@ paths:
       description: |
         **Limit: 10 requests per second**
 
+
         `GET /v1/referral/referee_info`
       tags:
         - private
@@ -4168,7 +4200,11 @@ paths:
       deprecated: false
       description: |
         **Limit: 10 requests per second**
+        
+        
         `GET /v1/referral/referee_rebate_summary`
+        
+        
         Provides daily statistics on referee rebates
       tags:
         - private
@@ -4532,7 +4568,7 @@ paths:
       summary: Get List of Campaigns
       deprecated: false
       description: |
-        **Limit: 10 requests per second**
+        **Limit: 10 requests per 1 second per IP address**
 
         `GET /v1/public/campaigns`
       tags:
@@ -4572,7 +4608,7 @@ paths:
       summary: Get Campaign Statistics
       deprecated: false
       description: |
-        **Limit: 10 requests per second**
+        **Limit: 10 requests per 1 second per IP address**
 
         `GET /v1/public/campaign/stats`
       tags:
@@ -4612,7 +4648,7 @@ paths:
       summary: Get Detailed Campaign Info
       deprecated: false
       description: |
-        **Limit: 10 requests per second**
+        **Limit: 10 requests per 1 second per IP address**
 
         `GET /v1/public/campaign/stats/details`
       tags:
@@ -4659,7 +4695,7 @@ paths:
       summary: Get Campaign Ranking
       deprecated: false
       description: |
-        **Limit: 10 requests per second**
+        **Limit: 10 requests per 1 second per IP address**
 
         `GET /v1/public/campaign/ranking`
       tags:
@@ -4713,7 +4749,7 @@ paths:
       summary: Get Campaign User Info
       deprecated: false
       description: |
-        **Limit: 10 requests per second**
+        **Limit: 10 requests per 1 second per IP address**
 
         `GET /v1/public/campaign/user`
       tags:
@@ -4768,6 +4804,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetCampaignUserResponse'
+
+
 components:
   parameters:
     orderly_timestamp:
@@ -6119,7 +6157,7 @@ components:
                       status:
                         type: string
                         example: "Accrued"
-                        description: "`Accured`/`Settled`"
+                        description: "`Accrued`/`Settled`"
                       created_time:
                         type: number
                         example: 1682235722003
@@ -6374,6 +6412,12 @@ components:
           description: "`MARKET` orders beyond this slippage will not be executed"
         order_tag:
           type: string
+        level:
+          type: number
+          description: "Integer value from `0` to `4`. This parameter controls wether to present the price of bid0 to bid4 or ask0 to ask4. Only allowed when `order_type` is `BID` or `ASK`."
+        post_only_adjust:
+          type: boolean
+          description: "If set to true, then price will be adjusted to 1 tick close to current best price. Only supported for `POST_ONLY` type orders"
 
     PostOrderResponse:
       allOf:
@@ -7158,6 +7202,23 @@ components:
                   type: string
                   example: "0xb129e074a17dfba8d652ae1eca21c7d6bb6904f1aa693f4886d50db170933a46"
 
+    GetBrokerResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                broker_id:
+                  type: array
+                  items:
+                    type: string
+                    example: "woofi_pro"
+
+
     DelegateSignerBody:
       type: object
       required:
@@ -7361,7 +7422,7 @@ components:
               description: Orderly Key to be added
             scope:
               type: string
-              description: Valid nonce from Get Registration Nonce
+              description: "Valid scopes are `read` and `trading`; multiple scopes can be sent by separating scopes with comma such as `read,trading`"
             timestamp:
               type: number
               description: timestamp in UNIX milliseconds
@@ -9263,6 +9324,503 @@ components:
                 taker_fee_rate:
                   type: number
                   example: 0.001
+
+    GetWalletStakedBalanceResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                total_staked_balance:
+                  type: number
+                  example: 10000
+                total_staked_order:
+                  type: number
+                  example: 2000
+                total_staked_esorder:
+                  type: number
+                  example: 8000
+
+    GetUnstakeDetailsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                total_unstake_order:
+                  type: number
+                  example: 500
+                unstaked_end_time:
+                  type: number
+                  example: 1684671623456
+
+    GetStakingOverviewResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                total_stake:
+                  type: number
+                  example: 845599630.06
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      date:
+                        type: string
+                        example: "2023-05-20"
+                      usd_reward:
+                        type: number
+                        example: 1268.34
+                      total_staked_usd:
+                        type: number
+                        example: 117654321.99
+
+
+    GetValorBatchInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      batch_id:
+                        type: number
+                        example: 1
+                      batch_start_time:
+                        type: number
+                        example: 1684502400000
+                      batch_end_time:
+                        type: number
+                        example: 1684588800000
+
+
+    GetValorPoolInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                valor_price_usdc:
+                  type: number
+                  example: 50
+                treasury_pool_value:
+                  type: number
+                  example: 20000
+                next_settlement_date:
+                  type: string
+                  example: "2024-06-15"
+
+
+    GetValorRedeemInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                redeeming_valor_amount:
+                  type: number
+                  example: 1000
+                chain_details:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      chain_id:
+                        type: number
+                        example: 1
+                      pending_usdc:
+                        type: number
+                        example: 5000
+                      available_usdc:
+                        type: number
+                        example: 1500
+
+
+    GetParameterOfEachEpochForAllEpochsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                current_epoch:
+                  type: number
+                  example: 23
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      epoch_id:
+                        type: number
+                        example: 2
+                      start_time:
+                        type: number
+                        example: 1711411200000
+                      end_time:
+                        type: number
+                        example: 1711497600000
+                      power_fees_paid_major:
+                        type: number
+                        example: 0.8
+                      power_fees_paid_alts:
+                        type: number
+                        example: 0.8
+                      power_staked_major:
+                        type: number
+                        example: 0.2
+                      power_staked_alts:
+                        type: number
+                        example: 0.2
+                      epoch_token:
+                        type: string
+                        example: "ORDER"
+                      max_reward_amount:
+                        type: number
+                        example: 200000
+                      k_constant_major:
+                        type: number
+                        example: 10
+                      k_constant_alts:
+                        type: number
+                        example: 10
+
+
+    GetEpochsDataResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                total_released_trading_rewards_order:
+                  type: number
+                  example: 3591403.07726818
+                total_released_trading_rewards_escrow:
+                  type: number
+                  example: 0
+                current_epoch:
+                  type: number
+                  example: 66
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      epoch_id:
+                        type: number
+                        example: 2
+                      total_trader_score_major:
+                        type: number
+                        example: 8278.08333486
+                      total_trader_score_alts:
+                        type: number
+                        example: 20901.92612209
+                      epoch_token:
+                        type: string
+                        example: "ORDER"
+                      reward_status:
+                        type: string
+                        example: "Confirmed"
+                      r_major:
+                        type: number
+                        example: 150000
+                      r_alts:
+                        type: number
+                        example: 50000
+
+
+    GetBrokerAllocationHistoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      epoch_id:
+                        type: number
+                        example: 2
+                      rewards:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            broker_id:
+                              type: string
+                              example: "woofi_pro"
+                            epoch_token:
+                              type: string
+                              example: "ORDER"
+                            pct_allocation:
+                              type: number
+                              example: 0.2
+                            rewards_allocation:
+                              type: number
+                              example: 100
+
+    GetWalletRewardsHistoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                wallet_lifetime_trading_rewards_order:
+                  type: number
+                  example: 3378176.44849794
+                wallet_lifetime_trading_rewards_escrow:
+                  type: number
+                  example: 0
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      epoch_id:
+                        type: number
+                        example: 2
+                      wallet_epoch_avg_staked:
+                        type: number
+                        example: 0
+                      max_reward_amount:
+                        type: number
+                        example: 200000
+                      epoch_token:
+                        type: string
+                        example: "ORDER"
+                      reward_status:
+                        type: string
+                        example: "Pending"
+                      r_wallet:
+                        type: string
+                        example: 199712.92309234
+
+    GetAccountRewardsHistoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      epoch_id:
+                        type: number
+                        example: 2
+                      broker:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            broker_id:
+                              type: string
+                              example: "woofi_pro"
+                            wallet_epoch_avg_staked:
+                              type: number
+                              example: 2
+                            trader_score_major:
+                              type: number
+                              example: 2
+                            trader_score_alts:
+                              type: number
+                              example: 2
+                            epoch_token:
+                              type: string
+                              example: "ORDER"
+                            reward_status:
+                              type: string
+                              example: "Confirmed"
+                            r_major:
+                              type: number
+                              example: 2
+                            r_alts:
+                              type: number
+                              example: 2
+                            r_account:
+                              type: number
+                              example: 2
+
+    GetWalletGroupMarketMakingRewardsHistory:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                group_lifetime_mm_rewards_order:
+                  type: number
+                  example: 3378176.44849794
+                group_lifetime_mm_rewards_escrow:
+                  type: number
+                  example: 0
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      epoch_id:
+                        type: number
+                        example: 2
+                      epoch_avg_staked:
+                        type: number
+                        example: 0
+                      max_reward_amount:
+                        type: number
+                        example: 200000
+                      epoch_token:
+                        type: string
+                        example: "ORDER"
+                      reward_status:
+                        type: string
+                        example: "PENDING"
+                      total_reward:
+                        type: number
+                        example: 10
+
+
+    GetCurrentEpochBrokerEstimateResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      broker_id:
+                        type: string
+                        example: "woofi_pro"
+                      est_pct_allocation:
+                        type: number
+                        example: 0.2
+                      est_allocation:
+                        type: number
+                        example: 8278.08333486
+
+
+    GetCurrentEpochEstimateResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                est_trading_volume:
+                  type: number
+                  example: 120
+                est_avg_stake:
+                  type: number
+                  example: 55
+                est_stake_boost:
+                  type: number
+                  example: 2.228807384
+                est_r_wallet:
+                  type: number
+                  example: 17.4236779074
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      broker_id:
+                        type: string
+                        example: "woofi_pro"
+                      est_r_account:
+                        type: number
+                        example: 13.4236779074
+
+
+    GetMMCurrentEpochEstimateResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                est_maker_volume:
+                  type: number
+                  example: 120
+                est_avg_stake:
+                  type: number
+                  example: 55
+                est_stake_boost:
+                  type: number
+                  example: 2.228807384
+                est_r_wallet:
+                  type: number
+                  example: 17.4236779074
+
+
+    GetParameterOfEachMMEpochForAllMMEpochsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                current_epoch:
+                  type: number
+                  example: 23
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      epoch_id:
+                        type: number
+                        example: 2
+                      start_time:
+                        type: number
+                        example: 1711411200000
+                      end_time:
+                        type: number
+                        example: 1711497600000
+                      epoch_token:
+                        type: string
+                        example: "ORDER"
+                      max_reward_amount:
+                        type: number
+                        example: 200000
 
 
 servers:
