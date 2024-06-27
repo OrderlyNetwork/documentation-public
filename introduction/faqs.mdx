@@ -2,6 +2,7 @@
 title: "FAQ"
 sidebarTitle: "FAQ"
 ---
+
 <AccordionGroup>
   <Accordion title="What is Orderly?">
 Orderly Network is a combination of an orderbook-based trading infrastructure and a robust liquidity layer offering spot and perpetual futures orderbooks. Unlike traditional platforms, Orderly doesn’t have a front end; instead, it operates at the core of the ecosystem, providing essential services to projects built on top of it.
@@ -11,14 +12,15 @@ Our DEX white-label solution is carefully crafted to save builders time and capi
 With Orderly, anyone can create a trading application thanks to our seamless plug-and-play experience leveraging our liquidity and composability.
 
 Looking ahead, our grand vision is to create an omnichain protocol, connecting traders from both EVM and non-EVM chains within the same orderbook.
+
   </Accordion>
 
   <Accordion title="How do I get started?">
   ## For traders:
     Traders can start using any interface built on Orderly listed on [this](/introduction/trade-on-orderly/brokers) page
 
-
     ## For Developers and API traders:
+
 <CardGroup cols={2}>
   <Card title="EVM Quick Start" href="/build-on-evm/building-on-evm">
   </Card>
@@ -27,8 +29,8 @@ Looking ahead, our grand vision is to create an omnichain protocol, connecting t
 </CardGroup>
   </Accordion>
 
-  <Accordion title="What can I do on Orderly?">
-    Developers can build a full suite of products:
+<Accordion title="What can I do on Orderly?">
+  Developers can build a full suite of products:
 
 **Brokers:** Create your own Spot or Perps DEX effortlessly on NEAR, and Perps DEX on EVM. Benefit from our professional trading infrastructure and deep liquidity.
 
@@ -45,32 +47,34 @@ Looking ahead, our grand vision is to create an omnichain protocol, connecting t
 **Trading Bots:** Connect to our orderbook and offer the industry’s best Spot & Perps rates. Enjoy SL/limit orders, gasless transactions, and fully customizable fees.
 
 **Hedging:** Safeguard your positions on other exchanges by using our orderbook for effective hedging strategies.
+
 <br />
 Traders can explore an ecosystem of front-ends built on Orderly. A comprehensive list can be found [here](/introduction/trade-on-orderly/brokers).
-  </Accordion>
+</Accordion>
   
   <Accordion title="How are trading fees calculated/charged?">
 
     Fees are deducted from the converted token for spot(e.g. converting USDC to ETH will incur fees in ETH) and added to the cost position for perps (denominated in USDC).
-    
+
     Each broker sets their own fee rates.
+
   </Accordion>
 
-  <Accordion title="Can I list my token on Orderly?">
-    Yes! We are always looking to list more tokens on the platforms. Please [reach out](mailto:product@orderly.network) to us if you want your token listed.
-  </Accordion>  
+<Accordion title="Can I list my token on Orderly?">
+  Yes! We are always looking to list more tokens on the platforms. Please [reach
+  out](mailto:product@orderly.network) to us if you want your token listed.
+</Accordion>
 
-  <Accordion title="What are the different order types?">
-    **MARKET:** It matches until the full size is executed. If the size is too large (larger than the whole book) or the matching price exceeds the price limit (refer to `price_range`), then the remaining quantity will be canceled.
-    
-    **IOC (Immediate or Cancel):** It matches as much as possible at the order\_price. If not fully executed, then the remaining quantity will be canceled.
-    
-    **FOK (Fill or Kill):** If the order can be fully executed at the order\_price, then the order gets fully executed otherwise would be canceled without any execution.
-    
-    **POST ONLY:** If the order executes with any maker trades at the time of placement, then it will be canceled without any execution.
-    
-    **REDUCE ONLY:** Executes buy or sell orders which only reduce a current position
-  </Accordion>
+<Accordion title="What are the different order types?">
+  **MARKET:** It matches until the full size is executed. If the size is too large (larger than the
+  whole book) or the matching price exceeds the price limit (refer to `price_range`), then the
+  remaining quantity will be canceled. **IOC (Immediate or Cancel):** It matches as much as possible
+  at the order\_price. If not fully executed, then the remaining quantity will be canceled. **FOK
+  (Fill or Kill):** If the order can be fully executed at the order\_price, then the order gets
+  fully executed otherwise would be canceled without any execution. **POST ONLY:** If the order
+  executes with any maker trades at the time of placement, then it will be canceled without any
+  execution. **REDUCE ONLY:** Executes buy or sell orders which only reduce a current position
+</Accordion>
 
   <Accordion title="Why does Orderly require two different keys to trade? (NEAR only)">
     There are a couple of reasons:
@@ -78,12 +82,14 @@ Traders can explore an ecosystem of front-ends built on Orderly. A comprehensive
     1. Separating the rights for trading and other operations, which is crucial for larger companies and institutions.
 
     2. Verify order contents uploaded by the operator corresponds to an order sent by the user when the trade is settled. Since the orders don't go through the smart contract which uses Access Keys, we need trading keys, so that the operator cannot create fake orders not coming from the users
+
   </Accordion>
 
   <Accordion title="How do you ensure no fake orders are settled on-chain?">
     All orders coming into the Orderly off-chain matching engine are signed by users' private trading keys and are settled on-chain with those signatures. Public keys are stored on the contract and the signatures are verified thus validifying orders.
 
     The above model ensures that even in the event operator gets compromised, no fake orders are executed and all user funds are safe.
+
   </Accordion>
 
   <Accordion title="Are there code examples or tutorials for how to build on Orderly?">
@@ -91,10 +97,9 @@ Traders can explore an ecosystem of front-ends built on Orderly. A comprehensive
 
     [NEAR Tutorial](/build-on-near/tutorial)
 
-    [EVM SDK](https://sdk.orderly.network/docs/hooks/overview)
+    [EVM SDK](/sdks/overview)
 
     [NEAR SDK](/build-on-near/near-sdk/near-sdk)
-
 
   </Accordion>
 

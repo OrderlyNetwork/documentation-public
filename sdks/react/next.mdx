@@ -1,0 +1,83 @@
+---
+title: "Next.js"
+---
+
+Setting up Orderly SDK in a Next.js project.
+
+<Steps>
+<Step title="Create your project">
+
+Start by creating a new Next.js project if you don’t have one set up already. The most common approach is to use [Create Next App](https://nextjs.org/docs/api-ref·erence/create-next-app).
+
+```bash
+npx create-next-app@latest my-exchange --app --typescript --eslint
+cd my-exchange
+```
+
+</Step>
+<Step title="Add Orderly SDK">
+
+```sh
+npm install @orderly.network/react
+```
+
+</Step>
+<Step title="Add new route">
+
+Next.js has two routing modes: Page Router and App Router. Here we take App mode as an example. For more information about App Router, please refer to [Next.js documentation](https://nextjs.org/docs/app/building-your-application/routing/defining-routes).
+
+Create a new `trade/[symbol]` directory under the `/app` directory, create a `page.tsx` file, and add the following code:
+
+```tsx page.tsx
+import { TradingPage, OrderlyAppProvider } from "@orderly.network/react";
+import { ConnectorProvider } from "@orderly.network/web3-onboard";
+
+export default function Trading({ params }: { params: { symbol: string } }) {
+  return (
+    <ConnectorProvider
+      apiKey="<Your web3-onboard's api key>"
+      options={`<options>`}
+    >
+      <OrderlyAppProvider
+        networkId="testnet"
+        brokerId="<Your broker id>"
+        brokerName="<Your name>"
+        appIcons={...}
+      >
+        <TradingPage
+          symbol={params.symbol}
+          tradingViewConfig={`tradingView config`}
+          onSymbolChange={`onSymbolChange handler`}
+        />
+      </OrderlyAppProvider>
+    </ConnectorProvider>
+  );
+}
+```
+
+</Step>
+<Step title="Import style">
+
+```tsx page.tsx
+import { TradingPage, OrderlyAppProvider } from "@orderly.network/react";
+import { ConnectorProvider } from "@orderly.network/web3-onboard";
+import "@orderly.network/react/dist/styles.css";
+
+export default function Trading() {
+  return {
+    /* ... */
+  };
+}
+```
+
+</Step>
+<Step title="Done">
+
+Now you can start your project and access the `/trade/PERP_ETH_USDC` route, you will see a complete exchange page.
+
+```bash
+npm run dev
+```
+
+</Step>
+</Steps>
