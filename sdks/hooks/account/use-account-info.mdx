@@ -6,6 +6,8 @@ Fetch basic acccount information from API.
 
 - [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#useaccountinfo)
 
+This hooks returns the data provided by the [account information endpoint](/build-on-evm/evm-api/restful-api/private/get-account-information).
+
 ### Example
 
 ```tsx
@@ -13,5 +15,18 @@ const { data: account, error, isLoading } = useAccountInfo();
 if (account == null || isLoading) {
   return "Loading...";
 }
-console.log("account_id", account.account_id);
+
+const {
+  account_id,
+  email,
+  account_mode,
+  max_leverage,
+  taker_fee_rate,
+  maker_fee_rate,
+  futures_taker_fee_rate,
+  futures_maker_fee_rate,
+  maintenance_cancel_orders,
+  imr_factor,
+  max_notional
+} = account;
 ```
