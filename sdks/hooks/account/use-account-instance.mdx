@@ -10,4 +10,20 @@ Get [`Account`](/sdks/tech-doc/classes/orderly_network_core.Account) singleton, 
 
 ```ts
 const account = useAccountInstance();
+
+return (
+  <>
+    <div>Connected address: {account.address}</div>
+    <div>Connected chain: {account.chainId}</div>
+    <button onClick={account.createAccount}>Register</button>
+    <button
+      onClick={() => {
+        account.createOrderlyKey(365);
+      }}
+    >
+      Create Orderly Key
+    </button>
+    <button onClick={account.settle}>Settle PnL</button>
+  </>
+);
 ```
