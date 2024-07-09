@@ -8,7 +8,7 @@ We are excited to present an addition to our array of services that many have ea
 Existing users can effortlessly create personalized referral codes, which they can then share with potential new members. It's designed to reward both new and existing members, encouraging the growth of their networks within the Orderly ecosystem and fostering a more interconnected and robust trading community.
 
 ## Overview of the Referral Binding Process
-**Referral Code Creation:** Brokers create unique referral codes linked to specific user accounts.
+**Referral Code Creation:** Builders create unique referral codes linked to specific user accounts.
 
 **Binding Process:** The referee, upon receiving a referral code, binds it to their account, establishing a direct link between the referrer and the referee.
 
@@ -25,7 +25,7 @@ Existing users can effortlessly create personalized referral codes, which they c
 
 - **Referrer Rebate:** A matching portion of the taker fee is rebated to the referrer.
 
-- **Broker Rebate:** The remaining portion of the taker fee is rebated to the broker.
+- **Builder Rebate:** The remaining portion of the taker fee is rebated to the builder.
 
 ### Example Calculation
 **Assumptions:**
@@ -36,7 +36,7 @@ Existing users can effortlessly create personalized referral codes, which they c
 
 -Total Taker Fee for Referee's Order: 7 basis points (bps) = 15 USDC
 
--Broker Rebate: 4 bps ≈ 8.6 USDC
+-Builder Rebate: 4 bps ≈ 8.6 USDC
 
 **Rebate Allocation:**
 
@@ -44,17 +44,17 @@ Existing users can effortlessly create personalized referral codes, which they c
 
 - Referrer Rebate: 1.7 USDC
 
-- Broker Rebate: 5.2 USDC
+- Builder Rebate: 5.2 USDC
 
-## User Flow for Brokers
+## User Flow for Builders
 <Steps>
   <Step title="Generating referral codes">
-    Brokers generate and assign unique referral codes for each user (referrer) through [POST `/v1/referral/create`](/build-on-evm/evm-api/restful-api/private/create-referral-code).
+    Builders generate and assign unique referral codes for each user (referrer) through [POST `/v1/referral/create`](/build-on-evm/evm-api/restful-api/private/create-referral-code).
 
     Taker rebate need to provided for both referee and referrer. 
 
     <Note>
-This endpoint is authenticated with broker's admin account
+This endpoint is authenticated with builder's admin account
     </Note>
   </Step>
     <Step title="Bind referral code">
@@ -63,11 +63,11 @@ This endpoint is authenticated with broker's admin account
   <Step title="Update referral code">
 Update referral rebate of a referral code through [POST `/v1/referral/update`](/build-on-evm/evm-api/restful-api/private/update-referral-code).
     <Note>
-This endpoint is authenticated with broker's admin account
+This endpoint is authenticated with builder's admin account
     </Note>
   </Step>
       <Step title="Retrieve referral information">
-Brokers can retrieve details of referees, referrers, rebates. All endpoints listed under ["Referral Program"](/build-on-evm/evm-api/restful-api/private/get-referral-info) section.
+Builders can retrieve details of referees, referrers, rebates. All endpoints listed under ["Referral Program"](/build-on-evm/evm-api/restful-api/private/get-referral-info) section.
   </Step>
 </Steps>
 
