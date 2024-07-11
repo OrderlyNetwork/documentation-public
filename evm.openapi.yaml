@@ -67,7 +67,7 @@ paths:
 
   /v1/public/volume/stats:
     get:
-      summary: Get Broker Volume
+      summary: Get Builder Volume
       deprecated: false
       description: >
 
@@ -77,8 +77,8 @@ paths:
         `GET /v1/public/volume/stats`
 
 
-        Get the latest volume statistics of Orderly and its associated brokers.
-        Note that for broker volume, the volume is counted as the sum of the
+        Get the latest volume statistics of Orderly and its associated builders.
+        Note that for builder volume, the volume is counted as the sum of the
         maker and taker volume, while for the full Orderly platform, the volume
         is the total amount matched on the platform (ie taker and maker are not
         double-counted.)
@@ -87,7 +87,7 @@ paths:
       parameters:
         - name: broker_id
           in: query
-          description: Provide broker_id to obtain statistics of a specific broker
+          description: Provide broker_id to obtain statistics of a specific builder
           required: false
           example: test_broker
           schema:
@@ -102,7 +102,7 @@ paths:
 
   /v1/public/broker/name:
     get:
-      summary: Get Broker List
+      summary: Get Builder List
       deprecated: false
       description: |
 
@@ -110,13 +110,13 @@ paths:
 
         `GET /v1/public/broker/name?broker_id={broker_id}`
 
-        Get the list of brokers currently onboarded on Orderly Network.
+        Get the list of builders currently onboarded on Orderly Network.
       tags:
         - public
       parameters:
         - name: broker_id
           in: query
-          description: If provided, it will only return details for the particular broker.
+          description: If provided, it will only return details for the particular builder.
           required: false
           example: test_broker
           schema:
@@ -810,7 +810,7 @@ paths:
               properties:
                 leverage:
                   type: integer
-                  description: One of 1,2,3,4,5,10,15,20
+                  description: Integer between 1 to 50
               required:
                 - leverage
       responses:
@@ -820,6 +820,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmptyDataResponse'
+
+  /v1/public/leverage:
+    post:
+      summary: Get Max Leverage Setting
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `POST /v1/public/leverage`
+
+        Get max leverage setting
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLeverageSettingResponse'
   /v1/liquidations:
     get:
       summary: Get Liquidated Positions of Account
@@ -1583,7 +1603,7 @@ paths:
             type: string
         - name: broker_id
           in: query
-          description: The broker that the account is registered on
+          description: The builder that the account is registered on
           required: true
           example: ''
           schema:
@@ -1635,8 +1655,8 @@ paths:
 
 
         Registers a new account to Orderly Network. Note an account is unique
-        for each wallet address + broker id (ie the same wallet address can have
-        multiple accounts with Orderly Network, 1 with each broker)
+        for each wallet address + builder id (ie the same wallet address can have
+        multiple accounts with Orderly Network, 1 with each builder)
       tags:
         - public
       parameters: []
@@ -1758,20 +1778,20 @@ paths:
                 $ref: '#/components/schemas/ConfigResponse'
   /v1/public/chain_info:
     get:
-      summary: Get Supported Chains per Broker
+      summary: Get Supported Chains per Builder
       deprecated: false
       description: |
         **Limit: 10 requests per 1 second per IP address**
 
         `GET /v1/public/chain_info`
 
-        Get chains specified broker is available on.
+        Get chains specified builder is available on.
       tags:
         - public
       parameters:
         - name: broker_id
           in: query
-          description: return chains that supports this broker
+          description: return chains that supports this builder
           required: false
           example: ''
           schema:
@@ -2785,7 +2805,7 @@ paths:
             type: string
         - name: broker_id
           in: query
-          description: Broker ID of an account
+          description: Builder ID of an account
           required: true
           example: ''
           schema:
@@ -3292,7 +3312,7 @@ paths:
 
         `GET /v1/public/account`
 
-        Check if provided account account is registered with Orderly Network and it's respecitive broker.
+        Check if provided account account is registered with Orderly Network and it's respecitive builder.
       tags:
         - public
       parameters:
@@ -3312,7 +3332,7 @@ paths:
                 $ref: '#/components/schemas/GetAccountDetailsResponse'
   /v1/volume/broker/daily:
     get:
-      summary: Get Broker's Users' Volumes
+      summary: Get Builder's Users' Volumes
       deprecated: false
       description: >
         **Limit 10 requests per 60 seconds**
@@ -3322,7 +3342,7 @@ paths:
 
 
         Get the daily historical breakdown of the user trading volume on
-        specified broker.
+        specified builder.
 
 
         The provided `start_date`/`end_date` has to be within a 90-day range.
@@ -3517,9 +3537,9 @@ paths:
 
         `GET /v1/broker/user_info`
         
-        Scope: Only each broker_id's admin wallet can call this endpoint.
+        Scope: Only each builder_id's admin wallet can call this endpoint.
         
-        If `account_id` or `address` is provided, will always return the fee rate and indicate whether the user is on the broker’s default fee rate or not.
+        If `account_id` or `address` is provided, will always return the fee rate and indicate whether the user is on the builder’s default fee rate or not.
       tags:
         - private
       parameters:
@@ -3574,7 +3594,7 @@ paths:
         
         Send a list of accounts assigned to a new fee rate. Max 500 accounts per request.
         
-        Scope: Only each broker_id's admin wallet can call this endpoint.
+        Scope: Only each builder_id's admin wallet can call this endpoint.
       tags:
         - private
       parameters:
@@ -3622,7 +3642,7 @@ paths:
         
         Assign users to a default fee rate. Only send accounts that need to be updated. Max 500 accounts per request.
         
-        Scope: Only each broker’s admin can create the referral code for accounts that are related to the broker_id
+        Scope: Only each builder’s admin can create the referral code for accounts that are related to the builder_id
       tags:
         - private
       parameters:
@@ -3653,7 +3673,7 @@ paths:
 
   /v1/broker/fee_rate/default:
     post:
-      summary: Update Default Broker Fee
+      summary: Update Default Builder Fee
       deprecated: false
       description: |
         **Limit: 1 requests per second**
@@ -3662,7 +3682,7 @@ paths:
         
         Update the default fee rate for users assigned to a default fee rate.
         
-        Scope: Only each broker_id’s admin wallet can call this endpoint
+        Scope: Only each builder_id’s admin wallet can call this endpoint
       tags:
         - private
       parameters:
@@ -3693,7 +3713,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/BasicResponse'
     get:
-      summary: Get Default Broker Fee
+      summary: Get Default Builder Fee
       deprecated: false
       description: |
         **Limit: 1 requests per second**
@@ -3702,7 +3722,7 @@ paths:
         
         Get default fee rate.
         
-        Scope: Only each broker_id’s admin wallet can call this endpoint
+        Scope: Only each builder_id’s admin wallet can call this endpoint
       tags:
         - private
       parameters:
@@ -3727,7 +3747,7 @@ paths:
 
         `POST /v1/referral/create`
         
-        Scope: Only each broker’s admin can create the referral code for accounts that are related to the broker_id
+        Scope: Only each builder’s admin can create the referral code for accounts that are related to the builder_id
       tags:
         - private
       parameters:
@@ -3779,7 +3799,7 @@ paths:
 
         `GET /v1/referral/admin_info`
         
-        Scope: Only each broker_id’s admin wallet can call this endpoint.
+        Scope: Only each builder’s admin wallet can call this endpoint.
       tags:
         - private
       parameters:
@@ -3886,7 +3906,7 @@ paths:
 
         `POST /v1/referral/update`
         
-        Scope: Only each broker_id’s admin wallet can call this endpoint.
+        Scope: Only each Builder’s admin wallet can call this endpoint.
       tags:
         - private
       parameters:
@@ -7240,7 +7260,7 @@ components:
               example: "0xaddress"
             brokerId:
               type: string
-              description: Broker ID
+              description: Builder ID
               example: "woofi_pro"
             chainId:
               type: integer
@@ -7285,7 +7305,7 @@ components:
           properties:
             brokerId:
               type: string
-              description: Broker ID
+              description: Builder ID
             chainId:
               type: integer
               description: Chain ID of registering chain (within those that are supported by the Network)
@@ -7366,7 +7386,7 @@ components:
               description: ""
             brokerId:
               type: string
-              description: Broker ID
+              description: Builder ID
             chainId:
               type: integer
               description: Chain ID of registering chain (within those that are supported by the Network)
@@ -7410,7 +7430,7 @@ components:
           properties:
             brokerId:
               type: string
-              description: Broker ID
+              description: Builder ID
             chainId:
               type: integer
               description: Chain ID of registering chain (within those that are supported by the Network)
@@ -7851,7 +7871,7 @@ components:
           properties:
             brokerId:
               type: string
-              description: Broker ID
+              description: Builder ID
             chainId:
               type: integer
               description: Chain ID of registering chain (within those that are supported by the Network)
@@ -7905,7 +7925,7 @@ components:
               type: string
             brokerId:
               type: string
-              description: Broker ID
+              description: Builder ID
             chainId:
               type: integer
               description: Chain ID of registering chain (within those that are supported by the Network)
@@ -7969,7 +7989,7 @@ components:
           properties:
             brokerId:
               type: string
-              description: Broker ID
+              description: Builder ID
             chainId:
               type: integer
               description: Chain ID of registering chain (within those that are supported by the Network)
@@ -8011,7 +8031,7 @@ components:
               type: string
             brokerId:
               type: string
-              description: Broker ID
+              description: Builder ID
             chainId:
               type: integer
               description: Chain ID of registering chain (within those that are supported by the Network)
@@ -9819,6 +9839,18 @@ components:
                         type: number
                         example: 200000
 
+
+    GetLeverageSettingResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                max_futures_leverage:
+                  type: integer
+                  example: 50
 
 servers:
   - url: https://api-evm.orderly.network
