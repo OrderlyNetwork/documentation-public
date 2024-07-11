@@ -6,7 +6,7 @@ title: "User Flow Walkthrough"
 
 ### Account Structure
 
-A wallet owner can register an account on Orderly Network for each broker that is supported. Each wallet owner could thus have multiple accounts (that are not interlinked with each other) registered with Orderly Network.
+A wallet owner can register an account on Orderly Network for each builder that is supported. Each wallet owner could thus have multiple accounts (that are not interlinked with each other) registered with Orderly Network.
 
 ### Account ID
 
@@ -43,7 +43,7 @@ Access keys also have expirations for security reasons. The maximum allowed expi
 
 Follow the following steps to register an account on Orderly Network:
 
-1. Choose a valid chain/broker to register the account on
+1. Choose a valid chain/builder to register the account on
 2. Check if the wallet is already registered via [this](/build-on-evm/evm-api/restful-api/public/check-if-wallet-is-registered) API or if account already exisists via [this](/build-on-evm/evm-api/restful-api/public/check-if-account-exists) API.
 3. Get a nonce from Get registration nonce API
 4. Sign a message from the wallet in the following format using the EIP-712 standard and obtain the signature
@@ -61,7 +61,7 @@ where:
 
 | Name              | Type      | Required | Description                                                                                                |
 | ----------------- | --------- | -------- | ---------------------------------------------------------------------------------------------------------- |
-| brokerId          | string    | Y        | Broker ID                                                                                                  |
+| brokerId          | string    | Y        | Builder ID                                                                                                  |
 | chainId           | int       | Y        | Chain ID of registering chain (within those that are supported by the Network)                             |
 | timestamp         | timestamp | Y        | timestamp in UNIX milliseconds                                                                             |
 | registrationNonce | string    | Y        | Valid nonce from [Get registration nonce](/build-on-evm/evm-api/restful-api/public/get-registration-nonce) |
@@ -87,7 +87,7 @@ where:
 
 | Name       | Type      | Required | Description                                                                                      |
 | ---------- | --------- | -------- | ------------------------------------------------------------------------------------------------ |
-| brokerId   | string    | Y        | Broker ID                                                                                        |
+| brokerId   | string    | Y        | Builder ID                                                                                        |
 | chainId    | int       | Y        | Chain ID of registering chain (within those that are supported by the Network)                   |
 | orderlyKey | string    | Y        | ed25519 public key                                                                               |
 | scope      | string    | Y        | valid scopes are read, trading; multiple scopes can be sent, comma separated                     |
@@ -111,7 +111,7 @@ To create a deposit request, users can follow the following steps:
 | Name        | Type  | Required | Description                                          |
 | ----------- | ----- | -------- | ---------------------------------------------------- |
 | accountId   | bytes | Y        | The account id of the user in bytes.                 |
-| brokerHash  | bytes | Y        | The keccak256 hash of the broker id (eg "woofi_dex") |
+| brokerHash  | bytes | Y        | The keccak256 hash of the builder id (eg "woofi_dex") |
 | tokenHash   | bytes | Y        | The keccak256 hash of the token string (eg "USDC")   |
 | tokenAmount | int   | Y        | Amount of tokens to be deposited                     |
 
@@ -141,7 +141,7 @@ Follow the following steps to withdraw your tokens from Orderly Network:
 where
 | Name | Type | Required | Description |
 |---------------|-----------|----------|--------------------------------------------------------------------------------|
-| brokerId | string | Y | Broker ID |
+| brokerId | string | Y | Builder ID |
 | chainId | int | Y | Chain ID of withdrawing chain (within those that are supported by the Network) |
 | receiver | string | Y | Address of the receiver, which should be equal to the address of the account. |
 | token | string | Y | The string representation of the token that is being withdrawn (eg "USDC") |
@@ -170,7 +170,7 @@ Any realized and unrealized PnL accrued from open or closed positions needs to b
 where:
 
 Name Type Required Description
-brokerId string Y Broker ID
+brokerId string Y Builder ID
 chainId int Y Chain ID of registering chain (within those that are supported by the Network)
 settleNonce int Y Valid settlement nonce from Get Settle PnL nonce
 timestamp timestamp Y current timestamp in UNIX milliseconds
@@ -179,7 +179,7 @@ timestamp timestamp Y current timestamp in UNIX milliseconds
 
 | Name        | Type      | Required | Description                                                                                                        |
 | ----------- | --------- | -------- | ------------------------------------------------------------------------------------------------------------------ |
-| brokerId    | string    | Y        | Broker ID                                                                                                          |
+| brokerId    | string    | Y        | Builder ID                                                                                                          |
 | chainId     | int       | Y        | Chain ID of registering chain (within those that are supported by the Network)                                     |
 | settleNonce | int       | Y        | Valid settlement nonce from [Get Settle PnL nonce](/build-on-evm/evm-api/restful-api/private/get-settle-pnl-nonce) |
 | timestamp   | timestamp | Y        | current timestamp in UNIX milliseconds                                                                             |

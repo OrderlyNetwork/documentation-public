@@ -172,7 +172,7 @@ const depositFee = await vaultContract.getDepositFee(wallet.address, depositInpu
 | **Name**    | **Type** | **Required** | **Description**                                       |
 | ----------- | -------- | ------------ | ----------------------------------------------------- |
 | accountId   | bytes    | Y            | The account id of the user in bytes.                  |
-| brokerHash  | bytes    | Y            | The keccak256 hash of the broker id (eg "woofi\_dex") |
+| brokerHash  | bytes    | Y            | The keccak256 hash of the builder id (eg "woofi\_dex") |
 | tokenHash   | bytes    | Y            | The keccak256 hash of the token string (eg “USDC“)    |
 | tokenAmount | int      | Y            | Amount of tokens to be deposited                      |
 
@@ -450,7 +450,7 @@ where:
 
 | **Name**      | **Type**  | **Required** | **Description**                                                                                                        |
 | ------------- | --------- | ------------ | ---------------------------------------------------------------------------------------------------------------------- |
-| brokerId      | string    | Y            | Broker ID, the valid list can be found \[here\]                                                                        |
+| brokerId      | string    | Y            | Builder ID, the valid list can be found \[here\]                                                                        |
 | chainId       | int       | Y            | Chain ID of the chain that the funds should be withdrawn to (within those that are supported by the Network)           |
 | receiver      | string    | Y            | Address of the receiver, which should be equal to the address of the account.                                          |
 | token         | string    | Y            | The string representation of the token that is being withdrawn (eg "USDC")                                             |

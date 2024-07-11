@@ -5,7 +5,7 @@ description: "Overview of account structure"
 
 ## Account Structure
 
-A wallet owner can register an account on Orderly Network for each broker that is supported. Each wallet owner could thus have multiple accounts (that are not interlinked with each other) registered with Orderly Network.
+A wallet owner can register an account on Orderly Network for each builder that is supported. Each wallet owner could thus have multiple accounts (that are not interlinked with each other) registered with Orderly Network.
 
 ### Account ID
 
@@ -40,8 +40,8 @@ export function getAccountId(userAddress, brokerId) {
 Follow the following steps to register an account on Orderly Network:
 
 <Steps>
-  <Step title="Choose a valid chain/broker to register the account on">
-    List of chains can be found [here](build-on-evm/addresses) and supported brokers through [Get list of brokers API](/build-on-evm/evm-api/restful-api/public/get-broker-list).
+  <Step title="Choose a valid chain/builder to register the account on">
+    List of chains can be found [here](build-on-evm/addresses) and supported builders through [Get list of builders API](/build-on-evm/evm-api/restful-api/public/get-builder-list).
   </Step>
   <Step title="Check if the wallet is already registered or account exists">
      Check if the wallet is already registered via [this](/build-on-evm/evm-api/restful-api/public/check-if-wallet-is-registered) API or if account already exisists via [this](/build-on-evm/evm-api/restful-api/public/check-if-account-exists) API.
@@ -105,7 +105,7 @@ where:
 
 | **Name**          | **Type**  | **Required** | **Description**                                                                                            |
 | ----------------- | --------- | ------------ | ---------------------------------------------------------------------------------------------------------- |
-| brokerId          | string    | Y            | Broker ID                                                                                                  |
+| brokerId          | string    | Y            | Builder ID                                                                                                  |
 | chainId           | int       | Y            | Chain ID of registering chain (within those that are supported by the Network)                             |
 | timestamp         | timestamp | Y            | timestamp in UNIX milliseconds                                                                             |
 | registrationNonce | string    | Y            | Valid nonce from Get [Registration Nonce](/build-on-evm/evm-api/restful-api/public/get-registration-nonce) |
