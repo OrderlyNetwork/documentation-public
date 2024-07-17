@@ -3,11 +3,13 @@ title: "Referral System"
 ---
 
 ## Introduction
+
 We are excited to present an addition to our array of services that many have eagerly anticipated: Orderly Referral System. This system, developed in response to your insightful feedback, represents a pivotal advancement in our platform's evolution. Designed to enrich and expand our community, it offers a dynamic way for both existing and new users to connect, thereby significantly strengthening the Orderly ecosystem.
 
 Existing users can effortlessly create personalized referral codes, which they can then share with potential new members. It's designed to reward both new and existing members, encouraging the growth of their networks within the Orderly ecosystem and fostering a more interconnected and robust trading community.
 
 ## Overview of the Referral Binding Process
+
 **Referral Code Creation:** Builders create unique referral codes linked to specific user accounts.
 
 **Binding Process:** The referee, upon receiving a referral code, binds it to their account, establishing a direct link between the referrer and the referee.
@@ -16,25 +18,27 @@ Existing users can effortlessly create personalized referral codes, which they c
 
 **Incentives:** Referrers and/or referees benefit from rebates off trading fees for using the referral code.
 
-
 ## Referral Rebate Breakdown
-**Taker Fee Rebate:** The referral rebate applies exclusively to taker fees.
+
+The referral rebate applies to both taker and maker fees.
 
 ### Distribution of Rebates:
-- **Referee Rebate:** A portion of the taker fee is rebated to the referee.
 
-- **Referrer Rebate:** A matching portion of the taker fee is rebated to the referrer.
+- **Referee Rebate:** A portion of the fee is rebated to the referee.
 
-- **Builder Rebate:** The remaining portion of the taker fee is rebated to the builder.
+- **Referrer Rebate:** A matching portion of the fee is rebated to the referrer.
+
+- **Builder Rebate:** The remaining portion of the fee is rebated to the builder.
 
 ### Example Calculation
+
 **Assumptions:**
 
 -Referee Rate: 0.2%
 
 -Referrer Rate: 0.2%
 
--Total Taker Fee for Referee's Order: 7 basis points (bps) = 15 USDC
+-Total Fee for Referee's Order: 7 basis points (bps) = 15 USDC
 
 -Builder Rebate: 4 bps ≈ 8.6 USDC
 
@@ -47,15 +51,19 @@ Existing users can effortlessly create personalized referral codes, which they c
 - Builder Rebate: 5.2 USDC
 
 ## User Flow for Builders
+
 <Steps>
   <Step title="Generating referral codes">
     Builders generate and assign unique referral codes for each user (referrer) through [POST `/v1/referral/create`](/build-on-evm/evm-api/restful-api/private/create-referral-code).
 
-    Taker rebate need to provided for both referee and referrer. 
+    The rebate needs to be provided for both referee and referrer.
 
     <Note>
+
 This endpoint is authenticated with builder's admin account
-    </Note>
+
+</Note>
+
   </Step>
     <Step title="Bind referral code">
     Bind the referral code to each user (referee) through [POST `/v1/referral/bind`](/build-on-evm/evm-api/restful-api/private/bind-referral-code).
@@ -70,4 +78,3 @@ This endpoint is authenticated with builder's admin account
 Builders can retrieve details of referees, referrers, rebates. All endpoints listed under ["Referral Program"](/build-on-evm/evm-api/restful-api/private/get-referral-info) section.
   </Step>
 </Steps>
-
