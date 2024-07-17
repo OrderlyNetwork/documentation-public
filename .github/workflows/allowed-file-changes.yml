@@ -26,5 +26,5 @@ jobs:
 
       - name: Test for no git diff
         run: |
-          yarn update
+          COREPACK_ENABLE_STRICT=0 yarn update
           git diff --exit-code -- :^/sdks/tech-doc
