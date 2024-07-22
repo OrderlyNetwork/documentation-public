@@ -12,10 +12,12 @@ export interface OrderEntryReturn {
   maxQty: number;
   freeCollateral: number;
   markPrice: number;
+  estLiqPrice?: number | null;
+  estLeverage?: number | null;
 
   symbolConfig: API.SymbolExt;
   helper: {
-    calculate: (values: any, field: string, value: any) => any;
+    calculate: (values: Partial<OrderEntity>, field: keyof OrderEntity, value: any) => Partial<OrderEntity>;
     validator: (values: any) => any;
   };
 }
@@ -34,6 +36,8 @@ const useOrderEntry = (
 - `maxQty`: The maximum quantity that the user can trade based on the free collateral.
 - `freeCollateral`: The amount collateral available for trading, factoring in open positions and pending orders.
 - `markPrice`: The mark price of the symbol.
+- `estLiqPrice`: The estimated liquidation price, if a position is created from given order paramters.
+- `estLeverage`: The estimated leverage, if a position is created from given order paramters.
 
 ### Data calculations
 
@@ -45,7 +49,12 @@ The `useOrderEntry` hook provides a `calculate()` function to format user's inpu
 ```typescript
 const {
   helper: { calculate }
-} = useOrderEntry("PERP_ETH_USDC", OrderSide.BUY, false);
+} = useOrderEntry({
+  symbol: "PERP_ETH_USDC",
+  side: OrderSide.BUY,
+  orderType: OrderType.MARKET,
+  order_quantity: 1
+});
 
 const newValue = calculate(values, "order_quantity", 1);
 ```
@@ -57,7 +66,12 @@ Order inputs should be validated by the frontend before submitting to provide th
 ```typescript
 const {
   helper: { validator }
-} = useOrderEntry("PERP_ETH_USDC", OrderSide.BUY, false);
+} = useOrderEntry({
+  symbol: "PERP_ETH_USDC",
+  side: OrderSide.BUY,
+  orderType: OrderType.MARKET,
+  order_quantity: 1
+});
 
 const errors = validator(values);
 ```
@@ -65,7 +79,12 @@ const errors = validator(values);
 ### Placing orders
 
 ```typescript
-const { onSubmit } = useOrderEntry("PERP_ETH_USDC", OrderSide.BUY, false);
+const { onSubmit } = useOrderEntry({
+  symbol: "PERP_ETH_USDC",
+  side: OrderSide.BUY,
+  orderType: OrderType.MARKET,
+  order_quantity: 1
+});
 
 const onSubmit = async (values) => {
   const res = await onSubmit(values);
