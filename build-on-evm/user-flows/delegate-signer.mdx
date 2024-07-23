@@ -15,9 +15,10 @@ Delegate Signer allows Smart Contracts to assign an EOA to sign on behalf of the
 <Warning>
   There can only be one EOA per Smart Contract account. If a new Delegate Signer is announced via Vault Smart Contract interaction, the old Delegate Signer will be deleted.
 
-  Smart Contract accounts are single chain accounts, restricted to only be able to deposit/withdraw from the chain the Delegate Signer call was made.
+Smart Contract accounts are single chain accounts, restricted to only be able to deposit/withdraw from the chain the Delegate Signer call was made.
 
-  A Smart Contract account will always need an EOA to withdraw funds.
+A Smart Contract account will always need an EOA to withdraw funds.
+
 </Warning>
 
 ### Implementation
@@ -45,6 +46,7 @@ library VaultTypes {
     An example Smart Contract deployed on [Arbitrum Sepolia](https://sepolia.arbiscan.io/address/0xa4394b62261061c629800c6d86d153a9f38f0cbb#code) has the following code to initiate delegation:
 
     <CodeGroup>
+
 ```sol DelegateContract.sol
 pragma solidity ^0.8.18;
 
@@ -78,14 +80,17 @@ interface IVault {
     function delegateSigner(VaultTypes.VaultDelegate calldata data) external;
 }
 ```
+
     </CodeGroup>
 
     After calling the function on your Smart Contract for the linking, you need to remember this transaction hash.
+
   </Step>
   <Step title="Accept the link from the Delegate Signer EOA">
     Confirm the link by signing the [EIP-712](/build-on-evm/user-flows/wallet-authentication#message-types) with your Delegate Signer's wallet and send the information via [`delegate_signer` API](/build-on-evm/evm-api/restful-api/public/delegate-signer). You will also need to send the transaction hash from previous step.
 
-    This step will optionally create the account for the Smart Contract, if it does not yet exist. If it already exists it will just update the linked EOA account. 
+    This step will optionally create the account for the Smart Contract, if it does not yet exist. If it already exists it will just update the linked EOA account.
+
   </Step>
   <Step title="Add Orderly Key">
     Add Delegate Orderly Key via [REST API](/build-on-evm/user-flows/wallet-authentication#orderly-key).
@@ -104,5 +109,5 @@ interface IVault {
 
 ### Example
 
-A full example can be found on [this Github repository](https://github.com/OrderlyNetwork/delegate-signer).
-The website is deployed [here](https://orderlynetwork.github.io/delegate-signer/).
+A full example can be found on [this Github repository](https://github.com/OrderlyNetwork/broker-registration).
+The website is deployed [here](https://orderlynetwork.github.io/broker-registration/).
