@@ -2774,6 +2774,8 @@ paths:
                 $ref: '#/components/schemas/VaultBalanceResponse'
   /v1/faucet/usdc:
     post:
+      servers:
+        - url: https://testnet-operator-evm.orderly.org
       summary: Get Faucet USDC(Testnet Only)
       deprecated: false
       description: >-
@@ -2788,28 +2790,25 @@ paths:
         as above instead of Mainnet domain.
       tags:
         - public
-      parameters:
-        - name: chain_id
-          in: query
-          description: The chain ID that the test USDC should be deposited to
-          required: true
-          example: ''
-          schema:
-            type: string
-        - name: user_address
-          in: query
-          description: The address of the user account
-          required: true
-          example: ''
-          schema:
-            type: string
-        - name: broker_id
-          in: query
-          description: Builder ID of an account
-          required: true
-          example: ''
-          schema:
-            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - chain_id
+              - user_address
+              - broker_id
+              type: object
+              properties:
+                chain_id:
+                  type: string
+                  description: The chain ID that the test USDC should be deposited to
+                user_address:
+                  type: string
+                  description: The address of the user account
+                broker_id:
+                  type: string
+                  description: Builder ID of an account
       responses:
         "200":
           description: OK
