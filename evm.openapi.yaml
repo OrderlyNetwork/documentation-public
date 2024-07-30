@@ -29,6 +29,70 @@ paths:
               schema:
                 $ref: '#/components/schemas/FuturesInfoResponse'
 
+
+  /v1/public/futures_market:
+    get:
+      summary: Get Market Volume by Broker
+      deprecated: false
+      description: |
+
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/futures_market`
+
+        Get market volume filtered by broker.
+      tags:
+        - public
+      parameters:
+        - name: symbol
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: broker_id
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMarketVolumeByBrokerResponse'
+
+
+  /v1/public/balance/stats:
+    get:
+      summary: Get TVL by Broker
+      deprecated: false
+      description: |
+
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/balance/stats`
+
+        Get TVL(Total Balance + Unsettled PnL) by broker
+      tags:
+        - public
+      parameters:
+        - name: broker_id
+          in: query
+          description: "Return all TVL if not specified"
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTVLByBrokerResponse'
+
+
   /v1/public/market_trades:
     get:
       summary: Get Market Trades
@@ -2862,7 +2926,7 @@ paths:
                   description: "`STOP`/`TP_SL`/`POSITIONAL_TP_SL`"
                 client_order_id:
                   type: string
-                  description: '36 length, default: null'
+                  description: '36 length, accepts hyphen but cannot be the first character, default: null'
                 type:
                   type: string
                   description: "`LIMIT` / `MARKET`, required if `algo_type` = `STOP`"
@@ -4076,6 +4140,7 @@ paths:
           example: ''
           schema:
             type: string
+            description: "max date selection range is 3 months"
         - name: end_date
           in: query
           description: ""
@@ -4083,6 +4148,7 @@ paths:
           example: ''
           schema:
             type: string
+            description: "max date selection range is 3 months"
         - name: page
           in: query
           description: ""
@@ -4662,6 +4728,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetCampaignStatsResponse'
 
+
   /v1/public/campaign/stats/details:
     get:
       summary: Get Detailed Campaign Info
@@ -4824,6 +4891,60 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetCampaignUserResponse'
 
+  /v1/public/campaign/check:
+    get:
+      summary: Get Campaign Verification
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/campaign/check`
+      tags:
+        - public
+      parameters:
+        - name: campaign_id
+          in: query
+          description: ""
+          required: true
+          example: 10
+          schema:
+            type: number
+        - name: type
+          in: query
+          description: "`volume`/`deposit`/`withdraw`/`order_count`"
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: address
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: lower_boundary
+          in: query
+          description: ""
+          required: false
+          example: 100
+          schema:
+            type: number
+        - name: cmp
+          in: query
+          description: "`gt`/`ge`/`le`/`lt`, default `gt`"
+          required: false
+          example: 'gt'
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCampaignCheckResponse'
+
 
 components:
   parameters:
@@ -4932,6 +5053,46 @@ components:
                   type: array
                   items:
                     $ref: '#/components/schemas/FutureInfo'
+
+
+    GetMarketVolumeByBrokerResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/FutureInfo'
+
+
+    GetTVLByBrokerResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                total_holding:
+                  type: number
+                  example: 100
+                total_unsettled_balance:
+                  type: number
+                  example: 21
+                last_update_time:
+                  type: number
+                  example: 1702989203989
+
 
     FutureInfoResponse:
       allOf:
@@ -6401,7 +6562,7 @@ components:
           example: "PERP_ETH_USDC"
         client_order_id:
           type: string
-          description: "36 length, default: null"
+          description: "36 length, accepts hyphen but cannot be the first character, default: null"
         order_type:
           type: string
           description: "`LIMIT`/`MARKET`/`IOC`/`FOK`/`POST_ONLY`/`ASK`/`BID`"
@@ -7442,6 +7603,9 @@ components:
             expiration:
               type: number
               description: Expiration time of the key in UNIX milliseconds. Maximum allowed expiration is 365 days from add
+            tag:
+              type: string
+              description: An optional tag of string values。
           description: Message object containing the message that is signed by the wallet owner
         signature:
           type: string
@@ -7449,9 +7613,6 @@ components:
         userAddress:
           type: string
           description: The address of the wallet signing the message object via EIP-712
-        tag:
-          type: string
-          description: An optional tag of string values。
 
     RemoveOrderlyKeyBody:
       type: object
@@ -8141,6 +8302,9 @@ components:
                   expiration:
                     type: integer
                     example: 1689086651947
+                  scope:
+                    type: string
+                    example: "read,trading"
                   tag:
                     type: string
                     description: "Optional, could be null if there wasn't a tag"
@@ -9190,6 +9354,18 @@ components:
                 end_account_value:
                   type: number
                   example: 800.12
+
+    GetCampaignCheckResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                status:
+                  type: string
+                  example: "success"
 
     GetPointsLeaderboardResponse:
       allOf:
