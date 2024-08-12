@@ -152,6 +152,65 @@ return (
 );
 ```
 
+### shareOptions
+
+- Type: `DrawOptions` - [API](/sdks/tech-doc/@orderly.network/hooks/type-aliases/DrawOptions)
+- Required: `true
+
+The `shareOptions` need to be set so that users can share their PnL as an image.
+A preset of images can be found [in our example DEX]9https://github.com/OrderlyNetwork/js-sdk-demo/tree/main/public/images).
+
+If custom images are provided, it might be necessary to change the placement of various text elements.
+Please check following example:
+
+```tsx
+export type layoutInfo = {
+  width?: number;
+  height?: number;
+  fontSize?: number;
+
+  color?: string;
+  textAlign?: CanvasTextAlign;
+  textBaseline?: CanvasTextBaseline;
+  position: Partial<{
+    left: number;
+    right: number;
+    top: number;
+    bottom: number;
+  }>;
+};
+
+// ...
+
+return (
+  <OrderlyAppProvider
+    shareOptions={{
+      pnl: {
+        backgroundImages: [
+          "/images/poster_bg_1.png",
+          "/images/poster_bg_2.png",
+          "/images/poster_bg_3.png"
+        ],
+        layout: {
+          message: {
+            width: 100,
+            height: 25,
+            fontSize: 16,
+            position: {
+              left: 300,
+              top: 150
+            }
+          }
+          // other text placements are: `domain`, `information`, `position`, `unrealizedPnl`, `updateTime`
+        }
+      }
+    }}
+  >
+    {/* ... */}
+  </OrderlyAppProvider>
+);
+```
+
 ## WalletConnectorContext
 
 `WalletConnectorContext` is a React Context used to provide wallet connection methods or data for the currently connected wallet in the app. It can be used as follows:
@@ -169,3 +228,4 @@ export const App: FC = (props) => {
 ```
 
 In the example code above, each property or method of the `value` object must be implemented; otherwise, the entire app will be unable to connect to the wallet. If you find this process cumbersome or are starting a new project, it is recommended to use the `@orderly.network/web3-onboard` library provided by Orderly. Please refer to [this link](/sdks/react/wallet) for more information.
+import ts from "typescript"

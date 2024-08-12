@@ -1,0 +1,137 @@
+[**@orderly.network/hooks v1.5.10**](/sdks/tech-doc/@orderly.network/hooks/README) • **Docs**
+
+***
+
+[Orderly SDKs](/sdks/tech-doc/packages) / [@orderly.network/hooks](/sdks/tech-doc/@orderly.network/hooks/README) / useDeposit
+
+# Function: useDeposit()
+
+> **useDeposit**(`options`?): `object`
+
+## Parameters
+
+• **options?**: `useDepositOptions`
+
+## Returns
+
+`object`
+
+### allowance
+
+> **allowance**: `string`
+
+### allowanceRevalidating
+
+> **allowanceRevalidating**: `boolean`
+
+### approve()
+
+> **approve**: (`amount`?) => `Promise`\<`undefined` \| `void`\>
+
+#### Parameters
+
+• **amount?**: `string`
+
+#### Returns
+
+`Promise`\<`undefined` \| `void`\>
+
+### balance
+
+> **balance**: `string`
+
+### balanceRevalidating
+
+> **balanceRevalidating**: `boolean`
+
+### deposit()
+
+> **deposit**: () => `Promise`\<`any`\>
+
+#### Returns
+
+`Promise`\<`any`\>
+
+### depositFee
+
+> **depositFee**: `bigint`
+
+orderly deposit fee, unit: wei
+
+### depositFeeRevalidating
+
+> **depositFeeRevalidating**: `boolean`
+
+enquiring depositFee status on chain
+
+### dst
+
+> **dst**: `object`
+
+orderly support chain dst
+
+### dst.address
+
+> **dst.address**: `undefined` \| `string` = `USDC.address`
+
+### dst.chainId
+
+> **dst.chainId**: `number` = `targetChain.network_infos.chain_id`
+
+### dst.decimals
+
+> **dst.decimals**: `undefined` \| `number` = `USDC.decimals`
+
+### dst.network
+
+> **dst.network**: `string` = `targetChain.network_infos.shortName`
+
+### dst.symbol
+
+> **dst.symbol**: `string` = `"USDC"`
+
+### fetchBalance()
+
+> **fetchBalance**: (`address`, `decimals`?) => `Promise`\<`string`\> = `fetchBalanceHandler`
+
+#### Parameters
+
+• **address**: `string`
+
+• **decimals?**: `number`
+
+#### Returns
+
+`Promise`\<`string`\>
+
+### fetchBalances()
+
+> **fetchBalances**: (`tokens`) => `Promise`\<`void`\>
+
+#### Parameters
+
+• **tokens**: [`TokenInfo`](/sdks/tech-doc/@orderly.network/types/namespaces/API/interfaces/TokenInfo)[]
+
+#### Returns
+
+`Promise`\<`void`\>
+
+### isNativeToken
+
+> **isNativeToken**: `boolean`
+
+### quantity
+
+> **quantity**: `string`
+
+input quantiy
+
+### setQuantity
+
+> **setQuantity**: `Dispatch`\<`SetStateAction`\<`string`\>\>
+
+set input quantity
+
+## Defined in
+
+[packages/hooks/src/orderly/useDeposit.ts:27](https://github.com/OrderlyNetwork/js-sdk/blob/554ae704783e3b83c40bb234a899e8f02987d9b6/packages/hooks/src/orderly/useDeposit.ts#L27)

@@ -1,0 +1,30 @@
+[**@orderly.network/hooks v1.5.10**](/sdks/tech-doc/@orderly.network/hooks/README) • **Docs**
+
+***
+
+[Orderly SDKs](/sdks/tech-doc/packages) / [@orderly.network/hooks](/sdks/tech-doc/@orderly.network/hooks/README) / useTPSLOrder
+
+# Function: useTPSLOrder()
+
+> **useTPSLOrder**(`position`, `options`?): [`Partial`\<`Omit`\<[`BaseAlgoOrderEntity`](/sdks/tech-doc/@orderly.network/types/interfaces/BaseAlgoOrderEntity)\<[`TP_SL`](/sdks/tech-doc/@orderly.network/types/enumerations/AlgoOrderRootType#tp_sl)\>, `"order_type"` \| `"side"` \| `"trigger_price"` \| `"type"`\> & `Partial`\<`Pick`\<[`BaseAlgoOrderEntity`](/sdks/tech-doc/@orderly.network/types/interfaces/BaseAlgoOrderEntity)\<[`TP_SL`](/sdks/tech-doc/@orderly.network/types/enumerations/AlgoOrderRootType#tp_sl)\>, `"order_type"` \| `"side"` \| `"trigger_price"` \| `"type"`\>\> & `object`\>, `object`]
+
+## Parameters
+
+• **position**: `Partial`\<[`PositionTPSLExt`](/sdks/tech-doc/@orderly.network/types/namespaces/API/interfaces/PositionTPSLExt)\> & `Pick`\<[`PositionTPSLExt`](/sdks/tech-doc/@orderly.network/types/namespaces/API/interfaces/PositionTPSLExt), `"symbol"` \| `"average_open_price"` \| `"position_qty"`\>
+
+Position that needs to set take profit and stop loss
+
+• **options?**
+
+• **options.defaultOrder?**: [`AlgoOrder`](/sdks/tech-doc/@orderly.network/types/namespaces/API/interfaces/AlgoOrder)
+
+You can set the default value for the take profit and stop loss order,
+it is usually used when editing order
+
+## Returns
+
+[`Partial`\<`Omit`\<[`BaseAlgoOrderEntity`](/sdks/tech-doc/@orderly.network/types/interfaces/BaseAlgoOrderEntity)\<[`TP_SL`](/sdks/tech-doc/@orderly.network/types/enumerations/AlgoOrderRootType#tp_sl)\>, `"order_type"` \| `"side"` \| `"trigger_price"` \| `"type"`\> & `Partial`\<`Pick`\<[`BaseAlgoOrderEntity`](/sdks/tech-doc/@orderly.network/types/interfaces/BaseAlgoOrderEntity)\<[`TP_SL`](/sdks/tech-doc/@orderly.network/types/enumerations/AlgoOrderRootType#tp_sl)\>, `"order_type"` \| `"side"` \| `"trigger_price"` \| `"type"`\>\> & `object`\>, `object`]
+
+## Defined in
+
+[packages/hooks/src/orderly/useTakeProfitAndStopLoss/index.ts:4](https://github.com/OrderlyNetwork/js-sdk/blob/554ae704783e3b83c40bb234a899e8f02987d9b6/packages/hooks/src/orderly/useTakeProfitAndStopLoss/index.ts#L4)
