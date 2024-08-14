@@ -1,0 +1,118 @@
+[Orderly SDKs](/sdks/tech-doc/README) / [Modules](/sdks/tech-doc/modules) / [@orderly.network/core](/sdks/tech-doc/modules/orderly_network_core) / EventEmitter
+
+# Namespace: EventEmitter
+
+[@orderly.network/core](/sdks/tech-doc/modules/orderly_network_core).EventEmitter
+
+## Table of contents
+
+### Interfaces
+
+- [EventEmitterStatic](/sdks/tech-doc/interfaces/orderly_network_core.EventEmitter.EventEmitterStatic)
+- [ListenerFn](/sdks/tech-doc/interfaces/orderly_network_core.EventEmitter.ListenerFn)
+
+### Type Aliases
+
+- [ArgumentMap](/sdks/tech-doc/modules/orderly_network_core.EventEmitter#argumentmap)
+- [EventArgs](/sdks/tech-doc/modules/orderly_network_core.EventEmitter#eventargs)
+- [EventListener](/sdks/tech-doc/modules/orderly_network_core.EventEmitter#eventlistener)
+- [EventNames](/sdks/tech-doc/modules/orderly_network_core.EventEmitter#eventnames)
+- [ValidEventTypes](/sdks/tech-doc/modules/orderly_network_core.EventEmitter#valideventtypes)
+
+### Variables
+
+- [EventEmitter](/sdks/tech-doc/modules/orderly_network_core.EventEmitter#eventemitter)
+
+## Type Aliases
+
+### ArgumentMap
+
+Ƭ **ArgumentMap**\<`T`\>: \{ [K in keyof T]: T[K] extends Function ? Parameters\<T[K]\> : T[K] extends any[] ? T[K] : any[] }
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends `object` |
+
+#### Defined in
+
+node_modules/.pnpm/eventemitter3@5.0.1/node_modules/eventemitter3/index.d.ts:109
+
+___
+
+### EventArgs
+
+Ƭ **EventArgs**\<`T`, `K`\>: `Parameters`\<[`EventListener`](/sdks/tech-doc/modules/orderly_network_core.EventEmitter#eventlistener)\<`T`, `K`\>\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends [`ValidEventTypes`](/sdks/tech-doc/modules/orderly_network_core.EventEmitter#valideventtypes) |
+| `K` | extends [`EventNames`](/sdks/tech-doc/modules/orderly_network_core.EventEmitter#eventnames)\<`T`\> |
+
+#### Defined in
+
+node_modules/.pnpm/eventemitter3@5.0.1/node_modules/eventemitter3/index.d.ts:126
+
+___
+
+### EventListener
+
+Ƭ **EventListener**\<`T`, `K`\>: `T` extends `string` \| `symbol` ? (...`args`: `any`[]) => `void` : (...`args`: [`ArgumentMap`](/sdks/tech-doc/modules/orderly_network_core.EventEmitter#argumentmap)\<`Exclude`\<`T`, `string` \| `symbol`\>\>[`Extract`\<`K`, keyof `T`\>]) => `void`
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends [`ValidEventTypes`](/sdks/tech-doc/modules/orderly_network_core.EventEmitter#valideventtypes) |
+| `K` | extends [`EventNames`](/sdks/tech-doc/modules/orderly_network_core.EventEmitter#eventnames)\<`T`\> |
+
+#### Defined in
+
+node_modules/.pnpm/eventemitter3@5.0.1/node_modules/eventemitter3/index.d.ts:117
+
+___
+
+### EventNames
+
+Ƭ **EventNames**\<`T`\>: `T` extends `string` \| `symbol` ? `T` : keyof `T`
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends [`ValidEventTypes`](/sdks/tech-doc/modules/orderly_network_core.EventEmitter#valideventtypes) |
+
+#### Defined in
+
+node_modules/.pnpm/eventemitter3@5.0.1/node_modules/eventemitter3/index.d.ts:105
+
+___
+
+### ValidEventTypes
+
+Ƭ **ValidEventTypes**: `string` \| `symbol` \| `object`
+
+`object` should be in either of the following forms:
+```
+interface EventTypes {
+  'event-with-parameters': any[]
+  'event-with-example-handler': (...args: any[]) => void
+}
+```
+
+#### Defined in
+
+node_modules/.pnpm/eventemitter3@5.0.1/node_modules/eventemitter3/index.d.ts:103
+
+## Variables
+
+### EventEmitter
+
+• `Const` **EventEmitter**: [`EventEmitterStatic`](/sdks/tech-doc/interfaces/orderly_network_core.EventEmitter.EventEmitterStatic)
+
+#### Defined in
+
+node_modules/.pnpm/eventemitter3@5.0.1/node_modules/eventemitter3/index.d.ts:131

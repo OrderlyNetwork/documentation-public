@@ -1,0 +1,1059 @@
+[Orderly SDKs](/sdks/tech-doc/README) / [Modules](/sdks/tech-doc/modules) / @orderly.network/types
+
+# Module: @orderly.network/types
+
+## Table of contents
+
+### References
+
+- [Chain](/sdks/tech-doc/modules/orderly_network_types#chain)
+
+### Namespaces
+
+- [API](/sdks/tech-doc/modules/orderly_network_types.API)
+- [WSMessage](/sdks/tech-doc/modules/orderly_network_types.WSMessage)
+
+### Enumerations
+
+- [AccountStatusEnum](/sdks/tech-doc/enums/orderly_network_types.AccountStatusEnum)
+- [AlgoOrderRootType](/sdks/tech-doc/enums/orderly_network_types.AlgoOrderRootType)
+- [AlgoOrderType](/sdks/tech-doc/enums/orderly_network_types.AlgoOrderType)
+- [ExchangeStatusEnum](/sdks/tech-doc/enums/orderly_network_types.ExchangeStatusEnum)
+- [OrderSide](/sdks/tech-doc/enums/orderly_network_types.OrderSide)
+- [OrderStatus](/sdks/tech-doc/enums/orderly_network_types.OrderStatus)
+- [OrderType](/sdks/tech-doc/enums/orderly_network_types.OrderType)
+- [PositionSide](/sdks/tech-doc/enums/orderly_network_types.PositionSide)
+- [SystemStateEnum](/sdks/tech-doc/enums/orderly_network_types.SystemStateEnum)
+- [TriggerPriceType](/sdks/tech-doc/enums/orderly_network_types.TriggerPriceType)
+- [WS\_WalletStatusEnum](/sdks/tech-doc/enums/orderly_network_types.WS_WalletStatusEnum)
+- [WithdrawStatus](/sdks/tech-doc/enums/orderly_network_types.WithdrawStatus)
+
+### Classes
+
+- [ApiError](/sdks/tech-doc/classes/orderly_network_types.ApiError)
+- [SDKError](/sdks/tech-doc/classes/orderly_network_types.SDKError)
+
+### Interfaces
+
+- [BaseAlgoOrderEntity](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity)
+- [ChainConfig](/sdks/tech-doc/interfaces/orderly_network_types.ChainConfig)
+- [ChainInfo](/sdks/tech-doc/interfaces/orderly_network_types.ChainInfo)
+- [NativeCurrency](/sdks/tech-doc/interfaces/orderly_network_types.NativeCurrency)
+- [OrderEntity](/sdks/tech-doc/interfaces/orderly_network_types.OrderEntity)
+
+### Type Aliases
+
+- [AlgoOrderEntity](/sdks/tech-doc/modules/orderly_network_types#algoorderentity)
+- [CurrentChain](/sdks/tech-doc/modules/orderly_network_types#currentchain)
+- [NetworkId](/sdks/tech-doc/modules/orderly_network_types#networkid)
+- [Optional](/sdks/tech-doc/modules/orderly_network_types#optional)
+- [RequireKeys](/sdks/tech-doc/modules/orderly_network_types#requirekeys)
+- [TPSLOrderEntry](/sdks/tech-doc/modules/orderly_network_types#tpslorderentry)
+
+### Variables
+
+- [ARBITRUM\_MAINNET\_CHAINID](/sdks/tech-doc/modules/orderly_network_types#arbitrum_mainnet_chainid)
+- [ARBITRUM\_MAINNET\_CHAINID\_HEX](/sdks/tech-doc/modules/orderly_network_types#arbitrum_mainnet_chainid_hex)
+- [ARBITRUM\_TESTNET\_CHAINID](/sdks/tech-doc/modules/orderly_network_types#arbitrum_testnet_chainid)
+- [ARBITRUM\_TESTNET\_CHAINID\_HEX](/sdks/tech-doc/modules/orderly_network_types#arbitrum_testnet_chainid_hex)
+- [Arbitrum](/sdks/tech-doc/modules/orderly_network_types#arbitrum)
+- [ArbitrumGoerli](/sdks/tech-doc/modules/orderly_network_types#arbitrumgoerli)
+- [ArbitrumSepolia](/sdks/tech-doc/modules/orderly_network_types#arbitrumsepolia)
+- [Avalanche](/sdks/tech-doc/modules/orderly_network_types#avalanche)
+- [BNB](/sdks/tech-doc/modules/orderly_network_types#bnb)
+- [Base](/sdks/tech-doc/modules/orderly_network_types#base)
+- [BaseSepolia](/sdks/tech-doc/modules/orderly_network_types#basesepolia)
+- [DEPOSIT\_FEE\_RATE](/sdks/tech-doc/modules/orderly_network_types#deposit_fee_rate)
+- [Ethereum](/sdks/tech-doc/modules/orderly_network_types#ethereum)
+- [Fantom](/sdks/tech-doc/modules/orderly_network_types#fantom)
+- [Fuji](/sdks/tech-doc/modules/orderly_network_types#fuji)
+- [Linea](/sdks/tech-doc/modules/orderly_network_types#linea)
+- [MANTLE\_TESTNET\_CHAINID](/sdks/tech-doc/modules/orderly_network_types#mantle_testnet_chainid)
+- [MANTLE\_TESTNET\_CHAINID\_HEX](/sdks/tech-doc/modules/orderly_network_types#mantle_testnet_chainid_hex)
+- [MEDIA\_TABLET](/sdks/tech-doc/modules/orderly_network_types#media_tablet)
+- [Mantle](/sdks/tech-doc/modules/orderly_network_types#mantle)
+- [MantleSepolia](/sdks/tech-doc/modules/orderly_network_types#mantlesepolia)
+- [MaxUint256](/sdks/tech-doc/modules/orderly_network_types#maxuint256)
+- [Optimism](/sdks/tech-doc/modules/orderly_network_types#optimism)
+- [OptimismGoerli](/sdks/tech-doc/modules/orderly_network_types#optimismgoerli)
+- [OptimismSepolia](/sdks/tech-doc/modules/orderly_network_types#optimismsepolia)
+- [Polygon](/sdks/tech-doc/modules/orderly_network_types#polygon)
+- [PolygonAmoy](/sdks/tech-doc/modules/orderly_network_types#polygonamoy)
+- [PolygonzkEVM](/sdks/tech-doc/modules/orderly_network_types#polygonzkevm)
+- [TestnetChains](/sdks/tech-doc/modules/orderly_network_types#testnetchains)
+- [chainsInfoMap](/sdks/tech-doc/modules/orderly_network_types#chainsinfomap)
+- [defaultMainnetChains](/sdks/tech-doc/modules/orderly_network_types#defaultmainnetchains)
+- [defaultTestnetChains](/sdks/tech-doc/modules/orderly_network_types#defaulttestnetchains)
+- [definedTypes](/sdks/tech-doc/modules/orderly_network_types#definedtypes)
+- [nativeTokenAddress](/sdks/tech-doc/modules/orderly_network_types#nativetokenaddress)
+- [version](/sdks/tech-doc/modules/orderly_network_types#version)
+- [zkSyncEra](/sdks/tech-doc/modules/orderly_network_types#zksyncera)
+
+### Functions
+
+- [isNativeTokenChecker](/sdks/tech-doc/modules/orderly_network_types#isnativetokenchecker)
+
+## References
+
+### Chain
+
+Renames and re-exports [ChainConfig](/sdks/tech-doc/interfaces/orderly_network_types.ChainConfig)
+
+## Type Aliases
+
+### AlgoOrderEntity
+
+Ƭ **AlgoOrderEntity**\<`T`\>: `T` extends [`TP_SL`](/sdks/tech-doc/enums/orderly_network_types.AlgoOrderRootType#tp_sl) ? [`Optional`](/sdks/tech-doc/modules/orderly_network_types#optional)\<[`BaseAlgoOrderEntity`](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity)\<`T`\>, ``"side"`` \| ``"type"`` \| ``"trigger_price"`` \| ``"order_type"``\> : `T` extends [`POSITIONAL_TP_SL`](/sdks/tech-doc/enums/orderly_network_types.AlgoOrderRootType#positional_tp_sl) ? [`Optional`](/sdks/tech-doc/modules/orderly_network_types#optional)\<[`BaseAlgoOrderEntity`](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity)\<`T`\>, ``"side"`` \| ``"type"`` \| ``"trigger_price"`` \| ``"order_type"`` \| ``"quantity"``\> : `Omit`\<[`BaseAlgoOrderEntity`](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity)\<`T`\>, ``"child_orders"`` \| ``"order_type"``\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends [`AlgoOrderRootType`](/sdks/tech-doc/enums/orderly_network_types.AlgoOrderRootType) = [`STOP`](/sdks/tech-doc/enums/orderly_network_types.AlgoOrderRootType#stop) |
+
+#### Defined in
+
+[packages/types/src/order.ts:116](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/order.ts#L116)
+
+___
+
+### CurrentChain
+
+Ƭ **CurrentChain**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `id` | `number` |
+| `info` | [`Chain`](../interfaces/orderly_network_types.API.Chain) |
+
+#### Defined in
+
+[packages/types/src/wallet.ts:8](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/wallet.ts#L8)
+
+___
+
+### NetworkId
+
+Ƭ **NetworkId**: ``"testnet"`` \| ``"mainnet"``
+
+#### Defined in
+
+[packages/types/src/constants.ts:21](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/constants.ts#L21)
+
+___
+
+### Optional
+
+Ƭ **Optional**\<`T`, `K`\>: `Omit`\<`T`, `K`\> & `Partial`\<`Pick`\<`T`, `K`\>\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | `T` |
+| `K` | extends keyof `T` |
+
+#### Defined in
+
+[packages/types/src/order.ts:84](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/order.ts#L84)
+
+___
+
+### RequireKeys
+
+Ƭ **RequireKeys**\<`T`, `K`\>: `Required`\<`Pick`\<`T`, `K`\>\> & `Omit`\<`T`, `K`\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends `object` |
+| `K` | extends keyof `T` |
+
+#### Defined in
+
+[packages/types/src/order.ts:85](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/order.ts#L85)
+
+___
+
+### TPSLOrderEntry
+
+Ƭ **TPSLOrderEntry**: [`Optional`](orderly_network_types#optional)\<[`AlgoOrderEntity`](orderly_network_types#algoorderentity)\<[`TP_SL`](../enums/orderly_network_types.AlgoOrderRootType#tp_sl)\>, ``"side"`` \| ``"type"`` \| ``"trigger_price"``\>
+
+#### Defined in
+
+[packages/types/src/order.ts:130](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/order.ts#L130)
+
+## Variables
+
+### ARBITRUM\_MAINNET\_CHAINID
+
+• `Const` **ARBITRUM\_MAINNET\_CHAINID**: ``42161``
+
+#### Defined in
+
+[packages/types/src/constants.ts:36](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/constants.ts#L36)
+
+___
+
+### ARBITRUM\_MAINNET\_CHAINID\_HEX
+
+• `Const` **ARBITRUM\_MAINNET\_CHAINID\_HEX**: ``"0xa4b1"``
+
+#### Defined in
+
+[packages/types/src/constants.ts:37](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/constants.ts#L37)
+
+___
+
+### ARBITRUM\_TESTNET\_CHAINID
+
+• `Const` **ARBITRUM\_TESTNET\_CHAINID**: ``421614``
+
+#### Defined in
+
+[packages/types/src/constants.ts:29](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/constants.ts#L29)
+
+___
+
+### ARBITRUM\_TESTNET\_CHAINID\_HEX
+
+• `Const` **ARBITRUM\_TESTNET\_CHAINID\_HEX**: ``"0x66EEE"``
+
+#### Defined in
+
+[packages/types/src/constants.ts:30](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/constants.ts#L30)
+
+___
+
+### Arbitrum
+
+• `Const` **Arbitrum**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `blockExplorerName` | `string` |
+| `chainInfo` | \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "Arbitrum"; `nativeCurrency`: \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "eth"; `symbol`: `string` = "ETH" } ; `rpcUrls`: `string`[]  } |
+| `chainInfo.blockExplorerUrls` | `string`[] |
+| `chainInfo.chainId` | `string` |
+| `chainInfo.chainName` | `string` |
+| `chainInfo.nativeCurrency` | \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "eth"; `symbol`: `string` = "ETH" } |
+| `chainInfo.nativeCurrency.decimals` | `number` |
+| `chainInfo.nativeCurrency.fix` | `number` |
+| `chainInfo.nativeCurrency.name` | `string` |
+| `chainInfo.nativeCurrency.symbol` | `string` |
+| `chainInfo.rpcUrls` | `string`[] |
+| `chainLogo` | `string` |
+| `chainName` | `string` |
+| `chainNameShort` | `string` |
+| `id` | `number` |
+| `maxPrepayCrossGas` | `number` |
+| `minCrossGasBalance` | `number` |
+| `minGasBalance` | `number` |
+| `requestRpc` | `string` |
+
+#### Defined in
+
+[packages/types/src/chains.ts:173](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L173)
+
+___
+
+### ArbitrumGoerli
+
+• `Const` **ArbitrumGoerli**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `blockExplorerName` | `string` |
+| `chainInfo` | \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "Arbitrum Goerli"; `nativeCurrency`: \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "AGOR"; `symbol`: `string` = "AGOR" } ; `rpcUrls`: `string`[]  } |
+| `chainInfo.blockExplorerUrls` | `string`[] |
+| `chainInfo.chainId` | `string` |
+| `chainInfo.chainName` | `string` |
+| `chainInfo.nativeCurrency` | \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "AGOR"; `symbol`: `string` = "AGOR" } |
+| `chainInfo.nativeCurrency.decimals` | `number` |
+| `chainInfo.nativeCurrency.fix` | `number` |
+| `chainInfo.nativeCurrency.name` | `string` |
+| `chainInfo.nativeCurrency.symbol` | `string` |
+| `chainInfo.rpcUrls` | `string`[] |
+| `chainLogo` | `string` |
+| `chainName` | `string` |
+| `chainNameShort` | `string` |
+| `id` | `number` |
+| `maxPrepayCrossGas` | `number` |
+| `minCrossGasBalance` | `number` |
+| `minGasBalance` | `number` |
+| `requestRpc` | `string` |
+
+#### Defined in
+
+[packages/types/src/chains.ts:346](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L346)
+
+___
+
+### ArbitrumSepolia
+
+• `Const` **ArbitrumSepolia**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `blockExplorerName` | `string` |
+| `chainInfo` | \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "Arbitrum Sepolia"; `nativeCurrency`: \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "ETH"; `symbol`: `string` = "ETH" } ; `rpcUrls`: `string`[]  } |
+| `chainInfo.blockExplorerUrls` | `string`[] |
+| `chainInfo.chainId` | `string` |
+| `chainInfo.chainName` | `string` |
+| `chainInfo.nativeCurrency` | \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "ETH"; `symbol`: `string` = "ETH" } |
+| `chainInfo.nativeCurrency.decimals` | `number` |
+| `chainInfo.nativeCurrency.fix` | `number` |
+| `chainInfo.nativeCurrency.name` | `string` |
+| `chainInfo.nativeCurrency.symbol` | `string` |
+| `chainInfo.rpcUrls` | `string`[] |
+| `chainLogo` | `string` |
+| `chainName` | `string` |
+| `chainNameShort` | `string` |
+| `id` | `number` |
+| `maxPrepayCrossGas` | `number` |
+| `minCrossGasBalance` | `number` |
+| `minGasBalance` | `number` |
+| `requestRpc` | `string` |
+
+#### Defined in
+
+[packages/types/src/chains.ts:370](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L370)
+
+___
+
+### Avalanche
+
+• `Const` **Avalanche**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `blockExplorerName` | `string` |
+| `chainInfo` | \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "Avalanche"; `nativeCurrency`: \{ `decimals`: `number` = 18; `fix`: `number` = 5; `name`: `string` = "avax"; `symbol`: `string` = "AVAX" } ; `rpcUrls`: `string`[]  } |
+| `chainInfo.blockExplorerUrls` | `string`[] |
+| `chainInfo.chainId` | `string` |
+| `chainInfo.chainName` | `string` |
+| `chainInfo.nativeCurrency` | \{ `decimals`: `number` = 18; `fix`: `number` = 5; `name`: `string` = "avax"; `symbol`: `string` = "AVAX" } |
+| `chainInfo.nativeCurrency.decimals` | `number` |
+| `chainInfo.nativeCurrency.fix` | `number` |
+| `chainInfo.nativeCurrency.name` | `string` |
+| `chainInfo.nativeCurrency.symbol` | `string` |
+| `chainInfo.rpcUrls` | `string`[] |
+| `chainLogo` | `string` |
+| `chainName` | `string` |
+| `chainNameShort` | `string` |
+| `id` | `number` |
+| `maxPrepayCrossGas` | `number` |
+| `minCrossGasBalance` | `number` |
+| `minGasBalance` | `number` |
+| `requestRpc` | `string` |
+
+#### Defined in
+
+[packages/types/src/chains.ts:53](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L53)
+
+___
+
+### BNB
+
+• `Const` **BNB**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `blockExplorerName` | `string` |
+| `chainInfo` | \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "BNB Chain"; `nativeCurrency`: \{ `decimals`: `number` = 18; `fix`: `number` = 6; `name`: `string` = "bnb"; `symbol`: `string` = "BNB" } ; `rpcUrls`: `string`[]  } |
+| `chainInfo.blockExplorerUrls` | `string`[] |
+| `chainInfo.chainId` | `string` |
+| `chainInfo.chainName` | `string` |
+| `chainInfo.nativeCurrency` | \{ `decimals`: `number` = 18; `fix`: `number` = 6; `name`: `string` = "bnb"; `symbol`: `string` = "BNB" } |
+| `chainInfo.nativeCurrency.decimals` | `number` |
+| `chainInfo.nativeCurrency.fix` | `number` |
+| `chainInfo.nativeCurrency.name` | `string` |
+| `chainInfo.nativeCurrency.symbol` | `string` |
+| `chainInfo.rpcUrls` | `string`[] |
+| `chainLogo` | `string` |
+| `chainName` | `string` |
+| `chainNameShort` | `string` |
+| `id` | `number` |
+| `maxPrepayCrossGas` | `number` |
+| `minCrossGasBalance` | `number` |
+| `minGasBalance` | `number` |
+| `requestRpc` | `string` |
+
+#### Defined in
+
+[packages/types/src/chains.ts:101](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L101)
+
+___
+
+### Base
+
+• `Const` **Base**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `blockExplorerName` | `string` |
+| `chainInfo` | \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "Base Network"; `nativeCurrency`: \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "eth"; `symbol`: `string` = "ETH" } ; `rpcUrls`: `string`[]  } |
+| `chainInfo.blockExplorerUrls` | `string`[] |
+| `chainInfo.chainId` | `string` |
+| `chainInfo.chainName` | `string` |
+| `chainInfo.nativeCurrency` | \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "eth"; `symbol`: `string` = "ETH" } |
+| `chainInfo.nativeCurrency.decimals` | `number` |
+| `chainInfo.nativeCurrency.fix` | `number` |
+| `chainInfo.nativeCurrency.name` | `string` |
+| `chainInfo.nativeCurrency.symbol` | `string` |
+| `chainInfo.rpcUrls` | `string`[] |
+| `chainLogo` | `string` |
+| `chainName` | `string` |
+| `chainNameShort` | `string` |
+| `id` | `number` |
+| `maxPrepayCrossGas` | `number` |
+| `minCrossGasBalance` | `number` |
+| `minGasBalance` | `number` |
+| `requestRpc` | `string` |
+
+#### Defined in
+
+[packages/types/src/chains.ts:298](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L298)
+
+___
+
+### BaseSepolia
+
+• `Const` **BaseSepolia**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `blockExplorerName` | `string` |
+| `chainInfo` | \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "Base Sepolia"; `nativeCurrency`: \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "ETH"; `symbol`: `string` = "ETH" } ; `rpcUrls`: `string`[]  } |
+| `chainInfo.blockExplorerUrls` | `string`[] |
+| `chainInfo.chainId` | `string` |
+| `chainInfo.chainName` | `string` |
+| `chainInfo.nativeCurrency` | \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "ETH"; `symbol`: `string` = "ETH" } |
+| `chainInfo.nativeCurrency.decimals` | `number` |
+| `chainInfo.nativeCurrency.fix` | `number` |
+| `chainInfo.nativeCurrency.name` | `string` |
+| `chainInfo.nativeCurrency.symbol` | `string` |
+| `chainInfo.rpcUrls` | `string`[] |
+| `chainLogo` | `string` |
+| `chainName` | `string` |
+| `chainNameShort` | `string` |
+| `id` | `number` |
+| `maxPrepayCrossGas` | `number` |
+| `minCrossGasBalance` | `number` |
+| `minGasBalance` | `number` |
+| `requestRpc` | `string` |
+
+#### Defined in
+
+[packages/types/src/chains.ts:442](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L442)
+
+___
+
+### DEPOSIT\_FEE\_RATE
+
+• `Const` **DEPOSIT\_FEE\_RATE**: ``1.05``
+
+#### Defined in
+
+[packages/types/src/constants.ts:41](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/constants.ts#L41)
+
+___
+
+### Ethereum
+
+• `Const` **Ethereum**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `blockExplorerName` | `string` |
+| `chainInfo` | \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "Ethereum Mainnet"; `nativeCurrency`: \{ `decimals`: `number` = 18; `fix`: `number` = 8; `name`: `string` = "eth"; `symbol`: `string` = "ETH" } ; `rpcUrls`: `string`[]  } |
+| `chainInfo.blockExplorerUrls` | `string`[] |
+| `chainInfo.chainId` | `string` |
+| `chainInfo.chainName` | `string` |
+| `chainInfo.nativeCurrency` | \{ `decimals`: `number` = 18; `fix`: `number` = 8; `name`: `string` = "eth"; `symbol`: `string` = "ETH" } |
+| `chainInfo.nativeCurrency.decimals` | `number` |
+| `chainInfo.nativeCurrency.fix` | `number` |
+| `chainInfo.nativeCurrency.name` | `string` |
+| `chainInfo.nativeCurrency.symbol` | `string` |
+| `chainInfo.rpcUrls` | `string`[] |
+| `chainLogo` | `string` |
+| `chainName` | `string` |
+| `chainNameShort` | `string` |
+| `id` | `number` |
+| `maxPrepayCrossGas` | `number` |
+| `minCrossGasBalance` | `number` |
+| `minGasBalance` | `number` |
+| `requestRpc` | `string` |
+
+#### Defined in
+
+[packages/types/src/chains.ts:29](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L29)
+
+___
+
+### Fantom
+
+• `Const` **Fantom**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `blockExplorerName` | `string` |
+| `chainInfo` | \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "Fantom"; `nativeCurrency`: \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "ftm"; `symbol`: `string` = "FTM" } ; `rpcUrls`: `string`[]  } |
+| `chainInfo.blockExplorerUrls` | `string`[] |
+| `chainInfo.chainId` | `string` |
+| `chainInfo.chainName` | `string` |
+| `chainInfo.nativeCurrency` | \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "ftm"; `symbol`: `string` = "FTM" } |
+| `chainInfo.nativeCurrency.decimals` | `number` |
+| `chainInfo.nativeCurrency.fix` | `number` |
+| `chainInfo.nativeCurrency.name` | `string` |
+| `chainInfo.nativeCurrency.symbol` | `string` |
+| `chainInfo.rpcUrls` | `string`[] |
+| `chainLogo` | `string` |
+| `chainName` | `string` |
+| `chainNameShort` | `string` |
+| `id` | `number` |
+| `maxPrepayCrossGas` | `number` |
+| `minCrossGasBalance` | `number` |
+| `minGasBalance` | `number` |
+| `requestRpc` | `string` |
+
+#### Defined in
+
+[packages/types/src/chains.ts:125](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L125)
+
+___
+
+### Fuji
+
+• `Const` **Fuji**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `blockExplorerName` | `string` |
+| `chainInfo` | \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "Avalanche Fuji Testnet"; `nativeCurrency`: \{ `decimals`: `number` = 18; `fix`: `number` = 5; `name`: `string` = "avax"; `symbol`: `string` = "AVAX" } ; `rpcUrls`: `string`[]  } |
+| `chainInfo.blockExplorerUrls` | `string`[] |
+| `chainInfo.chainId` | `string` |
+| `chainInfo.chainName` | `string` |
+| `chainInfo.nativeCurrency` | \{ `decimals`: `number` = 18; `fix`: `number` = 5; `name`: `string` = "avax"; `symbol`: `string` = "AVAX" } |
+| `chainInfo.nativeCurrency.decimals` | `number` |
+| `chainInfo.nativeCurrency.fix` | `number` |
+| `chainInfo.nativeCurrency.name` | `string` |
+| `chainInfo.nativeCurrency.symbol` | `string` |
+| `chainInfo.rpcUrls` | `string`[] |
+| `chainLogo` | `string` |
+| `chainName` | `string` |
+| `chainNameShort` | `string` |
+| `id` | `number` |
+| `maxPrepayCrossGas` | `number` |
+| `minCrossGasBalance` | `number` |
+| `minGasBalance` | `number` |
+| `requestRpc` | `string` |
+
+#### Defined in
+
+[packages/types/src/chains.ts:77](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L77)
+
+___
+
+### Linea
+
+• `Const` **Linea**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `blockExplorerName` | `string` |
+| `chainInfo` | \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "Linea"; `nativeCurrency`: \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "eth"; `symbol`: `string` = "ETH" } ; `rpcUrls`: `string`[]  } |
+| `chainInfo.blockExplorerUrls` | `string`[] |
+| `chainInfo.chainId` | `string` |
+| `chainInfo.chainName` | `string` |
+| `chainInfo.nativeCurrency` | \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "eth"; `symbol`: `string` = "ETH" } |
+| `chainInfo.nativeCurrency.decimals` | `number` |
+| `chainInfo.nativeCurrency.fix` | `number` |
+| `chainInfo.nativeCurrency.name` | `string` |
+| `chainInfo.nativeCurrency.symbol` | `string` |
+| `chainInfo.rpcUrls` | `string`[] |
+| `chainLogo` | `string` |
+| `chainName` | `string` |
+| `chainNameShort` | `string` |
+| `id` | `number` |
+| `maxPrepayCrossGas` | `number` |
+| `minCrossGasBalance` | `number` |
+| `minGasBalance` | `number` |
+| `requestRpc` | `string` |
+
+#### Defined in
+
+[packages/types/src/chains.ts:274](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L274)
+
+___
+
+### MANTLE\_TESTNET\_CHAINID
+
+• `Const` **MANTLE\_TESTNET\_CHAINID**: ``5003``
+
+#### Defined in
+
+[packages/types/src/constants.ts:32](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/constants.ts#L32)
+
+___
+
+### MANTLE\_TESTNET\_CHAINID\_HEX
+
+• `Const` **MANTLE\_TESTNET\_CHAINID\_HEX**: ``"0x138b"``
+
+#### Defined in
+
+[packages/types/src/constants.ts:33](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/constants.ts#L33)
+
+___
+
+### MEDIA\_TABLET
+
+• `Const` **MEDIA\_TABLET**: ``"(max-width: 768px)"``
+
+#### Defined in
+
+[packages/types/src/constants.ts:39](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/constants.ts#L39)
+
+___
+
+### Mantle
+
+• `Const` **Mantle**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `blockExplorerName` | `string` |
+| `chainInfo` | \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "Mantle"; `nativeCurrency`: \{ `decimals`: `number` = 6; `fix`: `number` = 4; `name`: `string` = "MNT"; `symbol`: `string` = "MNT" } ; `rpcUrls`: `string`[]  } |
+| `chainInfo.blockExplorerUrls` | `string`[] |
+| `chainInfo.chainId` | `string` |
+| `chainInfo.chainName` | `string` |
+| `chainInfo.nativeCurrency` | \{ `decimals`: `number` = 6; `fix`: `number` = 4; `name`: `string` = "MNT"; `symbol`: `string` = "MNT" } |
+| `chainInfo.nativeCurrency.decimals` | `number` |
+| `chainInfo.nativeCurrency.fix` | `number` |
+| `chainInfo.nativeCurrency.name` | `string` |
+| `chainInfo.nativeCurrency.symbol` | `string` |
+| `chainInfo.rpcUrls` | `string`[] |
+| `chainLogo` | `string` |
+| `chainName` | `string` |
+| `chainNameShort` | `string` |
+| `id` | `number` |
+| `maxPrepayCrossGas` | `number` |
+| `minCrossGasBalance` | `number` |
+| `minGasBalance` | `number` |
+| `requestRpc` | `string` |
+
+#### Defined in
+
+[packages/types/src/chains.ts:322](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L322)
+
+___
+
+### MantleSepolia
+
+• `Const` **MantleSepolia**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `blockExplorerName` | `string` |
+| `chainInfo` | \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "Mantle Sepolia"; `nativeCurrency`: \{ `decimals`: `number` = 6; `fix`: `number` = 4; `name`: `string` = "MNT"; `symbol`: `string` = "MNT" } ; `rpcUrls`: `string`[]  } |
+| `chainInfo.blockExplorerUrls` | `string`[] |
+| `chainInfo.chainId` | `string` |
+| `chainInfo.chainName` | `string` |
+| `chainInfo.nativeCurrency` | \{ `decimals`: `number` = 6; `fix`: `number` = 4; `name`: `string` = "MNT"; `symbol`: `string` = "MNT" } |
+| `chainInfo.nativeCurrency.decimals` | `number` |
+| `chainInfo.nativeCurrency.fix` | `number` |
+| `chainInfo.nativeCurrency.name` | `string` |
+| `chainInfo.nativeCurrency.symbol` | `string` |
+| `chainInfo.rpcUrls` | `string`[] |
+| `chainLogo` | `string` |
+| `chainName` | `string` |
+| `chainNameShort` | `string` |
+| `id` | `number` |
+| `maxPrepayCrossGas` | `number` |
+| `minCrossGasBalance` | `number` |
+| `minGasBalance` | `number` |
+| `requestRpc` | `string` |
+
+#### Defined in
+
+[packages/types/src/chains.ts:466](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L466)
+
+___
+
+### MaxUint256
+
+• `Const` **MaxUint256**: `bigint`
+
+A constant for the maximum value for a ``uint256``.
+
+#### Defined in
+
+[packages/types/src/constants.ts:46](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/constants.ts#L46)
+
+___
+
+### Optimism
+
+• `Const` **Optimism**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `blockExplorerName` | `string` |
+| `chainInfo` | \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "Optimism"; `nativeCurrency`: \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "eth"; `symbol`: `string` = "ETH" } ; `rpcUrls`: `string`[]  } |
+| `chainInfo.blockExplorerUrls` | `string`[] |
+| `chainInfo.chainId` | `string` |
+| `chainInfo.chainName` | `string` |
+| `chainInfo.nativeCurrency` | \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "eth"; `symbol`: `string` = "ETH" } |
+| `chainInfo.nativeCurrency.decimals` | `number` |
+| `chainInfo.nativeCurrency.fix` | `number` |
+| `chainInfo.nativeCurrency.name` | `string` |
+| `chainInfo.nativeCurrency.symbol` | `string` |
+| `chainInfo.rpcUrls` | `string`[] |
+| `chainLogo` | `string` |
+| `chainName` | `string` |
+| `chainNameShort` | `string` |
+| `id` | `number` |
+| `maxPrepayCrossGas` | `number` |
+| `minCrossGasBalance` | `number` |
+| `minGasBalance` | `number` |
+| `requestRpc` | `string` |
+
+#### Defined in
+
+[packages/types/src/chains.ts:197](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L197)
+
+___
+
+### OptimismGoerli
+
+• `Const` **OptimismGoerli**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `blockExplorerName` | `string` |
+| `chainInfo` | \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "Optimism Goerli"; `nativeCurrency`: \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "ETH"; `symbol`: `string` = "ETH" } ; `rpcUrls`: `string`[]  } |
+| `chainInfo.blockExplorerUrls` | `string`[] |
+| `chainInfo.chainId` | `string` |
+| `chainInfo.chainName` | `string` |
+| `chainInfo.nativeCurrency` | \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "ETH"; `symbol`: `string` = "ETH" } |
+| `chainInfo.nativeCurrency.decimals` | `number` |
+| `chainInfo.nativeCurrency.fix` | `number` |
+| `chainInfo.nativeCurrency.name` | `string` |
+| `chainInfo.nativeCurrency.symbol` | `string` |
+| `chainInfo.rpcUrls` | `string`[] |
+| `chainLogo` | `string` |
+| `chainName` | `string` |
+| `chainNameShort` | `string` |
+| `id` | `number` |
+| `maxPrepayCrossGas` | `number` |
+| `minCrossGasBalance` | `number` |
+| `minGasBalance` | `number` |
+| `requestRpc` | `string` |
+
+#### Defined in
+
+[packages/types/src/chains.ts:394](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L394)
+
+___
+
+### OptimismSepolia
+
+• `Const` **OptimismSepolia**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `blockExplorerName` | `string` |
+| `chainInfo` | \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "Optimism Sepolia"; `nativeCurrency`: \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "ETH"; `symbol`: `string` = "ETH" } ; `rpcUrls`: `string`[]  } |
+| `chainInfo.blockExplorerUrls` | `string`[] |
+| `chainInfo.chainId` | `string` |
+| `chainInfo.chainName` | `string` |
+| `chainInfo.nativeCurrency` | \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "ETH"; `symbol`: `string` = "ETH" } |
+| `chainInfo.nativeCurrency.decimals` | `number` |
+| `chainInfo.nativeCurrency.fix` | `number` |
+| `chainInfo.nativeCurrency.name` | `string` |
+| `chainInfo.nativeCurrency.symbol` | `string` |
+| `chainInfo.rpcUrls` | `string`[] |
+| `chainLogo` | `string` |
+| `chainName` | `string` |
+| `chainNameShort` | `string` |
+| `id` | `number` |
+| `maxPrepayCrossGas` | `number` |
+| `minCrossGasBalance` | `number` |
+| `minGasBalance` | `number` |
+| `requestRpc` | `string` |
+
+#### Defined in
+
+[packages/types/src/chains.ts:418](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L418)
+
+___
+
+### Polygon
+
+• `Const` **Polygon**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `blockExplorerName` | `string` |
+| `chainInfo` | \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "Polygon"; `nativeCurrency`: \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "matic"; `symbol`: `string` = "MATIC" } ; `rpcUrls`: `string`[]  } |
+| `chainInfo.blockExplorerUrls` | `string`[] |
+| `chainInfo.chainId` | `string` |
+| `chainInfo.chainName` | `string` |
+| `chainInfo.nativeCurrency` | \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "matic"; `symbol`: `string` = "MATIC" } |
+| `chainInfo.nativeCurrency.decimals` | `number` |
+| `chainInfo.nativeCurrency.fix` | `number` |
+| `chainInfo.nativeCurrency.name` | `string` |
+| `chainInfo.nativeCurrency.symbol` | `string` |
+| `chainInfo.rpcUrls` | `string`[] |
+| `chainLogo` | `string` |
+| `chainName` | `string` |
+| `chainNameShort` | `string` |
+| `id` | `number` |
+| `maxPrepayCrossGas` | `number` |
+| `minCrossGasBalance` | `number` |
+| `minGasBalance` | `number` |
+| `requestRpc` | `string` |
+
+#### Defined in
+
+[packages/types/src/chains.ts:149](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L149)
+
+___
+
+### PolygonAmoy
+
+• `Const` **PolygonAmoy**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `blockExplorerName` | `string` |
+| `chainInfo` | \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "Polygon Amoy"; `nativeCurrency`: \{ `decimals`: `number` = 6; `fix`: `number` = 4; `name`: `string` = "MATIC"; `symbol`: `string` = "MATIC" } ; `rpcUrls`: `string`[]  } |
+| `chainInfo.blockExplorerUrls` | `string`[] |
+| `chainInfo.chainId` | `string` |
+| `chainInfo.chainName` | `string` |
+| `chainInfo.nativeCurrency` | \{ `decimals`: `number` = 6; `fix`: `number` = 4; `name`: `string` = "MATIC"; `symbol`: `string` = "MATIC" } |
+| `chainInfo.nativeCurrency.decimals` | `number` |
+| `chainInfo.nativeCurrency.fix` | `number` |
+| `chainInfo.nativeCurrency.name` | `string` |
+| `chainInfo.nativeCurrency.symbol` | `string` |
+| `chainInfo.rpcUrls` | `string`[] |
+| `chainLogo` | `string` |
+| `chainName` | `string` |
+| `chainNameShort` | `string` |
+| `id` | `number` |
+| `maxPrepayCrossGas` | `number` |
+| `minCrossGasBalance` | `number` |
+| `minGasBalance` | `number` |
+| `requestRpc` | `string` |
+
+#### Defined in
+
+[packages/types/src/chains.ts:490](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L490)
+
+___
+
+### PolygonzkEVM
+
+• `Const` **PolygonzkEVM**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `blockExplorerName` | `string` |
+| `chainInfo` | \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "Polygon zkEVM"; `nativeCurrency`: \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "eth"; `symbol`: `string` = "ETH" } ; `rpcUrls`: `string`[]  } |
+| `chainInfo.blockExplorerUrls` | `string`[] |
+| `chainInfo.chainId` | `string` |
+| `chainInfo.chainName` | `string` |
+| `chainInfo.nativeCurrency` | \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "eth"; `symbol`: `string` = "ETH" } |
+| `chainInfo.nativeCurrency.decimals` | `number` |
+| `chainInfo.nativeCurrency.fix` | `number` |
+| `chainInfo.nativeCurrency.name` | `string` |
+| `chainInfo.nativeCurrency.symbol` | `string` |
+| `chainInfo.rpcUrls` | `string`[] |
+| `chainLogo` | `string` |
+| `chainName` | `string` |
+| `chainNameShort` | `string` |
+| `id` | `number` |
+| `maxPrepayCrossGas` | `number` |
+| `minCrossGasBalance` | `number` |
+| `minGasBalance` | `number` |
+| `requestRpc` | `string` |
+
+#### Defined in
+
+[packages/types/src/chains.ts:250](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L250)
+
+___
+
+### TestnetChains
+
+• `Const` **TestnetChains**: \{ `network_infos`: \{ `bridge_enable`: `boolean` = true; `chain_id`: `number` = 421614; `currency_symbol`: `string` = "ETH"; `est_txn_mins`: ``null`` = null; `explorer_base_url`: `string` = "https://sepolia.arbiscan.io"; `mainnet`: `boolean` = false; `name`: `string` = "Arbitrum Sepolia"; `public_rpc_url`: `string` = "https://arbitrum-sepolia.blockpi.network/v1/rpc/public"; `shortName`: `string` = "Arbitrum Sepolia" } ; `token_infos`: \{ `address`: `string` = "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d"; `decimals`: `number` = 6; `symbol`: `string` = "USDC" }[]  }[]
+
+#### Defined in
+
+[packages/types/src/chains.ts:537](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L537)
+
+___
+
+### chainsInfoMap
+
+• `Const` **chainsInfoMap**: `Map`\<`number`, [`ChainConfig`](../interfaces/orderly_network_types.ChainConfig)\>
+
+#### Defined in
+
+[packages/types/src/chains.ts:514](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L514)
+
+___
+
+### defaultMainnetChains
+
+• `Const` **defaultMainnetChains**: \{ `blockExplorerName`: `string` = "Arbiscan"; `chainInfo`: \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "Arbitrum"; `nativeCurrency`: \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "eth"; `symbol`: `string` = "ETH" } ; `rpcUrls`: `string`[]  } ; `chainLogo`: `string` = ""; `chainName`: `string` = "Arbitrum"; `chainNameShort`: `string` = "Arbitrum"; `id`: `number` = 42161; `maxPrepayCrossGas`: `number` = 0.03; `minCrossGasBalance`: `number` = 0.002; `minGasBalance`: `number` = 0.0002; `requestRpc`: `string` = "https://arb1.arbitrum.io/rpc" }[]
+
+#### Defined in
+
+[packages/types/src/chains.ts:614](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L614)
+
+___
+
+### defaultTestnetChains
+
+• `Const` **defaultTestnetChains**: \{ `blockExplorerName`: `string` = "Arbitrum Sepolia"; `chainInfo`: \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "Arbitrum Sepolia"; `nativeCurrency`: \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "ETH"; `symbol`: `string` = "ETH" } ; `rpcUrls`: `string`[]  } ; `chainLogo`: `string` = ""; `chainName`: `string` = "Arbitrum Sepolia"; `chainNameShort`: `string` = "Arbitrum Sepolia"; `id`: `number` = 421614; `maxPrepayCrossGas`: `number` = 0.03; `minCrossGasBalance`: `number` = 0.002; `minGasBalance`: `number` = 0.0002; `requestRpc`: `string` = "https://arbitrum-sepolia.blockpi.network/v1/rpc/public" }[]
+
+#### Defined in
+
+[packages/types/src/chains.ts:615](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L615)
+
+___
+
+### definedTypes
+
+• `Const` **definedTypes**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `AddOrderlyKey` | readonly [\{ `name`: ``"brokerId"`` = "brokerId"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"orderlyKey"`` = "orderlyKey"; `type`: ``"string"`` = "string" }, \{ `name`: ``"scope"`` = "scope"; `type`: ``"string"`` = "string" }, \{ `name`: ``"timestamp"`` = "timestamp"; `type`: ``"uint64"`` = "uint64" }, \{ `name`: ``"expiration"`` = "expiration"; `type`: ``"uint64"`` = "uint64" }] |
+| `EIP712Domain` | readonly [\{ `name`: ``"name"`` = "name"; `type`: ``"string"`` = "string" }, \{ `name`: ``"version"`` = "version"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"verifyingContract"`` = "verifyingContract"; `type`: ``"address"`` = "address" }] |
+| `Registration` | readonly [\{ `name`: ``"brokerId"`` = "brokerId"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"timestamp"`` = "timestamp"; `type`: ``"uint64"`` = "uint64" }, \{ `name`: ``"registrationNonce"`` = "registrationNonce"; `type`: ``"uint256"`` = "uint256" }] |
+| `SettlePnl` | readonly [\{ `name`: ``"brokerId"`` = "brokerId"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"settleNonce"`` = "settleNonce"; `type`: ``"uint64"`` = "uint64" }, \{ `name`: ``"timestamp"`` = "timestamp"; `type`: ``"uint64"`` = "uint64" }] |
+| `Withdraw` | readonly [\{ `name`: ``"brokerId"`` = "brokerId"; `type`: ``"string"`` = "string" }, \{ `name`: ``"chainId"`` = "chainId"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"receiver"`` = "receiver"; `type`: ``"address"`` = "address" }, \{ `name`: ``"token"`` = "token"; `type`: ``"string"`` = "string" }, \{ `name`: ``"amount"`` = "amount"; `type`: ``"uint256"`` = "uint256" }, \{ `name`: ``"withdrawNonce"`` = "withdrawNonce"; `type`: ``"uint64"`` = "uint64" }, \{ `name`: ``"timestamp"`` = "timestamp"; `type`: ``"uint64"`` = "uint64" }] |
+
+#### Defined in
+
+[packages/types/src/sign.ts:1](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/sign.ts#L1)
+
+___
+
+### nativeTokenAddress
+
+• `Const` **nativeTokenAddress**: ``"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"``
+
+#### Defined in
+
+[packages/types/src/constants.ts:50](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/constants.ts#L50)
+
+___
+
+### version
+
+• **version**: ``"1.5.7"``
+
+#### Defined in
+
+[packages/types/src/version.ts:14](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/version.ts#L14)
+
+___
+
+### zkSyncEra
+
+• `Const` **zkSyncEra**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `blockExplorerName` | `string` |
+| `chainInfo` | \{ `blockExplorerUrls`: `string`[] ; `chainId`: `string` ; `chainName`: `string` = "zkSync Era"; `nativeCurrency`: \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "eth"; `symbol`: `string` = "ETH" } ; `rpcUrls`: `string`[]  } |
+| `chainInfo.blockExplorerUrls` | `string`[] |
+| `chainInfo.chainId` | `string` |
+| `chainInfo.chainName` | `string` |
+| `chainInfo.nativeCurrency` | \{ `decimals`: `number` = 18; `fix`: `number` = 4; `name`: `string` = "eth"; `symbol`: `string` = "ETH" } |
+| `chainInfo.nativeCurrency.decimals` | `number` |
+| `chainInfo.nativeCurrency.fix` | `number` |
+| `chainInfo.nativeCurrency.name` | `string` |
+| `chainInfo.nativeCurrency.symbol` | `string` |
+| `chainInfo.rpcUrls` | `string`[] |
+| `chainLogo` | `string` |
+| `chainName` | `string` |
+| `chainNameShort` | `string` |
+| `id` | `number` |
+| `maxPrepayCrossGas` | `number` |
+| `minCrossGasBalance` | `number` |
+| `minGasBalance` | `number` |
+| `requestRpc` | `string` |
+
+#### Defined in
+
+[packages/types/src/chains.ts:221](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/chains.ts#L221)
+
+## Functions
+
+### isNativeTokenChecker
+
+▸ **isNativeTokenChecker**(`address`): `boolean`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `address` | `string` |
+
+#### Returns
+
+`boolean`
+
+#### Defined in
+
+[packages/types/src/constants.ts:52](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/types/src/constants.ts#L52)
