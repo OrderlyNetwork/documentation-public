@@ -89,14 +89,54 @@ $$ R_{MajorBuilderX}= W_{Major} * R * {\frac {baseFees_{MajorBuilderX}} {baseFee
 
 $$ R_{AltsBuilderX}= W_{Alts} * R * {\frac {baseFees_{AltsBuilderX}} {baseFees_{Alts}}} $$
 
-| Term                                                     | Definition                                                                                                                     |
-|----------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| $$ R_{MajorBuilderX} / R_{AltsBuilderX} $$               | The total trading rewards amount allocated to a specific builder for the **Major / Alts** symbols category in an epoch         |
-| $$ W_{Major} / W_{Alts}  $$                              | The weightage of the **Major / Alts** symbol category                                                                          |
-| $$ R  $$                                                 | The epoch’s trading rewards amount                                                                                             |
-| $$ feesPaid_{MajorBuilderX} / feesPaid_{AltsBuilderX} $$ | The total amount of base fees generated to Orderly through a specific builder for trading **Major / Alts** symbols in an epoch |
-| $$ feesPaid_{Major} / feesPaid_{Alts}  $$                | The total amount of base fees generated to Orderly across all builders for trading **Major / Alts** symbols in an epoch        |
+| Term                                                            | Definition                                                                                                                     |
+|-----------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| $$ R_{MajorBuilderX} $$ / $$  R_{AltsBuilderX} $$               | The total trading rewards amount allocated to a specific builder for the **Major / Alts** symbols category in an epoch         |
+| $$ W_{Major} $$ / $$  W_{Alts}  $$                              | The weightage of the **Major / Alts** symbol category                                                                          |
+| $$ R  $$                                                        | The epoch’s trading rewards amount                                                                                             |
+| $$ feesPaid_{MajorBuilderX} $$ / $$  feesPaid_{AltsBuilderX} $$ | The total amount of base fees generated to Orderly through a specific builder for trading **Major / Alts** symbols in an epoch |
+| $$ feesPaid_{Major} $$ / $$ feesPaid_{Alts}  $$                 | The total amount of base fees generated to Orderly across all builders for trading **Major / Alts** symbols in an epoch        |
 
 #### Example
 
 Assume that the epoch rewards is 1,000,000 \$ORDER. The weightage of Major and Alts symbols are 40\% and 60\% respectively.
+
+|                                              | builder1 | builder2 | builder3 |
+|----------------------------------------------|----------|----------|----------|
+| Base Fees Generated (Major)                  | 600,000  | 150,000  | 750,000  |
+| Ratio                                        | 80.00\%  | 20.00%\% | 100\%    |
+| Trading Rewards, <br/> $$ R_{MajorBrokerX}$$ | 320,000  | 80,000   | 400,000  |
+
+|                                             | builder1 | builder2 | builder3 |
+|---------------------------------------------|----------|----------|----------|
+| Base Fees Generated (Alts)                  | 17,500   | 7,500    | 25,000   |
+| Ratio                                       | 70.00\%  | 30.00%\% | 100\%    |
+| Trading Rewards, <br/> $$ R_{AltsBrokerX}$$ | 420,000  | 180,000  | 600,000  |
+
+## Application of the First Layer
+
+Within each builder, each end user gets Trader Score $$ w_{MajorBrokerX} $$  and Trader Score $$ w_{AltsBrokerX}$$ for each epoch.
+
+$$ TraderScore(w)_{MajorBuilderX}=feesPaid_{MajorBuilderX}^{0.8}*[max(10,stakedORDER)]^{0.2} $$
+
+$$ TraderScore(w)_{AltsBuilderX}=feesPaid_{AltsBuilderX}^{0.8}*[max(10,stakedORDER)]^{0.2} $$ 
+
+Trader scores are calculated at the end of each epoch and are determined by (1) the total trading fees the user has paid to the builder for trading **Major / Alts** symbols and (2) their average staked balance in each epoch.
+
+- The average staked balance is calculated by the sum of the daily staked balance divided by the number of days in an epoch. A daily snapshot will be taken randomly to determine the user’s daily staked balance.
+
+At the end of each epoch, trader scores are converted into trading rewards and distributed to end users.
+
+$$ r_{MajorBuilderX}=R_{MajorBuilderX}* {\dfrac{w_{MajorBuilderX}} {allTraderScores_{MajorBuilderX}}} $$
+$$ r_{AltsBuilderX}=R_{AltsBuilderX}*{\dfrac{w_{AltsBuilderX}}{allTraderScores_{AltsBuilderX}}} $$
+
+The amount of trading rewards an end user earns is proportional to their TraderScore against the sum of all TraderScores within each builder in that epoch. The computation of major and alts symbols is calculated separately. 
+
+| Term                                                                         | Definition                                                                                                                        |
+|------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| $$ TraderScore(w)_{MajorBuilderX} $$ / $$ TraderScore(w)_{MajorBuilderX} $$  | The trader score for trading **Major / Alts** symbols with a specific builder in an epoch                                         |
+| $$ feesPaid_{MajorBuilderX} $$/ $$ feesPaid_{AltsBuilderX}  $$               | The total amount of trading fees paid by the end user through a specific builder for trading **Major / Alts** symbols in an epoch |
+| $$ stakedORDER  $$                                                           | The average staked (\$ORDER/es\$ORDER) balance of a wallet in an epoch                                                            |
+| $$ r_{MajorBuilderX} $$ / $$ r_{AltsBuilderX} $$                             | The amount of trading reward an end user has earned under a specific builder for trading **major** symbols in an epoch            |
+| $$ R_{MajorBuilderX} $$ / $$ R_{AltsBuilderX} $$                             | The total trading rewards amount allocated to a specific builder for the **Major / Alts** symbols category in an epoch            |
+| $$ allTraderScores_{MajorBuilderX} $$ / $$ allTraderScores_{AltsBuilderX} $$ | The sum of all trader scores that traded **Major / Alts** symbols for a specific builder in an epoch                              |
