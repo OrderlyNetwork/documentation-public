@@ -1,0 +1,728 @@
+[Orderly SDKs](/sdks/tech-doc/README) / [Modules](/sdks/tech-doc/modules) / [@orderly.network/core](/sdks/tech-doc/modules/orderly_network_core) / Account
+
+# Class: Account
+
+[@orderly.network/core](/sdks/tech-doc/modules/orderly_network_core).Account
+
+Account
+
+**`Example`**
+
+```ts
+const account = new Account();
+account.login("0x1234567890");
+```
+
+## Table of contents
+
+### Constructors
+
+- [constructor](/sdks/tech-doc/classes/orderly_network_core.Account#constructor)
+
+### Properties
+
+- [\_ee](/sdks/tech-doc/classes/orderly_network_core.Account#_ee)
+- [\_singer](/sdks/tech-doc/classes/orderly_network_core.Account#_singer)
+- [\_state](/sdks/tech-doc/classes/orderly_network_core.Account#_state)
+- [assetsManager](/sdks/tech-doc/classes/orderly_network_core.Account#assetsmanager)
+- [configStore](/sdks/tech-doc/classes/orderly_network_core.Account#configstore)
+- [contractManger](/sdks/tech-doc/classes/orderly_network_core.Account#contractmanger)
+- [getWalletAdapter](/sdks/tech-doc/classes/orderly_network_core.Account#getwalletadapter)
+- [keyStore](/sdks/tech-doc/classes/orderly_network_core.Account#keystore)
+- [walletClient](/sdks/tech-doc/classes/orderly_network_core.Account#walletclient)
+- [instanceName](/sdks/tech-doc/classes/orderly_network_core.Account#instancename)
+
+### Accessors
+
+- [accountId](/sdks/tech-doc/classes/orderly_network_core.Account#accountid)
+- [accountIdHashStr](/sdks/tech-doc/classes/orderly_network_core.Account#accountidhashstr)
+- [address](/sdks/tech-doc/classes/orderly_network_core.Account#address)
+- [chainId](/sdks/tech-doc/classes/orderly_network_core.Account#chainid)
+- [off](/sdks/tech-doc/classes/orderly_network_core.Account#off)
+- [on](/sdks/tech-doc/classes/orderly_network_core.Account#on)
+- [once](/sdks/tech-doc/classes/orderly_network_core.Account#once)
+- [signer](/sdks/tech-doc/classes/orderly_network_core.Account#signer)
+- [stateValue](/sdks/tech-doc/classes/orderly_network_core.Account#statevalue)
+- [wallet](/sdks/tech-doc/classes/orderly_network_core.Account#wallet)
+
+### Methods
+
+- [\_bindEvents](/sdks/tech-doc/classes/orderly_network_core.Account#_bindevents)
+- [\_checkAccount](/sdks/tech-doc/classes/orderly_network_core.Account#_checkaccount)
+- [\_checkAccountExist](/sdks/tech-doc/classes/orderly_network_core.Account#_checkaccountexist)
+- [\_checkOrderlyKeyState](/sdks/tech-doc/classes/orderly_network_core.Account#_checkorderlykeystate)
+- [\_getAccountInfo](/sdks/tech-doc/classes/orderly_network_core.Account#_getaccountinfo)
+- [\_getRegisterationNonce](/sdks/tech-doc/classes/orderly_network_core.Account#_getregisterationnonce)
+- [\_getSettleNonce](/sdks/tech-doc/classes/orderly_network_core.Account#_getsettlenonce)
+- [\_getTimestampFromServer](/sdks/tech-doc/classes/orderly_network_core.Account#_gettimestampfromserver)
+- [\_simpleFetch](/sdks/tech-doc/classes/orderly_network_core.Account#_simplefetch)
+- [createAccount](/sdks/tech-doc/classes/orderly_network_core.Account#createaccount)
+- [createOrderlyKey](/sdks/tech-doc/classes/orderly_network_core.Account#createorderlykey)
+- [disconnect](/sdks/tech-doc/classes/orderly_network_core.Account#disconnect)
+- [getDomain](/sdks/tech-doc/classes/orderly_network_core.Account#getdomain)
+- [logout](/sdks/tech-doc/classes/orderly_network_core.Account#logout)
+- [parseChainId](/sdks/tech-doc/classes/orderly_network_core.Account#parsechainid)
+- [setAddress](/sdks/tech-doc/classes/orderly_network_core.Account#setaddress)
+- [settle](/sdks/tech-doc/classes/orderly_network_core.Account#settle)
+- [signTypedData](/sdks/tech-doc/classes/orderly_network_core.Account#signtypeddata)
+- [switchChainId](/sdks/tech-doc/classes/orderly_network_core.Account#switchchainid)
+
+## Constructors
+
+### constructor
+
+• **new Account**(`configStore`, `keyStore`, `getWalletAdapter`, `options?`)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `configStore` | [`ConfigStore`](/sdks/tech-doc/interfaces/orderly_network_core.ConfigStore) |
+| `keyStore` | [`OrderlyKeyStore`](/sdks/tech-doc/interfaces/orderly_network_core.OrderlyKeyStore) |
+| `getWalletAdapter` | [`getWalletAdapterFunc`](/sdks/tech-doc/modules/orderly_network_core#getwalletadapterfunc) |
+| `options?` | `Partial`\<\{ `contracts`: [`IContract`](/sdks/tech-doc/interfaces/orderly_network_core.IContract)  }\> |
+
+#### Defined in
+
+[packages/core/src/account.ts:88](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L88)
+
+## Properties
+
+### \_ee
+
+• `Private` **\_ee**: [`EventEmitter`](orderly_network_core.EventEmitter-1)\<`string` \| `symbol`, `any`\>
+
+#### Defined in
+
+[packages/core/src/account.ts:67](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L67)
+
+___
+
+### \_singer
+
+• `Private` `Optional` **\_singer**: [`Signer`](../interfaces/orderly_network_core.Signer)
+
+#### Defined in
+
+[packages/core/src/account.ts:59](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L59)
+
+___
+
+### \_state
+
+• `Private` **\_state**: [`AccountState`](../interfaces/orderly_network_core.AccountState)
+
+#### Defined in
+
+[packages/core/src/account.ts:71](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L71)
+
+___
+
+### assetsManager
+
+• **assetsManager**: `Assets`
+
+#### Defined in
+
+[packages/core/src/account.ts:69](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L69)
+
+___
+
+### configStore
+
+• `Private` `Readonly` **configStore**: [`ConfigStore`](../interfaces/orderly_network_core.ConfigStore)
+
+#### Defined in
+
+[packages/core/src/account.ts:89](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L89)
+
+___
+
+### contractManger
+
+• `Private` `Readonly` **contractManger**: [`IContract`](../interfaces/orderly_network_core.IContract)
+
+#### Defined in
+
+[packages/core/src/account.ts:80](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L80)
+
+___
+
+### getWalletAdapter
+
+• `Private` `Readonly` **getWalletAdapter**: [`getWalletAdapterFunc`](../modules/orderly_network_core#getwalletadapterfunc)
+
+#### Defined in
+
+[packages/core/src/account.ts:91](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L91)
+
+___
+
+### keyStore
+
+• `Readonly` **keyStore**: [`OrderlyKeyStore`](../interfaces/orderly_network_core.OrderlyKeyStore)
+
+#### Defined in
+
+[packages/core/src/account.ts:90](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L90)
+
+___
+
+### walletClient
+
+• `Optional` **walletClient**: [`WalletAdapter`](../interfaces/orderly_network_core.WalletAdapter)
+
+#### Defined in
+
+[packages/core/src/account.ts:84](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L84)
+
+___
+
+### instanceName
+
+▪ `Static` **instanceName**: `string` = `"account"`
+
+#### Defined in
+
+[packages/core/src/account.ts:57](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L57)
+
+## Accessors
+
+### accountId
+
+• `get` **accountId**(): `undefined` \| `string`
+
+#### Returns
+
+`undefined` \| `string`
+
+#### Defined in
+
+[packages/core/src/account.ts:175](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L175)
+
+___
+
+### accountIdHashStr
+
+• `get` **accountIdHashStr**(): `undefined` \| `string`
+
+#### Returns
+
+`undefined` \| `string`
+
+#### Defined in
+
+[packages/core/src/account.ts:180](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L180)
+
+___
+
+### address
+
+• `get` **address**(): `undefined` \| `string`
+
+#### Returns
+
+`undefined` \| `string`
+
+#### Defined in
+
+[packages/core/src/account.ts:192](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L192)
+
+___
+
+### chainId
+
+• `get` **chainId**(): `undefined` \| `string` \| `number`
+
+#### Returns
+
+`undefined` \| `string` \| `number`
+
+#### Defined in
+
+[packages/core/src/account.ts:196](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L196)
+
+___
+
+### off
+
+• `get` **off**(): \<T\>(`event`: `T`, `fn?`: (...`args`: `any`[]) => `void`, `context?`: `any`, `once?`: `boolean`) => [`EventEmitter`](orderly_network_core.EventEmitter-1)\<`string` \| `symbol`, `any`\>
+
+#### Returns
+
+`fn`
+
+▸ \<`T`\>(`event`, `fn?`, `context?`, `once?`): [`EventEmitter`](orderly_network_core.EventEmitter-1)\<`string` \| `symbol`, `any`\>
+
+##### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends `string` \| `symbol` |
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `T` |
+| `fn?` | (...`args`: `any`[]) => `void` |
+| `context?` | `any` |
+| `once?` | `boolean` |
+
+##### Returns
+
+[`EventEmitter`](orderly_network_core.EventEmitter-1)\<`string` \| `symbol`, `any`\>
+
+#### Defined in
+
+[packages/core/src/account.ts:676](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L676)
+
+___
+
+### on
+
+• `get` **on**(): \<T\>(`event`: `T`, `fn`: (...`args`: `any`[]) => `void`, `context?`: `any`) => [`EventEmitter`](orderly_network_core.EventEmitter-1)\<`string` \| `symbol`, `any`\>
+
+#### Returns
+
+`fn`
+
+▸ \<`T`\>(`event`, `fn`, `context?`): [`EventEmitter`](orderly_network_core.EventEmitter-1)\<`string` \| `symbol`, `any`\>
+
+Add a listener for a given event.
+
+##### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends `string` \| `symbol` |
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `T` |
+| `fn` | (...`args`: `any`[]) => `void` |
+| `context?` | `any` |
+
+##### Returns
+
+[`EventEmitter`](orderly_network_core.EventEmitter-1)\<`string` \| `symbol`, `any`\>
+
+#### Defined in
+
+[packages/core/src/account.ts:670](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L670)
+
+___
+
+### once
+
+• `get` **once**(): \<T\>(`event`: `T`, `fn`: (...`args`: `any`[]) => `void`, `context?`: `any`) => [`EventEmitter`](orderly_network_core.EventEmitter-1)\<`string` \| `symbol`, `any`\>
+
+#### Returns
+
+`fn`
+
+▸ \<`T`\>(`event`, `fn`, `context?`): [`EventEmitter`](orderly_network_core.EventEmitter-1)\<`string` \| `symbol`, `any`\>
+
+Add a one-time listener for a given event.
+
+##### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends `string` \| `symbol` |
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `event` | `T` |
+| `fn` | (...`args`: `any`[]) => `void` |
+| `context?` | `any` |
+
+##### Returns
+
+[`EventEmitter`](orderly_network_core.EventEmitter-1)\<`string` \| `symbol`, `any`\>
+
+#### Defined in
+
+[packages/core/src/account.ts:673](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L673)
+
+___
+
+### signer
+
+• `get` **signer**(): [`Signer`](../interfaces/orderly_network_core.Signer)
+
+#### Returns
+
+[`Signer`](../interfaces/orderly_network_core.Signer)
+
+#### Defined in
+
+[packages/core/src/account.ts:576](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L576)
+
+___
+
+### stateValue
+
+• `get` **stateValue**(): [`AccountState`](../interfaces/orderly_network_core.AccountState)
+
+#### Returns
+
+[`AccountState`](../interfaces/orderly_network_core.AccountState)
+
+#### Defined in
+
+[packages/core/src/account.ts:170](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L170)
+
+___
+
+### wallet
+
+• `get` **wallet**(): `undefined` \| [`WalletAdapter`](../interfaces/orderly_network_core.WalletAdapter)
+
+#### Returns
+
+`undefined` \| [`WalletAdapter`](../interfaces/orderly_network_core.WalletAdapter)
+
+#### Defined in
+
+[packages/core/src/account.ts:584](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L584)
+
+## Methods
+
+### \_bindEvents
+
+▸ `Private` **_bindEvents**(): `void`
+
+set user positions count
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[packages/core/src/account.ts:219](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L219)
+
+___
+
+### \_checkAccount
+
+▸ `Private` **_checkAccount**(`address`): `Promise`\<[`AccountStatusEnum`](../enums/orderly_network_types.AccountStatusEnum)\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `address` | `string` |
+
+#### Returns
+
+`Promise`\<[`AccountStatusEnum`](../enums/orderly_network_types.AccountStatusEnum)\>
+
+#### Defined in
+
+[packages/core/src/account.ts:226](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L226)
+
+___
+
+### \_checkAccountExist
+
+▸ `Private` **_checkAccountExist**(`address`): `Promise`\<``null`` \| \{ `account_id`: `string` ; `user_id`: `string`  }\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `address` | `string` |
+
+#### Returns
+
+`Promise`\<``null`` \| \{ `account_id`: `string` ; `user_id`: `string`  }\>
+
+#### Defined in
+
+[packages/core/src/account.ts:330](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L330)
+
+___
+
+### \_checkOrderlyKeyState
+
+▸ `Private` **_checkOrderlyKeyState**(`accountId`, `orderlyKey`): `Promise`\<`any`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `accountId` | `string` |
+| `orderlyKey` | `string` |
+
+#### Returns
+
+`Promise`\<`any`\>
+
+#### Defined in
+
+[packages/core/src/account.ts:564](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L564)
+
+___
+
+### \_getAccountInfo
+
+▸ `Private` **_getAccountInfo**(): `Promise`\<`any`\>
+
+#### Returns
+
+`Promise`\<`any`\>
+
+#### Defined in
+
+[packages/core/src/account.ts:615](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L615)
+
+___
+
+### \_getRegisterationNonce
+
+▸ `Private` **_getRegisterationNonce**(): `Promise`\<\{ `nonce`: `any` = res.data.registration\_nonce; `timestamp`: `any` = res.timestamp }\>
+
+#### Returns
+
+`Promise`\<\{ `nonce`: `any` = res.data.registration\_nonce; `timestamp`: `any` = res.timestamp }\>
+
+#### Defined in
+
+[packages/core/src/account.ts:588](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L588)
+
+___
+
+### \_getSettleNonce
+
+▸ `Private` **_getSettleNonce**(): `Promise`\<`any`\>
+
+#### Returns
+
+`Promise`\<`any`\>
+
+#### Defined in
+
+[packages/core/src/account.ts:623](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L623)
+
+___
+
+### \_getTimestampFromServer
+
+▸ `Private` **_getTimestampFromServer**(): `Promise`\<`any`\>
+
+#### Returns
+
+`Promise`\<`any`\>
+
+#### Defined in
+
+[packages/core/src/account.ts:605](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L605)
+
+___
+
+### \_simpleFetch
+
+▸ `Private` **_simpleFetch**(`url`, `init?`): `Promise`\<`any`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `url` | `string` |
+| `init` | `RequestInit` |
+
+#### Returns
+
+`Promise`\<`any`\>
+
+#### Defined in
+
+[packages/core/src/account.ts:648](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L648)
+
+___
+
+### createAccount
+
+▸ **createAccount**(): `Promise`\<`any`\>
+
+#### Returns
+
+`Promise`\<`any`\>
+
+#### Defined in
+
+[packages/core/src/account.ts:344](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L344)
+
+___
+
+### createOrderlyKey
+
+▸ **createOrderlyKey**(`expiration?`): `Promise`\<`any`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `expiration?` | `number` |
+
+#### Returns
+
+`Promise`\<`any`\>
+
+#### Defined in
+
+[packages/core/src/account.ts:407](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L407)
+
+___
+
+### disconnect
+
+▸ **disconnect**(): `Promise`\<`void`\>
+
+#### Returns
+
+`Promise`\<`void`\>
+
+#### Defined in
+
+[packages/core/src/account.ts:531](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L531)
+
+___
+
+### getDomain
+
+▸ **getDomain**(`onChainDomain?`): [`SignatureDomain`](../modules/orderly_network_core.utils#signaturedomain)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `onChainDomain?` | `boolean` |
+
+#### Returns
+
+[`SignatureDomain`](../modules/orderly_network_core.utils#signaturedomain)
+
+#### Defined in
+
+[packages/core/src/account.ts:654](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L654)
+
+___
+
+### logout
+
+▸ **logout**(): `void`
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[packages/core/src/account.ts:111](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L111)
+
+___
+
+### parseChainId
+
+▸ `Private` **parseChainId**(`chainId`): `number`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `chainId` | `string` \| `number` |
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[packages/core/src/account.ts:554](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L554)
+
+___
+
+### setAddress
+
+▸ **setAddress**(`address`, `wallet?`): `Promise`\<[`AccountStatusEnum`](../enums/orderly_network_types.AccountStatusEnum)\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `address` | `string` |
+| `wallet?` | `Object` |
+| `wallet.chain` | `Object` |
+| `wallet.chain.id` | `string` \| `number` |
+| `wallet.provider` | `any` |
+| `wallet.wallet?` | `Object` |
+| `wallet.wallet.name` | `string` |
+
+#### Returns
+
+`Promise`\<[`AccountStatusEnum`](../enums/orderly_network_types.AccountStatusEnum)\>
+
+#### Defined in
+
+[packages/core/src/account.ts:115](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L115)
+
+___
+
+### settle
+
+▸ **settle**(): `Promise`\<`any`\>
+
+#### Returns
+
+`Promise`\<`any`\>
+
+#### Defined in
+
+[packages/core/src/account.ts:474](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L474)
+
+___
+
+### signTypedData
+
+▸ **signTypedData**(`toSignatureMessage`): `Promise`\<`string`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `toSignatureMessage` | `Record`\<`string`, `any`\> |
+
+#### Returns
+
+`Promise`\<`string`\>
+
+#### Defined in
+
+[packages/core/src/account.ts:396](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L396)
+
+___
+
+### switchChainId
+
+▸ **switchChainId**(`chainId`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `chainId` | `string` \| `number` |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[packages/core/src/account.ts:547](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/account.ts#L547)
