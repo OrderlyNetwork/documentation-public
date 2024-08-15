@@ -39,6 +39,8 @@ const useOrderEntry = (
 - `estLiqPrice`: The estimated liquidation price, if a position is created from given order paramters.
 - `estLeverage`: The estimated leverage, if a position is created from given order paramters.
 
+> Note: Calculating `estLiqPrice` requires the `watchOrderbook` option to be set to `true`. It also depends on the `orderbook:update` event emitted by the `useOrderbookStream` hook, which must be used elsewhere in your application.
+
 ### Data calculations
 
 The `useOrderEntry` hook provides a `calculate()` function to format user's input:
