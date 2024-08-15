@@ -1,0 +1,48 @@
+[**@orderly.network/hooks v1.5.10**](/sdks/tech-doc/@orderly.network/hooks/README) • **Docs**
+
+***
+
+[Orderly SDKs](/sdks/tech-doc/packages) / [@orderly.network/hooks](/sdks/tech-doc/@orderly.network/hooks/README) / useMutation
+
+# Function: useMutation()
+
+> **useMutation**\<`T`, `E`\>(`url`, `method`, `options`?): readonly [(`data`, `params`?, `options`?) => `Promise`\<`any`\>, `object`]
+
+This hook is used to execute API requests for data mutation, such as POST, DELETE, PUT, etc.
+
+## Type Parameters
+
+• **T**
+
+• **E**
+
+## Parameters
+
+• **url**: `string`
+
+The URL to send the request to. If the URL does not start with "http",
+it will be prefixed with the API base URL.
+
+• **method**: `HTTP_METHOD` = `"POST"`
+
+The HTTP method to use for the request. Defaults to "POST".
+
+• **options?**: `SWRMutationConfiguration`\<`T`, `E`\>
+
+The configuration object for the mutation.
+
+**See**
+
+[useSWRMutation](https://swr.vercel.app/docs/mutation#api)
+
+**Link**
+
+https://swr.vercel.app/docs/mutation#api
+
+## Returns
+
+readonly [(`data`, `params`?, `options`?) => `Promise`\<`any`\>, `object`]
+
+## Defined in
+
+[packages/hooks/src/useMutation.ts:53](https://github.com/OrderlyNetwork/js-sdk/blob/554ae704783e3b83c40bb234a899e8f02987d9b6/packages/hooks/src/useMutation.ts#L53)
