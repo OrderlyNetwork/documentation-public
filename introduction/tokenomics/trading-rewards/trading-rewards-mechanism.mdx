@@ -28,30 +28,30 @@ There are two phases in the trading rewards structure:
 
     - The actual rewards emitted per epoch may deviate from the estimated rewards emission schedule in this phase. Orderly will routinely assess if rewards are under/over-incentivizing and adjusted by increasing/decreasing actual epoch rewards.
 
-The actual distribution schedule below also serves as a reference for the inflation rate of $ORDER attributed by trading rewards. Distribution of the escrowed phase will be pre-announced and documented in the below table.
+The actual distribution schedule below also serves as a reference for the inflation rate of \$ORDER attributed by trading rewards. Distribution of the escrowed phase will be pre-announced before the epoch commences in the future and updated in the table below.
 
-| Epoch | Epoch Rewards   | Accumulative Distribution (\$ORDER) |
-|-------|-----------------|-------------------------------------|
-| 1     | 1,500,000 ORDER | 1,500,000                           |
-| 2     | 1,500,000 ORDER | 3,000,000                           |
-| 3     | 1,400,000 ORDER | 4,400,000                           |
-| 4     | 1,400,000 ORDER | 5,800,000                           |
-| 5     | 1,300,000 ORDER | 7,100,000                           |
-| 6     | 1,300,000 ORDER | 8,400,000                           |
-| 7     | 1,200,000 ORDER | 9,600,000                           |
-| 8     | 1,200,000 ORDER | 10,800,000                          |
-| 9     | 1,100,000 ORDER | 11,900,000                          |
-| 10    | 1,100,000 ORDER | 13,000,000                          |
+| Epoch | Epoch Rewards (\$ORDER) | Accumulative Distribution (\$ORDER) |
+|-------|-------------------------|-------------------------------------|
+| 1     | 1,500,000               | 1,500,000                           |
+| 2     | 1,500,000               | 3,000,000                           |
+| 3     | 1,400,000               | 4,400,000                           |
+| 4     | 1,400,000               | 5,800,000                           |
+| 5     | 1,300,000               | 7,100,000                           |
+| 6     | 1,300,000               | 8,400,000                           |
+| 7     | 1,200,000               | 9,600,000                           |
+| 8     | 1,200,000               | 10,800,000                          |
+| 9     | 1,100,000               | 11,900,000                          |
+| 10    | 1,100,000               | 13,000,000                          |
 
 
 ## Allocation Mechanism
 For every epoch, trading rewards are allocated between two categories of symbols:
 
-1. Major symbols (BTCUSDC, ETHUSDC, SOLUSDC) with X\% weightage,
+1. Major symbols (BTC, ETH, SOL) with X\% weightage,
 
 2. Alts symbols (all other symbols listed on Orderly) with (100\-X)\% weightage.
 
-The symbols and weightage associated with the two categories will be periodically adjusted according to market conditions.
+The symbols and weightage \% associated with the two categories will be periodically adjusted according to market conditions.
 
 #### Example
 
@@ -87,35 +87,37 @@ Trading rewards are distributed based on each user’s trading score during the 
 
 $$ R_{MajorBuilderX}= W_{Major} * R * {\frac {baseFees_{MajorBuilderX}} {baseFees_{Major}}} $$ 
 
+
+
 $$ R_{AltsBuilderX}= W_{Alts} * R * {\frac {baseFees_{AltsBuilderX}} {baseFees_{Alts}}} $$
 
 | Term                                                            | Definition                                                                                                                     |
 |-----------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
 | $$ R_{MajorBuilderX} $$ / $$  R_{AltsBuilderX} $$               | The total trading rewards amount allocated to a specific builder for the **Major / Alts** symbols category in an epoch         |
-| $$ W_{Major} $$ / $$  W_{Alts}  $$                              | The weightage of the **Major / Alts** symbol category                                                                          |
+| $$ W_{Major} $$ / $$  W_{Alts}  $$                              | The weightage X\% / (100\-X)\% of the **Major / Alts** symbol category                                                         |
 | $$ R  $$                                                        | The epoch’s trading rewards amount                                                                                             |
-| $$ feesPaid_{MajorBuilderX} $$ / $$  feesPaid_{AltsBuilderX} $$ | The total amount of base fees generated to Orderly through a specific builder for trading **Major / Alts** symbols in an epoch |
-| $$ feesPaid_{Major} $$ / $$ feesPaid_{Alts}  $$                 | The total amount of base fees generated to Orderly across all builders for trading **Major / Alts** symbols in an epoch        |
+| $$ baseFees_{MajorBuilderX} $$ / $$  baseFees_{AltsBuilderX} $$ | The total amount of base fees generated to Orderly through a specific builder for trading **Major / Alts** symbols in an epoch |
+| $$ basefees_{Major} $$ / $$ baseFees_{Alts}  $$                 | The total amount of base fees generated to Orderly across all builders for trading **Major / Alts** symbols in an epoch        |
 
 #### Example
 
 Assume that the epoch rewards is 1,000,000 \$ORDER. The weightage of Major and Alts symbols are 40\% and 60\% respectively.
 
-|                                              | builder1 | builder2 | builder3 |
+|                                              | Builder1 | Builder2 | Builder3 |
 |----------------------------------------------|----------|----------|----------|
 | Base Fees Generated (Major)                  | 600,000  | 150,000  | 750,000  |
-| Ratio                                        | 80.00\%  | 20.00%\% | 100\%    |
+| Ratio                                        | 80.00\%  | 20.00\%  | 100\%    |
 | Trading Rewards, <br/> $$ R_{MajorBrokerX}$$ | 320,000  | 80,000   | 400,000  |
 
-|                                             | builder1 | builder2 | builder3 |
+|                                             | Builder1 | Builder2 | Builder3 |
 |---------------------------------------------|----------|----------|----------|
 | Base Fees Generated (Alts)                  | 17,500   | 7,500    | 25,000   |
-| Ratio                                       | 70.00\%  | 30.00%\% | 100\%    |
+| Ratio                                       | 70.00\%  | 30.00\%  | 100\%    |
 | Trading Rewards, <br/> $$ R_{AltsBrokerX}$$ | 420,000  | 180,000  | 600,000  |
 
 ## Application of the Second Layer
 
-Within each builder, each end user gets Trader Score $$ w_{MajorBrokerX} $$  and Trader Score $$ w_{AltsBrokerX}$$ for each epoch.
+Within each builder, every end user gets a separate Trader Score for trading with Major and Alts for each epoch.
 
 $$ TraderScore(w)_{MajorBuilderX}=feesPaid_{MajorBuilderX}^{0.8}*[max(10,stakedORDER)]^{0.2} $$
 
