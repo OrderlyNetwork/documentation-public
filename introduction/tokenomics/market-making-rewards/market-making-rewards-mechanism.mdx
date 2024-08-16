@@ -5,8 +5,7 @@ title: "Market Making Rewards Mechanism"
 Adjacent to Orderly Network’s trading rewards, the market making rewards program is designed to incentivize market makers that play an integral role in the liquidity of the DeFi protocol. 10% of the total \$ORDER token supply (100,000,000 \$ORDER) is allocated to market makers who support the liquidity of the Orderly Network’s trading infrastructure. 
 
 ## Epoch distribution
-Market making rewards will be distributed linearly on an epoch basis over 200 epochs with 14 days per epoch incorporating a Provide Liquidity-to-Earn model capped within each epoch performance.
-
+Market making rewards will be distributed linearly on an epoch basis over 200 epochs incorporating a Provide Liquidity-to-Earn model capped within each epoch performance.
 <img
   className="block dark:hidden"
   src="/images/distribution-light.png"
@@ -18,7 +17,7 @@ Market making rewards will be distributed linearly on an epoch basis over 200 ep
   alt="ORDER Token Distribution"
 />
 
-500,000 ORDER is allocated for each epoch for all qualified Orderly market makers. From epoch 11 onwards, the market maker rewards will be distributed as [escrowed $ORDER](/introduction/market-making-rewards/market-making-rewards-mechanism) instead of liquid ORDER tokens in epochs 1\-10. Any further adjustment of the distribution mechanism will be formally assessed and communicated to market makers in advance. 
+500,000 $ORDER is allocated for each epoch for all qualified Orderly market makers. From epoch 11 onwards, the market maker rewards will be distributed as [escrowed $ORDER](/introduction/market-making-rewards/market-making-rewards-mechanism) instead of liquid $ORDER tokens in epochs 1\-10. Any further adjustment of the distribution mechanism will be formally assessed and communicated to market makers in advance. 
 
 ## Allocation Mechanism
 For every epoch, market making rewards are allocated among Orderly’s listed markets. Each market’s allocation will be based on the following formulas:
@@ -50,15 +49,16 @@ For each market, $$ Q_{final} $$ is calculated at the end of every epoch for eli
 
 2. Liquidity Uptime
 
-3. Staked Balance ($ORDER/es$ORDER)
+3. Staked Balance ($ORDER/esORDER)
 
 4. Maker Volume
 
 Market making performance is monitored and calculated on a minute-by-minute basis (using randomized sampling) and aggregated into a $$ Q_{min} $$ for each market. Orders below a certain **minimum depth size** and/or over a certain **maximum spread** from each market maker’s mid-market price will be excluded from the computation of $$ Q_{final} $$.
 
-$$ Q_{final}=\sum_{N=1}^{totalEpochMinutes} \{Q_{min(N)}=[\dfrac{BidDepth_1}{Spread_1}+\dfrac{BidDepth_2}{Spread_2}...., \dfrac{AskDepth_1}{Spread_1}+\dfrac{AskDepth_2}{Spread_2}...]\}^{0.35} $$
+$$ Q_{final}=\sum_{N=1}^{totalEpochMinutes} \{Q_{min(N)}=[\dfrac{BidDepth_1}{Spread_1}+\dfrac{BidDepth_2}{Spread_2}...., \dfrac{AskDepth_1}{Spread_1}+\dfrac{AskDepth_2}{Spread_2}...]\}^{0.35} *[\dfrac{\sum_{N=1}^{totalEpochMinutes}Count(Q_{min(N)}>0)}{totalEpochMinutes}]^5 * [max(10,stakedORDER)]^{0.2} * [MakerVolume]^{0.45}$$
 
-$$ *[\dfrac{\sum_{N=1}^{totalEpochMinutes}Count(Q_{min(N)}>0)}{totalEpochMinutes}]^5 * [max(10,stakedORDER)]^{0.2} * [MakerVolume]^{0.45} $$
+
+
 
 $$ r_{market} = RewardPool_{Market} * \dfrac{Q_{final}}{Q_{total}} $$
 
