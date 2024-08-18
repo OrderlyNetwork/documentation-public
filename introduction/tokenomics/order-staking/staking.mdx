@@ -1,0 +1,130 @@
+---
+title: "Staking"
+---
+
+## Overview
+Earn VALOR & USDC by staking \$ORDER/esORDER while enjoying stake boost for your earnings with [trading rewards](/introduction/tokenomics/trading-rewards/trading-rewards) and [market making rewards](/introduction/tokenomics/market-making-rewards/market-making-rewards)! Users have the flexibility to stake/unstake or claim their \$ORDER and \$USDC across the growing list of blockchain networks that Orderly Network supports, enjoying a seamless omnichain experience.
+
+
+## Staking Interface
+Access the Orderly App and connect to your wallet to view your staking statistics.
+
+<img
+  className="block dark:hidden"
+  src="/images/staking-page.png"
+  alt="Staking Page"
+/>
+
+Users can perform staking, unstaking of \$ORDER, redeeming VALOR, and claiming of USDC. The data displayed on the staking page on the Orderly App is chain-agnostic. Apart from the user’s \$ORDER wallet balance, with the same EVM address, users will see the same information regardless of which blockchain network they are connected to.
+
+
+## Stake \$ORDER
+1. Users can see their \$ORDER balance after connecting their wallet to the selected blockchain network.
+
+2. Click on the “Stake” button and stake the amount of \$ORDER as desired.
+
+3. Once the on-chain stake transaction is successful, users can expect their \$ORDER in their wallet balance to decrease and observe their staked \$ORDER balance increase.
+
+4. Users will immediately start earning VALOR every second.
+
+
+## Unstake $ORDER
+1. Click on the “Unstake” button to unstake the amount of \$ORDER as desired.
+
+2. When unstaking \$ORDER token, there is a 7-day unstaking period.
+
+3. \$ORDER token that is undergoing unstaking will not earn VALOR. VALOR that have been earned are not affected when a user unstakes.
+
+4. Each user can have at most one unstaking request at a time. For example: A user unstaked 1000 \$ORDER that will be available in 5 days. The user decided to unstake another 500 \$ORDER. This will result in the total unstaking \$ORDER amount to be 1500 \$ORDER and will collectively be available in 7 days.
+
+5. User may cancel their unstaking request anytime before the 7 days of unstaking period by clicking on the “Cancel” button. This cancel unstake action will stake the full unstaking amount back for the user. 
+
+6. After 7 days, users can claim their unstaked \$ORDER to the network they are connected to on the Orderly App. For example, a user staked \$ORDER tokens on the Polygon blockchain network. After 7 days of unstaking, they have the flexibility to connect Optimism blockchain network to claim their unstaked \$ORDER tokens.
+
+7. \$ORDER (ERC-20) will be received by users when claiming unstaked $ORDER on Ethereum L1. 
+
+8. \$ORDER (OFT) will be received by users when claiming unstaked \$ORDER on all other blockchain networks.
+
+## Valor
+- VALOR is not a token. It is a metric of measure for each user's \$ORDER staking position based on the amount and duration of their stake. Thus, VALOR is not transferable. 
+
+- Earning VALOR is exclusive to staking \$ORDER or esORDER.
+
+- VALOR can only be redeemed for USDC. The amount of USDC that each VALOR can be redeemed for depends on the amount of USDC in the current protocol treasury and the available supply of VALOR.
+
+- Around 4.13 VALOR is distributed equally to the portion you stake over the total pool every second.
+
+
+## Redeem VALOR
+- The price of VALOR will be determined by the Treasury pool divided by the total amount of VALOR, with the Treasury pool being the cumulative 70% of Orderly's net fee.
+
+- VALOR price serves as a current estimated value of how much USDC is redeemable for each VALOR. The formula is as follows:
+
+    - VALOR price \= (total USDC in treasury) / (total circulating supply of VALOR)
+
+        - The total amount of USDC in the treasury is updated daily.
+
+            - At launch, the treasury starts with \$0.
+
+            - Orderly will upload 70\% of the protocol’s day net revenue amount to the treasury.
+
+        - The total circulating supply of VALOR is updated each time a user interacts with the smart contract to stake/unstake.
+
+- Users can redeem their partial/full amount of VALOR anytime. This can be tracked from the “Redeeming valor” value.
+
+- The protocol will process all VALOR redemptions sim on the next settlement date (end of each batch).
+
+    - This implies that all VALOR redemptions will settle at the same VALOR price regardless of when user A redeemed VALOR on the 5th day and user B redeemed VALOR on the 12th day.
+
+    - A redemption request cannot be revoked once submitted.
+
+    - A user can submit multiple VALOR redemption requests where each redemption can be on the same/different blockchain networks.
+
+- Whenever a user redeems their VALOR, the respective amount of redeemed VALOR will be burned. This permanently reduces the VALOR supply and increases the weight of the remaining VALOR.
+
+    - Note: Other users’ VALOR redemption will not affect your proportion of the treasury.
+
+    - Each batch comprises 14 days period. Users will see their Redeeming VALOR converted to Pending USDC at the end of each batch.
+
+
+<Note>
+Please pay attention to the blockchain network you are connected to on the Orderly App before redeeming your VALOR as this is where your USDC will be made available to claim. This is not modifiable once the transaction is executed on-chain. Take note to ensure that you have sufficient gas fees to claim your USDC transaction after the batch’s waiting period.
+</Note>
+
+
+The value of VALOR can only increase over time as it ties in with the protocol’s revenue from trading fees earned. As long as Orderly earns trading fees, 70\% of the net revenue will be injected daily into the treasury. In short, the later one redeems their VALOR, the more USDC they will receive per VALOR.
+
+
+## Claim USDC
+- There is a 2-day waiting period after each batch ends before users can start to claim their USDC with the blockchain network of their choice determined during redemption.
+
+- After the successful VALOR redemption, the available USDC can be claimed by users anytime with no time restrictions.
+
+- Each time a user claims USDC on a specific blockchain network, the full available USDC amount will be claimed.
+
+
+## FAQ
+- **How is staking APR calculated?**
+
+It is the protocol’s trailing 7-day average daily returns (annualized). Note that past performance does not guarantee future returns.
+
+Daily returns refer to the 70\% of the protocol daily net revenue divided by the daily USD equivalent of total staked \$ORDER and esORDER.
+
+ 
+
+- **Do I earn back the VALOR that I’ve missed if I cancel my unstaking request?**
+
+VALOR is earned every second when \$ORDER/esORDER is staked. Therefore, you do not retrospectively earn VALOR in the period of unstaking. However, upon the successful unstaking cancellation, you will start earning VALOR immediately.
+
+ 
+
+- **Why can I stake & claim my unstaked \$ORDER from a different chain?**
+
+One of Orderly’s key value propositions is to support builders across different blockchain networks. This omnichain architecture supports all our users across different blockchain networks to stake/unstake with ease, not limiting them to stake/unstake from one specific blockchain. Versatile to various use cases, this design empowers our users with the flexibility to stake from one blockchain and claim their unstaked \$ORDER from another blockchain seamlessly. This omnichain design is completely optional and users can choose to complete staking and unstaking on the same blockchain.
+
+ 
+
+- **What is OFT and why did Orderly decide to use it instead of just supporting an ERC-20 standard token?**
+
+The Omnichain Fungible Token (OFT) standard by LayerZero allows **fungible tokens** to be seamlessly transferred across multiple blockchains without asset wrapping or middlechains. OFT resonates with Orderly’s omnichain mission, enabling a multichain interoperability for users to receive their rewards and interact with Orderly with ease.
+
