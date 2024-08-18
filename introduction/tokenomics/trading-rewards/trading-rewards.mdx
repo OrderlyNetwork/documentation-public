@@ -1,0 +1,102 @@
+---
+title: "Trading Rewards"
+---
+
+## Overview
+Trade with Orderly’s builders and start earning trading rewards today! Orderly’s trading rewards program will be conducted across approximately 200 epochs (14 days per epoch) distributing 15% of the total supply of $ORDER. The next epoch will commence immediately once the current epoch has ended unless stated otherwise. Rewards are fairly and transparently allocated to Orderly’s builders and distributed to end-users on an epoch basis.
+
+## Rules
+- Refer to [Trading Rewards](/introduction/tokenomics/trading-rewards/trading-rewards-mechanism) for the distribution schedule, mechanisms, and formulas.
+
+- At any given time, a user can only be earning either trading rewards OR market making rewards. A user qualified for the market making rewards program will not be eligible for trading rewards.
+
+- The trading rewards program is applicable only for EVM trades.
+
+- Wash trading (self-trading) will be penalized.
+
+- Orderly reserves the right to modify, suspend or discontinue any and all of the rules in the program at any time.
+
+## Key Information
+The breakdown of the trading rewards’ Major/Alts symbols and their allocation weightage. This table will be periodically updated.
+
+| Category | Symbols     | Weightage (\%) |
+|----------|-------------|----------------|
+| Major    | BTC,ETH,SOL | 70             |
+| Alts     | Others      | 30             |
+
+## User Workflow Explained
+What happens in the life cycle of one epoch?
+
+1. Users trade with Orderly’s builders.
+
+2. After the epoch has ended, users can view their processing epoch rewards by connecting their wallet via the Orderly App (the amount of the rewards earned is subject to change).
+
+3. There is a 5 days waiting period after each epoch for the validate of rewards distribution before users can start to claim their epoch rewards. During the waiting period, Orderly will conduct a wash trading analysis to penalize potential users who have self-traded during the epoch. This is imperative to ensure that legitimate users are fairly rewarded.
+
+    - After the waiting period, the rewards earned by each user will be finalized and displayed with an Available status on the Orderly App.
+
+4. Users can claim their epoch trading rewards (\$ORDER token) to the blockchain network they are connected to on the Orderly App. Rewards earned do not expire.
+
+    - All users can choose which network they would like to claim their rewards regardless of which blockchain network they have traded on with Orderly’s builders. Gas fees will paid paying on-chain native gas on the selected chain to 
+
+        1. \$ORDER (ERC-20) will be received by users when claiming rewards on Ethereum L1
+
+        2. \$ORDER (OFT) will be received by users when claiming rewards on all other blockchain network
+
+
+## Trading Rewards Interface
+Access the [Orderly App](app.orderly.network/tradingRewards) and connect to your wallet to view your trading rewards statistics.
+
+<img
+  className="block dark:hidden"
+  src="/images/trading-rewards.png"
+  alt="Trading Rewards Page"
+/>
+
+You will be able to view the current epoch information, claim your earned trading rewards, and track the breakdown / status of your trading rewards history. The trading rewards data displayed on the Orderly App are chain-agnostic and aggregate all data across your different builder accounts. With the same EVM address, users will see the same information regardless of which blockchain network they are connected.
+
+<Note>
+Please pay attention to the selected blockchain network before claiming your rewards. Your trading rewards will be claimed to the blockchain network you are connected to on the Orderly App.
+</Note>
+
+## FAQ
+
+- **Which builder can I trade on to earn trading rewards?**
+
+Trade with any builder that are integrated with Orderly (EVM) as they are all automatically enrolled in Orderly’s trading rewards program.
+
+ 
+
+- **Is there a cap on how much trading rewards I can earn per epoch?**
+
+There is no restriction imposed on the amount of trader score each account can get from a builder per epoch. However, the maximum amount of trading rewards you can earn from a builder is bounded by the trading rewards allocated to that builder. For example, if Builder ABC has been allocated with 100,000 ORDER in epoch 1 and you are the only trader that traded with Builder ABC, you will earn 100,000 ORDER from Builder ABC. Refer to [Trading Rewards](/introduction/tokenomics/trading-rewards/trading-rewards-mechanism) for the distribution schedule, mechanisms, and formulas. 
+
+ 
+
+- **How can I claim my trading rewards if I traded with multiple Orderly’s builders in the same epoch using the same wallet address?**
+
+At the end of each epoch, the total trading rewards a wallet owner has earned from each builder (regardless on which blockchain network) will be aggregated into his/her wallet address. You only need to claim once from the Orderly App to receive all the trading rewards you have earned across different builders.
+
+ 
+
+- **What is OFT and why did Orderly use it?**
+
+The Omnichain Fungible Token (OFT) standard by LayerZero allows fungible tokens to be seamlessly transferred across multiple blockchains without asset wrapping or middlechains. OFT resonates with Orderly’s omnichain mission, enabling a multichain interoperability for users to receive their rewards and interact with Orderly with ease.
+
+ 
+
+- **Why can I choose which blockchain network to claim my trading rewards? How does it work?**
+
+This user centric design empower flexibility to users to claim their trading rewards to the blockchain network of their choice. Behind the scene, every user’s reward claiming transaction is a cross-chain transaction that is processed by LayerZero protocol. Whenever a user submit a claim transaction, their rewards \$ORDER (OFT) tokens will be burned on the Ledger chain and the respective \$ORDER (OFT) will be minted and transferred to user’s wallet address on their chosen blockchain network. For the case when users' claim their trading rewards on Ethereum L1, their rewards \$ORDER (OFT) tokens will be burned on the Ledger chain and the respective \$ORDER (ERC-20) will be unlocked and transferred to the user’s wallet. 
+
+For example: A user has earned trading rewards by trading with Builder ABC on the Arbitrum network. This user is not just restricted to claiming their trading rewards to the Arbitrum network. They have the flexibility to claim their trading rewards to the Optimism network.
+
+Note that users are required to have \$ETH or native gas token in their wallet on the blockchain network that they are connected to before they can perform the claiming transaction (e.g. \$MATIC for polygon).
+
+Despite this being a cross-chain transaction, users will only need to pay native gas fees from the blockchain network that they are connected to while LayerZero handles all the cross-chain gas transaction fees.
+
+ 
+
+- **How can I convert my \$ORDER from OFT standard to ERC-20 standard and vice versa?**
+
+Users can convert via [Stargate](https://stargate.finance/bridge).
