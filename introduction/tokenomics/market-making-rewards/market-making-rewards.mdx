@@ -3,7 +3,7 @@ title: "Market Making Rewards"
 ---
 
 ## Overview
-Orderly’s market making rewards program will be conducted across approximately 200 epochs (14 days per epoch) distributing 10\% of the total supply of $ORDER. The next epoch will commence immediately once the current epoch has ended unless stated otherwise. Rewards will be distributed to eligible users/market makers on an epoch basis based on their epoch’s liquidity provision performance. The market making rewards serve as incentives for top-performing market makers and we welcome market makers interested in collaborating towards Orderly’s omnichain liquidity mission to come on board. Please reach out to the team at mm\@orderly.network to have a chat to understand more about the market making journey with Orderly and the market making rewards program. 
+Orderly’s market making rewards program will be conducted across approximately 200 epochs (14 days per epoch) distributing 10\% of the total supply of \$ORDER. The next epoch will commence immediately once the current epoch has ended unless stated otherwise. Rewards will be distributed to eligible users/market makers on an epoch basis based on their epoch’s liquidity provision performance. The market making rewards serve as incentives for top-performing market makers and we welcome market makers interested in collaborating towards Orderly’s omnichain liquidity mission to come on board. Please reach out to the team at mm\@orderly.network to have a chat to understand more about the market making journey with Orderly and the market making rewards program. 
 
 ## Rules 
 1. Refer to [Market Making Rewards](/introduction/tokenomics/market-making-rewards/market-making-rewards-mechanism) for the distribution schedule, mechanisms, and formulas.
@@ -44,7 +44,7 @@ The minimum depth and max spread tables are essential for market makers to ensur
 | PERP_DOGE_USDC      | 6.00       | 1000                 | 40               |
 | PERP_LINK_USDC      | 6.00       | 1000                 | 40               |
 | PERP_INJ_USDC       | 1.50       | 1000                 | 40               |
-| PERP_MKR_USDC       | 1.55       | 1000                 | 40               |
+| PERP_MKR_USDC       | 1.50       | 1000                 | 40               |
 | PERP_TON_USDC       | 1.50       | 1000                 | 40               |
 | PERP_1000BONK_USDC  | 0.75       | 1000                 | 40               |
 | PERP_1000FLOKI_USDC | 0.75       | 1000                 | 40               |
@@ -95,12 +95,32 @@ The minimum depth and max spread tables are essential for market makers to ensur
 
 
 
+## User Workflow Explained
+What happens in the life cycle of one epoch?
+
+1. Market makers provide liquidity to Orderly.
+
+2. After the epoch has ended, eligible market makers (rewards wallet) can view their processing epoch rewards by connecting their wallet via the Orderly App (the amount of the rewards earned is subject to change).
+
+3. There is a waiting period of up to 4 days after each epoch for the validate of rewards distribution before users can start to claim their epoch rewards. During this period, Orderly will conduct wash trading analysis
+
+    - After the waiting period, the rewards earned by each market maker will be finalized and displayed with an Available status on the Orderly App.
+
+4. Market makers can claim their epoch market making rewards (\$ORDER token) to the blockchain network they are connected to on the Orderly App. Rewards earned do not expire.
+
+    - All market makers can choose which network they would like to claim their rewards regardless of which blockchain network they have traded on with Orderly’s builders. Gas fees will paid paying on-chain native gas on the selected chain to 
+
+        1. \$ORDER (ERC-20) will be received by users when claiming rewards on Ethereum
+
+        2. \$ORDER (OFT) will be received by users when claiming rewards on all other blockchain network
+
+
 ## Market Making Rewards Interface
-Access the Orderly App and connect to your wallet to view your market making rewards statistics.
+Access the [Orderly App](https://app.orderly.network/MMRewards) and connect to your wallet to view your market making rewards statistics.
 
 <img
   className="block dark:hidden"
-  src="/images/market-making-rewards.png"
+  src="/images/market-making-rewards-interface.png"
   alt="Market Making Rewards Page"
 />
 
@@ -134,7 +154,7 @@ The Omnichain Fungible Token (OFT) standard by LayerZero allows fungible tokens 
 
 - **Why can I choose which chain to claim my market making rewards? How does it work?**
 
-This user centric design empower flexibility to users to claim their market making rewards to the blockchain network of their choice. Behind the scene, every user’s reward claiming transaction is a cross-chain transaction that is processed by LayerZero protocol. Whenever a user submit a claim transaction, their rewards \$ORDER (OFT) tokens will be burned on the Ledger chain and the respective \$ORDER (OFT) will be minted and transferred to user’s wallet address on their chosen blockchain network. For the case when users' claim their market making rewards on Ethereum L1, their rewards \$ORDER (OFT) tokens will be burned on the Ledger chain and the respective \$ORDER (ERC-20) will be unlocked and transferred to the user’s wallet.
+This user centric design empower flexibility to users to claim their market making rewards to the blockchain network of their choice. Behind the scene, every user’s reward claiming transaction is a cross-chain transaction that is processed by LayerZero protocol. Whenever a user submit a claim transaction, their rewards \$ORDER (OFT) tokens will be burned on the Ledger chain and the respective \$ORDER (OFT) will be minted and transferred to user’s wallet address on their chosen blockchain network. For the case when users' claim their market making rewards on Ethereum, their rewards \$ORDER (OFT) tokens will be burned on the Ledger chain and the respective \$ORDER (ERC-20) will be unlocked and transferred to the user’s wallet.
 
 Note that users are required to have \$ETH or native gas token in their wallet on the blockchain network that they are connected to before they can perform the claiming transaction (e.g. \$MATIC for polygon).
 
