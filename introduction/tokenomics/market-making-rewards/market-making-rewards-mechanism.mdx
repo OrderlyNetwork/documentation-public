@@ -17,28 +17,28 @@ Market making rewards will be distributed linearly on an epoch basis over 200 ep
   alt="ORDER Token Distribution"
 />
 
-500,000 \$ORDER is allocated for each epoch for all qualified Orderly market makers. From epoch 11 onwards, the market maker rewards will be distributed as [escrowed \$ORDER](/introduction/tokenomics/esorder) instead of liquid $ORDER tokens in epochs 1\-10. Any further adjustment of the distribution mechanism will be formally assessed and communicated to market makers in advance. 
+500,000 \$ORDER is allocated for each epoch for all qualified Orderly market makers. From epoch 11 onwards, the market maker rewards will be distributed as [escrowed \$ORDER](/introduction/tokenomics/esorder) instead of liquid \$ORDER tokens in epochs 1\-10. Any further adjustment of the distribution mechanism will be formally assessed and communicated to market makers in advance. 
 
 ## Allocation Mechanism
 For every epoch, market making rewards are allocated among Orderly’s listed markets. Each market’s allocation will be based on the following formulas:
 
-$$ poolWeight_{market}=poolMultiplier_{market}*\dfrac{activeDaysInEpoch}{totalEpochDays} $$
+$$ PoolWeight_{market}=PoolMultiplier_{market}*\dfrac{activeDaysInEpoch}{totalEpochDays} $$
 
-$$ RewardPool_{market}=\dfrac{poolWeight_{market}}{totalWeight} $$
+$$ RewardPool_{market}=\dfrac{PoolWeight_{market}}{TotalWeight} $$
 
 - The pool weight takes account of new listing/delisting of markets with the number of active days in an epoch, prorating the pool multiplier effect.
 
-- Each market’s pool multiplier will be maintained and periodically updated by Orderly based on market conditions and other factors.
+- Each market’s pool multiplier will be maintained and periodically updated [here](/introduction/tokenomics/market-making-rewards/market-making-rewards#key-information) by Orderly based on market conditions and other factors.
 
 - The amount of market making rewards allocated to each market is determined proportionally based on the ratio across the total weight against all markets.
 
 | Term              | Definition                                                    |
 |-------------------|---------------------------------------------------------------|
-| poolWeight        | The reward pool weightage of a market                         |
-| poolMultiplier    | The amount of pool multiplier of a market                     |
+| PoolWeight        | The reward pool weightage of a market                         |
+| PoolMultiplier    | The amount of pool multiplier of a market                     |
 | activeDaysInEpoch | The number of days a market is active for trading in an epoch |
 | totalEpochDays    | Total number of days in the epoch                             |
-| totalWeight       | The sum of pool weights of every market                       |
+| TotalWeight       | The sum of pool weights of every market                       |
 | RewardPool        | The amount of rewards allocated to a specific market          |
 
 ## Distribution Formula

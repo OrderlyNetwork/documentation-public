@@ -5,7 +5,7 @@ title: "Trading Rewards Mechanism"
 15% of the total \$ORDER token supply (150,000,000 \$ORDER) is allocated to users (excluding DMMs) trading on Orderly via any of Orderly’s builder frontends. The goal is to incentivize users who trade with Orderly Network while enjoying industry-leading order book liquidity.
 
 ## Epoch distribution
-Trading rewards will be distributed on an epoch basis over 200 epochs with 14 days per epoch incorporating a Trade-to-Earn model capped within each epoch performance. Rewards emitted have a reducing trend over time. Loyal and long-term traders stand to benefit the most. The estimated trading reward distribution is as follows:
+Trading rewards will be distributed on an epoch basis over 200 epochs incorporating a Trade-to-Earn model capped within each epoch performance. Rewards emitted have a reducing trend over time. Loyal and long-term traders stand to benefit the most. The estimated trading reward distribution is as follows:
 
 <img
   className="block dark:hidden"
@@ -51,7 +51,7 @@ For every epoch, trading rewards are allocated between two categories of symbols
 
 2. Alts symbols (all other symbols listed on Orderly) with (100\-X)\% weightage.
 
-The symbols and weightage \% associated with the two categories will be periodically adjusted according to market conditions.
+The symbols and weightage \% associated with the two categories will be periodically adjusted [here](/introduction/tokenomics/trading-rewards/trading-rewards#key-information) according to market conditions.
 
 #### Example
 
@@ -103,11 +103,11 @@ $$ R_{AltsBuilderX}= W_{Alts} * R * {\frac {baseFees_{AltsBuilderX}} {baseFees_{
 
 Assume that the epoch rewards is 1,000,000 \$ORDER. The weightage of Major and Alts symbols are 40\% and 60\% respectively.
 
-|                                              | Builder1 | Builder2 | Builder3 |
-|----------------------------------------------|----------|----------|----------|
-| Base Fees Generated (Major)                  | 600,000  | 150,000  | 750,000  |
-| Ratio                                        | 80.00\%  | 20.00\%  | 100\%    |
-| Trading Rewards, <br/> $$ R_{MajorBrokerX}$$ | 320,000  | 80,000   | 400,000  |
+|                                              | Builder 1 | Builder 2 | Builder 3 |
+|----------------------------------------------|-----------|-----------|-----------|
+| Base Fees Generated (Major)                  | 600,000   | 150,000   | 750,000   |
+| Ratio                                        | 80.00\%   | 20.00\%   | 100\%     |
+| Trading Rewards, <br/> $$ R_{MajorBrokerX}$$ | 320,000   | 80,000    | 400,000   |
 
 |                                             | Builder1 | Builder2 | Builder3 |
 |---------------------------------------------|----------|----------|----------|
@@ -140,7 +140,7 @@ The amount of trading rewards an end user earns is proportional to their TraderS
 |------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
 | $$ TraderScore(w)_{MajorBuilderX} $$ / $$ TraderScore(w)_{MajorBuilderX} $$  | The trader score for trading **Major / Alts** symbols with a specific builder in an epoch                                         |
 | $$ feesPaid_{MajorBuilderX} $$/ $$ feesPaid_{AltsBuilderX}  $$               | The total amount of trading fees paid by the end user through a specific builder for trading **Major / Alts** symbols in an epoch |
-| $$ stakedORDER  $$                                                           | The average staked (\$ORDER/es\$ORDER) balance of a wallet in an epoch                                                            |
+| $$ stakedORDER  $$                                                           | The average staked (\$ORDER/esORDER) balance of a wallet in an epoch                                                              |
 | $$ r_{MajorBuilderX} $$ / $$ r_{AltsBuilderX} $$                             | The amount of trading reward an end user has earned under a specific builder for trading **major** symbols in an epoch            |
 | $$ R_{MajorBuilderX} $$ / $$ R_{AltsBuilderX} $$                             | The total trading rewards amount allocated to a specific builder for the **Major / Alts** symbols category in an epoch            |
 | $$ allTraderScores_{MajorBuilderX} $$ / $$ allTraderScores_{AltsBuilderX} $$ | The sum of all trader scores that traded **Major / Alts** symbols for a specific builder in an epoch                              |
