@@ -1,0 +1,67 @@
+---
+title: "Market Price Changes Info"
+---
+
+Push interval: every 1m
+
+```json
+{
+    "id": "clientID11",
+    "topic": "price_changes",
+    "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name   | Type   | Required | Description               |
+| ------ | ------ | -------- |---------------------------|
+| id     | string | Y        | id generate by client     |
+| event  | string | Y        | `subscribe`/`unsubscribe` |
+| topic  | string | N        | `price_changes`           |
+
+<RequestExample>
+```json Response
+{
+   "id":"clientID11",
+   "event":"subscribe",
+   "success":true,
+   "ts":1682242408023
+}
+```
+</RequestExample>
+
+<ResponseExample>
+```json Subscribed Message
+{
+  "topic": "price_changes",
+  "ts": 1702989203989,
+  "data": [
+    {
+      "symbol": "PERP_BTC_USDC",
+      "last_price": 31000,
+      "5m": 31000,
+      "30m": 31000,
+      "1h": 31000,
+      "4h": 31000,
+      "24h": 31000,
+      "3d": 31000,
+      "7d": 31000,
+      "30d": null
+    },
+    {
+      "symbol": "PERP_ETH_USDC",
+      "last_price": 2100,
+      "5m": 31000,
+      "30m": 31000,
+      "1h": 31000,
+      "4h": 31000,
+      "24h": 31000,
+      "3d": 31000,
+      "7d": 31000,
+      "30d": null
+    }
+  ]
+}
+```
+</ResponseExample>
