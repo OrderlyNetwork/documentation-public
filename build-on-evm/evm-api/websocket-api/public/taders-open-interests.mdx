@@ -1,0 +1,53 @@
+---
+title: "Traders Open Interest"
+---
+
+Push interval: every 1m
+
+```json
+{
+    "id": "clientID11",
+    "topic": "traders_open_interest",
+    "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name   | Type   | Required | Description               |
+| ------ | ------ | -------- |---------------------------|
+| id     | string | Y        | id generate by client     |
+| event  | string | Y        | `subscribe`/`unsubscribe` |
+| topic  | string | N        | `traders_open_interest`   |
+
+<RequestExample>
+```json Response
+{
+   "id":"clientID11",
+   "event":"subscribe",
+   "success":true,
+   "ts":1682242408023
+}
+```
+</RequestExample>
+
+<ResponseExample>
+```json Subscribed Message
+{
+  "topic": "traders_open_interests",
+  "ts": 1618820615000,
+  "data": [
+    {
+      "symbol": "PERP_BTC_USDC",
+      "long_oi": 31000,
+      "short_oi": 31000
+    },
+    {
+      "symbol": "PERP_ETH_USDC",
+      "long_oi": 31000,
+      "short_oi": 31000
+    }
+  ]
+}
+```
+</ResponseExample>

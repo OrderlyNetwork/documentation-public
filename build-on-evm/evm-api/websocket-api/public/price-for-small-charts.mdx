@@ -1,0 +1,70 @@
+---
+title: "Price for Small Charts"
+---
+
+Push interval: every 1m
+
+```json
+{
+    "id": "clientID11",
+    "topic": "history_charts_1m",
+    "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name   | Type   | Required | Description                      |
+| ------ | ------ | -------- |----------------------------------|
+| id     | string | Y        | id generate by client            |
+| event  | string | Y        | `subscribe`/`unsubscribe`        |
+| topic  | string | N        | `history_charts_{time_interval}` |
+
+<RequestExample>
+```json Response
+{
+   "id":"clientID11",
+   "event":"subscribe",
+   "success":true,
+   "ts":1682242408023
+}
+```
+</RequestExample>
+
+<ResponseExample>
+```json Subscribed Message
+{
+  "topic": "history_charts_1h",
+  "ts": 1618820615000,
+  "data": [
+    {
+      "symbol": "PERP_NEAR_USDC",
+      "price_list": [
+          {
+            "ts": 1702989203989,
+            "price": 31000
+          },
+          {
+            "ts": 1702989203989,
+            "price": 31000
+          }
+        ]
+    },
+    {
+      "symbol": "PERP_WOO_USDC",
+      "price_list": [
+          {
+            "ts": 1702989203989,
+            "price": 31000
+          },
+          {
+            "ts": 1702989203989,
+            "price": 31000
+          }
+        ]
+    }
+  ]
+}
+
+```
+</ResponseExample>
