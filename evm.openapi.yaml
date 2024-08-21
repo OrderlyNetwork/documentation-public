@@ -684,6 +684,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AvailableSymbolsResponse'
+  /v1/public/index_price_source:
+    get:
+      summary: Get Index Price Source
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/index_price_source`
+
+        Retrieves the available tokens to be used as collateral within Orderly Network.
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetIndexPriceSourceResponse'
   /v1/public/insurancefund:
     get:
       summary: Get Insurance Fund Info
@@ -6040,6 +6059,44 @@ components:
                               type: string
                               description: "`USDC.e` for `Mantle` chain"
                               example: "USDC"
+
+
+    GetIndexPriceSourceResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      symbol:
+                        type: string
+                        description: "SPOT symbol name"
+                        example: "SPOT_BNB_USDC"
+                      updated_time:
+                        type: number
+                        example: 1710382176255
+                      sources:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                          - "gateio"
+                          - "kucoin"
+                          - "binance"
+                          - "okx"
+                          - "huobi"
+                          - "bybit"
+                          - "mexc"
 
     AvailableSymbolsResponse:
       allOf:
