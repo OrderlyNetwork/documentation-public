@@ -5420,6 +5420,44 @@ paths:
                 $ref: '#/components/schemas/GetAccountRewardsHistoryResponse'
 
 
+  /v1/public/trading_rewards/status:
+    get:
+      summary: Get the Status of Trading Rewards Programme
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/trading_rewards/status`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTheStatusOfTradingRewardsProgrammeResponse'
+
+
+  /v1/public/trading_rewards/symbol_category:
+    get:
+      summary: Get Symbol Rewards Category
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/trading_rewards/symbol_category`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSymbolRewardsCategoryResponse'
+
+
   /v1/public/market_making_rewards/epoch_info:
     get:
       summary: Get Parameters of Each MM Epoch for All MM Epochs
@@ -5437,6 +5475,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetParameterOfEachMMEpochForAllMMEpochsResponse'
+
+
+  /v1/public/market_making_rewards/status:
+    get:
+      summary: Get the Status of Market Making Rewards Programme
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/market_making_rewards/status`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTheStatusOfMarketMakingRewardsProgrammeResponse'
+
+
+  /v1/public/market_making_rewards/symbol_params:
+    get:
+      summary: Get Symbol Rewards Parameters
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/market_making_rewards/symbol_params`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSymbolRewardsParametersResponse'
+
 
 
   /v1/public/market_making_rewards/current_epoch_estimate:
@@ -6623,8 +6700,8 @@ components:
           type: number
           example: 0.1
         liquidation_tier:
-          type: string
-          example: "1"
+          type: number
+          example: 1
 
     InsuranceFundResponse:
       allOf:
@@ -10922,6 +10999,121 @@ components:
                       est_r_account:
                         type: number
                         example: 13.4236779074
+
+
+    GetTheStatusOfMarketMakingRewardsProgrammeResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                epoch_status:
+                  type: string
+                  example: "Active"
+                current_epoch:
+                  type: number
+                  example: 23
+                last_completed_epoch:
+                  type: number
+                  example: 22
+
+
+    GetSymbolRewardsParametersResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                updated_time:
+                  type: string
+                  example: "Active"
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      symbol:
+                        type: string
+                        example: "PERP_ETH_USDC"
+                      multiplier:
+                        type: number
+                        example: 1.0
+                      min_depth:
+                        type: number
+                        example: 1.0
+                      max_spread:
+                        type: number
+                        example: 2.3
+                        description: "in bps"
+
+
+    GetTheStatusOfTradingRewardsProgrammeResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                epoch_status:
+                  type: string
+                  example: "Active"
+                current_epoch:
+                  type: number
+                  example: 23
+                last_completed_epoch:
+                  type: number
+                  example: 22
+
+
+    GetSymbolRewardsCategoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                current:
+                  type: object
+                  properties:
+                    epoch_id:
+                      type: number
+                      example: 23
+                    major_weightage:
+                      type: number
+                      example: 0.8
+                    alts_weightage:
+                      type: number
+                      example: 0.2
+                    major_symbols:
+                      type: string
+                      example: "BTC,ETH"
+                    updated_time:
+                      type: number
+                      example: 123891923213
+                next:
+                  type: object
+                  properties:
+                    epoch_id:
+                      type: number
+                      example: 24
+                    major_weightage:
+                      type: number
+                      example: 0.7
+                    alts_weightage:
+                      type: number
+                      example: 0.3
+                    major_symbols:
+                      type: string
+                      example: "BTC,ETH"
+                    updated_time:
+                      type: number
+                      example: 132891923213
 
 
     GetMMCurrentEpochEstimateResponse:
