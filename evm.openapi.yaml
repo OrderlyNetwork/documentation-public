@@ -5150,6 +5150,416 @@ paths:
                 $ref: '#/components/schemas/GetCampaignCheckResponse'
 
 
+
+  /v1/staking/balance:
+    get:
+      summary: Get Wallet's Current Staked Balance
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/staking/balance`
+      tags:
+        - private
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWalletStakedBalanceResponse'
+
+
+  /v1/staking/unstake_details:
+    get:
+      summary: Get Unstaking ORDER details
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/staking/unstake_details`
+      tags:
+        - private
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUnstakeDetailsResponse'
+
+
+  /v1/staking/overview:
+    get:
+      summary: Get Staking Overview
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+        
+
+        `GET /v1/staking/overview`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStakingOverviewResponse'
+
+
+  /v1/staking/valor/batch_info:
+    get:
+      summary: Get Valor Batch Info
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        `GET /v1/staking/valor/batch_info`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetValorBatchInfoResponse'
+
+
+  /v1/staking/valor/pool_info:
+    get:
+      summary: Get Valor Pool Info
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        `GET /v1/staking/valor/pool_info`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetValorPoolInfoResponse'
+
+
+  /v1/staking/valor/redeem:
+    get:
+      summary: Get Valor Redeem Info
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        `GET /v1/staking/valor/redeem`
+      tags:
+        - private
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetValorRedeemInfoResponse'
+
+
+  /v1/public/trading_rewards/epoch_info:
+    get:
+      summary: Get Parameters of Each Epoch for All Epochs
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/trading_rewards/epoch_info`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetParameterOfEachEpochForAllEpochsResponse'
+
+
+  /v1/public/trading_rewards/epoch_data:
+    get:
+      summary: Get Epochs Data
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+        
+        
+        Get data of each epoch from epoch 1 to current epoch
+        
+
+        `GET /v1/public/trading_rewards/epoch_data`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEpochsDataResponse'
+
+
+  /v1/public/trading_rewards/broker_allocation_history:
+    get:
+      summary: Get Broker Allocation History
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+        
+        
+        Return each epoch from Epoch 1 to last completed epoch.
+        
+
+        `GET /v1/public/trading_rewards/broker_allocation_history`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBrokerAllocationHistoryResponse'
+
+
+  /v1/public/trading_rewards/wallet_rewards_history:
+    get:
+      summary: Get Wallet Trading Rewards History
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        Return each epoch from Epoch 1 to last completed epoch.
+
+
+        `GET /v1/public/trading_rewards/wallet_rewards_history`
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWalletRewardsHistoryResponse'
+
+
+  /v1/public/trading_rewards/account_rewards_history:
+    get:
+      summary: Get Account Trading Rewards History
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        Return each epoch from Epoch 1 to last completed epoch.
+
+
+        `GET /v1/public/trading_rewards/account_rewards_history`
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAccountRewardsHistoryResponse'
+
+
+  /v1/public/market_making_rewards/epoch_info:
+    get:
+      summary: Get Parameters of Each MM Epoch for All MM Epochs
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/market_making_rewards/epoch_info`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetParameterOfEachMMEpochForAllMMEpochsResponse'
+
+
+  /v1/public/market_making_rewards/current_epoch_estimate:
+    get:
+      summary: Get Market Maker Current Epoch Estimate
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        `GET /v1/public/market_making_rewards/current_epoch_estimate`
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMMCurrentEpochEstimateResponse'
+
+
+  /v1/public/trading_rewards/current_epoch_broker_estimate:
+    get:
+      summary: Get Current Epoch Estimate by Broker
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+        
+        
+        Get all broker’s estimated rewards allocation during the current epoch
+
+
+        `GET /v1/public/trading_rewards/current_epoch_broker_estimate`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCurrentEpochBrokerEstimateResponse'
+
+
+  /v1/public/trading_rewards/current_epoch_estimate:
+    get:
+      summary: Get Current Epoch Estimate
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        Get user’s estimated trading rewards during the current epoch
+
+
+        `GET /v1/public/trading_rewards/current_epoch_estimate`
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCurrentEpochEstimateResponse'
+
+
+
+  /v1/public/market_making_rewards/group_rewards_history:
+    get:
+      summary: Get Wallet Group Market Making Rewards History
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        Return each epoch from Epoch 1 to last completed epoch.
+
+
+        `GET /v1/public/market_making_rewards/group_rewards_history`
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+        - name: symbol
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWalletGroupMarketMakingRewardsHistory'
+
+
 components:
   parameters:
     orderly_timestamp:
