@@ -1,0 +1,46 @@
+---
+title: "Announcement"
+---
+
+Push interval: on new announcement
+
+```json
+{
+    "id": "clientID11",
+    "topic": "announcement",
+    "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name   | Type   | Required | Description               |
+| ------ | ------ | -------- |---------------------------|
+| id     | string | Y        | id generate by client     |
+| event  | string | Y        | `subscribe`/`unsubscribe` |
+| topic  | string | N        | `announcement`            |
+
+<RequestExample>
+```json Response
+{
+   "id":"clientID11",
+   "event":"subscribe",
+   "success":true,
+   "ts":1682242408023
+}
+```
+</RequestExample>
+
+<ResponseExample>
+```json Subscribed Message
+{
+   "topic":"announcement",
+   "ts":1682242806000,
+   "data": {
+        "announcement_id": 1,
+        "message": "Position information is incorrect due to a 1-minute delay.", 
+        "url": null
+      }
+}
+```
+</ResponseExample>

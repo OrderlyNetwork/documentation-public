@@ -9,7 +9,7 @@ tags:
 paths:
   /v1/public/futures:
     get:
-      summary: Get Market Info for All Trading Pairs
+      summary: Get Market Info for All Symbols
       deprecated: false
       description: |
 
@@ -17,7 +17,7 @@ paths:
 
         `GET /v1/public/futures`
 
-        Get basic market information for all the trading pairs.
+        Get basic market information for all the symbols.
       tags:
         - public
       parameters: []
@@ -128,6 +128,126 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MarketTradesResponse'
+
+
+  /v1/public/market_info/price_changes:
+    get:
+      summary: Get Price Info for All Symbols
+      deprecated: false
+      description: |
+
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/market_info/price_changes`
+
+        Return the current price and the price 5m, 30m, 1h, 24h, 3d, 7d, 30d ago for all symbols
+
+        Examples:
+
+        - Now: 11:06:30 (2024-07-11)  
+        
+        - 5m: 11:01:00 (2024-07-11)
+        
+        - 30m: 10:36:00 (2024-07-11)
+        
+        - 1h: 10:06:00 (2024-07-11)
+        
+        - 4h: 07:06:00 (2024-07-11)
+        
+        - 24h: 11:06:00 (2024-07-10)
+        
+        - 3d: 00:00:00 (2024-07-08)
+        
+        - 7d: 00:00:00 (2024-07-04)
+        
+        - 30d: 00:00:00 (2024-06-11)
+      tags:
+        - public
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketPriceChangeInfoResponse'
+
+
+
+  /v1/public/market_info/traders_open_interests:
+    get:
+      summary: Get Long or Short OI for All Symbols
+      deprecated: false
+      description: |
+
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/market_info/traders_open_interests`
+
+        Return the long/short Open Interests for all symbols (mm accounts are excluded).
+
+      tags:
+        - public
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketOpenInterestsResponse'
+
+
+  /v1/public/market_info/history_charts:
+    get:
+      summary: Get Historical Price List for All Symbols
+      deprecated: false
+      description: |
+
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/market_info/history_charts`
+
+        Return the close price for all symbols
+
+      tags:
+        - public
+      parameters:
+        - name: time_interval
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPriceForSmallChartsResponse'
+
+
+  /v1/public/market_info/funding_history:
+    get:
+      summary: Get Funding Rate for All Markets
+      deprecated: false
+      description: |
+
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/market_info/funding_history`
+
+      tags:
+        - public
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMarketFundingRateHistoryResponse'
+
+
+
 
   /v1/public/volume/stats:
     get:
@@ -319,7 +439,7 @@ paths:
                 $ref: '#/components/schemas/FundingRateHistoryResponse'
   /v1/public/futures/{symbol}:
     get:
-      summary: Get Market Info for One Trading Pair
+      summary: Get Market Info for One Symbol
       deprecated: false
       description: |
 
@@ -451,7 +571,7 @@ paths:
                 $ref: '#/components/schemas/LiquidatedPositionsResponse'
   /v1/public/info/{symbol}:
     get:
-      summary: Get Order Rules per Market
+      summary: Get $ORDER Rules per Symbol
       deprecated: false
       description: "
         **Limit: 10 requests per 1 second per IP address**
@@ -564,6 +684,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AvailableSymbolsResponse'
+  /v1/public/index_price_source:
+    get:
+      summary: Get Index Price Source
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/index_price_source`
+
+        Retrieves the available tokens to be used as collateral within Orderly Network.
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetIndexPriceSourceResponse'
   /v1/public/insurancefund:
     get:
       summary: Get Insurance Fund Info
@@ -1884,6 +2023,42 @@ paths:
 #            application/json:
 #              schema:
 #                $ref: '#/components/schemas/ChainInfoResponse'
+  /v1/order/cancel_all_after:
+    post:
+      summary: Cancel All After
+      deprecated: false
+      description: >-
+        **Limit: 1 request per 1 second**
+
+
+        `POST /v1/order/cancel_all_after`
+
+
+        Cancels all of the user's ordinary and algo orders after being called (dead man switch).
+
+
+        Note: Users must apply for access before using this endpoint.
+      tags:
+        - private
+      parameters:
+        - $ref: '#/components/parameters/orderly_timestamp'
+        - $ref: '#/components/parameters/orderly_account_id'
+        - $ref: '#/components/parameters/orderly_key'
+        - $ref: '#/components/parameters/orderly_signature'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelAllAfterBody'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelAllAfterResponse'
+
+
   /v1/batch-order:
     post:
       summary: Batch Create Order
@@ -3393,6 +3568,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetAccountDetailsResponse'
+
+
+  /v1/public/announcement:
+    get:
+      summary: Get Announcements
+      deprecated: false
+      description: |-
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/announcement`
+
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAnnouncementsResponse'
+
+
   /v1/volume/broker/daily:
     get:
       summary: Get Builder's Users' Volumes
@@ -3591,6 +3788,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetUserDailyStatsResponse'
+
+
   /v1/broker/user_info:
     get:
       summary: Get User Fee Rates
@@ -4734,7 +4933,7 @@ paths:
       summary: Get Detailed Campaign Info
       deprecated: false
       description: |
-        **Limit: 10 requests per 1 second per IP address**
+        **Limit: 10 requests per 1 minute per IP address**
 
         `GET /v1/public/campaign/stats/details`
       tags:
@@ -4754,7 +4953,7 @@ paths:
           example: ''
           schema:
             type: string
-        - name: symbol
+        - name: symbols
           in: query
           description: ""
           required: false
@@ -4944,6 +5143,493 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetCampaignCheckResponse'
+
+
+
+  /v1/staking/balance:
+    get:
+      summary: Get Wallet's Current Staked Balance
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/staking/balance`
+      tags:
+        - private
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWalletStakedBalanceResponse'
+
+
+  /v1/staking/unstake_details:
+    get:
+      summary: Get Unstaking ORDER Details
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/staking/unstake_details`
+      tags:
+        - private
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUnstakeDetailsResponse'
+
+
+  /v1/staking/overview:
+    get:
+      summary: Get Staking Overview
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+        
+
+        `GET /v1/staking/overview`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStakingOverviewResponse'
+
+
+  /v1/staking/valor/batch_info:
+    get:
+      summary: Get Valor Batch Info
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        `GET /v1/staking/valor/batch_info`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetValorBatchInfoResponse'
+
+
+  /v1/staking/valor/pool_info:
+    get:
+      summary: Get Valor Pool Info
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        `GET /v1/staking/valor/pool_info`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetValorPoolInfoResponse'
+
+
+  /v1/staking/valor/redeem:
+    get:
+      summary: Get Valor Redeem Info
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        `GET /v1/staking/valor/redeem`
+      tags:
+        - private
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetValorRedeemInfoResponse'
+
+
+  /v1/public/trading_rewards/epoch_info:
+    get:
+      summary: Get Parameters of Each Epoch for All Epochs
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/trading_rewards/epoch_info`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetParameterOfEachEpochForAllEpochsResponse'
+
+
+  /v1/public/trading_rewards/epoch_data:
+    get:
+      summary: Get Epochs Data
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+        
+        
+        Get data of each epoch from epoch 1 to current epoch
+        
+
+        `GET /v1/public/trading_rewards/epoch_data`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEpochsDataResponse'
+
+
+  /v1/public/trading_rewards/broker_allocation_history:
+    get:
+      summary: Get Broker Allocation History
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+        
+        
+        Return each epoch from Epoch 1 to last completed epoch.
+        
+
+        `GET /v1/public/trading_rewards/broker_allocation_history`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBrokerAllocationHistoryResponse'
+
+
+  /v1/public/trading_rewards/wallet_rewards_history:
+    get:
+      summary: Get Wallet Trading Rewards History
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        Return each epoch from Epoch 1 to last completed epoch.
+
+
+        `GET /v1/public/trading_rewards/wallet_rewards_history`
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWalletRewardsHistoryResponse'
+
+
+  /v1/public/trading_rewards/account_rewards_history:
+    get:
+      summary: Get Account Trading Rewards History
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        Return each epoch from Epoch 1 to last completed epoch.
+
+
+        `GET /v1/public/trading_rewards/account_rewards_history`
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAccountRewardsHistoryResponse'
+
+
+  /v1/public/trading_rewards/status:
+    get:
+      summary: Get the Status of Trading Rewards Programme
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/trading_rewards/status`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTheStatusOfTradingRewardsProgrammeResponse'
+
+
+  /v1/public/trading_rewards/symbol_category:
+    get:
+      summary: Get Symbol Rewards Category
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/trading_rewards/symbol_category`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSymbolRewardsCategoryResponse'
+
+
+  /v1/public/market_making_rewards/epoch_info:
+    get:
+      summary: Get Parameters of Each Epoch
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/market_making_rewards/epoch_info`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetParameterOfEachMMEpochForAllMMEpochsResponse'
+
+
+  /v1/public/market_making_rewards/status:
+    get:
+      summary: Get the Status of Market Making Rewards Programme
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/market_making_rewards/status`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTheStatusOfMarketMakingRewardsProgrammeResponse'
+
+
+  /v1/public/market_making_rewards/symbol_params:
+    get:
+      summary: Get Symbol Rewards Parameters
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/market_making_rewards/symbol_params`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSymbolRewardsParametersResponse'
+
+
+
+  /v1/public/market_making_rewards/current_epoch_estimate:
+    get:
+      summary: Get Market Maker Current Epoch Estimate
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        `GET /v1/public/market_making_rewards/current_epoch_estimate`
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMMCurrentEpochEstimateResponse'
+
+
+  /v1/public/trading_rewards/current_epoch_broker_estimate:
+    get:
+      summary: Get Current Epoch Estimate by Broker
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+        
+        
+        Get all broker’s estimated rewards allocation during the current epoch
+
+
+        `GET /v1/public/trading_rewards/current_epoch_broker_estimate`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCurrentEpochBrokerEstimateResponse'
+
+
+  /v1/public/trading_rewards/current_epoch_estimate:
+    get:
+      summary: Get Current Epoch Estimate
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        Get user’s estimated trading rewards during the current epoch
+
+
+        `GET /v1/public/trading_rewards/current_epoch_estimate`
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCurrentEpochEstimateResponse'
+
+
+
+  /v1/public/market_making_rewards/group_rewards_history:
+    get:
+      summary: Get Wallet Group Market Making Rewards History
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        Return each epoch from Epoch 1 to last completed epoch.
+
+
+        `GET /v1/public/market_making_rewards/group_rewards_history`
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ''
+          schema:
+            type: string
+        - name: symbol
+          in: query
+          description: ""
+          required: false
+          example: ''
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWalletGroupMarketMakingRewardsHistory'
 
 
 components:
@@ -5283,6 +5969,241 @@ components:
                         type: number
                         example: 1683878609166
 
+
+    MarketPriceChangeInfoResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      symbol:
+                        type: string
+                        example: "PERP_BTC_USDC"
+                      last_price:
+                        type: number
+                        example: 31000
+                      5m:
+                        type: number
+                        example: 31000
+                      30m:
+                        type: number
+                        example: 31000
+                      1h:
+                        type: number
+                        example: 31000
+                      4h:
+                        type: number
+                        example: 31000
+                      24h:
+                        type: number
+                        example: 31000
+                      3d:
+                        type: number
+                        example: 31000
+                      7d:
+                        type: number
+                        example: 31000
+                      30d:
+                        type: number
+                        example: null
+
+
+    MarketOpenInterestsResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      symbol:
+                        type: string
+                        example: "PERP_BTC_USDC"
+                      long_oi:
+                        type: number
+                        example: 31000
+                      short_oi:
+                        type: number
+                        example: 31000
+
+
+    GetPriceForSmallChartsResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      symbol:
+                        type: string
+                        example: "PERP_BTC_USDC"
+                      price_list:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            ts:
+                              type: number
+                              example: 1702989203989
+                            price:
+                              type: number
+                              example: 31000
+
+
+    GetMarketFundingRateHistoryResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      symbol:
+                        type: string
+                        example: "PERP_BTC_USDC"
+                      data_start_time:
+                        type: string
+                        example: "2022-01-01 00:00:00"
+                      funding:
+                        type: object
+                        properties:
+                          last:
+                            type: object
+                            properties:
+                              rate:
+                                type: number
+                                example: 0.00234
+                              positive:
+                                type: number
+                                example: 1
+                              negative:
+                                type: number
+                                example: 0
+                          1d:
+                            type: object
+                            properties:
+                              rate:
+                                type: number
+                                example: -0.00828
+                              positive:
+                                type: number
+                                example: 10
+                              negative:
+                                type: number
+                                example: 10
+                          3d:
+                            type: object
+                            properties:
+                              rate:
+                                type: number
+                                example: -0.00412
+                              positive:
+                                type: number
+                                example: 9
+                              negative:
+                                type: number
+                                example: 11
+                          7d:
+                            type: object
+                            properties:
+                              rate:
+                                type: number
+                                example: 0.00012
+                              positive:
+                                type: number
+                                example: 8
+                              negative:
+                                type: number
+                                example: 12
+                          14d:
+                            type: object
+                            properties:
+                              rate:
+                                type: number
+                                example: 0.00156
+                              positive:
+                                type: number
+                                example: 7
+                              negative:
+                                type: number
+                                example: 13
+                          30d:
+                            type: object
+                            properties:
+                              rate:
+                                type: number
+                                example: 0.00345
+                              positive:
+                                type: number
+                                example: 6
+                              negative:
+                                type: number
+                                example: 14
+                          90d:
+                            type: object
+                            properties:
+                              rate:
+                                type: number
+                                example: 0.01023
+                              positive:
+                                type: number
+                                example: 5
+                              negative:
+                                type: number
+                                example: 15
+                          180d:
+                            type: object
+                            properties:
+                              rate:
+                                type: number
+                                example: 0.01567
+                              positive:
+                                type: number
+                                example: 4
+                              negative:
+                                type: number
+                                example: 16
+
+
     VolumeStatsResponse:
       allOf:
         - $ref: '#/components/schemas/BasicResponse'
@@ -5621,6 +6542,44 @@ components:
                               description: "`USDC.e` for `Mantle` chain"
                               example: "USDC"
 
+
+    GetIndexPriceSourceResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      symbol:
+                        type: string
+                        description: "SPOT symbol name"
+                        example: "SPOT_BNB_USDC"
+                      updated_time:
+                        type: number
+                        example: 1710382176255
+                      sources:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                          - "gateio"
+                          - "kucoin"
+                          - "binance"
+                          - "okx"
+                          - "huobi"
+                          - "bybit"
+                          - "mexc"
+
     AvailableSymbolsResponse:
       allOf:
         - $ref: '#/components/schemas/BasicResponse'
@@ -5711,9 +6670,18 @@ components:
         floor_funding:
           type: number
           example: -3.75E-4
+        cap_ir:
+          type: number
+          example: 0.0003
+        floor_ir:
+          type: number
+          example: -0.0003
         interest_rate:
           type: number
           example: 1.0E-4
+        imr_factor:
+          type: number
+          example: 0.025
         created_time:
           type: integer
           example: 1684140107326
@@ -5727,8 +6695,8 @@ components:
           type: number
           example: 0.1
         liquidation_tier:
-          type: string
-          example: "1"
+          type: number
+          example: 1
 
     InsuranceFundResponse:
       allOf:
@@ -6536,6 +7504,37 @@ components:
         order_tag:
           type: string
 
+
+    CancelAllAfterBody:
+      required:
+        - trigger_after
+      type: object
+      properties:
+        trigger_after:
+          type: number
+          example: 5000
+          description: "Timeout in milliseconds. 
+          Min timeout is 5000.
+          Max timeout can be set to 900000. 
+          To cancel this timer, set timeout to 0.
+          "
+
+
+    CancelAllAfterResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+          - data
+          properties:
+            data:
+              type: object
+              properties:
+                expected_trigger_time:
+                  type: number
+                  example: "1711534302938"
+
+
     PutOrderResponse:
       allOf:
         - $ref: '#/components/schemas/BasicResponse'
@@ -6956,6 +7955,9 @@ components:
         realized_pnl:
           type: number
           example: 0.0
+        match_id:
+          type: string
+          example: ""
 
 
     AlgoTrade:
@@ -6992,6 +7994,9 @@ components:
         is_maker:
           type: number
           example: 1
+        match_id:
+          type: string
+          example: ""
 
     ClientHoldingResponse:
       allOf:
@@ -8530,6 +9535,31 @@ components:
                   type: string
                   example: "woofi_pro"
 
+
+    GetAnnouncementsResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasicResponse'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - address
+                - broker_id
+              properties:
+                announcement_id:
+                  type: number
+                  example: 1
+                message:
+                  type: string
+                  example: "Position information is incorrect due to a 1-minute delay."
+                url:
+                  type: string
+                  example: "null"
+
+
     GetBrokerDailyResponse:
       allOf:
         - $ref: '#/components/schemas/BasicResponse'
@@ -8615,6 +9645,9 @@ components:
                       pnl:
                         type: number
                         example: 123.45
+                      snapshot_time:
+                        type: number
+                        example: 1722989203989
 
     UserFeeRatesResponse:
       allOf:
@@ -9354,6 +10387,12 @@ components:
                 end_account_value:
                   type: number
                   example: 800.12
+                new_invited_referee:
+                  type: number
+                  example: 1
+                new_traded_referee:
+                  type: number
+                  example: 10
 
     GetCampaignCheckResponse:
       allOf:
@@ -9955,6 +10994,121 @@ components:
                       est_r_account:
                         type: number
                         example: 13.4236779074
+
+
+    GetTheStatusOfMarketMakingRewardsProgrammeResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                epoch_status:
+                  type: string
+                  example: "Active"
+                current_epoch:
+                  type: number
+                  example: 23
+                last_completed_epoch:
+                  type: number
+                  example: 22
+
+
+    GetSymbolRewardsParametersResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                updated_time:
+                  type: string
+                  example: "Active"
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      symbol:
+                        type: string
+                        example: "PERP_ETH_USDC"
+                      multiplier:
+                        type: number
+                        example: 1.0
+                      min_depth:
+                        type: number
+                        example: 1.0
+                      max_spread:
+                        type: number
+                        example: 2.3
+                        description: "in bps"
+
+
+    GetTheStatusOfTradingRewardsProgrammeResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                epoch_status:
+                  type: string
+                  example: "Active"
+                current_epoch:
+                  type: number
+                  example: 23
+                last_completed_epoch:
+                  type: number
+                  example: 22
+
+
+    GetSymbolRewardsCategoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                current:
+                  type: object
+                  properties:
+                    epoch_id:
+                      type: number
+                      example: 23
+                    major_weightage:
+                      type: number
+                      example: 0.8
+                    alts_weightage:
+                      type: number
+                      example: 0.2
+                    major_symbols:
+                      type: string
+                      example: "BTC,ETH"
+                    updated_time:
+                      type: number
+                      example: 123891923213
+                next:
+                  type: object
+                  properties:
+                    epoch_id:
+                      type: number
+                      example: 24
+                    major_weightage:
+                      type: number
+                      example: 0.7
+                    alts_weightage:
+                      type: number
+                      example: 0.3
+                    major_symbols:
+                      type: string
+                      example: "BTC,ETH"
+                    updated_time:
+                      type: number
+                      example: 132891923213
 
 
     GetMMCurrentEpochEstimateResponse:
