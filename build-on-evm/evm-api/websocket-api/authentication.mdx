@@ -4,6 +4,11 @@ title: "Authentication"
 
 Refer to [API authentication](/build-on-evm/evm-api/api-authentication) for more details about how to sign the request with `orderly-key` and `orderly-secret`. The **request method, request path,** and **request body** are all blank. The message to sign is therefore just the **timestamp**.
 
+wsprivate can now authenticate when creating the connection by appending the content of auth request into the subscription url in the form of query string. 
+
+
+For example, `wss://ws-private-evm.orderly.org/v2/ws/private/stream/0xd7379678a303b57d7d43eb23c64dd7528ac8cb4efe983a3aedcfe9b4aa4cb984?orderly_key=xxxxxxxx&timestamp=xxxxx&sign=xxxxx` will authenticate the user when creating the connection, no need to send auth request again.
+
 | Name        | Type      | Required | Description |
 |-------------|-----------|----------|-------------|
 | orderly_key | string    | Y        | Orderly Key |
