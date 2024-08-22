@@ -9,7 +9,7 @@ tags:
 paths:
   /v1/public/futures:
     get:
-      summary: Get Market Info for All Trading Pairs
+      summary: Get Market Info for All Symbols
       deprecated: false
       description: |
 
@@ -17,7 +17,7 @@ paths:
 
         `GET /v1/public/futures`
 
-        Get basic market information for all the trading pairs.
+        Get basic market information for all the symbols.
       tags:
         - public
       parameters: []
@@ -132,7 +132,7 @@ paths:
 
   /v1/public/market_info/price_changes:
     get:
-      summary: Get Market Price Change Info
+      summary: Get Price Info for All Symbols
       deprecated: false
       description: |
 
@@ -175,7 +175,7 @@ paths:
 
   /v1/public/market_info/traders_open_interests:
     get:
-      summary: Get Market Open Interests
+      summary: Get Long or Short OI for All Symbols
       deprecated: false
       description: |
 
@@ -198,7 +198,7 @@ paths:
 
   /v1/public/market_info/history_charts:
     get:
-      summary: Get Price for Small Charts
+      summary: Get Historical Price List for All Symbols
       deprecated: false
       description: |
 
@@ -228,7 +228,7 @@ paths:
 
   /v1/public/market_info/funding_history:
     get:
-      summary: Get Market Funding Rate History
+      summary: Get Funding Rate for All Markets
       deprecated: false
       description: |
 
@@ -439,7 +439,7 @@ paths:
                 $ref: '#/components/schemas/FundingRateHistoryResponse'
   /v1/public/futures/{symbol}:
     get:
-      summary: Get Market Info for One Trading Pair
+      summary: Get Market Info for One Symbol
       deprecated: false
       description: |
 
@@ -571,7 +571,7 @@ paths:
                 $ref: '#/components/schemas/LiquidatedPositionsResponse'
   /v1/public/info/{symbol}:
     get:
-      summary: Get Order Rules per Market
+      summary: Get $ORDER Rules per Symbol
       deprecated: false
       description: "
         **Limit: 10 requests per 1 second per IP address**
