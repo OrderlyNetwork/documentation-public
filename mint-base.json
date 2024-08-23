@@ -385,7 +385,8 @@
           "pages": [
             "build-on-evm/evm-api/restful-api/public/get-system-maintenance-status",
             "build-on-evm/evm-api/restful-api/public/get-vault-balance",
-            "build-on-evm/evm-api/restful-api/public/get-insurance-fund-info"
+            "build-on-evm/evm-api/restful-api/public/get-insurance-fund-info",
+            "build-on-evm/evm-api/restful-api/public/get-announcements"
           ]
         },
         {
@@ -477,6 +478,7 @@
             "build-on-evm/evm-api/restful-api/private/cancel-algo-order-by-client_order_id",
             "build-on-evm/evm-api/restful-api/private/cancel-all-pending-algo-orders",
             "build-on-evm/evm-api/restful-api/private/cancel-all-pending-orders",
+            "build-on-evm/evm-api/restful-api/private/cancel-all-after",
             "build-on-evm/evm-api/restful-api/private/batch-cancel-orders",
             "build-on-evm/evm-api/restful-api/private/batch-cancel-orders-by-client_order_id",
             "build-on-evm/evm-api/restful-api/private/get-order-by-order_id",
@@ -487,7 +489,8 @@
             "build-on-evm/evm-api/restful-api/private/get-algo-orders",
             "build-on-evm/evm-api/restful-api/private/get-trades",
             "build-on-evm/evm-api/restful-api/private/get-trade",
-            "build-on-evm/evm-api/restful-api/private/get-all-trades-of-specific-order"
+            "build-on-evm/evm-api/restful-api/private/get-all-trades-of-specific-order",
+            "build-on-evm/evm-api/restful-api/private/get-all-trades-of-specific-algo-order"
           ]
         },
         {
@@ -529,6 +532,58 @@
     },
 
     {
+      "group": "Rewards API",
+      "pages": [
+        {
+          "group": "Trading Rewards",
+          "pages": [
+            "build-on-evm/evm-api/restful-api/public/get-parameters-of-each-epoch-for-all-epochs",
+            "build-on-evm/evm-api/restful-api/public/get-epochs-data",
+            "build-on-evm/evm-api/restful-api/public/get-broker-allocation-history",
+            "build-on-evm/evm-api/restful-api/public/get-wallet-trading-rewards-history",
+            "build-on-evm/evm-api/restful-api/public/get-account-trading-rewards-history",
+            "build-on-evm/evm-api/restful-api/public/get-current-epoch-estimate",
+            "build-on-evm/evm-api/restful-api/public/get-current-epoch-estimate-by-broker",
+            "build-on-evm/evm-api/restful-api/public/get-the-status-of-trading-rewards-programme",
+            "build-on-evm/evm-api/restful-api/public/get-symbol-rewards-category"
+          ]
+        },
+        {
+          "group": "Market Making Rewards",
+          "pages": [
+            "build-on-evm/evm-api/restful-api/public/get-parameters-of-each-epoch",
+            "build-on-evm/evm-api/restful-api/public/get-wallet-group-market-making-rewards-history",
+            "build-on-evm/evm-api/restful-api/public/get-market-maker-current-epoch-estimate",
+            "build-on-evm/evm-api/restful-api/public/get-the-status-of-market-making-rewards-programme",
+            "build-on-evm/evm-api/restful-api/public/get-symbol-rewards-parameters"
+          ]
+        }
+      ]
+    },
+
+    {
+      "group": "Staking & VALOR API",
+      "pages": [
+        {
+          "group": "Staking",
+          "pages": [
+            "build-on-evm/evm-api/restful-api/private/get-wallets-current-staked-balance",
+            "build-on-evm/evm-api/restful-api/private/get-unstaking-order-details",
+            "build-on-evm/evm-api/restful-api/public/get-staking-overview"
+          ]
+        },
+        {
+          "group": "Valor",
+          "pages": [
+            "build-on-evm/evm-api/restful-api/public/get-valor-batch-info",
+            "build-on-evm/evm-api/restful-api/public/get-valor-pool-info",
+            "build-on-evm/evm-api/restful-api/private/get-valor-redeem-info"
+          ]
+        }
+        ]
+    },
+
+    {
       "group": "Builder API",
       "pages": [
         {
@@ -558,11 +613,11 @@
         },
 
         {
-          "group": "Points Campaign",
+          "group": "Merits Campaign",
           "pages": [
-            "build-on-evm/evm-api/restful-api/public/get-points-leaderboard",
-            "build-on-evm/evm-api/restful-api/public/get-users-points",
-            "build-on-evm/evm-api/restful-api/public/get-number-of-points-for-distribution",
+            "build-on-evm/evm-api/restful-api/public/get-merits-leaderboard",
+            "build-on-evm/evm-api/restful-api/public/get-users-merits",
+            "build-on-evm/evm-api/restful-api/public/get-number-of-merits-for-distribution",
             "build-on-evm/evm-api/restful-api/public/get-start-and-end-date-of-all-epochs"
           ]
         },
@@ -611,11 +666,16 @@
           "group": "Market Info",
           "pages": [
             "build-on-evm/evm-api/restful-api/public/get-supported-collateral-info",
-            "build-on-evm/evm-api/restful-api/public/get-order-rules-per-market",
+            "build-on-evm/evm-api/restful-api/public/get-order-rules-per-symbol",
             "build-on-evm/evm-api/restful-api/public/get-available-symbols",
             "build-on-evm/evm-api/restful-api/public/get-market-trades",
-            "build-on-evm/evm-api/restful-api/public/get-market-info-for-all-trading-pairs",
-            "build-on-evm/evm-api/restful-api/public/get-market-info-for-one-trading-pair",
+            "build-on-evm/evm-api/restful-api/public/get-price-info-for-all-symbols",
+            "build-on-evm/evm-api/restful-api/public/get-long-or-short-oi-for-all-symbols",
+            "build-on-evm/evm-api/restful-api/public/get-funding-rate-for-all-markets",
+            "build-on-evm/evm-api/restful-api/public/get-market-info-for-all-symbols",
+            "build-on-evm/evm-api/restful-api/public/get-market-info-for-one-symbol",
+            "build-on-evm/evm-api/restful-api/public/get-index-price-source",
+            "build-on-evm/evm-api/restful-api/public/get-historical-price-list-for-all-symbols",
             "build-on-evm/evm-api/restful-api/private/orderbook-snapshot",
             "build-on-evm/evm-api/restful-api/private/get-kline"
           ]
@@ -642,6 +702,9 @@
             "build-on-evm/evm-api/websocket-api/public/bbo",
             "build-on-evm/evm-api/websocket-api/public/bbos",
             "build-on-evm/evm-api/websocket-api/public/k-line",
+            "build-on-evm/evm-api/websocket-api/public/price-changes",
+            "build-on-evm/evm-api/websocket-api/public/traders-open-interests",
+            "build-on-evm/evm-api/websocket-api/public/price-for-small-charts",
             "build-on-evm/evm-api/websocket-api/public/index-price",
             "build-on-evm/evm-api/websocket-api/public/index-prices",
             "build-on-evm/evm-api/websocket-api/public/mark-price",
@@ -649,7 +712,8 @@
             "build-on-evm/evm-api/websocket-api/public/open-interest",
             "build-on-evm/evm-api/websocket-api/public/estimated-funding-rate",
             "build-on-evm/evm-api/websocket-api/public/liquidation-push",
-            "build-on-evm/evm-api/websocket-api/public/system-maintenance-status"
+            "build-on-evm/evm-api/websocket-api/public/system-maintenance-status",
+            "build-on-evm/evm-api/websocket-api/public/announcement"
           ]
         },
         {
