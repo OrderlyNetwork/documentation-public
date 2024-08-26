@@ -92,6 +92,8 @@ The minimum depth and max spread tables are essential for market makers to ensur
 | PERP_XRP_USDC       | 0.75       | 1000                 | 40               |
 | PERP_ZK_USDC        | 0.75       | 1000                 | 40               |
 | PERP_ZRO_USDC       | 0.75       | 1000                 | 40               |
+| PERP_TRX_USDC       | 0.75       | 1000                 | 40               |
+| PERP_ORDER_USDC     | 0.75       | 1000                 | 40               |
 
 
 
@@ -102,7 +104,7 @@ What happens in the life cycle of one epoch?
 
 2. After the epoch has ended, eligible market makers (rewards wallet) can view their processing epoch rewards by connecting their wallet via the Orderly App (the amount of the rewards earned is subject to change).
 
-3. There is a waiting period of up to 4 days after each epoch for the validate of rewards distribution before users can start to claim their epoch rewards. During this period, Orderly will conduct wash trading analysis
+3. There is a waiting period of up to 4 days after each epoch for the validation of rewards distribution before users can start to claim their epoch rewards. During this period, Orderly will conduct wash trading analysis
 
     - After the waiting period, the rewards earned by each market maker will be finalized and displayed with an Available status on the Orderly App.
 
@@ -143,7 +145,7 @@ Note: For market makers with multi-wallet linking, only the user of the designat
 
 The first (highest) **bid price level** of the market maker that met ( \> \= ) minimum depth to be the best bid price. The first (lowest) **ask price level** of the market maker that met ( \> \= ) min depth to be the best ask price.
 
-When determing best bid/ask price, Orderly considers the sum of the bid order(s) amount at a price level that has met the minimum depth requirement.
+When determing best bid/ask price, Orderly considers the sum of the bid order(s) / ask order(s) amount at a price level that has met the minimum depth requirement.
 
 For market makers with multi-wallet linking, open orders at the same price level are amalgamated.
 
