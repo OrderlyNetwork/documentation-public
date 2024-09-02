@@ -3130,10 +3130,19 @@ paths:
                 order_tag:
                   type: string
                 child_orders:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/CreateAlgoOrderChildRequest'
-                  description: "Array of `CreateAlgoOrderChildRequest`"
+                  type: object
+                  properties:
+                    symbol:
+                      type: string
+                      example: "PERP_ETH_USDC"
+                    algo_type:
+                      type: string
+                      example: "POSITIONAL_TP_SL"
+                    child_orders:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/CreateAlgoOrderChildRequest'
+                      description: "Array of `CreateAlgoOrderChildRequest`"
               required:
                 - symbol
       responses:
@@ -9701,11 +9710,11 @@ components:
           type: string
         trigger_price_type:
           type: string
-        child_orders:
-          type: array
-          items:
-            type: object
-          description: Array of `CreateAlgoOrderChildRequest`
+#        child_orders:
+#          type: array
+#          items:
+#            type: object
+#          description: Array of `CreateAlgoOrderChildRequest`
 
     EditAlgoOrderChildRequest:
       type: object
