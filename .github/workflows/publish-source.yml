@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
+        with:
+          fetch-depth: 0
       - name: Setup ssh for git command
         run: |
           mkdir -p ~/.ssh
@@ -21,4 +23,4 @@ jobs:
       - name: Push to public repository
         run: |
           git remote add public git@github.com:OrderlyNetwork/documentation-public.git
-          git push --force-with-lease public main
+          git push public main
