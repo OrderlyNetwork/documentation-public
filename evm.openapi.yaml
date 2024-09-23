@@ -857,6 +857,44 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PositionResponse"
+
+
+  /v1/position_history:
+    get:
+      summary: Get Position History
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per user**
+
+        `GET /v1/position_history`
+      tags:
+        - private
+      parameters:
+        - name: symbol
+          in: query
+          description: ""
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: ""
+          required: false
+          schema:
+            type: number
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PositionHistoryResponse"
+
+
   /v1/funding_fee/history:
     get:
       summary: Get Funding Fee History
@@ -7147,6 +7185,75 @@ components:
                   type: array
                   items:
                     $ref: "#/components/schemas/Position"
+
+
+    PositionHistoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      position_id:
+                        type: number
+                        example: 1
+                      status:
+                        type: string
+                        example: "closed"
+                      type:
+                        type: string
+                        example: "liquidated"
+                      symbol:
+                        type: string
+                        example: "PERP_ETH_USDC"
+                      avg_open_price:
+                        type: number
+                        example: 61016.1
+                      avg_close_price:
+                        type: number
+                        example: 61016.1
+                      max_position_qty:
+                        type: number
+                        example: 56.6
+                      close_position_qty:
+                        type: number
+                        example: 56.6
+                      side:
+                        type: string
+                        example: "LONG"
+                      trading_fee:
+                        type: number
+                        example: 0.015
+                      accumulated_funding_fee:
+                        type: number
+                        example: 0.11
+                      insurance_fund_fee:
+                        type: number
+                        example: 0
+                      liquidator_fee:
+                        type: number
+                        example: 0
+                      realized_pnl:
+                        type: number
+                        example: -9.0969192731490491
+                      open_timestamp:
+                        type: number
+                        example: 1685429350571
+                      close_timestamp:
+                        type: number
+                        example: 1685429350571
+                      last_update_timestamp:
+                        type: number
+                        example: 1685429350571
+
 
     PositionResponse:
       allOf:
