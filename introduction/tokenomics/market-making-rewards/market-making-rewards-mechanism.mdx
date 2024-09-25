@@ -55,7 +55,7 @@ For each market, $$ Q_{final} $$ is calculated at the end of every epoch for eli
 
 Market making performance is monitored and calculated on a minute-by-minute basis (using randomized sampling) and aggregated into a $$ Q_{min} $$ for each market. Orders below a certain **minimum depth size** and/or over a certain **maximum spread** from each market maker’s mid-market price will be excluded from the computation of $$ Q_{final} $$. Refer [here](/introduction/tokenomics/market-making-rewards/market-making-rewards#key-information) for the updated values.
 
-$$ Q_{final}=\sum_{N=1}^{totalEpochMinutes} \{Q_{min(N)}=[\dfrac{BidDepth_1}{Spread_1}+\dfrac{BidDepth_2}{Spread_2}...., \dfrac{AskDepth_1}{Spread_1}+\dfrac{AskDepth_2}{Spread_2}...]\}^{0.35} *[\dfrac{\sum_{N=1}^{totalEpochMinutes}Count(Q_{min(N)}>0)}{totalEpochMinutes}]^5 * [max(10,stakedORDER)]^{0.2} * [MakerVolume]^{0.45}$$
+$$ Q_{final}=\sum_{N=1}^{totalEpochMinutes} \{Q_{min(N)}=[\dfrac{BidDepth_1}{Spread_1}+\dfrac{BidDepth_2}{Spread_2}...., \dfrac{AskDepth_1}{Spread_1}+\dfrac{AskDepth_2}{Spread_2}...]\}^{0.35} *[\dfrac{\sum_{N=1}^{totalEpochMinutes}Count(Q_{min(N)}>0)}{totalEpochMinutes}]^5 * [max(10,stakedORDER)]^{0.15} * [MakerVolume]^{0.45}$$
 
 
 
