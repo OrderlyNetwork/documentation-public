@@ -2718,6 +2718,119 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PnlSettlementHistoryResponse"
+
+  /v1/internal_transfer:
+    post:
+      summary: Create Internal Transfer
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second**
+
+        `POST /v1/internal_transfer`
+
+        Orderly key must has `asset` scope to access this endpoint.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInternalTransferRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+
+
+  /v1/internal_transfer_history:
+    get:
+      summary: Get Internal Transfer History
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second**
+
+        `GET /v1/internal_transfer_history`
+        
+        Orderly key must has `asset` scope to access this endpoint.
+      tags:
+        - private
+      parameters:
+        - name: status
+          in: query
+          description: "`CREATED`/`PENDING`/`COMPLETED`/`FAILED`"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: start_t
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: end_t
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: size
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: side
+          in: query
+          description: "`IN`/`OUT`"
+          required: true
+          example: ""
+          schema:
+            type: string
+        - name: from_account_id
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: to_account_id
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetInternalTransferHistoryResponse"
+
   /v1/client/key_info:
     get:
       summary: Get Current Orderly Key Info
@@ -7370,6 +7483,52 @@ components:
                         type: number
                         example: 1682235722003
 
+
+    GetInternalTransferHistoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - meta
+                - rows
+              properties:
+                meta:
+                  $ref: "#/components/schemas/PaginationMeta"
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "230707030600002"
+                      token:
+                        type: string
+                        example: "USDC"
+                      amount:
+                        type: number
+                        example: 555,
+                      from_account_id:
+                        type: string
+                        example: "0x000000"
+                      to_account_id:
+                        type: string
+                        example: "0x000000"
+                      status:
+                        type: string
+                        example: "FAILED"
+                      created_time:
+                        type: number
+                        example: 1688699193034
+                      updated_time:
+                        type: number
+                        example: 1688699193034
+
     LiquidatorLiquidationsResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
@@ -7605,6 +7764,21 @@ components:
                 status:
                   type: string
                   example: "EDIT_SENT"
+
+
+    CreateInternalTransferRequest:
+      type: object
+      properties:
+        receiver_list:
+          type: object
+          properties:
+            account_id:
+              type: string
+              example: "0x0000000"
+            amount:
+              type: number
+              example: 100
+
 
     PostOrderBody:
       required:
