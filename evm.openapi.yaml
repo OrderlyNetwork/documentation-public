@@ -7769,8 +7769,12 @@ components:
     CreateInternalTransferRequest:
       type: object
       properties:
+        token:
+          type: string
+          example: "USDC"
         receiver_list:
           type: object
+          description: "Maximum 50 receivers per request, transferring to yourself will lead to request failure. "
           properties:
             account_id:
               type: string
