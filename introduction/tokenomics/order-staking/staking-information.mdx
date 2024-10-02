@@ -4,27 +4,50 @@ title: "Staking Information"
 
 \$ORDER staking plays a pivotal role in the \$ORDER tokenomics, offering a range of benefits to all platform stakeholders. These benefits include a share of the protocol treasury, enhanced trading rewards, increased market making rewards, and governance rights.
 
-Rather than rewarding stakers with inflated \$ORDER token emissions, Orderly Network is dedicated to establishing an organic balance between supply and demand. This is achieved by providing real yields to stakers, who can earn rewards from the protocol treasury funded by a portion of the protocol revenue (starting at 60% from the launch of \$ORDER staking). The revenue primarily comes from trading fees, which scale in accordance with the trading demand across all Orderly Network builder frontends. 
+Rather than rewarding stakers with inflated \$ORDER token emissions, Orderly Network is dedicated to establishing an organic balance between supply and demand. This is achieved by providing real yields to stakers, who gain ownership of the Orderly protocol treasury funded by 60\% of the protocol net revenue, which primarily comes from trading fees. Trading fees scale in accordance with the trading demand across all Orderly Network builder frontends.
 
 ## Stake \$ORDER or esORDER to earn VALOR
-Stakers receive their portion of the protocol treasury in the form of VALOR rewards. VALOR serves as a metric for measuring a user's \$ORDER staking position based on the amount and duration of their stake. The rewards that each VALOR can claim depend on the current protocol treasury and the available supply of VALOR. Earning VALOR is exclusive to staking \$ORDER or esORDER.
+VALOR represents the share of the Orderly Protocol Treasury and it is the only method to obtain VALOR is to stake \$ORDER or esORDER token with Orderly Network. 
 
-- Total VALOR supply: 1 billion
+VALOR has a 1 billion hard cap supply, and 100% of it is linearly emitted to \$ORDER and esORDER stakers exclusively over 200 epochs (equating to 5M VALOR per epoch). Stakers automatically accumulate VALOR, and at any time the circulating supply of VALOR is entitled to 100% of the Orderly protocol treasury. 
 
-- Emission schedule: VALOR is emitted linearly every second to all \$ORDER stakers in proportion to their \$ORDER/esORDER stake. The complete VALOR supply will be distributed across 200 epochs, equating to 5M VALOR per epoch.
-- 
-- VALOR holders can choose to hold, participate in managing the protocol treasury, or redeem their share of assets from the treasury. Upon redemption, the VALOR is burned, permanently reducing the VALOR supply and increasing the weight of the remaining VALOR.
+Since VALOR is non-transferable, it acts as a measure of a user's \$ORDER staking position based on the amount and duration of their stake. Each staker is entitled to a percentage of all assets currently in the Orderly protocol treasury and future revenue proportionate to their available VALOR balance. VALOR experiences deflation over its lifespan, as when stakers redeem assets from the protocol treasury using their VALOR, the VALOR is permanently burned - reducing the total supply of VALOR.
 
-- VALOR is non-transferable
+*VALOR circulating supply = Total VALOR emitted to date - VALOR burned from redemption*
 
-## Key benefits of the model
-1. Encouraging staking by incentivizing rather than imposing hard locks - stakers are encouraged to maintain their \$ORDER tokens staked to prevent dilution from continuous emissions per block.
+$$ TreasuryShare_{staker} = {\frac {AvailableValorBalance_{staker}}{ValorCirculatingSupply}} * TotalProtocolTreasuryValue $$
 
-2. Accumulating assets from the protocol revenue in the treasury before redemption creates opportunities for additional yields, supports product liquidity, and fosters partnerships with other DeFi protocols. Treasury management will be integrated into future governance.
+Understanding the VALOR & treasury model can be more challenging to grasp compared to the more familiar vanilla staking model. To provide clarity, let's illustrate this with a simplified example:
 
-3. With a fixed supply, VALOR rewards early stakers by allowing them to accumulate more VALOR without dilution.
+- Alice and Bob have been holding a staking position in \$ORDER equivalent to 1% respectively of the total ORDER staked from day 1. There hasn’t been any VALOR redemption from any staker before, resulting in each owning 1\% of the circulating supply of VALOR.
+
+- As epoch X draws to a close, with a circulating supply of 16 million VALOR and a protocol treasury value of \$500,000, both Bob and Alice's treasury share amounts to \$5,000.
+
+- Bob, facing liquidity needs, opts to redeem 60,000 VALOR from the protocol treasury. In contrast, Alice chooses to maximize her rewards and refrains from redeeming any VALOR. Consequently, Bob receives \$1,875 from the treasury by burning 60,000 VALOR, reducing the total treasury value to \$498,125.
+
+- Moving into epoch X+1, the Orderly network enhances volume and net revenue, leading to a \$250,000 addition to the protocol treasury.
+
+- By the end of epoch X+1, the circulating supply of VALOR rises to 20,940,000, and the protocol treasury value increases to \$748,125.
+
+- Maintaining their staking percentages, both Bob and Alice acquire an additional 50,000 VALOR each. Bob's VALOR balance reaches 150,000, while Alice's reaches 210,000.
+
+- Consequently, by the end of epoch X+1, Bob's treasury share rises to \$5,359, and Alice's to \$7,503.
+
+- Despite Bob withdrawing \$1,875 in the previous epoch, his total earnings amount to \$7,234. **In summary, as a result of early redemption, Bob earned \$269 less than Alice who had the same staking position and VALOR balance in epoch X and chose not to redeem any VALOR.**
+
+## Advantages for Long-Term Stakers and VALOR Holders
+
+- The VALOR and treasury model is designed to benefit long-term stakers and reward supporters with faith in the project's sustained growth of increasing protocol treasury value over time.
+
+- Given the scarcity and deflationary characteristics of VALOR, stakers should always try to keep their \$ORDER staked and add more \$ORDER staked. Because the moment they unstake, they stop earning VALOR while other stakers continue earning them hence their shares of the protocol treasury get diluted. 
+
+- Stakers can optimize their rewards by holding VALOR for for as long as possible. Redeeming VALOR translates to realizing past gains from the current protocol treasury and forfeiting future shares to the remaining VALOR holders.
+
+- With Orderly Network introducing more products and the rising popularity of DeFi, the protocol treasury sees an increase in net revenue per epoch. Simultaneously, the total supply of VALOR decreases due to redemptions, allowing the remaining Valor holders to possess a larger portion of the future treasury.
+
+- VALOR holders will wield governance rights to determine the utilization of assets in the protocol treasury. For instance, they may opt to deposit assets into other protocols to generate additional yields or repurchase ORDER tokens to retain them within the protocol treasury.
 
 
 <Note>
-Staking is not allowed for unlocked team tokens or investor tokens.
+Staking is not allowed for locked team tokens or investor tokens.
 </Note>
