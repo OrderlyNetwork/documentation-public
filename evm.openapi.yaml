@@ -3263,21 +3263,43 @@ paths:
                 order_tag:
                   type: string
                 child_orders:
-                  type: object
-                  properties:
-                    symbol:
-                      type: string
-                      example: "PERP_ETH_USDC"
-                    algo_type:
-                      type: string
-                      example: "POSITIONAL_TP_SL"
-                    child_orders:
-                      type: array
-                      items:
-                        $ref: "#/components/schemas/CreateAlgoOrderChildRequest"
-                      description: "Array of `CreateAlgoOrderChildRequest`"
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      symbol:
+                        type: string
+                      algo_type:
+                        type: string
+                      child_orders:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/CreateAlgoOrderChildRequest"
+                        description: "Array of `CreateAlgoOrderChildRequest`"
+                  example:
+                    - symbol: "PERP_ETH_USDC"
+                      algo_type: "BRACKET"
+                      child_orders:
+                        - symbol: "PERP_ETH_USDC"
+                          algo_type: "TAKE_PROFIT"
+                          side: "SELL"
+                          type: "CLOSE_POSITION"
+                          trigger_price: 3518.4
+                          reduce_only: true
+                        - symbol: "PERP_ETH_USDC"
+                          algo_type: "STOP_LOSS"
+                          side: "SELL"
+                          type: "CLOSE_POSITION"
+                          trigger_price: 3313.4
+                          reduce_only: true
+
               required:
                 - symbol
+                - algo_type
+                - quantity
+                - side
+                - type
+                - child_orders
       responses:
         "200":
           description: OK
