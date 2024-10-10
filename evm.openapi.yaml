@@ -3276,9 +3276,16 @@ paths:
                         items:
                           $ref: "#/components/schemas/CreateAlgoOrderChildRequest"
                         description: "Array of `CreateAlgoOrderChildRequest`"
-                  example:
+              example:
+                - symbol: "PERP_ETH_USDC"
+                  algo_type: "BRACKET"
+                  quantity: 0.0032
+                  side: "BUY"
+                  type: "LIMIT"
+                  price: 3415.9
+                  child_orders:
                     - symbol: "PERP_ETH_USDC"
-                      algo_type: "BRACKET"
+                      algo_type: "POSITIONAL_TP_SL"
                       child_orders:
                         - symbol: "PERP_ETH_USDC"
                           algo_type: "TAKE_PROFIT"
@@ -3292,6 +3299,21 @@ paths:
                           type: "CLOSE_POSITION"
                           trigger_price: 3313.4
                           reduce_only: true
+#                - symbol: "PERP_ETH_USDC"
+#                  algo_type: "POSITIONAL_TP_SL"
+#                  child_orders:
+#                    - symbol: "PERP_ETH_USDC"
+#                      algo_type: "TAKE_PROFIT"
+#                      side: "SELL"
+#                      type: "CLOSE_POSITION"
+#                      trigger_price: 3518.4
+#                      reduce_only: true
+#                    - symbol: "PERP_ETH_USDC"
+#                      algo_type: "STOP_LOSS"
+#                      side: "SELL"
+#                      type: "CLOSE_POSITION"
+#                      trigger_price: 3313.4
+#                      reduce_only: true
 
               required:
                 - symbol
