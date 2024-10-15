@@ -1,0 +1,99 @@
+---
+title: "Algo Order Sample Requests"
+---
+
+## Create Algo Order Sample
+
+### TP_SL
+```json
+{
+    "symbol": "PERP_NEAR_USDC",
+    "algo_type": "TP_SL",
+    "quantity": "5.5",
+    "trigger_price_type": "MARK_PRICE",
+    "order_tag": "test_tag",
+    "child_orders": [
+        {
+            "symbol": "PERP_NEAR_USDC",
+            "algo_type": "TAKE_PROFIT",
+            "side": "SELL",
+            "type": "MARKET",
+            "trigger_price": 3.365,
+            "reduce_only": true
+        },
+        {
+            "symbol": "PERP_NEAR_USDC",
+            "algo_type": "STOP_LOSS",
+            "side": "SELL",
+            "type": "MARKET",
+            "trigger_price": 3.36,
+            "reduce_only": true
+        }
+    ]
+}
+```
+
+### POSTIONAL_TP_SL
+```json
+{
+    "symbol": "PERP_NEAR_USDC", 
+    "algo_type": "POSITIONAL_TP_SL", 
+    "trigger_price_type": "MARK_PRICE", 
+    "child_orders": [
+        {
+            "symbol": "PERP_NEAR_USDC", 
+            "algo_type": "TAKE_PROFIT", 
+            "side": "SELL", 
+            "type": "CLOSE_POSITION", 
+            "trigger_price_type": "MARK_PRICE", 
+            "trigger_price": 4.05, 
+            "reduce_only": true
+        }, 
+        {
+            "symbol": "PERP_NEAR_USDC", 
+            "algo_type": "STOP_LOSS", 
+            "side": "SELL", 
+            "type": "CLOSE_POSITION", 
+            "trigger_price_type": "MARK_PRICE", 
+            "trigger_price": 3.95, 
+            "reduce_only": true
+        }
+    ]
+}
+```
+
+### BRACKET
+```json
+{
+  "symbol": "PERP_ETH_USDC",
+  "algo_type": "BRACKET",
+  "quantity": "0.0032",
+  "side": "BUY",
+  "type": "LIMIT",
+  "price": "3415.9",
+  "child_orders": [
+    {
+      "symbol": "PERP_ETH_USDC",
+      "algo_type": "POSITIONAL_TP_SL",
+      "child_orders": [
+        {
+          "symbol": "PERP_ETH_USDC",
+          "algo_type": "TAKE_PROFIT",
+          "side": "SELL",
+          "type": "CLOSE_POSITION",
+          "trigger_price": "3518.4",
+          "reduce_only": true
+        },
+        {
+          "symbol": "PERP_ETH_USDC",
+          "algo_type": "STOP_LOSS",
+          "side": "SELL",
+          "type": "CLOSE_POSITION",
+          "trigger_price": "3313.4",
+          "reduce_only": true
+        }
+      ]
+    }
+  ]
+}
+```
