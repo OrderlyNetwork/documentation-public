@@ -2,7 +2,7 @@
 
 Documentation of Orderly Network.
 
-Suggestions and edits welcome through Pull Requests / Issues.
+Suggestions and edits are welcome through Pull Requests / Issues.
 
 ## Change SOP
 

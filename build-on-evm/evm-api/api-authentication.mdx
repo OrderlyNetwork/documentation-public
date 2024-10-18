@@ -392,10 +392,10 @@ export async function signAndSendRequest(
 There is a three-layer checker to verify a request is valid. Orderly server only accepts the request that passes all checks. The checker contains the following:
 
 ### Request Timestamp
-The request would be considered expired and get rejected if the timestamp in `orderly-timestamp` header have 300+ seconds difference from the API server time.
+The request would be considered expired and get rejected if the timestamp in `orderly-timestamp` header has 300+ seconds difference from the API server time.
 
 ### HMAC Parameter Signature
-The request must have a `orderly-signature` header that is generate from request parameters and signed with your Orderly secret key.
+The request must have a `orderly-signature` header that is generated from request parameters and signed with your Orderly secret key.
 
 ### Orderly Key Validity Check
 The request must have an `orderly-key` header, and the `orderly-key` has to be added to the network via the Add Key functionality, matched with the account and is still valid (not expired yet).
