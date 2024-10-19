@@ -1,0 +1,85 @@
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                symbol:
+                  type: string
+                algo_type:
+                  type: string
+                  description: "`STOP`/`TP_SL`/`POSITIONAL_TP_SL`"
+                client_order_id:
+                  type: string
+                  description: "36 length, accepts hyphen but cannot be the first character, default: null"
+                type:
+                  type: string
+                  description: "`LIMIT` / `MARKET`, required if `algo_type` = `STOP`"
+                price:
+                  type: number
+                  description: "Optional for `TP_SL` and `POSTIONAL_TP_SL`"
+                quantity:
+                  type: number
+                  description: >-
+                    For `MARKET`/`ASK`/`BID` order, if order_amount is given, it is
+                    not required.
+                    Not required if type is `POSITIONAL_TP_SL`.
+                trigger_price_type:
+                  type: string
+                  description: Only `MARK_PRICE` is available for now.
+                trigger_price:
+                  type: number
+                reduce_only:
+                  type: boolean
+                visible_quantity:
+                  type: boolean
+                  description: Default false
+                side:
+                  type: string
+                  description: "`SELL`/`BUY`, required if `STOP` type"
+                order_tag:
+                  type: string
+                child_orders:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      symbol:
+                        type: string
+                      algo_type:
+                        type: string
+                      child_orders:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/CreateAlgoOrderChildRequest"
+                        description: "Array of `CreateAlgoOrderChildRequest`"
+              example:
+                - symbol: "PERP_ETH_USDC"
+                  algo_type: "BRACKET"
+                  quantity: 0.0032
+                  side: "BUY"
+                  type: "LIMIT"
+                  price: 3415.9
+                  child_orders:
+                    - symbol: "PERP_ETH_USDC"
+                      algo_type: "POSITIONAL_TP_SL"
+                      child_orders:
+                        - symbol: "PERP_ETH_USDC"
+                          algo_type: "TAKE_PROFIT"
+                          side: "SELL"
+                          type: "CLOSE_POSITION"
+                          trigger_price: 3518.4
+                          reduce_only: true
+                        - symbol: "PERP_ETH_USDC"
+                          algo_type: "STOP_LOSS"
+                          side: "SELL"
+                          type: "CLOSE_POSITION"
+                          trigger_price: 3313.4
+                          reduce_only: true
+              required:
+                - symbol
+                - algo_type
+                - quantity
+                - side
+                - type
+                - child_orders
