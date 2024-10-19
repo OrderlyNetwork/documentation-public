@@ -15,9 +15,11 @@ async function main() {
 }
 
 async function updateOpenApi() {
-  await rimraf("./build-on-evm/evm-api/restful-api");
+  try {
+    await rimraf("./build-on-evm/evm-api/restful-api");
+  } catch (err) {}
   await runCommand(
-    "npx @mintlify/scraping@latest openapi-file ./evm.openapi.yaml -o ./build-on-evm/evm-api/restful-api"
+    "npx @mintlify/scraping@3.0.179 openapi-file ./evm.openapi.yaml -o ./build-on-evm/evm-api/restful-api"
   );
 
   let basePath = "./build-on-evm/evm-api/restful-api";
@@ -63,7 +65,9 @@ async function updateOpenApi() {
 async function generateTechDocs() {
   const currentCwd = process.cwd();
   const tmpFolder = await fs.mkdtemp(path.join(tmpdir(), "js-sdk-"));
-  await runCommand(`git clone --depth 1 --branch docs https://github.com/OrderlyNetwork/js-sdk.git ${tmpFolder}`);
+  await runCommand(
+    `git clone --depth 1 --branch docs https://github.com/OrderlyNetwork/js-sdk.git ${tmpFolder}`
+  );
   process.chdir(tmpFolder);
   await runCommand(`pnpm install --no-frozen-lockfile`);
   await runCommand("pnpm run build");
