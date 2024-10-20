@@ -4,7 +4,24 @@ title: "Algo Order Sample Requests"
 
 ## Create Algo Order Sample
 
+
+### STOP
+`STOP` order will be triggered once the given `trigger_price` is reached and new order of `trigger_price_type` will be created.
+```json
+{
+    "symbol": "PERP_NEAR_USDC", 
+    "algo_type": "STOP", 
+    "quantity": "5.5", 
+    "side": "BUY", 
+    "type": "LIMIT", 
+    "trigger_price_type": "MARK_PRICE", 
+    "trigger_price": "4.203", 
+    "price": "3.5"
+}
+```
+
 ### TP_SL
+
 ```json
 {
     "symbol": "PERP_NEAR_USDC",
