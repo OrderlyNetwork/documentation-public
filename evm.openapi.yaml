@@ -562,7 +562,8 @@ paths:
     get:
       summary: Get Order Rules per Symbol
       deprecated: false
-      description: "
+      description: |
+        
         **Limit: 10 requests per 1 second per IP address**
 
 
@@ -606,8 +607,8 @@ paths:
 
 
         - Order size should be within holding threshold. See
-        [account_info](/build-on-evm/evm-api/restful-api/get-account-information)
-        "
+        [account_info](/docs/build-on-evm/evm-api/restful-api/get-account-information)
+
       tags:
         - public
       parameters:
@@ -3212,7 +3213,7 @@ paths:
         To place `Positional TP/SL` order, the input fields is 2 layer and includes an array of the objects named childOrder. The take-profit or stop-loss order should be the objects in the array. For the sub-order in childOrder, please input `CLOSE_POSITION` as type, and `TAKE_PROFIT` or `STOP_LOSS` in algoType field.
 
 
-        Sample request can be found [here](/build-on-evm/algo-order-samples)
+        Sample request can be found [here](/docs/build-on-evm/algo-order-samples)
 
 
         Note: This endpoint requires trading scope in Orderly Key.
