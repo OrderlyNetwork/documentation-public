@@ -2730,6 +2730,8 @@ paths:
         `POST /v1/internal_transfer`
 
         Orderly key must has `asset` scope to access this endpoint.
+        
+        This endpoint will return internal transfer is not available for Delegate Signer account if the `from` is a Delegate Signer account.
       tags:
         - private
       parameters:
@@ -3168,7 +3170,6 @@ paths:
           application/json:
             schema:
               required:
-                - chain_id
                 - user_address
                 - broker_id
               type: object
@@ -3178,7 +3179,7 @@ paths:
                   description: The chain ID that the test USDC should be deposited to
                 user_address:
                   type: string
-                  description: The address of the user account
+                  description: The address of the user account. Use `Zions51qQNUgWNyp4JegUFoMUpgFx43jBUsYmHtDPdr` for Solana address.
                 broker_id:
                   type: string
                   description: Builder ID of an account
@@ -10538,8 +10539,6 @@ components:
             data:
               type: object
               properties:
-                meta:
-                  $ref: "#/components/schemas/PaginationMeta"
                 rows:
                   type: array
                   items:
@@ -10557,6 +10556,10 @@ components:
                       end_time:
                         type: integer
                         example: 1585014255089
+                      register_time:
+                        type: integer
+                        example: 1585014255089
+                        description: "only response when address is input, can be null for no registration record"
 
     GetCampaignStatsResponse:
       allOf:
