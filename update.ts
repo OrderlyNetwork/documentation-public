@@ -19,7 +19,7 @@ async function updateOpenApi() {
     await rimraf("./build-on-evm/evm-api/restful-api");
   } catch (err) {}
   await runCommand(
-    "npx @mintlify/scraping@3.0.179 openapi-file ./evm.openapi.yaml -o ./build-on-evm/evm-api/restful-api"
+    "npx @mintlify/scraping@3.0.185 openapi-file ./evm.openapi.yaml -o ./build-on-evm/evm-api/restful-api"
   );
 
   let basePath = "./build-on-evm/evm-api/restful-api";
@@ -37,7 +37,7 @@ async function updateOpenApi() {
 
   await rimraf("./build-on-near/near-api/restful-api");
   await runCommand(
-    "npx @mintlify/scraping@latest openapi-file ./near.openapi.yaml -o ./build-on-near/near-api/restful-api"
+    "npx @mintlify/scraping@3.0.185 openapi-file ./near.openapi.yaml -o ./build-on-near/near-api/restful-api"
   );
   await fs.rename(
     "./build-on-near/near-api/restful-api/restful_public",
