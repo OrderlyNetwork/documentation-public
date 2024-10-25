@@ -1833,6 +1833,13 @@ paths:
           example: ""
           schema:
             type: string
+        - name: chain_type
+          in: query
+          description: "`EVM` or `SOL`"
+          required: false
+          example: "EVM"
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -1859,6 +1866,13 @@ paths:
           description: The address of the user
           required: true
           example: ""
+          schema:
+            type: string
+        - name: chain_type
+          in: query
+          description: "`EVM` or `SOL`"
+          required: false
+          example: "EVM"
           schema:
             type: string
       responses:
@@ -3151,13 +3165,23 @@ paths:
     post:
       servers:
         - url: https://testnet-operator-evm.orderly.org
+        - url: https://testnet-operator-sol.orderly.org
       summary: Get Faucet USDC(Testnet Only)
       deprecated: false
       description: >-
+        For `EVM`:
+        
+        
         `GET https://testnet-operator-evm.orderly.org/v1/faucet/usdc`
+        
+        
+        For `Solana`:
+        
+        
+        `GET https://testnet-operator-sol.orderly.org/v1/faucet/usdc`
 
 
-        Receive 1,000 USDC in the Testnet environment. Each account may only use
+        Receive 1,000 USDC in the EVM Testnet environment or 100 USDC in the Solana Testnet environment. Each account may only use
         the faucet a maximum of 5 times.
 
 
