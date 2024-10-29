@@ -1833,6 +1833,13 @@ paths:
           example: ""
           schema:
             type: string
+        - name: chain_type
+          in: query
+          description: "`EVM` or `SOL`"
+          required: false
+          example: "EVM"
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -1859,6 +1866,13 @@ paths:
           description: The address of the user
           required: true
           example: ""
+          schema:
+            type: string
+        - name: chain_type
+          in: query
+          description: "`EVM` or `SOL`"
+          required: false
+          example: "EVM"
           schema:
             type: string
       responses:
@@ -2730,6 +2744,8 @@ paths:
         `POST /v1/internal_transfer`
 
         Orderly key must has `asset` scope to access this endpoint.
+        
+        This endpoint will return internal transfer is not available for Delegate Signer account if the `from` is a Delegate Signer account.
       tags:
         - private
       parameters:
@@ -3149,13 +3165,23 @@ paths:
     post:
       servers:
         - url: https://testnet-operator-evm.orderly.org
+        - url: https://testnet-operator-sol.orderly.org
       summary: Get Faucet USDC(Testnet Only)
       deprecated: false
       description: >-
+        For `EVM`:
+        
+        
         `GET https://testnet-operator-evm.orderly.org/v1/faucet/usdc`
+        
+        
+        For `Solana`:
+        
+        
+        `GET https://testnet-operator-sol.orderly.org/v1/faucet/usdc`
 
 
-        Receive 1,000 USDC in the Testnet environment. Each account may only use
+        Receive 1,000 USDC in the EVM Testnet environment or 100 USDC in the Solana Testnet environment. Each account may only use
         the faucet a maximum of 5 times.
 
 
@@ -3168,17 +3194,16 @@ paths:
           application/json:
             schema:
               required:
-                - chain_id
                 - user_address
                 - broker_id
               type: object
               properties:
                 chain_id:
                   type: string
-                  description: The chain ID that the test USDC should be deposited to
+                  description: The chain ID that the test USDC should be deposited to. Not applicable to Solana faucet.
                 user_address:
                   type: string
-                  description: The address of the user account
+                  description: The address of the user account. Use `Zions51qQNUgWNyp4JegUFoMUpgFx43jBUsYmHtDPdr` for Solana address.
                 broker_id:
                   type: string
                   description: Builder ID of an account
@@ -6625,6 +6650,9 @@ components:
                             symbol:
                               type: string
                               example: "PERP_ETH_USDC"
+                            seq:
+                              type: number
+                              example: 1730181536341943600
                             position_qty:
                               type: integer
                               example: 0
@@ -7497,6 +7525,9 @@ components:
         symbol:
           type: string
           example: "PERP_BTC_USDC"
+        seq:
+          type: number
+          example: 1730181536341943600
         timestamp:
           type: number
           example: 1685429350571
@@ -7580,7 +7611,7 @@ components:
                         example: "USDC"
                       amount:
                         type: number
-                        example: 555,
+                        example: 555
                       from_account_id:
                         type: string
                         example: "0x000000"
@@ -10538,8 +10569,6 @@ components:
             data:
               type: object
               properties:
-                meta:
-                  $ref: "#/components/schemas/PaginationMeta"
                 rows:
                   type: array
                   items:
@@ -10557,6 +10586,10 @@ components:
                       end_time:
                         type: integer
                         example: 1585014255089
+                      register_time:
+                        type: integer
+                        example: 1585014255089
+                        description: "only response when address is input, can be null for no registration record"
 
     GetCampaignStatsResponse:
       allOf:
