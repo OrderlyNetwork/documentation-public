@@ -43,7 +43,9 @@ library VaultTypes {
     Latest contract ABI files can be found on our [GitHub](https://github.com/OrderlyNetwork/contract-evm-abi). All of our contracts are verified, so you can also see the ABI on their respective explorers.
     </Note>
 
-    An example Smart Contract deployed on [Arbitrum Sepolia](https://sepolia.arbiscan.io/address/0xa4394b62261061c629800c6d86d153a9f38f0cbb#code) has the following code to initiate delegation:
+    An example Smart Contract is deployed on [Arbitrum Sepolia](https://sepolia.arbiscan.io/address/0xa4394b62261061c629800c6d86d153a9f38f0cbb#code), however it implements an insecure `execAction` function, which allows arbitrary code execution.
+
+    A minimal implementation of a Smart Contract will look like this:
 
     <CodeGroup>
 
@@ -53,16 +55,12 @@ pragma solidity ^0.8.18;
 import "./IVault.sol";
 
 contract DelegateContract {
-    function execAction(address to, uint256 value, bytes memory action) public returns (bool success) {
-        uint256 gasLeft = gasleft();
-         assembly {
-            success := call(gasLeft, to, value, add(action, 0x20), mload(action), 0, 0)
-        }
-    }
-
     function delegate(address vault, VaultTypes.VaultDelegate calldata data) public {
         IVault(vault).delegateSigner(data);
     }
+
+    // ...
+    // implement any other functions your SC might need
 }
 ```
 
