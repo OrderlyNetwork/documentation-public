@@ -3142,7 +3142,7 @@ paths:
       parameters:
         - name: chain_id
           in: query
-          description: id of the chain you wish to query
+          description: "id of the chain you wish to query. `900900900` for Solana."
           required: false
           example: ""
           schema:
@@ -5594,6 +5594,13 @@ paths:
           example: ""
           schema:
             type: string
+        - name: chain_type
+          in: query
+          description: "`EVM` or `SOL`"
+          required: false
+          example: "EVM"
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -5622,6 +5629,13 @@ paths:
           description: ""
           required: true
           example: ""
+          schema:
+            type: string
+        - name: chain_type
+          in: query
+          description: "`EVM` or `SOL`"
+          required: false
+          example: "EVM"
           schema:
             type: string
       responses:
@@ -5739,6 +5753,13 @@ paths:
           description: ""
           required: true
           example: ""
+          schema:
+            type: string
+        - name: chain_type
+          in: query
+          description: "`EVM` or `SOL`"
+          required: false
+          example: "EVM"
           schema:
             type: string
       responses:
@@ -8802,6 +8823,9 @@ components:
             chainId:
               type: integer
               description: Chain ID of registering chain (within those that are supported by the Network)
+            chainType:
+              type: string
+              description: "`EVM` or `SOL`"
             timestamp:
               type: string
               description: timestamp in UNIX milliseconds
@@ -8926,6 +8950,9 @@ components:
             chainId:
               type: integer
               description: Chain ID of registering chain (within those that are supported by the Network)
+            chainType:
+              type: string
+              description: "`EVM` or `SOL`"
             orderlyKey:
               type: string
               description: Orderly Key to be added
@@ -9366,6 +9393,9 @@ components:
             chainId:
               type: integer
               description: Chain ID of registering chain (within those that are supported by the Network)
+            chainType:
+              type: string
+              description: "`EVM` or `SOL`"
             receiver:
               type: string
               description: Chain ID of registering chain (within those that are supported by the Network)
@@ -9484,6 +9514,9 @@ components:
             chainId:
               type: integer
               description: Chain ID of registering chain (within those that are supported by the Network)
+            chainType:
+              type: string
+              description: "`EVM` or `SOL`"
             settleNonce:
               type: integer
               description: Nonce from Get settle PnL Nonce
