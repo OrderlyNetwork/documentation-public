@@ -29,6 +29,27 @@ paths:
               schema:
                 $ref: "#/components/schemas/FuturesInfoResponse"
 
+  /v1/ip_info:
+    get:
+      summary: Get IP Info
+      deprecated: false
+      description: |
+
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/ip_info`
+
+      tags:
+        - public
+      parameters: [ ]
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetIpInfoResponse"
+
   /v1/public/futures_market:
     get:
       summary: Get Market Volume by Broker
@@ -5966,6 +5987,29 @@ components:
                   type: array
                   items:
                     $ref: "#/components/schemas/FutureInfo"
+
+    GetIpInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                city:
+                  type: string
+                  example: "Toronto"
+                ip:
+                  type: string
+                  example: "192.192.192.0"
+                checked:
+                  type: boolean
+                  example: false
+                region:
+                  type: string
+                  example: "Canada"
 
     GetMarketVolumeByBrokerResponse:
       allOf:
