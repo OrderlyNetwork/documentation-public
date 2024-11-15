@@ -23,11 +23,11 @@ title: "Algo Order Sample Requests"
 ### TP_SL
 - For each `TP_SL` order placed, three algo orders will be created in Orderly system.
 
-- To edit a `TP_SL` order, user must edit the `root_algo_order` such that an order edit request must edit the `root_order` and `child_orders` in the same time. User can pass one `child_order` for editing. If the goal is to edit `quantity`, both `child_order` must be passed along and the `quantity` need to be identical.
+- To edit a `TP_SL` order, user must send the edit order request on the `root_algo_order` and must pass both `root_algo_order` and `child_orders` as parameters. User may pass only one `child_order` for editing. If the goal is to edit `quantity`, both `child_order` must be passed and the `quantity` need to be identical.
 
-- For each user, there can be at most 10 `TP_SL` orders.
+- For each user, there can be at most 10 untriggered `TP_SL` orders.
 
-- For each user, there can be at most 1 `POSITIONAL_TP_SL` order.
+- For each user, there can be at most 1 untriggered `POSITIONAL_TP_SL` order.
 
 ```json
 {
