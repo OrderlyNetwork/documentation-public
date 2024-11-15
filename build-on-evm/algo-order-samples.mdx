@@ -21,6 +21,13 @@ title: "Algo Order Sample Requests"
 ```
 
 ### TP_SL
+- For each `TP_SL` order placed, three algo orders will be created in Orderly system.
+
+- To edit a `TP_SL` order, user must edit the `root_algo_order` such that an order edit request must edit the `root_order` and `child_orders` in the same time. User can pass one `child_order` for editing. If the goal is to edit `quantity`, both `child_order` must be passed along and the `quantity` need to be identical.
+
+- For each user, there can be at most 10 `TP_SL` orders.
+
+- For each user, there can be at most 1 `POSITIONAL_TP_SL` order.
 
 ```json
 {
@@ -50,7 +57,7 @@ title: "Algo Order Sample Requests"
 }
 ```
 
-### POSTIONAL_TP_SL
+### POSITIONAL_TP_SL
 ```json
 {
     "symbol": "PERP_NEAR_USDC", 
@@ -80,6 +87,20 @@ title: "Algo Order Sample Requests"
 ```
 
 ### BRACKET
+The nature of `BRACKET` order is to use track a regular order and close its position with `TP_SL` \ `POSITIONAL_TP_SL` order. In this example, assume the regular order under `BRACKET` order as `leg_1` and the `TP_SL` \ `POSITIONAL_TP_SL` child order under `BRACKET` order as `leg_2`.
+
+`leg_1` \= `BRACKET` and the triggered regular order
+
+`leg_2` \= `POSITIONAL_TP_SL` \ `TP_SL` and their triggered child orders
+
+`BRACKET` + `TP_SL` : The quantity of `TP_SL` order is determined by the `executed_quantity` of `leg_1`.
+
+`BRACKET` + `POSITIONAL_TP_SL` : The quantity of `POSITIONAL_TP_SL` order is determined by the user's position at the time of triggering. 
+
+Note: For `BRACKET` + `POSITIONAL_TP_SL`, when `leg_2`'s `POSITIONAL_TP_SL` order is triggered, the previously active `POSITIONAL_TP_SL` orders will be canceled. If there were existing triggered `POSITIONAL_TP_SL` order, `leg_2` will be canceled. 
+
+Makes sure there's only one active `POSITIONAL_TP_SL` order. For any of the regular order under `leg_1` being executed, `leg_1` and `leg_2` will be cutoff such that `leg_2` becomes an independent `POSITIONAL_TP_SL` order. 
+
 ```json
 {
   "symbol": "PERP_ETH_USDC",
