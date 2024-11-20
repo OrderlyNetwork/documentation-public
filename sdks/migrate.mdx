@@ -52,6 +52,7 @@ title: "Migrate to SDK v2"
 | ----------------------------------------- | ---------------------------------------------------------- |
 | `@orderly.network/ui`                     | Base UI component library.                                 |
 | `@orderly.network/ui-scaffold`            | Page layout components (e.g., headers, footers, sidebars). |
+| `@orderly.network/react-app`              | Providers for any React app built with Orderly components. |
 | `@orderly.network/trading`                | Trading page components.                                   |
 | `@orderly.network/portfolio`              | Personal portfolio dashboard components.                   |
 | `@orderly.network/trading-rewards`        |                                                            |
@@ -102,6 +103,7 @@ However, if you want to support only EVM or Solana, refer to the following confi
 import { DefaultEVMAdapterWalletAdapter } from "@orderly.network/default-evm-adapter";
 import { EthersProvider } from "@orderly.network/web3-provider-ethers";
 import { OrderlyAppProvider } from "@orderly.network/react-app";
+
 <OrderlyAppProvider
   //... other
   walletAdapters={[new DefaultEVMAdapterWalletAdapter(new EthersProvider())]}
@@ -189,6 +191,7 @@ onChainChanged?: (
     - shareOptions , referral have been removed: Configure this within the TradingPage component of `@orderly.network/trading`.
     - topBar, topBarProps, footerStatusBarProps, accountMenuItems, onClickAccountMenuItem have been removed. Migrate these configurations to the Scaffold component in `@orderly.network/ui-scaffold`.
   - Wallet Connection Component Update: Replace `@orderly.network/web3-onboard` with `@orderly.network/wallet-connector`. Ensure to update the corresponding component parameters.
+  - Replace `styles.css` import from `@orderly.network/react` with `@orderly.network/ui/dist/styles.css`
   - Theme Updates
 
 ```css
