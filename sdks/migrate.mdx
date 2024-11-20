@@ -1,0 +1,278 @@
+---
+title: "Migrate to SDK v2"
+---
+
+## Major Enhancements
+
+1. Hook and Component Library Refactoring: Improved performance and enhanced component customization capabilities.
+2. New UI/UX: Updated design for a better user experience.
+3. Solana Support: Added support for the Solana chain.
+4. New Bracket Order
+5. Extended React Hooks: Added new hooks (refer to documentation for the complete list):
+   1. portfolio
+      1. useAssetsHistory
+      2. useDistributionHistory
+      3. useFundingFeeHistory
+      4. useStatisticsDaily
+   2. Trading Rewards:
+      1. useAccountRewardsHistory
+      2. useWalletRewardsHistory
+6. New Page Components: Added more out-of-the-box components, the SDK now includes the following built-in page components:
+   1. Trading (New)
+   2. Portfolio
+   3. Referral
+   4. Markets
+   5. Trading Rewards
+   6. Affiliate
+7. Base UI component library: A new base component library, @orderly.network/ui, has been created to facilitate builders in developing custom components that maintain a consistent style with the components provided by the SDK.
+8. Independent Widgets: Separated additional widgets for standalone use, with each page widget’s components available for export:
+   1. Positions Widget
+   2. Orders Widget
+   3. Order Entry Widget
+9. Enhanced Customization Options:
+10. Theming:
+    1. Custom themes with support for CSS variables (since 1.0.0).
+    2. Override component styles via element class modifications.
+    3. Customize default component behaviors via theme configuration.
+11. Custom Components:
+    1. Ability to create fully custom components.
+
+## Package Structure Changes
+
+### Deprecated Packages:
+
+| Name                            | Replacement                                                | Description                                  |
+| ------------------------------- | ---------------------------------------------------------- | -------------------------------------------- |
+| `@orderly.network/react`        | `@orderly.network/ui-scaffold`, `@orderly.network/trading` | Deprecated and split into multiple packages. |
+| `@orderly.network/web3-onboard` | `@orderly.network/wallet-connector`                        | Supports Solana/EVM wallets.                 |
+
+### New Packages
+
+| Name                                      | Description                                                |
+| ----------------------------------------- | ---------------------------------------------------------- |
+| `@orderly.network/ui`                     | Base UI component library.                                 |
+| `@orderly.network/ui-scaffold`            | Page layout components (e.g., headers, footers, sidebars). |
+| `@orderly.network/trading`                | Trading page components.                                   |
+| `@orderly.network/portfolio`              | Personal portfolio dashboard components.                   |
+| `@orderly.network/trading-rewards`        |                                                            |
+| `@orderly.network/affiliate`              |                                                            |
+| `@orderly.network/markets`                |                                                            |
+| `@orderly.network/ui-connector`           |                                                            |
+| `@orderly.network/ui-chain-selector`      |                                                            |
+| `@orderly.network/ui-order-entry`         |                                                            |
+| `@orderly.network/ui-orders`              |                                                            |
+| `@orderly.network/ui-positions`           |                                                            |
+| `@orderly.network/ui-tpsl`                |                                                            |
+| `@orderly.network/ui-transfer`            |                                                            |
+| `@orderly.network/ui-share`               |                                                            |
+| `@orderly.network/ui-leverage`            |                                                            |
+| `@orderly.network/wallet-connector`       |                                                            |
+| `@orderly.network/default-evm-adapter`    |                                                            |
+| `@orderly.network/default-solana-adapter` |                                                            |
+| `@orderly.network/web3-provider-ethers`   |                                                            |
+
+## Major breaking changes
+
+### Hook Modifications (@orderly.network/hooks):
+
+#### OrderlyConfigProvider
+
+Added walletAdapters configuration property, supporting EVM and Solana by default. If your Solana wallet connection is not ready, manually configure this property to exclude Solana support:
+
+```tsx
+import { DefaultEVMAdapterWalletAdapter } from "@orderly.network/default-evm-adapter";
+import { EthersProvider } from "@orderly.network/web3-provider-ethers";
+/**
+ * To support only EVM, you need to manually set the `walletAdapters` property in `OrderlyProvider` to override the SDK's default configuration.
+ * Note: Make sure to include the following dependencies: `@orderly.network/default-evm-adapter` and `@orderly.network/web3-provider-ethers`.
+ */
+<OrderlyConfigProvider
+  //... other
+  walletAdapters={[new DefaultEVMAdapterWalletAdapter(new EthersProvider())]}
+>
+  {children}
+</OrderlyConfigProvider>;
+```
+
+If you are using the UI components directly from the Orderly SDK, you can ignore this change, as the SDK’s wallet connection components will support both EVM and Solana by default.
+
+However, if you want to support only EVM or Solana, refer to the following configuration:
+
+```tsx
+import { DefaultEVMAdapterWalletAdapter } from "@orderly.network/default-evm-adapter";
+import { EthersProvider } from "@orderly.network/web3-provider-ethers";
+import { OrderlyAppProvider } from "@orderly.network/react-app";
+<OrderlyAppProvider
+  //... other
+  walletAdapters={[new DefaultEVMAdapterWalletAdapter(new EthersProvider())]}
+>
+  {children}
+</OrderlyAppProvider>;
+```
+
+The getWalletAdapter property has been removed.
+
+#### useAccount
+
+Updated to support multiple chain namespaces (EVM, Solana):
+
+```tsx
+const { account } = useAccount();
+account.setAddress(currentWallet.accounts[0].address, {
+  provider: currentWallet.provider,
+  chain: {
+    id: currentChainId, // current chain id
+    namespace: "SOL" // namespace can be 'EVM' or 'SOL'
+  },
+  wallet: {
+    name: currentWallet.label // metamask or some other name of wallet
+  }
+});
+```
+
+#### useOrderEntry
+
+v2 refactors the input parameters and return types. If you still wish to use the useOrderEntry from v1, you can import it as follows:
+
+```tsx
+import { useOrderEntry_deprecated } from "@orderly.network/hooks";
+```
+
+<Note>
+  `useOrderEntry_deprecated` will be removed in future versions. It is recommended to transition to
+  the new version of useOrderEntry as soon as possible.
+</Note>
+
+#### useMarginRatio
+
+The return type has been updated:
+
+- **old**: `currentLeverage: number;`
+- **new**: `currentLeverage: number | null;`
+
+```tsx
+export type MarginRatioReturn = {
+  marginRatio: number;
+  // NEW: `number` to `number | null`
+  currentLeverage: number | null;
+  mmr: number | null;
+};
+```
+
+#### Components
+
+If you are only integrating the SDK using hooks, you can ignore the following changes. However, if you are using the widgets provided by the SDK, please adjust your implementation accordingly.
+
+- `@orderly.network/react`（Deprecated）
+  - The package `@orderly.network/react` has been deprecated and split into：
+    - `@orderly.network/ui-scaffold`: For page layout components.
+    - `@orderly.network/trading`: For trading page components.
+  - `@orderly.network/ui-scaffold` provides layout functionalities, including top navigation menus, bottom status bars, and left-side navigation.If you want to customize the top navigation component, note that the v1 Layout component attributes are no longer supported. Configuration should be migrated to the Scaffold component.
+  - The `@orderly.network/ui-scaffold` package not only includes the default Scaffold component but also exports subcomponents like ChainMenuWidget, AccountMenuWidget, etc. These can be freely combined to suit your needs. Refer to the `@orderly.network/ui-scaffold` documentation for details.
+  - The SDK only provides page components; you are responsible for organizing the routing. It is recommended to use a React router library that supports nested routes to reuse layout components, minimize page reloads, and improve user experience. If you are using Next.js, refer to the Next.js template.
+- OrderlyAppProvider updates:
+  - onChainChanged:
+
+```tsx
+//v 1
+onChainChanged?: (chainId: number, isTestnet: boolean) => void;
+
+// v2
+// The second parameter has changed from a boolean to an object
+onChainChanged?: (
+    chainId: number,
+    state: { isTestnet: boolean; isWalletConnected: boolean }
+) => void;
+```
+
+- - Removed Properties:
+    - shareOptions , referral have been removed: Configure this within the TradingPage component of `@orderly.network/trading`.
+    - topBar, topBarProps, footerStatusBarProps, accountMenuItems, onClickAccountMenuItem have been removed. Migrate these configurations to the Scaffold component in `@orderly.network/ui-scaffold`.
+  - Wallet Connection Component Update: Replace `@orderly.network/web3-onboard` with `@orderly.network/wallet-connector`. Ensure to update the corresponding component parameters.
+  - Theme Updates
+
+```css
+"--oui-font-family": '"Manrope", sans-serif',
+/* colors */
+"--oui-color-primary": "51 95 252",
+"--oui-color-primary-light": "96 140 255",
+"--oui-color-primary-darken": "152 62 214",
+"--oui-color-primary-contrast": "255 255 255",
+"--oui-color-link": "182 79 255",
+"--oui-color-link-light": "208 140 255",
+"--oui-color-secondary": "255 255 255",
+"--oui-color-tertiary": "218 218 218",
+"--oui-color-quaternary": "218 218 218",
+"--oui-color-danger": "255 68 124",
+"--oui-color-danger-light": "255 68 124",
+"--oui-color-danger-darken": "217 45 107",
+"--oui-color-danger-contrast": "255 255 255",
+"--oui-color-success": "0 180 158",
+"--oui-color-success-light": "15 203 180",
+"--oui-color-success-darken": "0 134 118",
+"--oui-color-success-contrast": "255 255 255",
+"--oui-color-warning": "210 95 0",
+"--oui-color-warning-light": "255 207 115",
+"--oui-color-warning-darken": "117 88 33",
+"--oui-color-warning-contrast": "255 255 255",
+"--oui-color-fill": "36 32 47",
+"--oui-color-fill-active": "40 46 58",
+"--oui-color-base-1": "83 94 123",
+"--oui-color-base-2": "74 83 105",
+"--oui-color-base-3": "57 65 85",
+"--oui-color-base-4": "51 57 72",
+"--oui-color-base-5": "40 46 58",
+"--oui-color-base-6": "32 37 47",
+"--oui-color-base-7": "27 32 40",
+"--oui-color-base-8": "24 28 35",
+"--oui-color-base-9": "19 21 25",
+"--oui-color-base-10": "7 8 10",
+"--oui-color-base-foreground": "255 255 255",
+"--oui-color-line": "255 255 255",
+"--oui-color-trading-loss": "255 68 124",
+"--oui-color-trading-loss-contrast": "255 255 255",
+"--oui-color-trading-profit": "0 180 158",
+"--oui-color-trading-profit-contrast": "255 255 255",
+/* gradients */
+"--oui-gradient-primary-start": "96 140 255",
+"--oui-gradient-primary-end": "24 40 195",
+"--oui-gradient-secondary-start": "189 107 237",
+"--oui-gradient-secondary-end": "45 0 97",
+"--oui-gradient-success-start": "0 180 158",
+"--oui-gradient-success-end": "0 90 79",
+"--oui-gradient-danger-start": "255 68 124",
+"--oui-gradient-danger-end": "121 20 56",
+"--oui-gradient-warning-start": "255 182 93",
+"--oui-gradient-warning-end": "121 46 0",
+"--oui-gradient-neutral-start": "38 41 46",
+"--oui-gradient-neutral-end": "27 29 34",
+"--oui-gradient-brand-start": "38 254 255",
+"--oui-gradient-brand-end": "89 176 254",
+/* Spacing */
+"--oui-spacing-xs": "20rem",
+"--oui-spacing-sm": "22.5rem",
+"--oui-spacing-md": "26.25rem",
+"--oui-spacing-lg": "30rem",
+"--oui-spacing-xl": "33.75rem"
+```
+
+## FAQ
+
+### export 'SWRConfig' (reexported as 'SWRConfig') was not found in 'swr' (possible exports: unstable_serialize)
+
+when use Next.js，you need to add use client directive at the top of the file
+
+### Attempted import error: 'startWith' is not exported from 'rxjs' (imported as 'startWith').
+
+./node_modules/@web3-onboard/core/dist/Index-6c094240.js
+
+This issue is caused by a version conflict between the rxjs version used by @web3-onboard/core and other libraries. In rxjs@7.x, startWith is exported from 'rxjs/operators' rather than being directly imported from 'rxjs'.
+
+To resolve this issue, ensure the required version of rxjs for @web3-onboard/core is installed (i.e., ^7.5.5). Since @orderly.network/wallet-connector already includes this version of rxjs, updating @orderly.network/wallet-connector will resolve the conflict.
+
+### Error: Dynamic require of "react" is not supported
+
+The issue with the import statement might be due to the following reasons:
+
+- The imported package is not added to the dependencies in your package.json file.
+- The import statement is pointing to a local directory (e.g., ../../dist) instead of the actual package name.
