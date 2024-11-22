@@ -5531,6 +5531,40 @@ paths:
               schema:
                 $ref: "#/components/schemas/GetValorRedeemInfoResponse"
 
+  /v1/staking/esorder/vesting_list:
+    get:
+      summary: Get esORDER vesting list
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        `GET /v1/staking/esorder/vesting_list`
+      tags:
+        - private
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ""
+          schema:
+            type: string
+        - name: is_vesting
+          in: query
+          description: ""
+          required: true
+          example: "False"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetesORDERVestingListResponse"
+
   /v1/public/trading_rewards/epoch_info:
     get:
       summary: Get Parameters of Each Epoch for All Epochs
@@ -11090,6 +11124,33 @@ components:
                       available_usdc:
                         type: number
                         example: 1500
+
+    GetesORDERVestingListResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                vest_request_id:
+                  type: number
+                  example: 1
+                vest_start_time:
+                  type: number
+                  example: 1685600000
+                  description: "`unlockTimestamp` - 15days"
+                vest_end_time:
+                  type: number
+                  example: 1691200000
+                  description: "`unlockTimestamp` + 75days"
+                total_vest_amount:
+                  type: number
+                  example: 1500000.0
+                status:
+                  type: string
+                  example: "claimed"
+                  description: "`claimed` / `canceled` / `vesting`"
 
     GetParameterOfEachEpochForAllEpochsResponse:
       allOf:
