@@ -74,14 +74,16 @@ title: "Migrate to SDK v2"
 
 ## Major breaking changes
 
-### Hook Modifications (@orderly.network/hooks):
+### Hooks SDK Modifications (@orderly.network/hooks)
+
+You can find a full example using the Components SDK in [this Github repository](https://github.com/OrderlyNetwork/example-dex).
 
 #### OrderlyConfigProvider
 
 Added walletAdapters configuration property, supporting EVM and Solana by default. If your Solana wallet connection is not ready, manually configure this property to exclude Solana support:
 
 ```tsx
-import { DefaultEVMAdapterWalletAdapter } from "@orderly.network/default-evm-adapter";
+import { DefaultEVMWalletAdapter } from "@orderly.network/default-evm-adapter";
 import { EthersProvider } from "@orderly.network/web3-provider-ethers";
 /**
  * To support only EVM, you need to manually set the `walletAdapters` property in `OrderlyProvider` to override the SDK's default configuration.
@@ -89,7 +91,7 @@ import { EthersProvider } from "@orderly.network/web3-provider-ethers";
  */
 <OrderlyConfigProvider
   //... other
-  walletAdapters={[new DefaultEVMAdapterWalletAdapter(new EthersProvider())]}
+  walletAdapters={[new DefaultEVMWalletAdapter(new EthersProvider())]}
 >
   {children}
 </OrderlyConfigProvider>;
@@ -161,9 +163,11 @@ export type MarginRatioReturn = {
 };
 ```
 
-#### Components
+### Components SDK Modifications (prior @orderly.network/react)
 
 If you are only integrating the SDK using hooks, you can ignore the following changes. However, if you are using the widgets provided by the SDK, please adjust your implementation accordingly.
+
+You can find a full example using the Components SDK in [this Github repository](https://github.com/OrderlyNetwork/orderly-js-sdk-nextjs-template).
 
 - `@orderly.network/react`（Deprecated）
   - The package `@orderly.network/react` has been deprecated and split into：
