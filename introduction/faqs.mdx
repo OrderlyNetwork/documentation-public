@@ -76,15 +76,6 @@ Traders can explore an ecosystem of front-ends built on Orderly. A comprehensive
   execution. **REDUCE ONLY:** Executes buy or sell orders which only reduce a current position
 </Accordion>
 
-  <Accordion title="Why does Orderly require two different keys to trade? (NEAR only)">
-    There are a couple of reasons:
-
-    1. Separating the rights for trading and other operations, which is crucial for larger companies and institutions.
-
-    2. Verify order contents uploaded by the operator corresponds to an order sent by the user when the trade is settled. Since the orders don't go through the smart contract which uses Access Keys, we need trading keys, so that the operator cannot create fake orders not coming from the users
-
-  </Accordion>
-
   <Accordion title="How do you ensure no fake orders are settled on-chain?">
     All orders coming into the Orderly off-chain matching engine are signed by users' private trading keys and are settled on-chain with those signatures. Public keys are stored on the contract and the signatures are verified thus validifying orders.
 
