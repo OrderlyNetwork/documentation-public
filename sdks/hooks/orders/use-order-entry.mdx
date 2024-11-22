@@ -2,31 +2,72 @@
 title: "useOrderEntry"
 ---
 
-## Order entry
-
 The `useOrderEntry` hook provides a variety of supporting functions according to input parameters and the prevailing market data.
 
-```typescript
-export interface OrderEntryReturn {
-  onSubmit: (values: OrderEntity) => Promise<any>;
-  maxQty: number;
-  freeCollateral: number;
-  markPrice: number;
-  estLiqPrice?: number | null;
-  estLeverage?: number | null;
-
-  symbolConfig: API.SymbolExt;
-  helper: {
-    calculate: (values: Partial<OrderEntity>, field: keyof OrderEntity, value: any) => Partial<OrderEntity>;
-    validator: (values: any) => any;
-  };
-}
-
-const useOrderEntry = (
+```ts
+const useOrderEntry: (
   symbol: string,
-  side: OrderSide,
-  reduceOnly: boolean = false,
-): OrderEntryReturn
+  options: {
+    /** initial order state, default is buy limit order */
+    initialOrder?: Omit<Partial<FullOrderState>, "symbol">;
+  }
+) => OrderEntryReturn;
+
+type OrderEntryReturn = {
+  submit: (options?: { resetOnSuccess?: boolean }) => Promise<void>;
+  reset: () => void;
+  resetErrors: () => void;
+  resetMetaState: () => void;
+  formattedOrder: Partial<FullOrderState>;
+  maxQty: number;
+  /**
+   * The estimated liquidation price.
+   */
+  estLiqPrice: number | null;
+  /**
+   * The estimated leverage after order creation.
+   */
+  estLeverage: number | null;
+  helper: {
+    /**
+     * Function to validate the order.
+     * @returns {Promise<VerifyResult | null>} The validation result.
+     */
+    validate: () => Promise<VerifyResult | null>;
+  };
+  freeCollateral: number;
+  /**
+   * set a single value to the order data;
+   * @param key
+   * @param value
+   * @returns
+   */
+  setValue: (
+    key: keyof FullOrderState,
+    value: any,
+    options?: {
+      shouldUpdateLastChangedField?: boolean;
+    }
+  ) => void;
+  setValues: (values: Partial<FullOrderState>) => void;
+  symbolInfo: API.SymbolExt;
+  /**
+   * Meta state including validation and submission status.
+   */
+  metaState: {
+    dirty: {
+      [K in keyof OrderlyOrder]?: boolean;
+    };
+    submitted: boolean;
+    validated: boolean;
+    errors: VerifyResult | null;
+  };
+  /**
+   * Indicates if a mutation (order creation) is in progress.
+   */
+  isMutating: boolean;
+  markPrice: number | undefined;
+};
 ```
 
 ### Real-time data
@@ -39,57 +80,161 @@ const useOrderEntry = (
 - `estLiqPrice`: The estimated liquidation price, if a position is created from given order paramters.
 - `estLeverage`: The estimated leverage, if a position is created from given order paramters.
 
-> Note: Calculating `estLiqPrice` requires the `watchOrderbook` option to be set to `true`. It also depends on the `orderbook:update` event emitted by the `useOrderbookStream` hook, which must be used elsewhere in your application.
+### Updating values
 
-### Data calculations
+For updating values two functions are provided: `setValue` and `setValues`.
+`useOrderEntry` is built on the concepts of `react-hook-form`.
+If you have been using it in conjunction with `react-hook-form` with the SDK v1, then you might want to entirely remove it now.
 
-The `useOrderEntry` hook provides a `calculate()` function to format user's input:
-
-- Converts the input quantity into USDC
-- Truncates the input quantity and price according to the symbol's tick size
-
-```typescript
-const {
-  helper: { calculate }
-} = useOrderEntry({
-  symbol: "PERP_ETH_USDC",
-  side: OrderSide.BUY,
-  orderType: OrderType.MARKET,
-  order_quantity: 1
+```tsx
+// ...
+const { setValue } = useOrderEntry(symbol, {
+  initialOrder: {
+    side: OrderSide.BUY,
+    order_type: OrderType.MARKET,
+    price: undefined,
+    order_quantity: undefined
+  }
 });
+// ...
 
-const newValue = calculate(values, "order_quantity", 1);
+return (
+  <>
+    {/* ... */}
+    <select
+      onChange={(event) => {
+        setValue("order_type", event.target.value);
+      }}
+    >
+      <option value="MARKET">Market</option>
+      <option value="LIMIT">Limit</option>
+      <option value="STOP_LIMIT">Stop Limit</option>
+    </select>
+
+    <input
+      type="string"
+      placeholder="Price"
+      name="price"
+      onChange={(event) => {
+        setValue("price", event.target.value);
+      }}
+    />
+
+    <input
+      type="string"
+      placeholder="Quantity"
+      name="order_quantity"
+      onChange={(event) => {
+        setValue("order_quantity", event.target.value);
+      }}
+    />
+    {/* ... */}
+  </>
+);
 ```
 
 ### Order validations
 
-Order inputs should be validated by the frontend before submitting to provide the best user experience.
+Order inputs will be validated automatically and any error will be returned in the `metaState.errors` field.
 
-```typescript
+<CodeGroup>
+
+```tsx CreateOrder.tsx
+import { renderFormError } from "./formHelper.tsx";
+
+// ...
 const {
-  helper: { validator }
-} = useOrderEntry({
-  symbol: "PERP_ETH_USDC",
-  side: OrderSide.BUY,
-  orderType: OrderType.MARKET,
-  order_quantity: 1
+  setValue,
+  metaState: { errors, dirty, submitted }
+} = useOrderEntry(symbol, {
+  initialOrder: {
+    side: OrderSide.BUY,
+    order_type: OrderType.MARKET,
+    trigger_price: undefined,
+    price: undefined,
+    order_quantity: undefined
+  }
 });
+const hasError = useCallback(
+  (
+    key: keyof OrderlyOrder
+  ):
+    | {
+        message: string;
+      }
+    | undefined => {
+    if (!dirty[key] && !submitted) {
+      return;
+    }
+    return errors?.[key];
+  },
+  [errors, dirty, submitted]
+);
+// ...
 
-const errors = validator(values);
+return (
+  <>
+    {/* ... */}
+    <input
+      type="string"
+      placeholder="Quantity"
+      name="order_quantity"
+      onChange={(event) => {
+        setValue("order_quantity", event.target.value);
+      }}
+    />
+    {renderFormError(hasError("order_quantity"))}
+    {/* ... */}
+  </>
+);
 ```
+
+```tsx formHelper.tsx
+export const renderFormError = (error?: { message: string }) => {
+  return (
+    <span
+      className={`${
+        error == null ? "h-0" : "h-[1.3rem]"
+      } overflow-hidden color-red transition-duration-300 transition-property-[height] transition-ease-out`}
+    >
+      {error?.message ?? ""}
+    </span>
+  );
+};
+```
+
+</CodeGroup>
 
 ### Placing orders
 
-```typescript
-const { onSubmit } = useOrderEntry({
-  symbol: "PERP_ETH_USDC",
-  side: OrderSide.BUY,
-  orderType: OrderType.MARKET,
-  order_quantity: 1
-});
+You can place orders by calling the `submit` function.
 
-const onSubmit = async (values) => {
-  const res = await onSubmit(values);
-  //...
-};
+```tsx
+// ...
+const { submit, reset } = useOrderEntry(symbol, {
+  initialOrder: {
+    side: OrderSide.BUY,
+    order_type: OrderType.MARKET,
+    price: undefined,
+    order_quantity: undefined
+  }
+});
+// ...
+
+return (
+  <>
+    {/* ... */}
+
+    <form
+      onSubmit={async (event) => {
+        event.preventDefault();
+        await submit();
+        reset();
+      }}
+    >
+      <button type="submit"> Create Order</button>
+    </form>
+    {/* ... */}
+  </>
+);
 ```
