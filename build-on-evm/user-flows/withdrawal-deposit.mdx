@@ -30,7 +30,7 @@ DefaultGasProvider gasProvider = new DefaultGasProvider();
 
 NativeUSDC USDC = new NativeUSDC(usdcAddress, web3j, credentials, gasProvider);
 
-BigInteger depositAmount = new BigInteger("100000");
+BigInteger depositAmount = new BigInteger("10000000");
 
 // approve USDC ERC-20 to be transferred to Vault contract
 USDC.approve(vaultAddress, depositAmount).send();
@@ -52,7 +52,7 @@ usdc = w3.eth.contract(
     abi=abi,
 )
 
-deposit_amount = 100000
+deposit_amount = 10000000
 
 # approve USDC ERC-20 to be transferred to Vault contract
 usdc.functions.approve(vault_address, deposit_amount).transact(
@@ -69,7 +69,7 @@ const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
 
 const usdcContract = NativeUSDC__factory.connect(usdcAddress, wallet);
 
-const depositAmount = 100000n;
+const depositAmount = 10_000_000n;
 await usdcContract.approve(vaultAddress, depositAmount);
 ```
 
@@ -102,7 +102,7 @@ tokenHash.digest(),
 depositAmount);
 
 // get wei deposit fee for `deposit` call
-BigInteger depositFee = vault.getDepositFee(vaultAddress, depositInput).send();
+BigInteger depositFee = vault.getDepositFee(credentials.getAddress(), depositInput).send();
 
 ````
 
@@ -259,7 +259,7 @@ public class DepositExample {
 
             NativeUSDC USDC = new NativeUSDC(usdcAddress, web3j, credentials, gasProvider);
 
-            BigInteger depositAmount = new BigInteger("100000");
+            BigInteger depositAmount = new BigInteger("10000000");
 
             // approve USDC ERC-20 to be transferred to Vault contract
             USDC.approve(vaultAddress, depositAmount).send();
@@ -281,7 +281,7 @@ public class DepositExample {
                         depositAmount);
 
             // get wei deposit fee for `deposit` call
-            BigInteger depositFee = vault.getDepositFee(vaultAddress, depositInput).send();
+            BigInteger depositFee = vault.getDepositFee(credentials.getAddress(), depositInput).send();
 
             // deposit USDC into Vault contract
             vault.deposit(
@@ -321,7 +321,7 @@ usdc = w3.eth.contract(
     abi=abi,
 )
 
-deposit_amount = 100000
+deposit_amount = 10000000
 
 # approve USDC ERC-20 to be transferred to Vault contract
 usdc.functions.approve(vault_address, deposit_amount).transact(
@@ -378,7 +378,7 @@ async function deposit(): Promise<void> {
 
   const usdcContract = NativeUSDC__factory.connect(usdcAddress, wallet);
 
-  const depositAmount = 100000n;
+  const depositAmount = 10_000_000n;
   await usdcContract.approve(vaultAddress, depositAmount);
 
   const vaultContract = Vault__factory.connect(vaultAddress, wallet);
