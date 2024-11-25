@@ -11133,24 +11133,29 @@ components:
             data:
               type: object
               properties:
-                vest_request_id:
-                  type: number
-                  example: 1
-                vest_start_time:
-                  type: number
-                  example: 1685600000000
-                  description: "`unlockTimestamp` - 15days"
-                vest_end_time:
-                  type: number
-                  example: 1691200000000
-                  description: "`unlockTimestamp` + 75days"
-                total_vest_amount:
-                  type: number
-                  example: 1500000.0
-                status:
-                  type: string
-                  example: "claimed"
-                  description: "`claimed` / `canceled` / `vesting`"
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      vest_request_id:
+                        type: number
+                        example: 1
+                      vest_start_time:
+                        type: number
+                        example: 1685600000000
+                        description: "`unlockTimestamp` - 15days"
+                      vest_end_time:
+                        type: number
+                        example: 1691200000000
+                        description: "`unlockTimestamp` + 75days"
+                      total_vest_amount:
+                        type: number
+                        example: 1500000.0
+                      status:
+                        type: string
+                        example: "claimed"
+                        description: "`claimed` / `canceled` / `vesting`"
 
     GetParameterOfEachEpochForAllEpochsResponse:
       allOf:
