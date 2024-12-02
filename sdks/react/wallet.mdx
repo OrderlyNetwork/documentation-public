@@ -2,55 +2,40 @@
 title: "Wallet connect"
 ---
 
-`@orderly.network/react` is an application layer of the Orderly API. It is mainly responsible for rendering the UI, handling user interaction events, and completing trading actions. Therefore, it does not include built-in wallet connection functionality.
+`@orderly.network/react-app` is an application layer of the Orderly API. It is mainly responsible for rendering the UI, handling user interaction events, and completing trading actions. Therefore, it does not include built-in wallet connection functionality.
 
-In places where wallet connection needs to be handled, `@orderly.network/react` utilizes React's context mechanism to obtain information about the currently connected wallet or call wallet connection functions provided by the context. To facilitate this, `@orderly.network/hooks` defines a context named `WalletConnectorContext`. Any component that implements the `WalletConnectorContext.Provider` defined in `WalletConnectorContextState` can serve as the wallet connection component for the app. Please refer to [this link](#custom-wallet-connection-provider) for more details.
+In places where wallet connection needs to be handled, `@orderly.network/react-app` utilizes React's context mechanism to obtain information about the currently connected wallet or call wallet connection functions provided by the context. To facilitate this, `@orderly.network/react-app` defines a context named `WalletConnectorContext`. Any component that implements the `WalletConnectorContext.Provider` defined in `WalletConnectorContextState` can serve as the wallet connection component for the app. Please refer to [this link](#custom-wallet-connection-provider) for more details.
 
 ## Using the wallet connection component provided by Orderly
 
-For the convenience of developers to quickly integrate with third-party wallet connectors, the Orderly SDK has encapsulated and provided installations for popular libraries in the community.
+Orderly SDK provides a built-in wallet connection component supporting both EVM and Solana. Here’s how to integrate it:
 
-### `@orderly.network/web3-onboard`
+### Install Wallet Connector Dependencies
 
-This is a wrapper for [`web3-onboard`](https://onboard.blocknative.com/docs/modules/react), which can assist you in quickly integrating wallet functionality.
-
-#### Installation
-
-```bash
-npm install @orderly.network/web3-onboard
+```
+npm install @orderly.network/wallet-connector
 ```
 
-#### Usage
+### Add the WalletConnectorProvider Component
 
-Wrap your component with the `ConnectorProvider` component, which should typically be the top-level component in your component tree. If it's not, it must be placed at a level above [`OrderlyAppProvider`](/sdks/react/configuration#orderlyappprovider). The `ConnectorProvider` component accepts two parameters:
-
-- `apiKey`: Your [API key](https://explorer.blocknative.com/account) created in `web3-onboard`.
-- `options`: Configuration options for `web3-onboard`. For details, refer to [web3-onboard](https://onboard.blocknative.com/docs/modules/core#initialization). This parameter is optional; if not provided, default configuration options will be used.
+Wrap your application with the `WalletConnectorProvider` for wallet connection functionality:
 
 ```tsx
-import { ConnectorProvider } from "@orderly.network/web3-onboard";
-import injectedModule from "@web3-onboard/injected-wallets";
+import { WalletConnectorProvider } from "@orderly.network/wallet-connector";
 
-export const App = () => {
+const App: FC<{ children: ReactNode }> = (props) => {
   return (
-    <ConnectorProvider
-      apiKey="<Your web3-onboard's api key>"
-      options={{
-        wallets: [injectedModule()],
-        appMetadata: {
-          name: "Orderly",
-          icon: "/Orderly.svg",
-          description: "Orderly"
-        }
-      }}
-    >
-      {/* components */}
-    </ConnectorProvider>
+    <WalletConnectorProvider>
+      <OrderlyAppProvider brokerId="orderly" brokerName="Orderly" networkId="testnet" appIcons={""}>
+        {props.children}
+      </OrderlyAppProvider>
+    </WalletConnectorProvider>
   );
 };
 ```
 
-Orderly will continue to release support for more wallet connection libraries. Stay tuned for updates!
+Alternatively, you can integrate third-party wallet libraries by implementing the `WalletConnectorContextState`
+interface from `@orderly.network/hooks`.
 
 ## Custom wallet connection provider
 
@@ -113,15 +98,14 @@ export const useWalletConnector = () => {
 The following example demonstrates a wallet connection component implemented using `web3modal`. You can use this example as a reference to implement your own wallet connection component.
 
 ```tsx
-import { FC, PropsWithChildren, createContext, useContext, useEffect, useCallback } from "react";
-import { useAccount, WalletConnectorContext } from "@orderly.network/hooks";
-
+import { WalletConnectorContext, WalletState } from "@orderly.network/hooks";
+import { ChainNamespace } from "@orderly.network/types";
 import { createWeb3Modal, defaultWagmiConfig, useWeb3Modal } from "@web3modal/wagmi/react";
+import { FC, PropsWithChildren, useEffect, useState } from "react";
+import { useAccount as useWagmiAccount } from "wagmi";
+import { arbitrum, mainnet } from "wagmi/chains";
 
-import { WagmiConfig, useAccount as useWagmiAccount, useProvider, usePublicClient } from "wagmi";
-import { arbitrum, mainnet } from "viem/chains";
-
-// 1. Get projectId at https://cloud.walletconnect.com
+// 1. Get projectId at https://cloud.reown.com/
 const projectId = "YOUR_PROJECT_ID";
 
 // 2. Create wagmiConfig
@@ -136,30 +120,62 @@ const chains = [mainnet, arbitrum];
 export const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata });
 
 // 3. Create modal
-createWeb3Modal({ wagmiConfig, projectId, chains });
+createWeb3Modal({ wagmiConfig, projectId });
 
-export const WalletConnectProvider: FC<PropsWithChildren<{}>> = (props) => {
-  const { account } = useAccount();
-
-  const publicClient = usePublicClient();
-  const { address, isConnecting, isDisconnected } = useWagmiAccount();
+export const OrderlyProvider: FC<PropsWithChildren> = ({ children }) => {
+  const [wallet, setWallet] = useState<WalletState>({
+    chains: chains.map((chain) => ({
+      namespace: ChainNamespace.evm,
+      id: chain.id
+    })),
+    accounts: [],
+    icon: "",
+    label: "",
+    provider: null
+  });
 
   const { open } = useWeb3Modal();
+  const { address, isConnecting, chain, connector, status } = useWagmiAccount();
 
   useEffect(() => {
-    // call account's setAdress method to update account status;
-  }, []);
-
-  const connect = useCallback(() => {
-    return open().then((res) => {
-      console.log(res);
-      return [];
-    });
-  }, []);
+    const run = async () => {
+      if (!connector) return;
+      setWallet({
+        ...wallet,
+        accounts: await connector.getAccounts().then((addresses) =>
+          addresses.map((addr) => ({
+            address: addr
+          }))
+        ),
+        provider: await connector.getProvider(),
+        label: (await connector.getClient?.().then((client) => client.name)) ?? ""
+      });
+    };
+    run();
+  }, [address, wallet, setWallet, connector]);
 
   return (
-    <WalletConnectorContext.Provider value={{ connect }}>
-      {props.children}
+    <WalletConnectorContext.Provider
+      value={{
+        connect: () => {
+          return open().then(() => []);
+        },
+        disconnect: async () => {
+          connector?.disconnect();
+          return [];
+        },
+        setChain: async ({ chainId }) => {
+          return connector?.switchChain?.({ chainId: Number(chainId) });
+        },
+        chains,
+        connectedChain: chain ? { id: chain.id, namespace: ChainNamespace.evm } : null,
+        namespace: ChainNamespace.evm,
+        connecting: isConnecting,
+        settingChain: status === "reconnecting",
+        wallet
+      }}
+    >
+      {children}
     </WalletConnectorContext.Provider>
   );
 };
