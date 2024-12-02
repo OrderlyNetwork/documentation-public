@@ -2,156 +2,126 @@
 title: "Getting started"
 ---
 
-## Automatic Installation
+Follow the steps below to integrate the Orderly SDK into your project:
 
-For a brand new project, we recommend running the `create-orderly-app` command to create a new trading app automatically. This will set up a new Orderly app and install the required dependencies.
+## Add Basic Dependencies
 
-<CodeGroup>
-```bash npm
-npx create-orderly-app .
+### Install the Base Component Libraries
+
+```
+npm install @orderly.network/ui @orderly.network/react-app
 ```
 
-```bash pnpm
-pnpm create orderly-app .
-```
-
-```bash yarn
-yarn create orderly-app .
-```
-
-</CodeGroup>
-
-You will then be asked the following prompts:
-
-- **Project name?**: The name of your project.
-- **What is your BrokerId?**: Your unique broker ID.
-- **Would you like to add which pages?**: You can add some pages to your project.
-- **would you like to use which wallet connector?**: choose a wallet connect compoenent.
-- **Would you like to use which framework?**: choose a React framework.
-
-Once you've answered the prompts, `create-orderly-app` will create a folder that is named after your project name, then install all dependencies, and creates all routes and components required for creating the app automatically.
-
-## Manual Installation
-
-If you already created your own project, or would like to manually set the SDK up, then you can follow the steps below to install `@orderly.network/react`.
-
-<Steps>
-<Step title="Installation">
- 
-Inside your React project directory, run the following:
-
-```sh
-npm install @orderly.network/react
-```
-
-</Step>
-<Step title="Add styles">
+### Add Styles to Your Project
 
 Reference the style file by adding the following code to your project:
 
-```tsx
-import "@orderly.network/react/dist/styles.css";
+```ts
+import "@orderly.network/ui/dist/styles.css";
 ```
 
-If you would like to customize the theme, please refer to this [link](/sdks/react/theming).
+### Add a Global Configuration Provider
 
-</Step>
-<Step title="Adding a global configuration Provider">
+Wrap your application with the `OrderlyAppProvider` component to set global configurations:
 
-- The `OrderlyAppProvider` component encapsulates the `OrderlyConfigProvider` from `@orderly.network/hooks`. The parameters you configure on the `OrderlyAppProvider` component will be passed to the `OrderlyConfigProvider`.
-- The `brokerId` parameter is mandatory, and you can obtain it by [contacting us](mailto:product@orderly.network).
+```tsx
+import React, { FC, ReactNode } from "react";
+import { OrderlyAppProvider } from "@orderly.network/react-app";
 
-```tsx trading.tsx
-import { TradingPage, OrderlyAppProvider } from "@orderly.network/react";
-// Add a wallet connection provider to provide the wallet connection function for the app
-import { ConnectorProvider } from "@orderly.network/web3-onboard";
-
-export default function Trading() {
+const App: FC<{ children: ReactNode }> = (props) => {
   return (
-    <OrderlyAppProvider
-        networkId="testnet"
-        brokerId="<Your brokerId>"
-        brokerName="<Your name>"
-				shareOptions={{
-          pnl: {
-            backgroundImages: [
-              // your background images
-            ],
-          },
-        }}
-        appIcons={...}
-      >
-        {/* page */}
+    <OrderlyAppProvider brokerId="orderly" brokerName="Orderly" networkId="testnet" appIcons={""}>
+      {props.children}
     </OrderlyAppProvider>
   );
-}
+};
 ```
 
-</Step>
-<Step title="Adding a wallet connection component">
+### Add Wallet Connection
 
-**You must add a web3 wallet provider**, otherwise the Orderly private apis cannot be used. You can use the wallet connection library provided by the Orderly SDK or implement the component yourself. For more details, please refer to [Wallet Connect](/sdks/react/wallet).
+Orderly SDK provides a built-in wallet connection component supporting both EVM and Solana. Here’s how to integrate it:
 
-```sh
-npm install @orderly.network/web3-onboard
+#### Install Wallet Connector Dependencies
+
+```
+npm install @orderly.network/wallet-connector
 ```
 
-```tsx trading.tsx
-import { TradingPage } from "@orderly.network/react";
-// Add a wallet connection provider to provide the wallet connection function for the app
-import { ConnectorProvider } from "@orderly.network/web3-onboard";
+#### Add the WalletConnectorProvider Component
 
-export default function Trading() {
+Wrap your application with the `WalletConnectorProvider` for wallet connection functionality:
+
+```tsx
+import { WalletConnectorProvider } from "@orderly.network/wallet-connector";
+
+const App: FC<{ children: ReactNode }> = (props) => {
   return (
-    <ConnectorProvider
-      apiKey="<Your web3-onboard's api key>"
-      options={`metadata`}
-    >
-      <OrderlyAppProvider
-        {/* config */}
-      >
-        {/* page */}
+    <WalletConnectorProvider>
+      <OrderlyAppProvider brokerId="orderly" brokerName="Orderly" networkId="testnet" appIcons={""}>
+        {props.children}
       </OrderlyAppProvider>
-    </ConnectorProvider>
+    </WalletConnectorProvider>
   );
-}
+};
 ```
 
-</Step>
-<Step title="Pages">
+Alternatively, you can integrate third-party wallet libraries by implementing the `WalletConnectorContextState`
+interface from `@orderly.network/hooks`.
 
-To add a new page to your project, introduce a component of the Page type, and provide the required configuration parameters as specified. Below is an example using the trading page:
+## Add Pages
 
-```tsx trading.tsx
-import { TradingPage } from "@orderly.network/react";
+### Page Layout
 
-export default function Trading() {
-  return (
-    <ConnectorProvider
-      apiKey="<Your web3-onboard's api key>"
-      options={`metadata`}
-    >
-      <OrderlyAppProvider
-        {/* config */}
-      >
-        <TradingPage
-          symbol={"PERP_ETH_USDC"}
-          tradingViewConfig={`tradingView config`}
-          onSymbolChange={`onSymbolChange handler`}
-        />
-      </OrderlyAppProvider>
-    </ConnectorProvider>
-  );
-}
+If you want to use the SDK’s built-in top navigation, side navigation, and other layout features, install the layout library:
+
+```
+npm install @orderly.network/ui-scaffold
 ```
 
-- Different frameworks often have different ways of configuring routes. You can view examples [here](/sdks/react/next).
-- For configuration parameters of the Trading Page component, please refer to [this link](/sdks/react/components/trading).
+### Add the Scaffold component to your application:
 
-</Step>
-<Step title="Done">
+```tsx
+import Scaffold from "@orderly.network/ui-scaffold";
 
-Now you can start your project and access the routes defined above. You will see a complete exchange page.
+<Scaffold
+  mainNavProps={
+    {
+      // Please refer to the example code and configure as needed.
+    }
+  }
+  footerProps={{}}
+  routerAdapter={{
+    onRouteChange, //Handle user click events on the navigation menu.
+    currentPath: "/"
+  }}
+>
+  {/* page component */}
+  {children}
+</Scaffold>;
+```
 
-</Step>
-</Steps>
+For certain page components, the SDK also provides ready-made layout components. For example, you can directly import the layout for `@orderly.network/portfolio`.
+
+### Page Components
+
+The SDK includes the following page components:
+
+Trading - `@orderly.network/trading`
+
+Portfolio - `@orderly.network/portfolio`
+
+Referral - `@orderly.network/referral`
+
+Markets - `@orderly.network/markets`
+
+Trading Rewards - `@orderly.network/trading-rewards`
+
+Affiliate - `@orderly.network/affiliate`
+
+You can integrate these with your preferred React routing framework. Here are examples for popular frameworks:
+
+- [Next.js](https://github.com/OrderlyNetwork/orderly-js-sdk-nextjs-template)
+
+- [CRA](https://github.com/OrderlyNetwork/orderly-js-sdk-cra-template)
+
+For detailed usage, refer to the [Orderly Storybook](https://storybook.orderly.network/).
