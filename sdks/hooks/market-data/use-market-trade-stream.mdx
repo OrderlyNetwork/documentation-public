@@ -6,6 +6,19 @@ Subscribe to [trades](/sdks/tech-doc/interfaces/orderly_network_types.API.Trade)
 
 - [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#usemkarettradestream)
 
+### Example
+
 ```tsx
 const { data, isLoading } = useMarketTradeStream(symbol);
+```
+
+The returned data is an array of objects containing the following fields:
+
+```ts
+{
+  "price": 95731.5,
+  "side": "SELL",
+  "size": 0.1,
+  "ts": 1732805310368
+}
 ```
