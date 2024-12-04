@@ -2158,7 +2158,7 @@ paths:
                 orders:
                   type: array
                   items:
-                    $ref: "#/components/schemas/OrderBody"
+                    $ref: "#/components/schemas/BatchCreateOrderBody"
       responses:
         "200":
           description: OK
@@ -7900,6 +7900,35 @@ components:
       properties:
         order_id:
           type: string
+        symbol:
+          type: string
+        client_order_id:
+          type: string
+        order_type:
+          type: string
+        order_price:
+          type: number
+        order_quantity:
+          type: number
+        order_amount:
+          type: number
+        reduce_only:
+          type: boolean
+        visible_quantity:
+          type: number
+        side:
+          type: string
+        order_tag:
+          type: string
+
+
+    BatchCreateOrderBody:
+      required:
+        - order_type
+        - side
+        - symbol
+      type: object
+      properties:
         symbol:
           type: string
         client_order_id:
