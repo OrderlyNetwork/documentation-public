@@ -15,7 +15,7 @@ Orderly Network uses the [`ed25519` elliptic curve standard](https://ed25519.cr.
   </Step>
   <Step title="Access key (Orderly key)">
     Your Orderly public key needs to be added to the request header as `orderly-key`. To generate and add a new Orderly key, please refer to [the documentation](/build-on-evm/user-flows/wallet-authentication#orderly-key).
-    You can also get Orderly keys from frontend builders like [WOOFi Pro](https://dex.woo.org).
+    You can also get Orderly keys from frontend builders like [WOOFi Pro](https://pro.woofi.com).
   </Step>
   <Step title="Timestamp">
     Take the timestamp of the request in milliseconds and add it as `orderly-timestamp` to the request header.
@@ -33,6 +33,7 @@ Orderly Network uses the [`ed25519` elliptic curve standard](https://ed25519.cr.
 ```
 1649920583000POST/v1/order{"symbol": "PERP_ETH_USDC", "order_type": "LIMIT", "order_price": 1521.03, "order_quantity": 2.11, "side": "BUY"}
 ```
+
   </Step>
   <Step title="Generate a signature">
     Use the normalized request content to generate a signature using the `ed25519` algorithm, and encode the signature in base64 url-safe format. Add the result to the request headers as `orderly-signature`.
@@ -43,12 +44,13 @@ Orderly Network uses the [`ed25519` elliptic curve standard](https://ed25519.cr.
   <Step title="Send the request">
   The final request should have following headers:
 
-  `Content-Type`, `orderly-account-id`, `orderly-key`, `orderly-signature`, `orderly-timestamp`
+`Content-Type`, `orderly-account-id`, `orderly-key`, `orderly-signature`, `orderly-timestamp`
+
   </Step>
 </Steps>
 
 <Note>
-Orderly key should be used without the ed25519\: prefix when used in code samples below.
+  Orderly key should be used without the ed25519\: prefix when used in code samples below.
 </Note>
 
 ### Full example
@@ -70,9 +72,9 @@ import org.bitcoinj.base.Base58;
 import org.json.JSONObject;
 
 public class AuthenticationExample {
-   public static void main(String[] args) throws Exception {
-      String baseUrl = "https://testnet-api-evm.orderly.org";
-      String orderlyAccountId = "<orderly-account-id>";
+public static void main(String[] args) throws Exception {
+String baseUrl = "https://testnet-api-evm.orderly.org";
+String orderlyAccountId = "<orderly-account-id>";
 
       Dotenv dotenv = Dotenv.load();
       OkHttpClient client = new OkHttpClient();
@@ -95,9 +97,11 @@ public class AuthenticationExample {
          res = response.body().string();
       }
       JSONObject obj = new JSONObject(res);
-   }
+
 }
-```
+}
+
+````
 
 ```Java Signer.java
 import java.io.UnsupportedEncodingException;
@@ -194,8 +198,10 @@ public class Signer {
             .build();
    }
 }
-```
+````
+
     </CodeGroup>
+
   </Tab>
   <Tab title="Python">
     <CodeGroup>
@@ -209,7 +215,6 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from signer import Signer
 
-
 base_url = "https://testnet-api-evm.orderly.org"
 orderly_account_id = "<orderly-account-id>"
 
@@ -220,20 +225,21 @@ session = Session()
 signer = Signer(orderly_account_id, orderly_key)
 
 req = signer.sign_request(
-    Request(
-        "POST",
-        "%s/v1/order" % base_url,
-        json={
-            "symbol": "PERP_ETH_USDC",
-            "order_type": "MARKET",
-            "order_quantity": 0.01,
-            "side": "BUY",
-        },
-    )
+Request(
+"POST",
+"%s/v1/order" % base_url,
+json={
+"symbol": "PERP_ETH_USDC",
+"order_type": "MARKET",
+"order_quantity": 0.01,
+"side": "BUY",
+},
+)
 )
 res = session.send(req)
 response = json.loads(res.text)
-```
+
+````
 
 ```py signer.py
 from base58 import b58encode
@@ -292,8 +298,10 @@ class Signer(object):
 
 def encode_key(key: bytes):
     return "ed25519:%s" % b58encode(key).decode("utf-8")
-```
+````
+
     </CodeGroup>
+
   </Tab>
   <Tab title="TypeScript">
     <CodeGroup>
@@ -302,7 +310,7 @@ import bs58 from 'bs58';
 import { config } from 'dotenv';
 import { webcrypto } from 'node:crypto';
 
-import { signAndSendRequest } from './signer';
+import { signAndSendRequest } from "./signer";
 
 // this is only necessary in Node.js to make `@noble/ed25519` dependency work
 if (!globalThis.crypto) globalThis.crypto = webcrypto as any;
@@ -310,26 +318,27 @@ if (!globalThis.crypto) globalThis.crypto = webcrypto as any;
 config();
 
 async function main() {
-  const baseUrl = 'https://testnet-api-evm.orderly.org';
-  const orderlyAccountId = '<orderly-account-id>';
+const baseUrl = 'https://testnet-api-evm.orderly.org';
+const orderlyAccountId = '<orderly-account-id>';
 
-  const orderlyKey = bs58.decode(process.env.ORDERLY_SECRET!);
+const orderlyKey = bs58.decode(process.env.ORDERLY_SECRET!);
 
-  const res = await signAndSendRequest(orderlyAccountId, orderlyKey, `${baseUrl}/v1/order`, {
-    method: 'POST',
-    body: JSON.stringify({
-      symbol: 'PERP_ETH_USDC',
-      order_type: 'MARKET',
-      order_quantity: 0.01,
-      side: 'BUY'
-    })
-  });
-  const response = await res.json();
-  console.log(response);
+const res = await signAndSendRequest(orderlyAccountId, orderlyKey, `${baseUrl}/v1/order`, {
+method: 'POST',
+body: JSON.stringify({
+symbol: 'PERP_ETH_USDC',
+order_type: 'MARKET',
+order_quantity: 0.01,
+side: 'BUY'
+})
+});
+const response = await res.json();
+console.log(response);
 }
 
 main();
-```
+
+````
 
 ```ts signer.ts
 import { getPublicKeyAsync, signAsync } from '@noble/ed25519';
@@ -366,8 +375,10 @@ export async function signAndSendRequest(
     ...(init ?? {})
   });
 }
-```
+````
+
     </CodeGroup>
+
   </Tab>
   <Tab title="Shell">
   ``` shell cURL
@@ -389,14 +400,17 @@ export async function signAndSendRequest(
 </Tabs>
 
 ## Security
+
 There is a three-layer checker to verify a request is valid. Orderly server only accepts the request that passes all checks. The checker contains the following:
 
 ### Request Timestamp
+
 The request would be considered expired and get rejected if the timestamp in `orderly-timestamp` header has 300+ seconds difference from the API server time.
 
 ### HMAC Parameter Signature
+
 The request must have a `orderly-signature` header that is generated from request parameters and signed with your Orderly secret key.
 
 ### Orderly Key Validity Check
-The request must have an `orderly-key` header, and the `orderly-key` has to be added to the network via the Add Key functionality, matched with the account and is still valid (not expired yet).
 
+The request must have an `orderly-key` header, and the `orderly-key` has to be added to the network via the Add Key functionality, matched with the account and is still valid (not expired yet).
