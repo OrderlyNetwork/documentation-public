@@ -28,7 +28,6 @@ title: "Migrate to SDK v2"
    3. Referral
    4. Markets
    5. Trading Rewards
-   6. Affiliate
 7. Base UI component library: A new base component library, @orderly.network/ui, has been created to facilitate builders in developing custom components that maintain a consistent style with the components provided by the SDK.
 8. Independent Widgets: Separated additional widgets for standalone use, with each page widget’s components available for export:
    1. Positions Widget
@@ -50,6 +49,7 @@ title: "Migrate to SDK v2"
 | ------------------------------- | ---------------------------------------------------------- | -------------------------------------------- |
 | `@orderly.network/react`        | `@orderly.network/ui-scaffold`, `@orderly.network/trading` | Deprecated and split into multiple packages. |
 | `@orderly.network/web3-onboard` | `@orderly.network/wallet-connector`                        | Supports Solana/EVM wallets.                 |
+| `@orderly.network/referral`     | `@orderly.network/affiliate`                               | Replacement package.                         |
 
 ### New Packages
 
@@ -176,15 +176,18 @@ If you are only integrating the SDK using hooks, you can ignore the following ch
 
 You can find a full example using the Components SDK in [this Github repository](https://github.com/OrderlyNetwork/orderly-js-sdk-nextjs-template).
 
-- `@orderly.network/react`（Deprecated）
-  - The package `@orderly.network/react` has been deprecated and split into：
-    - `@orderly.network/ui-scaffold`: For page layout components.
-    - `@orderly.network/trading`: For trading page components.
-  - `@orderly.network/ui-scaffold` provides layout functionalities, including top navigation menus, bottom status bars, and left-side navigation.If you want to customize the top navigation component, note that the v1 Layout component attributes are no longer supported. Configuration should be migrated to the Scaffold component.
-  - The `@orderly.network/ui-scaffold` package not only includes the default Scaffold component but also exports subcomponents like ChainMenuWidget, AccountMenuWidget, etc. These can be freely combined to suit your needs. Refer to the `@orderly.network/ui-scaffold` documentation for details.
-  - The SDK only provides page components; you are responsible for organizing the routing. It is recommended to use a React router library that supports nested routes to reuse layout components, minimize page reloads, and improve user experience. If you are using Next.js, refer to the Next.js template.
-- OrderlyAppProvider updates:
-  - onChainChanged:
+#### `@orderly.network/react`（Deprecation）
+
+- The package `@orderly.network/react` has been deprecated and split into：
+  - `@orderly.network/ui-scaffold`: For page layout components.
+  - `@orderly.network/trading`: For trading page components.
+- `@orderly.network/ui-scaffold` provides layout functionalities, including top navigation menus, bottom status bars, and left-side navigation.If you want to customize the top navigation component, note that the v1 Layout component attributes are no longer supported. Configuration should be migrated to the Scaffold component.
+- The `@orderly.network/ui-scaffold` package not only includes the default Scaffold component but also exports subcomponents like ChainMenuWidget, AccountMenuWidget, etc. These can be freely combined to suit your needs. Refer to the `@orderly.network/ui-scaffold` documentation for details.
+- The SDK only provides page components; you are responsible for organizing the routing. It is recommended to use a React router library that supports nested routes to reuse layout components, minimize page reloads, and improve user experience. If you are using Next.js, refer to the Next.js template.
+
+#### OrderlyAppProvider updates:
+
+- onChainChanged:
 
 ```tsx
 //v 1
@@ -198,12 +201,19 @@ onChainChanged?: (
 ) => void;
 ```
 
-- - Removed Properties:
-    - shareOptions , referral have been removed: Configure this within the TradingPage component of `@orderly.network/trading`.
-    - topBar, topBarProps, footerStatusBarProps, accountMenuItems, onClickAccountMenuItem have been removed. Migrate these configurations to the Scaffold component in `@orderly.network/ui-scaffold`.
-  - Wallet Connection Component Update: Replace `@orderly.network/web3-onboard` with `@orderly.network/wallet-connector`. Ensure to update the corresponding component parameters.
-  - Replace `styles.css` import from `@orderly.network/react` with `@orderly.network/ui/dist/styles.css`
-  - Theme Updates
+- Removed Properties:
+  - shareOptions , referral have been removed: Configure this within the TradingPage component of `@orderly.network/trading`.
+  - topBar, topBarProps, footerStatusBarProps, accountMenuItems, onClickAccountMenuItem have been removed. Migrate these configurations to the Scaffold component in `@orderly.network/ui-scaffold`.
+
+#### Wallet Connection
+
+Replace `@orderly.network/web3-onboard` with `@orderly.network/wallet-connector`. Ensure to update the corresponding component parameters.
+
+#### Styling
+
+Replace `styles.css` import from `@orderly.network/react` with `@orderly.network/ui/dist/styles.css`
+
+Theme Updates:
 
 ```css
 "--oui-font-family": '"Manrope", sans-serif',
@@ -268,6 +278,27 @@ onChainChanged?: (
 "--oui-spacing-md": "26.25rem",
 "--oui-spacing-lg": "30rem",
 "--oui-spacing-xl": "33.75rem"
+```
+
+#### Referral
+
+`@orderly.network/referral` has been replaced by `@orderly.network/affiliate`:
+
+```tsx
+import { Dashboard, ReferralProvider } from "@orderly.network/affiliate";
+// ...
+
+<ReferralProvider
+  becomeAnAffiliateUrl="URL"
+  learnAffiliateUrl="URL"
+  referralLinkUrl="URL"
+  overwrite={{
+    shortBrokerName: "NAME",
+    brokerName: "NAME"
+  }}
+>
+  <Dashboard.DashboardPage />
+</ReferralProvider>;
 ```
 
 ## FAQ
