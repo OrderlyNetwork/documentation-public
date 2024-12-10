@@ -110,3 +110,34 @@ export const App: FC<PropsWithChildren> = ({ children }) => {
   );
 };
 ```
+
+## Wallet Integration with Orderly Provider
+
+The Orderly Provider enables seamless integration with different blockchain wallets.
+It supports both EVM-compatible chains and Solana through dedicated wallet adapters.
+Here's how to set up the provider with both ecosystems:
+
+```tsx
+import type { FC, PropsWithChildren } from "react";
+import { OrderlyConfigProvider } from "@orderly.network/hooks";
+import { DefaultEVMWalletAdapter } from "@orderly.network/default-evm-adapter";
+import { DefaultSolanaWalletAdapter } from "@orderly.network/default-solana-adapter";
+import { EthersProvider } from "@orderly.network/web3-provider-ethers";
+
+const brokerId = "<your id>";
+
+export const App: FC<PropsWithChildren> = ({ children }) => {
+  return (
+    <OrderlyConfigProvider
+      brokerId={brokerId}
+      networkId="testnet"
+      walletAdapters={[
+        new DefaultEVMWalletAdapter(new EthersProvider()),
+        new DefaultSolanaWalletAdapter()
+      ]}
+    >
+      {children}
+    </OrderlyConfigProvider>
+  );
+};
+```
