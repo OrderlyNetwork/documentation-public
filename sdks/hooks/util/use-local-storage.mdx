@@ -27,3 +27,32 @@ return (
   </>
 );
 ```
+
+### Using with different data types
+
+```tsx
+type ChartConfig = {
+  timeframe: string;
+  indicators: string[];
+  theme: "light" | "dark";
+};
+
+const [chartConfig, setChartConfig] = useLocalStorage<ChartConfig>("CHART_CONFIG", {
+  timeframe: "1h",
+  indicators: ["MA", "RSI"],
+  theme: "light"
+});
+
+const toggleTheme = () => {
+  setChartConfig((prev) => ({
+    ...prev,
+    theme: prev.theme === "light" ? "dark" : "light"
+  }));
+};
+
+return (
+  <button onClick={toggleTheme}>
+    Switch to {chartConfig.theme === "light" ? "dark" : "light"} theme
+  </button>
+);
+```
