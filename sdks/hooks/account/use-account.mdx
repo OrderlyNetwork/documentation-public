@@ -127,3 +127,25 @@ const nextState = await account.setAddress("<address>", {
   }
 });
 ```
+
+### Switch Chain
+
+```tsx
+  const account = useAccountInstance();
+
+  const handleChainSelect = (id: string) => {
+    // Remember to also switch chain in your wallet provider (e.g., wagmi, web3-onboard)
+    account.switchChainId(id);
+  }
+
+return (
+  {supportedChains
+    .filter(({ network }) => network === "mainnet")
+    .map(({ id, icon, label, chainId }) => (
+      <button key={id} onClick={handleChainSelect(id)}>
+        {label}
+      </button>
+    ))
+  }
+);
+```
