@@ -1138,6 +1138,20 @@ paths:
           example: ""
           schema:
             type: number
+        - name: sort_by
+          in: query
+          description: "liquidation_id, time.default sort_by id desc"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: liquidation_id
+          in: query
+          description: "return the designed liquidation_id only"
+          required: false
+          example: ""
+          schema:
+            type: number
         - $ref: "#/components/parameters/orderly_timestamp"
         - $ref: "#/components/parameters/orderly_account_id"
         - $ref: "#/components/parameters/orderly_key"
