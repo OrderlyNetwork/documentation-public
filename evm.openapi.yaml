@@ -1138,6 +1138,20 @@ paths:
           example: ""
           schema:
             type: number
+        - name: sort_by
+          in: query
+          description: "`liquidation_id`/`time`"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: liquidation_id
+          in: query
+          description: "return the designed liquidation_id only"
+          required: false
+          example: ""
+          schema:
+            type: number
         - $ref: "#/components/parameters/orderly_timestamp"
         - $ref: "#/components/parameters/orderly_account_id"
         - $ref: "#/components/parameters/orderly_key"
@@ -5323,9 +5337,12 @@ paths:
           in: query
           description: ""
           required: false
-          example: ""
+          example: []
           schema:
-            type: string
+            type: array
+            items:
+              type: string
+              example: "PERP_WOO_USDC"
         - name: order_tag
           in: query
           description: ""
@@ -5790,6 +5807,39 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GetSymbolRewardsParametersResponse"
+
+  /v1/public/market_making_rewards/leaderboard:
+    get:
+      summary: Leaderboard for market maker rewards
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET v1/public/market_making_rewards/leaderboard`
+      tags:
+        - public
+      parameters:
+        - name: epoch
+          in: query
+          description: ""
+          required: true
+          example:
+          schema:
+            type: number
+        - name: market
+          in: query
+          description: ""
+          required: true
+          example: ""
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeaderboardForMarketMakerRewardsResponse"
 
   /v1/public/market_making_rewards/current_epoch_estimate:
     get:
@@ -7531,7 +7581,7 @@ components:
                       max_position_qty:
                         type: number
                         example: 56.6
-                      close_position_qty:
+                      closed_position_qty:
                         type: number
                         example: 56.6
                       side:
@@ -7549,6 +7599,9 @@ components:
                       liquidator_fee:
                         type: number
                         example: 0
+                      liquidation_id:
+                        type: number
+                        example: null
                       realized_pnl:
                         type: number
                         example: -9.0969192731490491
@@ -10234,6 +10287,9 @@ components:
                       referee_fee:
                         type: number
                         example: 0.01
+                      orderly_fee:
+                        type: number
+                        example: 1111
                       referral_codes:
                         type: array
                         items:
@@ -10861,6 +10917,12 @@ components:
                 new_traded_referee:
                   type: number
                   example: 10
+                total_staked_order:
+                  type: number
+                  example: 111
+                total_staked_esorder:
+                  type: number
+                  example: 111
 
     GetCampaignCheckResponse:
       allOf:
@@ -11640,6 +11702,47 @@ components:
                         type: number
                         example: 2.3
                         description: "in bps"
+
+    LeaderboardForMarketMakerRewardsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                market:
+                  type: string
+                  example: "PERP_ETH_USDC"
+                epoch:
+                  type: number
+                  example: 1
+                epoch_status:
+                  type: string
+                  example: "Active"
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      address:
+                        type: string
+                        example: "0xxx"
+                      est_r_wallet:
+                        type: number
+                        example: 2.228807384
+                      est_avg_stake:
+                        type: number
+                        example: 55
+                      est_stake_boost:
+                        type: number
+                        example: 1
+                      uptime:
+                        type: number
+                        example: 1
+                      maker_volume:
+                        type: number
+                        example: 2.3
 
     GetTheStatusOfTradingRewardsProgrammeResponse:
       allOf:
