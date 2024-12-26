@@ -5808,6 +5808,39 @@ paths:
               schema:
                 $ref: "#/components/schemas/GetSymbolRewardsParametersResponse"
 
+  v1/public/market_making_rewards/leaderboard:
+    get:
+      summary: Leaderboard for market maker rewards
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET v1/public/market_making_rewards/leaderboard`
+      tags:
+        - public
+      parameters:
+        - name: epoch
+          in: query
+          description: ""
+          required: true
+          example:
+          schema:
+            type: number
+        - name: market
+          in: query
+          description: ""
+          required: true
+          example: ""
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeaderboardForMarketMakerRewardsResponse"
+
   /v1/public/market_making_rewards/current_epoch_estimate:
     get:
       summary: Get Market Maker Current Epoch Estimate
@@ -11666,6 +11699,47 @@ components:
                         type: number
                         example: 2.3
                         description: "in bps"
+
+    LeaderboardForMarketMakerRewardsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                market:
+                  type: string
+                  example: "PERP_ETH_USDC"
+                epoch:
+                  type: number
+                  example: 1
+                epoch_status:
+                  type: string
+                  example: "Active"
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      address:
+                        type: string
+                        example: "0xxx"
+                      est_r_wallet:
+                        type: number
+                        example: 2.228807384
+                      est_avg_stake:
+                        type: number
+                        example: 55
+                      est_stake_boost:
+                        type: number
+                        example: 1
+                      uptime:
+                        type: number
+                        example: 1
+                      maker_volume:
+                        type: number
+                        example: 2.3
 
     GetTheStatusOfTradingRewardsProgrammeResponse:
       allOf:
