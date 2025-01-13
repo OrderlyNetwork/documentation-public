@@ -6,7 +6,7 @@ title: "User Flow Walkthrough"
 
 ### Account Structure
 
-A wallet owner can register an account on Orderly Network for each builder that is supported. Each wallet owner could thus have multiple accounts (that are not interlinked with each other) registered with Orderly Network.
+A wallet owner can register an account on Orderly for each builder that is supported. Each wallet owner could thus have multiple accounts (that are not interlinked with each other) registered with Orderly.
 
 ### Account ID
 
@@ -19,7 +19,7 @@ Each account is identified by an account id, which can be calculated by
 
 ### Authorization
 
-Orderly Network relies on the EIP-712 standard to authenticate wallets and accounts for critical actions, such as:
+Orderly relies on the EIP-712 standard to authenticate wallets and accounts for critical actions, such as:
 
 - Account creation
 - Access key (Orderly key) addition
@@ -27,13 +27,13 @@ Orderly Network relies on the EIP-712 standard to authenticate wallets and accou
 
 For these actions, wallet owners will need to sign specific messages from their wallet and pass the signature through the REST APIs to complete the action. The following sections describe the steps needed to complete these actions.
 
-In addition, depositing into Orderly Network is a direct on-chain transaction that requires signing from the wallet owner.
+In addition, depositing into Orderly is a direct on-chain transaction that requires signing from the wallet owner.
 
 For other actions, such as calling trading-related RESTful APIs, only the Orderly Key is required.
 
 ### Access key (Orderly key)
 
-Orderly Network uses the ed25519 elliptic curve standard for access keys. Users can generate access keys using any public ed25519 libraries (such as this one) and then be added to any account through a REST API.
+Orderly uses the ed25519 elliptic curve standard for access keys. Users can generate access keys using any public ed25519 libraries (such as this one) and then be added to any account through a REST API.
 
 Access keys can have different scopes. A read scope API can access all private read-only APIs, and a trading scope can, in addition, access all order APIs (create order, batch create order, edit order, cancel order, cancel order by client_order-Id, cancel orders in bulk, batch cancel orders, batch cancel orders by client_order_id).
 
@@ -41,7 +41,7 @@ Access keys also have expirations for security reasons. The maximum allowed expi
 
 ### Account Registration
 
-Follow the following steps to register an account on Orderly Network:
+Follow the following steps to register an account on Orderly:
 
 1. Choose a valid chain/builder to register the account on
 2. Check if the wallet is already registered via [this](/build-on-evm/evm-api/restful-api/public/check-if-wallet-is-registered) API or if account already exists via [this](/build-on-evm/evm-api/restful-api/public/check-if-account-exists) API.
@@ -68,7 +68,7 @@ where:
 
 ### Add Access Key
 
-Follow the following steps to add a new access key on Orderly Network:
+Follow the following steps to add a new access key on Orderly:
 
 1. Generate an ed25519 key-pair
 2. Sign a message from the wallet in the following format using the EIP-712 standard and obtain the signature
@@ -119,7 +119,7 @@ Note that deposits will take some time to reflect depending on the origin chain,
 
 ### Withdrawal
 
-Follow the following steps to withdraw your tokens from Orderly Network:
+Follow the following steps to withdraw your tokens from Orderly:
 
 1. Choose a valid chain to withdraw your funds to
 2. Check if the chain has sufficient liquidity

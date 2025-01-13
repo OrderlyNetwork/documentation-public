@@ -1,6 +1,6 @@
 # Orderly Docs
 
-Documentation of Orderly Network.
+Documentation of Orderly.
 
 Suggestions and edits are welcome through Pull Requests / Issues.
 
