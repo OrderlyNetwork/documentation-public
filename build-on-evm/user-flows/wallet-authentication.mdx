@@ -5,7 +5,7 @@ description: "Overview of wallet authentication & Orderly keys"
 
 ## EIP-712
 
-Orderly Network relies on the [EIP-712](https://eips.ethereum.org/EIPS/eip-712) standard to authenticate wallets and accounts for critical actions, such as:
+Orderly relies on the [EIP-712](https://eips.ethereum.org/EIPS/eip-712) standard to authenticate wallets and accounts for critical actions, such as:
 
 * Account creation
 
@@ -21,8 +21,8 @@ For other actions, such as calling trading-related RESTful APIs, a successful Or
 
 ### Domain
 
-Orderly Network utilizes the following EIP-712 domain and types for the registration, access key, withdrawal and settle PnL processes.
-Note that `chainId` will be the id of the chain connected, which must be supported by Orderly Network.
+Orderly utilizes the following EIP-712 domain and types for the registration, access key, withdrawal and settle PnL processes.
+Note that `chainId` will be the id of the chain connected, which must be supported by Orderly.
 
 #### Off-chain Domain
 
@@ -130,14 +130,14 @@ The message types are required for the EIP-712 algorithm to do a proper signing.
 
 ## Orderly key
 
-Orderly Network uses the `ed25519` elliptic curve standard for Orderly keys. Users can generate Orderly keys using any public `ed25519` libraries and then be added to any account through the REST API.
+Orderly uses the `ed25519` elliptic curve standard for Orderly keys. Users can generate Orderly keys using any public `ed25519` libraries and then be added to any account through the REST API.
 An Orderly key is necessary to perform [API authentication](/build-on-evm/evm-api/api-authentication).
 
 Orderly keys can have different scopes. A `read` scope API can access all private read-only APIs, and a `trading` scope can, in addition, access all order APIs (create order, batch create order, edit order, cancel order, cancel order by client\_order-Id, cancel orders in bulk, batch cancel orders, batch cancel orders by client\_order\_id).
 
 Orderly keys also have expirations for security reasons. The maximum allowed expiration of an Orderly key is 365 days.
 
-Follow the following steps to add a new Orderly key on Orderly Network:
+Follow the following steps to add a new Orderly key on Orderly:
 
 <Steps>
   <Step title="Generate an ed25519 key-pair">
