@@ -8,7 +8,7 @@ Suggestions and edits are welcome through Pull Requests / Issues.
 
 ### New chains
 
-- add contract addresses: https://orderly.network/docs/build-on-evm/addresses
+- add contract addresses: https://orderly.network/docs/build-on-omnichain/addresses
 - add chain here: https://orderly.network/docs/introduction/trade-on-orderly/supported-chains
 
 ### New listings
