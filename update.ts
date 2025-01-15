@@ -16,13 +16,13 @@ async function main() {
 
 async function updateOpenApi() {
   try {
-    await rimraf("./build-on-evm/evm-api/restful-api");
+    await rimraf("./build-on-omnichain/evm-api/restful-api");
   } catch (err) {}
   await runCommand(
-    "npx @mintlify/scraping@3.0.185 openapi-file ./evm.openapi.yaml -o ./build-on-evm/evm-api/restful-api"
+    "npx @mintlify/scraping@3.0.185 openapi-file ./evm.openapi.yaml -o ./build-on-omnichain/evm-api/restful-api"
   );
 
-  let basePath = "./build-on-evm/evm-api/restful-api";
+  let basePath = "./build-on-omnichain/evm-api/restful-api";
   let files = await fs.readdir(basePath, { recursive: true });
   await Promise.all(
     files.map(async (fileName) => {

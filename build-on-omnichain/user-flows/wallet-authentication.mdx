@@ -15,7 +15,7 @@ Orderly relies on the [EIP-712](https://eips.ethereum.org/EIPS/eip-712) standard
 
 For these actions, wallet owners will need to sign specific messages from their wallet and pass the signature through the REST APIs to complete the action. The following sections describe the steps needed to complete these actions.
 
-For other actions, such as calling trading-related RESTful APIs, a successful Orderly Key generation is required in order to use it via [API authentication](/build-on-evm/evm-api/api-authentication).
+For other actions, such as calling trading-related RESTful APIs, a successful Orderly Key generation is required in order to use it via [API authentication](/build-on-omnichain/evm-api/api-authentication).
 
 
 
@@ -39,7 +39,7 @@ The `Registration` and `AddOrderlyKey` types are entirely processed off-chain, w
 
 #### On-chain Domain
 
-Any other type uses the on-chain domain. The address for the Ledger contract on the Orderly L2 chain can be looked up [here](/build-on-evm/addresses).
+Any other type uses the on-chain domain. The address for the Ledger contract on the Orderly L2 chain can be looked up [here](/build-on-omnichain/addresses).
 
 ```json
 {
@@ -131,7 +131,7 @@ The message types are required for the EIP-712 algorithm to do a proper signing.
 ## Orderly key
 
 Orderly uses the `ed25519` elliptic curve standard for Orderly keys. Users can generate Orderly keys using any public `ed25519` libraries and then be added to any account through the REST API.
-An Orderly key is necessary to perform [API authentication](/build-on-evm/evm-api/api-authentication).
+An Orderly key is necessary to perform [API authentication](/build-on-omnichain/evm-api/api-authentication).
 
 Orderly keys can have different scopes. A `read` scope API can access all private read-only APIs, and a `trading` scope can, in addition, access all order APIs (create order, batch create order, edit order, cancel order, cancel order by client\_order-Id, cancel orders in bulk, batch cancel orders, batch cancel orders by client\_order\_id).
 
@@ -169,7 +169,7 @@ where:
 | expiration | timestamp | Y            | Expiration time of the key in UNIX millisecondsMaximum allowed expiration is 365 days from add |
   </Step>
   <Step title="Add Orderly key">
-     Send all the necessary information via [Add Orderly key API](/build-on-evm/evm-api/restful-api/public/add-orderly-key).
+     Send all the necessary information via [Add Orderly key API](/build-on-omnichain/evm-api/restful-api/public/add-orderly-key).
   </Step>
 </Steps>
 
