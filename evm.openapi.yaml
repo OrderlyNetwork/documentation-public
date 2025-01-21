@@ -5828,8 +5828,8 @@ paths:
             type: number
         - name: market
           in: query
-          description: ""
-          required: true
+          description: "return all markets if empty"
+          required: false
           example: ""
           schema:
             type: string
@@ -11732,6 +11732,9 @@ components:
                       address:
                         type: string
                         example: "0xxx"
+                      est_score:
+                        type: number
+                        example: 2.xx
                       est_r_wallet:
                         type: number
                         example: 2.228807384
