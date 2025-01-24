@@ -11,3 +11,53 @@ Receive chain information for a given token.
 ```ts
 const { chains, isLoading } = useChain("USDC");
 ```
+
+### Return Type
+
+```typescript
+interface ChainResponse {
+  chain_details: Array<{
+    chain_id: string;
+    chain_name: string;
+    contract_address: string;
+    cross_chain_withdrawal_fee: number;
+    decimals: number;
+    display_name: string;
+    withdrawal_fee: number;
+  }>;
+  decimals: number;
+  minimum_withdraw_amount: number;
+  token: string;
+  token_hash: string;
+}
+```
+
+### Usage
+
+```typescript
+import { useChain } from "@orderly.network/hooks";
+
+function ChainInfo() {
+  const { data } = useChain("USDC");
+
+  return (
+    <div>
+      {data.chain_details.map((chain) => (
+        <div key={chain.chain_id}>
+          <div>Network: {chain.chain_name}</div>
+          <div>Contract: {chain.contract_address}</div>
+          <div>Withdrawal Fee: {chain.withdrawal_fee} USDC</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+### Features
+
+- Supports multiple chains
+- Chain-specific contract addresses
+- Withdrawal fee information
+- Token decimals and minimums
+- Cross-chain transfer details

@@ -9,5 +9,32 @@ Receive mark price for given symbol and auto update via Websockets.
 ### Example
 
 ```ts
-const markPrice: number = useMarkPrice("PERP_ETH_USDC");
+const markPrice = useMarkPrice("PERP_ETH_USDC");
 ```
+
+### Return Type
+
+```typescript
+interface MarkPriceResponse {
+  data: number; // Current mark price in USDC
+}
+```
+
+### Usage
+
+```typescript
+import { useMarkPrice } from "@orderly.network/hooks";
+
+function PriceDisplay() {
+  const { data: price } = useMarkPrice("PERP_ETH_USDC");
+
+  return <div>ETH Price: ${price}</div>;
+}
+```
+
+### Features
+
+- Real-time updates via WebSocket
+- Price in USDC terms
+- Auto-reconnect on disconnect
+- Efficient single pair subscription
