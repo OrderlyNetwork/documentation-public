@@ -11,3 +11,59 @@ Receive funding rate for given symbol.
 ```ts
 const fundingRate = useFundingRate("PERP_ETH_USDC");
 ```
+
+## Return Type
+
+```typescript
+interface FundingRateData {
+  // Time remaining until next funding in format "HH:MM:SS"
+  countDown: string;
+
+  // Estimated funding rate for next period
+  est_funding_rate: string;
+
+  // Timestamp when estimated rate was calculated
+  est_funding_rate_timestamp: number;
+
+  // Last funding rate that was charged/paid
+  last_funding_rate: number;
+
+  // Timestamp of last funding rate
+  last_funding_rate_timestamp: number;
+
+  // Timestamp of next funding event
+  next_funding_time: number;
+
+  // Cumulative funding since position opened
+  sum_unitary_funding: number;
+
+  // Trading pair symbol
+  symbol: string;
+}
+```
+
+## Usage
+
+```typescript
+import { useFundingRate } from "@orderly.network/hooks";
+
+function FundingRateDisplay() {
+  const fundingRate = useFundingRate("PERP_ETH_USDC");
+
+  return (
+    <div>
+      <div>Next Funding: {fundingRate.countDown}</div>
+      <div>Est. Rate: {fundingRate.est_funding_rate}</div>
+      <div>Last Rate: {fundingRate.last_funding_rate}</div>
+    </div>
+  );
+}
+```
+
+## Funding Rate Details
+
+- Funding occurs every 8 hours
+- Rates are displayed in percentage format
+- Positive rates mean longs pay shorts
+- Negative rates mean shorts pay longs
+- Timestamps are in Unix milliseconds
