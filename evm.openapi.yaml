@@ -4021,6 +4021,13 @@ paths:
           example: ""
           schema:
             type: number
+        - name: include_historical_data
+          in: query
+          description: "When include_historical_data is set to True, the rate limit for this API becomes 1 request per 60 seconds, the API response will include archived data."
+          required: false
+          example: "False"
+          schema:
+            type: boolean
         - name: orderly-timestamp
           in: header
           description: ""
