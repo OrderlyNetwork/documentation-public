@@ -73,7 +73,7 @@ import org.json.JSONObject;
 
 public class AuthenticationExample {
 public static void main(String[] args) throws Exception {
-String baseUrl = "https://testnet-api-evm.orderly.org";
+String baseUrl = "https://testnet-api.orderly.org";
 String orderlyAccountId = "<orderly-account-id>";
 
       Dotenv dotenv = Dotenv.load();
@@ -215,7 +215,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from signer import Signer
 
-base_url = "https://testnet-api-evm.orderly.org"
+base_url = "https://testnet-api.orderly.org"
 orderly_account_id = "<orderly-account-id>"
 
 key = b58decode(os.environ.get("ORDERLY_SECRET"))
@@ -318,7 +318,7 @@ if (!globalThis.crypto) globalThis.crypto = webcrypto as any;
 config();
 
 async function main() {
-const baseUrl = 'https://testnet-api-evm.orderly.org';
+const baseUrl = 'https://testnet-api.orderly.org';
 const orderlyAccountId = '<orderly-account-id>';
 
 const orderlyKey = bs58.decode(process.env.ORDERLY_SECRET!);
@@ -383,7 +383,7 @@ export async function signAndSendRequest(
   <Tab title="Shell">
   ``` shell cURL
   curl --request POST \
-  --url https://api-evm.orderly.org/v1/order \
+  --url https://api.orderly.org/v1/order \
   --header 'Content-Type: application/json' \
   --header 'orderly-account-id: <orderly-account-id>' \
   --header 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
