@@ -1,0 +1,940 @@
+openapi: 3.0.1
+info:
+  title: SV
+  description: ""
+  version: 1.0.0
+tags:
+  - name: public
+  - name: private
+paths:
+  /v1/sv/orderly_key:
+    post:
+      summary: Add SP Orderly Key
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `POST /v1/sv/orderly_key`
+
+        Adds an Orderly access key to a SP account
+      tags:
+        - private
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: object
+                  properties:
+                    contract:
+                      type: string
+                      description: "PV SC address"
+                    brokerId:
+                      type: string
+                      description: "fixed for PV"
+                    chainId:
+                      type: number
+                      description: "no logic, so just use arb/base/op chainid"
+                    orderlyKey:
+                      type: string
+                      description: "FE to generate this ed25519 public key"
+                    scope:
+                      type: string
+                      description: "valid scope for SV: read & trading. [asset not applicable for SV]"
+                    timestamp:
+                      type: number
+                      description: ""
+                    expiration:
+                      type: number
+                      description: ""
+                signature:
+                  type: string
+                userAddress:
+                  type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+  /v1/sv/settle_pnl:
+    post:
+      summary: Request SP PnL Settlement
+      description: |
+
+        **Limit: 1 request per second**
+
+        `POST /v1/sv/settle_pnl`
+      tags:
+        - private
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: object
+                  properties:
+                    contract:
+                      type: string
+                      description: ""
+                    brokerId:
+                      type: string
+                      description: ""
+                    chainId:
+                      type: number
+                      description: ""
+                    settleNonce:
+                      type: string
+                      description: ""
+                    timestamp:
+                      type: number
+                      description: ""
+                signature:
+                  type: string
+                userAddress:
+                  type: string
+                verifyingContract:
+                  type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+  /v1/public/strategy_vault/sp/info:
+    get:
+      summary: Get Strategy Provider’s Info
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/sp/info`
+      tags:
+        - public
+      parameters:
+        - name: vault_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: wallet_address
+          in: query
+          description: "SP wallet address for PV"
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SpInfoResponse"
+  /v1/public/strategy_vault/sp/transaction_history:
+    get:
+      summary: SP Transaction History
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/sp/transaction_history`
+        
+        View Strategy Provider Transaction History
+      tags:
+        - public
+      parameters:
+        - name: vault_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: wallet_address
+          in: query
+          description: "SP wallet address for PV"
+          required: true
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: "deposit/withdrawal, blank return all type data"
+          required: false
+          schema:
+            type: string
+        - name: chain_id
+          in: query
+          description: "blank return all chain data"
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionHistoryResponse"
+  /v1/public/strategy_vault/sp/claim_info:
+    get:
+      summary: Get Strategy Provider Claimable Amount
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/sp/claim_info`
+      tags:
+        - public
+      parameters:
+        - name: vault_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: wallet_address
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: chain_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClaimInfoResponse"
+  /v1/sv/manual_period_delivery:
+    post:
+      summary: Trigger Manual Period Delivery
+      description: |
+
+        **Limit: 1 request per second per account**
+
+        `POST /v1/sv/manual_period_delivery`
+      tags:
+        - private
+      parameters:
+        - name: account_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: orderly_key
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: orderly_signature
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: plan_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+  /v1/public/strategy_vault/fund/info:
+    get:
+      summary: Get Strategy Fund Details
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/fund/info`
+        
+        View Strategy Fund Info
+      tags:
+        - public
+      parameters:
+        - name: vault_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: wallet_address
+          in: query
+          description: "SP wallet address for PV"
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundInfoResponse"
+  /v1/public/strategy_vault/fund/period_info:
+    get:
+      summary: Get Period History and Fund Period Instructions
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/fund/period_info`
+      tags:
+        - public
+      parameters:
+        - name: vault_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: wallet_address
+          in: query
+          description: "SP wallet address for PV"
+          required: true
+          schema:
+            type: string
+        - name: period_number
+          in: query
+          description: ""
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PeriodInfoResponse"
+  /v1/public/strategy_vault/fund/pending_transactions:
+    get:
+      summary: Get Preview Users Pending Requests
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/fund/pending_transactions`
+      tags:
+        - public
+      parameters:
+        - name: vault_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: wallet_address
+          in: query
+          description: "SP wallet address for PV"
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PendingTransactionsResponse"
+  /v1/sv/venue_transfer_history:
+    get:
+      summary: Get Fund Inflow Allocation
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/sv/venue_transfer_history`
+      tags:
+        - public
+      parameters:
+        - name: account_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: orderly_key
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: orderly_signature
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: period_number
+          in: query
+          description: ""
+          required: false
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VenueTransferHistoryResponse"
+  /v1/sv/venue_withdrawal_history:
+    get:
+      summary: Get Fund Outflow Allocation
+      description: |
+
+        **Limit: 10 requests per second per account**
+
+        `GET /v1/sv/venue_withdrawal_history`
+      tags:
+        - public
+      parameters:
+        - name: account_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: orderly_key
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: orderly_signature
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: period_number
+          in: query
+          description: ""
+          required: false
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VenueWithdrawalHistoryResponse"
+  /v1/sv/protocol_revenue_share_history:
+    get:
+      summary: Get Orderly Protocol Revenue Sharing History
+      description: |
+
+        **Limit: 10 requests per second per account**
+
+        `GET /v1/sv/protocol_revenue_share_history`
+      tags:
+        - public
+      parameters:
+        - name: account_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: orderly_key
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: orderly_signature
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShareHistoryResponse"
+  /v1/sv/liquidation_fees_share_history:
+    get:
+      summary: Get Liquidation Fees Sharing History
+      description: |
+
+        **Limit: 10 requests per second per account**
+
+        `GET /v1/sv/liquidation_fees_share_history`
+      tags:
+        - public
+      parameters:
+        - name: account_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: orderly_key
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: orderly_signature
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShareHistoryResponse"
+  /v1/sv/internal_transfer_history:
+    get:
+      summary: Get Internal Transfer History (Non-Vault Account to Strategy Provider Account)
+      description: |
+
+        **Limit: 10 requests per second per account**
+
+        `GET /v1/sv/internal_transfer_history`
+      tags:
+        - public
+      parameters:
+        - name: account_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: orderly_key
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: orderly_signature
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalTransferHistoryResponse"
+components:
+  schemas:
+    BasicResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        timestamp:
+          type: number
+          example: 1702989203989
+    SpInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                sp_nav:
+                  type: number
+                  example: 56789.0
+                sp_total_strategy_shares:
+                  type: number
+                  example: 12700.000000
+                sp_strategy_shares_pct:
+                  type: number
+                  example: 0.12
+                available_strategy_shares:
+                  type: number
+                  example: 12458.05
+                sp_lifetime_net_pnl:
+                  type: number
+                  example: 8888.00
+                potential_pnl:
+                  type: number
+                  example: 2567.730000
+                sp_reserved_collateral:
+                  type: number
+                  example: 50000.000000
+                sp_min_shares_pct:
+                  type: number
+                  example: 0.01
+    FundInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                fund_nav:
+                  type: number
+                  example: 123456789.000000
+                fund_lifetime_net_pnl:
+                  type: number
+                  example: 123456.000000
+                fund_total_strategy_shares:
+                  type: number
+                  example: 123456789.000000
+                est_strategy_share_price:
+                  type: number
+                  example: 1.500000
+                broker_id:
+                  type: string
+                  example: "orderly"
+                current_period_number:
+                  type: number
+                  example: 4
+                period_start_time:
+                  type: number
+                  example: 1738454400000
+                period_end_time:
+                  type: number
+                  example: 1738540800000
+                period_duration:
+                  type: number
+                  example: 60
+                performance_fee_rate:
+                  type: number
+                  example: 0.00
+    TransactionHistoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                meta:
+                  type: object
+                  properties:
+                    total:
+                      type: number
+                      example: 9
+                    records_per_page:
+                      type: number
+                      example: 20
+                    current_page:
+                      type: number
+                      example: 1
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      created_time:
+                        type: number
+                        example: 1734652800000
+                      period_number:
+                        type: number
+                        example: 4
+                      type:
+                        type: string
+                        example: "withdrawal"
+                      status:
+                        type: string
+                        example: "claimable"
+                      est_claim_time:
+                        type: number
+                        example: null
+                      chain_id:
+                        type: string
+                        example: "1"
+                      txn_hash:
+                        type: string
+                        example: "0x4dbc4b0cc722d2f401e9a32fe5be7a52c6834785e2084ac78447e94735b8274d"
+                      txn_hash_claim:
+                        type: string
+                        example: "0x25b973f86b370e9f1f4b5244242ab8ade3bdbfc1068b74a9b17a2c345a64080f"
+                      shares_change:
+                        type: number
+                        example: 60.000000
+                      amount_change:
+                        type: number
+                        example: 88.009000
+    ClaimInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                claimable_amount:
+                  type: number
+                  example: 10087.260000
+    PeriodInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                meta:
+                  type: object
+                  properties:
+                    total:
+                      type: number
+                      example: 2
+                    records_per_page:
+                      type: number
+                      example: 25
+                    current_page:
+                      type: number
+                      example: 1
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      period_number:
+                        type: number
+                        example: 2
+                      start_time:
+                        type: number
+                        example: 1738454400000
+                      end_time:
+                        type: number
+                        example: 1738540800000
+                      total_deposit_amount:
+                        type: number
+                        example: 30000
+                      total_withdrawal_amount:
+                        type: number
+                        example: null
+    PendingTransactionsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                est_fund_allocation_pct:
+                  type: number
+                  example: 1
+                total_pending_deposit_amount:
+                  type: number
+                  example: 50000.000000
+                lp_pending_deposit_amount:
+                  type: number
+                  example: 40000.000000
+                sp_pending_deposit_amount:
+                  type: number
+                  example: 10000.000000
+                fund_pending_deposit_amount:
+                  type: number
+                  example: 50000.000000
+                fund_pending_withdrawal_amount:
+                  type: number
+                  example: 2350.000000
+                total_pending_withdrawal_main_share:
+                  type: number
+                  example: 4000.000000
+                est_main_share_price:
+                  type: number
+                  example: 0.500000
+                total_pending_withdrawal_strategy_share:
+                  type: number
+                  example: 500.000000
+                est_strategy_share_price:
+                  type: number
+                  example: 0.700000
+    VenueTransferHistoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                meta:
+                  type: object
+                  properties:
+                    total:
+                      type: number
+                      example: 2
+                    records_per_page:
+                      type: number
+                      example: 25
+                    current_page:
+                      type: number
+                      example: 1
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      created_time:
+                        type: number
+                        example: 1739257560000
+                      executed_time:
+                        type: number
+                        example: 1739257561000
+                      period_number:
+                        type: number
+                        example: 2
+                      plan_id:
+                        type: number
+                        example: 3
+                      amount:
+                        type: number
+                        example: 13633.532389
+                      status:
+                        type: string
+                        example: "completed"
+    VenueWithdrawalHistoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                meta:
+                  type: object
+                  properties:
+                    total:
+                      type: number
+                      example: 2
+                    records_per_page:
+                      type: number
+                      example: 25
+                    current_page:
+                      type: number
+                      example: 1
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      created_time:
+                        type: number
+                        example: 1739257260000
+                      period_number:
+                        type: number
+                        example: 2
+                      plan_id:
+                        type: number
+                        example: 4
+                      schedule_time:
+                        type: number
+                        example: 1739268000000
+                      executed_time:
+                        type: number
+                        example: null
+                      trigger_by:
+                        type: number
+                        example: null
+                      amount:
+                        type: number
+                        example: 13633.532389
+                      status:
+                        type: string
+                        example: "pending"
+    ShareHistoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                meta:
+                  type: object
+                  properties:
+                    total:
+                      type: number
+                      example: 2
+                    records_per_page:
+                      type: number
+                      example: 25
+                    current_page:
+                      type: number
+                      example: 1
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      executed_time:
+                        type: number
+                        example: 1734652800000
+                      amount:
+                        type: number
+                        example: 13633.532389
+    InternalTransferHistoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                meta:
+                  type: object
+                  properties:
+                    total:
+                      type: number
+                      example: 2
+                    records_per_page:
+                      type: number
+                      example: 25
+                    current_page:
+                      type: number
+                      example: 1
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      executed_time:
+                        type: number
+                        example: 1734652800000
+                      from_account:
+                        type: string
+                        example: ""
+                      amount:
+                        type: number
+                        example: 13633.532389
+servers:
+  - url: https://api-sv.orderly.org
+    description: Mainnet
+  - url: https://testnet-api-sv.orderly.org
+    description: Testnet

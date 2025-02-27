@@ -60,6 +60,10 @@
       "url": "sdks"
     },
     {
+      "name": "Strategy Vault",
+      "url": "strategy-vault"
+    },
+    {
       "name": "Troubleshooting",
       "url": "troubleshooting"
     },
@@ -913,6 +917,70 @@
           ]
         }
       ]
+    },
+    {
+      "group": "Strategy Provider",
+      "pages": [
+        {
+          "group": "Key management",
+          "pages": [
+            "strategy-vault/strategy-provider/private/add-sp-orderly-key"
+          ]
+        },
+        {
+          "group": "Settle PnL",
+          "pages": [
+            "strategy-vault/strategy-provider/private/request-sp-pnl-settlement"
+          ]
+        },
+        {
+          "group": "Strategy Provider Details",
+          "pages": [
+            "strategy-vault/strategy-provider/public/get-strategy-providers-info"
+          ]
+        },
+        {
+          "group": "Deposit/Withdrawal",
+          "pages": [
+            "strategy-vault/strategy-provider/public/sp-transaction-history",
+            "strategy-vault/strategy-provider/public/sp-claim-info"
+          ]
+        },
+        {
+          "group": "Period Obligations",
+          "pages": [
+            "strategy-vault/strategy-provider/private/trigger-manual-period-delivery"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Strategy Fund",
+      "pages": [
+        {
+          "group": "Strategy Fund Details",
+          "pages": [
+            "strategy-vault/strategy-fund/public/get-strategy-fund-details"
+          ]
+        },
+        {
+          "group": "Period Details",
+          "pages": [
+            "strategy-vault/strategy-fund/public/get-period-history-and-fund-period-instructions"
+          ]
+        },
+        {
+          "group": "Fund Transactions",
+          "pages": [
+            "strategy-vault/strategy-fund/public/get-preview-users-pending-requests",
+            "strategy-vault/strategy-fund/public/get-fund-inflow-allocation",
+            "strategy-vault/strategy-fund/public/get-fund-outflow-allocation",
+            "strategy-vault/strategy-fund/public/get-orderly-protocol-revenue-sharing-history",
+            "strategy-vault/strategy-fund/public/get-liquidation-fees-sharing-history",
+            "strategy-vault/strategy-fund/public/get-internal-transfer-history"
+          ]
+        }
+      ]
     }
   ],
   "footerSocials": {
@@ -923,6 +991,7 @@
   },
   "openapi": [
     "/evm.openapi.yaml",
-    "/near.openapi.yaml"
+    "/near.openapi.yaml",
+    "/sv.openapi.yaml"
   ]
 }
