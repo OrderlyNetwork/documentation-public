@@ -7,108 +7,6 @@ tags:
   - name: public
   - name: private
 paths:
-  /v1/sv/orderly_key:
-    post:
-      summary: Add SP Orderly Key
-      description: |
-
-        **Limit: 10 requests per second per IP address**
-
-        `POST /v1/sv/orderly_key`
-
-        Adds an Orderly access key to a SP account
-      tags:
-        - private
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: object
-                  properties:
-                    contract:
-                      type: string
-                      description: "PV SC address"
-                    brokerId:
-                      type: string
-                      description: "fixed for PV"
-                    chainId:
-                      type: number
-                      description: "no logic, so just use arb/base/op chainid"
-                    orderlyKey:
-                      type: string
-                      description: "FE to generate this ed25519 public key"
-                    scope:
-                      type: string
-                      description: "valid scope for SV: read & trading. [asset not applicable for SV]"
-                    timestamp:
-                      type: number
-                      description: ""
-                    expiration:
-                      type: number
-                      description: ""
-                signature:
-                  type: string
-                userAddress:
-                  type: string
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BasicResponse"
-  /v1/sv/settle_pnl:
-    post:
-      summary: Request SP PnL Settlement
-      description: |
-
-        **Limit: 1 request per second**
-
-        `POST /v1/sv/settle_pnl`
-      tags:
-        - private
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: object
-                  properties:
-                    contract:
-                      type: string
-                      description: ""
-                    brokerId:
-                      type: string
-                      description: ""
-                    chainId:
-                      type: number
-                      description: ""
-                    settleNonce:
-                      type: string
-                      description: ""
-                    timestamp:
-                      type: number
-                      description: ""
-                signature:
-                  type: string
-                userAddress:
-                  type: string
-                verifyingContract:
-                  type: string
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BasicResponse"
   /v1/public/strategy_vault/sp/info:
     get:
       summary: Get Strategy Provider’s Info
@@ -128,7 +26,7 @@ paths:
             type: string
         - name: wallet_address
           in: query
-          description: "SP wallet address for PV"
+          description: ""
           required: true
           schema:
             type: string
@@ -141,7 +39,7 @@ paths:
                 $ref: "#/components/schemas/SpInfoResponse"
   /v1/public/strategy_vault/sp/transaction_history:
     get:
-      summary: SP Transaction History
+      summary: Get Strategy Provider Transaction History
       description: |
 
         **Limit: 10 requests per second per IP address**
@@ -160,7 +58,7 @@ paths:
             type: string
         - name: wallet_address
           in: query
-          description: "SP wallet address for PV"
+          description: ""
           required: true
           schema:
             type: string
@@ -219,48 +117,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ClaimInfoResponse"
-  /v1/sv/manual_period_delivery:
-    post:
-      summary: Trigger Manual Period Delivery
-      description: |
-
-        **Limit: 1 request per second per account**
-
-        `POST /v1/sv/manual_period_delivery`
-      tags:
-        - private
-      parameters:
-        - name: account_id
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_key
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_signature
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: plan_id
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BasicResponse"
   /v1/public/strategy_vault/fund/info:
     get:
       summary: Get Strategy Fund Details
@@ -282,7 +138,7 @@ paths:
             type: string
         - name: wallet_address
           in: query
-          description: "SP wallet address for PV"
+          description: ""
           required: true
           schema:
             type: string
@@ -312,7 +168,7 @@ paths:
             type: string
         - name: wallet_address
           in: query
-          description: "SP wallet address for PV"
+          description: ""
           required: true
           schema:
             type: string
@@ -348,7 +204,7 @@ paths:
             type: string
         - name: wallet_address
           in: query
-          description: "SP wallet address for PV"
+          description: ""
           required: true
           schema:
             type: string
@@ -359,198 +215,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PendingTransactionsResponse"
-  /v1/sv/venue_transfer_history:
-    get:
-      summary: Get Fund Inflow Allocation
-      description: |
-
-        **Limit: 10 requests per second per IP address**
-
-        `GET /v1/sv/venue_transfer_history`
-      tags:
-        - public
-      parameters:
-        - name: account_id
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_key
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_signature
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: period_number
-          in: query
-          description: ""
-          required: false
-          schema:
-            type: number
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/VenueTransferHistoryResponse"
-  /v1/sv/venue_withdrawal_history:
-    get:
-      summary: Get Fund Outflow Allocation
-      description: |
-
-        **Limit: 10 requests per second per account**
-
-        `GET /v1/sv/venue_withdrawal_history`
-      tags:
-        - public
-      parameters:
-        - name: account_id
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_key
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_signature
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: period_number
-          in: query
-          description: ""
-          required: false
-          schema:
-            type: number
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/VenueWithdrawalHistoryResponse"
-  /v1/sv/protocol_revenue_share_history:
-    get:
-      summary: Get Orderly Protocol Revenue Sharing History
-      description: |
-
-        **Limit: 10 requests per second per account**
-
-        `GET /v1/sv/protocol_revenue_share_history`
-      tags:
-        - public
-      parameters:
-        - name: account_id
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_key
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_signature
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ShareHistoryResponse"
-  /v1/sv/liquidation_fees_share_history:
-    get:
-      summary: Get Liquidation Fees Sharing History
-      description: |
-
-        **Limit: 10 requests per second per account**
-
-        `GET /v1/sv/liquidation_fees_share_history`
-      tags:
-        - public
-      parameters:
-        - name: account_id
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_key
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_signature
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ShareHistoryResponse"
-  /v1/sv/internal_transfer_history:
-    get:
-      summary: Get Internal Transfer History (Non-Vault Account to Strategy Provider Account)
-      description: |
-
-        **Limit: 10 requests per second per account**
-
-        `GET /v1/sv/internal_transfer_history`
-      tags:
-        - public
-      parameters:
-        - name: account_id
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_key
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_signature
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InternalTransferHistoryResponse"
 components:
   schemas:
     BasicResponse:
@@ -776,163 +440,6 @@ components:
                 est_strategy_share_price:
                   type: number
                   example: 0.700000
-    VenueTransferHistoryResponse:
-      allOf:
-        - $ref: "#/components/schemas/BasicResponse"
-        - type: object
-          properties:
-            data:
-              type: object
-              properties:
-                meta:
-                  type: object
-                  properties:
-                    total:
-                      type: number
-                      example: 2
-                    records_per_page:
-                      type: number
-                      example: 25
-                    current_page:
-                      type: number
-                      example: 1
-                rows:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      created_time:
-                        type: number
-                        example: 1739257560000
-                      executed_time:
-                        type: number
-                        example: 1739257561000
-                      period_number:
-                        type: number
-                        example: 2
-                      plan_id:
-                        type: number
-                        example: 3
-                      amount:
-                        type: number
-                        example: 13633.532389
-                      status:
-                        type: string
-                        example: "completed"
-    VenueWithdrawalHistoryResponse:
-      allOf:
-        - $ref: "#/components/schemas/BasicResponse"
-        - type: object
-          properties:
-            data:
-              type: object
-              properties:
-                meta:
-                  type: object
-                  properties:
-                    total:
-                      type: number
-                      example: 2
-                    records_per_page:
-                      type: number
-                      example: 25
-                    current_page:
-                      type: number
-                      example: 1
-                rows:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      created_time:
-                        type: number
-                        example: 1739257260000
-                      period_number:
-                        type: number
-                        example: 2
-                      plan_id:
-                        type: number
-                        example: 4
-                      schedule_time:
-                        type: number
-                        example: 1739268000000
-                      executed_time:
-                        type: number
-                        example: null
-                      trigger_by:
-                        type: number
-                        example: null
-                      amount:
-                        type: number
-                        example: 13633.532389
-                      status:
-                        type: string
-                        example: "pending"
-    ShareHistoryResponse:
-      allOf:
-        - $ref: "#/components/schemas/BasicResponse"
-        - type: object
-          properties:
-            data:
-              type: object
-              properties:
-                meta:
-                  type: object
-                  properties:
-                    total:
-                      type: number
-                      example: 2
-                    records_per_page:
-                      type: number
-                      example: 25
-                    current_page:
-                      type: number
-                      example: 1
-                rows:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      executed_time:
-                        type: number
-                        example: 1734652800000
-                      amount:
-                        type: number
-                        example: 13633.532389
-    InternalTransferHistoryResponse:
-      allOf:
-        - $ref: "#/components/schemas/BasicResponse"
-        - type: object
-          properties:
-            data:
-              type: object
-              properties:
-                meta:
-                  type: object
-                  properties:
-                    total:
-                      type: number
-                      example: 2
-                    records_per_page:
-                      type: number
-                      example: 25
-                    current_page:
-                      type: number
-                      example: 1
-                rows:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      executed_time:
-                        type: number
-                        example: 1734652800000
-                      from_account:
-                        type: string
-                        example: ""
-                      amount:
-                        type: number
-                        example: 13633.532389
 servers:
   - url: https://api-sv.orderly.org
     description: Mainnet
