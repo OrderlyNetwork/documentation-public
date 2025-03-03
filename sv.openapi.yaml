@@ -348,7 +348,7 @@ paths:
           required: false
           schema:
             type: string
-        - name: sort by
+        - name: sort_by
           in: query
           description: "ascending and descending (default) update time"
           required: false
@@ -384,7 +384,7 @@ paths:
           required: false
           schema:
             type: string
-        - name: sort by
+        - name: sort_by
           in: query
           description: "ascending and descending (default) time"
           required: false
@@ -397,6 +397,192 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/VaultTradeHistoryResponse"
+  /v1/public/strategy_vault/lp/info:
+    get:
+      summary: Get Liquidity Provider Info
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/lp/info`
+      tags:
+        - public
+      parameters:
+        - name: wallet_address
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: vault_id
+          in: query
+          description: "return all if empty"
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LpInfoResponse"
+  /v1/public/strategy_vault/lp/performance:
+    get:
+      summary: Get Liquidity Provider Performance
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/lp/performance`
+        
+        Liquidity Provider’s performance in a vault
+      tags:
+        - public
+      parameters:
+        - name: vault_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: wallet_address
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LpPerformanceResponse"
+  /v1/public/strategy_vault/lp/performance_chart:
+    get:
+      summary: Get Liquidity Provider TVL/PnL History
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/lp/performance_chart`
+        
+        Liquidity Provider’s TVL/PnL history in a vault
+      tags:
+        - public
+      parameters:
+        - name: vault_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: wallet_address
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: "PNL/TVL"
+          required: true
+          schema:
+            type: string
+        - name: time_range
+          in: query
+          description: "24h/7d/30d/all_time"
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LpPerformanceChartResponse"
+  /v1/public/strategy_vault/lp/transaction_history:
+    get:
+      summary: Get Liquidity Provider Transaction History
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/lp/transaction_history`
+      tags:
+        - public
+      parameters:
+        - name: vault_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: wallet_address
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: "deposit/withdrawal, blank = return all type data"
+          required: false
+          schema:
+            type: string
+        - name: chain_id
+          in: query
+          description: "blank = return all chain data"
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LpTransactionHistoryResponse"
+  /v1/public/strategy_vault/lp/claim_info:
+    get:
+      summary: Get Liquidity Provider Claim Info
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/lp/claim_info`
+        
+        The claimable asset amount on a chain from the processed withdrawal request(s) of a vault
+      tags:
+        - public
+      parameters:
+        - name: vault_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: wallet_address
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: chain_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LpClaimInfoResponse"
 components:
   schemas:
     BasicResponse:
@@ -863,7 +1049,7 @@ components:
                         type: number
                         example: 0.0001
                       fee_asset:
-                        type: number
+                        type: string
                         example: "USDC"
                       side:
                         type: string
@@ -889,6 +1075,144 @@ components:
                       match_id:
                         type: number
                         example: 7386297591862810182
+    LpInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      vault_id:
+                        type: string
+                        example: ""
+                      lp_nav:
+                        type: number
+                        example: 56789.0
+                      lp_tvl:
+                        type: number
+                        example: 63701.21
+                      total_main_shares:
+                        type: number
+                        example: 12700.000000
+                      available_main_shares:
+                        type: number
+                        example: 12458.0500
+                      potential_pnl:
+                        type: number
+                        example: 2567.730000
+    LpPerformanceResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      time_range:
+                        type: string
+                        example: "24h"
+                      incremental_net_pnl:
+                        type: number
+                        example: 123.000000
+                      tvl_max_drawdown:
+                        type: number
+                        example: 0.015
+    LpPerformanceChartResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      timestamp:
+                        type: number
+                        example: 1734307200000
+                      value:
+                        type: number
+                        example: 1400000.000000
+    LpTransactionHistoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                meta:
+                  type: object
+                  properties:
+                    total:
+                      type: number
+                      example: 9
+                    records_per_page:
+                      type: number
+                      example: 25
+                    current_page:
+                      type: number
+                      example: 1
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      created_time:
+                        type: number
+                        example: 1734652800000
+                      period_number:
+                        type: number
+                        example: 4
+                      type:
+                        type: string
+                        example: "withdrawal"
+                      status:
+                        type: string
+                        example: "claimable"
+                      est_claim_time:
+                        type: number
+                        example: 1734672800000
+                      chain_id:
+                        type: string
+                        example: "1"
+                      txn_hash:
+                        type: string
+                        example: "0x4dbc4b0cc722d2f401e9a32fe5be7a52c6834785e2084ac78447e94735b8274d"
+                      txn_hash_claim:
+                        type: string
+                        example: null
+                      shares_change:
+                        type: number
+                        example: 60.000000
+                      amount_change:
+                        type: number
+                        example: 88.009000
+    LpClaimInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                claimable_amount:
+                  type: number
+                  example: 10087.260000
 servers:
   - url: https://api-sv.orderly.org
     description: Mainnet
