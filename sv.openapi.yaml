@@ -215,6 +215,188 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PendingTransactionsResponse"
+  /v1/public/strategy_vault/vault/info:
+    get:
+      summary: Get Strategy Vault Info
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/vault/info`
+      tags:
+        - public
+      parameters:
+        - name: vault_id
+          in: query
+          description: "if not did not specify, return all vault info"
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaultInfoResponse"
+  /v1/public/strategy_vault/vault/performance:
+    get:
+      summary: Get Strategy Vault Performance
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/vault/performance`
+      tags:
+        - public
+      parameters:
+        - name: vault_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaultPerformanceResponse"
+  /v1/public/strategy_vault/vault/performance_chart:
+    get:
+      summary: Get Strategy Vault TVL/PnL History
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/vault/performance_chart`
+      tags:
+        - public
+      parameters:
+        - name: vault_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: "PNL/TVL"
+          required: true
+          schema:
+            type: string
+        - name: time_range
+          in: query
+          description: "24h/7d/30d/all_time"
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaultPerformanceChartResponse"
+  /v1/public/strategy_vault/vault/positions:
+    get:
+      summary: Get Strategy Vault Positions
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/vault/positions`
+      tags:
+        - public
+      parameters:
+        - name: vault_id
+          in: query
+          description: "restrict only vault_type = protocol_vault, will fetch PV’s SP account position"
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaultPositionsResponse"
+  /v1/public/strategy_vault/vault/open_orders:
+    get:
+      summary: Get Strategy Vault Open Orders
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/vault/open_orders`
+        
+        Includes both normal & algo orders
+      tags:
+        - public
+      parameters:
+        - name: vault_id
+          in: query
+          description: "restrict only vault_type = pv, will fetch PV’s SP account open orders"
+          required: false
+          schema:
+            type: string
+        - name: symbol
+          in: query
+          description: "only 1 at a time"
+          required: false
+          schema:
+            type: string
+        - name: sort by
+          in: query
+          description: "ascending and descending (default) update time"
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaultOpenOrdersResponse"
+  /v1/public/strategy_vault/vault/trade_history:
+    get:
+      summary: Get Strategy Vault Trade History
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/vault/trade_history`
+      tags:
+        - public
+      parameters:
+        - name: vault_id
+          in: query
+          description: "restrict only vault_type = pv, will fetch PV’s SP account trade history"
+          required: false
+          schema:
+            type: string
+        - name: symbol
+          in: query
+          description: "only 1 at a time"
+          required: false
+          schema:
+            type: string
+        - name: sort by
+          in: query
+          description: "ascending and descending (default) time"
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaultTradeHistoryResponse"
 components:
   schemas:
     BasicResponse:
@@ -440,6 +622,273 @@ components:
                 est_strategy_share_price:
                   type: number
                   example: 0.700000
+    VaultInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      vault_id:
+                        type: string
+                        example: ""
+                      vault_address:
+                        type: string
+                        example: ""
+                      vault_type:
+                        type: string
+                        example: "protocol_vault"
+                      performance_fee_rate:
+                        type: number
+                        example: 0.3
+                      supported_chains:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            chain_id:
+                              type: string
+                              example: "1"
+                            chain_name:
+                              type: string
+                              example: "Ethereum"
+                      tvl:
+                        type: number
+                        example: 123456789.0
+                      30d_apr:
+                        type: number
+                        example: 34.87
+                      vault_lifetime_net_pnl:
+                        type: number
+                        example: 123456.0
+                      lp_counts:
+                        type: number
+                        example: 1204
+                      total_main_shares:
+                        type: number
+                        example: 123456789.000000
+                      est_main_share_price:
+                        type: number
+                        example: 1.500000
+                      lock_duration:
+                        type: number
+                        example: 48
+                      broker_id:
+                        type: string
+                        example: "orderly"
+    VaultPerformanceResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      time_range:
+                        type: string
+                        example: "24h"
+                      incremental_net_pnl:
+                        type: number
+                        example: 5678.90
+                      tvl_max_drawdown:
+                        type: number
+                        example: 0.015
+                      fees:
+                        type: number
+                        example: 1234.50
+                      volume:
+                        type: number
+                        example: 456789.0
+    VaultPositionsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      symbol:
+                        type: string
+                        example: "PERP_BTC_USDC"
+                      position_qty:
+                        type: number
+                        example: -5
+                      average_open_price:
+                        type: number
+                        example: 27908.14386047
+                      mark_price:
+                        type: number
+                        example: 27794.9
+                      est_liq_price:
+                        type: number
+                        example: 117335.92899428
+    VaultPerformanceChartResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      timestamp:
+                        type: number
+                        example: 1734307200000
+                      value:
+                        type: number
+                        example: 1400000.0
+    VaultOpenOrdersResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                meta:
+                  type: object
+                  properties:
+                    total:
+                      type: number
+                      example: 9
+                    records_per_page:
+                      type: number
+                      example: 25
+                    current_page:
+                      type: number
+                      example: 1
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      order_id:
+                        type: number
+                        example: 78151
+                      created_time:
+                        type: number
+                        example: 1653563963000
+                      updated_time:
+                        type: number
+                        example: 1653564213000
+                      type:
+                        type: string
+                        example: "LIMIT"
+                      symbol:
+                        type: string
+                        example: "PERP_WOO_USDC"
+                      side:
+                        type: string
+                        example: "BUY"
+                      quantity:
+                        type: number
+                        example: 20
+                      price:
+                        type: number
+                        example: 0.67772
+                      amount:
+                        type: number
+                        example: 10
+                      executed_quantity:
+                        type: number
+                        example: 20
+                      total_executed_quantity:
+                        type: number
+                        example: 20
+                      average_executed_price:
+                        type: number
+                        example: 0.67772
+                      status:
+                        type: string
+                        example: "NEW"
+                      is_triggered:
+                        type: string
+                        example: "false"
+                      child_orders:
+                        type: array
+                        items:
+                          type: object
+    VaultTradeHistoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                meta:
+                  type: object
+                  properties:
+                    total:
+                      type: number
+                      example: 9
+                    records_per_page:
+                      type: number
+                      example: 25
+                    current_page:
+                      type: number
+                      example: 1
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        example: 2
+                      symbol:
+                        type: string
+                        example: "PERP_BTC_USDC"
+                      fee:
+                        type: number
+                        example: 0.0001
+                      fee_asset:
+                        type: number
+                        example: "USDC"
+                      side:
+                        type: string
+                        example: "BUY"
+                      order_id:
+                        type: number
+                        example: 1
+                      executed_price:
+                        type: number
+                        example: 123
+                      executed_quantity:
+                        type: number
+                        example: 0.05
+                      executed_timestamp:
+                        type: number
+                        example: 1567382401000
+                      is_maker:
+                        type: number
+                        example: 1
+                      realized_pnl:
+                        type: number
+                        example: 0
+                      match_id:
+                        type: number
+                        example: 7386297591862810182
 servers:
   - url: https://api-sv.orderly.org
     description: Mainnet
