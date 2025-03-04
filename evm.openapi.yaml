@@ -605,9 +605,9 @@ paths:
 
         - `(price - quote_min) % quote_tick` should equal to zero
 
-        - `price` =< `asks[0].price * (1 + price_range)` when BUY
+        - `price` =< `mark_price * (1 + price_range)` when BUY
 
-        - `price` >= `bids[0].price * (1 - price_range)` when SELL
+        - `price` >= `mark_price * (1 - price_range)` when SELL
 
 
         Size filter
@@ -2442,7 +2442,7 @@ paths:
       description: |
         **Limit: 10 requests per 1 second**
 
-        `GET /v1/order/:order_id/trades`
+        `GET /v1/order/{order_id}/trades`
 
         Get specific trades of an order by `order_id`.
       tags:
