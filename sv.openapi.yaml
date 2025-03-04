@@ -64,13 +64,13 @@ paths:
             type: string
         - name: type
           in: query
-          description: "deposit/withdrawal, blank return all type data"
+          description: "`deposit` / `withdrawal` / return all if empty"
           required: false
           schema:
             type: string
         - name: chain_id
           in: query
-          description: "blank return all chain data"
+          description: "return all if empty"
           required: false
           schema:
             type: string
@@ -228,7 +228,7 @@ paths:
       parameters:
         - name: vault_id
           in: query
-          description: "if not did not specify, return all vault info"
+          description: "return all if empty"
           required: false
           schema:
             type: string
@@ -282,13 +282,13 @@ paths:
             type: string
         - name: type
           in: query
-          description: "PNL/TVL"
+          description: "`PNL` / `TVL`"
           required: true
           schema:
             type: string
         - name: time_range
           in: query
-          description: "24h/7d/30d/all_time"
+          description: "`24h` / `7d` / `30d` / `all_time`"
           required: true
           schema:
             type: string
@@ -312,8 +312,8 @@ paths:
       parameters:
         - name: vault_id
           in: query
-          description: "restrict only vault_type = protocol_vault, will fetch PV’s SP account position"
-          required: false
+          description: ""
+          required: true
           schema:
             type: string
       responses:
@@ -338,19 +338,19 @@ paths:
       parameters:
         - name: vault_id
           in: query
-          description: "restrict only vault_type = pv, will fetch PV’s SP account open orders"
-          required: false
+          description: ""
+          required: true
           schema:
             type: string
         - name: symbol
           in: query
-          description: "only 1 at a time"
+          description: "one symbol at a time"
           required: false
           schema:
             type: string
         - name: sort_by
           in: query
-          description: "ascending and descending (default) update time"
+          description: "`ascending` / `descending` (default) on updated_time"
           required: false
           schema:
             type: string
@@ -374,19 +374,19 @@ paths:
       parameters:
         - name: vault_id
           in: query
-          description: "restrict only vault_type = pv, will fetch PV’s SP account trade history"
-          required: false
+          description: ""
+          required: true
           schema:
             type: string
         - name: symbol
           in: query
-          description: "only 1 at a time"
+          description: "one symbol at a time"
           required: false
           schema:
             type: string
         - name: sort_by
           in: query
-          description: "ascending and descending (default) time"
+          description: "`ascending` / `descending` (default)"
           required: false
           schema:
             type: string
@@ -486,13 +486,13 @@ paths:
             type: string
         - name: type
           in: query
-          description: "PNL/TVL"
+          description: "`PNL` / `TVL`"
           required: true
           schema:
             type: string
         - name: time_range
           in: query
-          description: "24h/7d/30d/all_time"
+          description: "`24h` / `7d` / `30d` / `all_time`"
           required: true
           schema:
             type: string
@@ -528,13 +528,13 @@ paths:
             type: string
         - name: type
           in: query
-          description: "deposit/withdrawal, blank = return all type data"
+          description: "`deposit` / `withdrawal` / return all if empty"
           required: false
           schema:
             type: string
         - name: chain_id
           in: query
-          description: "blank = return all chain data"
+          description: "return all if empty"
           required: false
           schema:
             type: string
