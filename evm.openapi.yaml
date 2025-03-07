@@ -5971,14 +5971,14 @@ paths:
               schema:
                 $ref: "#/components/schemas/GetWalletGroupMarketMakingRewardsHistory"
 
-  /v1/sv/orderly_key:
+  /v1/sv/sp_orderly_key:
     post:
       summary: Add SP Orderly Key
       description: |
 
         **Limit: 10 requests per second per IP address**
 
-        `POST /v1/sv/orderly_key`
+        `POST /v1/sv/sp_orderly_key`
 
         Adds an Orderly access key to a SP account
       tags:
@@ -6025,14 +6025,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BasicResponse"
-  /v1/sv/settle_pnl:
+  /v1/sv/sp_settle_pnl:
     post:
       summary: Request SP PnL Settlement
       description: |
 
         **Limit: 1 request per second**
 
-        `POST /v1/sv/settle_pnl`
+        `POST /v1/sv/sp_settle_pnl`
       tags:
         - private
       requestBody:
