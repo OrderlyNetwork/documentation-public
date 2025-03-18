@@ -6130,24 +6130,6 @@ paths:
       tags:
         - public
       parameters:
-        - name: account_id
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_key
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_signature
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
         - name: period_number
           in: query
           description: ""
@@ -6166,6 +6148,9 @@ paths:
           required: false
           schema:
             type: number
+        - $ref: "#/components/parameters/sv_account_id"
+        - $ref: "#/components/parameters/sv_orderly_key"
+        - $ref: "#/components/parameters/sv_orderly_signature"
       responses:
         "200":
           description: Success
@@ -6184,24 +6169,6 @@ paths:
       tags:
         - public
       parameters:
-        - name: account_id
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_key
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_signature
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
         - name: period_number
           in: query
           description: ""
@@ -6220,6 +6187,9 @@ paths:
           required: false
           schema:
             type: number
+        - $ref: "#/components/parameters/sv_account_id"
+        - $ref: "#/components/parameters/sv_orderly_key"
+        - $ref: "#/components/parameters/sv_orderly_signature"
       responses:
         "200":
           description: Success
@@ -6238,24 +6208,6 @@ paths:
       tags:
         - public
       parameters:
-        - name: account_id
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_key
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_signature
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
         - name: page
           in: query
           description: "the page you wish to query"
@@ -6268,6 +6220,9 @@ paths:
           required: false
           schema:
             type: number
+        - $ref: "#/components/parameters/sv_account_id"
+        - $ref: "#/components/parameters/sv_orderly_key"
+        - $ref: "#/components/parameters/sv_orderly_signature"
       responses:
         "200":
           description: Success
@@ -6286,24 +6241,6 @@ paths:
       tags:
         - public
       parameters:
-        - name: account_id
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_key
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_signature
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
         - name: page
           in: query
           description: "the page you wish to query"
@@ -6316,6 +6253,9 @@ paths:
           required: false
           schema:
             type: number
+        - $ref: "#/components/parameters/sv_account_id"
+        - $ref: "#/components/parameters/sv_orderly_key"
+        - $ref: "#/components/parameters/sv_orderly_signature"
       responses:
         "200":
           description: Success
@@ -6336,24 +6276,6 @@ paths:
       tags:
         - public
       parameters:
-        - name: account_id
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_key
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_signature
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
         - name: page
           in: query
           description: "the page you wish to query"
@@ -6366,6 +6288,9 @@ paths:
           required: false
           schema:
             type: number
+        - $ref: "#/components/parameters/sv_account_id"
+        - $ref: "#/components/parameters/sv_orderly_key"
+        - $ref: "#/components/parameters/sv_orderly_signature"
       responses:
         "200":
           description: Success
@@ -6415,6 +6340,33 @@ components:
       schema:
         type: string
       example: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
+    sv_account_id:
+      name: account_id
+      in: header
+      description: ""
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    sv_orderly_signature:
+      name: orderly_signature
+      in: header
+      description: ""
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    sv_orderly_key:
+      name: orderly_key
+      in: header
+      description: ""
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
     recv_window_header:
       name: x-recv-window
       in: header
