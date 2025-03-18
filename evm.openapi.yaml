@@ -6102,12 +6102,16 @@ paths:
           required: true
           schema:
             type: string
-        - name: plan_id
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - plan_id
+              properties:
+                plan_id:
+                  type: string
       responses:
         "200":
           description: Success
