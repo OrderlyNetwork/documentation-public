@@ -6148,9 +6148,10 @@ paths:
           required: false
           schema:
             type: number
-        - $ref: "#/components/parameters/sv_account_id"
-        - $ref: "#/components/parameters/sv_orderly_key"
-        - $ref: "#/components/parameters/sv_orderly_signature"
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
       responses:
         "200":
           description: Success
@@ -6187,9 +6188,10 @@ paths:
           required: false
           schema:
             type: number
-        - $ref: "#/components/parameters/sv_account_id"
-        - $ref: "#/components/parameters/sv_orderly_key"
-        - $ref: "#/components/parameters/sv_orderly_signature"
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
       responses:
         "200":
           description: Success
@@ -6220,9 +6222,10 @@ paths:
           required: false
           schema:
             type: number
-        - $ref: "#/components/parameters/sv_account_id"
-        - $ref: "#/components/parameters/sv_orderly_key"
-        - $ref: "#/components/parameters/sv_orderly_signature"
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
       responses:
         "200":
           description: Success
@@ -6253,9 +6256,10 @@ paths:
           required: false
           schema:
             type: number
-        - $ref: "#/components/parameters/sv_account_id"
-        - $ref: "#/components/parameters/sv_orderly_key"
-        - $ref: "#/components/parameters/sv_orderly_signature"
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
       responses:
         "200":
           description: Success
@@ -6288,9 +6292,10 @@ paths:
           required: false
           schema:
             type: number
-        - $ref: "#/components/parameters/sv_account_id"
-        - $ref: "#/components/parameters/sv_orderly_key"
-        - $ref: "#/components/parameters/sv_orderly_signature"
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
       responses:
         "200":
           description: Success
@@ -6340,33 +6345,6 @@ components:
       schema:
         type: string
       example: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
-    sv_account_id:
-      name: account_id
-      in: header
-      description: ""
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type: string
-    sv_orderly_signature:
-      name: orderly_signature
-      in: header
-      description: ""
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type: string
-    sv_orderly_key:
-      name: orderly_key
-      in: header
-      description: ""
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type: string
     recv_window_header:
       name: x-recv-window
       in: header
