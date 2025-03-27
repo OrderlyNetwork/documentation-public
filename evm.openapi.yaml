@@ -10186,9 +10186,19 @@ components:
           properties:
             data:
               type: object
-              required:
-                - rows
               properties:
+                meta:
+                  type: object
+                  properties:
+                    total:
+                      type: number
+                      example: 50
+                    records_per_page:
+                      type: number
+                      example: 25
+                    current_page:
+                      type: number
+                      example: 1
                 rows:
                   type: array
                   items:
