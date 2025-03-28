@@ -9,5 +9,22 @@ Receive index price for given symbol and auto update via Websockets.
 ### Example
 
 ```ts
-const indexPrice: number = useIndexPrice("PERP_ETH_USDC");
+import { useIndexPrice } from "@orderly.network/hooks";
+
+const { data: indexPrice } = useIndexPrice("PERP_ETH_USDC");
 ```
+
+### Return Type
+
+```typescript
+interface IndexPriceResponse {
+  data: number; // Current index price in USDC
+}
+```
+
+### Features
+
+- WebSocket updates
+- USDC denominated
+- Used for funding calculations
+- Reflects spot market price
