@@ -6,6 +6,45 @@ icon: "layer-group"
 
 import { Chip } from "/snippets/chip.mdx";
 
+## April 1st, 2025 - Documentation Update
+
+<div style={{ display: "table", width: "auto" }}>
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="times" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Testnet: March 28, 2025 14:00pm (UTC +8)**
+
+      **Mainnet: April 1, 2025 14:00pm (UTC +8)**
+    </div>
+
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="update" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Updates**
+
+      - Market maker reward leaderboard
+      - Added filtering capability for Broker Admin to view non-default users
+    </div>
+
+  </div>
+</div>
+
 ## February 25th, 2025 - Major Update
 
 <div style={{ display: "table", width: "auto" }}>
@@ -677,11 +716,13 @@ Adding maker and taker volume breakdown in `GET /v1/volume/broker/daily` API
 
 Brokers can now retrieve total fees collected under the criteria (given broker_id, aggregate logic, order_tag filter, and etc.) + broker rebate via`GET /v1/volume/broker/daily` API
 
-New query parameters in `GET /v1/referral/admin_info` API: - New query parameter user_address, to filter all codes of the matching user_address only (should only match 1 account since the broker_id has to match the broker admin one)
+New query parameters in `GET /v1/referral/admin_info` API:
 
-    - New query parameter account_id, to filter all codes of the matching account_id only
+- New query parameter user_address, to filter all codes of the matching user_address only (should only match 1 account since the broker_id has to match the broker admin one)
 
-    - **NOTE:** Only user_address or account_id can be provided
+- New query parameter account_id, to filter all codes of the matching account_id only
+
+- **NOTE:** Only user_address or account_id can be provided
 
 Ability to change the referral code's rebate split via `POST /v1/referral/edit_split`
 
