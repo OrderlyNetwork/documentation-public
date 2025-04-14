@@ -1,0 +1,92 @@
+---
+title: "Mechanics"
+---
+
+Orderly OmniVault deploys strategies with vault assets to generate yields. The PnL gain/loss are proportionally split across all its Liquidity Providers (LPs), according to the number of shares each LP owns.
+
+The lifecycle of Orderly OmniVault is summarised as follows:
+
+1. Users deposit USDC into the OmniVault
+
+2. Strategy Providers (SPs) execute strategies with vault assets
+
+3. Users submit withdrawal requests to redeem shares
+
+4. Users claim their redeemed USDC once redemption is processed
+
+Refer below for the OmniVault key concepts
+
+## Shares
+Shares are used to track the portion of Orderly OmniVault asset ownership of a LP. Each LP’s shareholding is traceable both on-chain and off-chain. Shares<a href="#ref11"><sup>1 </sup></a> &nbsp;are non-tokenized, meaning they are neither tradable nor transferrable.
+
+Share price is calculated as:
+
+- Share price = Vault Vault Net Asset Value / Total Number of Issued Shares
+
+For deposits, new shares are calculated as:
+
+- Number of Shares = LP Deposits (in USDC) / Share Price
+
+For withdrawals, claimable amounts are calculated as:
+
+- Claimable Amount (in USDC) = LP Withdrawal Shares * Share Price
+
+## Vault Period
+
+Orderly OmniVault uses the concept of a vault period, which batches and processes all deposits & withdrawal requests at a common <u>vault period settlement share price</u> to ensure fairness, stability, and eliminates front-running risks. It’s important to note that the number of shares or claimable USDC may differ from initial estimates at the time of deposit or withdrawal requests.<a href="#ref12"><sup>2 </sup></a>
+
+Each Vault Period lasts for 3 hours and runs consecutively:
+
+- Vault Period Start time (UTC): 0200H, 0500H, 0800H, 1100H, 1400H, 1700H, 2000H, 2300H
+
+Example:
+
+| Vault Period | User Activities |
+|--------------|-----------------|
+| 8am-11am     | LP 1 perform a 50,000 USDC deposit at 9am <p/> - transaction status: pending <p/> LP 2 perform a 2,000 shares withdrawal requests at 10am <p/> - transaction status: requested <p/> Both transactions will be assigned and processed in the next vault period at 11am |
+| 11am-2pm     | Using the settlement of share price at 11am, assuming \$1.25 <p/> - LP 1 will receive 40,000 shares (50,000 USDC / \$1.25) for his 50k USDC deposit <p/> - LP 2 will be able to claim 2,500 USDC (2000 * \$1.25) for his 2,000 shares withdrawal request at the end of this vault period |
+
+## Omnichain Capability
+Orderly OmniVault is omnichain-enabled that allows LP to deposit USDC into the vault from any supported network while interacting with a single unified strategy vault. This differentiates Orderly OmniVault from typical strategy vaults that either support a single blockchain network or manage each supported network separately.<a href="#ref13"><sup>3 </sup></a>
+
+Orderly OmniVault support blockchain networks:
+
+1. Arbitrum
+
+2. Base
+
+3. Optimism
+
+4. Additional networks coming soon
+
+Like the user experience for staking $ORDER, OmniVault offers omnichain flexibility–users can deposit USDC from chain A (e.g. Optimism) and withdraw+claim USDC on chain B (e.g. Base)
+
+## OmniVault Yields & Strategies
+
+Orderly OmniVault assets are managed by SP to:
+
+1. Execute market making strategies primarily on Orderly’s order book
+
+2. Act as the primary liquidator for selected symbols, taking on liquidated positions.<a href="#ref14"><sup>4 </sup></a>
+
+It is important to note that Orderly OmniVault does not replace the Orderly insurance fund, and not all symbol liquidated positions will be handled on by Orderly OmniVault. Risk management mechanisms are in place to limit the vault’s exposure to liquidated positions.
+
+Additionally, the Orderly protocol will allocate a portion of its net protocol revenue (up to 40%) and a portion of insurance fund liquidation fees proceeds to Orderly OmniVault. The percentage sharing will be periodically adjusted based on market conditions and OmniVault’s TVL.
+
+All returns (PnL gains/losses and protocol fees distributions) are compounded in Orderly OmniVault and distributed to all LPs proportionally.
+
+## APY Calculation
+
+APY is calculated using a daily time-weighted rate of return (TWRR) approach across a 30 days rolling window, compounded and annualized. It serves as an estimate of annualized returns based on past OmniVault performance and is not a guarantee or indicator of future results.
+
+<Note>APY may initially fluctuate significantly due to the limited historical data at launch.</Note>
+
+---
+
+<a id="ref11"><sup>1 </sup></a>  Shares represent a record of vault participation and do not constitute securities, debt instruments, or any legal ownership in Orderly or its affiliates.
+
+<a id="ref12"><sup>2 </sup></a>  Orderly is not responsible for any slippage, pricing discrepancies, or timing mismatch between user-submitted requests and vault period settlements.
+
+<a id="ref13"><sup>3 </sup></a>  Omnichain functionality relies on third-party bridging protocols and may be subject to latency, errors, or cross-chain risks beyond Orderly’s control.
+
+<a id="ref14"><sup>4 </sup></a>  Liquidation strategies involve inherent risks, including volatility, market reversals, or imperfect pricing execution, which may negatively impact vault performance.
