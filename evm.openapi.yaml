@@ -3980,6 +3980,79 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GetBrokerDailyResponse"
+
+  /v1/broker/leaderboard/daily:
+    get:
+      summary: leaderboard
+      deprecated: false
+      description: >
+        **Limit 10 requests per 60 seconds**
+
+        `GET /v1/broker/leaderboard/daily`
+
+        The provided `start_date`/`end_date` has to be within a 90-day range.
+
+        Updated hourly
+      tags:
+        - private
+      parameters:
+        - name: start_date
+          in: query
+          description: Format YYYY-MM-DD
+          required: true
+          example: ""
+          schema:
+            type: string
+        - name: end_date
+          in: query
+          description: Format YYYY-MM-DD
+          required: true
+          example: ""
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: size
+          in: query
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: order_tag
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: broker_id
+          in: query
+          description: "if the broker_id is empty, return all users"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: sort
+          in: query
+          description: |
+            Allow sort by
+
+            `realized_pnl`
+            `volume`
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeaderboardResponse"
   /v1/client/statistics/daily:
     get:
       summary: Get User Daily Statistics
@@ -10622,6 +10695,56 @@ components:
                         type: number
                         example: 123.456
                       broker_fee:
+                        type: number
+                        example: 123.456
+                      address:
+                        type: string
+                        example: "0x0000000000"
+                      realized_pnl:
+                        type: number
+                        example: 111.00
+                meta:
+                  type: object
+                  properties:
+                    records_per_page:
+                      type: integer
+                      example: 25
+                    current_page:
+                      type: integer
+                      example: 1
+                    total:
+                      type: integer
+                      example: 50
+    LeaderboardResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                snapshot_time:
+                  type: number
+                  example: 1702989203989
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      account_id:
+                        type: string
+                        example: "0x58220761ade872c94f85e62f1b24a74eec792aaa3677b6201071fd05c1698e89"
+                      perp_volume:
+                        type: number
+                        example: 451580.9523
+                      perp_maker_volume:
+                        type: number
+                        example: 123.456
+                      perp_taker_volum:
                         type: number
                         example: 123.456
                       address:
