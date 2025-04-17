@@ -3983,14 +3983,17 @@ paths:
 
   /v1/broker/leaderboard/daily:
     get:
-      summary: leaderboard
+      summary: Get Builder's Leaderboard
       deprecated: false
       description: >
         **Limit 10 requests per 60 seconds**
 
+
         `GET /v1/broker/leaderboard/daily`
 
+
         The provided `start_date`/`end_date` has to be within a 90-day range.
+
 
         Updated hourly
       tags:
@@ -4041,8 +4044,10 @@ paths:
           description: |
             Allow sort by
 
-            `realized_pnl`
-            `volume`
+            `ascending_realized_pnl`
+            `descending_realized_pnl`
+            `ascending_perp_volume`
+            `descending_perp_volume`
           required: false
           schema:
             type: string
