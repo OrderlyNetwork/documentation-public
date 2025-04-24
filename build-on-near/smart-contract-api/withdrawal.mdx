@@ -6,29 +6,28 @@ title: "Withdrawal"
 
 ![](/images/build-on-orderly/NEAR-withdraw-flow.png)
 
-## Withdraw a Token
+## Check balances
+
+`get_user_token_balances`
+
+`near view asset-manager.orderly-network.near get_user_token_balances '{"user": "bmhc.near"}' --networkId mainnet`
+
+
+Parameters:
+
+```css
+View call: asset-manager.orderly-network.near.get_user_token_balances({"user": "bmhc.near"})
+[
+  [
+    'a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near', // tokenAccoutId
+    { balance: '3667917', pending_transfer: '0' } // tokenBalance
+  ],
+  ...
+]
+```
+
+## Withdraw the asset
 
 `user_request_withdraw`
 
-Parameters:
-
-```css
-args: {
-    token: accountId,
-    amount: "100",
-    broker_id: "broker_id", //optional
-}
-```
-
-## Check User's Pending Withdrawals
-
-`user_withdraw_pending`
-
-Parameters:
-
-```css
-args: {
-    user: accountId,
-    token: accountId, 
-}
-```
+`near call asset-manager.orderly-network.near user_request_withdraw '{"token": "$tokenAccoutId", "amount": "$tokenAmount"}' --accountId spring2022.near --depositYocto 1 --gas 120000000000000 --networkId mainnet`
