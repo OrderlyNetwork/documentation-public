@@ -4921,6 +4921,8 @@ paths:
         **Limit: 1 requests per second**
 
         `POST /v1/referral/auto_referral/update`
+        
+        Scope: Only each Builder’s admin wallet can call this endpoint.
       tags:
         - private
       parameters:
@@ -4946,6 +4948,7 @@ paths:
                   type: boolean
                 description:
                   type: string
+                  description: All users who receive a ref code will see this description displayed in the admin tool.
               required:
                 - required_trading_volume
                 - max_rebate
@@ -4968,6 +4971,8 @@ paths:
         **Limit: 1 requests per second**
 
         `GET /v1/referral/auto_referral/info`
+        
+        Scope: Only each Builder’s admin wallet can call this endpoint.
       tags:
         - private
       parameters:
