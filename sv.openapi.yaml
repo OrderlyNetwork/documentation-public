@@ -1047,6 +1047,8 @@ components:
                         type: number
                       tvl_max_drawdown:
                         type: number
+                      pnl_max_drawdown:
+                        type: number
                       fees:
                         type: number
                       volume:
@@ -1055,21 +1057,25 @@ components:
                       - time_range: "24h"
                         incremental_net_pnl: 5678.90
                         tvl_max_drawdown: 0.015
+                        pnl_max_drawdown: 0.012
                         fees: 1234.50
                         volume: 456789.0
                       - time_range: "7d"
                         incremental_net_pnl: -45678.90
                         tvl_max_drawdown: 0.02
+                        pnl_max_drawdown: 0.04
                         fees: 7890.50
                         volume: 1234567.0
                       - time_range: "30d"
                         incremental_net_pnl: 172567.73
                         tvl_max_drawdown: 0.0253
+                        pnl_max_drawdown: 0.0051
                         fees: 56789.0
                         volume: 3456789.0
                       - time_range: "all_time"
                         incremental_net_pnl: 1234567.89
                         tvl_max_drawdown: 0.03
+                        pnl_max_drawdown: 0.08
                         fees: 98765.0
                         volume: 9876543.0
     VaultPositionsResponse:
@@ -1435,19 +1441,25 @@ components:
                         type: number
                       tvl_max_drawdown:
                         type: number
+                      pnl_max_drawdown:
+                        type: number
               example:
                 - time_range: "24h"
                   incremental_net_pnl: 123.000000
                   tvl_max_drawdown: 0.015
+                  pnl_max_drawdown: 0.012
                 - time_range: "7d"
                   incremental_net_pnl: -2559.000000
                   tvl_max_drawdown: 0.02
+                  pnl_max_drawdown: 0.04
                 - time_range: "30d"
                   incremental_net_pnl: 8888.021000
                   tvl_max_drawdown: 0.0253
+                  pnl_max_drawdown: 0.0051
                 - time_range: "all_time"
                   incremental_net_pnl: 99888.070200
                   tvl_max_drawdown: 0.03
+                  pnl_max_drawdown: 0.08
     LpPerformanceChartResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
