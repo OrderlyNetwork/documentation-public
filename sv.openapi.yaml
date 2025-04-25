@@ -323,6 +323,50 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/VaultPerformanceChartResponse"
+  /v1/public/strategy_vault/vault/liquidator_history:
+    get:
+      summary: Get Strategy Vault Liquidator History
+      description: |
+        
+        Liquidated positions of liquidator
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/vault/liquidator_history`
+      tags:
+        - public
+      parameters:
+        - name: vault_id
+          in: query
+          description: "restrict only vault_type = pv, will fetch PV’s SP account liquidator’s liquidated position history"
+          required: true
+          schema:
+            type: string
+        - name: symbol
+          in: query
+          description: "only 1 at a time"
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: "the page you wish to query"
+          required: false
+          schema:
+            type: number
+        - name: size
+          in: query
+          description: "the page size you wish to query (max: 500)"
+          required: false
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaultLiquidatorHistoryResponse"
   /v1/public/strategy_vault/vault/positions:
     get:
       summary: Get Strategy Vault Positions
@@ -1022,6 +1066,68 @@ components:
                       value:
                         type: number
                         example: 1400000.0
+    VaultLiquidatorHistoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                meta:
+                  type: object
+                  properties:
+                    total:
+                      type: number
+                      example: 9
+                    records_per_page:
+                      type: number
+                      example: 25
+                    current_page:
+                      type: number
+                      example: 1
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      liquidation_id:
+                        type: number
+                        example: 1728
+                      timestamp:
+                        type: number
+                        example: 1685154032762
+                      type:
+                        type: string
+                        example: "liquidated"
+                        description: "liquidated: claimed from user liquidated position, claimed: claimed from insuranceFund position"
+                      assigned:
+                        type: number
+                        example: 1
+                        description: "1: refers to liquidated position assigned to liquidator, 0: refers to liquidated position initiated by liquidator"
+                      positions_by_perp:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            abs_liquidator_fee:
+                              type: number
+                              example: 1.152279
+                            cost_position_transfer:
+                              type: number
+                              example: 65.84448
+                            liquidator_fee:
+                              type: number
+                              example: 0.0175
+                            position_qty:
+                              type: number
+                              example: 41.6
+                            symbol:
+                              type: string
+                              example: "PERP_NEAR_USDC"
+                            transfer_price:
+                              type: number
+                              example: 1.5828
     VaultOpenOrdersResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
