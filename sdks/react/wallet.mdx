@@ -22,10 +22,11 @@ Wrap your application with the `WalletConnectorProvider` for wallet connection f
 
 ```tsx
 import { WalletConnectorProvider } from "@orderly.network/wallet-connector";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 
 const App: FC<{ children: ReactNode }> = (props) => {
   return (
-    <WalletConnectorProvider>
+    <WalletConnectorProvider solanaInitial={{network : WalletAdapterNetwork.Mainnet}}>
       <OrderlyAppProvider brokerId="orderly" brokerName="Orderly" networkId="testnet" appIcons={""}>
         {props.children}
       </OrderlyAppProvider>
