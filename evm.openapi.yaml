@@ -8739,15 +8739,17 @@ components:
           type: string
           example: "USDC"
         receiver_list:
-          type: object
+          type: array
           description: "Maximum 50 receivers per request, transferring to yourself will lead to request failure. "
-          properties:
-            account_id:
-              type: string
-              example: "0x0000000"
-            amount:
-              type: number
-              example: 100
+          items:
+            type: object
+            properties:
+              account_id:
+                type: string
+                example: "0x0000000"
+              amount:
+                type: number
+                example: 100
 
 
     PostOrderBody:
