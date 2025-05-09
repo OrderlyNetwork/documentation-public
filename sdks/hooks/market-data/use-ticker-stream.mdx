@@ -6,25 +6,52 @@ This hooks streams [market information](/sdks/tech-doc/interfaces/orderly_networ
 
 - [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#usetickerstream)
 
-### Example
+## Usage
 
 ```tsx
-const marketInfo = useTickerStream("PERP_BTC_USDC");
+import { useTickerStream } from "@orderly.network/hooks";
 
-return (
-  <>
-    <div className="flex flex-col">
-      <div className="color-gray">Mark</div>
-      <div>{stream.mark_price}</div>
-    </div>
-    <div className="flex flex-col">
-      <div className="color-gray">Index</div>
-      <div>{stream.index_price}</div>
-    </div>
-    <div className="flex flex-col">
-      <div className="color-gray">24h volume</div>
-      <div>{stream["24h_amount"]}</div>
-    </div>
-  </>
-);
+function MarketInfo() {
+  const marketInfo = useTickerStream("PERP_BTC_USDC");
+
+  return (
+    <>
+      <div>Mark Price: ${marketInfo.mark_price}</div>
+      <div>24h Change: {marketInfo["24h_change"]}%</div>
+      <div>24h Volume: ${marketInfo["24h_amount"]}</div>
+    </>
+  );
+}
 ```
+
+### Return Type
+
+```typescript
+interface TickerStreamResponse {
+  "24h_amount": number; // 24h trading volume in USDC
+  "24h_change": number; // Price change in last 24h
+  "24h_close": number; // Latest price in 24h period
+  "24h_high": number; // Highest price in 24h
+  "24h_low": number; // Lowest price in 24h
+  "24h_open": number; // Opening price 24h ago
+  "24h_volume": number; // Trading volume in base currency
+  change: number; // Price change percentage
+  est_funding_rate: number; // Estimated next funding rate
+  index_price: number; // Current index price
+  last_funding_rate: number; // Last paid funding rate
+  mark_price: number; // Current mark price
+  next_funding_time: number; // Next funding timestamp
+  open_interest: number; // Total open interest
+  sum_unitary_funding: number; // Cumulative funding
+  symbol: string; // Trading pair symbol
+}
+```
+
+### Features
+
+- Real-time WebSocket updates
+- Comprehensive market data
+- Price metrics and changes
+- Volume information
+- Funding rate details
+- Open interest tracking
