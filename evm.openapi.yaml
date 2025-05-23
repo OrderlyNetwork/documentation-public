@@ -7,6 +7,138 @@ tags:
   - name: public
   - name: private
 paths:
+  /v1/client/add_sub_account:
+    post:
+      summary: Add sub-account
+      description: |
+        **Limit: 10 requests per second**
+
+        `POST /v1/client/add_sub_account`
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AddSubAccountResponse"
+
+  /v1/client/sub_account:
+    get:
+      summary: Get sub-account list
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/client/sub_account`
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubAccountResponse"
+
+  /v1/client/update_sub_account:
+    post:
+      summary: Update sub-account
+      description: |
+        **Limit: 10 requests per second**
+
+        `POST /v1/client/update_sub_account`
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - sub_account_id
+              type: object
+              properties:
+                sub_account_id:
+                  type: string
+                description:
+                  type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+
+  /v1/client/aggregate/positions:
+    get:
+      summary: Get aggregate positions
+      description: |
+
+        **Limit: 1 request per 60 seconds**
+
+        `GET v1/client/aggregate/positions`
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AggregatePositionsResponse"
+
+  /v1/client/aggregate/holding:
+    get:
+      summary: Get aggregate holding
+      description: |
+
+        **Limit: 1 request per 60 seconds**
+
+        `GET /v1/client/aggregate/holding`
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AggregateHoldingResponse"
+
   /v1/public/futures:
     get:
       summary: Get Market Info for All Symbols
@@ -6548,6 +6680,192 @@ components:
         timestamp:
           type: integer
           example: 1702989203989
+    AddSubAccountResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - main_account_id
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - sub_account_id
+                - description
+              properties:
+                sub_account_id:
+                  type: number
+                  example: 123
+                description:
+                  type: string
+                  example: "abc"
+
+    SubAccountResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - main_account_id
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - main_account_id
+                - rows
+              properties:
+                main_account_id:
+                  type: number
+                  example: 123
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - sub_account_id
+                      - description
+                    properties:
+                      sub_account_id:
+                        type: number
+                        example: 123
+                      description:
+                        type: string
+                        example: "abc"
+
+    AggregatePositionsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      account_id:
+                        type: string
+                      IMR_withdraw_orders:
+                        type: number
+                      MMR_with_orders:
+                        type: number
+                      average_open_price:
+                        type: number
+                      cost_position:
+                        type: number
+                      est_liq_price:
+                        type: number
+                      fee_24_h:
+                        type: number
+                      imr:
+                        type: number
+                      last_sum_unitary_funding:
+                        type: number
+                      mark_price:
+                        type: number
+                      mmr:
+                        type: number
+                      pending_long_qty:
+                        type: number
+                      pending_short_qty:
+                        type: number
+                      pnl_24_h:
+                        type: number
+                      position_qty:
+                        type: number
+                      settle_price:
+                        type: number
+                      symbol:
+                        type: string
+                      seq:
+                        type: number
+                      timestamp:
+                        type: number
+                      unsettled_pnl:
+                        type: number
+              example:
+                - account_id: "0x11111"
+                  IMR_withdraw_orders: 0.1
+                  MMR_with_orders: 0.05
+                  average_open_price: 27908.14386047
+                  cost_position: -139329.358492
+                  est_liq_price: 117335.92899428
+                  fee_24_h: 0
+                  imr: 0.1
+                  last_sum_unitary_funding: 70.38
+                  mark_price: 27794.9
+                  mmr: 0.05
+                  pending_long_qty: 0
+                  pending_short_qty: 0
+                  pnl_24_h: 0
+                  position_qty: -5
+                  settle_price: 27865.8716984
+                  symbol: "PERP_BTC_USDC"
+                  seq: 1730181536341943600
+                  timestamp: 1685429350571
+                  unsettled_pnl: 354.858492
+                - account_id: "0x22222"
+                  IMR_withdraw_orders: 0.12
+                  MMR_with_orders: 0.06
+                  average_open_price: 28000.123456
+                  cost_position: -100000.56789
+                  est_liq_price: 120000.654321
+                  fee_24_h: 5.5
+                  imr: 0.12
+                  last_sum_unitary_funding: 50.12
+                  mark_price: 27794.9
+                  mmr: 0.06
+                  pending_long_qty: 1
+                  pending_short_qty: 0
+                  pnl_24_h: 150.75
+                  position_qty: -3
+                  settle_price: 27950.6789
+                  symbol: "PERP_BTC_USDC"
+                  seq: 1730181536341943601
+                  timestamp: 1685429350572
+                  unsettled_pnl: 200.50
+
+    AggregateHoldingResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      account_id:
+                        type: string
+                      updated_time:
+                        type: number
+                      token:
+                        type: string
+                      holding:
+                        type: number
+                      frozen:
+                        type: number
+                      pending_short:
+                        type: number
+              example:
+                - account_id: "0x1111"
+                  updated_time: 1580794149000
+                  token: "BTC"
+                  holding: -28.000752
+                  frozen: 0
+                  pending_short: -2000
+                - account_id: "0x2222"
+                  updated_time: 1580794149000
+                  token: "ETH"
+                  holding: -10.123456
+                  frozen: 0
+                  pending_short: -500
 
     EmptyDataResponse:
       allOf:
