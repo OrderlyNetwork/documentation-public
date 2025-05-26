@@ -135,3 +135,41 @@ Makes sure there's only one active `POSITIONAL_TP_SL` order. For any of the regu
   ]
 }
 ```
+
+### BRACKET + TP_SL
+```json
+{
+    "symbol": "PERP_NEAR_USDC",
+    "algo_type": "BRACKET",
+    "quantity": "4",
+    "side": "BUY",
+    "type": "LIMIT",
+    "price": 2.03,
+    "child_orders": [
+        {
+            "symbol": "PERP_NEAR_USDC",
+            "algo_type": "TP_SL",
+            "child_orders": [
+                {
+                    "symbol": "PERP_NEAR_USDC",
+                    "algo_type": "TAKE_PROFIT",
+                    "side": "SELL",
+                    "type": "LIMIT",
+                    "price": 2.06,
+                    "trigger_price": 2.05,
+                    "reduce_only": true
+                },
+                {
+                    "symbol": "PERP_NEAR_USDC",
+                    "algo_type": "STOP_LOSS",
+                    "side": "SELL",
+                    "type": "LIMIT",
+                    "price": 2.02,
+                    "trigger_price": 2.02,
+                    "reduce_only": true
+                }
+            ]
+        }
+    ]
+}
+```
