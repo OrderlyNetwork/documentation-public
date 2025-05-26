@@ -845,34 +845,66 @@ components:
                     properties:
                       created_time:
                         type: number
-                        example: 1734652800000
                       period_number:
                         type: number
-                        example: 4
                       type:
                         type: string
-                        example: "withdrawal"
                       status:
                         type: string
-                        example: "claimable"
+                      est_assign_period_time:
+                        type: number
+                      unlock_time:
+                        type: number
                       est_claim_time:
                         type: number
-                        example: null
                       chain_id:
                         type: string
-                        example: "1"
                       txn_hash:
                         type: string
-                        example: "0x4dbc4b0cc722d2f401e9a32fe5be7a52c6834785e2084ac78447e94735b8274d"
                       txn_hash_claim:
                         type: string
-                        example: "0x25b973f86b370e9f1f4b5244242ab8ade3bdbfc1068b74a9b17a2c345a64080f"
                       shares_change:
                         type: number
-                        example: 60.000000
                       amount_change:
                         type: number
-                        example: 88.009000
+
+                    example:
+                      - created_time: 1734652800000
+                        period_number: 4
+                        type: "withdrawal"
+                        status: "claimable"
+                        est_assign_period_time: null
+                        unlock_time: null
+                        est_claim_time: null
+                        chain_id: "1"
+                        txn_hash: "0x4dbc4b0cc722d2f401e9a32fe5be7a52c6834785e2084ac78447e94735b8274d"
+                        txn_hash_claim: null
+                        shares_change: 60.000000
+                        amount_change: 88.009000
+                      - created_time: 1734566400000
+                        period_number: 2
+                        type: "withdrawal"
+                        status: "claimed"
+                        est_assign_period_time: null
+                        unlock_time: null
+                        est_claim_time: null
+                        chain_id: "1"
+                        txn_hash: "0x14a8248f38c2530011ba4c826eb1f1db8dad05025be24461bb42f1bc540ac42e"
+                        txn_hash_claim: "0x25b973f86b370e9f1f4b5244242ab8ade3bdbfc1068b74a9b17a2c345a64080f"
+                        shares_change: 400.000000
+                        amount_change: 572.001000
+                      - created_time: 1734480000000
+                        period_number: 1
+                        type: "deposit"
+                        status: "available"
+                        est_assign_period_time: null
+                        unlock_time: null
+                        est_claim_time: null
+                        chain_id: "1"
+                        txn_hash: "0x14a8248f38c2530011ba4c826eb1f1db8dad05025be24461bb42f1bc540ac42e"
+                        txn_hash_claim: null
+                        shares_change: 465.830000
+                        amount_change: 2800.004000
     ClaimInfoResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
@@ -1506,34 +1538,65 @@ components:
                     properties:
                       created_time:
                         type: number
-                        example: 1734652800000
                       period_number:
                         type: number
-                        example: 4
                       type:
                         type: string
-                        example: "withdrawal"
                       status:
                         type: string
-                        example: "claimable"
+                      est_assign_period_time:
+                        type: number
+                      unlock_time:
+                        type: number
                       est_claim_time:
                         type: number
-                        example: 1734672800000
                       chain_id:
                         type: string
-                        example: "1"
                       txn_hash:
                         type: string
-                        example: "0x4dbc4b0cc722d2f401e9a32fe5be7a52c6834785e2084ac78447e94735b8274d"
                       txn_hash_claim:
                         type: string
-                        example: null
                       shares_change:
                         type: number
-                        example: 60.000000
                       amount_change:
                         type: number
-                        example: 88.009000
+                    example:
+                      - created_time: 1734652800000
+                        period_number: 4
+                        type: "withdrawal"
+                        status: "claimable"
+                        est_assign_period_time: null
+                        unlock_time: null
+                        est_claim_time: null
+                        chain_id: "1"
+                        txn_hash: "0x4dbc4b0cc722d2f401e9a32fe5be7a52c6834785e2084ac78447e94735b8274d"
+                        txn_hash_claim: null
+                        shares_change: 60.000000
+                        amount_change: 88.009000
+                      - created_time: 1734566400000
+                        period_number: 2
+                        type: "withdrawal"
+                        status: "claimable"
+                        est_assign_period_time: null
+                        unlock_time: null
+                        est_claim_time: null
+                        chain_id: "1"
+                        txn_hash: "0x14a8248f38c2530011ba4c826eb1f1db8dad05025be24461bb42f1bc540ac42e"
+                        txn_hash_claim: "0x14a8248f38c2530011ba4c826eb1f1db8dad05025be24461bb42f1bc540ac42e"
+                        shares_change: 400.000000
+                        amount_change: 572.001000
+                      - created_time: 1734480000000
+                        period_number: 1
+                        type: "deposit"
+                        status: "available"
+                        est_assign_period_time: null
+                        unlock_time: null
+                        est_claim_time: null
+                        chain_id: "1"
+                        txn_hash: "0x14a8248f38c2530011ba4c826eb1f1db8dad05025be24461bb42f1bc540ac42e"
+                        txn_hash_claim: null
+                        shares_change: 465.830000
+                        amount_change: 2800.004000
     LpClaimInfoResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
