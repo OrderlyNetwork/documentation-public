@@ -16,6 +16,8 @@ paths:
         `POST /v1/client/add_sub_account`
         
         Only the main account is allowed to call this API.
+        
+        Main account’s Orderly key can control sub-accounts.
       tags:
         - private
       parameters:
@@ -151,16 +153,23 @@ paths:
 
   /v1/sub_account_settle_pnl:
     post:
-      summary: sub-account settle pnl
+      summary: Settle sub-account PnL
       description: |
         **Limit: 10 requests per second**
 
         `POST /v1/sub_account_settle_pnl`
+        
+        Main account’s Orderly key can control sub-accounts.
       tags:
         - private
       parameters:
         - $ref: "#/components/parameters/orderly_timestamp"
-        - $ref: "#/components/parameters/orderly_account_id"
+        - name: orderly_account_id
+          in: header
+          description: "account_id in header can only be sub_account"
+          required: true
+          schema:
+            type: string
         - $ref: "#/components/parameters/orderly_key"
         - $ref: "#/components/parameters/orderly_signature"
       requestBody:
