@@ -57,6 +57,37 @@ title: "Algo Order Sample Requests"
 }
 ```
 
+- `TP_SL` orders support triggering Limit orders.
+
+```json
+{
+    "symbol": "PERP_NEAR_USDC",
+    "algo_type": "TP_SL",
+    "quantity": 6,
+    "trigger_price_type": "MARK_PRICE",
+    "child_orders": [
+        {
+            "symbol": "PERP_NEAR_USDC",
+            "algo_type": "TAKE_PROFIT",
+            "side": "SELL",
+            "type": "LIMIT",
+            "price": 2.4,
+            "trigger_price": 2.3,
+            "reduce_only": true
+        },
+        {
+            "symbol": "PERP_NEAR_USDC",
+            "algo_type": "STOP_LOSS",
+            "side": "SELL",
+            "type": "LIMIT",
+            "price": 2.1,
+            "trigger_price": 1.9,
+            "reduce_only": true
+        }
+    ]
+}
+```
+
 ### POSITIONAL_TP_SL
 ```json
 {
