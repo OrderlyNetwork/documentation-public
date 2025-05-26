@@ -14,6 +14,8 @@ paths:
         **Limit: 10 requests per second**
 
         `POST /v1/client/add_sub_account`
+        
+        Only the main account is allowed to call this API.
       tags:
         - private
       parameters:
@@ -44,6 +46,8 @@ paths:
         **Limit: 10 requests per second**
 
         `GET /v1/client/sub_account`
+        
+        Only the main account is allowed to call this API.
       tags:
         - private
       parameters:
@@ -66,6 +70,8 @@ paths:
         **Limit: 10 requests per second**
 
         `POST /v1/client/update_sub_account`
+        
+        Only the main account is allowed to call this API.
       tags:
         - private
       parameters:
@@ -101,6 +107,8 @@ paths:
         **Limit: 1 request per 60 seconds**
 
         `GET v1/client/aggregate/positions`
+        
+        Only the main account is allowed to call this API.
       tags:
         - private
       parameters:
@@ -124,6 +132,8 @@ paths:
         **Limit: 1 request per 60 seconds**
 
         `GET /v1/client/aggregate/holding`
+        
+        Only the main account is allowed to call this API
       tags:
         - private
       parameters:
@@ -2123,6 +2133,8 @@ paths:
         `POST /v1/orderly_key`
 
         Adds an Orderly access key to an account.
+        
+        Main account's Orderly key can control sub-account.
       tags:
         - public
       parameters: []
@@ -3004,6 +3016,13 @@ paths:
           example: ""
           schema:
             type: string
+        - name: main_sub_only
+          in: query
+          description: "If True, return only internal transfers between main account and sub-accounts.If False or empty, return all internal transfers."
+          required: false
+          example: ""
+          schema:
+            type: boolean
         - $ref: "#/components/parameters/orderly_timestamp"
         - $ref: "#/components/parameters/orderly_account_id"
         - $ref: "#/components/parameters/orderly_key"
@@ -4182,6 +4201,13 @@ paths:
             `ascending_perp_volume`
             `descending_perp_volume`
           required: false
+          schema:
+            type: string
+        - name: address
+          in: query
+          description: ""
+          required: false
+          example: ""
           schema:
             type: string
       responses:
@@ -10142,6 +10168,9 @@ components:
         userAddress:
           type: string
           description: The address of the wallet signing the message object via EIP-712
+        subAccountId:
+          type: string
+          description: create the api key for the input subAccountId
 
     RemoveOrderlyKeyBody:
       type: object
