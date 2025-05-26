@@ -149,6 +149,37 @@ paths:
               schema:
                 $ref: "#/components/schemas/AggregateHoldingResponse"
 
+  /v1/sub_account_settle_pnl:
+    post:
+      summary: sub-account settle pnl
+      description: |
+        **Limit: 10 requests per second**
+
+        `POST /v1/sub_account_settle_pnl`
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - settle_nonce
+              type: object
+              properties:
+                settle_nonce:
+                  type: number
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SettlePnlResponse"
   /v1/public/futures:
     get:
       summary: Get Market Info for All Symbols
