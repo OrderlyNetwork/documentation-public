@@ -129,6 +129,48 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ClaimInfoResponse"
+  /v1/public/strategy_vault/sp/fees_history:
+    get:
+      summary: Get Strategy Provider Fee History
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/sp/fees_history`
+      tags:
+        - public
+      parameters:
+        - name: vault_id
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: wallet_address
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: "the page you wish to query"
+          required: false
+          schema:
+            type: number
+        - name: size
+          in: query
+          description: "the page size you wish to query (max: 500)"
+          required: false
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SpFeesHistoryResponse"
   /v1/public/strategy_vault/fund/info:
     get:
       summary: Get Strategy Fund Details
@@ -970,6 +1012,57 @@ components:
                 claimable_amount:
                   type: number
                   example: 10087.260000
+    SpFeesHistoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            meta:
+              type: object
+              properties:
+                total:
+                  type: number
+                  example: 3
+                records_per_page:
+                  type: number
+                  example: 20
+                current_page:
+                  type: number
+                  example: 1
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      created_time:
+                        type: number
+                      period_number:
+                        type: number
+                      type:
+                        type: string
+                      shares_change:
+                        type: number
+                      amount_change:
+                        type: number
+              example:
+                - created_time: 1734652800000
+                  period_number: 2
+                  type: "performance_fee"
+                  shares_change: 1.24
+                  amount_change: 1.24
+                - created_time: 1734566400000
+                  period_number: 1
+                  type: "performance_fee"
+                  shares_change: 0
+                  amount_change: 0
+                - created_time: 1734480000000
+                  period_number: 0
+                  type: "performance_fee"
+                  shares_change: 0
+                  amount_change: 0
     PeriodInfoResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
