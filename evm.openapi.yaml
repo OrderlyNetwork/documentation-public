@@ -5217,6 +5217,50 @@ paths:
               schema:
                 $ref: "#/components/schemas/AutoReferralProgressResponse"
 
+  /v1/referral/edit_referral_code:
+    post:
+      summary: Edit Referral Code
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `POST /v1/referral/edit_referral_code`
+
+        Only Auto generated code can be updated.
+
+        The referral code can only be changed if it hasn’t been bound by other user yet. 
+
+        There is no limit to the number of times it can be changed.
+
+        The referral code must be unique platform-wise.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                current_referral_code:
+                  type: string
+                new_referral_code:
+                  type: string
+              required:
+                - current_referral_code
+                - new_referral_code
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+
   /v1/public/points/leaderboard:
     get:
       summary: Get Merits Leaderboard
