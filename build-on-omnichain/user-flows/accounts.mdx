@@ -71,11 +71,15 @@ String registrationNonce = nonceObj.getJSONObject("data").getString("registratio
 
 ```py Python
 import requests
+import json
 
 BASE_URL = "https://testnet-api.orderly.org"
 
 res = requests.get(f"{BASE_URL}/v1/registration_nonce")
-print(res.text)
+response = json.loads(res.text)
+nonce = response["data"]["registration_nonce"]
+
+print(nonce)
 ```
 
 ```ts TypeScript
