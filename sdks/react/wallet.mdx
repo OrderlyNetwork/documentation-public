@@ -12,7 +12,7 @@ Orderly SDK provides a built-in wallet connection component supporting both EVM 
 
 ### Install Wallet Connector Dependencies
 
-```
+```bash
 npm install @orderly.network/wallet-connector
 ```
 
@@ -35,8 +35,93 @@ const App: FC<{ children: ReactNode }> = (props) => {
 };
 ```
 
-Alternatively, you can integrate third-party wallet libraries by implementing the `WalletConnectorContextState`
-interface from `@orderly.network/hooks`.
+---
+
+## Wallet Connector Privy
+
+The new wallet connector consists of three parts:
+
+- **Privy**: Provides social login, featuring an injected wallet, EVM wallets, and Solana wallets.
+- **Wagmi**: Offers connectivity for EVM wallets, such as MetaMask and WalletConnect.
+- **Solana**: Provides connectivity for Solana wallets, such as Phantom and Ledger.
+
+### Configuration options
+
+- `network` (**required**) – e.g., `mainnet` or `testnet`. This determines the network used by wallets like Solana and Abstract.
+- `customChains` (**optional**) – Brokers can define which chains to display.
+- `termsOfUse` (**optional**) – URL for Terms of Use; if not provided, terms section won't be shown.
+
+```ts
+interface WalletConnectorPrivyProps{
+  network: Network;
+  customChains?: Chains;
+  termsOfUse?: string;
+  privyConfig?: InitPrivy;
+  wagmiConfig?: InitWagmi;
+  solanaConfig?: InitSolana;
+}
+```
+
+- If `privyConfig` is not configured, the Privy connector will be disabled.
+- If `wagmiConfig` is not configured, the Wagmi connector will be disabled.
+- If `solanaConfig` is not configured, the Solana connector will be disabled.
+- If `abstractConfig` is not configured, the Abstract Global Wallet connector will be disabled.
+- At least one of `privyConfig`, `wagmiConfig`, or `solanaConfig` must be provided.
+
+### Behavior based on `customChains`:
+
+- If only Solana chains are included, Privy will show only the Solana injected wallet and disable the Wagmi connector.
+- If only EVM chains are included, Privy will show only the EVM injected wallet and disable the Solana connector.
+
+### Example
+
+```tsx
+<WalletConnectorPrivyProvider
+  termsOfUse="https://learn.woo.org/legal/terms-of-use"
+  network={Network.testnet}
+  privyConfig={{
+    appid: "your privy appid",
+    config: {
+      appearance: {
+        theme: "dark",
+        accentColor: "#181C23",
+        logo: "/orderly-logo.svg",
+      },
+    },
+  }}
+  wagmiConfig={{
+    connectors: [
+      wagmiConnectors.injected(),
+      wagmiConnectors.walletConnect({
+        projectId: "your project id",
+        showQrModal: true,
+        storageOptions: {},
+        metadata: {
+          name: "Orderly Network",
+          description: "Orderly Network",
+          url: "https://orderly.network",
+          icons: ["https://oss.orderly.network/static/sdk/chains.png"],
+        },
+      }),
+    ],
+  }}
+  solanaConfig={{
+    mainnetRpc: "",
+    devnetRpc: "https://api.devnet.solana.com",
+    wallets: wallets,
+    onError: (error: WalletError, adapter?: Adapter) => {
+      console.log("-- error", error, adapter);
+    },
+  }}
+  abstractConfig={{}}
+>
+  <OrderlyAppProvider>
+    {props.children}
+  </OrderlyAppProvider>
+</WalletConnectorPrivyProvider>
+```
+
+---
 
 ## Custom wallet connection provider
 
@@ -49,13 +134,11 @@ import { WalletConnectorContext } from "@orderly.network/hooks";
 export const WalletConnector = ({ children }: PropsWithChildren) => {
   return (
     <WalletConnectorContext.Provider
-      value={
-        {
-          /*
-           * implement all properties defined in WalletConnectorContextState
-           */
-        }
-      }
+      value={{
+        /*
+         * implement all properties defined in WalletConnectorContextState
+         */
+      }}
     >
       {children}
     </WalletConnectorContext.Provider>
@@ -81,7 +164,6 @@ export interface WalletConnectorContextState {
   switchChain: (options: { chainId: string }) => Promise<any>;
   wallet: any;
   connectedChain: ConnectedChain | null;
-
   settingChain: boolean;
 }
 

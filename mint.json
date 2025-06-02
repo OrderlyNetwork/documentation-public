@@ -441,8 +441,7 @@
         {
           "group": "User Data",
           "pages": [
-            "build-on-omnichain/evm-api/restful-api/private/get-builders-users-volumes",
-            "build-on-omnichain/evm-api/restful-api/public/get-builders-leaderboard"
+            "build-on-omnichain/evm-api/restful-api/private/get-builders-users-volumes"
           ]
         },
         {
@@ -482,10 +481,7 @@
             "build-on-omnichain/evm-api/restful-api/private/get-referral-history",
             "build-on-omnichain/evm-api/restful-api/private/get-referral-rebate-summary",
             "build-on-omnichain/evm-api/restful-api/private/get-distribution-history",
-            "build-on-omnichain/evm-api/restful-api/private/edit-referral-code-split",
-            "build-on-omnichain/evm-api/restful-api/private/builder-auto-referral-update",
-            "build-on-omnichain/evm-api/restful-api/private/builder-auto-referral-info",
-            "build-on-omnichain/evm-api/restful-api/private/auto-referral-progress"
+            "build-on-omnichain/evm-api/restful-api/private/edit-referral-code-split"
           ]
         }
       ]
@@ -615,7 +611,9 @@
           "pages": [
             "sdks/react/components/deposit",
             "sdks/react/components/withdraw",
-            "sdks/react/components/order_book"
+            "sdks/react/components/order_book",
+            "sdks/react/components/portfolio",
+            "sdks/react/components/scaffold"
           ]
         }
       ]
@@ -773,6 +771,70 @@
       ]
     },
     {
+      "group": "Strategy Provider",
+      "pages": [
+        {
+          "group": "Key management",
+          "pages": [
+            "strategy-vault/strategy-provider/private/add-sp-orderly-key"
+          ]
+        },
+        {
+          "group": "Settle PnL",
+          "pages": [
+            "strategy-vault/strategy-provider/private/request-sp-pnl-settlement"
+          ]
+        },
+        {
+          "group": "Strategy Provider Details",
+          "pages": [
+            "strategy-vault/strategy-provider/public/get-strategy-providers-info"
+          ]
+        },
+        {
+          "group": "Deposit/Withdrawal",
+          "pages": [
+            "strategy-vault/strategy-provider/public/sp-transaction-history",
+            "strategy-vault/strategy-provider/public/sp-claim-info"
+          ]
+        },
+        {
+          "group": "Period Obligations",
+          "pages": [
+            "strategy-vault/strategy-provider/private/trigger-manual-period-delivery"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Strategy Fund",
+      "pages": [
+        {
+          "group": "Strategy Fund Details",
+          "pages": [
+            "strategy-vault/strategy-fund/public/get-strategy-fund-details"
+          ]
+        },
+        {
+          "group": "Period Details",
+          "pages": [
+            "strategy-vault/strategy-fund/public/get-period-history-and-fund-period-instructions"
+          ]
+        },
+        {
+          "group": "Fund Transactions",
+          "pages": [
+            "strategy-vault/strategy-fund/public/get-preview-users-pending-requests",
+            "strategy-vault/strategy-fund/public/get-fund-inflow-allocation",
+            "strategy-vault/strategy-fund/public/get-fund-outflow-allocation",
+            "strategy-vault/strategy-fund/public/get-orderly-protocol-revenue-sharing-history",
+            "strategy-vault/strategy-fund/public/get-liquidation-fees-sharing-history",
+            "strategy-vault/strategy-fund/public/get-internal-transfer-history"
+          ]
+        }
+      ]
+    },
+    {
       "group": "Technical Documentation",
       "pages": [
         "sdks/tech-doc/README",
@@ -924,123 +986,6 @@
             "sdks/tech-doc/classes/orderly_network_trading_view.Datafeed",
             "sdks/tech-doc/classes/orderly_network_types.ApiError",
             "sdks/tech-doc/classes/orderly_network_types.SDKError"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Strategy Vault",
-      "pages": [
-        {
-          "group": "Vault Details",
-          "pages": [
-            "strategy-vault/strategy-vault/public/vault-info"
-          ]
-        },
-        {
-          "group": "Vault Statistics",
-          "pages": [
-            "strategy-vault/strategy-vault/public/vault-performance",
-            "strategy-vault/strategy-vault/public/vault-performance-chart"
-          ]
-        },
-        {
-          "group": "Order Management",
-          "pages": [
-            "strategy-vault/strategy-vault/public/vault-positions",
-            "strategy-vault/strategy-vault/public/vault-open-orders",
-            "strategy-vault/strategy-vault/public/vault-trade-history",
-            "strategy-vault/strategy-vault/public/vault-order-history",
-            "strategy-vault/strategy-vault/public/vault-liquidator-history"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Liquidity Provider",
-      "pages": [
-        {
-          "group": "Liquidity Provider Details",
-          "pages": [
-            "strategy-vault/liquidity-provider/public/lp-info"
-          ]
-        },
-        {
-          "group": "Liquidity Provider Statistics",
-          "pages": [
-            "strategy-vault/liquidity-provider/public/lp-performance",
-            "strategy-vault/liquidity-provider/public/lp-performance-chart"
-          ]
-        },
-        {
-          "group": "Deposit/Withdrawal",
-          "pages": [
-            "strategy-vault/liquidity-provider/public/lp-transaction-history",
-            "strategy-vault/liquidity-provider/public/lp-claim-info"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Strategy Provider",
-      "pages": [
-        {
-          "group": "Key management",
-          "pages": [
-            "strategy-vault/strategy-provider/private/add-sp-orderly-key"
-          ]
-        },
-        {
-          "group": "Settle PnL",
-          "pages": [
-            "strategy-vault/strategy-provider/private/request-sp-pnl-settlement"
-          ]
-        },
-        {
-          "group": "Strategy Provider Details",
-          "pages": [
-            "strategy-vault/strategy-provider/public/get-strategy-providers-info"
-          ]
-        },
-        {
-          "group": "Deposit/Withdrawal",
-          "pages": [
-            "strategy-vault/strategy-provider/public/sp-transaction-history",
-            "strategy-vault/strategy-provider/public/sp-claim-info"
-          ]
-        },
-        {
-          "group": "Period Obligations",
-          "pages": [
-            "strategy-vault/strategy-provider/private/trigger-manual-period-delivery"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Strategy Fund",
-      "pages": [
-        {
-          "group": "Strategy Fund Details",
-          "pages": [
-            "strategy-vault/strategy-fund/public/get-strategy-fund-details"
-          ]
-        },
-        {
-          "group": "Period Details",
-          "pages": [
-            "strategy-vault/strategy-fund/public/get-period-history-and-fund-period-instructions"
-          ]
-        },
-        {
-          "group": "Fund Transactions",
-          "pages": [
-            "strategy-vault/strategy-fund/public/get-preview-users-pending-requests",
-            "strategy-vault/strategy-fund/public/get-fund-inflow-allocation",
-            "strategy-vault/strategy-fund/public/get-fund-outflow-allocation",
-            "strategy-vault/strategy-fund/public/get-orderly-protocol-revenue-sharing-history",
-            "strategy-vault/strategy-fund/public/get-liquidation-fees-sharing-history",
-            "strategy-vault/strategy-fund/public/get-internal-transfer-history"
           ]
         }
       ]
