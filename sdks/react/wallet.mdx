@@ -39,7 +39,7 @@ const App: FC<{ children: ReactNode }> = (props) => {
 
 ## Wallet Connector Privy
 
-The new wallet connector consists of three parts:
+The Privy wallet connector consists of three parts:
 
 - **Privy**: Provides social login, featuring an injected wallet, EVM wallets, and Solana wallets.
 - **Wagmi**: Offers connectivity for EVM wallets, such as MetaMask and WalletConnect.
@@ -76,6 +76,8 @@ interface WalletConnectorPrivyProps{
 ### Example
 
 ```tsx
+import WalletConnectorPrivyProvider from "@orderly.network/wallet-connector-privy";
+
 <WalletConnectorPrivyProvider
   termsOfUse="https://learn.woo.org/legal/terms-of-use"
   network={Network.testnet}
