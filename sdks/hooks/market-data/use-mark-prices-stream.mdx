@@ -11,3 +11,44 @@ Get list of all mark prices in a `symbol` -> `price` map.
 ```ts
 const { data: markPrices }: { data: Record<string, number> } = useMarkPricesStream();
 ```
+
+### Return
+
+```typescript
+PERP_1000APU_USDC: 0.448
+PERP_1000BONK_USDC: 0.030194
+PERP_1000FLOKI_USDC: 0.137867
+PERP_1000PEPE_USDC: 0.015262
+PERP_1000SHIB_USDC: 0.019946
+PERP_1000000MOG_USDC: 1.5348
+...
+```
+
+### Usage
+
+```typescript
+import { useMarkPricesStream } from "@orderly.network/hooks";
+
+function PricesDisplay() {
+  const { data: markPrices } = useMarkPricesStream();
+
+  return (
+    <div>
+      {Object.entries(markPrices).map(([symbol, price]) => (
+        <div key={symbol}>
+          {symbol}: ${price}
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+### Features
+
+- Real-time WebSocket stream
+- Provides mark prices for all perpetual trading pairs
+- Price updates on each tick
+- Prices in USDC terms
+- Common pairs include BTC, ETH, SOL and other major assets
+- Also includes pairs with 1000x or 1000000x multipliers for low-value tokens
