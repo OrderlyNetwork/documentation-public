@@ -305,6 +305,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/VaultInfoResponse"
+
   /v1/public/strategy_vault/vault/performance:
     get:
       summary: Get Strategy Vault Performance
@@ -1204,6 +1205,12 @@ components:
                       lock_duration:
                         type: number
                         example: 48
+                      gate_threshold_pct:
+                        type: number
+                        example: 0.1
+                      gate_triggered:
+                        type: boolean
+                        example: false
                       broker_id:
                         type: string
                         example: "orderly"
