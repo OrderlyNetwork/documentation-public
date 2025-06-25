@@ -5555,6 +5555,34 @@ paths:
               schema:
                 $ref: "#/components/schemas/GetDistributionHistoryResponse"
 
+  /v1/client/campaign/sign_up:
+    post:
+      summary: Sign Up Campaign
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `POST /v1/client/campaign/sign_up`
+      tags:
+        - private
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                campaign_id:
+                  type: number
+              required:
+                - campaign_id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+
   /v1/public/campaigns:
     get:
       summary: Get List of Campaigns
@@ -5583,6 +5611,13 @@ paths:
         - name: only_show_alive
           in: query
           description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: address
+          in: query
+          description: "Filter the list that this address has participated in."
           required: false
           example: ""
           schema:
@@ -11985,6 +12020,12 @@ components:
                       end_time:
                         type: integer
                         example: 1585014255089
+                      signup_start_time:
+                        type: integer
+                        example: 1585014255089
+                      signup_end_time:
+                        type: integer
+                        example: 1585014255089
                       register_time:
                         type: integer
                         example: 1585014255089
@@ -11998,15 +12039,18 @@ components:
             data:
               type: object
               properties:
-                updated_time:
-                  type: integer
-                  example: 1688371971550
                 volume:
                   type: number
-                  example: 800.12
+                  example: 65615479.490133
                 user_count:
                   type: integer
-                  example: 10
+                  example: 1680
+                sign_up_count:
+                  type: integer
+                  example: 1680
+                updated_time:
+                  type: integer
+                  example: 1750766370033
 
     GetCampaignDetailedStatsResponse:
       allOf:
