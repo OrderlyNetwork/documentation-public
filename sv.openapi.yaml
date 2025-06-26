@@ -1181,6 +1181,17 @@ components:
                             chain_name:
                               type: string
                               example: "Ethereum"
+                        example:
+                          - chain_id: "1"
+                            chain_name: "Ethereum"
+                          - chain_id: "42161"
+                            chain_name: "Arbitrum"
+                          - chain_id: "8453"
+                            chain_name: "Base"
+                          - chain_id: "10"
+                            chain_name: "Optimism"
+                          - chain_id: "137"
+                            chain_name: "Polygon"
                       tvl:
                         type: number
                         example: 123456789.0
@@ -1205,6 +1216,9 @@ components:
                       lock_duration:
                         type: number
                         example: 48
+                      min_withdrawal_amount:
+                        type: number
+                        example: 10
                       gate_threshold_pct:
                         type: number
                         example: 0.1
@@ -1214,9 +1228,6 @@ components:
                       broker_id:
                         type: string
                         example: "orderly"
-                      min_withdrawal_amount:
-                        type: number
-                        example: 10
     VaultPerformanceResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
