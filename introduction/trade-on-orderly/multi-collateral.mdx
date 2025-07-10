@@ -34,19 +34,17 @@ By maintaining a healthy LTV, you can maximize the loan you can access while enh
 ### How to calculate LTV
 
 ```
-LTV = ( abs(min(USDC_balance, 0)) + abs(min(upnl, 0)) )
-      /
-      [ sum( max(collateral_qty_i, 0) × index_price_i × weight_i ) + max(upnl, 0) ]
+LTV = ( abs(min(USDC Balance, 0)) + abs(min(upnl, 0)) ) / [ sum( max(Collateral Quantity, 0) × Index Price × Weight ) + max(upnl, 0) ]
 ```
 
-| Term                      | Definition                                                |
-| ------------------------- | --------------------------------------------------------- |
-| abs(min(USDC_balance, 0)) | The total absolute USDC balance that has been borrowed    |
-| abs(min(upnl, 0))         | The isolated unrealized losses included                   |
-| max(collateral_qty_i, 0)  | The quantity of a specific asset you hold as collateral   |
-| index_price_i             | The current market price of the collateral                |
-| weight_i                  | The collateral weight (refer to Collateral Ratio section) |
-| max(upnl, 0)              | The isolated unrealized profits included                  |
+| Term                | Definition                                                |
+| ------------------- | --------------------------------------------------------- |
+| USDC Balance        | The total absolute USDC balance that has been borrowed    |
+| min(upnl, 0)        | The isolated unrealized losses included                   |
+| Collateral Quantity | The quantity of a specific asset you hold as collateral   |
+| Index Price         | The current market price of the collateral                |
+| Weight              | The collateral weight (refer to Collateral Ratio section) |
+| max(upnl, 0)        | The isolated unrealized profits included                  |
 
 The acceptable range of LTV ratio remains below 95%. Auto conversion of collateral will be triggered if the LTV ratio reaches 95% and above.
 
@@ -65,7 +63,7 @@ A higher ratio provides a greater safety buffer against market fluctuations and 
 ### How to Calculate Weight?
 
 ```
-weight_i = min (base_weight_i, K / (1 + DCF_i * abs(collateral_qty_i * index_price_i )^(4/5)))
+Weight = min (Base Weight, K / (1 + DCF * abs(Collateral Quantity * Index Price )^(4/5)))
 ```
 
 where:
@@ -73,14 +71,14 @@ where:
 - `DCF_i` = Discount Collateral Factor
 - `K` = 1.2
 
-| Term             | Definition                                                                 |
-| ---------------- | -------------------------------------------------------------------------- |
-| base_weight_i    | The standard or default collateral weight for a specific asset             |
-| K                | A constant system parameter set at 1.2 unless otherwise stated             |
-| DCF_i            | Discount collateral factor determining weight sensitivity to position size |
-| collateral_qty_i | Quantity of the collateral deposited                                       |
-| index_price_i    | Current market price of the collateral                                     |
-| ^(4/5)           | Smoothes impact of large position size                                     |
+| Term                | Definition                                                                 |
+| ------------------- | -------------------------------------------------------------------------- |
+| Base Weight         | The standard or default collateral weight for a specific asset             |
+| K                   | A constant system parameter set at 1.2 unless otherwise stated             |
+| DCF                 | Discount collateral factor determining weight sensitivity to position size |
+| Collateral Quantity | Quantity of the collateral deposited                                       |
+| Index Price         | Current market price of the collateral                                     |
+| ^(⅘)                | Smoothes impact of large position size                                     |
 
 ### Weight & Discount Collateral Factor
 
@@ -96,25 +94,25 @@ Weight and DCF will be determined based on the table below:
 ## Collateral Value
 
 ```
-collateral_value_i = min(collateral_qty_i, collateral_cap_i) * weight_i * index_price_i
+Collateral Value = min(Collateral Quantity , Collateral Cap) * Weight * Index Price
 ```
 
 ### Total Collateral Value
 
 ```
-total_collateral_value = sum(collateral_value_i) + upnl
+Total Collateral Value = sum(Collateral Value) + upnl
 ```
 
 ### Free Collateral
 
 ```
-free_collateral = total_collateral_value - total_initial_margin_with_orders
+Free Collateral = Total Collateral Value - Total Initial Margin With Orders
 ```
 
 ### Total Account Value
 
 ```
-total_account_value = sum(collateral_qty_i * index_price_i) + upnl
+Total Account Value = sum(Collateral Quantity * Index Price) + upnl
 ```
 
 ---
@@ -140,7 +138,7 @@ Each collateral’s minimum and maximum swap amount can be found in the table be
 
 <img src="/images/multi-collateral/convert.jpg" alt="Convert Rate" />
 
-| Collateral | min_swap_collateral_i (Arbitrum & Base) | min_swap_collateral_i (Ethereum) | max_swap_collateral_i (Arbitrum & Base) | max_swap_collateral_i (Ethereum) |
-| ---------- | --------------------------------------- | -------------------------------- | --------------------------------------- | -------------------------------- |
-| USDT       | 50                                      | 500                              | 500,000                                 | 1,000,000                        |
-| ETH        | 0.02                                    | 0.2                              | 100                                     | 500                              |
+| Collateral | Minimum Swap Collateral Required (Arbitrum & Base) | Minimum Swap Collateral Required (Ethereum) | Maximum Swap Collateral Threshold (Arbitrum & Base) | Maximum Swap Collateral Threshold (Ethereum) |
+| ---------- | -------------------------------------------------- | ------------------------------------------- | --------------------------------------------------- | -------------------------------------------- |
+| USDT       | 50                                                 | 500                                         | 500,000                                             | 1,000,000                                    |
+| ETH        | 0.02                                               | 0.2                                         | 100                                                 | 500                                          |
