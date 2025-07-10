@@ -3058,7 +3058,10 @@ paths:
             type: string
         - name: main_sub_only
           in: query
-          description: "If True, return only internal transfers between main account and sub-accounts.If False or empty, return all internal transfers."
+          description: |
+            If True, return only internal transfers between main account and sub-accounts. 
+            If False, return only internal transfers between main account and other main accounts. 
+            If empty, return all transfer history.
           required: false
           example: ""
           schema:
@@ -3465,6 +3468,7 @@ paths:
         To place `Positional TP/SL` order, the input fields is 2 layer and includes an array of the objects named childOrder. The take-profit or stop-loss order should be the objects in the array. For the sub-order in childOrder, please input `CLOSE_POSITION` as type, and `TAKE_PROFIT` or `STOP_LOSS` in algoType field.
 
 
+        
         Sample request can be found [here](/docs/build-on-omnichain/algo-order-samples)
 
 
@@ -5555,6 +5559,34 @@ paths:
               schema:
                 $ref: "#/components/schemas/GetDistributionHistoryResponse"
 
+  /v1/client/campaign/sign_up:
+    post:
+      summary: Sign Up Campaign
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second**
+
+        `POST /v1/client/campaign/sign_up`
+      tags:
+        - private
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                campaign_id:
+                  type: number
+              required:
+                - campaign_id
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+
   /v1/public/campaigns:
     get:
       summary: Get List of Campaigns
@@ -5583,6 +5615,13 @@ paths:
         - name: only_show_alive
           in: query
           description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: address
+          in: query
+          description: "Filter the list that this address has participated in."
           required: false
           example: ""
           schema:
@@ -11985,6 +12024,12 @@ components:
                       end_time:
                         type: integer
                         example: 1585014255089
+                      signup_start_time:
+                        type: integer
+                        example: 1585014255089
+                      signup_end_time:
+                        type: integer
+                        example: 1585014255089
                       register_time:
                         type: integer
                         example: 1585014255089
@@ -11998,15 +12043,18 @@ components:
             data:
               type: object
               properties:
-                updated_time:
-                  type: integer
-                  example: 1688371971550
                 volume:
                   type: number
-                  example: 800.12
+                  example: 65615479.490133
                 user_count:
                   type: integer
-                  example: 10
+                  example: 1680
+                sign_up_count:
+                  type: integer
+                  example: 1680
+                updated_time:
+                  type: integer
+                  example: 1750766370033
 
     GetCampaignDetailedStatsResponse:
       allOf:
