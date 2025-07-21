@@ -10290,7 +10290,10 @@ components:
               description: Expiration time of the key in UNIX milliseconds. Maximum allowed expiration is 365 days from add
             tag:
               type: string
-              description: An optional tag of string values。
+              description: An optional tag of string values.
+            subAccountId:
+              type: string
+              description: create the api key for the input subAccountId
           description: Message object containing the message that is signed by the wallet owner
         signature:
           type: string
@@ -10298,9 +10301,6 @@ components:
         userAddress:
           type: string
           description: The address of the wallet signing the message object via EIP-712
-        subAccountId:
-          type: string
-          description: create the api key for the input subAccountId
 
     RemoveOrderlyKeyBody:
       type: object
