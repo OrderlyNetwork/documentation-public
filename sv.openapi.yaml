@@ -74,6 +74,12 @@ paths:
           required: false
           schema:
             type: string
+        - name: source
+          in: query
+          description: "`wallet` / `broker_id` / return all if empty"
+          required: false
+          schema:
+            type: string
         - name: page
           in: query
           description: "the page you wish to query"
@@ -777,6 +783,12 @@ paths:
           required: false
           schema:
             type: string
+        - name: source
+          in: query
+          description: "`wallet` / `broker_id` / return all if empty"
+          required: false
+          schema:
+            type: string
         - name: page
           in: query
           description: "the page you wish to query"
@@ -796,6 +808,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/LpTransactionHistoryResponse"
+
   /v1/public/strategy_vault/lp/claim_info:
     get:
       summary: Get Liquidity Provider Claim Info
@@ -949,6 +962,8 @@ components:
                         type: number
                       type:
                         type: string
+                      source:
+                        type: string
                       status:
                         type: string
                       est_assign_period_time:
@@ -967,11 +982,11 @@ components:
                         type: number
                       amount_change:
                         type: number
-
                     example:
                       - created_time: 1734652800000
                         period_number: 4
                         type: "withdrawal"
+                        source: "wallet"
                         status: "claimable"
                         est_assign_period_time: null
                         unlock_time: null
@@ -984,6 +999,7 @@ components:
                       - created_time: 1734566400000
                         period_number: 2
                         type: "withdrawal"
+                        source: "wallet"
                         status: "claimed"
                         est_assign_period_time: null
                         unlock_time: null
@@ -996,6 +1012,7 @@ components:
                       - created_time: 1734480000000
                         period_number: 1
                         type: "deposit"
+                        source: "WOOFi Pro"
                         status: "available"
                         est_assign_period_time: null
                         unlock_time: null
@@ -1765,6 +1782,8 @@ components:
                         type: number
                       type:
                         type: string
+                      source:
+                        type: string
                       status:
                         type: string
                       est_assign_period_time:
@@ -1787,6 +1806,7 @@ components:
                       - created_time: 1734652800000
                         period_number: 4
                         type: "withdrawal"
+                        source: "wallet"
                         status: "claimable"
                         est_assign_period_time: null
                         unlock_time: null
@@ -1799,6 +1819,7 @@ components:
                       - created_time: 1734566400000
                         period_number: 2
                         type: "withdrawal"
+                        source: "wallet"
                         status: "claimable"
                         est_assign_period_time: null
                         unlock_time: null
@@ -1811,12 +1832,13 @@ components:
                       - created_time: 1734480000000
                         period_number: 1
                         type: "deposit"
+                        source: "WOOFi Pro"
                         status: "available"
                         est_assign_period_time: null
                         unlock_time: null
                         est_claim_time: null
                         chain_id: "1"
-                        txn_hash: "0x14a8248f38c2530011ba4c826eb1f1db8dad05025be24461bb42f1bc540ac42e"
+                        txn_hash: null
                         txn_hash_claim: null
                         shares_change: 465.830000
                         amount_change: 2800.004000
