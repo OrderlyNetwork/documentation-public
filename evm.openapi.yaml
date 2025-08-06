@@ -6445,6 +6445,150 @@ paths:
               schema:
                 $ref: "#/components/schemas/GetWalletGroupMarketMakingRewardsHistory"
 
+  /v1/public/sv_nonce:
+    get:
+      summary: Get Strategy Vault Nonce for Account Transaction
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/sv_nonce`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SvNonceResponse"
+
+  /v1/account_sv_transaction_history:
+    get:
+      summary: Get Account’s Strategy Vault Transaction history
+      deprecated: false
+      description: |
+        `GET /v1/account_sv_transaction_history`
+
+        Get account transaction history with strategy vaults
+      tags:
+        - public
+      parameters:
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+        - name: vault_id
+          in: query
+          description: >-
+            if vault_id is empty, it will return all vaults
+          required: false
+          example: ""
+          schema:
+            type: string        
+        - name: start_t
+          in: query
+          description: >-
+            start time range that you wish to query, noted that the time stamp
+            is a 13-digits timestamp.
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: end_t
+          in: query
+          description: >-
+            end time range that you wish to query, noted that the time stamp is
+            a 13-digits timestamp.
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: the page you wish to query.
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: size
+          in: query
+          description: "Default: 60"
+          required: false
+          example: ""
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetAccountStrategyVaultTransactionHistory"
+
+
+  /v1/sv_operation_request:
+    post:
+      summary: Create Strategy Vault Deposit/Withdrawal Request with Account
+      description: |
+
+        **Limit: 10 requests per 1 second per IP address**
+
+        `POST /v1/sv_operation_request`
+
+        Deposit into a strategy vault with account balance / withdraw from a strategy vault into your account balance
+      tags:
+        - public
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: object
+                  properties:
+                    payloadType:
+                      type: number
+                      description: "LP_DEPOSIT=0/LP_WITHDRAW=1/SP_DEPOSIT=2/SP_WITHDRAW=3"
+                    nonce:
+                      type: string
+                      description: ""
+                    receiver:
+                      type: string
+                      description: ""
+                    amount:
+                      type: string
+                      description: ""
+                    vaultId:
+                      type: string
+                      description: ""
+                    token:
+                      type: string
+                      description: ""
+                    dexBrokerId:
+                      type: string
+                      description: ""
+                    chainId:
+                      type: number
+                      description: ""
+                    chainType:
+                      type: string
+                      description: ""
+                signature:
+                  type: string
+                userAddress:
+                  type: string
+                verifyingContract:
+                  type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+
   /v1/sv/sp_orderly_key:
     post:
       summary: Add SP Orderly Key
@@ -6499,6 +6643,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BasicResponse"
+
   /v1/sv/sp_settle_pnl:
     post:
       summary: Request SP PnL Settlement
@@ -6891,6 +7036,61 @@ components:
                       description:
                         type: string
                         example: "abc"
+
+    SvNonceResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                nonce:
+                  type: number
+                  example: 14001212121234
+
+    GetAccountStrategyVaultTransactionHistory:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - meta
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - vault_id
+                      - created_time
+                      - type
+                      - status
+                      - amount_change
+                    properties:
+                      vault_id:
+                        type: string
+                      created_time:
+                        type: integer
+                        example: 1734652800000
+                      type:
+                        type: string
+                        example: "withdrawal"
+                      status:
+                        type: string
+                        example: "pending"
+                      amount_change:
+                        type: integer
+                        example: 88.009000
+                meta:
+                  $ref: "#/components/schemas/PaginationMeta"
 
     AggregatePositionsResponse:
       allOf:
