@@ -982,6 +982,9 @@ components:
                         type: number
                       amount_change:
                         type: number
+                      transaction_nonce:
+                        type: string
+                        description: "will return string value if the source != wallet; will return null if source == wallet"
                     example:
                       - created_time: 1734652800000
                         period_number: 4
@@ -996,6 +999,7 @@ components:
                         txn_hash_claim: null
                         shares_change: 60.000000
                         amount_change: 88.009000
+                        transaction_nonce: null
                       - created_time: 1734566400000
                         period_number: 2
                         type: "withdrawal"
@@ -1009,6 +1013,7 @@ components:
                         txn_hash_claim: "0x25b973f86b370e9f1f4b5244242ab8ade3bdbfc1068b74a9b17a2c345a64080f"
                         shares_change: 400.000000
                         amount_change: 572.001000
+                        transaction_nonce: null
                       - created_time: 1734480000000
                         period_number: 1
                         type: "deposit"
@@ -1022,6 +1027,7 @@ components:
                         txn_hash_claim: null
                         shares_change: 465.830000
                         amount_change: 2800.004000
+                        transaction_nonce: null
     ClaimInfoResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
@@ -1802,6 +1808,9 @@ components:
                         type: number
                       amount_change:
                         type: number
+                      transaction_nonce:
+                        type: string
+                        description: "will return string value if the source != wallet; will return null if source == wallet"
                     example:
                       - created_time: 1734652800000
                         period_number: 4
@@ -1816,6 +1825,7 @@ components:
                         txn_hash_claim: null
                         shares_change: 60.000000
                         amount_change: 88.009000
+                        transaction_nonce: null
                       - created_time: 1734566400000
                         period_number: 2
                         type: "withdrawal"
@@ -1829,6 +1839,7 @@ components:
                         txn_hash_claim: "0x14a8248f38c2530011ba4c826eb1f1db8dad05025be24461bb42f1bc540ac42e"
                         shares_change: 400.000000
                         amount_change: 572.001000
+                        transaction_nonce: null
                       - created_time: 1734480000000
                         period_number: 1
                         type: "deposit"
@@ -1842,6 +1853,7 @@ components:
                         txn_hash_claim: null
                         shares_change: 465.830000
                         amount_change: 2800.004000
+                        transaction_nonce: null
     LpClaimInfoResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
