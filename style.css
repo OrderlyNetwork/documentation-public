@@ -5,436 +5,371 @@ iframe.preview {
 
 /* 适用于桌面端 */
 @media screen and (min-width: 1024px) {
-    .container {
-      display: flex; /* 设置父元素为 flex 布局 */
-    }
+  .container {
+    display: flex; /* 设置父元素为 flex 布局 */
+  }
 
-    .left {
-      width: 30%; /* 设置左右两部分的宽度 */
-    }
+  .left {
+    width: 30%; /* 设置左右两部分的宽度 */
+  }
 
-    .right {
-      width: 70%;
-    }
+  .right {
+    width: 70%;
+  }
 
-    .card {
-      position: relative;
-      height: fit-content;
-      border: 1px solid #2A1F3A;
-      padding: 16px;
-      border-radius: 8px;
-      transition: border 0.3s ease-in-out;
-      background-color: #16132b;
-      margin-bottom: 10px;
-    }
+  .card {
+    position: relative;
+    height: fit-content;
+    border: 1px solid #2a1f3a;
+    padding: 16px;
+    border-radius: 8px;
+    transition: border 0.3s ease-in-out;
+    background-color: #16132b;
+    margin-bottom: 10px;
+  }
 
-    .card:hover {
-      border-color: gold;
-    }
+  .gold {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 10;
+  }
 
-    .card .gold {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      background: linear-gradient(135deg, #856220, #F4E683, #BF923D, #F1EA82, #4E341B);
-      color: #2A1F3A;
-      border-radius: 8px;
-      display: none;
-      font-size: 12px;
-      padding: 0.5px 5px;
-      font-weight: 700;
-      transition: border 0.3s ease-in-out;
-    }
+  .silver {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 10;
+  }
 
-    .card:hover .gold {
-      display: block;
-    }
+  .card a img,
+  .card img {
+    pointer-events: none;
+    cursor: default;
+  }
 
-    .card .silver {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      background: linear-gradient(135deg, #856220, #C9C9C9, #7D7D7D, #A5A5A5);
-      color: #2A1F3A;
-      border-radius: 8px;
-      display: none;
-      font-size: 12px;
-      padding: 0.5px 5px;
-      font-weight: 700;
-      transition: border 0.3s ease-in-out;
-    }
+  .card:hover {
+    border-color: gold;
+  }
 
-    .card:hover .silver {
-      display: block;
-    }
+  .card .gold {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: linear-gradient(135deg, #856220, #f4e683, #bf923d, #f1ea82, #4e341b);
+    color: #2a1f3a;
+    border-radius: 8px;
+    display: none;
+    font-size: 12px;
+    padding: 0.5px 5px;
+    font-weight: 700;
+    transition: border 0.3s ease-in-out;
+  }
 
-    .card .bronze {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      background: linear-gradient(135deg, #856220, #F6CBA2, #9D6939, #E9A363);
-      color: #2A1F3A;
-      border-radius: 8px;
-      display: none;
-      font-size: 12px;
-      padding: 0.5px 5px;
-      font-weight: 700;
-      transition: border 0.3s ease-in-out;
-    }
+  .card:hover .gold {
+    display: block;
+  }
 
-    .card:hover .bronze {
-      display: block;
-    }
+  .card .silver {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: linear-gradient(135deg, #856220, #c9c9c9, #7d7d7d, #a5a5a5);
+    color: #2a1f3a;
+    border-radius: 8px;
+    display: none;
+    font-size: 12px;
+    padding: 0.5px 5px;
+    font-weight: 700;
+    transition: border 0.3s ease-in-out;
+  }
 
-    .card .link {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      width: 20px;
-      height: 20px;
-      display: none;
-    }
+  .card:hover .silver {
+    display: block;
+  }
 
-    .card:hover .link {
-      display: block;
-    }
+  .card .bronze {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: linear-gradient(135deg, #856220, #f6cba2, #9d6939, #e9a363);
+    color: #2a1f3a;
+    border-radius: 8px;
+    display: none;
+    font-size: 12px;
+    padding: 0.5px 5px;
+    font-weight: 700;
+    transition: border 0.3s ease-in-out;
+  }
 
-    .content-before {
-        height: 100px;
-    }
+  .card:hover .bronze {
+    display: block;
+  }
 
-    .logo {
-        height: 85px;
-    }
+  .card .link {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    display: none;
+  }
 
-    .coin98_logo {
-        height: 85px;
-        margin-left: 48px;
-    }
+  .card:hover .link {
+    display: block;
+  }
 
-    .content-before:hover {
-      cursor: pointer;
-    }
+  .content-before {
+    height: 100px;
+  }
 
-    .search-builders-input {
-      height: 10px;
-      width: 95%;
-    }
+  .logo {
+    height: 85px;
+  }
 
-    .search-builders-tier {
-      height: 100px;
-      width: 95%;
-    }
+  .coin98_logo {
+    height: 85px;
+    margin-left: 48px;
+  }
 
-    .search-builders-network {
-      height: 200px;
-      width: 95%;
-    }
+  .content-before:hover {
+    cursor: pointer;
+  }
 
-    .search-builders-tier-btn {
-      background: #16132b;
-      padding: 15px;
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 95%;
-      height: 180px;
-    }
+  .search-builders-input {
+    height: 10px;
+    width: 95%;
+  }
 
-    .filter-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: bold;
-    }
+  .search-builders-tier {
+    height: 100px;
+    width: 95%;
+  }
 
-    .reset-btn {
-      background: transparent;
-      color: #a0a0a0;
-      border: 1px solid #a0a0a0;
-      padding: 5px 10px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 12px;
-    }
+  .search-builders-network {
+    height: 200px;
+    width: 95%;
+  }
 
-    .reset-btn:hover {
-      color: white;
-      border-color: white;
-    }
+  .search-builders-tier-btn {
+    background: #16132b;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 95%;
+    height: 180px;
+  }
 
-    .filter-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 14px;
-      height: 30px;
-    }
+  .filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+  }
 
-    .tier-icon {
-      width: 12px;
-      height: 12px;
-      border-radius: 3px;
-      display: inline-block;
-      margin-right: 10px;
-    }
+  .reset-btn {
+    background: transparent;
+    color: #a0a0a0;
+    border: 1px solid #a0a0a0;
+    padding: 5px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 12px;
+  }
 
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 34px;
-      height: 20px;
-    }
+  .reset-btn:hover {
+    color: white;
+    border-color: white;
+  }
 
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
+  .filter-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    height: 30px;
+  }
 
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #555;
-      border-radius: 20px;
-      transition: 0.3s;
-    }
+  .tier-icon {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-right: 10px;
+  }
 
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 14px;
-      width: 14px;
-      left: 3px;
-      bottom: 3px;
-      background-color: #BABABA;
-      border-radius: 50%;
-      transition: 0.3s;
-    }
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 20px;
+  }
 
-    input:checked + .slider {
-      background-color: #B084E9;
-    }
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
 
-    input:checked + .slider:before {
-      transform: translateX(14px);
-    }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #555;
+    border-radius: 20px;
+    transition: 0.3s;
+  }
 
-    .search-builders-network {
-      background: #16132b;
-      padding: 15px;
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 95%;
-      height: 540px;
-    }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: #bababa;
+    border-radius: 50%;
+    transition: 0.3s;
+  }
 
-    .network-icon {
-      width: 18px;
-      height: 18px;
-      border-radius: 3px;
-      display: inline-block;
-      margin-right: 10px;
-    }
+  input:checked + .slider {
+    background-color: #b084e9;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(14px);
+  }
+
+  .search-builders-network {
+    background: #16132b;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 95%;
+    height: 540px;
+  }
+
+  .network-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-right: 10px;
+  }
 }
 
-/* 适用于移动端 */
+/* 移动端优化 */
 @media screen and (max-width: 768px) {
-    .container {
-      display: flex; /* 设置父元素为 flex 布局 */
-    }
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 
-    .left {
-      width: 30%; /* 设置左右两部分的宽度 */
-    }
+  .card {
+    position: relative;
+    border: 1px solid #2a1f3a;
+    padding: 16px;
+    border-radius: 12px;
+    background-color: #16132b;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s ease;
+  }
 
-    .right {
-      width: 70%;
-    }
+  .card:active {
+    transform: scale(0.98);
+  }
 
-    .card {
-      position: relative;
-      height: 120px;
-      border: 1px solid #2A1F3A;
-      padding: 16px;
-      border-radius: 8px;
-      transition: border 0.3s ease-in-out;
-      background-color: #16132b;
-      margin-bottom: 10px;
-    }
+  /* 徽章：移动端常驻显示 */
+  .card .gold,
+  .card .silver,
+  .card .bronze {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    padding: 2px 6px;
+    font-weight: 700;
+    color: #2a1f3a;
+  }
 
-    .card:hover {
-      border-color: gold;
-    }
+  .gold {
+    background: linear-gradient(135deg, #856220, #f4e683, #bf923d, #f1ea82, #4e341b);
+  }
 
-    .card .badge {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      background: linear-gradient(135deg, #856220, #F4E683, #BF923D, #F1EA82, #4E341B);
-      color: #2A1F3A;
-      border-radius: 8px;
-      display: none;
-      font-size: 12px;
-      padding: 0.5px 5px;
-      font-weight: 700;
-      transition: border 0.3s ease-in-out;
-    }
+  .silver {
+    background: linear-gradient(135deg, #856220, #c9c9c9, #7d7d7d, #a5a5a5);
+  }
 
-    .card:hover .badge {
-      display: block;
-    }
+  .bronze {
+    background: linear-gradient(135deg, #856220, #f6cba2, #9d6939, #e9a363);
+  }
 
-    .card .link {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      width: 20px;
-      height: 20px;
-      display: none;
-    }
+  .card .link {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
 
-    .card:hover .link {
-      display: block;
-    }
+  .card a img,
+  .card img {
+    pointer-events: none;
+    cursor: default;
+  }
 
-    .content-before {
-      display: flex;
-      height: 100%;
-      justify-content: center;  /* 水平居中 */
-      align-items: center;      /* 垂直居中 */
-    }
+  .content-before {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 80px; /* 统一卡片内高度 */
+  }
 
-    .search-builders-input {
-      height: 10px;
-      width: 95%;
-    }
+  /* 确保 logo 最小高度，避免太小被压缩 */
+  .logo,
+  .coin98_logo {
+    max-height: 65px;
+    min-height: 40px; /* 新增，确保至少 40px 高度 */
+    max-width: 100%;
+    object-fit: contain;
+  }
 
-    .search-builders-tier {
-      height: 100px;
-      width: 95%;
-    }
+  /* 搜索与筛选区优化 */
+  .search-builders-input,
+  .search-builders-tier,
+  .search-builders-network {
+    width: 100%;
+    border-radius: 8px;
+  }
 
-    .search-builders-network {
-      height: 200px;
-      width: 95%;
-    }
+  .search-builders-tier-btn {
+    background: #16132b;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    height: auto;
+  }
 
-    .search-builders-tier-btn {
-      background: #16132b;
-      padding: 15px;
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 95%;
-      height: 200px;
-    }
-
-    .filter-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: bold;
-    }
-
-    .reset-btn {
-      background: transparent;
-      color: #a0a0a0;
-      border: 1px solid #a0a0a0;
-      padding: 5px 10px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 12px;
-    }
-
-    .reset-btn:hover {
-      color: white;
-      border-color: white;
-    }
-
-    .filter-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 14px;
-      margin-bottom: 10px;
-    }
-
-    .tier-icon {
-      width: 12px;
-      height: 12px;
-      border-radius: 3px;
-      display: inline-block;
-      margin-right: 10px;
-    }
-
-    .gold {
-      background: linear-gradient(135deg, #856220, #F4E683, #BF923D, #F1EA82, #4E341B);
-    }
-
-    .silver {
-      background: linear-gradient(135deg, #856220, #C9C9C9, #7D7D7D, #A5A5A5);
-    }
-
-    .bronze {
-      background: linear-gradient(135deg, #856220, #F6CBA2, #9D6939, #E9A363);
-    }
-
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 34px;
-      height: 20px;
-    }
-
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #555;
-      border-radius: 20px;
-      transition: 0.3s;
-    }
-
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 14px;
-      width: 14px;
-      left: 3px;
-      bottom: 3px;
-      background-color: #BABABA;
-      border-radius: 50%;
-      transition: 0.3s;
-    }
-
-    input:checked + .slider {
-      background-color: #B084E9;
-    }
-
-    input:checked + .slider:before {
-      transform: translateX(14px);
-    }
-
-    .search-builders-network {
-
-    }
+  .filter-item {
+    font-size: 14px;
+    padding: 5px 0;
+  }
 }
-
