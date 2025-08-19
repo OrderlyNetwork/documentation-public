@@ -2066,6 +2066,46 @@ paths:
               schema:
                 $ref: "#/components/schemas/GetAccountResponse"
 
+  /v1/get_all_accounts:
+    get:
+      summary: Check Account Details of an Address
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/get_all_accounts`
+      tags:
+        - public
+      parameters:
+        - name: address
+          in: query
+          description: The address of the user wallet
+          required: true
+          example: ""
+          schema:
+            type: string
+        - name: broker_id
+          in: query
+          description: The builder that the account is registered on
+          required: true
+          example: ""
+          schema:
+            type: string
+        - name: chain_type
+          in: query
+          description: "`EVM` or `SOL`"
+          required: false
+          example: "EVM"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetAllAccountsResponse"
+
   /v1/get_broker:
     get:
       summary: Check if Address is Registered
@@ -10269,6 +10309,47 @@ components:
                 account_id:
                   type: string
                   example: "0xb129e074a17dfba8d652ae1eca21c7d6bb6904f1aa693f4886d50db170933a46"
+
+    GetAllAccountsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - user_id
+                      - account_id
+                      - broker_id
+                      - chain_type
+                      - user_type
+                    properties:
+                      user_id:
+                        type: integer
+                        example: 24
+                      account_id:
+                        type: string
+                        example: "0xb129e074a17dfba8d652ae1eca21c7d6bb6904f1aa693f4886d50db170933a46"
+                      broker_id:
+                        type: string
+                        example: "aden"
+                      chain_type:
+                        type: string
+                        example: "EVM"
+                        description: "`EVM` or `SOL`"
+                      user_type:
+                        type: string
+                        example: "SUB"
+                        description: "`SUB`, `MAIN`, `SP`, `PV`, `UV`"
 
     GetBrokerResponse:
       allOf:
