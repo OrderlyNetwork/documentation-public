@@ -1247,6 +1247,32 @@ paths:
               schema:
                 $ref: "#/components/schemas/LiquidatorLiquidationsResponse"
   /v1/client/leverage:
+    get:
+      summary: Get Leverage Setting
+      deprecated: false
+      description: |
+        **Limit: 1 requests per 1 second per IP address**
+
+        `GET /v1/client/leverage`
+
+        Get account's leverage setting for a specific symbol.
+      tags:
+        - private
+      parameters:
+        - name: symbol
+          in: query
+          description: ""
+          required: true
+          example: "PERP_BTC_USDC"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeverageResponse"
     post:
       summary: Update Leverage Setting
       deprecated: false
@@ -1255,7 +1281,17 @@ paths:
 
         `POST /v1/client/leverage`
 
-        Choose maximum leverage for futures mode
+        Allow users to customize leverage for each symbol or choose maximum leverage for account's futures mode.
+
+        Validation Logic:
+
+        1. Check the leverage range is eligible
+
+        2. Check if the position notional under the updated leverage is acceptable
+           - `max_notional = (1 / (symbol_leverage * imr_factor)) ^ (1/0.8)`
+           - `symbol_leverage_max = round down to int → min(1 / (imr_factor * notional ^ 0.8), 1/base_imr)`
+
+        3. Check if the margin is enough
       tags:
         - private
       parameters:
@@ -1269,6 +1305,9 @@ paths:
             schema:
               type: object
               properties:
+                symbol:
+                  type: string
+                  example: "PERP_BTC_USDC"
                 leverage:
                   type: integer
                   description: Integer between 1 to 50
@@ -1280,7 +1319,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/EmptyDataResponse"
+                $ref: "#/components/schemas/LeverageResponse"
 
   /v1/public/leverage:
     get:
@@ -5856,6 +5895,14 @@ paths:
           example: "5000"
           schema:
             type: integer
+        - name: aggregateBy
+          in: query
+          description: |
+            `address`: If the broker_id is not null, aggregateBy will become invalid.
+          required: false
+          example: ""
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -7241,7 +7288,11 @@ components:
                         type: number
                       timestamp:
                         type: number
+                      updated_time:
+                        type: number
                       unsettled_pnl:
+                        type: number
+                      leverage:
                         type: number
               example:
                 - account_id: "0x11111"
@@ -7263,7 +7314,9 @@ components:
                   symbol: "PERP_BTC_USDC"
                   seq: 1730181536341943600
                   timestamp: 1685429350571
+                  updated_time: 1685429350571
                   unsettled_pnl: 354.858492
+                  leverage: 10
                 - account_id: "0x22222"
                   IMR_withdraw_orders: 0.12
                   MMR_with_orders: 0.06
@@ -7283,7 +7336,9 @@ components:
                   symbol: "PERP_BTC_USDC"
                   seq: 1730181536341943601
                   timestamp: 1685429350572
-                  unsettled_pnl: 200.50
+                  updated_time: 1685429350571
+                  unsettled_pnl: 354.858492
+                  leverage: 10
 
     AggregateHoldingResponse:
       allOf:
@@ -7334,6 +7389,21 @@ components:
             data:
               type: object
               properties: {}
+
+    LeverageResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                symbol:
+                  type: string
+                  example: "PERP_BTC_USDC"
+                leverage:
+                  type: integer
+                  example: 10
 
     PaginationMeta:
       required:
@@ -8181,7 +8251,27 @@ components:
                       token:
                         type: string
                         description: name of token
-                        example: USDC
+                        example: ETH
+                      base_weight:
+                        type: number
+                        description: 1 for usdc
+                        example: 0.8
+                      discount_factor:
+                        type: number
+                        description: null for usdc
+                        example: 0.02
+                      haircut:
+                        type: number
+                        description: 0 for usdc
+                        example: 0.95
+                      user_max_qty:
+                        type: number
+                        description: -1 = infinity > usdc
+                        example: 111
+                      is_collateral:
+                        type: boolean
+                        description: True, the asset can be collateral, users are allowed to manually swap, and we will do auto-swap
+                        example: true
                       decimals:
                         type: number
                         description: precision of the token
@@ -8190,6 +8280,10 @@ components:
                         type: number
                         description: ""
                         example: 0.000001
+                      on_chain_swap:
+                        type: boolean
+                        description: True, the asset is eligible for on-chain swaps on at least one supported blockchain
+                        example: true
                       token_hash:
                         type: string
                         example: "0xd6aca1be9729c13d677335161321649cccae6a591554772516700f986f942eaa"
@@ -8209,14 +8303,14 @@ components:
                               example: 0
                             decimals:
                               type: integer
-                              example: 6
+                              example: 18
                             withdraw_fee:
                               type: number
                               example: 2
                             display_name:
                               type: string
                               description: "`USDC.e` for `Mantle` chain"
-                              example: "USDC"
+                              example: "ETH"
 
     GetIndexPriceSourceResponse:
       allOf:
@@ -9099,6 +9193,9 @@ components:
                       last_update_timestamp:
                         type: number
                         example: 1685429350571
+                      leverage:
+                        type: number
+                        example: 10
 
     PositionResponse:
       allOf:
@@ -9166,10 +9263,17 @@ components:
           example: 1730181536341943600
         timestamp:
           type: number
+          description: "The timestamp when the position is created for the entry"
+          example: 1685429350571
+        updated_time:
+          type: number
           example: 1685429350571
         unsettled_pnl:
           type: number
           example: 354.858492
+        leverage:
+          type: number
+          example: 10
 
     FundingFeeHistoryResponse:
       allOf:
@@ -9304,24 +9408,24 @@ components:
     PerpPosition:
       type: object
       properties:
+        symbol:
+          type: string
+          example: "PERP_BTC_USDC"
         abs_liquidator_fee:
           type: number
           example: 1.152279
         cost_position_transfer:
           type: number
-          example: 65.84448
+          example: 21.002786
         liquidator_fee:
           type: number
-          example: 0.0175
+          example: 0.006
         position_qty:
           type: number
-          example: 41.6
-        symbol:
-          type: string
-          example: "PERP_NEAR_USDC"
+          example: 0.00017
         transfer_price:
           type: number
-          example: 1.5828
+          example: 123545.8
 
     ClientLeverageBody:
       type: object
@@ -9361,10 +9465,64 @@ components:
                       transfer_amount_to_insurance_fund:
                         type: number
                         example: 0
+                      margin_ratio:
+                        type: number
+                        example: 0.10436069
+                      account_mmr:
+                        type: number
+                        example: 0.012
+                      position_notional:
+                        type: number
+                        example: 28.415534
+                      collateral_value:
+                        type: number
+                        example: 2.965465
                       positions_by_perp:
                         type: array
                         items:
-                          $ref: "#/components/schemas/PerpPosition"
+                          type: object
+                          required:
+                            - total_position
+
+                            - abs_insurance_fund_fee
+                            - abs_liquidation_fee
+                            - cost_position_transfer
+                            - insurance_fund_fee
+                            - liquidator_fee
+                            - position_qty
+                            - symbol
+                            - transfer_price
+                          properties:
+                            total_position:
+                              type: number
+                              example: 41.6
+                            mark_price:
+                              type: number
+                              example: 123400
+                            symbol:
+                              type: string
+                              example: "PERP_BTC_USDC"
+                            position_qty:
+                              type: number
+                              example: 0.00017
+                            liquidator_fee:
+                              type: number
+                              example: 0.006
+                            cost_position_transfer:
+                              type: number
+                              example: 21.002786
+                            transfer_price:
+                              type: number
+                              example: 123545.8
+                            insurance_fund_fee:
+                              type: number
+                              example: 0.006
+                            abs_insurance_fund_fee:
+                              type: number
+                              example: 0.126017
+                            abs_liquidator_fee:
+                              type: number
+                              example: 0.252034
 
     LiquidationBody:
       required:

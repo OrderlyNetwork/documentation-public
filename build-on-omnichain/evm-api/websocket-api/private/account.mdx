@@ -6,19 +6,19 @@ Push interval: real-time push
 
 ```json
 {
-    "id": "clientID3",
-    "topic": "account",
-    "event": "subscribe"
+  "id": "clientID3",
+  "topic": "account",
+  "event": "subscribe"
 }
 ```
 
 **Parameters**
 
-| Name   | Type   | Required | Description                              |
-| ------ | ------ | -------- | ---------------------------------------- |
-| id     | string | Y        | id generate by client                    |
-| event  | string | Y        | `subscribe`/`unsubscribe`                |
-| topic  | string | Y        | `account`                                |
+| Name  | Type   | Required | Description               |
+| ----- | ------ | -------- | ------------------------- |
+| id    | string | Y        | id generate by client     |
+| event | string | Y        | `subscribe`/`unsubscribe` |
+| topic | string | Y        | `account`                 |
 
 <RequestExample>
 ```json Response
@@ -41,7 +41,11 @@ Push interval: real-time push
         "makerFeeRate": 10,
         "futuresTakerFeeRate": 8,
         "futuresMakerFeeRate": 4,
-        "maintenanceCancelFlag": false
+        "maintenanceCancelFlag": false,
+        "symbolLeverage": {
+            "leverage": 20,
+            "symbol": "PERP_BTC_USDC"
+        }
     }
 }
 ```
