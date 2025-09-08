@@ -14,9 +14,9 @@ paths:
         **Limit: 10 requests per second**
 
         `POST /v1/client/add_sub_account`
-        
+
         Only the main account is allowed to call this API.
-        
+
         Main account’s Orderly key can control sub-accounts.
       tags:
         - private
@@ -48,7 +48,7 @@ paths:
         **Limit: 10 requests per second**
 
         `GET /v1/client/sub_account`
-        
+
         Only the main account is allowed to call this API.
       tags:
         - private
@@ -72,7 +72,7 @@ paths:
         **Limit: 10 requests per second**
 
         `POST /v1/client/update_sub_account`
-        
+
         Only the main account is allowed to call this API.
       tags:
         - private
@@ -109,7 +109,7 @@ paths:
         **Limit: 1 request per 60 seconds**
 
         `GET v1/client/aggregate/positions`
-        
+
         Only the main account is allowed to call this API.
       tags:
         - private
@@ -134,7 +134,7 @@ paths:
         **Limit: 1 request per 60 seconds**
 
         `GET /v1/client/aggregate/holding`
-        
+
         Only the main account is allowed to call this API
       tags:
         - private
@@ -158,7 +158,7 @@ paths:
         **Limit: 10 requests per second**
 
         `POST /v1/sub_account_settle_pnl`
-        
+
         Main account’s Orderly key can control sub-accounts.
       tags:
         - private
@@ -223,7 +223,7 @@ paths:
 
       tags:
         - public
-      parameters: [ ]
+      parameters: []
       responses:
         "200":
           description: Success
@@ -475,6 +475,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/VolumeStatsResponse"
+
+  /v1/public/broker/stats:
+    get:
+      summary: Get Builder Stats
+      deprecated: false
+      description: |
+
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/broker/stats?broker_id={broker_id}`
+
+        Get the stats of a specific builder.
+      tags:
+        - public
+      parameters:
+        - name: broker_id
+          in: query
+          description: If provided, it will only return details for the particular builder.
+          required: false
+          example: test_broker
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BrokerStatsResponse"
 
   /v1/public/broker/name:
     get:
@@ -766,7 +795,7 @@ paths:
       summary: Get Order Rules per Symbol
       deprecated: false
       description: |
-        
+
         **Limit: 10 requests per 1 second per IP address**
 
 
@@ -1062,7 +1091,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/PositionResponse"
 
-
   /v1/position_history:
     get:
       summary: Get Position History
@@ -1097,7 +1125,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PositionHistoryResponse"
-
 
   /v1/funding_fee/history:
     get:
@@ -2213,7 +2240,7 @@ paths:
         `POST /v1/orderly_key`
 
         Adds an Orderly access key to an account.
-        
+
         Main account's Orderly key can control sub-account.
       tags:
         - public
@@ -3003,9 +3030,19 @@ paths:
 
         `POST /v1/internal_transfer`
 
-        Orderly key must has `asset` scope to access this endpoint.
-        
         This endpoint will return internal transfer is not available for Delegate Signer account if the `from` is a Delegate Signer account.
+
+        Scenarios where internal transfers are allowed:
+
+        a. Main and sub-accounts
+
+        b. Accounts within the same wallet group
+
+        c. Same address across all brokers.
+
+        d. A whitelisted `account_id` can be used as `from address`
+
+        e. If 2 `account_id` are under the same broker_id and the broker_id is whitelisted.
       tags:
         - private
       parameters:
@@ -3026,7 +3063,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/BasicResponse"
 
-
   /v1/internal_transfer_history:
     get:
       summary: Get Internal Transfer History
@@ -3035,7 +3071,7 @@ paths:
         **Limit: 10 requests per 1 second**
 
         `GET /v1/internal_transfer_history`
-        
+
         Orderly key must has `asset` scope to access this endpoint.
       tags:
         - private
@@ -3440,14 +3476,14 @@ paths:
       deprecated: false
       description: >-
         For `EVM`:
-        
-        
+
+
         `GET https://testnet-operator-evm.orderly.org/v1/faucet/usdc`
-        
-        
+
+
         For `Solana`:
-        
-        
+
+
         `GET https://testnet-operator-sol.orderly.org/v1/faucet/usdc`
 
 
@@ -3508,7 +3544,7 @@ paths:
         To place `Positional TP/SL` order, the input fields is 2 layer and includes an array of the objects named childOrder. The take-profit or stop-loss order should be the objects in the array. For the sub-order in childOrder, please input `CLOSE_POSITION` as type, and `TAKE_PROFIT` or `STOP_LOSS` in algoType field.
 
 
-        
+
         Sample request can be found [here](/docs/build-on-omnichain/algo-order-samples)
 
 
@@ -5179,7 +5215,7 @@ paths:
         **Limit: 1 requests per second**
 
         `POST /v1/referral/auto_referral/update`
-        
+
         Scope: Only each Builder’s admin wallet can call this endpoint.
       tags:
         - private
@@ -5229,7 +5265,7 @@ paths:
         **Limit: 1 requests per second**
 
         `GET /v1/referral/auto_referral/info`
-        
+
         Scope: Only each Builder’s admin wallet can call this endpoint.
       tags:
         - private
@@ -5245,7 +5281,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BuilderAutoReferralInfoResponse"
-
 
   /v1/referral/auto_referral/progress:
     get:
@@ -5807,6 +5842,20 @@ paths:
           example: ""
           schema:
             type: string
+        - name: min_pnl
+          in: query
+          description: "Return only records where PnL is greater than or equal to this value."
+          required: false
+          example: "1000"
+          schema:
+            type: integer
+        - name: min_volume
+          in: query
+          description: "Return only records where Volume is greater than or equal to this value."
+          required: false
+          example: "5000"
+          schema:
+            type: integer
       responses:
         "200":
           description: OK
@@ -6524,7 +6573,7 @@ paths:
           required: false
           example: ""
           schema:
-            type: string        
+            type: string
         - name: start_t
           in: query
           description: >-
@@ -6557,6 +6606,13 @@ paths:
           example: ""
           schema:
             type: string
+        - name: type
+          in: query
+          description: "deposit/withdraw, if empty = return all"
+          required: false
+          example: ""
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -6564,7 +6620,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GetAccountStrategyVaultTransactionHistory"
-
 
   /v1/sv_operation_request:
     post:
@@ -6937,7 +6992,7 @@ paths:
         **Limit: 10 requests per second per account**
 
         `GET /v1/sv/internal_transfer_history`
-        
+
         Non-Vault Account to Strategy Provider Account
       tags:
         - public
@@ -7848,6 +7903,29 @@ components:
                       broker_name:
                         type: string
                         example: "WOOFi Pro"
+
+    BrokerStatsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - connected_user
+                    properties:
+                      connected_user:
+                        type: integer
+                        example: "274148"
 
     FundingRatesResponse:
       allOf:
@@ -8952,7 +9030,6 @@ components:
                   items:
                     $ref: "#/components/schemas/Position"
 
-
     PositionHistoryResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
@@ -9022,7 +9099,6 @@ components:
                       last_update_timestamp:
                         type: number
                         example: 1685429350571
-
 
     PositionResponse:
       allOf:
@@ -9141,7 +9217,6 @@ components:
                       updated_time:
                         type: number
                         example: 1682235722003
-
 
     GetInternalTransferHistoryResponse:
       allOf:
@@ -9386,7 +9461,6 @@ components:
         order_tag:
           type: string
 
-
     BatchCreateOrderBody:
       required:
         - order_type
@@ -9455,7 +9529,6 @@ components:
                   type: string
                   example: "EDIT_SENT"
 
-
     CreateInternalTransferRequest:
       type: object
       properties:
@@ -9474,7 +9547,6 @@ components:
               amount:
                 type: number
                 example: 100
-
 
     PostOrderBody:
       required:
