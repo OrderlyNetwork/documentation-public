@@ -6,11 +6,11 @@ An account is subject to liquidation if its Account Margin Ratio falls below its
 
 When an account is under liquidation, its current open orders are automatically cancelled and its USDC balance is frozen.
 
-## Decentralized Liquidations 
+## Decentralized Liquidations
 
-Unlike CEXes (Centralized Exchanges) or a few other dApps such as dYdX, at Orderly, liquidations are decentralized. 
+Unlike CEXes (Centralized Exchanges) or a few other dApps such as dYdX, at Orderly, liquidations are decentralized.
 
-Most of the time, CEXes directly close positions on the orderbook, which often triggers cascading liquidations, hurting traders further and encouraging bad actors to manipulate market prices. 
+Most of the time, CEXes directly close positions on the orderbook, which often triggers cascading liquidations, hurting traders further and encouraging bad actors to manipulate market prices.
 
 Orderly adopts a decentralized liquidation model where positions are transferred to **liquidators** at a discount instead of being market sold in the orderbook. It is fully decentralized as anyone with an Orderly account can act as a liquidator, as long as the account has enough margin to take over the liquidated positions. Further details on how an account can claim liquidating positions can be found in the API docs.
 
@@ -18,17 +18,17 @@ Orderly adopts a decentralized liquidation model where positions are transferred
 
 A liquidation is triggered if the Account Margin Ratio (AMR) is below the Maintenance Margin Ratio (MMR) required for the account (see [here](/introduction/trade-on-orderly/perpetual-futures/margin-leverage-and-pnl#maintenance-margin-ratio) for more details).
 
-## Liquidation Tiers 
+## Liquidation Tiers
 
-All trading pairs are not equal in term of risk. In Orderly, there are two groups of symbol tier : 
+All trading pairs are not equal in term of risk. In Orderly, there are two groups of symbol tier :
 
 - Low Tier Risk : Liquidators can only claim a ratio of all symbols. Claiming a single symbol is not allowed
-- High Tier Risk : Liquidators can claim 1 single symbol 
+- High Tier Risk : Liquidators can claim 1 single symbol
 
 | Tier | Perp Markets |
-| ----------- | -------------- | 
-| Low         | BTC ; ETH          | 
-| High         | Others           | 
+| ---- | ------------ |
+| Low  | BTC ; ETH    |
+| High | Others       |
 
 ## Liquidation amount
 
@@ -40,32 +40,34 @@ If the account has multiple positions in the low tier risk, the positions will b
 
 When an account is liquidated, a User Liquidation Fee is incurred. This is split between the Orderly **Insurance Fund** and the **liquidator**. Each perpetual market has its own Liquidation Fee:
 
-| Perp Market    | Liquidation Fee | Liquidator Fee |
-|----------------|-----------------|----------------|
-| BTC            | 0.80%           | 0.40%          |
-| ETH            | 0.80%           | 0.40%          |
-| Altcoins (10x) | 1.50%           | 0.75%          |
-| Altcoins (20x) | 2.40%           | 1.20%          |
+| Perp Market | Liquidation Fee | Liquidator Fee |
+| ----------- | --------------- | -------------- |
+| BTC         | 0.60%           | 0.30%          |
+| ETH         | 0.60%           | 0.30%          |
+| SOL         | 0.60%           | 0.30%          |
+| Others      | 1.20%           | 0.60%          |
 
 The overall User Liquidation Fee and Liquidator Fee are calculated as follows:
 
-Low Tier Liquidation (multiple symbols): 
+Low Tier Liquidation (multiple symbols):
+
 ```
 User Liquidation Fee = Sum[Liquidation Fee(Symbol i) * Abs(Notional i)]
 Liquidator Fee = Sum[Liquidator Fee(Asset i) * Abs(Notional i)]
 ```
 
 High Tier Liquidation (1 symbol):
+
 ```
 User Liquidation Fee = Liquidation Fee(Symbol i) * Abs(Notional i)
 Liquidator Fee = Sum[Liquidator Fee(Asset i) * Abs(Notional i)]
 ```
 
-* If the Account Margin Ratio is higher than the User Liquidation Fee, the User Liquidation Fee is split in half between the Insurance Fund and the liquidator (Insurance Fund and Liquidator each receives `0.5 * User Liquidation Fee`).
+- If the Account Margin Ratio is higher than the User Liquidation Fee, the User Liquidation Fee is split in half between the Insurance Fund and the liquidator (Insurance Fund and Liquidator each receives `0.5 * User Liquidation Fee`).
 
-* If the Account Margin Ratio is between User Liquidation Fee and Liquidator Fee, then a fee equal to `0.5 * User Liquidation Fee` is paid to the liquidator, and the remaining account margin is transferred to the insurance fund.
+- If the Account Margin Ratio is between User Liquidation Fee and Liquidator Fee, then a fee equal to `0.5 * User Liquidation Fee` is paid to the liquidator, and the remaining account margin is transferred to the insurance fund.
 
-* In the unlikely scenario that the remaining margin of the account cannot cover the Liquidator Fee, the account's balance and positions are transferred to the insurance fund. Those positions can still be claimed by liquidators (see [Insurance Fund & ADL](/introduction/trade-on-orderly/perpetual-futures/insurance-fund-and-adl)).
+- In the unlikely scenario that the remaining margin of the account cannot cover the Liquidator Fee, the account's balance and positions are transferred to the insurance fund. Those positions can still be claimed by liquidators (see [Insurance Fund & ADL](/introduction/trade-on-orderly/perpetual-futures/insurance-fund-and-adl)).
 
 ## Full vs Partial Liquidator Takeover
 
