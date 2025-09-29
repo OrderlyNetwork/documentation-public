@@ -1491,7 +1491,7 @@ paths:
         the order would be hidden from the orderbook. It doesn't work for
         `MARKET`/`IOC`/`FOK` orders since orders with these types would be
         executed and cancelled immediately and not be shown on orderbook. For
-        `LIMIT`/`POST_ONLY` order, as long as it's not complete,
+        `LIMIT` order, as long as it's not complete,
         `visible_quantity` is the maximum quantity that shown on orderbook.
 
 
@@ -9742,7 +9742,7 @@ components:
           type: number
           description: |
             The order quantity shown on orderbook. (default: equal to order_quantity)
-            The visible quantity can not be used with post only orders.
+            Visible quantity is not supported for post-only orders.
         side:
           type: string
           description: "`SELL`/`BUY`"
