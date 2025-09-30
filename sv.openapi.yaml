@@ -372,6 +372,31 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/VaultPerformanceChartResponse"
+  /v1/public/strategy_vault/vault/overall_info:
+    get:
+      summary: Get Overall Statistics of all Strategy Vaults
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/vault/overall_info`
+      tags:
+        - public
+      parameters:
+        - name: broker_ids
+          in: query
+          description: "return all if no filter. can filter multiple broker_id per query"
+          required: false
+          example: "orderly,woofi_pro,aden"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaultOverallInfoResponse"
   /v1/public/strategy_vault/vault/liquidator_history:
     get:
       summary: Get Strategy Vault Liquidator History
@@ -1351,6 +1376,35 @@ components:
                       value:
                         type: number
                         example: 1400000.0
+    VaultOverallInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      strategy_vaults_tvl:
+                        type: number
+                        description: "Sum tvl of all vaults"
+                        example: 1234567.89
+                      strategy_vaults_lifetime_net_pnl:
+                        type: number
+                        description: "Sum lifetime net pnl of all vaults"
+                        example: 350000.21
+                      strategy_vaults_count:
+                        type: number
+                        description: "With status == live & closing. status == closed will not be included in this count."
+                        example: 8
+                      strategy_vaults_lp_count:
+                        type: number
+                        description: "Sum of LP count of all SV. e.g. address 0x…123 deposited in vault A & vault B will be counted as 2"
+                        example: 1234
     VaultLiquidatorHistoryResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
