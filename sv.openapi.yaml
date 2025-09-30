@@ -397,6 +397,30 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/VaultOverallInfoResponse"
+  /v1/public/strategy_vault/user/overall_info:
+    get:
+      summary: Get User Overall Statistics across Strategy Vaults
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/user/overall_info`
+      tags:
+        - public
+      parameters:
+        - name: wallet_address
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserOverallInfoResponse"
   /v1/public/strategy_vault/vault/liquidator_history:
     get:
       summary: Get Strategy Vault Liquidator History
@@ -1405,6 +1429,55 @@ components:
                         type: number
                         description: "Sum of LP count of all SV. e.g. address 0x…123 deposited in vault A & vault B will be counted as 2"
                         example: 1234
+    UserOverallInfoResponse:
+        allOf:
+          - $ref: "#/components/schemas/BasicResponse"
+          - type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  rows:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        total_vaults_tvl:
+                          type: number
+                          description: "strategy_vaults_lp_tvl + strategy_vaults_sp_tvl"
+                          example: 10000
+                        vaults_lp_tvl:
+                          type: number
+                          description: "Sum lp_tvl of all vaults of this address"
+                          example: 7000
+                        vaults_sp_tvl:
+                          type: number
+                          description: "Sum sp_tvl of all vaults of this address"
+                          example: 3000
+                        total_vaults_lifetime_net_pnl:
+                          type: number
+                          description: "strategy_vaults_lp_lifetime_net_pnl + strategy_vaults_sp_lifetime_net_pnl"
+                          example: 500
+                        vaults_lp_lifetime_net_pnl:
+                          type: number
+                          description: "sum of all vaults of this address lp_lifetime_net_pnl. lp_lifetime_net_pnl = LP unrealised PnL + LP realised PnL"
+                          example: 400
+                        vaults_sp_lifetime_net_pnl:
+                          type: number
+                          description: "sum of all vaults of this address sp_lifetime_net_pnl"
+                          example: 100
+                        total_involved_vaults_count:
+                          type: number
+                          description: "involved_lp_strategy_vaults_count + involved_sp_strategy_vaults_count"
+                          example: 5
+                        involved_lp_vaults_count:
+                          type: number
+                          description: "count of vaults that this address has lp_tvl > 0"
+                          example: 4
+                        involved_sp_vaults_count:
+                          type: number
+                          description: "count of vaults that this address has"
+                          example: 1
     VaultLiquidatorHistoryResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
