@@ -4568,6 +4568,10 @@ paths:
                 taker_fee_rate:
                   type: number
                   description: "Taker fee charged to users by default (0.0001 = 0.01%)"
+                rwa_taker_fee_rate:
+                  type: number
+                rwa_maker_fee_rate:
+                  type: number
                 account_ids:
                   type: array
                   items:
@@ -4656,6 +4660,10 @@ paths:
                 taker_fee_rate:
                   type: number
                   description: "Taker fee charged to users by default (0.0001 = 0.01%)"
+                rwa_taker_fee_rate:
+                  type: number
+                rwa_maker_fee_rate:
+                  type: number
               required:
                 - maker_fee_rate
                 - taker_fee_rate
@@ -10253,6 +10261,12 @@ components:
                 maker_fee_rate:
                   type: number
                   example: 0
+                rwa_taker_fee_rate:
+                  type: number
+                  example: 0
+                rwa_maker_fee_rate:
+                  type: number
+                  example: 0
                 futures_taker_fee_rate:
                   type: number
                   example: 0
@@ -11980,6 +11994,12 @@ components:
                       taker_fee_rate:
                         type: number
                         example: 0.01
+                      rwa_taker_fee_rate:
+                        type: number
+                        example: 0.0001
+                      rwa_maker_fee_rate:
+                        type: number
+                        example: 0.0001
 
     CreateAlgoOrderChildRequest:
       type: object
@@ -12920,6 +12940,12 @@ components:
                 taker_fee_rate:
                   type: number
                   example: 0.001
+                rwa_taker_fee_rate:
+                  type: number
+                  example: 0.0001
+                rwa_maker_fee_rate:
+                  type: number
+                  example: 0.0001
 
     GetWalletStakedBalanceResponse:
       allOf:
