@@ -7249,12 +7249,22 @@ components:
                       status:
                         type: string
                         example: "pending"
+                        description: "`pending` / `completed` / `failed`"
                       asset:
                         type: string
                         example: "USDC"
                       amount_change:
                         type: integer
+                        example: 100.000000
+                        description: |
+                          All values are positive. When type = `deposit`, `amount_change` is shown normally. 
+                          When type = `withdrawal`, only when status == `completed` return `amount_change` value, all other status return null.
+                      shares_change:
+                        type: integer
                         example: 88.009000
+                        description: |
+                          All values are positive. When type = `withdrawal`, `shares_change` is shown normally. 
+                          When type = `deposit`, only when status == `completed` return `shares_change` value, all other status return null.
                 meta:
                   $ref: "#/components/schemas/PaginationMeta"
 
