@@ -372,6 +372,55 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/VaultPerformanceChartResponse"
+  /v1/public/strategy_vault/vault/overall_info:
+    get:
+      summary: Get Overall Statistics of all Strategy Vaults
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/vault/overall_info`
+      tags:
+        - public
+      parameters:
+        - name: broker_ids
+          in: query
+          description: "return all if no filter. can filter multiple broker_id per query"
+          required: false
+          example: "orderly,woofi_pro,aden"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaultOverallInfoResponse"
+  /v1/public/strategy_vault/user/overall_info:
+    get:
+      summary: Get User Overall Statistics across Strategy Vaults
+      description: |
+
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/strategy_vault/user/overall_info`
+      tags:
+        - public
+      parameters:
+        - name: wallet_address
+          in: query
+          description: ""
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserOverallInfoResponse"
   /v1/public/strategy_vault/vault/liquidator_history:
     get:
       summary: Get Strategy Vault Liquidator History
@@ -869,6 +918,9 @@ components:
                 sp_nav:
                   type: number
                   example: 56789.0
+                sp_tvl:
+                  type: number
+                  example: 56789.0
                 sp_total_strategy_shares:
                   type: number
                   example: 12700.000000
@@ -1227,6 +1279,12 @@ components:
                       30d_apy:
                         type: number
                         example: 0.24
+                      recovery_30d_apy:
+                        type: number
+                        example: 0
+                      lifetime_apy:
+                        type: number
+                        example: 0.21
                       vault_lifetime_net_pnl:
                         type: number
                         example: 123456.0
@@ -1274,7 +1332,7 @@ components:
                         type: string
                       incremental_net_pnl:
                         type: number
-                      tvl_max_drawdown:
+                      max_drawdown:
                         type: number
                       pnl_max_drawdown:
                         type: number
@@ -1285,25 +1343,25 @@ components:
                     example:
                       - time_range: "24h"
                         incremental_net_pnl: 5678.90
-                        tvl_max_drawdown: 0.015
+                        max_drawdown: 0.015
                         pnl_max_drawdown: 0.012
                         fees: 1234.50
                         volume: 456789.0
                       - time_range: "7d"
                         incremental_net_pnl: -45678.90
-                        tvl_max_drawdown: 0.02
+                        max_drawdown: 0.02
                         pnl_max_drawdown: 0.04
                         fees: 7890.50
                         volume: 1234567.0
                       - time_range: "30d"
                         incremental_net_pnl: 172567.73
-                        tvl_max_drawdown: 0.0253
+                        max_drawdown: 0.0253
                         pnl_max_drawdown: 0.0051
                         fees: 56789.0
                         volume: 3456789.0
                       - time_range: "all_time"
                         incremental_net_pnl: 1234567.89
-                        tvl_max_drawdown: 0.03
+                        max_drawdown: 0.03
                         pnl_max_drawdown: 0.08
                         fees: 98765.0
                         volume: 9876543.0
@@ -1357,6 +1415,84 @@ components:
                       value:
                         type: number
                         example: 1400000.0
+    VaultOverallInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      strategy_vaults_tvl:
+                        type: number
+                        description: "Sum tvl of all vaults"
+                        example: 1234567.89
+                      strategy_vaults_lifetime_net_pnl:
+                        type: number
+                        description: "Sum lifetime net pnl of all vaults"
+                        example: 350000.21
+                      strategy_vaults_count:
+                        type: number
+                        description: "With status == live & closing. status == closed will not be included in this count."
+                        example: 8
+                      strategy_vaults_lp_count:
+                        type: number
+                        description: "Sum of LP count of all SV. e.g. address 0x…123 deposited in vault A & vault B will be counted as 2"
+                        example: 1234
+    UserOverallInfoResponse:
+        allOf:
+          - $ref: "#/components/schemas/BasicResponse"
+          - type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  rows:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        total_vaults_tvl:
+                          type: number
+                          description: "strategy_vaults_lp_tvl + strategy_vaults_sp_tvl"
+                          example: 10000
+                        vaults_lp_tvl:
+                          type: number
+                          description: "Sum lp_tvl of all vaults of this address"
+                          example: 7000
+                        vaults_sp_tvl:
+                          type: number
+                          description: "Sum sp_tvl of all vaults of this address"
+                          example: 3000
+                        total_vaults_lifetime_net_pnl:
+                          type: number
+                          description: "strategy_vaults_lp_lifetime_net_pnl + strategy_vaults_sp_lifetime_net_pnl"
+                          example: 500
+                        vaults_lp_lifetime_net_pnl:
+                          type: number
+                          description: "sum of all vaults of this address lp_lifetime_net_pnl. lp_lifetime_net_pnl = LP unrealised PnL + LP realised PnL"
+                          example: 400
+                        vaults_sp_lifetime_net_pnl:
+                          type: number
+                          description: "sum of all vaults of this address sp_lifetime_net_pnl"
+                          example: 100
+                        total_involved_vaults_count:
+                          type: number
+                          description: "involved_lp_strategy_vaults_count + involved_sp_strategy_vaults_count"
+                          example: 5
+                        involved_lp_vaults_count:
+                          type: number
+                          description: "count of vaults that this address has lp_tvl > 0"
+                          example: 4
+                        involved_sp_vaults_count:
+                          type: number
+                          description: "count of vaults that this address has"
+                          example: 1
     VaultLiquidatorHistoryResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
@@ -1737,26 +1873,26 @@ components:
                         type: string
                       incremental_net_pnl:
                         type: number
-                      tvl_max_drawdown:
+                      max_drawdown:
                         type: number
                       pnl_max_drawdown:
                         type: number
               example:
                 - time_range: "24h"
                   incremental_net_pnl: 123.000000
-                  tvl_max_drawdown: 0.015
+                  max_drawdown: 0.015
                   pnl_max_drawdown: 0.012
                 - time_range: "7d"
                   incremental_net_pnl: -2559.000000
-                  tvl_max_drawdown: 0.02
+                  max_drawdown: 0.02
                   pnl_max_drawdown: 0.04
                 - time_range: "30d"
                   incremental_net_pnl: 8888.021000
-                  tvl_max_drawdown: 0.0253
+                  max_drawdown: 0.0253
                   pnl_max_drawdown: 0.0051
                 - time_range: "all_time"
                   incremental_net_pnl: 99888.070200
-                  tvl_max_drawdown: 0.03
+                  max_drawdown: 0.03
                   pnl_max_drawdown: 0.08
     LpPerformanceChartResponse:
       allOf:

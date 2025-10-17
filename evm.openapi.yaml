@@ -3582,6 +3582,7 @@ paths:
 
         To place `Positional TP/SL` order, the input fields is 2 layer and includes an array of the objects named childOrder. The take-profit or stop-loss order should be the objects in the array. For the sub-order in childOrder, please input `CLOSE_POSITION` as type, and `TAKE_PROFIT` or `STOP_LOSS` in algoType field.
 
+        To place `Trailing Stop` order, please use `TRAILING_STOP` as algoType and `MARKET` as type. Please also input your trailing rate setting in callbackRate field.
 
 
         Sample request can be found [here](/docs/build-on-omnichain/algo-order-samples)
@@ -3606,7 +3607,7 @@ paths:
                   type: string
                 algo_type:
                   type: string
-                  description: "`STOP`/`TP_SL`/`POSITIONAL_TP_SL`/`BRACKET`/`BRACKET + TP_SL`"
+                  description: "`STOP`/`TP_SL`/`POSITIONAL_TP_SL`/`BRACKET`/`BRACKET + TP_SL`/`TRAILING_STOP`"
                 client_order_id:
                   type: string
                   description: "36 length, accepts hyphen but cannot be the first character, default: null"
@@ -3651,6 +3652,15 @@ paths:
                         items:
                           $ref: "#/components/schemas/CreateAlgoOrderChildRequest"
                         description: "Array of `CreateAlgoOrderChildRequest`"
+                activatedPrice:
+                  type: string
+                  description: "Activated price for algoType=`TRAILING_STOP`"
+                callbackRate:
+                  type: string
+                  description: "Callback rate, only for algoType=`TRAILING_STOP`, i.e. the value = 0.1 represent to 10%."
+                callbackValue:
+                  type: string
+                  description: "Callback value, only for algoType=`TRAILING_STOP`, i.e. the value = 100"
               example:
                 - symbol: "PERP_ETH_USDC"
                   algo_type: "BRACKET"
@@ -4558,6 +4568,10 @@ paths:
                 taker_fee_rate:
                   type: number
                   description: "Taker fee charged to users by default (0.0001 = 0.01%)"
+                rwa_taker_fee_rate:
+                  type: number
+                rwa_maker_fee_rate:
+                  type: number
                 account_ids:
                   type: array
                   items:
@@ -4646,6 +4660,10 @@ paths:
                 taker_fee_rate:
                   type: number
                   description: "Taker fee charged to users by default (0.0001 = 0.01%)"
+                rwa_taker_fee_rate:
+                  type: number
+                rwa_maker_fee_rate:
+                  type: number
               required:
                 - maker_fee_rate
                 - taker_fee_rate
@@ -7231,6 +7249,9 @@ components:
                       status:
                         type: string
                         example: "pending"
+                      asset:
+                        type: string
+                        example: "USDC"
                       amount_change:
                         type: integer
                         example: 88.009000
@@ -10240,6 +10261,12 @@ components:
                 maker_fee_rate:
                   type: number
                   example: 0
+                rwa_taker_fee_rate:
+                  type: number
+                  example: 0
+                rwa_maker_fee_rate:
+                  type: number
+                  example: 0
                 futures_taker_fee_rate:
                   type: number
                   example: 0
@@ -11967,6 +11994,12 @@ components:
                       taker_fee_rate:
                         type: number
                         example: 0.01
+                      rwa_taker_fee_rate:
+                        type: number
+                        example: 0.0001
+                      rwa_maker_fee_rate:
+                        type: number
+                        example: 0.0001
 
     CreateAlgoOrderChildRequest:
       type: object
@@ -12907,6 +12940,12 @@ components:
                 taker_fee_rate:
                   type: number
                   example: 0.001
+                rwa_taker_fee_rate:
+                  type: number
+                  example: 0.0001
+                rwa_maker_fee_rate:
+                  type: number
+                  example: 0.0001
 
     GetWalletStakedBalanceResponse:
       allOf:
