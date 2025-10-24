@@ -39,8 +39,8 @@ The **Funding Function** is defined as follows to allow for faster convergence i
 ```
 Funding Function(x) =
   x , if |x| < 0.5%
-  0.5%  * sign(x) + (x - 0.5% * sign(x)) * 2, if 0.5% < |x| < 1.5%
-  [0.5% + (1.5% - 0.5%) * 2] * sign(x) + (x - 1.5% * sign(x)) * 4, if |x| > 1.5%
+  0.5%  * sign(x) + (x - 0.5% * sign(x)), if 0.5% < |x| < 1.5%
+  [0.5% + (1.5% - 0.5%)] * sign(x) + (x - 1.5% * sign(x)), if |x| > 1.5%
 
 NB: x refers here to the Average Premium
 ```
@@ -48,8 +48,8 @@ NB: x refers here to the Average Premium
 | Premium | Range               | Slope |
 | ------- | ------------------- | ----- |
 | Low     | \|x\| < 0.5%        | 1     |
-| Medium  | 0.5% < \|x\| < 1.5% | 2     |
-| Large   | 1.5% < \|x\|        | 4     |
+| Medium  | 0.5% < \|x\| < 1.5% | 1     |
+| Large   | 1.5% < \|x\|        | 1     |
 
 ## Interest Rate
 
@@ -66,7 +66,7 @@ The Interest Rate is fixed to be 0.01% for all Perpetual Markets (assuming USDC 
 The final Funding Rate is then a combination of the Average Premium and the Interest Rate.
 
 ```
-Funding Rate = clamp[Funding Function(Average Premium) + clamp(Interest Rate - Funding Function(Average Premium) , Cap IR, Floor IR), Cap Funding, Floor Funding]
+Funding Rate = clamp[Funding Function(Average Premium / (8/N)) + clamp(Interest Rate - Funding Function(Average Premium / (8/N)), Cap IR, Floor IR), Cap Funding, Floor Funding]
 ```
 
 The funding rate is also capped and floored respectively by a `Cap Funding` and a `Floor Funding`. The specific values depend on each perpetual market. In the event of extreme market conditions, Orderly may change these parameters, which will enable the funding rate model's higher slope to kick in.
