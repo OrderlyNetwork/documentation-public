@@ -16,10 +16,12 @@ These values represent the maximum amount of each collateral type (USDT or ETH) 
 | ETH        | Ethereum | 500                     |
 | ETH        | Base     | 500                     |
 | USDT       | BSC      | 5,000,000               |
-| YUSD       | Ethereum | 100,000                 |
+| YUSD       | Ethereum | 500,000                 |
+| YUSD       | BSC      | 500,000                 |
 | SOL        | SOL      | 40,000                  |
 | BNB        | BSC      | 10,000                  |
 | WBTC       | Ethereum | 80                      |
+| deUSD      | Ethereum | 5,000,000               |
 
 ### Max Deposits (User)
 
@@ -29,8 +31,9 @@ These values represent the maximum amount of each collateral type (USDT or ETH) 
 | ETH        | 100            |
 | SOL        | 2,000          |
 | BNB        | 500            |
-| YUSD       | 25,000         |
+| YUSD       | 50,000         |
 | WBTC       | 5              |
+| deUSD      | 500,000        |
 
 ## What is Loan-to-value (LTV)?
 
@@ -101,6 +104,7 @@ Weight and DCF will be determined based on the table below:
 | SOL        | 0.8         | 0.000007  |
 | BNB        | 0.8         | 0.000007  |
 | WBTC       | 0.8         | 0.000007  |
+| deUSD      | 0.95        | 0.0000045 |
 
 ---
 
@@ -144,6 +148,7 @@ This is a protective measure to manage risk. As always, remember that the lower 
 | SOL        | 3.5%                           |
 | BNB        | 3.5%                           |
 | WBTC       | 3.5%                           |
+| deUSD      | 0.035%                         |
 
 ---
 
@@ -155,20 +160,26 @@ Each collateral’s minimum and maximum swap amount can be found in the table be
 
 <img src="/images/multi-collateral/convert.jpg" alt="Convert Rate" />
 
-| Collateral | Minimum Swap Collateral Required (Arbitrum & Base) | Minimum Swap Collateral Required (Ethereum) | Minimum Swap Collateral Required (Solana) | Minimum Swap Collateral Required (BSC) |
-| ---------- | -------------------------------------------------- | ------------------------------------------- | ----------------------------------------- | -------------------------------------- |
-| USDT       | 50                                                 | 500                                         | 50                                        | 50                                     |
-| ETH        | 0.02                                               | 0.2                                         | --                                        | --                                     |
-| YUSD       | --                                                 | 500                                         | --                                        | --                                     |
-| SOL        | --                                                 | --                                          | 2                                         | --                                     |
-| BNB        | --                                                 | --                                          | --                                        | 0.5                                    |
-| WBTC       | --                                                 | 0.005                                       | --                                        | --                                     |
+### Minimum Swap Collateral Required
 
-| Collateral | Maximum Swap Collateral Threshold (Arbitrum & Base) | Maximum Swap Collateral Threshold (Ethereum) | Maximum Swap Collateral Threshold (Solana) | Maximum Swap Collateral Threshold (BSC) |
-| ---------- | --------------------------------------------------- | -------------------------------------------- | ------------------------------------------ | --------------------------------------- |
-| USDT       | 500,000                                             | 1,000,000                                    | 500,000                                    | 500,000                                 |
-| ETH        | 100                                                 | 500                                          | --                                         | --                                      |
-| YUSD       | --                                                  | 50,000                                       | --                                         | --                                      |
-| SOL        | 500                                                 | --                                           | --                                         | --                                      |
-| BNB        | --                                                  | --                                           | --                                         | 500                                     |
-| WBTC       | 5                                                   | --                                           | --                                         | --                                      |
+| Collateral | Arbitrum & Base | Ethereum | Solana | BSC |
+| ---------- | --------------- | -------- | ------ | --- |
+| USDT       | 50              | 500      | 50     | 50  |
+| ETH        | 0.02            | 0.2      | --     | --  |
+| YUSD       | --              | 500      | --     | 50  |
+| SOL        | --              | --       | 2      | --  |
+| BNB        | --              | --       | --     | 0.5 |
+| WBTC       | --              | 0.005    | --     | --  |
+| deUSD      | --              | 500      | --     | --  |
+
+### Maximum Swap Collateral Threshold
+
+| Collateral | Arbitrum & Base | Ethereum  | Solana  | BSC     |
+| ---------- | --------------- | --------- | ------- | ------- |
+| USDT       | 500,000         | 1,000,000 | 500,000 | 500,000 |
+| ETH        | 100             | 500       | --      | --      |
+| YUSD       | --              | 50,000    | --      | 50,000  |
+| SOL        | 500             | --        | --      | --      |
+| BNB        | --              | --        | --      | 500     |
+| WBTC       | 5               | --        | --      | --      |
+| deUSD      | --              | 1,000,000 | --      | --      |
