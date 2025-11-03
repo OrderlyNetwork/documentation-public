@@ -1646,7 +1646,7 @@ paths:
         `GET /v1/trades`
 
         Return client’s trades history within a time range.
-        
+
         Only return the latest 500 entries.
       tags:
         - private
@@ -2712,6 +2712,70 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/KlineResponse"
+
+  /v1/kline_history:
+    get:
+      summary: Get Kline History
+      deprecated: false
+      description: >
+
+        **Limit: 1 requests per 1 second**
+
+
+        `GET /v1/kline_history`
+
+
+        Endpoint to get Historical K-line data.
+      tags:
+        - public
+      parameters:
+        - name: symbol
+          in: query
+          description: ""
+          required: true
+          example: PERP_BTC_USDC
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: 1m/5m/15m/30m/1h/4h/12h/1d/1w/1mon/1y
+          required: true
+          example: ""
+          schema:
+            type: string
+        - name: before
+          in: query
+          description: The start timestamp cursor for fetching the previous page of results, excluding the kline associated with the cursor itself.  Either before or after can be specified.  If both are provided, before takes precedence.  If neither is passed, the results default to starting from the most recent kline.
+          required: false
+          example: ""
+          schema:
+            type: long
+        - name: after
+          in: query
+          description: The start timestamp cursor for fetching the next page of results, excluding the kline associated with the cursor itself.  Either before or after can be specified.  If both are provided, before takes precedence.  If neither is passed, the results default to starting from the most recent kline.
+          required: false
+          example: ""
+          schema:
+            type: long
+        - name: limit
+          in: query
+          description: Numbers of klines. Maximum of 1000 klines. Default is 100.
+          required: false
+          example: ""
+          schema:
+            type: number
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KlineResponse"
+
   /v1/order/{order_id}/trades:
     get:
       summary: Get All Trades of Specific Order
