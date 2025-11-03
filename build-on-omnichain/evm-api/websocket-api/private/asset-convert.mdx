@@ -1,0 +1,51 @@
+---
+title: "Asset Convert"
+---
+
+Push interval: push on update
+
+```json
+{
+  "id": "clientID3",
+  "topic": "assetconvert",
+  "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name  | Type   | Required | Description               |
+| ----- | ------ | -------- | ------------------------- |
+| id    | string | Y        | id generate by client     |
+| event | string | Y        | `subscribe`/`unsubscribe` |
+| topic | string | Y        | `assetconvert`            |
+
+<RequestExample>
+```json Response
+{
+    "id": "clientID3",
+    "event": "subscribe",
+    "success": true,
+    "ts": 1609924478533
+}
+```
+</RequestExample>
+
+<ResponseExample>
+```json Subscribed Message
+{
+  "topic": "assetconvert",
+  "ts": 1641439456774,
+  "data":{
+      "convertId": 123456789,  // planId
+      "transactionId": 202,     // id
+      "timestamp": 1663313562090, // updatedTime 
+      "type": "auto",          // refType  0/1=auto, 1=manual 
+      "convertedAsset": "ETH",  // sellToken
+      "convertedQty": 1.23,     // sellQuantity
+      "receivedAsset": "USDC",   // buyToken
+      "receivedQty": 18123.43   // buyQuantity
+    }
+}
+```
+</ResponseExample>
