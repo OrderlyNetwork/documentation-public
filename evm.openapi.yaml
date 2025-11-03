@@ -1646,6 +1646,8 @@ paths:
         `GET /v1/trades`
 
         Return client’s trades history within a time range.
+        
+        Only return the latest 500 entries.
       tags:
         - private
       parameters:
@@ -2358,7 +2360,7 @@ paths:
           in: query
           description: return chains that supports this builder
           required: false
-          example: ""
+          example: "woofi_pro"
           schema:
             type: string
       responses:
@@ -2368,23 +2370,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ChainInfoResponse"
-  #  /v1/public/chain_info:
-  #    get:
-  #      summary: Get Vault Chain Config
-  #      deprecated: false
-  #      description: |
-  #        **Limit: 10 requests per 1 second per IP address**
-  #
-  #        `GET /v1/public/chain_info`
-  #      tags:
-  #        - public
-  #      responses:
-  #        "200":
-  #          description: OK
-  #          content:
-  #            application/json:
-  #              schema:
-  #                $ref: '#/components/schemas/ChainInfoResponse'
+
   /v1/order/cancel_all_after:
     post:
       summary: Cancel All After
@@ -9378,6 +9364,9 @@ components:
                   items:
                     type: object
                     properties:
+                      internal_transfer_request_id:
+                        type: number
+                        example: 123
                       id:
                         type: string
                         example: "230707030600002"
@@ -10932,7 +10921,6 @@ components:
                       - chain_id
                       - currency_symbol
                       - explorer_base_url
-                      # TODO vault_address has been missing. Check
                       - vault_address
                     properties:
                       name:
@@ -10949,7 +10937,7 @@ components:
                         example: "ETH"
                       currency_decimal:
                         type: number
-                        example: 8
+                        example: 18
                       explorer_base_url:
                         type: string
                         example: https://arbiscan.io
@@ -10960,7 +10948,7 @@ components:
                         type: array
                         items:
                           type: string
-                          example: "woofi_dex"
+                          example: "woofi_pro"
     #                      token_info:
     #                        type: object
     #                        properties:
