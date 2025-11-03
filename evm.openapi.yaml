@@ -2068,6 +2068,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SystemInfoResponse"
+                
   /v1/registration_nonce:
     get:
       summary: Get Registration Nonce
@@ -2749,14 +2750,14 @@ paths:
           required: false
           example: ""
           schema:
-            type: long
+            type: string
         - name: after
           in: query
           description: The start timestamp cursor for fetching the next page of results, excluding the kline associated with the cursor itself.  Either before or after can be specified.  If both are provided, before takes precedence.  If neither is passed, the results default to starting from the most recent kline.
           required: false
           example: ""
           schema:
-            type: long
+            type: string
         - name: limit
           in: query
           description: Numbers of klines. Maximum of 1000 klines. Default is 100.
@@ -3151,6 +3152,57 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BasicResponse"
+
+  /v2/internal_transfer:
+    post:
+      summary: Create Internal Transfer With Wallet Signature
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second**
+
+        `POST /v2/internal_transfer`
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInternalTransferV2Request"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateInternalTransferV2Response"
+
+  /v1/transfer_nonce:
+    get:
+      summary: Get Transfer Nonce
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second**
+
+        `GET /v1/transfer_nonce`
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetTransferNonceResponse"
 
   /v1/internal_transfer_history:
     get:
@@ -9794,6 +9846,59 @@ components:
               amount:
                 type: number
                 example: 100
+
+    CreateInternalTransferV2Request:
+      type: object
+      properties:
+        signature:
+          type: string
+        userAddress:
+          type: string
+        verifyingContract:
+          type: string
+        message:
+          type: object
+          properties:
+            receiver:
+              type: string
+            token:
+              type: string
+            amount:
+              type: integer
+              example: 123
+            transferNonce:
+              type: string
+            chainId:
+              type: string
+              example: "1"
+            chainType:
+              type: string
+              enum: ["EVM", "SOL"]
+              example: "SOL"
+
+    CreateInternalTransferV2Response:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                internal_transfer_request_id:
+                  type: integer
+                  example: 123
+
+    GetTransferNonceResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                transfer_nonce:
+                  type: integer
+                  example: 1
 
     PostOrderBody:
       required:
