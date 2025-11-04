@@ -2068,7 +2068,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SystemInfoResponse"
-                
+
   /v1/registration_nonce:
     get:
       summary: Get Registration Nonce
@@ -7641,7 +7641,65 @@ components:
             - data
           properties:
             data:
-              $ref: "#/components/schemas/FutureInfo"
+              type: object
+              required:
+                - 24h_amount
+                - 24h_close
+                - 24h_high
+                - 24h_low
+                - 24h_open
+                - 24h_volume
+                - est_funding_rate
+                - index_price
+                - last_funding_rate
+                - mark_price
+                - next_funding_time
+                - open_interest
+                - sum_unitary_funding
+                - symbol
+              properties:
+                symbol:
+                  type: string
+                  example: "PERP_ETH_USDC"
+                index_price:
+                  type: number
+                  example: 1901.6
+                mark_price:
+                  type: integer
+                  example: 1950
+                sum_unitary_funding:
+                  type: number
+                  example: 387.891
+                est_funding_rate:
+                  type: number
+                  example: 4.6875E-4
+                last_funding_rate:
+                  type: number
+                  example: 4.6875E-4
+                next_funding_time:
+                  type: integer
+                  example: 1683270060000
+                open_interest:
+                  type: string
+                  example: "None"
+                24h_open:
+                  type: integer
+                  example: 2115
+                24h_close:
+                  type: integer
+                  example: 2115
+                24h_high:
+                  type: integer
+                  example: 2115
+                24h_low:
+                  type: integer
+                  example: 2115
+                24h_amount:
+                  type: integer
+                  example: 0
+                24h_volume:
+                  type: integer
+                  example: 0
 
     FutureInfo:
       type: object
