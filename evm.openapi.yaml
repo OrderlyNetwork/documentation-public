@@ -2714,55 +2714,55 @@ paths:
               schema:
                 $ref: "#/components/schemas/KlineResponse"
 
-  /v1/kline_history:
+  /v1/tv/kline_history:
     get:
       summary: Get Kline History
       deprecated: false
       description: >
 
-        **Limit: 1 requests per 1 second**
+        **Limit: 5 request per 10 second per IP address**
 
 
-        `GET /v1/kline_history`
+        `GET /v1/tv/kline_history`
 
 
-        Endpoint to get Historical K-line data.
+        Get the historical klines of the specified symbol
       tags:
         - public
       parameters:
         - name: symbol
           in: query
-          description: ""
+          description: "Symbol name"
           required: true
           example: PERP_BTC_USDC
           schema:
             type: string
-        - name: type
+        - name: resolution
           in: query
-          description: 1m/5m/15m/30m/1h/4h/12h/1d/1w/1mon/1y
+          description: "`1m/5m/15m/30m/1h/4h/12h/1d/1w/1mon`"
           required: true
-          example: ""
+          example: "1d"
           schema:
             type: string
-        - name: before
+        - name: from
           in: query
-          description: The start timestamp cursor for fetching the previous page of results, excluding the kline associated with the cursor itself.  Either before or after can be specified.  If both are provided, before takes precedence.  If neither is passed, the results default to starting from the most recent kline.
+          description: If the range from from to to contains 1200 klines, only 1000 klines will be returned, starting from to and moving backward (due to the limit).
           required: false
-          example: ""
+          example: "1761926400"
           schema:
             type: string
-        - name: after
+        - name: to
           in: query
-          description: The start timestamp cursor for fetching the next page of results, excluding the kline associated with the cursor itself.  Either before or after can be specified.  If both are provided, before takes precedence.  If neither is passed, the results default to starting from the most recent kline.
+          description: If the range from from to to contains only 500 klines, then all 500 will be returned, starting from to and moving backward.
           required: false
-          example: ""
+          example: "1762790400"
           schema:
             type: string
         - name: limit
           in: query
-          description: Numbers of klines. Maximum of 1000 klines. Default is 100.
+          description: Numbers of klines you want to query.  Maximum of 1000 klines allowed.
           required: false
-          example: ""
+          example: "1000"
           schema:
             type: number
         - $ref: "#/components/parameters/orderly_timestamp"
@@ -2775,7 +2775,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/KlineResponse"
+                $ref: "#/components/schemas/KlineHistoryResponse"
 
   /v1/order/{order_id}/trades:
     get:
@@ -7269,6 +7269,107 @@ components:
                 description:
                   type: string
                   example: "abc"
+
+    KlineHistoryResponse:
+      type: object
+      required:
+        - s
+        - o
+        - c
+        - h
+        - l
+        - v
+        - a
+        - t
+      properties:
+        s:
+          type: string
+          example: ok
+        o:
+          type: array
+          items:
+            type: number
+          example:
+            - 2.1050
+            - 2.1550
+            - 2.1050
+            - 2.0285
+            - 1.8000
+            - 2.5500
+            - 2.5500
+        c:
+          type: array
+          items:
+            type: number
+          example:
+            - 2.1000
+            - 2.1550
+            - 2.0570
+            - 1.8600
+            - 1.8000
+            - 2.5500
+            - 2.4800
+        h:
+          type: array
+          items:
+            type: number
+          example:
+            - 2.1550
+            - 2.1550
+            - 2.1050
+            - 2.0285
+            - 1.8000
+            - 2.5500
+            - 3.1750
+        l:
+          type: array
+          items:
+            type: number
+          example:
+            - 2.1000
+            - 2.1550
+            - 2.0200
+            - 1.8500
+            - 1.8000
+            - 2.5500
+            - 2.4800
+        v:
+          type: array
+          items:
+            type: number
+          example:
+            - 22.0
+            - 0.0
+            - 2.0
+            - 3000.0
+            - 26.0
+            - 0.0
+            - 2.0
+        a:
+          type: array
+          items:
+            type: number
+          example:
+            - 46.2000
+            - 0.0000
+            - 4.1140
+            - 5635.0000
+            - 46.8000
+            - 0.0000
+            - 6.1000
+        t:
+          type: array
+          items:
+            type: integer
+            format: int64
+          example:
+            - 1761955200
+            - 1762041600
+            - 1762128000
+            - 1762214400
+            - 1762300800
+            - 1762646400
+            - 1762732800
 
     SubAccountResponse:
       allOf:
