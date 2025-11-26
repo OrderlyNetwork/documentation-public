@@ -3151,7 +3151,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BasicResponse"
+                $ref: "#/components/schemas/CreateInternalTransferV1Response"
 
   /v2/internal_transfer:
     post:
@@ -10036,6 +10036,18 @@ components:
               example: "SOL"
 
     CreateInternalTransferV2Response:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                internal_transfer_request_id:
+                  type: integer
+                  example: 123
+                  
+    CreateInternalTransferV1Response:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
         - type: object
