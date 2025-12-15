@@ -1,0 +1,100 @@
+---
+title: "Affiliate & Referral Program"
+description: "Learn how the Orderly referral ecosystem works for Brokers, Affiliates, and Traders."
+---
+
+## Overview
+
+The referral system is a crucial component of the Orderly ecosystem, designed to incentivize user growth and engagement through a structured rewards program. A broker can choose to share part of its broker fees to incentives a distributor/affiliate/referrer for bringing in new traders.
+Orderly powers many different trading platforms, the referral system is integrated directly into the protocol but configured by individual Brokers.
+
+The ecosystem involves three key parties:
+
+1.  **The Broker (Builder):** The Dex building on Orderly. They set the fee structure and the maximum rebate limits.
+2.  **The Referrer (Affiliate):** A user (e.g., a KOL or community leader) who invites others to trade. They can modify the fee split between themselves and the trader, but not maximum rebate limit.
+3.  **The Referee (Trader):** The new user who signs up using a referral code.
+
+## How It Works
+
+### 1. The Binding Process
+The Binding is established when a new user (Referee) connects to a Broker and enters a referral code, their account is permanently "bound" to the Referrer. A bound referral code can't be removed or modified after binding.
+
+<img
+  src="/images/be-a-broker/affiliate-referral-program/bind-ref-code.png"
+  width="70%"
+/>
+
+### 2. The Reward Split
+When the Referee executes a trade, the trading fee is split. Orderly Network takes a base protocol fee, and the remaining "Broker Fee" (Profit) is distributed between the Broker, the Referrer, and the Referee based on the configured rebate settings.
+
+*   **Referrer Rebate:** Income earned by the affiliate for inviting the user.
+*   **Referee Rebate:** A discount returned to the trader, incentivizing them to use the code.
+*   **Broker Revenue:** The remaining fee kept by the platform.
+
+## Example Calculation
+
+Let's look at a concrete example of how fees flow.
+
+**Scenario:**
+*   **Orderly Base Fee:** 3 bps Taker fee and 0 bps Maker fee.
+*   **Broker Fee Structure:** 6 bps (0.06%) Taker Fee and 3(0.03%) bps Maker Fee.
+*   **Broker Net Profit for each trade(regardless of maker/trader):** 3 bps.
+
+**Referral Configuration:**
+The Broker creates a code for a KOL with an **80% Max Rebate**, split **50:50** between the Referrer and Referee.
+
+| Party | Share of Net Profit | Calculation |
+| :--- | :--- | :--- |
+| **Total Net Profit** | **100%** | **3 bps** |
+| **Referee (Trader)** | 40% | Gets 40% of the 3 bps profit returned as a discount. |
+| **Referrer (Affiliate)** | 40% | Gets 40% of the 3 bps profit as commission. |
+| **Broker** | 20% | Keeps the remaining 20% of the 3 bps profit. |
+
+**In Dollar Terms:**
+If a user generates **$10 USDC** in *Net Broker Fees*:
+1.  **$4.00** goes back to the Trader (Referee).
+2.  **$4.00** goes to the Affiliate (Referrer).
+3.  **$2.00** is kept by the Broker.
+
+## Configuration for Brokers
+
+Brokers manage referral codes and rebate rates via the Orderly Admin Console.
+Click ""+ create code" button on the admin portal.
+
+<img
+  src="/images/be-a-broker/affiliate-referral-program/admin-portal.png"
+  width="70%"
+/>
+
+
+**Location:** [https://admin.orderly.network/referral](https://admin.orderly.network/referral)
+
+### Setup Fields
+
+<img
+  src="/images/be-a-broker/affiliate-referral-program/create-ref-code.png"
+  width="70%"
+/>
+
+1.  **User Address:** The wallet address of the Affiliate (Referrer) who will own this code.
+2.  **Referral Code:** The unique string traders will enter (e.g., `REFFCODE1`).
+3.  **Max Rebate:** The total percentage of the Broker's Net Profit to give away (e.g., 80%).
+4.  **Split Slider:** How that rebate is divided.
+    *   **Referrer Rebate:** % of the rebate the Affiliate keeps.
+    *   **Referee Rebate:** % of the rebate returned to the Trader.
+
+## Distribution
+
+Rewards are calculated automatically by the Orderly protocol.
+
+*   **Frequency:** Rewards are typically distributed **daily**.
+*   **Currency:** USDC.
+
+## Auto referral system
+
+<img
+  src="/images/be-a-broker/affiliate-referral-program/auto-referral.png"
+  width="70%"
+/>
+
+Similar to the affiliate system, the auto-referral system grants traders a referral code once they reach a specific trading volume. This means that instead of manual entry, traders are automatically assigned a code based on their trading activity.
