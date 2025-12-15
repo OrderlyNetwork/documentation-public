@@ -1,17 +1,17 @@
 ---
 title: "Affiliate & Referral Program"
-description: "Learn how the Orderly referral ecosystem works for Brokers, Affiliates, and Traders."
+description: "Understand the Orderly referral ecosystem for Brokers, Affiliates, and Traders."
 ---
 
 ## Overview
 
-The referral system is a crucial component of the Orderly ecosystem, designed to incentivize user growth and engagement through a structured rewards program. A broker can choose to share part of its broker fees to incentives a distributor/affiliate/referrer for bringing in new traders.
-Orderly powers many different trading platforms, the referral system is integrated directly into the protocol but configured by individual Brokers.
+The referral system is a crucial component of the Orderly ecosystem, designed to incentivize user growth and engagement through a structured rewards program. 
 
-The ecosystem involves three key parties:
+A broker can choose to share part of its broker fees to incentives a distributor/affiliate/referrer for bringing in new traders.
+The ecosystem consists of three key participants: 
 
-1.  **The Broker (Builder):** The Dex building on Orderly. They set the fee structure and the maximum rebate limits.
-2.  **The Referrer (Affiliate):** A user (e.g., a KOL or community leader) who invites others to trade. They can modify the fee split between themselves and the trader, but not maximum rebate limit.
+1.  **The Broker (Dex):** The Dex built on Orderly. Brokers determine the fee structures and maximum rebate limits.
+2.  **The Referrer (Affiliate):** A user (e.g., a KOL, influencer, or community leader) who invites others to trade. They can modify the fee split between themselves and the trader, but not the maximum rebate limit.
 3.  **The Referee (Trader):** The new user who signs up using a referral code.
 
 ## How It Works
@@ -25,15 +25,15 @@ The Binding is established when a new user (Referee) connects to a Broker and en
 />
 
 ### 2. The Reward Split
-When the Referee executes a trade, the trading fee is split. Orderly Network takes a base protocol fee, and the remaining "Broker Fee" (Profit) is distributed between the Broker, the Referrer, and the Referee based on the configured rebate settings.
+When a Referee executes a trade, the trading fee is split automatically. Orderly Network retains a base protocol fee, and the remaining **Broker Fee** is distributed among the Broker, Referrer, and Referee based on the configured rebate settings.
 
-*   **Referrer Rebate:** Income earned by the affiliate for inviting the user.
-*   **Referee Rebate:** A discount returned to the trader, incentivizing them to use the code.
-*   **Broker Revenue:** The remaining fee kept by the platform.
+*   **Referrer Rebate:** Commission earned by the affiliate for inviting the user.
+*   **Referee Rebate:** A discount returned to the trader, incentivizing them to use the referral code.
+*   **Broker Revenue:** The remaining portion of the fee retained by the platform.
 
 ## Example Calculation
 
-Let's look at a concrete example of how fees flow.
+The following example demonstrates how fees flow between parties.
 
 **Scenario:**
 *   **Orderly Base Fee:** 3 bps Taker fee and 0 bps Maker fee.
@@ -41,35 +41,38 @@ Let's look at a concrete example of how fees flow.
 *   **Broker Net Profit for each trade(regardless of maker/trader):** 3 bps.
 
 **Referral Configuration:**
-The Broker creates a code for a KOL with an **80% Max Rebate**, split **50:50** between the Referrer and Referee.
+The Broker generates a code for a KOL with an **80% Max Rebate**, split **50:50** between the Referrer and Referee.
 
 | Party | Share of Net Profit | Calculation |
 | :--- | :--- | :--- |
 | **Total Net Profit** | **100%** | **3 bps** |
-| **Referee (Trader)** | 40% | Gets 40% of the 3 bps profit returned as a discount. |
-| **Referrer (Affiliate)** | 40% | Gets 40% of the 3 bps profit as commission. |
-| **Broker** | 20% | Keeps the remaining 20% of the 3 bps profit. |
+| **Referee (Trader)** | 40% | Receives 40% of the 3 bps profit as a discount. |
+| **Referrer (Affiliate)** | 40% | Receives 40% of the 3 bps profit as commission. |
+| **Broker** | 20% | Retains the remaining 20% of the 3 bps profit. |
 
 **In Dollar Terms:**
 If a user generates **$10 USDC** in *Net Broker Fees*:
-1.  **$4.00** goes back to the Trader (Referee).
-2.  **$4.00** goes to the Affiliate (Referrer).
-3.  **$2.00** is kept by the Broker.
+1.  **$4.00** is returned to the Trader (Referee).
+2.  **$4.00** is credited to the Affiliate (Referrer).
+3.  **$2.00** is retained by the Broker.
 
 ## Configuration for Brokers
 
 Brokers manage referral codes and rebate rates via the Orderly Admin Console.
-Click ""+ create code" button on the admin portal.
+
+
+**Admin console:** [https://admin.orderly.network/referral](https://admin.orderly.network/referral)
+
+Click ""+ create code" button.
 
 <img
   src="/images/be-a-broker/affiliate-referral-program/admin-portal.png"
   width="70%"
 />
 
-
-**Location:** [https://admin.orderly.network/referral](https://admin.orderly.network/referral)
-
 ### Setup Fields
+
+A pop up window will appear for Brokers to create a referral code for an address.
 
 <img
   src="/images/be-a-broker/affiliate-referral-program/create-ref-code.png"
@@ -78,17 +81,17 @@ Click ""+ create code" button on the admin portal.
 
 1.  **User Address:** The wallet address of the Affiliate (Referrer) who will own this code.
 2.  **Referral Code:** The unique string traders will enter (e.g., `REFFCODE1`).
-3.  **Max Rebate:** The total percentage of the Broker's Net Profit to give away (e.g., 80%).
-4.  **Split Slider:** How that rebate is divided.
-    *   **Referrer Rebate:** % of the rebate the Affiliate keeps.
-    *   **Referee Rebate:** % of the rebate returned to the Trader.
+3.  **Max Rebate:** The total percentage of the Broker's Net Profit allocated for rebates (e.g., 80%).
+4.  **Split Slider:** Determines how the rebate is divided:
+    *   **Referrer Rebate:** The percentage of the rebate the Affiliate keeps.
+    *   **Referee Rebate:** The percentage of the rebate returned to the Trader.
 
 ## Distribution
 
 Rewards are calculated automatically by the Orderly protocol.
 
 *   **Frequency:** Rewards are typically distributed **daily**.
-*   **Currency:** USDC.
+*   **Currency:** Payouts are settled in **USDC**.
 
 ## Auto referral system
 
