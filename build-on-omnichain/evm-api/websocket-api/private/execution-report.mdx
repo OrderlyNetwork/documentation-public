@@ -8,17 +8,22 @@ Push interval: real-time push
 {
   "id": "clientID3",
   "topic": "executionreport",
-  "event": "subscribe"
+  "event": "subscribe",
+  "params": {
+    "symbol": "PERP_BTC_USDC,PERP_ETH_USDC"
+  }
 }
 ```
 
 **Parameters**
 
-| Name  | Type   | Required | Description               |
-| ----- | ------ | -------- | ------------------------- |
-| id    | string | Y        | id generate by client     |
-| event | string | Y        | `subscribe`/`unsubscribe` |
-| topic | string | Y        | `executionreport`         |
+| Name          | Type   | Required | Description               |
+| ------------- | ------ | -------- | ------------------------- |
+| id            | string | Y        | id generate by client     |
+| event         | string | Y        | `subscribe`/`unsubscribe` |
+| topic         | string | Y        | `executionreport`         |
+| params        | object | N        | Defaults to all symbols   |
+| params.symbol | string | N        | Symbols, comma separated  |
 
 <RequestExample>
 
