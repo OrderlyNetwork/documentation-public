@@ -1,0 +1,94 @@
+---
+title: "Vanguard Distributor Program"
+---
+
+## TL;DR
+
+The Vanguard Program is the core growth engine for the Orderly One ecosystem. It incentivizes "Distributors" to onboard new Builders (DEXs) through a tiered revenue-sharing model.
+
+*   **Key Roles:** Participants join as either **Ambassadors** or **Builders**.
+*   **Profit Mechanism:** Revenue is generated via the "Fee Spread" between the Distributor’s tier and their Invitee’s tier.
+*   **Scale Advantage:** Distributors can level up their tier using the aggregate volume of their entire invitee network.
+
+## 1. Participant Profiles
+
+| Feature | Ambassador | Builder |
+| :--- | :--- | :--- |
+| **Role** | **General users / Affiliates** | **Graduated DEXs** |
+| **Revenue Stream** | Referral share only | DEX operational profit + Referral share |
+| **Revenue Settlement** | Ambassador trading account | Builder admin account |
+
+## 2. Onboarding & Binding Logic
+
+### The 4-Step Setup
+
+1.  **Connect:** Link an EOA wallet via Ethereum, Arbitrum One, or Base.
+2.  **Profile:** Select the "Ambassador" or "Builder" path.
+3.  **Activate:** Complete key creation (Builders must complete the "Graduation" process).
+4.  **Share:** Use unique distributor codes or URLs to bind invitees.
+
+### Binding Rules (Guardrails)
+
+*   **Unidirectional:** An invitee can only be bound to a single distributor.
+*   **Non-Reciprocal:** Cross-referral (e.g., A invites B, B invites A) is strictly prohibited.
+*   **Timing:** Binding must be established **at or before** the invitee’s DEX graduation.
+*   **Immutability:** Once established, the binding relationship cannot be modified.
+
+## 3. Orderly Tiering Programme
+
+A distributor’s tier is determined by their **30-day Aggregate Volume** and **$ORDER Staking**. This system aligns distributor growth with overall ecosystem performance.
+
+### Tiers & Privileges
+
+| Tier | 30d Aggregate Volume | $ORDER Staked | Base Taker Fee | Tier Assignment Privilege |
+| :--- | :--- | :--- | :--- | :--- |
+| **Public** | ≥ $0 | ≥ 0 | 3.00 bps | - |
+| **Silver** | ≥ $30M | ≥ 100K | 2.75 bps | - |
+| **Gold** | ≥ $90M | ≥ 250K | 2.50 bps | Can assign Silver / Public |
+| **Platinum** | ≥ $1B | ≥ 2M | 2.00 bps | Can assign Gold & below |
+| **Diamond** | ≥ $10B | ≥ 7M | 1.00 bps | Can assign Platinum & below |
+
+### The Volume Formula
+
+>$$
+>\text{30d Aggregate Volume} = (\text{Distributor Volume}) + \sum (\text{All Graduated Invitees' Volume})
+>$$
+>
+>*(Note: For Ambassadors, personal volume is treated as 0).*
+
+Reference: [Orderly Builder Programme](/introduction/orderly-one/builder-programme).
+
+## 4. Revenue Share Mechanics
+
+### The Core Equation
+
+Distributors earn the "spread" between the invitee’s base fee and their own.
+
+**Distributor Margin:**
+
+$$
+Margin = \max(0.1 \text{ bps}, \text{Invitee Base Fee} - \text{Distributor Base Fee})
+$$
+
+*(A guaranteed 0.1 bps minimum margin applies to Taker orders even if tiers are identical).*
+
+**Invitee (DEX) Margin:**
+
+$$
+Margin = \text{End User Fee} - \text{Invitee Base Fee} - \text{Referral Commissions}
+$$
+
+### Fee Spread Example
+
+If the **Distributor** is Diamond (1.0 bps) and the **Invitee** is Gold (2.5 bps) with an **End User** Fee of 5.0 bps:
+
+*   **Distributor Share:** $2.5 - 1.0 = **1.5 bps**
+*   **Invitee Share:** $5.0 - 2.5 = **2.5 bps**
+*   **Orderly Protocol Fee:** **1.0 bps**
+
+## 5. Settlement & Distribution
+
+*   **Frequency:** Daily settlement at **00:00 UTC**.
+*   **Automatic Distribution:** 
+    * **Builders**: Revenue is credited to the **Builder Admin Account**.
+    * **Ambassadors**: Revenue is credited to the **Ambassador Trading Account**(The trading account created under the ambassador broker).
