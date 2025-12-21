@@ -6258,6 +6258,92 @@ paths:
               schema:
                 $ref: "#/components/schemas/GetValorPoolInfoResponse"
 
+  /v1/staking/valor2/pool_info:
+    get:
+      summary: Get Valor2 Pool Info
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        `GET /v1/staking/valor2/pool_info`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetValor2PoolInfoResponse"
+
+  /v1/staking/valor2/batch_info:
+    get:
+      summary: Get Valor2 Batch Info
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+
+        `GET /v1/staking/valor2/batch_info`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetValor2BatchInfoResponse"
+
+  /v1/staking/valor2/redeem:
+    get:
+      summary: Get Valor2 Redeem Info
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        The redeemed VALOR amount may come from multiple batches
+
+        `GET /v1/staking/valor2/redeem`
+      tags:
+        - private
+      parameters:
+        - name: address
+          in: query
+          description: ""
+          required: true
+          example: ""
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetValor2RedeemInfoResponse"
+
+  /v1/staking/valor2/revenue_buyback:
+    get:
+      summary: Get Valor2 Revenue Buyback
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        Order by batch_id. Display the amount after the batch is claimable.
+
+        `GET /v1/staking/valor2/revenue_buyback`
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetValor2RevenueBuybackResponse"
+
   /v1/staking/valor/redeem:
     get:
       summary: Get Valor Redeem Info
@@ -13396,6 +13482,115 @@ components:
                 total_redeemed_amount:
                   type: number
                   example: 2000
+
+    GetValor2PoolInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                revenue_rate:
+                  type: number
+                  example: 0.6
+                valor_price_esorder:
+                  type: number
+                  example: 0.018128737338881
+                treasury_pool_value:
+                  type: number
+                  description: esorder
+                  example: 741510.854264
+                est_treasury_inflow:
+                  type: number
+                  description: total accumulated USDC pending buyback (usdc)
+                  example: 1502.490346
+                order_price_usdc:
+                  type: number
+                  example: 0.2
+                total_redeemed_amount:
+                  type: number
+                  example: 1594502.182669
+                current_batch_id:
+                  type: number
+                  example: 13
+                next_settlement_date:
+                  type: string
+                  example: "2025-10-06"
+
+    GetValor2BatchInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      batch_id:
+                        type: number
+                        example: 1
+                      batch_start_time:
+                        type: number
+                        example: 1684502400000
+                      batch_end_time:
+                        type: number
+                        example: 1684588800000
+
+    GetValor2RedeemInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                redeeming_valor_amount:
+                  type: number
+                  example: 1000
+                redeeming_valor_list:
+                  type: array
+                  description: The redeemed VALOR amount may come from multiple batches, so redeeming_valor_list provides a per-batch breakdown for users to identify each batch.
+                  items:
+                    type: object
+                    properties:
+                      batch_id:
+                        type: number
+                        example: 13
+                      redeem_amount:
+                        type: number
+                        example: 2000
+                pending_esorder:
+                  type: number
+                  example: 5000
+                available_esorder:
+                  type: number
+                  example: 1500
+
+    GetValor2RevenueBuybackResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: array
+              description: Order by batch_id. Display the amount after the batch is claimable.
+              items:
+                type: object
+                properties:
+                  batch_id:
+                    type: number
+                    example: 13
+                  usdc_revenue:
+                    type: number
+                    example: 19090
+                  esorder_amount:
+                    type: number
+                    example: 90000000
 
     GetValorRedeemInfoResponse:
       allOf:
