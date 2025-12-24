@@ -4055,21 +4055,9 @@ paths:
         `visible_quantity` is the maximum quantity that shown on orderbook.
 
 
-        `order_amount` behavior: for `MARKET`/`BID`/`ASK` order, order can be
-        placed by `order_amount` instead of `order_quantity`. It's the size of
-        the order in terms of the quote currency instead of the base currency.
-        The order would be rejected if  both `order_amount` and `order_quantity`
-        are provided. The precision of the number should be within 8 digits.
-
-
         `client_order_id` behavior: customized order_id, a unique id among open
         orders. Orders with the same `client_order_id` can be accepted only when
         the previous one if completed, otherwise the order will be rejected.
-
-
-        For `MARKET`/`BID`/`ASK` order, `order_amount` is not supported when
-        placing SELL order while `order_quantity` is not supported when placing
-        BUY order.
       tags:
         - restful_private
       parameters:
@@ -4134,11 +4122,6 @@ paths:
                   description: >-
                     For MARKET/ASK/BID order, if order_amount is given, it is
                     not required.
-                order_amount:
-                  type: number
-                  description: >-
-                    For MARKET/ASK/BID order, the order size in terms of quote
-                    currency
                 visible_quantity:
                   type: number
                   description: >-
@@ -4162,7 +4145,6 @@ paths:
                 - order_type
                 - order_price
                 - order_quantity
-                - order_amount
                 - visible_quantity
                 - side
                 - reduce_only
@@ -4200,8 +4182,6 @@ paths:
                         type: number
                       broker_id:
                         type: string
-                      order_amount:
-                        type: number
                     required:
                       - order_id
                       - client_order_id
@@ -4209,7 +4189,6 @@ paths:
                       - order_price
                       - order_quantity
                       - broker_id
-                      - order_amount
                     x-apifox-orders:
                       - order_id
                       - client_order_id
@@ -4217,7 +4196,6 @@ paths:
                       - order_price
                       - order_quantity
                       - broker_id
-                      - order_amount
                     x-apifox-ignore-properties: []
                   timestamp:
                     type: number
