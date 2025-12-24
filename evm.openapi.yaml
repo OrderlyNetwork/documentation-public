@@ -1495,21 +1495,9 @@ paths:
         `visible_quantity` is the maximum quantity that shown on orderbook.
 
 
-        `order_amount` behavior: for `MARKET`/`BID`/`ASK` order, order can be
-        placed by `order_amount` instead of `order_quantity`. It's the size of
-        the order in terms of the quote currency instead of the base currency.
-        The order would be rejected if  both `order_amount` and `order_quantity`
-        are provided. The precision of the number should be within 8 digits.
-
-
         `client_order_id` behavior: customized order_id, a unique id among open
         orders. Orders with the same `client_order_id` can be accepted only when
         the previous one if completed, otherwise the order will be rejected.
-
-
-        For `MARKET`/`BID`/`ASK` order, `order_amount` is not supported when
-        placing SELL order while `order_quantity` is not supported when placing
-        BUY order.
 
 
         Note: This endpoint requires `trading` scope in Orderly Key.
