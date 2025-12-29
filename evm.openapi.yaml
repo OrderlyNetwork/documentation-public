@@ -10169,7 +10169,10 @@ components:
           description: "If order_type is MARKET/ASK/BID, then is not required, otherwise this parameter is required."
         order_quantity:
           type: number
-          description: "For MARKET/ASK/BID order, if order_amount is given, it is not required."
+          description: ""
+        order_amount:
+          type: number
+          description: "For MARKET/ASK/BID order, the order size in terms of quote currency"
         visible_quantity:
           type: number
           description: |
@@ -10231,9 +10234,6 @@ components:
         order_quantity:
           type: number
           example: 0.987654
-        order_amount:
-          type: number
-          example: 0.8
         error_message:
           type: string
           example: "none"
