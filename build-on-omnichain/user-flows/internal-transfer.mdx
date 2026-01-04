@@ -1,0 +1,360 @@
+---
+title: "Internal Transfer"
+description: "Overview of internal transfer flow"
+---
+
+## Internal Transfer With Wallet Signature
+
+The Internal Transfer with Wallet Signature API allows users to transfer assets between Orderly accounts. This API requires a wallet EIP-712 signature to verify the ownership and authorization of the transfer.
+
+To create an internal transfer request, users can follow the following steps:
+
+<Steps>
+  <Step title="Obtain a transfer nonce">
+    Get a valid transfer nonce from the [Get Transfer Nonce API](/build-on-omnichain/evm-api/restful-api/private/get-transfer-nonce).
+
+    ```json
+    // Response Example
+    {
+      "success": true,
+      "timestamp": 1702989203989,
+      "data": {
+        "transfer_nonce": 1
+      }
+    }
+    ```
+  </Step>
+
+  <Step title="Obtain a signature from EIP-712">
+    Sign an EIP-712 message of [message type](/build-on-omnichain/user-flows/wallet-authentication#message-types) `InternalTransfer`:
+
+    ```json
+    "InternalTransfer": [
+        { "name": "receiver", "type": "bytes32" },
+        { "name": "token", "type": "string" },
+        { "name": "amount", "type": "uint256" },
+        { "name": "transferNonce", "type": "uint64" }
+    ]
+    ```
+
+    where:
+
+    | **Name**        | **Type**  | **Required** | **Description**                                                                        |
+    | --------------- | --------- | ------------ | -------------------------------------------------------------------------------------- |
+    | receiver        | bytes32   | Y            | The Orderly Account ID of the receiver (in bytes32 format)                           |
+    | token           | string    | Y            | The token symbol (e.g., "USDC")                                                       |
+    | amount          | uint256   | Y            | The amount to transfer (raw value with decimals, e.g., 1000000 for 1 USDC)            |
+    | transferNonce   | uint64    | Y            | The nonce obtained from Step 1                                                         |
+
+    <Note>
+      The EIP-712 signature uses the [on-chain domain](/build-on-omnichain/user-flows/wallet-authentication#on-chain-domain). The `verifyingContract` should be the Ledger contract address, which can be found [here](/build-on-omnichain/addresses).
+    </Note>
+
+    <Accordion title="Example code">
+      <CodeGroup>
+
+```ts TypeScript
+import { ethers } from "ethers";
+
+const chainId = 42161; // Arbitrum One
+const ledgerContractAddress = "0x..."; // Get from addresses page
+
+// Define Domain
+const domain = {
+  name: "Orderly",
+  version: "1",
+  chainId: chainId,
+  verifyingContract: ledgerContractAddress
+};
+
+// Define Types
+const types = {
+  InternalTransfer: [
+    { name: "receiver", type: "bytes32" },
+    { name: "token", type: "string" },
+    { name: "amount", type: "uint256" },
+    { name: "transferNonce", type: "uint64" }
+  ]
+};
+
+// Define Message Data
+const receiverAccountId = "0x9ff99a5d6cb71a3ef897b0fff5f5801af6dc5f72d8f1608e61409b8fc965bd68";
+const message = {
+  receiver: receiverAccountId,
+  token: "USDC",
+  amount: 1000000n, // 1 USDC (assuming 6 decimals)
+  transferNonce: 1 // From API
+};
+
+// Sign
+const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!);
+const signature = await wallet.signTypedData(domain, types, message);
+```
+
+```py Python
+from eth_account import Account
+from eth_account.messages import encode_typed_data
+
+chain_id = 42161  # Arbitrum One
+ledger_contract_address = "0x..."  # Get from addresses page
+private_key = os.environ.get("PRIVATE_KEY")
+
+# Construct EIP-712 Data
+data = {
+    "types": {
+        "EIP712Domain": [
+            {"name": "name", "type": "string"},
+            {"name": "version", "type": "string"},
+            {"name": "chainId", "type": "uint256"},
+            {"name": "verifyingContract", "type": "address"},
+        ],
+        "InternalTransfer": [
+            {"name": "receiver", "type": "bytes32"},
+            {"name": "token", "type": "string"},
+            {"name": "amount", "type": "uint256"},
+            {"name": "transferNonce", "type": "uint64"},
+        ],
+    },
+    "domain": {
+        "name": "Orderly",
+        "version": "1",
+        "chainId": chain_id,
+        "verifyingContract": ledger_contract_address,
+    },
+    "primaryType": "InternalTransfer",
+    "message": {
+        "receiver": bytes.fromhex("9ff99a5d6cb71a3ef897b0fff5f5801af6dc5f72d8f1608e61409b8fc965bd68"),
+        "token": "USDC",
+        "amount": 1000000,
+        "transferNonce": 1
+    },
+}
+
+# Sign
+account = Account.from_key(private_key)
+signable_message = encode_typed_data(full_message=data)
+signed_message = account.sign_message(signable_message)
+signature = signed_message.signature.hex()
+```
+
+      </CodeGroup>
+    </Accordion>
+
+  </Step>
+
+  <Step title="Make an internal transfer request">
+    Call the [Create Internal Transfer With Wallet Signature API](/build-on-omnichain/evm-api/restful-api/private/create-internal-transfer-v2).
+
+    The request body must include the generated signature and the message parameters used to create it:
+
+    ```json
+    {
+      "message": {
+        "receiver": "0x9ff99a5d6cb71a3ef897b0fff5f5801af6dc5f72d8f1608e61409b8fc965bd68",
+        "token": "USDC",
+        "amount": "1000000",
+        "transferNonce": "1",
+        "chainId": "42161",
+        "chainType": "EVM"
+      },
+      "signature": "0xa9f5ef503a95af0bb0211858e8b6a83a3d23d7a84b8db3c2aa3327deb34b084577758cc6d8cbc9a047d60436c62d0591ee6693f34487bea785247608516360991b",
+      "userAddress": "0xUserWalletAddress...",
+      "verifyingContract": "0xLedgerContractAddress..."
+    }
+    ```
+
+    where:
+
+    | **Parameter**              | **Type** | **Required** | **Description**                                                                    |
+    | -------------------------- | -------- | ------------ | ---------------------------------------------------------------------------------- |
+    | message.receiver           | string   | Y            | The Orderly Account ID of the receiver                                             |
+    | message.token              | string   | Y            | Token symbol                                                                       |
+    | message.amount             | string   | Y            | Transfer amount                                                                    |
+    | message.transferNonce       | string   | Y            | Must match the nonce used in the signature                                         |
+    | message.chainId            | string   | Y            | Chain ID                                                                           |
+    | message.chainType          | string   | Y            | Chain type: `EVM` or `SOL`                                                         |
+    | signature                  | string   | Y            | The EIP-712 signature string                                                      |
+    | userAddress                | string   | Y            | The wallet address of the sender (must match the signer)                           |
+    | verifyingContract          | string   | Y            | The contract address used in the EIP-712 domain                                    |
+
+  </Step>
+</Steps>
+
+<Note>
+  Ensure the `userAddress` matches the wallet address associated with the Orderly Account ID making the request. The standard Orderly authentication headers (Orderly Key signature) are also required for this API call.
+</Note>
+
+### Full example
+
+<CodeGroup>
+```ts TypeScript
+import { config } from "dotenv";
+import { ethers } from "ethers";
+
+config();
+
+const BASE_URL = "https://testnet-api.orderly.org";
+const CHAIN_ID = 421614; // Arbitrum Sepolia
+const LEDGER_CONTRACT_ADDRESS = "0x..."; // Get from addresses page
+const RECEIVER_ACCOUNT_ID = "0x9ff99a5d6cb71a3ef897b0fff5f5801af6dc5f72d8f1608e61409b8fc965bd68";
+
+async function internalTransfer(): Promise<void> {
+  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!);
+
+  // Step 1: Get transfer nonce
+  // Note: This requires Orderly authentication headers
+  const nonceRes = await fetch(`${BASE_URL}/v1/transfer_nonce`, {
+    method: "GET",
+    headers: {
+      // Add Orderly authentication headers here
+      "Content-Type": "application/json"
+    }
+  });
+  const nonceData = await nonceRes.json();
+  const transferNonce = nonceData.data.transfer_nonce;
+
+  // Step 2: Sign EIP-712 message
+  const domain = {
+    name: "Orderly",
+    version: "1",
+    chainId: CHAIN_ID,
+    verifyingContract: LEDGER_CONTRACT_ADDRESS
+  };
+
+  const types = {
+    InternalTransfer: [
+      { name: "receiver", type: "bytes32" },
+      { name: "token", type: "string" },
+      { name: "amount", type: "uint256" },
+      { name: "transferNonce", type: "uint64" }
+    ]
+  };
+
+  const message = {
+    receiver: RECEIVER_ACCOUNT_ID,
+    token: "USDC",
+    amount: 1000000n, // 1 USDC
+    transferNonce: transferNonce
+  };
+
+  const signature = await wallet.signTypedData(domain, types, message);
+
+  // Step 3: Make transfer request
+  const transferRes = await fetch(`${BASE_URL}/v2/internal_transfer`, {
+    method: "POST",
+    headers: {
+      // Add Orderly authentication headers here
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      message: {
+        receiver: RECEIVER_ACCOUNT_ID,
+        token: "USDC",
+        amount: "1000000",
+        transferNonce: transferNonce.toString(),
+        chainId: CHAIN_ID.toString(),
+        chainType: "EVM"
+      },
+      signature: signature,
+      userAddress: await wallet.getAddress(),
+      verifyingContract: LEDGER_CONTRACT_ADDRESS
+    })
+  });
+
+  const result = await transferRes.json();
+  console.log("Transfer result:", result);
+}
+
+internalTransfer();
+```
+
+```py Python
+import json
+import os
+import requests
+
+from eth_account import Account
+from eth_account.messages import encode_typed_data
+
+BASE_URL = "https://testnet-api.orderly.org"
+CHAIN_ID = 421614  # Arbitrum Sepolia
+LEDGER_CONTRACT_ADDRESS = "0x..."  # Get from addresses page
+RECEIVER_ACCOUNT_ID = "0x9ff99a5d6cb71a3ef897b0fff5f5801af6dc5f72d8f1608e61409b8fc965bd68"
+
+account = Account.from_key(os.environ.get("PRIVATE_KEY"))
+
+# Step 1: Get transfer nonce
+# Note: This requires Orderly authentication headers
+nonce_res = requests.get(
+    f"{BASE_URL}/v1/transfer_nonce",
+    headers={
+        # Add Orderly authentication headers here
+        "Content-Type": "application/json"
+    }
+)
+nonce_data = nonce_res.json()
+transfer_nonce = nonce_data["data"]["transfer_nonce"]
+
+# Step 2: Sign EIP-712 message
+data = {
+    "types": {
+        "EIP712Domain": [
+            {"name": "name", "type": "string"},
+            {"name": "version", "type": "string"},
+            {"name": "chainId", "type": "uint256"},
+            {"name": "verifyingContract", "type": "address"},
+        ],
+        "InternalTransfer": [
+            {"name": "receiver", "type": "bytes32"},
+            {"name": "token", "type": "string"},
+            {"name": "amount", "type": "uint256"},
+            {"name": "transferNonce", "type": "uint64"},
+        ],
+    },
+    "domain": {
+        "name": "Orderly",
+        "version": "1",
+        "chainId": CHAIN_ID,
+        "verifyingContract": LEDGER_CONTRACT_ADDRESS,
+    },
+    "primaryType": "InternalTransfer",
+    "message": {
+        "receiver": bytes.fromhex(RECEIVER_ACCOUNT_ID[2:]),
+        "token": "USDC",
+        "amount": 1000000,  # 1 USDC
+        "transferNonce": transfer_nonce,
+    },
+}
+
+signable_message = encode_typed_data(full_message=data)
+signed_message = account.sign_message(signable_message)
+signature = signed_message.signature.hex()
+
+# Step 3: Make transfer request
+transfer_res = requests.post(
+    f"{BASE_URL}/v2/internal_transfer",
+    headers={
+        # Add Orderly authentication headers here
+        "Content-Type": "application/json"
+    },
+    json={
+        "message": {
+            "receiver": RECEIVER_ACCOUNT_ID,
+            "token": "USDC",
+            "amount": "1000000",
+            "transferNonce": str(transfer_nonce),
+            "chainId": str(CHAIN_ID),
+            "chainType": "EVM"
+        },
+        "signature": signature,
+        "userAddress": account.address,
+        "verifyingContract": LEDGER_CONTRACT_ADDRESS
+    }
+)
+
+result = transfer_res.json()
+print("Transfer result:", result)
+```
+
+</CodeGroup>
+
