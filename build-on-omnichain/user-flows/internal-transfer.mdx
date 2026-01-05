@@ -23,6 +23,7 @@ To create an internal transfer request, users can follow the following steps:
       }
     }
     ```
+
   </Step>
 
   <Step title="Obtain a signature from EIP-712">
@@ -41,7 +42,7 @@ To create an internal transfer request, users can follow the following steps:
 
     | **Name**        | **Type**  | **Required** | **Description**                                                                        |
     | --------------- | --------- | ------------ | -------------------------------------------------------------------------------------- |
-    | receiver        | bytes32   | Y            | The Orderly Account ID of the receiver (in bytes32 format)                           |
+    | receiver        | bytes32   | Y            | The Orderly Account ID of the receiver (must be converted to bytes32 format for EIP-712 signing)                           |
     | token           | string    | Y            | The token symbol (e.g., "USDC")                                                       |
     | amount          | uint256   | Y            | The amount to transfer (raw value with decimals, e.g., 1000000 for 1 USDC)            |
     | transferNonce   | uint64    | Y            | The nonce obtained from Step 1                                                         |
@@ -78,9 +79,10 @@ const types = {
 };
 
 // Define Message Data
+// Note: ethers.js signTypedData automatically converts hex strings to bytes32
 const receiverAccountId = "0x9ff99a5d6cb71a3ef897b0fff5f5801af6dc5f72d8f1608e61409b8fc965bd68";
 const message = {
-  receiver: receiverAccountId,
+  receiver: receiverAccountId, // ethers.js automatically handles hex string to bytes32 conversion
   token: "USDC",
   amount: 1000000n, // 1 USDC (assuming 6 decimals)
   transferNonce: 1 // From API
@@ -92,14 +94,17 @@ const signature = await wallet.signTypedData(domain, types, message);
 ```
 
 ```py Python
+import os
 from eth_account import Account
 from eth_account.messages import encode_typed_data
 
 chain_id = 42161  # Arbitrum One
 ledger_contract_address = "0x..."  # Get from addresses page
 private_key = os.environ.get("PRIVATE_KEY")
+receiver_account_id = "0x9ff99a5d6cb71a3ef897b0fff5f5801af6dc5f72d8f1608e61409b8fc965bd68"
 
 # Construct EIP-712 Data
+# Note: receiver must be converted from hex string to bytes32 for signing
 data = {
     "types": {
         "EIP712Domain": [
@@ -123,7 +128,7 @@ data = {
     },
     "primaryType": "InternalTransfer",
     "message": {
-        "receiver": bytes.fromhex("9ff99a5d6cb71a3ef897b0fff5f5801af6dc5f72d8f1608e61409b8fc965bd68"),
+        "receiver": bytes.fromhex(receiver_account_id[2:]),  # Convert hex string to bytes32
         "token": "USDC",
         "amount": 1000000,
         "transferNonce": 1
@@ -147,21 +152,27 @@ signature = signed_message.signature.hex()
 
     The request body must include the generated signature and the message parameters used to create it:
 
+    <Note>
+      Note that in the API request, `receiver` is a string (hex format with 0x prefix), while in the EIP-712 signature it must be bytes32. The `userAddress` must be an EVM address format (0x-prefixed hex string) for EVM chains, or a Solana address for SOL chains.
+    </Note>
+
     ```json
-    {
-      "message": {
-        "receiver": "0x9ff99a5d6cb71a3ef897b0fff5f5801af6dc5f72d8f1608e61409b8fc965bd68",
-        "token": "USDC",
-        "amount": "1000000",
-        "transferNonce": "1",
-        "chainId": "42161",
-        "chainType": "EVM"
-      },
-      "signature": "0xa9f5ef503a95af0bb0211858e8b6a83a3d23d7a84b8db3c2aa3327deb34b084577758cc6d8cbc9a047d60436c62d0591ee6693f34487bea785247608516360991b",
-      "userAddress": "0xUserWalletAddress...",
-      "verifyingContract": "0xLedgerContractAddress..."
-    }
-    ```
+
+{
+"message": {
+"receiver": "0x9ff99a5d6cb71a3ef897b0fff5f5801af6dc5f72d8f1608e61409b8fc965bd68",
+"token": "USDC",
+"amount": "1000000",
+"transferNonce": "2",
+"chainId": "421614",
+"chainType": "EVM"
+},
+"signature": "0xa9f5ef503a95af0bb0211858e8b6a83a3d23d7a84b8db3c2aa3327deb34b084577758cc6d8cbc9a047d60436c62d0591ee6693f34487bea785247608516360991b",
+"userAddress": "0xb6309c90b5ecc2f8a87987294af03951e80bfef0",
+"verifyingContract": "0x8794E7260517B1766fc7b55cAfcd56e6bf08600e"
+}
+
+````
 
     where:
 
@@ -181,7 +192,9 @@ signature = signed_message.signature.hex()
 </Steps>
 
 <Note>
-  Ensure the `userAddress` matches the wallet address associated with the Orderly Account ID making the request. The standard Orderly authentication headers (Orderly Key signature) are also required for this API call.
+  Ensure the `userAddress` matches the wallet address associated with the Orderly Account ID making
+  the request. The standard Orderly authentication headers (Orderly Key signature) are also required
+  for this API call.
 </Note>
 
 ### Full example
@@ -195,78 +208,80 @@ config();
 
 const BASE_URL = "https://testnet-api.orderly.org";
 const CHAIN_ID = 421614; // Arbitrum Sepolia
-const LEDGER_CONTRACT_ADDRESS = "0x..."; // Get from addresses page
+const LEDGER_CONTRACT_ADDRESS = "0x8794E7260517B1766fc7b55cAfcd56e6bf08600e";
 const RECEIVER_ACCOUNT_ID = "0x9ff99a5d6cb71a3ef897b0fff5f5801af6dc5f72d8f1608e61409b8fc965bd68";
 
 async function internalTransfer(): Promise<void> {
-  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!);
+const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!);
 
-  // Step 1: Get transfer nonce
-  // Note: This requires Orderly authentication headers
-  const nonceRes = await fetch(`${BASE_URL}/v1/transfer_nonce`, {
-    method: "GET",
-    headers: {
-      // Add Orderly authentication headers here
-      "Content-Type": "application/json"
-    }
-  });
-  const nonceData = await nonceRes.json();
-  const transferNonce = nonceData.data.transfer_nonce;
+// Step 1: Get transfer nonce
+// Note: This requires Orderly authentication headers
+const nonceRes = await fetch(`${BASE_URL}/v1/transfer_nonce`, {
+method: "GET",
+headers: {
+// Add Orderly authentication headers here
+"Content-Type": "application/json"
+}
+});
+const nonceData = await nonceRes.json();
+const transferNonce = nonceData.data.transfer_nonce;
 
-  // Step 2: Sign EIP-712 message
-  const domain = {
-    name: "Orderly",
-    version: "1",
-    chainId: CHAIN_ID,
-    verifyingContract: LEDGER_CONTRACT_ADDRESS
-  };
+// Step 2: Sign EIP-712 message
+const domain = {
+name: "Orderly",
+version: "1",
+chainId: CHAIN_ID,
+verifyingContract: LEDGER_CONTRACT_ADDRESS
+};
 
-  const types = {
-    InternalTransfer: [
-      { name: "receiver", type: "bytes32" },
-      { name: "token", type: "string" },
-      { name: "amount", type: "uint256" },
-      { name: "transferNonce", type: "uint64" }
-    ]
-  };
+const types = {
+InternalTransfer: [
+{ name: "receiver", type: "bytes32" },
+{ name: "token", type: "string" },
+{ name: "amount", type: "uint256" },
+{ name: "transferNonce", type: "uint64" }
+]
+};
 
-  const message = {
-    receiver: RECEIVER_ACCOUNT_ID,
-    token: "USDC",
-    amount: 1000000n, // 1 USDC
-    transferNonce: transferNonce
-  };
+// Note: ethers.js signTypedData automatically converts hex strings to bytes32
+const message = {
+receiver: RECEIVER_ACCOUNT_ID, // ethers.js automatically handles hex string to bytes32 conversion
+token: "USDC",
+amount: 1000000n, // 1 USDC
+transferNonce: transferNonce
+};
 
-  const signature = await wallet.signTypedData(domain, types, message);
+const signature = await wallet.signTypedData(domain, types, message);
 
-  // Step 3: Make transfer request
-  const transferRes = await fetch(`${BASE_URL}/v2/internal_transfer`, {
-    method: "POST",
-    headers: {
-      // Add Orderly authentication headers here
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      message: {
-        receiver: RECEIVER_ACCOUNT_ID,
-        token: "USDC",
-        amount: "1000000",
-        transferNonce: transferNonce.toString(),
-        chainId: CHAIN_ID.toString(),
-        chainType: "EVM"
-      },
-      signature: signature,
-      userAddress: await wallet.getAddress(),
-      verifyingContract: LEDGER_CONTRACT_ADDRESS
-    })
-  });
+// Step 3: Make transfer request
+const transferRes = await fetch(`${BASE_URL}/v2/internal_transfer`, {
+method: "POST",
+headers: {
+// Add Orderly authentication headers here
+"Content-Type": "application/json"
+},
+body: JSON.stringify({
+message: {
+receiver: RECEIVER_ACCOUNT_ID,
+token: "USDC",
+amount: "1000000",
+transferNonce: transferNonce.toString(),
+chainId: CHAIN_ID.toString(),
+chainType: "EVM"
+},
+signature: signature,
+userAddress: await wallet.getAddress(),
+verifyingContract: LEDGER_CONTRACT_ADDRESS
+})
+});
 
-  const result = await transferRes.json();
-  console.log("Transfer result:", result);
+const result = await transferRes.json();
+console.log("Transfer result:", result);
 }
 
 internalTransfer();
-```
+
+````
 
 ```py Python
 import json
@@ -278,7 +293,7 @@ from eth_account.messages import encode_typed_data
 
 BASE_URL = "https://testnet-api.orderly.org"
 CHAIN_ID = 421614  # Arbitrum Sepolia
-LEDGER_CONTRACT_ADDRESS = "0x..."  # Get from addresses page
+LEDGER_CONTRACT_ADDRESS = "0x8794E7260517B1766fc7b55cAfcd56e6bf08600e"
 RECEIVER_ACCOUNT_ID = "0x9ff99a5d6cb71a3ef897b0fff5f5801af6dc5f72d8f1608e61409b8fc965bd68"
 
 account = Account.from_key(os.environ.get("PRIVATE_KEY"))
@@ -357,4 +372,3 @@ print("Transfer result:", result)
 ```
 
 </CodeGroup>
-
