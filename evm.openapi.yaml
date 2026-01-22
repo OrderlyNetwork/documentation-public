@@ -5581,6 +5581,53 @@ paths:
               schema:
                 $ref: "#/components/schemas/GetPointsResponse"
 
+  /v1/client/points/user_statistics:
+    get:
+      summary: Get User Statistics
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per user per IP address**
+
+        `GET /v1/client/points/user_statistics`
+
+        Returns daily point statistics for a specific user.
+      tags:
+        - client
+      parameters:
+        - name: orderly-timestamp
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: orderly-account-id
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: orderly-key
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: orderly-signature
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: stage
+          in: query
+          description: "Filter by Stage"
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetUserStatisticsResponse"
+
   /v1/public/points/epoch_dates:
     get:
       summary: Get Start and End Date of All Epochs
@@ -5601,6 +5648,53 @@ paths:
               schema:
                 $ref: "#/components/schemas/GetEpochDatesResponse"
 
+  /v1/public/points/rankings:
+    get:
+      summary: Get Stage Rankings
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per user per IP address**
+
+        `GET /v1/public/points/rankings`
+
+        Returns the rankings for a specific stage.
+        
+        Note: Need to aggregate the point data from all sub-accounts with the same address.
+      tags:
+        - public
+      parameters:
+        - name: stage
+          in: query
+          description: "Filter by Stage"
+          required: true
+          schema:
+            type: number
+        - name: page
+          in: query
+          description: "Page number"
+          schema:
+            type: number
+            default: 1
+        - name: size
+          in: query
+          description: "Items per page"
+          schema:
+            type: number
+            default: 20
+        - name: period
+          in: query
+          description: "Filter by period (`all_time`/`last_week`/`this_week`)"
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetStageRankingsResponse"
+
   /v1/public/points/epoch:
     get:
       summary: Get Number of Merits for Distribution
@@ -5620,6 +5714,185 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GetEpochPointsResponse"
+
+  /v1/public/points/stages:
+    get:
+      summary: Get Information About Stages
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per user per IP address**
+
+        `GET /v1/public/points/stages`
+
+        Returns information about stages.
+      tags:
+        - public
+      parameters:
+        - name: stage_id
+          in: query
+          description: "Filter by specific Stage, return all if empty"
+          schema:
+            type: number
+        - name: status
+          in: query
+          description: "Filter by status (`completed`/`active`), return all if empty except pending"
+          schema:
+            type: string
+        - name: broker_id
+          in: query
+          description: "Filter by Broker"
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetPointStagesResponse"
+
+  /v1/admin/points/stage:
+    get:
+      summary: Get Stage Parameters
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per user per IP address**
+
+        `GET /v1/admin/points/stage`
+
+        Get a specific stage (series of epochs).
+
+        Only callable by Broker Admin.
+      tags:
+        - private
+      parameters:
+        - name: orderly-timestamp
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: orderly-account-id
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: orderly-key
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: orderly-signature
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: stage_id
+          in: query
+          description: "Filter by specific Stage"
+          required: false
+          schema:
+            type: number
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetStageParametersResponse"
+    post:
+      summary: Create/Update Stage Parameters
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per user per IP address**
+
+        `POST /v1/admin/points/stage`
+
+        Create a new stage (series of epochs). Only callable by Broker Admin.
+
+        Make sure there's only 1 active stage at any time.
+      tags:
+        - private
+      parameters:
+        - name: orderly-timestamp
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: orderly-account-id
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: orderly-key
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: orderly-signature
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUpdateStageRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+    delete:
+      summary: Delete Stage
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per user per IP address**
+
+        `DELETE /v1/admin/points/stage`
+
+        Delete a specific stage.
+
+        Only callable by Broker Admin.
+      tags:
+        - admin
+      parameters:
+        - name: orderly-timestamp
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: orderly-account-id
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: orderly-key
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: orderly-signature
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: stage_id
+          in: query
+          description: "Stage ID to delete"
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
 
   /v1/delegate_signer:
     post:
@@ -11764,6 +12037,91 @@ components:
               type: string
               description: current timestamp in UNIX milliseconds
 
+    CreateUpdateStageRequest:
+      type: object
+      properties:
+        stage_id:
+          type: number
+          description: "If provided, update this stage; if empty, create a new stage"
+        stage_name:
+          type: string
+          description: "Name of the stage"
+        start_date:
+          type: string
+          description: "Start date (YYYY-MM-DD)"
+        end_date:
+          type: string
+          description: "End date (YYYY-MM-DD), optional for indefinite"
+        volume_boost:
+          type: number
+          description: "Volume boost factor"
+        pnl_boost:
+          type: number
+          description: "PnL boost factor"
+        l1_referral_boost:
+          type: number
+          description: "Level 1 Referral boost factor"
+        l2_referral_boost:
+          type: number
+          description: "Level 2 Referral boost factor"
+        is_continous:
+          type: boolean
+      required:
+        - stage_name
+        - start_date
+        - volume_boost
+        - pnl_boost
+        - l1_referral_boost
+        - l2_referral_boost
+        - is_continous
+
+    GetStageParametersResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      stage_id:
+                        type: number
+                        example: 1
+                      stage_name:
+                        type: string
+                        example: "Trading Points"
+                      start_date:
+                        type: string
+                        example: "2024-01-01"
+                      end_date:
+                        type: string
+                        example: "2024-01-07"
+                      epoch_period:
+                        type: number
+                        example: 7
+                      volume_boost:
+                        type: number
+                        example: 1.0
+                      pnl_boost:
+                        type: number
+                        example: 0.5
+                      l1_referral_boost:
+                        type: number
+                        example: 0.5
+                      l2_referral_boost:
+                        type: number
+                        example: 0.1
+                      status:
+                        type: string
+                        example: "pending"
+                      is_continous:
+                        type: boolean
+                        example: false
+
     WithdrawResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
@@ -13279,6 +13637,139 @@ components:
                       total_points:
                         type: number
                         example: 15000
+
+    GetPointStagesResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      stage_id:
+                        type: number
+                        example: 1
+                      start_time:
+                        type: number
+                        example: 1704067200
+                      end_time:
+                        type: number
+                        example: 1705276800
+                      status:
+                        type: string
+                        example: "active"
+                      stage_name:
+                        type: string
+                        example: "Stage 1"
+                      stage_description:
+                        type: string
+                        example: "Stage 1 description"
+                      is_continous:
+                        type: boolean
+                        example: true
+
+    GetUserStatisticsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                stage:
+                  type: number
+                  example: 1
+                address:
+                  type: string
+                  example: "0x123..."
+                trading_point:
+                  type: number
+                  example: 50
+                pnl_point:
+                  type: number
+                  example: 30
+                referral_point:
+                  type: number
+                  example: 20
+                stage_rank:
+                  type: number
+                  example: 1
+                stage_points:
+                  type: number
+                  example: 100
+                weekly_breakdown:
+                  type: object
+                  properties:
+                    this_week:
+                      type: object
+                      properties:
+                        trading_point:
+                          type: number
+                          example: 50
+                        pnl_point:
+                          type: number
+                          example: 30
+                        referral_point:
+                          type: number
+                          example: 20
+                        rank:
+                          type: number
+                          example: 1
+                    last_week:
+                      type: object
+                      properties:
+                        trading_point:
+                          type: number
+                          example: 50
+                        pnl_point:
+                          type: number
+                          example: 30
+                        referral_point:
+                          type: number
+                          example: 20
+                        rank:
+                          type: number
+                          example: 1    
+
+    GetStageRankingsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      rank:
+                        type: number
+                        example: 1
+                      address:
+                        type: string
+                        example: "0x123..."
+                      total_points:
+                        type: number
+                        example: 1000
+                meta:
+                  type: object
+                  properties:
+                    total:
+                      type: number
+                      example: 50
+                    records_per_page:
+                      type: number
+                      example: 20
+                    current_page:
+                      type: number
+                      example: 1
 
     GetEpochDatesResponse:
       allOf:
