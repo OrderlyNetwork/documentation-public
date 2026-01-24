@@ -7222,6 +7222,14 @@ paths:
               properties:
                 message:
                   type: object
+                  required:
+                    - contract
+                    - brokerId
+                    - chainId
+                    - orderlyKey
+                    - scope
+                    - timestamp
+                    - expiration
                   properties:
                     contract:
                       type: string
@@ -7246,7 +7254,7 @@ paths:
                       description: ""
                     subAccountId:
                       type: string
-                      description: create the api key for the input subAccountId
+                      description: If subAccountId is not null, create the api key for the input subAccountId
                 signature:
                   type: string
                 userAddress:
@@ -7307,6 +7315,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BasicResponse"
+
   /v1/sv/manual_period_delivery:
     post:
       summary: Trigger Manual Period Delivery
@@ -7339,6 +7348,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BasicResponse"
+
   /v1/sv/venue_transfer_history:
     get:
       summary: Get Fund Inflow Allocation
@@ -7379,6 +7389,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/VenueTransferHistoryResponse"
+
   /v1/sv/venue_withdrawal_history:
     get:
       summary: Get Fund Outflow Allocation
@@ -7419,6 +7430,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/VenueWithdrawalHistoryResponse"
+
   /v1/sv/protocol_revenue_share_history:
     get:
       summary: Get Orderly Protocol Revenue Sharing History
