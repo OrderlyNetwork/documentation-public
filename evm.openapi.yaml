@@ -7318,24 +7318,10 @@ paths:
       tags:
         - private
       parameters:
-        - name: account_id
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_key
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
-        - name: orderly_signature
-          in: query
-          description: ""
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
       requestBody:
         content:
           application/json:
