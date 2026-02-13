@@ -1,0 +1,93 @@
+---
+title: "Orderly DEX’s Affiliate Program (Affiliate’s Quick Guide)"
+description: "Quick guide for affiliates using Orderly DEX’s Affiliate Program."
+---
+
+## 1. Overview
+
+Orderly adds a brand new affiliate programme that allows DEXs and their affiliates to configure the percentage of referral commission share to foster the growth of their trading platform.
+
+The core model is a funneled and multilevel referral system:
+
+- Brokers work with their direct affiliates to grow their trading platform, with attractive referral commissions for the direct affiliates to build their own multilevel referral networks.
+- Affiliates higher up the hierarchy have the flexibility to set higher commission sharing ratios. This allows affiliates to distribute a portion of their commissions to referees, based on their commission sharing ratio, thus creating a multilevel chain of referrals. 
+
+## 2. Prerequisites
+
+Any users can participate as affiliates, provided that the DEX activates the new affiliate program. 
+
+In some cases, a trading volume requirement may be necessary. If a volume prerequisite is set, users must meet it to qualify as an affiliate and begin building their referral network. Since the required volume may vary between DEXs, users should confirm the specific prerequisites directly with the DEX they wish to join.
+
+## 3. New vs. legacy affiliate programs
+
+The key differences between the legacy and new affiliate programs are summarized below:
+
+| Details                        | Legacy                                                                                                            | New                                                                                                                                                 |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Referral network**           | Single-level, only direct referrals                                                                               | Multilevel (up to 15 levels), direct and indirect referrals                                                                                        |
+| **Referral commission**        | Affiliates earn commissions from direct referees only                                                             | Affiliates earn commissions from both direct and indirect referees down the referral chain, with additional 10% bonus from direct referees        |
+| **L1 affiliate’s commission**  | Up to 100%, decided by broker                                                                                     | Up to 90%, decided by broker                                                                                                                       |
+| **Referral code creation**     | Created primarily by the broker or qualified affiliates upon meeting the applicable trading volume requirements. | Qualified affiliates can create codes after meeting the required trading volume (where applicable). Affiliates may only create one unique referral code. |
+
+## 4. Coexistence of legacy affiliate program
+
+This new affiliate program is a multilevel referral system which supersedes the legacy affiliate program. DEXs who have enabled the legacy affiliate program could choose to keep the legacy system or upgrade to the new one. 
+
+If you are already an existing affiliate, please check with your respective DEX directly for details regarding the activation of the new program. Once activated by the DEX, you will be able to generate a new referral code under this system. Please note that all existing legacy referral codes will remain active, and you will continue to earn commission from them.
+
+## 5. Referral commission structure
+
+DEXs have the flexibility to determine the referral commission rate allocated to L1 affiliates. These L1 affiliates are the initial referrers who establish a multilevel network and do not report to any referrer above them.
+
+### 5.1 Affiliate commission
+
+Affiliates receive their referral commissions from the broker fees shared by DEXs. This commission is paid out for every trade executed on the DEX.
+
+```text
+(Fee)Broker = (Trading fee)N - (Base fee)Broker
+```
+
+where `(Base fee)Broker` depends on the broker fee tier of the DEX.
+
+L1 affiliates may distribute a portion of their commission to their direct referees (L2). This process can be extended further, as L2 affiliates can further sub-divide their allocation to their direct referees (L3), establishing a multilevel structure. This multilevel referral network can extend up to a total of 15 levels.
+
+For every trade executed by a user (LN) on the DEX, the affiliates within the multilevel referral network can earn the following commission:
+
+| Role          | Affiliate commission rate                    | Affiliate commission                          |
+| ------------- | -------------------------------------------- | --------------------------------------------- |
+| **L1 affiliate**  | `(X1 - X2)` where `X2 ∈ [0, X1]`              | `(X1 - X2) × (Fee)Broker`                     |
+| **L2 affiliate**  | `(X2 - X3)` where `X3 ∈ [0, X2]`              | `(X2 - X3) × (Fee)Broker`                     |
+| **L3 affiliate**  | `(X3 - X4)` where `X4 ∈ [0, X3]`              | `(X3 - X4) × (Fee)Broker`                     |
+| **…**             | `…`                                          | `…`                                           |
+| **LN-1 user**     | `(XN-1 - XN)` where `XN ∈ [0, XN-1]`         | `[(XN-1 - XN) + 10%] × (Fee)Broker`          |
+| **LN user**       | `XN`                                         | `XN × (Fee)Broker` (referee’s commission)    |
+
+LN-1 user earns a 10% bonus as the direct referrer.
+
+> Note: Direct referrers earn a 10% bonus referral commission rate from trades executed by their direct referees.
+
+### 5.2 Referee’s commission
+
+For every trade executed by a user (LN) on the DEX, the user can earn the following referee’s commission within the multilevel referral network:
+
+```text
+(XN) × (Fee)Broker
+```
+
+where `(XN)` is the commission rate allocated by the direct referrer (LN-1).
+
+> Note: L1 users have no referrers above them and earn no referee’s commissions from their own trades.
+
+### 5.3 Referee’s commission rate adjustments
+
+#### 5.3.1 Default referee’s commission rate
+
+Each referral code has a default commission rate for referees who use it to create an account on the DEX. The affiliate owning the code can update this rate, subject to the following rules:
+
+- If the code has no referees, the affiliate can freely adjust the default commission rate up or down.
+- If the code has direct referees, the affiliate may only increase the default commission rate, applying changes to all direct referees on that rate. This restriction protects existing referrals and prevents unfavourable downstream changes.
+
+#### 5.3.2 Custom referee’s commission rate
+
+Affiliates may customize a higher commission rate to overwrite the default rate for any direct referees, but cannot decrease it.
+
