@@ -865,7 +865,6 @@ While there is not an official Orderly DEX, there are many teams hosting graphic
     There are numerous DEXes built on top of Orderly with many more in development.
   
 
-
 > **Note:** In NEAR Protocol, users have to pay storage fees when a token is first deposited into a contract and since Orderly Asset Manager contract stores users' tokens, some of the expenses will be passed on to the users, to make sure we can provide the best product
 
 
@@ -1097,7 +1096,6 @@ maintenance_margin_ratio = sum (weighted_maintenance_margin_ratio_i)
 **Unrealized PnL** = `position_qty * (mark_price - avg_open)`
 
  
-
 **Liquidation Price**
 
 ```
@@ -1107,11 +1105,9 @@ liquidation_price  = max[( Mark Price + ( total_collateral_value - total_notiona
 ```
 
  
-
 **Notional** = `position_notional_i = abs(mark_price_i * position_qty_i)`
 
  
-
 **Fut Notional or Total Notional** = `sum (abs (position_notional_i))`
 
  
@@ -2225,83 +2221,20 @@ Each collateral’s minimum and maximum swap amount can be found in the table be
 
 Source: [https://orderly.network/docs/introduction/trade-on-orderly/builders](https://orderly.network/docs/introduction/trade-on-orderly/builders)
 
-GOLD
-            
-            
-                
-            
-        
-        
-            GOLD
-            
-            
-                
-            
-        
-        
-            GOLD
-            
-            
-                
-            
-        
-    
-    
-        
-            GOLD
-            
-            
-                
-            
-        
-        
-            GOLD
-            
-            
-                
-            
-        
-        
-            GOLD
-            
-            
-                
-            
-        
-    
-    
-        
-            GOLD
-            
-            
-                
-            
-        
-        
-            GOLD
-            
-            
-                
-            
-        
-        
-            GOLD
-            
-            
-                
-            
-        
-    
-    
-        
-            GOLD
-            
-            
-                
-            
-        
-        
-            GOLD
+The following builders have integrated with Orderly Network:
+
+#### Gold Tier
+- [WOOFi Pro](https://pro.woofi.com/)
+- [Raydium](https://perps.raydium.io/)
+- [Aark](https://app.aark.digital/perp)
+- [Saros](https://perps.saros.xyz/)
+- [What Exchange](https://trade.what.exchange/)
+- [Kyrr](https://dex.kyrr.io/)
+- [JOJO](https://app.jojo.exchange/)
+- [Coin98](https://coin98.com/)
+- [BBX](https://bbx.com/orderly/perp/PERP_BTC_USDC)
+- [PerpsDAO](https://perpsdao.xyz/)
+- [Vooi](https://app.vooi.io/)
 
 
 ## Orderly OmniVault
@@ -2483,13 +2416,11 @@ Source: [https://orderly.network/docs/introduction/orderly-omniVault/faq](https:
 No fees are charged during the initial launch period of the Orderly OmniVault.
 
   
-
   **Can I lose money as an LP with Orderly OmniVault?:**
 
 Yes, there is a possibility of loss. Interacting with any DeFi application involves risks. As an LP, you hold shares in the vault and will proportionally share in both the PnL gains and losses, together with other users. Orderly does not guarantee any minimum returns or protection from losses.
 
   
-
 <Accordion title='Why is my deposit/withdrawal request stuck in the "pending/requested" status?'>
 A "pending" or "requested" status means Orderly OmniVault has received your request and is awaiting processing in the next vault period. Please refer to the “Vault Period” section on the OmniVault Mechanics page for a detailed explanation.
 
@@ -2500,7 +2431,6 @@ A "pending" or "requested" status means Orderly OmniVault has received your requ
 The APY displayed serves as an estimate of annualized returns based on past OmniVault performance and is not a guarantee or indicator of future outcomes.
 
   
-
 **Can I transfer or trade my shares?:**
 
 No. Share is not tokenised, meaning they are neither tradable nor transferrable. Shares simply represent your percentage ownership of Orderly OmniVault assets.
@@ -2852,25 +2782,13 @@ Source: [https://orderly.network/docs/build-on-omnichain/overview](https://order
 #### General Overview
 
 
-  
-
-
 #### Deposit Flow
-
-
-  
 
 
 #### Settle PnL Flow
 
 
-  
-
-
 #### Trade Flow
-
-
-  
 
 
 #### Withdrawal Flow
@@ -3226,7 +3144,6 @@ With Orderly, anyone can create a trading application thanks to our seamless plu
 Looking ahead, our grand vision is to create an omnichain protocol, connecting traders from both EVM and non-EVM chains within the same orderbook.
 
   
-
    **How to integrate?:**
 
 Orderly offers multiple integration pathways: 
@@ -3238,7 +3155,6 @@ Orderly offers multiple integration pathways:
 Documentation and examples for these can be found on their respective GitHub repositories and the official documentation site.
 
   
-
   **Creating a builder ID:**
 
 Not everyone needs a builder ID.
@@ -3248,7 +3164,6 @@ If you are an API trader please select any available builder to trade on [here](
 If you are a builder looking to host a front-end, onboard traders, and earn revenue share, you can get in touch via [email](mailto::product@orderly.network).
 
   
-
 **Fee setting, default fees, and custom fee rates:**
 
   More on fees can be found [here](/build-on-omnichain/user-flows/custom-fees)
@@ -3303,21 +3218,6 @@ Each account is identified by an account id, which can be calculated by
   **Step: Converting back to Hex String, the keccak256 hash of the result of (3)**
 
     
-```ts TypeScript
-
-  const abicoder = AbiCoder.defaultAbiCoder();
-  return keccak256(
-    abicoder.encode(
-      ['address', 'bytes32'],
-      [userAddress, solidityPackedKeccak256(['string'], [brokerId])]
-    )
-  );
-}
-```
-    
-  
-
-
 #### Account Registration
 
 Follow the following steps to register an account on Orderly:
@@ -3338,24 +3238,6 @@ Follow the following steps to register an account on Orderly:
     **Example code:**
 
       
-
-```Java Java
-String baseUrl = "https://testnet-api.orderly.org";
-
-OkHttpClient client = new OkHttpClient();
-
-Request nonceReq = new Request.Builder()
-      .url(baseUrl + "/v1/registration_nonce")
-      .build();
-String nonceRes;
-try (Response response = client.newCall(nonceReq).execute()) {
-    nonceRes = response.body().string();
-}
-JSONObject nonceObj = new JSONObject(nonceRes);
-
-String registrationNonce = nonceObj.getJSONObject("data").getString("registration_nonce");
-```
-
 ```py Python
 base_url = "https://testnet-api.orderly.org"
 
@@ -3364,18 +3246,7 @@ response = json.loads(res.text)
 registration_nonce = response["data"]["registration_nonce"]
 ```
 
-```ts TypeScript
-const BASE_URL = "https://testnet-api.orderly.org";
 
-const nonceRes = await fetch(`${BASE_URL}/v1/registration_nonce`);
-const nonceJson = await nonceRes.json();
-const registrationNonce = nonceJson.data.registration_nonce as string;
-```
-
-      
-    
-
-  
   **Step: Obtain a signature from EIP-712**
 
     Sign a message from the wallet in the following format using the EIP-712 standard and obtain the signature.
@@ -3401,54 +3272,6 @@ where:
     **Example code:**
 
       
-
-```Java Java
-JSONObject MESSAGE_TYPES = new JSONObject("""
-  {
-    "EIP712Domain": [
-        {"name": "name", "type": "string"},
-        {"name": "version", "type": "string"},
-        {"name": "chainId", "type": "uint256"},
-        {"name": "verifyingContract", "type": "address"},
-    ],
-    "Registration": [
-        {"name": "brokerId", "type": "string"},
-        {"name": "chainId", "type": "uint256"},
-        {"name": "timestamp", "type": "uint64"},
-        {"name": "registrationNonce", "type": "uint256"},
-    ],
-  }""");
-
-JSONObject OFF_CHAIN_DOMAIN = new JSONObject("""
-  {
-    "name": "Orderly",
-    "version": "1",
-    "chainId": 421614,
-    "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
-  }""");
-
-String brokerId = "woofi_dex";
-int chainId = 421614;
-
-Dotenv dotenv = Dotenv.load();
-String pk = dotenv.get("PRIVATE_KEY");
-Credentials credentials = Credentials.create(ECKeyPair.create(Hex.decodeHex(pk)));
-
-JSONObject registerMessage = new JSONObject();
-registerMessage.put("brokerId", brokerId);
-registerMessage.put("chainId", chainId);
-registerMessage.put("timestamp", Instant.now().toEpochMilli());
-registerMessage.put("registrationNonce", registrationNonce);
-
-JSONObject jsonObject = new JSONObject();
-jsonObject.put("types", RegisterExample.MESSAGE_TYPES);
-jsonObject.put("primaryType", "Registration");
-jsonObject.put("domain", RegisterExample.OFF_CHAIN_DOMAIN);
-jsonObject.put("message", registerMessage);
-
-Sign.SignatureData signature = Sign.signTypedData(jsonObject.toString(), credentials.getEcKeyPair());
-```
-
 ```py Python
 MESSAGE_TYPES = {
     "EIP712Domain": [
@@ -3496,55 +3319,7 @@ encoded_data = messages.encode_typed_data(
 signed_message = account.sign_message(encoded_data)
 ```
 
-```ts TypeScript
-const MESSAGE_TYPES = {
-  EIP712Domain: [
-    { name: "name", type: "string" },
-    { name: "version", type: "string" },
-    { name: "chainId", type: "uint256" },
-    { name: "verifyingContract", type: "address" }
-  ],
-  Registration: [
-    { name: "brokerId", type: "string" },
-    { name: "chainId", type: "uint256" },
-    { name: "timestamp", type: "uint64" },
-    { name: "registrationNonce", type: "uint256" }
-  ]
-};
 
-const OFF_CHAIN_DOMAIN = {
-  name: "Orderly",
-  version: "1",
-  chainId: 421614,
-  verifyingContract: "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"
-};
-
-const BASE_URL = "https://testnet-api.orderly.org";
-const BROKER_ID = "woofi_dex";
-const CHAIN_ID = 421614;
-
-const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!);
-
-const registerMessage = {
-  brokerId: BROKER_ID,
-  chainId: CHAIN_ID,
-  timestamp: Date.now(),
-  registrationNonce
-};
-
-const signature = await wallet.signTypedData(
-  OFF_CHAIN_DOMAIN,
-  {
-    Registration: MESSAGE_TYPES.Registration
-  },
-  registerMessage
-);
-```
-
-      
-    
-
-  
   **Step: Register account**
 
     Send all the necessary information via [Register account API](/build-on-omnichain/evm-api/restful-api/public/register-account).
@@ -3552,39 +3327,6 @@ const signature = await wallet.signTypedData(
     **Example code:**
 
       
-
-```Java Java
-String baseUrl = "https://testnet-api.orderly.org";
-
-JSONObject jsonBody = new JSONObject();
-jsonBody.put("message", registerMessage);
-jsonBody.put("signature", RegisterExample.signatureToHashString(signature));
-jsonBody.put("userAddress", credentials.getAddress());
-RequestBody body = RequestBody.create(jsonBody.toString(), MediaType.get("application/json"));
-Request registerReq = new Request.Builder()
-      .url(baseUrl + "/v1/register_account")
-      .post(body)
-      .build();
-String registerRes;
-try (Response response = client.newCall(registerReq).execute()) {
-    registerRes = response.body().string();
-}
-JSONObject registerObj = new JSONObject(registerRes);
-
-String orderlyAccountId = registerObj.getJSONObject("data").getString("account_id");
-System.out.println("orderlyAccountId: " + orderlyAccountId);
-
-// ...
-
-public static String signatureToHashString(Sign.SignatureData signature) {
-    byte[] retval = new byte[65];
-    System.arraycopy(signature.getR(), 0, retval, 0, 32);
-    System.arraycopy(signature.getS(), 0, retval, 32, 32);
-    System.arraycopy(signature.getV(), 0, retval, 64, 1);
-    return Numeric.toHexString(retval);
-}
-```
-
 ```py Python
 base_url = "https://testnet-api.orderly.org"
 
@@ -3603,130 +3345,9 @@ orderly_account_id = response["data"]["account_id"]
 print("orderly_account_id:", orderly_account_id)
 ```
 
-```ts TypeScript
-const BASE_URL = "https://testnet-api.orderly.org";
-
-const registerRes = await fetch(`${BASE_URL}/v1/register_account`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    message: registerMessage,
-    signature,
-    userAddress: await wallet.getAddress()
-  })
-});
-const registerJson = await registerRes.json();
-if (!registerJson.success) {
-  throw new Error(registerJson.message);
-}
-const orderlyAccountId = registerJson.data.account_id;
-console.log("orderlyAccountId", orderlyAccountId);
-```
-
-      
-    
-
-  
-
 
 ##### Full example
 
-
-```Java Java
-
-
-public class RegisterExample {
-public static JSONObject MESSAGE_TYPES = new JSONObject("""
-{
-"EIP712Domain": [
-{"name": "name", "type": "string"},
-{"name": "version", "type": "string"},
-{"name": "chainId", "type": "uint256"},
-{"name": "verifyingContract", "type": "address"},
-],
-"Registration": [
-{"name": "brokerId", "type": "string"},
-{"name": "chainId", "type": "uint256"},
-{"name": "timestamp", "type": "uint64"},
-{"name": "registrationNonce", "type": "uint256"},
-],
-}""");
-
-public static JSONObject OFF_CHAIN_DOMAIN = new JSONObject("""
-{
-"name": "Orderly",
-"version": "1",
-"chainId": 421614,
-"verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
-}""");
-
-public static void main(String[] args) throws Exception {
-String baseUrl = "https://testnet-api.orderly.org";
-String brokerId = "woofi_dex";
-int chainId = 421614;
-
-      Dotenv dotenv = Dotenv.load();
-      String pk = dotenv.get("PRIVATE_KEY");
-      Credentials credentials = Credentials.create(ECKeyPair.create(Hex.decodeHex(pk)));
-      OkHttpClient client = new OkHttpClient();
-
-      Request nonceReq = new Request.Builder()
-            .url(baseUrl + "/v1/registration_nonce")
-            .build();
-      String nonceRes;
-      try (Response response = client.newCall(nonceReq).execute()) {
-         nonceRes = response.body().string();
-      }
-      JSONObject nonceObj = new JSONObject(nonceRes);
-
-      String registrationNonce = nonceObj.getJSONObject("data").getString("registration_nonce");
-
-      JSONObject registerMessage = new JSONObject();
-      registerMessage.put("brokerId", brokerId);
-      registerMessage.put("chainId", chainId);
-      registerMessage.put("timestamp", Instant.now().toEpochMilli());
-      registerMessage.put("registrationNonce", registrationNonce);
-
-      JSONObject jsonObject = new JSONObject();
-      jsonObject.put("types", RegisterExample.MESSAGE_TYPES);
-      jsonObject.put("primaryType", "Registration");
-      jsonObject.put("domain", RegisterExample.OFF_CHAIN_DOMAIN);
-      jsonObject.put("message", registerMessage);
-
-      Sign.SignatureData signature = Sign.signTypedData(jsonObject.toString(), credentials.getEcKeyPair());
-
-      JSONObject jsonBody = new JSONObject();
-      jsonBody.put("message", registerMessage);
-      jsonBody.put("signature", RegisterExample.signatureToHashString(signature));
-      jsonBody.put("userAddress", credentials.getAddress());
-      RequestBody body = RequestBody.create(jsonBody.toString(), MediaType.get("application/json"));
-      Request registerReq = new Request.Builder()
-            .url(baseUrl + "/v1/register_account")
-            .post(body)
-            .build();
-      String registerRes;
-      try (Response response = client.newCall(registerReq).execute()) {
-         registerRes = response.body().string();
-      }
-      JSONObject registerObj = new JSONObject(registerRes);
-
-      String orderlyAccountId = registerObj.getJSONObject("data").getString("account_id");
-      System.out.println("orderlyAccountId: " + orderlyAccountId);
-
-}
-
-public static String signatureToHashString(Sign.SignatureData signature) {
-byte[] retval = new byte[65];
-System.arraycopy(signature.getR(), 0, retval, 0, 32);
-System.arraycopy(signature.getS(), 0, retval, 32, 32);
-System.arraycopy(signature.getV(), 0, retval, 64, 1);
-return Numeric.toHexString(retval);
-}
-}
-
-````
 
 ```py Python
 from datetime import datetime
@@ -3799,81 +3420,6 @@ response = json.loads(res.text)
 orderly_account_id = response["data"]["account_id"]
 print("orderly_account_id:", orderly_account_id)
 ````
-
-```ts TypeScript
-
-
-const MESSAGE_TYPES = {
-  EIP712Domain: [
-    { name: "name", type: "string" },
-    { name: "version", type: "string" },
-    { name: "chainId", type: "uint256" },
-    { name: "verifyingContract", type: "address" }
-  ],
-  Registration: [
-    { name: "brokerId", type: "string" },
-    { name: "chainId", type: "uint256" },
-    { name: "timestamp", type: "uint64" },
-    { name: "registrationNonce", type: "uint256" }
-  ]
-};
-
-const OFF_CHAIN_DOMAIN = {
-  name: "Orderly",
-  version: "1",
-  chainId: 421614,
-  verifyingContract: "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"
-};
-
-const BASE_URL = "https://testnet-api.orderly.org";
-const BROKER_ID = "woofi_dex";
-const CHAIN_ID = 421614;
-
-config();
-
-async function registerAccount(): Promise<void> {
-  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!);
-
-  const nonceRes = await fetch(`${BASE_URL}/v1/registration_nonce`);
-  const nonceJson = await nonceRes.json();
-  const registrationNonce = nonceJson.data.registration_nonce as string;
-
-  const registerMessage = {
-    brokerId: BROKER_ID,
-    chainId: CHAIN_ID,
-    timestamp: Date.now(),
-    registrationNonce
-  };
-
-  const signature = await wallet.signTypedData(
-    OFF_CHAIN_DOMAIN,
-    {
-      Registration: MESSAGE_TYPES.Registration
-    },
-    registerMessage
-  );
-
-  const registerRes = await fetch(`${BASE_URL}/v1/register_account`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      message: registerMessage,
-      signature,
-      userAddress: await wallet.getAddress()
-    })
-  });
-  const registerJson = await registerRes.json();
-  if (!registerJson.success) {
-    throw new Error(registerJson.message);
-  }
-  const orderlyAccountId = registerJson.data.account_id;
-  console.log("orderlyAccountId", orderlyAccountId);
-}
-
-registerAccount();
-```
 
 
 ### Wallet Authentication
@@ -4051,96 +3597,8 @@ where:
      Send all the necessary information via [Add Orderly key API](/build-on-omnichain/evm-api/restful-api/public/add-orderly-key).
   
 
-
 ##### Full example
 
-
-```Java Java
-
-
-public class OrderlyKeyExample {
-   public static JSONObject MESSAGE_TYPES = new JSONObject("""
-         {
-            "EIP712Domain": [
-               {"name": "name", "type": "string"},
-               {"name": "version", "type": "string"},
-               {"name": "chainId", "type": "uint256"},
-               {"name": "verifyingContract", "type": "address"},
-            ],
-            "AddOrderlyKey": [
-               {"name": "brokerId", "type": "string"},
-               {"name": "chainId", "type": "uint256"},
-               {"name": "orderlyKey", "type": "string"},
-               {"name": "scope", "type": "string"},
-               {"name": "timestamp", "type": "uint64"},
-               {"name": "expiration", "type": "uint64"},
-            ],
-         }""");
-
-   public static JSONObject OFF_CHAIN_DOMAIN = new JSONObject("""
-         {
-            "name": "Orderly",
-            "version": "1",
-            "chainId": 421614,
-            "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
-         }""");
-
-   public static void main(String[] args) throws Exception {
-      String baseUrl = "https://testnet-api.orderly.org";
-      String brokerId = "woofi_dex";
-      int chainId = 421614;
-
-      Dotenv dotenv = Dotenv.load();
-      String pk = dotenv.get("PRIVATE_KEY");
-      Credentials credentials = Credentials.create(ECKeyPair.create(Hex.decodeHex(pk)));
-      OkHttpClient client = new OkHttpClient();
-
-      KeyPairGenerator keyGen = new KeyPairGenerator();
-      KeyPair keyPair = keyGen.generateKeyPair();
-      String orderlyKey = Util.encodePublicKey((EdDSAPrivateKey) keyPair.getPrivate());
-
-      JSONObject addKeyMessage = new JSONObject();
-      long timestamp = Instant.now().toEpochMilli();
-      addKeyMessage.put("brokerId", brokerId);
-      addKeyMessage.put("chainId", chainId);
-      addKeyMessage.put("scope", "read,trading");
-      addKeyMessage.put("orderlyKey", orderlyKey);
-      addKeyMessage.put("timestamp", timestamp);
-      addKeyMessage.put("expiration", timestamp + 1_000 * 60 * 60 * 24 * 365); // 1 year
-
-      JSONObject jsonObject = new JSONObject();
-      jsonObject.put("types", RegisterExample.MESSAGE_TYPES);
-      jsonObject.put("primaryType", "AddOrderlyKey");
-      jsonObject.put("domain", RegisterExample.OFF_CHAIN_DOMAIN);
-      jsonObject.put("message", addKeyMessage);
-
-      Sign.SignatureData signature = Sign.signTypedData(jsonObject.toString(), credentials.getEcKeyPair());
-
-      JSONObject jsonBody = new JSONObject();
-      jsonBody.put("message", addKeyMessage);
-      jsonBody.put("signature", Util.signatureToHashString(signature));
-      jsonBody.put("userAddress", credentials.getAddress());
-      RequestBody body = RequestBody.create(jsonBody.toString(), MediaType.get("application/json"));
-      Request addKeyReq = new Request.Builder()
-            .url(baseUrl + "/v1/orderly_key")
-            .post(body)
-            .build();
-      String addKeyRes;
-      try (Response response = client.newCall(addKeyReq).execute()) {
-         addKeyRes = response.body().string();
-      }
-      System.out.println("orderly_key response: " + addKeyRes);
-   }
-
-   public static String signatureToHashString(Sign.SignatureData signature) {
-      byte[] retval = new byte[65];
-      System.arraycopy(signature.getR(), 0, retval, 0, 32);
-      System.arraycopy(signature.getS(), 0, retval, 32, 32);
-      System.arraycopy(signature.getV(), 0, retval, 64, 1);
-      return Numeric.toHexString(retval);
-   }
-}
-```
 
 ```py Python
 from datetime import datetime
@@ -4220,84 +3678,6 @@ response = json.loads(res.text)
 print("add_access_key:", response)
 ```
 
-```ts TypeScript
-
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-if (!globalThis.crypto) globalThis.crypto = webcrypto;
-
-const MESSAGE_TYPES = {
-  EIP712Domain: [
-    { name: 'name', type: 'string' },
-    { name: 'version', type: 'string' },
-    { name: 'chainId', type: 'uint256' },
-    { name: 'verifyingContract', type: 'address' }
-  ],
-  AddOrderlyKey: [
-    { name: 'brokerId', type: 'string' },
-    { name: 'chainId', type: 'uint256' },
-    { name: 'orderlyKey', type: 'string' },
-    { name: 'scope', type: 'string' },
-    { name: 'timestamp', type: 'uint64' },
-    { name: 'expiration', type: 'uint64' }
-  ]
-};
-
-const OFF_CHAIN_DOMAIN = {
-  name: 'Orderly',
-  version: '1',
-  chainId: 421614,
-  verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
-};
-
-const BASE_URL = 'https://testnet-api.orderly.org';
-const BROKER_ID = 'woofi_dex';
-const CHAIN_ID = 421614;
-
-config();
-
-async function createOrderlyKey(): Promise<void> {
-  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!);
-
-  const privateKey = utils.randomPrivateKey();
-  const orderlyKey = `ed25519:${encodeBase58(await getPublicKeyAsync(privateKey))}`;
-  const timestamp = Date.now();
-  const addKeyMessage = {
-    brokerId: BROKER_ID,
-    chainId: CHAIN_ID,
-    orderlyKey,
-    scope: 'read,trading',
-    timestamp,
-    expiration: timestamp + 1_000 * 60 * 60 * 24 * 365 // 1 year
-  };
-
-  const signature = await wallet.signTypedData(
-    OFF_CHAIN_DOMAIN,
-    {
-      AddOrderlyKey: MESSAGE_TYPES.AddOrderlyKey
-    },
-    addKeyMessage
-  );
-
-  const keyRes = await fetch(`${BASE_URL}/v1/orderly_key`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      message: addKeyMessage,
-      signature,
-      userAddress: await wallet.getAddress()
-    })
-  });
-  const keyJson = await keyRes.json();
-  console.log('addAccessKey', keyJson);
-}
-
-createOrderlyKey();
-```
-
 
 ### Deposit/Withdrawal
 
@@ -4318,26 +3698,6 @@ To create a deposit request, users can follow the following steps:
     **Example code:**
 
       
-
-```Java Java
-String usdcAddress = "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d";
-String vaultAddress = "0x0EaC556c0C2321BA25b9DC01e4e3c95aD5CDCd2f";
-
-Dotenv dotenv = Dotenv.load();
-String pk = dotenv.get("PRIVATE_KEY");
-Credentials credentials = Credentials.create(ECKeyPair.create(Hex.decodeHex(pk)));
-
-Web3j web3j = Web3j.build(new HttpService("https://arbitrum-sepolia.publicnode.com"));
-DefaultGasProvider gasProvider = new DefaultGasProvider();
-
-NativeUSDC USDC = new NativeUSDC(usdcAddress, web3j, credentials, gasProvider);
-
-BigInteger depositAmount = new BigInteger("10000000");
-
-// approve USDC ERC-20 to be transferred to Vault contract
-USDC.approve(vaultAddress, depositAmount).send();
-```
-
 ```py Python
 usdc_address = Web3.to_checksum_address("0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d")
 vault_address = Web3.to_checksum_address("0x0EaC556c0C2321BA25b9DC01e4e3c95aD5CDCd2f")
@@ -4362,54 +3722,12 @@ usdc.functions.approve(vault_address, deposit_amount).transact(
 )
 ```
 
-```ts TypeScript
-const usdcAddress = "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d";
-const vaultAddress = "0x0EaC556c0C2321BA25b9DC01e4e3c95aD5CDCd2f";
 
-const provider = new ethers.JsonRpcProvider("https://arbitrum-sepolia.publicnode.com");
-const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
-
-const usdcContract = NativeUSDC__factory.connect(usdcAddress, wallet);
-
-const depositAmount = 10_000_000n;
-await usdcContract.approve(vaultAddress, depositAmount);
-```
-
-      
-    
-
-  
   **Step: Determine necessary deposit fee in WEI**
 
     **Example code:**
 
       
-```Java Java
-String brokerId = "woofi_pro";
-String tokenId = "USDC";
-String orderlyAccountId = "0x...";
-
-Vault vault = new Vault(vaultAddress, web3j, credentials, gasProvider);
-
-Keccak.Digest256 brokerHash = new Keccak.Digest256();
-byte[] brokerIdBytes = brokerId.getBytes("UTF-8");
-brokerHash.update(brokerIdBytes, 0, brokerIdBytes.length);
-
-Keccak.Digest256 tokenHash = new Keccak.Digest256();
-byte[] usdcBytes = tokenId.getBytes("UTF-8");
-tokenHash.update(usdcBytes, 0, usdcBytes.length);
-
-Vault.VaultDepositFE depositInput = new Vault.VaultDepositFE(
-Hex.decodeHex(orderlyAccountId.substring(2)),
-brokerHash.digest(),
-tokenHash.digest(),
-depositAmount);
-
-// get wei deposit fee for `deposit` call
-BigInteger depositFee = vault.getDepositFee(credentials.getAddress(), depositInput).send();
-
-````
-
 ```py Python
 broker_id = "woofi_pro"
 token_id = "USDC"
@@ -4439,29 +3757,7 @@ deposit_fee = vault.functions.getDepositFee(
 ).call()
 ````
 
-```ts TypeScript
-const brokerId = "woofi_pro";
-const tokenId = "USDC";
-const orderlyAccountId = "0x...";
 
-const vaultContract = Vault__factory.connect(vaultAddress, wallet);
-
-const encoder = new TextEncoder();
-const depositInput = {
-  accountId: orderlyAccountId,
-  brokerHash: keccak256(encoder.encode(brokerId)),
-  tokenHash: keccak256(encoder.encode(tokenId)),
-  tokenAmount: depositAmount
-} satisfies VaultTypes.VaultDepositFEStruct;
-
-// get wei deposit fee for `deposit` call
-const depositFee = await vaultContract.getDepositFee(wallet.address, depositInput);
-```
-
-      
-    
-
-  
   **Step: Call the `deposit` function of the smart contract**
 
     Contains the following structured data:
@@ -4484,30 +3780,12 @@ const depositFee = await vaultContract.getDepositFee(wallet.address, depositInpu
     **Example code:**
 
       
-
-```Java Java
-// deposit USDC into Vault contract
-vault.deposit(
-      depositInput,
-      depositFee).send();
-```
-
 ```py Python
 # deposit USDC into Vault contract
 vault.functions.deposit(deposit_input).transact(
     {"from": account.address, "value": deposit_fee}
 )
 ```
-
-```ts TypeScript
-// deposit USDC into Vault contract
-await vaultContract.deposit(depositInput, { value: depositFee });
-```
-
-      
-    
-
-  
 
 
 > **Note:** Deposits will take some time to reflect depending on the origin chain, to allow for finalizing of
@@ -4519,76 +3797,15 @@ await vaultContract.deposit(depositInput, { value: depositFee });
 
 <Accordion title="Code generation via ABI file" defaultOpen="true">
   
-    **Java:**
 
       - install [Web3j CLI](https://docs.web3j.io/4.8.7/command_line_tools/)
       - `web3j generate solidity -a <./path/to/Vault.json> -o <./out-path/to/Vault.java> -p <package-name>`
     
-    **TypeScript:**
 
       - install [Typechain](https://github.com/dethcrypto/TypeChain)
       - `typechain --target=ethers-v6 <./path/to/Vault.json> --out-dir <out/path>`
     
   
-
-
-```Java Java
-
-
-public class DepositExample {
-
-      public static void main(String[] args) throws Exception {
-
-            String brokerId = "woofi_pro";
-            String tokenId = "USDC";
-            String orderlyAccountId = "0x...";
-
-            String usdcAddress = "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d";
-            String vaultAddress = "0x0EaC556c0C2321BA25b9DC01e4e3c95aD5CDCd2f";
-
-            Dotenv dotenv = Dotenv.load();
-            String pk = dotenv.get("PRIVATE_KEY");
-            Credentials credentials = Credentials.create(ECKeyPair.create(Hex.decodeHex(pk)));
-
-            Web3j web3j = Web3j.build(new HttpService("https://arbitrum-sepolia.publicnode.com"));
-            DefaultGasProvider gasProvider = new DefaultGasProvider();
-
-            NativeUSDC USDC = new NativeUSDC(usdcAddress, web3j, credentials, gasProvider);
-
-            BigInteger depositAmount = new BigInteger("10000000");
-
-            // approve USDC ERC-20 to be transferred to Vault contract
-            USDC.approve(vaultAddress, depositAmount).send();
-
-            Vault vault = new Vault(vaultAddress, web3j, credentials, gasProvider);
-
-            Keccak.Digest256 brokerHash = new Keccak.Digest256();
-            byte[] brokerIdBytes = brokerId.getBytes("UTF-8");
-            brokerHash.update(brokerIdBytes, 0, brokerIdBytes.length);
-
-            Keccak.Digest256 tokenHash = new Keccak.Digest256();
-            byte[] usdcBytes = tokenId.getBytes("UTF-8");
-            tokenHash.update(usdcBytes, 0, usdcBytes.length);
-
-            Vault.VaultDepositFE depositInput = new Vault.VaultDepositFE(
-                        Hex.decodeHex(orderlyAccountId.substring(2)),
-                        brokerHash.digest(),
-                        tokenHash.digest(),
-                        depositAmount);
-
-            // get wei deposit fee for `deposit` call
-            BigInteger depositFee = vault.getDepositFee(credentials.getAddress(), depositInput).send();
-
-            // deposit USDC into Vault contract
-            vault.deposit(
-                        depositInput,
-                        depositFee).send();
-      }
-
-}
-
-````
-
 ```py Python
 
 
@@ -4651,58 +3868,6 @@ vault.functions.deposit(deposit_input).transact(
     {"from": account.address, "value": deposit_fee}
 )
 ````
-
-```ts TypeScript
-
-
-const brokerId = "woofi_pro";
-const tokenId = "USDC";
-
-const usdcAddress = "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d";
-const vaultAddress = "0x0EaC556c0C2321BA25b9DC01e4e3c95aD5CDCd2f";
-
-config();
-
-async function deposit(): Promise<void> {
-  const provider = new ethers.JsonRpcProvider("https://arbitrum-sepolia.publicnode.com");
-  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
-
-  const usdcContract = NativeUSDC__factory.connect(usdcAddress, wallet);
-
-  const depositAmount = 10_000_000n;
-  await usdcContract.approve(vaultAddress, depositAmount);
-
-  const vaultContract = Vault__factory.connect(vaultAddress, wallet);
-
-  const orderlyAccountId = getAccountId(wallet.address, brokerId);
-
-  const encoder = new TextEncoder();
-  const depositInput = {
-    accountId: orderlyAccountId,
-    brokerHash: keccak256(encoder.encode(brokerId)),
-    tokenHash: keccak256(encoder.encode(tokenId)),
-    tokenAmount: depositAmount
-  } satisfies VaultTypes.VaultDepositFEStruct;
-
-  // get wei deposit fee for `deposit` call
-  const depositFee = await vaultContract.getDepositFee(wallet.address, depositInput);
-
-  // deposit USDC into Vault contract
-  await vaultContract.deposit(depositInput, { value: depositFee });
-}
-
-
-  const abicoder = AbiCoder.defaultAbiCoder();
-  return keccak256(
-    abicoder.encode(
-      ["address", "bytes32"],
-      [address, solidityPackedKeccak256(["string"], [brokerId])]
-    )
-  );
-}
-
-deposit();
-```
 
 
 #### Withdrawal
@@ -4771,7 +3936,6 @@ where:
     Call the [Create withdraw request API](/build-on-omnichain/evm-api/restful-api/private/create-withdraw-request).
   
 
-
 ##### Example
 
 The example code is very similar to the [Orderly key registration](/build-on-omnichain/user-flows/wallet-authentication#full-example), except it uses the EIP-712 [on-chain domain](/build-on-omnichain/user-flows/wallet-authentication#on-chain-domain) and the signed message is different.
@@ -4814,7 +3978,6 @@ where:
 
     Request a PnL settlement through [Request Pnl settlement API](/build-on-omnichain/evm-api/restful-api/private/request-pnl-settlement).
   
-
 
 ##### Example
 
@@ -4882,8 +4045,6 @@ We’re thrilled to unveil the latest enhancement to our services: the Custom Tr
     Retrieve default fee rate through [GET `/v1/broker/fee_rate/default`](/build-on-omnichain/evm-api/restful-api/private/get-default-builder-fee).
 
   
-
-
 ##### Builder Rebate Distribution
 
 Builders receive daily rebates in their fee wallet, calculated after deducting any referral rebates.
@@ -4980,7 +4141,6 @@ library VaultTypes {
     A minimal implementation of a Smart Contract will look like this:
 
     
-
 ```sol DelegateContract.sol
 pragma solidity ^0.8.18;
 
@@ -5011,7 +4171,6 @@ interface IVault {
 ```
 
     
-
     After calling the function on your Smart Contract for the linking, you need to remember this transaction hash.
 
   
@@ -5039,7 +4198,6 @@ interface IVault {
 
     [Settle PnL](/build-on-omnichain/evm-api/restful-api/private/delegate-signer-settle-pnl) and [withdraw](/build-on-omnichain/evm-api/restful-api/private/delegate-signer-withdraw-request) via special Delegate Signer endpoints. Sign [EIP-712](/build-on-omnichain/user-flows/wallet-authentication) domains with Delegate Signer wallet.
   
-
 
 ##### Example
 
@@ -5360,27 +4518,6 @@ To create an internal transfer request, users can follow the following steps:
     **Example code:**
 
       
-
-```ts TypeScript
-interface Client {
-    _sign_request(method: string, path: string, payload?: any): Promise<any>;
-}
-
-async function get_transfer_nonce(client: Client): Promise<number | null> {
-    try {
-        const response = await client._sign_request("GET", "/v1/transfer_nonce");
-        if (response.data && response.data.transfer_nonce) {
-            return response.data.transfer_nonce;
-        } else if (response.transfer_nonce) {
-            return response.transfer_nonce;
-        }
-        return null;
-    } catch (error) {
-        return null;
-    }
-}
-```
-
 ```py Python
 def get_transfer_nonce(client):
     try:
@@ -5395,8 +4532,6 @@ def get_transfer_nonce(client):
 ```
 
       
-    
-
     ```json
     // Response Example
     {
@@ -5409,7 +4544,6 @@ def get_transfer_nonce(client):
     ```
 
   
-
   **Step: Obtain a signature from EIP-712**
 
     Sign an EIP-712 message of [message type](/build-on-omnichain/user-flows/wallet-authentication#message-types) `InternalTransfer`:
@@ -5437,46 +4571,6 @@ def get_transfer_nonce(client):
     **Example code:**
 
       
-
-```ts TypeScript
-
-
-const chainId = 42161; // Arbitrum One
-const ledgerContractAddress = "0x..."; // Get from addresses page
-
-// Define Domain
-const domain = {
-  name: "Orderly",
-  version: "1",
-  chainId: chainId,
-  verifyingContract: ledgerContractAddress
-};
-
-// Define Types
-const types = {
-  InternalTransfer: [
-    { name: "receiver", type: "bytes32" },
-    { name: "token", type: "string" },
-    { name: "amount", type: "uint256" },
-    { name: "transferNonce", type: "uint64" }
-  ]
-};
-
-// Define Message Data
-// Note: ethers.js signTypedData automatically converts hex strings to bytes32
-const receiverAccountId = "0x9ff99a5d6cb71a3ef897b0fff5f5801af6dc5f72d8f1608e61409b8fc965bd68";
-const message = {
-  receiver: receiverAccountId, // ethers.js automatically handles hex string to bytes32 conversion
-  token: "USDC",
-  amount: 1000000n, // 1 USDC (assuming 6 decimals)
-  transferNonce: 1 // From API
-};
-
-// Sign
-const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!);
-const signature = await wallet.signTypedData(domain, types, message);
-```
-
 ```py Python
 
 from eth_account import Account
@@ -5529,10 +4623,6 @@ signature = signed_message.signature.hex()
 ```
 
       
-    
-
-  
-
   **Step: Make an internal transfer request**
 
     Call the [Create Internal Transfer With Wallet Signature API](/build-on-omnichain/evm-api/restful-api/private/create-internal-transfer-v2).
@@ -5574,182 +4664,12 @@ signature = signed_message.signature.hex()
     | verifyingContract          | string   | Y            | The contract address used in the EIP-712 domain                                    |
 
   
-
-
 > **Note:** Ensure the `userAddress` matches the wallet address associated with the Orderly Account ID making
 >   the request. The standard Orderly authentication headers (Orderly Key signature) are also required
 >   for this API call.
 
 ##### Full example
 
-
-```ts TypeScript
-
-
-const ACCOUNT_ID = "0x...";
-const ENV = 'mainnet';
-const ORDERLY_KEY = "ed25519:xxx";
-const ORDERLY_SECRET = "ed25519:xxx";
-const WALLET_SECRET = "70xxxf9";
-const USER_ADDRESS = "0x...";
-const CHAIN_ID = ENV === 'mainnet' ? 42161 : 421614;
-const LEDGER_CONTRACT_ADDRESS = ENV === 'mainnet' 
-    ? "0x6F7a338F2aA472838dEFD3283eB360d4Dff5D203" 
-    : "0x8794E7260517B1766fc7b55cAfcd56e6bf08600e";
-const RECEIVER_ACCOUNT_ID = "0x...";
-const TRANSFER_AMOUNT = 1000000;
-const ORDERLY_TESTNET = ENV === 'testnet';
-
-interface Client {
-    _sign_request(method: string, path: string, payload?: any): Promise<any>;
-}
-
-async function get_transfer_nonce(client: Client): Promise<number | null> {
-    try {
-        const response = await client._sign_request("GET", "/v1/transfer_nonce");
-        if (response.data && response.data.transfer_nonce) {
-            return response.data.transfer_nonce;
-        } else if (response.transfer_nonce) {
-            return response.transfer_nonce;
-        }
-        return null;
-    } catch (error) {
-        return null;
-    }
-}
-
-function sign_internal_transfer_message(
-    receiver_account_id: string,
-    token: string,
-    amount: number,
-    transfer_nonce: number,
-    chain_id: number,
-    ledger_contract_address: string,
-    private_key: string
-): string {
-    const receiver_hex = receiver_account_id.startsWith('0x') 
-        ? receiver_account_id.slice(2) 
-        : receiver_account_id;
-    const receiver_bytes32 = ethers.zeroPadValue('0x' + receiver_hex, 32);
-    
-    const domain = {
-        name: "Orderly",
-        version: "1",
-        chainId: chain_id,
-        verifyingContract: ledger_contract_address,
-    };
-    
-    const types = {
-        EIP712Domain: [
-            { name: "name", type: "string" },
-            { name: "version", type: "string" },
-            { name: "chainId", type: "uint256" },
-            { name: "verifyingContract", type: "address" },
-        ],
-        InternalTransfer: [
-            { name: "receiver", type: "bytes32" },
-            { name: "token", type: "string" },
-            { name: "amount", type: "uint256" },
-            { name: "transferNonce", type: "uint64" },
-        ],
-    };
-    
-    const message = {
-        receiver: receiver_bytes32,
-        token: token,
-        amount: amount,
-        transferNonce: transfer_nonce,
-    };
-    
-    const wallet = new ethers.Wallet(private_key);
-    const signature = wallet.signTypedDataSync(domain, types, message);
-    return signature;
-}
-
-async function create_internal_transfer_v2(
-    client: Client,
-    receiver_account_id: string,
-    token: string,
-    amount: string,
-    transfer_nonce: number,
-    chain_id: number,
-    chain_type: string,
-    signature: string,
-    user_address: string,
-    verifying_contract: string
-): Promise<any> {
-    const payload = {
-        message: {
-            receiver: receiver_account_id,
-            token: token,
-            amount: amount,
-            transferNonce: String(transfer_nonce),
-            chainId: String(chain_id),
-            chainType: chain_type,
-        },
-        signature: signature,
-        userAddress: user_address,
-        verifyingContract: verifying_contract,
-    };
-    
-    try {
-        return await client._sign_request("POST", "/v2/internal_transfer", payload);
-    } catch (error) {
-        return null;
-    }
-}
-
-async function test_internal_transfer_v2(): Promise<any> {
-    try {
-        const { Rest: Client } = await import('orderly-evm-connector');
-        
-        const client = new Client({
-            orderly_key: ORDERLY_KEY,
-            orderly_secret: ORDERLY_SECRET,
-            orderly_account_id: ACCOUNT_ID,
-            wallet_secret: WALLET_SECRET,
-            orderly_testnet: ORDERLY_TESTNET,
-            debug: true
-        });
-        
-        const transfer_nonce = await get_transfer_nonce(client);
-        if (!transfer_nonce) {
-            return null;
-        }
-        
-        const signature = sign_internal_transfer_message(
-            RECEIVER_ACCOUNT_ID,
-            "USDC",
-            TRANSFER_AMOUNT,
-            transfer_nonce,
-            CHAIN_ID,
-            LEDGER_CONTRACT_ADDRESS,
-            WALLET_SECRET
-        );
-        
-        if (!signature) {
-            return null;
-        }
-        
-        return await create_internal_transfer_v2(
-            client,
-            RECEIVER_ACCOUNT_ID,
-            "USDC",
-            String(TRANSFER_AMOUNT),
-            transfer_nonce,
-            CHAIN_ID,
-            "EVM",
-            signature,
-            USER_ADDRESS,
-            LEDGER_CONTRACT_ADDRESS
-        );
-    } catch (error) {
-        return null;
-    }
-}
-
-test_internal_transfer_v2();
-````
 
 ```py Python
 from eth_account import Account
@@ -6024,143 +4944,10 @@ Orderly uses the [`ed25519` elliptic curve standard](https://ed25519.cr.yp.to/) 
 `Content-Type`, `orderly-account-id`, `orderly-key`, `orderly-signature`, `orderly-timestamp`
 
   
-
-
 > **Note:** Orderly key should be used without the ed25519\: prefix when used in code samples below.
 
 ##### Full example
 
-
-  **Java:**
-
-    
-```Java AuthenticationExample.java
-
-
-public class AuthenticationExample {
-public static void main(String[] args) throws Exception {
-String baseUrl = "https://testnet-api.orderly.org";
-String orderlyAccountId = "<orderly-account-id>";
-
-      Dotenv dotenv = Dotenv.load();
-      OkHttpClient client = new OkHttpClient();
-
-      String key = dotenv.get("ORDERLY_SECRET");
-      EdDSAParameterSpec spec = EdDSANamedCurveTable.getByName(EdDSANamedCurveTable.ED_25519);
-      EdDSAPrivateKeySpec encoded = new EdDSAPrivateKeySpec(Base58.decode(key), spec);
-      EdDSAPrivateKey orderlyKey = new EdDSAPrivateKey(encoded);
-
-      Signer signer = new Signer(baseUrl, orderlyAccountId, orderlyKey);
-
-      JSONObject json = new JSONObject();
-      json.put("symbol", "PERP_ETH_USDC");
-      json.put("order_type", "MARKET");
-      json.put("order_quantity", 0.01);
-      json.put("side", "BUY");
-      Request req = signer.createSignedRequest("/v1/order", "POST", json);
-      String res;
-      try (Response response = client.newCall(req).execute()) {
-         res = response.body().string();
-      }
-      JSONObject obj = new JSONObject(res);
-
-}
-}
-
-````
-
-```Java Signer.java
-
-
-public class Signer {
-   public final String baseUrl;
-
-   private String accountId;
-   private EdDSAPrivateKey privateKey;
-
-   public Signer(String baseUrl, String accountId, EdDSAPrivateKey privateKey) {
-      this.baseUrl = baseUrl;
-      this.accountId = accountId;
-      this.privateKey = privateKey;
-   }
-
-   public Request createSignedRequest(String url)
-         throws SignatureException, UnsupportedEncodingException, InvalidKeyException, OrderlyClientException {
-      checkIsInitialized();
-      return createSignedRequest(url, "GET", null);
-   }
-
-   public Request createSignedRequest(String url, String method, JSONObject json)
-         throws OrderlyClientException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
-      checkIsInitialized();
-      if (method == "GET" || method == "DELETE") {
-         return createSignedFormRequest(url, method);
-      } else if ((method == "POST" || method == "PUT") && json != null) {
-         return createSignedJsonRequest(url, method, json);
-      } else {
-         throw new IllegalArgumentException();
-      }
-   }
-
-   private void checkIsInitialized() throws OrderlyClientException {
-      if (accountId == null) {
-         throw OrderlyClientExceptionReason.ACCOUNT_UNINITIALIZED.asException();
-      }
-      if (privateKey == null) {
-         throw OrderlyClientExceptionReason.KEYPAIR_UNINITIALIZED.asException();
-      }
-   }
-
-   private Request createSignedFormRequest(String url, String method)
-         throws SignatureException, UnsupportedEncodingException, InvalidKeyException {
-      long timestamp = Instant.now().toEpochMilli();
-      String message = "" + timestamp + method + url;
-
-      EdDSAEngine signature = new EdDSAEngine();
-      signature.initSign(privateKey);
-      byte[] orderlySignature = signature.signOneShot(message.getBytes("UTF-8"));
-
-      return new Request.Builder()
-            .url(baseUrl + url)
-            .addHeader("Content-Type", "x-www-form-urlencoded")
-            .addHeader("orderly-timestamp", "" + timestamp)
-            .addHeader("orderly-account-id", accountId)
-            .addHeader("orderly-key", Util.encodePublicKey(privateKey))
-            .addHeader("orderly-signature", Base64.getUrlEncoder().encodeToString(orderlySignature))
-            .get()
-            .build();
-   }
-
-   private Request createSignedJsonRequest(String url, String method, JSONObject json)
-         throws SignatureException, UnsupportedEncodingException, InvalidKeyException {
-      RequestBody body = RequestBody.create(json.toString(), MediaType.parse("application/json"));
-
-      long timestamp = Instant.now().toEpochMilli();
-      String message = "" + timestamp + method + url + json.toString();
-
-      EdDSAEngine signature = new EdDSAEngine();
-      signature.initSign(privateKey);
-      byte[] orderlySignature = signature.signOneShot(message.getBytes("UTF-8"));
-
-      return new Request.Builder()
-            .url(baseUrl + url)
-            .addHeader("Content-Type", "application/json")
-            .addHeader("orderly-timestamp", "" + timestamp)
-            .addHeader("orderly-account-id", accountId)
-            .addHeader("orderly-key", Util.encodePublicKey(privateKey))
-            .addHeader("orderly-signature", Base64.getUrlEncoder().encodeToString(orderlySignature))
-            .post(body)
-            .build();
-   }
-}
-````
-
-    
-
-  
-  **Python:**
-
-    
 ```py authentication_example.py
 
 
@@ -6256,80 +5043,6 @@ def encode_key(key: bytes):
 ````
 
     
-
-  
-  **TypeScript:**
-
-    
-```ts authenticationExample.ts
-
-
-// this is only necessary in Node.js to make `@noble/ed25519` dependency work
-if (!globalThis.crypto) globalThis.crypto = webcrypto as any;
-
-config();
-
-async function main() {
-const baseUrl = 'https://testnet-api.orderly.org';
-const orderlyAccountId = '<orderly-account-id>';
-
-const orderlyKey = bs58.decode(process.env.ORDERLY_SECRET!);
-
-const res = await signAndSendRequest(orderlyAccountId, orderlyKey, `${baseUrl}/v1/order`, {
-method: 'POST',
-body: JSON.stringify({
-symbol: 'PERP_ETH_USDC',
-order_type: 'MARKET',
-order_quantity: 0.01,
-side: 'BUY'
-})
-});
-const response = await res.json();
-console.log(response);
-}
-
-main();
-
-````
-
-```ts signer.ts
-
-
-  orderlyAccountId: string,
-  privateKey: Uint8Array | string,
-  input: URL | string,
-  init?: RequestInit | undefined
-): Promise<Response> {
-  const timestamp = Date.now();
-  const encoder = new TextEncoder();
-
-  const url = new URL(input);
-  let message = `${String(timestamp)}${init?.method ?? 'GET'}${url.pathname}${url.search}`;
-  if (init?.body) {
-    message += init.body;
-  }
-  const orderlySignature = await signAsync(encoder.encode(message), privateKey);
-
-  return fetch(input, {
-    headers: {
-      'Content-Type':
-        init?.method !== 'GET' && init?.method !== 'DELETE'
-          ? 'application/json'
-          : 'application/x-www-form-urlencoded',
-      'orderly-timestamp': String(timestamp),
-      'orderly-account-id': orderlyAccountId,
-      'orderly-key': `ed25519:${encodeBase58(await getPublicKeyAsync(privateKey))}`,
-      'orderly-signature': Buffer.from(orderlySignature).toString('base64url'),
-      ...(init?.headers ?? {})
-    },
-    ...(init ?? {})
-  });
-}
-````
-
-    
-
-  
   **Shell:**
 
   ``` shell cURL
@@ -6348,7 +5061,6 @@ main();
 }'
 ```
   
-
 
 #### Security
 
@@ -6428,7 +5140,6 @@ Retrieve a nonce used for registering an account on Orderly. The validity of the
 ```
 
 
-
 ### Check if Wallet is Registered
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/check-if-wallet-is-registered](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/check-if-wallet-is-registered)
@@ -6457,7 +5168,6 @@ Check whether a wallet has a registered account with provided broker_id.
 ```
 
 
-
 ### Register Account
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/register-account](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/register-account)
@@ -6469,7 +5179,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 `POST /v1/register_account`
 
 Registers a new account to Orderly. Note an account is unique for each wallet address + builder id (ie the same wallet address can have multiple accounts with Orderly, 1 with each builder)
-
 
 
 **Request Body:**
@@ -6492,7 +5201,6 @@ Registers a new account to Orderly. Note an account is unique for each wallet ad
 ```json
 {}
 ```
-
 
 
 ### Get Orderly Key
@@ -6522,7 +5230,6 @@ Check the validity of an Orderly access key attached to the account.
 ```
 
 
-
 ### Add Orderly Key
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/add-orderly-key](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/add-orderly-key)
@@ -6536,7 +5243,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 Adds an Orderly access key to an account.
 
 Main account's Orderly key can control sub-account.
-
 
 
 **Request Body:**
@@ -6565,7 +5271,6 @@ Main account's Orderly key can control sub-account.
 ```
 
 
-
 ### Remove Orderly Key
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/remove-orderly-key](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/remove-orderly-key)
@@ -6577,7 +5282,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 `POST /v1/client/remove_orderly_key`
 
 Remove an Orderly key from an account, deactivating it from all usage
-
 
 
 **Request Body:**
@@ -6595,7 +5299,6 @@ Remove an Orderly key from an account, deactivating it from all usage
   "timestamp": 1702989203989
 }
 ```
-
 
 
 ### Get Current Orderly Key Info
@@ -6628,7 +5331,6 @@ Retrieve all the registered Orderly key pairs under the account.
 ```
 
 
-
 ### Get Orderly Key IP Restriction
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-orderly-key-ip-restriction](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-orderly-key-ip-restriction)
@@ -6657,7 +5359,6 @@ Retrieves the current IP restriction of a particular Orderly key.
 ```json
 {}
 ```
-
 
 
 ### Set Orderly Key IP Restriction
@@ -6689,7 +5390,6 @@ Set the IP restrictions of a particular Orderly key under the account.
 ```json
 {}
 ```
-
 
 
 ### Reset Orderly Key IP Restriction
@@ -6726,7 +5426,6 @@ Reset the IP restriction of a particular Orderly key under the account.
 ```
 
 
-
 ### Add Delegate Signer Orderly Key
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/add-delegate-signer-orderly-key](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/add-delegate-signer-orderly-key)
@@ -6736,7 +5435,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 **Limit: 1 requests per second**
 
 `POST /v1/delegate_orderly_key`
-
 
 
 **Request Body:**
@@ -6763,7 +5461,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```
 
 
-
 ### Add SP Orderly Key
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/add-sp-orderly-key](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/add-sp-orderly-key)
@@ -6776,7 +5473,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 `POST /v1/sv/sp_orderly_key`
 
 Adds an Orderly access key to a SP account
-
 
 
 **Request Body:**
@@ -6805,7 +5501,6 @@ Adds an Orderly access key to a SP account
   "timestamp": 1702989203989
 }
 ```
-
 
 
 ## EVM REST API - Order Management
@@ -6838,7 +5533,6 @@ Get the latest market trades.
 ```
 
 
-
 ### Get Open Interests for All Symbols
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-open-interests-for-all-symbols](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-open-interests-for-all-symbols)
@@ -6853,12 +5547,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 Return the long/short Open Interests for all symbols (mm accounts are excluded).
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Order Rules per Symbol
@@ -6925,7 +5617,6 @@ Risk Exposure filer
 ```json
 {}
 ```
-
 
 
 ### Create Order
@@ -6995,7 +5686,6 @@ Note: This endpoint requires `trading` scope in Orderly Key.
 ```
 
 
-
 ### Cancel Order
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/cancel-order](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/cancel-order)
@@ -7027,7 +5717,6 @@ Note: This endpoint requires `trading` scope in Orderly Key.
 ```json
 {}
 ```
-
 
 
 ### Edit Order
@@ -7077,7 +5766,6 @@ Note: This endpoint requires `trading` scope in Orderly Key.
 ```
 
 
-
 ### Get Order by order_id
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-order-by-order_id](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-order-by-order_id)
@@ -7106,7 +5794,6 @@ Get details of a single order by `order_id`.
 ```json
 {}
 ```
-
 
 
 ### Get Trades
@@ -7143,7 +5830,6 @@ Only return the latest 500 entries.
 ```json
 {}
 ```
-
 
 
 ### Get Orders
@@ -7206,7 +5892,6 @@ If sort_by == `UPDATED_TIME_ASC`, ascending order by updated_time. Ascending ord
 ```
 
 
-
 ### Cancel All Pending Orders
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/cancel-all-pending-orders](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/cancel-all-pending-orders)
@@ -7237,7 +5922,6 @@ Note: This endpoint requires `trading` scope in Orderly Key.
 ```json
 {}
 ```
-
 
 
 ### Cancel All After
@@ -7278,7 +5962,6 @@ Note: Users must apply for access before using this endpoint.
 ```
 
 
-
 ### Batch Create Order
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/batch-create-order](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/batch-create-order)
@@ -7292,7 +5975,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 Creates a batch of orders as a list according to the same rules as a single Create Order.
 
 Parameters for each order within the batch will be the same as the create single order. The batch of orders should be sent as a JSON array containing all the orders. The maximum number of orders that can be sent in 1 batch order request is 10. Each order within the batch order request is counted as 1 order towards the overall create order rate limit.
-
 
 
 Note: This endpoint requires `trading` scope in Orderly Key.
@@ -7332,7 +6014,6 @@ Note: This endpoint requires `trading` scope in Orderly Key.
 ```
 
 
-
 ### Batch Cancel Orders
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/batch-cancel-orders](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/batch-cancel-orders)
@@ -7367,7 +6048,6 @@ Note: This endpoint requires `trading` scope in Orderly Key.
 ```
 
 
-
 ### Cancel Order By client_order_id
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/cancel-order-by-client_order_id](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/cancel-order-by-client_order_id)
@@ -7399,7 +6079,6 @@ Note: This endpoint requires `trading` scope in Orderly Key.
 ```json
 {}
 ```
-
 
 
 ### Batch Cancel Orders By client_order_id
@@ -7436,7 +6115,6 @@ Note: This endpoint requires `trading` scope in Orderly Key.
 ```
 
 
-
 ### Get Order by client_order_id
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-order-by-client_order_id](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-order-by-client_order_id)
@@ -7465,7 +6143,6 @@ Get details of a single order by `client_order_id`.
 ```json
 {}
 ```
-
 
 
 ### Get All Trades of Specific Order
@@ -7498,7 +6175,6 @@ Get specific trades of an order by `order_id`.
 ```
 
 
-
 ### Get Trade
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-trade](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-trade)
@@ -7527,7 +6203,6 @@ Get specific transaction details by `trade_id`.
 ```json
 {}
 ```
-
 
 
 ### Create Algo Order
@@ -7585,7 +6260,6 @@ Note: This endpoint requires trading scope in Orderly Key.
 ```
 
 
-
 ### Edit Algo Order
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/edit-algo-order](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/edit-algo-order)
@@ -7637,7 +6311,6 @@ Note: This endpoint requires trading scope in Orderly Key.
 ```
 
 
-
 ### Cancel Algo Order
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/cancel-algo-order](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/cancel-algo-order)
@@ -7667,7 +6340,6 @@ Cancels a single algo order by `order_id`.
 ```json
 {}
 ```
-
 
 
 ### Cancel Algo Order By client_order_id
@@ -7700,7 +6372,6 @@ Cancel an algo order by `client_order_id`.
 ```
 
 
-
 ### Cancel All Pending Algo Orders
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/cancel-all-pending-algo-orders](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/cancel-all-pending-algo-orders)
@@ -7729,7 +6400,6 @@ Cancel all pending algo orders.
 ```json
 {}
 ```
-
 
 
 ### Get Algo Orders
@@ -7778,7 +6448,6 @@ For filter by status, one can reference special bundled statuses below for ease 
 ```
 
 
-
 ### Get Algo Order by order_id
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-algo-order-by-order_id](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-algo-order-by-order_id)
@@ -7806,7 +6475,6 @@ Get details of a single algo order by order_id.
 ```json
 {}
 ```
-
 
 
 ### Get Algo Order by client_order_id
@@ -7839,7 +6507,6 @@ Get details of a single algo order by `client_order_id`.
 ```
 
 
-
 ### Get All Trades of Specific Algo Order
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-all-trades-of-specific-algo-order](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-all-trades-of-specific-algo-order)
@@ -7870,7 +6537,6 @@ Get specific trades of an algo order by `order_id`.
 ```
 
 
-
 ### Get Unstaking ORDER Details
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-unstaking-order-details](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-unstaking-order-details)
@@ -7893,7 +6559,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```json
 {}
 ```
-
 
 
 ### Get esORDER vesting list
@@ -7920,7 +6585,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```json
 {}
 ```
-
 
 
 ### Get Orderly Protocol Revenue Sharing History
@@ -7951,7 +6615,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```json
 {}
 ```
-
 
 
 ## EVM REST API - Positions & Assets
@@ -7993,7 +6656,6 @@ Main account’s Orderly key can control sub-accounts.
 ```
 
 
-
 ### Get All Positions Info
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-all-positions-info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-all-positions-info)
@@ -8019,7 +6681,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```json
 {}
 ```
-
 
 
 ### Get One Position Info
@@ -8050,7 +6711,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```
 
 
-
 ### Get Position History
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-position-history](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-position-history)
@@ -8078,7 +6738,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```json
 {}
 ```
-
 
 
 ### Get Funding Fee History
@@ -8115,7 +6774,6 @@ Get funding fee history.
 ```
 
 
-
 ### Get Current Holding
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-current-holding](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-current-holding)
@@ -8144,7 +6802,6 @@ Get the current summary of user token holdings.
 ```json
 {}
 ```
-
 
 
 ### Get Asset History
@@ -8183,7 +6840,6 @@ Get asset history, including token deposits/withdrawals.
 ```
 
 
-
 ### Get Withdrawal Nonce
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-withdrawal-nonce](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-withdrawal-nonce)
@@ -8213,7 +6869,6 @@ Retrieve a nonce used for requesting a withdrawal on Orderly. Each nonce can onl
 ```
 
 
-
 ### Get Settle PnL Nonce
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-settle-pnl-nonce](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-settle-pnl-nonce)
@@ -8241,7 +6896,6 @@ Retrieve a nonce used for requesting a withdrawal on Orderly. Each nonce can onl
 ```json
 {}
 ```
-
 
 
 ### Create Withdraw Request
@@ -8295,7 +6949,6 @@ This API will throw an error with message `22 - Cross-chain withdrawal required 
 ```
 
 
-
 ### Request PnL Settlement
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/request-pnl-settlement](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/request-pnl-settlement)
@@ -8342,7 +6995,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```
 
 
-
 ### Get PnL Settlement History
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-pnl-settlement-history](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-pnl-settlement-history)
@@ -8374,7 +7026,6 @@ Retrieve the historical PnL settlement history of the account.
 ```json
 {}
 ```
-
 
 
 ### Delegate Signer Withdraw Request
@@ -8424,7 +7075,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```
 
 
-
 ### Delegate Signer Settle PnL
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/delegate-signer-settle-pnl](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/delegate-signer-settle-pnl)
@@ -8469,7 +7119,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```
 
 
-
 ### Create Strategy Vault Deposit/Withdrawal Request with Account
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/sv_operation_request](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/sv_operation_request)
@@ -8482,7 +7131,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 `POST /v1/sv_operation_request`
 
 Deposit into a strategy vault with account balance / withdraw from a strategy vault into your account balance
-
 
 
 **Request Body:**
@@ -8515,7 +7163,6 @@ Deposit into a strategy vault with account balance / withdraw from a strategy va
 ```
 
 
-
 ### Request SP PnL Settlement
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/request-sp-pnl-settlement](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/request-sp-pnl-settlement)
@@ -8526,7 +7173,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 **Limit: 1 request per second**
 
 `POST /v1/sv/sp_settle_pnl`
-
 
 
 **Request Body:**
@@ -8553,7 +7199,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
   "timestamp": 1702989203989
 }
 ```
-
 
 
 ### Get Fund Outflow Allocation
@@ -8587,7 +7232,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```
 
 
-
 ## EVM REST API - Account & Config
 
 ### Get Leverage Setting
@@ -8614,7 +7258,6 @@ Get account's leverage setting for a specific symbol.
 ```json
 {}
 ```
-
 
 
 ### Update Leverage Setting
@@ -8665,7 +7308,6 @@ Validation Logic:
 ```
 
 
-
 ### Get Max Leverage Setting
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-max-leverage-setting](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-max-leverage-setting)
@@ -8679,12 +7321,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 Get max leverage setting
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Account Information
@@ -8716,7 +7356,6 @@ Get basic account information including current user fee rates.
 ```
 
 
-
 ### Get User Statistics
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-user-statistics](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-user-statistics)
@@ -8746,7 +7385,6 @@ Get statistics of the user account
 ```
 
 
-
 ### Get Leverage Configuration
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-leverage-configuration](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-leverage-configuration)
@@ -8759,12 +7397,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 `GET v1/public/config`
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Set Maintenance Config
@@ -8804,7 +7440,6 @@ Set the user config for whether the system should automatically cancel the user'
 ```
 
 
-
 ### Get User Volume Statistics
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-user-volume-statistics](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-user-volume-statistics)
@@ -8829,7 +7464,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```json
 {}
 ```
-
 
 
 ### Get User Daily Volume
@@ -8859,7 +7493,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```json
 {}
 ```
-
 
 
 ### Create Internal Transfer
@@ -8915,7 +7548,6 @@ e. If 2 `account_id` are under the same broker_id and the broker_id is whitelist
 ```
 
 
-
 ### Create Internal Transfer With Wallet Signature
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/create-internal-transfer-v2](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/create-internal-transfer-v2)
@@ -8961,7 +7593,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```
 
 
-
 ### Get Transfer Nonce
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-transfer-nonce](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-transfer-nonce)
@@ -8987,7 +7618,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```json
 {}
 ```
-
 
 
 ### Get Internal Transfer History
@@ -9031,7 +7661,6 @@ If empty, return all transfer history.
 ```
 
 
-
 ### Get All Notifications
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-all-notifications](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-all-notifications)
@@ -9066,7 +7695,6 @@ Currently the only supported message type is the order filled message.
 ```
 
 
-
 ### Get Unread Notifications
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-unread-notifications](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-unread-notifications)
@@ -9094,7 +7722,6 @@ Get the information on unread messages for the user.
 ```json
 {}
 ```
-
 
 
 ### Set Read Status of Notifications
@@ -9131,7 +7758,6 @@ Set the read status on a list of notifications for a user.
 ```
 
 
-
 ### Set Read Status of All Notifications
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/set-read-status-of-all-notifications](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/set-read-status-of-all-notifications)
@@ -9163,7 +7789,6 @@ Set the read status on all notifications for a user.
   "timestamp": 1702989203989
 }
 ```
-
 
 
 ### Get User Daily Statistics
@@ -9200,7 +7825,6 @@ Get user daily statistics of assets/pnl/volume.
 ```
 
 
-
 ### Get User Statistics
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-user-points-statistics](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-user-points-statistics)
@@ -9229,7 +7853,6 @@ Returns daily point statistics for a specific user.
 ```json
 {}
 ```
-
 
 
 ### Get Stage Parameters
@@ -9262,7 +7885,6 @@ Only callable by Broker Admin.
 ```json
 {}
 ```
-
 
 
 ### Create/Update Stage Parameters
@@ -9315,7 +7937,6 @@ Make sure there's only 1 active stage at any time.
 ```
 
 
-
 ### Delete Stage
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/delete-stage](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/delete-stage)
@@ -9351,7 +7972,6 @@ Only callable by Broker Admin.
 ```
 
 
-
 ### Get Distribution History
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-distribution-history](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-distribution-history)
@@ -9383,7 +8003,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```json
 {}
 ```
-
 
 
 ### Trigger Manual Period Delivery
@@ -9425,7 +8044,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```
 
 
-
 ## EVM REST API - Market Data
 
 ### Get Market Info for All Symbols
@@ -9442,12 +8060,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 Get basic market information for all the symbols.
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get IP Info
@@ -9462,12 +8078,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 `GET /v1/ip_info`
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Market Volume by Builder
@@ -9496,7 +8110,6 @@ Get market volume filtered by broker.
 ```json
 {}
 ```
-
 
 
 ### Get Price Info for All Symbols
@@ -9533,12 +8146,10 @@ Examples:
 - 30d: 00:00:00 (2024-06-11)
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Historical Price List for All Symbols
@@ -9568,7 +8179,6 @@ Return the close price for all symbols
 ```
 
 
-
 ### Get Funding Rate for All Markets
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-funding-rate-for-all-markets](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-funding-rate-for-all-markets)
@@ -9581,12 +8191,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 `GET /v1/public/market_info/funding_history`
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Predicted Funding Rates for All Markets
@@ -9611,7 +8219,6 @@ Get the :
 ```json
 {}
 ```
-
 
 
 ### Get Predicted Funding Rate for One Market
@@ -9639,7 +8246,6 @@ Get latest funding rate for one market.
 ```json
 {}
 ```
-
 
 
 ### Get Funding Rate History for One Market
@@ -9675,7 +8281,6 @@ Get funding rate history for one market.
 ```
 
 
-
 ### Get Market Info for One Symbol
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-market-info-for-one-symbol](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-market-info-for-one-symbol)
@@ -9701,7 +8306,6 @@ Get basic market information for one trading pair.
 ```json
 {}
 ```
-
 
 
 ### Get Supported Collateral Info
@@ -9730,7 +8334,6 @@ Retrieves the available tokens to be used as collateral within Orderly.
 ```
 
 
-
 ### Get Available Symbols
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-available-symbols](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-available-symbols)
@@ -9744,12 +8347,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 Get available symbols that Orderly supports, and also send order rules for each symbol. The definition of rules can be found at [Get Order Rules per Market](/docs/build-on-omnichain/evm-api/restful-api/public/get-order-rules-per-symbol)
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Index Price Source
@@ -9765,12 +8366,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 Retrieves the available tokens to be used as collateral within Orderly.
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Insurance Fund Info
@@ -9785,12 +8384,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 `GET /v1/public/insurancefund`
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get TradingView Localized Config Info
@@ -9863,7 +8460,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```
 
 
-
 ### Get TradingView History Bars
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-tradingview-history-bars](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-tradingview-history-bars)
@@ -9897,7 +8493,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
   "v": ["<number>"]
 }
 ```
-
 
 
 ### Get TradingView Symbol Info
@@ -9935,7 +8530,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```
 
 
-
 ### Get System Maintenance Status
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-system-maintenance-status](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-system-maintenance-status)
@@ -9953,7 +8547,6 @@ Retrieve the current system maintenance status of Orderly. A return value of sta
 ```json
 {}
 ```
-
 
 
 ### Check Account Details of an Address
@@ -9980,7 +8573,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```json
 {}
 ```
-
 
 
 ### Orderbook Snapshot
@@ -10012,7 +8604,6 @@ Snapshot of the current orderbook. Price of asks/bids are in descending order.
 ```json
 {}
 ```
-
 
 
 ### Get Kline
@@ -10048,7 +8639,6 @@ Please note that for symbols with low trading activity, the kline might be gener
 ```json
 {}
 ```
-
 
 
 ### Get Kline History
@@ -10095,7 +8685,6 @@ Get the historical klines of the specified symbol
 ```
 
 
-
 ### Get Vault Balance
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-vault-balance](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-vault-balance)
@@ -10114,7 +8703,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```json
 {}
 ```
-
 
 
 ### Get Faucet USDC(Testnet Only)
@@ -10155,7 +8743,6 @@ This API is only available on Testnet so make sure to use Testnet domain as abov
 ```
 
 
-
 ### Check if Account Exists
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/check-if-account-exists](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/check-if-account-exists)
@@ -10181,7 +8768,6 @@ Check if provided account account is registered with Orderly and it's respective
 ```
 
 
-
 ### Get Announcements
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-announcements](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-announcements)
@@ -10197,7 +8783,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```json
 {}
 ```
-
 
 
 ### Get Merits Leaderboard
@@ -10228,7 +8813,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```
 
 
-
 ### Get User's Merits
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-users-merits](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-users-merits)
@@ -10253,7 +8837,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```
 
 
-
 ### Get Start and End Date of All Epochs
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-start-and-end-date-of-all-epochs](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-start-and-end-date-of-all-epochs)
@@ -10267,12 +8850,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 Retrieve the dates of all epochs
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Stage Rankings
@@ -10306,7 +8887,6 @@ Note: Need to aggregate the point data from all sub-accounts with the same addre
 ```
 
 
-
 ### Get Number of Merits for Distribution
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-number-of-merits-for-distribution](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-number-of-merits-for-distribution)
@@ -10320,12 +8900,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 Retrieve the number of merits for past epochs and current epoch
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Information About Stages
@@ -10356,7 +8934,6 @@ Returns information about stages.
 ```
 
 
-
 ### Get Parameters of Each Epoch for All Epochs
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-parameters-of-each-epoch-for-all-epochs](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-parameters-of-each-epoch-for-all-epochs)
@@ -10368,12 +8945,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 `GET /v1/public/trading_rewards/epoch_info`
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Epochs Data
@@ -10391,12 +8966,10 @@ Get data of each epoch from epoch 1 to current epoch
 `GET /v1/public/trading_rewards/epoch_data`
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Wallet Trading Rewards History
@@ -10428,7 +9001,6 @@ Return each epoch from Epoch 1 to last completed epoch.
 ```
 
 
-
 ### Get Account Trading Rewards History
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-account-trading-rewards-history](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-account-trading-rewards-history)
@@ -10458,7 +9030,6 @@ Return each epoch from Epoch 1 to last completed epoch.
 ```
 
 
-
 ### Get the Status of Trading Rewards Programme
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-the-status-of-trading-rewards-programme](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-the-status-of-trading-rewards-programme)
@@ -10470,12 +9041,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 `GET /v1/public/trading_rewards/status`
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Symbol Rewards Category
@@ -10489,12 +9058,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 `GET /v1/public/trading_rewards/symbol_category`
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Parameters of Each Epoch
@@ -10508,12 +9075,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 `GET /v1/public/market_making_rewards/epoch_info`
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get the Status of Market Making Rewards Programme
@@ -10527,12 +9092,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 `GET /v1/public/market_making_rewards/status`
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Symbol Rewards Parameters
@@ -10546,12 +9109,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 `GET /v1/public/market_making_rewards/symbol_params`
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Leaderboard for market maker rewards
@@ -10577,7 +9138,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```json
 {}
 ```
-
 
 
 ### Get Market Maker Current Epoch Estimate
@@ -10606,7 +9166,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```
 
 
-
 ### Get Current Epoch Estimate
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-current-epoch-estimate](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-current-epoch-estimate)
@@ -10633,7 +9192,6 @@ Get user’s estimated trading rewards during the current epoch
 ```json
 {}
 ```
-
 
 
 ### Get Wallet Group Market Making Rewards History
@@ -10665,7 +9223,6 @@ Return each epoch from Epoch 1 to last completed epoch.
 ```
 
 
-
 ### Get Strategy Vault Nonce for Account Transaction
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/sv_nonce](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/sv_nonce)
@@ -10677,12 +9234,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 `GET /v1/public/sv_nonce`
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Account’s Strategy Vault Transaction history
@@ -10717,7 +9272,6 @@ Get account transaction history with strategy vaults
 ```
 
 
-
 ### Get Fund Inflow Allocation
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-fund-inflow-allocation](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-fund-inflow-allocation)
@@ -10747,7 +9301,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```json
 {}
 ```
-
 
 
 ### Get Internal Transfer History
@@ -10782,7 +9335,6 @@ Non-Vault Account to Strategy Provider Account
 ```
 
 
-
 ## EVM REST API - Liquidations
 
 ### Get Positions Under Liquidation
@@ -10812,7 +9364,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```
 
 
-
 ### Get Liquidated Positions Info
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-liquidated-positions-info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-liquidated-positions-info)
@@ -10840,7 +9391,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```json
 {}
 ```
-
 
 
 ### Get Liquidated Positions by Liquidator
@@ -10875,7 +9425,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```
 
 
-
 ### Get Liquidated Positions of Account
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-liquidated-positions-of-account](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-liquidated-positions-of-account)
@@ -10908,7 +9457,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```json
 {}
 ```
-
 
 
 ### Claim Liquidated Positions
@@ -10955,7 +9503,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```
 
 
-
 ### Claim Insurance Fund
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/claim-insurance-fund](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/claim-insurance-fund)
@@ -10996,7 +9543,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```
 
 
-
 ### Get Liquidation Fees Sharing History
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-liquidation-fees-sharing-history](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-liquidation-fees-sharing-history)
@@ -11025,7 +9571,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```json
 {}
 ```
-
 
 
 ## EVM REST API - Builder & Referral
@@ -11057,7 +9602,6 @@ Get TVL(Total Balance + Unsettled PnL) by broker
 ```
 
 
-
 ### Get Builder Volume
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-builder-volume](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-builder-volume)
@@ -11083,7 +9627,6 @@ Get the latest volume statistics of Orderly and its associated builders. Note th
 ```json
 {}
 ```
-
 
 
 ### Get Builder Stats
@@ -11113,7 +9656,6 @@ Get the stats of a specific builder.
 ```
 
 
-
 ### Get Builder List
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-builder-list](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-builder-list)
@@ -11139,7 +9681,6 @@ Get the list of builders currently onboarded on Orderly.
 ```json
 {}
 ```
-
 
 
 ### Check if Address is Registered
@@ -11169,7 +9710,6 @@ Check whether an address is registered already.
 ```
 
 
-
 ### Get Supported Chains per Builder
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-supported-chains-per-builder](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-supported-chains-per-builder)
@@ -11194,7 +9734,6 @@ Get chains specified builder is available on.
 ```json
 {}
 ```
-
 
 
 ### Get Builder's Users' Volumes
@@ -11249,7 +9788,6 @@ Updated hourly
 ```
 
 
-
 ### Get Builder's Leaderboard
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-builders-leaderboard](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-builders-leaderboard)
@@ -11294,7 +9832,6 @@ Updated hourly
 ```
 
 
-
 ### Get User Fee Rates
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-user-fee-rates](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-user-fee-rates)
@@ -11328,7 +9865,6 @@ If `account_id` or `address` is provided, will always return the fee rate and in
 ```json
 {}
 ```
-
 
 
 ### Update User Fee Rate
@@ -11377,7 +9913,6 @@ Scope: Only each builder_id's admin wallet can call this endpoint.
 ```
 
 
-
 ### Reset User Fee Rate
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/reset-user-fee-rate](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/reset-user-fee-rate)
@@ -11418,7 +9953,6 @@ Scope: Only each builder’s admin can create the referral code for accounts tha
   "timestamp": 1702989203989
 }
 ```
-
 
 
 ### Update Default Builder Fee
@@ -11466,7 +10000,6 @@ Scope: Only each builder_id’s admin wallet can call this endpoint
 ```
 
 
-
 ### Get Default Builder Fee
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-default-builder-fee](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-default-builder-fee)
@@ -11496,7 +10029,6 @@ Scope: Only each builder_id’s admin wallet can call this endpoint
 ```json
 {}
 ```
-
 
 
 ### Create Referral Code
@@ -11543,7 +10075,6 @@ Scope: Only each builder’s admin can create the referral code for accounts tha
 ```
 
 
-
 ### Get Referral Code Info
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-referral-code-info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-referral-code-info)
@@ -11578,7 +10109,6 @@ Scope: Only each builder’s admin wallet can call this endpoint.
 ```
 
 
-
 ### Check Referral Code
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/check-referral-code](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/check-referral-code)
@@ -11604,7 +10134,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```
 
 
-
 ### Verify Referral Code
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/verify-referral-code](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/verify-referral-code)
@@ -11628,7 +10157,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```json
 {}
 ```
-
 
 
 ### Update Referral Code
@@ -11675,7 +10203,6 @@ Scope: Only each Builder’s admin wallet can call this endpoint.
 ```
 
 
-
 ### Bind Referral Code
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/bind-referral-code](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/bind-referral-code)
@@ -11714,7 +10241,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```
 
 
-
 ### Get Referral Info
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-referral-info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-referral-info)
@@ -11740,7 +10266,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```json
 {}
 ```
-
 
 
 ### Get Referral History
@@ -11776,7 +10301,6 @@ Provides a detailed history of referral rebates paid to the user.
 ```
 
 
-
 ### Get Referral Rebate Summary
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-referral-rebate-summary](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-referral-rebate-summary)
@@ -11806,7 +10330,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```json
 {}
 ```
-
 
 
 ### Get Referee History
@@ -11840,7 +10363,6 @@ Provides a summary of all referee activity for the requesting user.
 ```json
 {}
 ```
-
 
 
 ### Get Referee Info
@@ -11880,7 +10402,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```
 
 
-
 ### Get Referee Rebate Summary
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-referee-rebate-summary](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-referee-rebate-summary)
@@ -11912,7 +10433,6 @@ Provides daily statistics on referee rebates
 ```json
 {}
 ```
-
 
 
 ### Edit Referral Code Split
@@ -11953,7 +10473,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
   "timestamp": 1702989203989
 }
 ```
-
 
 
 ### Builder admin update auto referral
@@ -12001,7 +10520,6 @@ Scope: Only each Builder’s admin wallet can call this endpoint.
 ```
 
 
-
 ### Builder admin get auto referral info
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/builder-admin-get-auto-referral-info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/builder-admin-get-auto-referral-info)
@@ -12031,7 +10549,6 @@ Scope: Only each Builder’s admin wallet can call this endpoint.
 ```
 
 
-
 ### Get auto referral progress
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-auto-referral-progress](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-auto-referral-progress)
@@ -12057,7 +10574,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```json
 {}
 ```
-
 
 
 ### Edit Referral Code
@@ -12107,7 +10623,6 @@ The referral code must be unique platform-wise.
 ```
 
 
-
 ### Sign Up Campaign
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/sign-up-campaign](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/sign-up-campaign)
@@ -12117,7 +10632,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 **Limit: 10 requests per 1 second**
 
 `POST /v1/client/campaign/sign_up`
-
 
 
 **Request Body:**
@@ -12135,7 +10649,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
   "timestamp": 1702989203989
 }
 ```
-
 
 
 ### Get List of Campaigns
@@ -12165,7 +10678,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```
 
 
-
 ### Get Campaign Statistics
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-campaign-statistics](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-campaign-statistics)
@@ -12190,7 +10702,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```json
 {}
 ```
-
 
 
 ### Get Detailed Campaign Info
@@ -12218,7 +10729,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```json
 {}
 ```
-
 
 
 ### Get Campaign Ranking
@@ -12252,7 +10762,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```
 
 
-
 ### Get Campaign User Info
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-campaign-user-info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-campaign-user-info)
@@ -12280,7 +10789,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```json
 {}
 ```
-
 
 
 ### Get Campaign Verification
@@ -12311,7 +10819,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```
 
 
-
 ### Get Broker Allocation History
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-broker-allocation-history](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-broker-allocation-history)
@@ -12327,12 +10834,10 @@ Return each epoch from Epoch 1 to last completed epoch.
 `GET /v1/public/trading_rewards/broker_allocation_history`
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Current Epoch Estimate by Broker
@@ -12350,12 +10855,10 @@ Get all broker’s estimated rewards allocation during the current epoch
 `GET /v1/public/trading_rewards/current_epoch_broker_estimate`
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ## EVM REST API - Staking & Valor
@@ -12384,7 +10887,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```
 
 
-
 ### Get Staking Overview
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-staking-overview](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-staking-overview)
@@ -12397,12 +10899,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 `GET /v1/staking/overview`
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Valor Batch Info
@@ -12417,12 +10917,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 `GET /v1/staking/valor/batch_info`
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Valor Pool Info
@@ -12437,12 +10935,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 `GET /v1/staking/valor/pool_info`
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Valor2 Pool Info
@@ -12457,12 +10953,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 `GET /v1/staking/valor2/pool_info`
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Valor2 Batch Info
@@ -12477,12 +10971,10 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 `GET /v1/staking/valor2/batch_info`
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Valor2 Redeem Info
@@ -12511,7 +11003,6 @@ The redeemed VALOR amount may come from multiple batches
 ```
 
 
-
 ### Get Valor2 Revenue Buyback
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-valor2-revenue-buyback](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-valor2-revenue-buyback)
@@ -12525,12 +11016,10 @@ Order by batch_id. Display the amount after the batch is claimable.
 `GET /v1/staking/valor2/revenue_buyback`
 
 
-
 **Response:**
 ```json
 {}
 ```
-
 
 
 ### Get Valor Redeem Info
@@ -12556,7 +11045,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pri
 ```json
 {}
 ```
-
 
 
 ## EVM REST API - Delegate Signer & Sub-Accounts
@@ -12600,7 +11088,6 @@ Main account’s Orderly key can control sub-accounts.
 ```
 
 
-
 ### Get sub-account list
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-sub-account](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-sub-account)
@@ -12628,7 +11115,6 @@ Only the main account is allowed to call this API.
 ```json
 {}
 ```
-
 
 
 ### Update sub-account
@@ -12672,7 +11158,6 @@ Only the main account is allowed to call this API.
 ```
 
 
-
 ### Get aggregate positions
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/aggregate-positions](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/aggregate-positions)
@@ -12701,7 +11186,6 @@ Only the main account is allowed to call this API.
 ```json
 {}
 ```
-
 
 
 ### Get aggregate holding
@@ -12734,7 +11218,6 @@ Only the main account is allowed to call this API
 ```
 
 
-
 ### Delegate Signer
 
 Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/delegate-signer](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/delegate-signer)
@@ -12744,7 +11227,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 **Limit: 1 requests per second**
 
 `POST /v1/delegate_signer`
-
 
 
 **Request Body:**
@@ -12768,7 +11250,6 @@ Source: [https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/pub
 ```json
 {}
 ```
-
 
 
 ## WebSocket API
@@ -14915,7 +13396,6 @@ Source: [https://orderly.network/docs/sdks/overview](https://orderly.network/doc
 #### EVM
 
 
-  
     The components library gives you high level components, that can be used as building blocks to
     develop your DEX.
   
@@ -16170,7 +14650,6 @@ The OrderBook component is commonly used in conjuction with the [`useOrderBookSt
   return (
     
       
-    
   );
 };
 ```
@@ -17123,7 +15602,6 @@ npm install @orderly.network/types @orderly.network/hooks
 ```
 
   
-
   **Step: Add OrderlyConfigProvider**
 
 Add the `OrderlyConfigProvider` component to your project, wrapping the root components.
@@ -17149,7 +15627,6 @@ const brokerId = "<your id>";
 ```
 
       
-
       **Custom:**
 
 
@@ -17177,10 +15654,6 @@ The respective interfaces the need to be implemented are:
 - [OrderlyKeyStore](/sdks/tech-doc/interfaces/orderly_network_core.OrderlyKeyStore)
 
 
-    
-
-  
-
   **Step: Setup complete!**
 
 
@@ -17200,8 +15673,6 @@ You can now use all the provided hooks within `@orderly.network/hooks`!
 ```
 
   
-
-
 #### Environments
 
 The `networkId` property within `OrderlyConfigProvider` can be set to `mainnet` or `testnet`. The default is `mainnet`. It is not possible to change the network during runtime. If you want to do so anyway, you need to reload the page.
@@ -18790,9 +17261,6 @@ Here is a small example of how to get current account leverage and how to edit m
             Max account leverage
             
               
-            
-          
-        
         <Button
           onClick={() => {
             setOpen(false);
@@ -18901,7 +17369,6 @@ return (
   <>
     Connected address: {account.address}
     Connected chain: {account.chainId}
-    
     
     
   </>
@@ -19691,7 +18158,6 @@ Source: [https://orderly.network/docs/strategy-vault/strategy-vault/public/vault
 ```
 
 
-
 ### Get Strategy Vault Performance
 
 Source: [https://orderly.network/docs/strategy-vault/strategy-vault/public/vault-performance](https://orderly.network/docs/strategy-vault/strategy-vault/public/vault-performance)
@@ -19715,7 +18181,6 @@ Source: [https://orderly.network/docs/strategy-vault/strategy-vault/public/vault
 ```json
 {}
 ```
-
 
 
 ### Get Strategy Vault TVL/PnL History
@@ -19745,7 +18210,6 @@ Source: [https://orderly.network/docs/strategy-vault/strategy-vault/public/vault
 ```
 
 
-
 ### Get Overall Statistics of all Strategy Vaults
 
 Source: [https://orderly.network/docs/strategy-vault/strategy-vault/public/vault-overall-statistics](https://orderly.network/docs/strategy-vault/strategy-vault/public/vault-overall-statistics)
@@ -19771,7 +18235,6 @@ Source: [https://orderly.network/docs/strategy-vault/strategy-vault/public/vault
 ```
 
 
-
 ### Get User Overall Statistics across Strategy Vaults
 
 Source: [https://orderly.network/docs/strategy-vault/strategy-vault/public/user-overall-statistics](https://orderly.network/docs/strategy-vault/strategy-vault/public/user-overall-statistics)
@@ -19795,7 +18258,6 @@ Source: [https://orderly.network/docs/strategy-vault/strategy-vault/public/user-
 ```json
 {}
 ```
-
 
 
 ### Get Strategy Vault Liquidator History
@@ -19828,7 +18290,6 @@ Liquidated positions of liquidator
 ```
 
 
-
 ### Get Strategy Vault Positions
 
 Source: [https://orderly.network/docs/strategy-vault/strategy-vault/public/vault-positions](https://orderly.network/docs/strategy-vault/strategy-vault/public/vault-positions)
@@ -19852,7 +18313,6 @@ Source: [https://orderly.network/docs/strategy-vault/strategy-vault/public/vault
 ```json
 {}
 ```
-
 
 
 ### Get Strategy Vault Open Orders
@@ -19886,7 +18346,6 @@ Includes both normal & algo orders
 ```
 
 
-
 ### Get Strategy Vault Trade History
 
 Source: [https://orderly.network/docs/strategy-vault/strategy-vault/public/vault-trade-history](https://orderly.network/docs/strategy-vault/strategy-vault/public/vault-trade-history)
@@ -19914,7 +18373,6 @@ Source: [https://orderly.network/docs/strategy-vault/strategy-vault/public/vault
 ```json
 {}
 ```
-
 
 
 ### Get Strategy Vault Order History
@@ -19948,7 +18406,6 @@ Include both normal & algo orders
 ```
 
 
-
 ### Request SP PnL Settlement
 
 Source: [https://orderly.network/docs/strategy-vault/strategy-provider/private/request-sp-pnl-settlement](https://orderly.network/docs/strategy-vault/strategy-provider/private/request-sp-pnl-settlement)
@@ -19959,8 +18416,6 @@ Source: [https://orderly.network/docs/strategy-vault/strategy-provider/private/r
 **Limit: 1 request per second**
 
 `POST /v1/sv/sp_settle_pnl`
-
-
 
 
 ### Trigger Manual Period Delivery
@@ -19985,7 +18440,6 @@ Source: [https://orderly.network/docs/strategy-vault/strategy-provider/private/t
 |  |  | string | No |  |
 
 
-
 ### Add SP Orderly Key
 
 Source: [https://orderly.network/docs/strategy-vault/strategy-provider/private/add-sp-orderly-key](https://orderly.network/docs/strategy-vault/strategy-provider/private/add-sp-orderly-key)
@@ -19998,8 +18452,6 @@ Source: [https://orderly.network/docs/strategy-vault/strategy-provider/private/a
 `POST /v1/sv/sp_orderly_key`
 
 Adds an Orderly access key to a SP account
-
-
 
 
 ### Get Fund Outflow Allocation
@@ -20027,7 +18479,6 @@ Source: [https://orderly.network/docs/strategy-vault/strategy-fund/public/get-fu
 |  |  | string | No |  |
 
 
-
 ### Get Orderly Protocol Revenue Sharing History
 
 Source: [https://orderly.network/docs/strategy-vault/strategy-fund/public/get-orderly-protocol-revenue-sharing-history](https://orderly.network/docs/strategy-vault/strategy-fund/public/get-orderly-protocol-revenue-sharing-history)
@@ -20050,7 +18501,6 @@ Source: [https://orderly.network/docs/strategy-vault/strategy-fund/public/get-or
 |  |  | string | No |  |
 |  |  | string | No |  |
 |  |  | string | No |  |
-
 
 
 ### Get Fund Inflow Allocation
@@ -20076,7 +18526,6 @@ Source: [https://orderly.network/docs/strategy-vault/strategy-fund/public/get-fu
 |  |  | string | No |  |
 |  |  | string | No |  |
 |  |  | string | No |  |
-
 
 
 ### Get Internal Transfer History
@@ -20105,7 +18554,6 @@ Non-Vault Account to Strategy Provider Account
 |  |  | string | No |  |
 
 
-
 ### Get Liquidation Fees Sharing History
 
 Source: [https://orderly.network/docs/strategy-vault/strategy-fund/public/get-liquidation-fees-sharing-history](https://orderly.network/docs/strategy-vault/strategy-fund/public/get-liquidation-fees-sharing-history)
@@ -20128,7 +18576,6 @@ Source: [https://orderly.network/docs/strategy-vault/strategy-fund/public/get-li
 |  |  | string | No |  |
 |  |  | string | No |  |
 |  |  | string | No |  |
-
 
 
 ## Liquidity Provider API
@@ -20157,7 +18604,6 @@ Source: [https://orderly.network/docs/strategy-vault/liquidity-provider/public/l
 ```json
 {}
 ```
-
 
 
 ### Get Liquidity Provider Fee History
@@ -20190,7 +18636,6 @@ Source: [https://orderly.network/docs/strategy-vault/liquidity-provider/public/f
 ```
 
 
-
 ### Get Liquidity Provider Performance
 
 Source: [https://orderly.network/docs/strategy-vault/liquidity-provider/public/lp-performance](https://orderly.network/docs/strategy-vault/liquidity-provider/public/lp-performance)
@@ -20217,7 +18662,6 @@ Liquidity Provider’s performance in a vault
 ```json
 {}
 ```
-
 
 
 ### Get Liquidity Provider TVL/PnL History
@@ -20248,7 +18692,6 @@ Liquidity Provider’s TVL/PnL history in a vault
 ```json
 {}
 ```
-
 
 
 ### Get Liquidity Provider Transaction History
@@ -20282,7 +18725,6 @@ Source: [https://orderly.network/docs/strategy-vault/liquidity-provider/public/l
 ```
 
 
-
 ### Get Liquidity Provider Claim Info
 
 Source: [https://orderly.network/docs/strategy-vault/liquidity-provider/public/lp-claim-info](https://orderly.network/docs/strategy-vault/liquidity-provider/public/lp-claim-info)
@@ -20312,7 +18754,6 @@ The claimable asset amount on a chain from the processed withdrawal request(s) o
 ```
 
 
-
 ## Strategy Provider API
 
 ### Get Strategy Provider’s Info
@@ -20339,7 +18780,6 @@ Source: [https://orderly.network/docs/strategy-vault/strategy-provider/public/ge
 ```json
 {}
 ```
-
 
 
 ### Get Strategy Provider Transaction History
@@ -20375,7 +18815,6 @@ View Strategy Provider Transaction History
 ```
 
 
-
 ### Get Strategy Provider Claimable Amount
 
 Source: [https://orderly.network/docs/strategy-vault/strategy-provider/public/sp-claim-info](https://orderly.network/docs/strategy-vault/strategy-provider/public/sp-claim-info)
@@ -20401,7 +18840,6 @@ Source: [https://orderly.network/docs/strategy-vault/strategy-provider/public/sp
 ```json
 {}
 ```
-
 
 
 ### Get Strategy Provider Fee History
@@ -20430,7 +18868,6 @@ Source: [https://orderly.network/docs/strategy-vault/strategy-provider/public/sp
 ```json
 {}
 ```
-
 
 
 ## Strategy Fund API
@@ -20463,7 +18900,6 @@ View Strategy Fund Info
 ```
 
 
-
 ### Get Period History and Fund Period Instructions
 
 Source: [https://orderly.network/docs/strategy-vault/strategy-fund/public/get-period-history-and-fund-period-instructions](https://orderly.network/docs/strategy-vault/strategy-fund/public/get-period-history-and-fund-period-instructions)
@@ -20493,7 +18929,6 @@ Source: [https://orderly.network/docs/strategy-vault/strategy-fund/public/get-pe
 ```
 
 
-
 ### Get Preview Users Pending Requests
 
 Source: [https://orderly.network/docs/strategy-vault/strategy-fund/public/get-preview-users-pending-requests](https://orderly.network/docs/strategy-vault/strategy-fund/public/get-preview-users-pending-requests)
@@ -20518,7 +18953,6 @@ Source: [https://orderly.network/docs/strategy-vault/strategy-fund/public/get-pr
 ```json
 {}
 ```
-
 
 
 ## NEAR Smart Contract API
@@ -20805,7 +19239,6 @@ With Orderly, anyone can create a trading application thanks to our seamless plu
 Looking ahead, our grand vision is to create an omnichain protocol, connecting traders from both EVM and non-EVM chains within the same orderbook.
 
   
-
   **How do I get started?:**
 
   ## For traders:
@@ -20818,7 +19251,6 @@ Looking ahead, our grand vision is to create an omnichain protocol, connecting t
   - [NEAR Quick Start](/build-on-near/building-on-near): 
 
   
-
 **What can I do on Orderly?:**
 
   Developers can build a full suite of products:
@@ -20849,7 +19281,6 @@ Traders can explore an ecosystem of front-ends built on Orderly. A comprehensive
     Each broker sets their own fee rates.
 
   
-
 **Can I list my token on Orderly?:**
 
   Yes! We are always looking to list more tokens on the platforms. Please [reach
@@ -20875,7 +19306,6 @@ Traders can explore an ecosystem of front-ends built on Orderly. A comprehensive
     The above model ensures that even in the event operator gets compromised, no fake orders are executed and all user funds are safe.
 
   
-
   **Are there code examples or tutorials for how to build on Orderly?:**
 
     Yes! This documentation includes code examples throughout and you can find full tutorials/sdk with code examples here:
@@ -21013,7 +19443,6 @@ If users are having issues with deposits please do the following:
     > **Note:** Deposits times vary based on chain. Polygon deposit requires 500 block confirmations which takes about 20 minutes.
 
   
-
   **Step: Second Step**
 
   If that wasn't sucessful, please search user's wallet address on [LayerZero explorer](https://layerzeroscan.com/).
@@ -21026,11 +19455,6 @@ A message appears with Ordelry as a destination chain for any deposits we have r
 
 **Example of a processed deposit on LZ scan**
 
-
-  
-
-
- 
 
   **Step: Third Step**
 
@@ -21097,30 +19521,17 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
 #### December 23rd, 2025 - Major Update
 
 
-  
-    
-    
       **Testnet: December 19, 2025 14:00pm (UTC +8)**
 
       **Mainnet: December 23, 2025 14:00pm (UTC +8)**
     
 
-  
-
-  
-    
-    
       **New Features**
 
       - Vanguard referral program
       - Gold/Silver price feed integration
     
 
-  
-
-  
-    
-    
       **Platform Enhancements**
 
       - Zero downtime deployment
@@ -21131,25 +19542,14 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - Performance improvements and bug fixes
     
 
-  
-
-
 #### November 19th, 2025 - Major Update
 
 
-  
-    
-    
       **Testnet: November 18, 2025 14:00pm (UTC +8)**
 
       **Mainnet: November 20, 2025 14:00pm (UTC +8)**
     
 
-  
-
-  
-    
-    
       **New Features**
 
       - Permissioned Vaults support
@@ -21157,11 +19557,6 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - YUSD collateral support on BNB Chain
     
 
-  
-
-  
-    
-    
       **Platform Enhancements**
 
       - Vault rebalance API enhancements
@@ -21172,25 +19567,14 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - Performance improvements and bug fixes
     
 
-  
-
-
 #### October 14th, 2025 - Major Update
 
 
-  
-    
-    
       **Testnet: October 16, 2025 2:00pm (UTC +8)**
 
       **Mainnet: October 17, 2025 2:00am (UTC +8)**
     
 
-  
-
-  
-    
-    
       **New Features**
 
       - RWA (Real World Assets) Trading
@@ -21198,11 +19582,6 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - CCTP v2 upgrade
     
 
-  
-
-  
-    
-    
       **Platform Enhancements**
 
       - Minimum trading fees configuration at broker level
@@ -21214,25 +19593,14 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - Security enhancements and documentation updates
     
 
-  
-
-
 #### September 13th, 2025 - Major Update
 
 
-  
-    
-    
       **Testnet: September 10, 2025 2:00pm (UTC +8)**
 
       **Mainnet: September 13, 2025 5:00am (UTC +8)**
     
 
-  
-
-  
-    
-    
       **New Features**
 
       - Multi-collateral support on Solana Chain
@@ -21241,11 +19609,6 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - ADL enhancements for insurance fund protection
     
 
-  
-
-  
-    
-    
       **Platform Enhancements**
 
       - Security enhancements including withdrawal checks and monitoring
@@ -21257,25 +19620,14 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - Documentation updates and bug fixes
     
 
-  
-
-
 #### August 12th, 2025 - Major Update
 
 
-  
-    
-    
       **Testnet: August 8, 2025 3:00pm (UTC +8)**
 
       **Mainnet: August 12, 2025 5:00am (UTC +8)**
     
 
-  
-
-  
-    
-    
       **New Features**
 
       - Ceffu (OmniVault) integration
@@ -21284,11 +19636,6 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - Trading blacklist functionality
     
 
-  
-
-  
-    
-    
       **Platform Enhancements**
 
       - User fee rate API updates
@@ -21296,25 +19643,14 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - Trading system enhancements and bug fixes
     
 
-  
-
-
 #### July 10th, 2025 - Major Update
 
 
-  
-    
-    
       **Testnet: July 2, 2025 18:00pm (UTC +8)**
 
       **Mainnet: July 10, 2025 14:00pm (UTC +8)**
     
 
-  
-
-  
-    
-    
       **New Features**
 
       - Multi-Collateral support
@@ -21322,35 +19658,19 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - Campaign signup API
     
 
-  
-
-  
-    
-    
       **Platform Enhancements**
 
       - Performance improvements and bug fixes
     
 
-  
-
-
 #### June 3rd, 2025 - Major Update
 
 
-  
-    
-    
       **Testnet: May 30, 2025 14:00pm (UTC +8)**
 
       **Mainnet: June 3, 2025 14:00pm (UTC +8)**
     
 
-  
-
-  
-    
-    
       **New Features**
 
       - Sub-accounts support
@@ -21358,11 +19678,6 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - TP/SL with limit order type
     
 
-  
-
-  
-    
-    
       **Platform Enhancements**
 
       - Strategy Vault upgrades including new endpoints and status handling
@@ -21371,25 +19686,14 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - Performance improvements and bug fixes
     
 
-  
-
-
 #### April 29th, 2025 - Major Update
 
 
-  
-    
-    
       **Testnet: April 25, 2025 14:00pm (UTC +8)**
 
       **Mainnet: April 29, 2025 14:00pm (UTC +8)**
     
 
-  
-
-  
-    
-    
       **Ecosystem Expansion**
 
       - Added Solana staking and trading rewards functionality
@@ -21397,11 +19701,6 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - Released public builder leaderboard for increased transparency
     
 
-  
-
-  
-    
-    
       **Platform Enhancements**
 
       - Strategy Vault optimizations:
@@ -21418,61 +19717,34 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - Enhanced referral API with sorting capabilities
     
 
-  
-
-
 #### April 1st, 2025 - Documentation Update
 
 
-  
-    
-    
       **Testnet: March 28, 2025 14:00pm (UTC +8)**
 
       **Mainnet: April 1, 2025 14:00pm (UTC +8)**
     
 
-  
-
-  
-    
-    
       **Updates**
 
       - Market maker reward leaderboard
       - Added filtering capability for Broker Admin to view non-default users
     
 
-  
-
-
 #### February 25th, 2025 - Major Update
 
 
-  
-    
-    
       **Testnet: February 21, 2025 14:00pm (UTC +8)**
 
       **Mainnet: February 25, 2025 14:00pm (UTC +8)**
     
 
-  
-
-  
-    
-    
       **New Network Support**
 
       - Added support for Monad testnet
       - Added Ledger support for Solana network
     
 
-  
-
-  
-    
-    
       **System Enhancements**
 
       - Updated API domain
@@ -21481,25 +19753,14 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - Upgraded to Pyth Lazer for price feeds
     
 
-  
-
-
 #### January 21th, 2025 - Major Update
 
 
- 
-    
-    
       **Testnet: January 17, 2025 14:00pm (UTC +8)**
 
       **Mainnet: January 21, 2025 14:00pm (UTC +8)**
     
 
-  
-
-  
-    
-    
       **Updates**
 
       - `GET /v1/referral/rebate_summary` add a new field traded_referral to track referral trades during the specified date
@@ -21513,25 +19774,14 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - minor improvements and fixes
     
 
-  
-
-
 #### December 24th, 2024 - Major Update
 
 
- 
-    
-    
       **Testnet: December 20, 2024 14:00pm (UTC +8)**
 
       **Mainnet: December 24, 2024 14:00pm (UTC +8)**
     
 
-  
-
-  
-    
-    
       **Updates**
 
       - Morph support
@@ -21547,26 +19797,14 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - minor improvements and fixes
     
 
-  
-  
-
-
 #### November 26th, 2024 - Major Update
 
 
- 
-    
-    
       **Testnet: November 22, 2024 14:00pm (UTC +8)**
 
       **Mainnet: November 26, 2024 14:00pm (UTC +8)**
     
 
-  
-
-  
-    
-    
       **Updates**
 
       - Avalanche support
@@ -21582,26 +19820,14 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - minor improvements and fixes
     
 
-  
-  
-
-
 #### October 29th, 2024 - Major Update
 
 
- 
-    
-    
       **Testnet: October 25, 2024 14:00pm (UTC +8)**
 
       **Mainnet: October 29, 2024 14:00pm (UTC +8)**
     
 
-  
-
-  
-    
-    
       **Updates**
 
       - Solana testnet support
@@ -21609,26 +19835,14 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - minor improvements and fixes
     
 
-  
-  
-
-
 #### September 24th, 2024 - Major Update
 
 
-  
-    
-    
       **Testnet: September 20, 2024 14:00pm (UTC +8)**
 
       **Mainnet: September 24, 2024 14:00pm (UTC +8)**
     
 
-  
-
-  
-    
-    
       **Updates**
 
       - Funding rate history comparison API
@@ -21640,26 +19854,14 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - unsettled PnL now considered in withdrawal checks
     
 
-  
-  
-
-
 #### August 27th, 2024 - Major Update
 
 
-  
-    
-    
       **Testnet: August 23, 2024 14:00pm (UTC +8)**
 
       **Mainnet: August 27, 2024 14:00pm (UTC +8)**
     
 
-  
-
-  
-    
-    
       **Updates**
 
       - The \$ORDER token has been released. Please check the [\$ORDER token overview](/introduction/tokenomics/overview-of-order)
@@ -21673,26 +19875,14 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - Minor bugfixes and improvements
     
 
-  
-  
-
-
 #### July 30th, 2024 - Minor Update
 
 
-  
-    
-    
       **Testnet: July 26, 2024 14:00pm (UTC +8)**
 
       **Mainnet: July 30, 2024 14:00pm (UTC +8)**
     
 
-  
-
-  
-    
-    
       **Updates**
 
       - New endpoint /v1/public/futures_market to get market volume filtered by builder
@@ -21704,26 +19894,14 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - Minor bugfixes and improvements
     
 
-  
-  
-
-
 #### June 25th, 2024 - Minor Update
 
 
-  
-    
-    
       **Testnet: June 21, 2024 14:00pm (UTC +8)**
 
       **Mainnet: June 25, 2024 14:00pm (UTC +8)**
     
 
-  
-
-  
-    
-    
       **Updates**
 
       - Adding optional `level` parameter to /v1/order POST body, which allows to use the price of bid0 to bid4 or ask0 to ask4
@@ -21735,37 +19913,18 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - Performance improvements
     
 
-  
-  
-
-
 #### May 28th, 2024 - Minor Update
 
 
-    
-    
-    
       **Testnet: May 24, 2024 14:00pm (UTC +8)**
 
       **Mainnet: May 28, 2024 14:00pm (UTC +8)**
 
     
-
-  
-
-    
-    
-    
       **Expanding to Mantle**
 
       The multichain expansion is progressing, and we are excited to announce our launch on Mantle, along with the introduction of support for USDC.e on the Mantle network.
 
-    
-
-  
-
-    
-    
     
       **Updates**
 
@@ -21782,38 +19941,18 @@ Source: [https://orderly.network/docs/changelog/evm](https://orderly.network/doc
       - Performance improvements
 
 
-    
-
-  
-
-
 #### April 16, 2024 - Minor Update
 
 
-    
-    
-    
       **New bracket order support**
 
 We're pleased to introduce bracket orders to Orderly, a feature designed to enhance your trading strategy by automatically setting stop loss and take profit orders alongside your primary trade. This functionality allows you to better manage risk and lock in profits without constant market monitoring.
 
     
-
-  
-
-    
-    
-    
       **Traders can now see realized PnL**
 
 All order APIs now return realized PnL per position for orders closing or reducing open positions.
 
-    
-
-  
-
-  
-    
     
       **Updated endpoints**
 
@@ -21822,16 +19961,9 @@ Two new websocket topics `{broker_id}${symbol}@ticker` and `{broker_id}$tickers`
 Two new endpoints for verifying and checking referral codes.
 
       
-
-  
-
-
 #### March 12, 2024 - Minor Update
 
 
-      
-    
-    
       **Brokers are now chain specific**
 
 Given Orderly's growth of supported chains, we understand some projects choose to only focus on certain chains, thus brokers can now choose which chain they want to operate on.
@@ -21839,22 +19971,10 @@ Given Orderly's growth of supported chains, we understand some projects choose t
 Supported brokers for each chain can be retrieved through `GET /v1/public/chain_info`
 
     
-
-  
-
-    
-    
-    
       **Automating rebates for trades with order tags**
 
 We've heard your feedback! The rebates for trades with specific order_tag can now be automated by using our refferal system. Create a refferal code and use that refferal code in order_tag when submitting orders.
 
-    
-
-  
-
-    
-    
     
       **Introducing max slippage for market orders**
 
@@ -21864,12 +19984,6 @@ For buy market orders, this means your order will be fully or partially filled a
 
 For example, if the mid-price for MATIC is $1 and you place a buy market order with a 0.02% slippage, only portions of the order that meet the slippage criteria will be executed, with any remaining quantity being canceled. This precision ensures that you achieve the best possible price, according to your specified tolerance for slippage.
 
-    
-
-  
-
-  
-    
     
       **Updated endpoints**
 
@@ -21932,16 +20046,9 @@ Increased update frequency of `GET /v1/volume/broker/daily` API to hourly from d
 Added address in the response for `GET /v1/volume/broker/daily`
 
       
-
-  
-
-
 #### February 5, 2024 - Major Update
 
 
-  
-    
-    
       **Introducing the new referral system**
 
       We've heard your feedback and delivered! The long-awaited Orderly Referral System is finally here, marking a significant milestone in enhancing our platform. Tailored to enrich our community, this system introduces an exciting way for our existing users to connect with new users, strengthening our network through shared rewards.
@@ -21952,12 +20059,6 @@ Added address in the response for `GET /v1/volume/broker/daily`
 
       To learn more about how the Orderly Referral System works, refer to [this article](build-on-omnichain/user-flows/referral-system).
 
-    
-
-  
-
-  
-    
     
       **Introducing the new fee structure**
 
@@ -21974,11 +20075,6 @@ Added address in the response for `GET /v1/volume/broker/daily`
       To learn more about how the new fee structure works, refer to [this article](build-on-omnichain/user-flows/custom-fees).
       
 
-  
-
-  
-    
-    
       **Adding New Order Types: Take Profit/Stop Loss**
 
       Traders can now use more order types: stop loss/take profit and positional stop loss/take.
@@ -22000,11 +20096,6 @@ Added address in the response for `GET /v1/volume/broker/daily`
       All "algo order" endpoints are ammended to add the new order types.
     
 
-  
-
-  
-    
-    
       **Introducing Smart Contract trading support**
 
       We are excited to announce the launch of the "Delegate Signer" feature in the Orderly, a new feature enabling Smart Contracts to trade.
@@ -22020,27 +20111,15 @@ Added address in the response for `GET /v1/volume/broker/daily`
       Full write-up of how Delegate Signer functionality works can be found in [this article](build-on-omnichain/user-flows/delegate-signer).
     
 
-  
-
-
 #### January 4, 2024 - Major Update
 
 
-  
-    
-    
       **Introducing the new order types**
 
       Added create algo order(GET /v1/algo/order), edit algo order(PUT /v1/algo/order), cancel algo order(DELETE /v1/algo/order) and get algo order APIs(GET /v1/algo/order).
 
       Only STOP orders are supported for now.
 
-    
-
-  
-
-  
-    
     
       **Changes to deposit withdrawal flow**
 
@@ -22053,11 +20132,6 @@ Added address in the response for `GET /v1/volume/broker/daily`
       Added PENDING_REBALANCE status for withdrawal request(POST /v1/withdraw_request) in REST and WSS
     
 
-  
-
-  
-    
-    
       **Introducing new endpoints to retrive user data**
 
       Added get account details (GET /v1/public/account) API
@@ -22067,11 +20141,6 @@ Added address in the response for `GET /v1/volume/broker/daily`
       Added get user fee tier(GET /v1/broker/user_info) API
     
 
-  
-
-  
-    
-    
       **Introducing new liquidation model**
 
       Added liquidation_tier parameter for each symbol
@@ -22079,15 +20148,9 @@ Added address in the response for `GET /v1/volume/broker/daily`
       Added symbols array and high/low risk perps in claim liquidated positions(POST /v1/liquidation) API
     
 
-  
-
-
 #### October 13, 2023 - Major Update
 
 
-  
-    
-    
       **Updates to APIs**
 
       Added get vault chain info API
@@ -22097,15 +20160,9 @@ Added address in the response for `GET /v1/volume/broker/daily`
       Changed symbol in get user info API from e.g BTC to PERP_BTC_USDC
     
 
-  
-
-
 #### September 21, 2023 - Minor Update
 
 
-  
-    
-    
       **Updates to APIs**
 
       Added Claim from insurance fund endpoint
@@ -22115,15 +20172,9 @@ Added address in the response for `GET /v1/volume/broker/daily`
       Added futures_tier parameter to Get Account Information endpoint
     
 
-  
-
-
 #### August 10, 2023 - Minor Update
 
 
-  
-    
-    
       **Updates to APIs**
 
       Added Get PnL Settlement History API
@@ -22146,87 +20197,52 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
 #### February 10, 2026 - v2.8.14
 
 
-  
-    
-    
       **Features**
       - Added in left hand mode for mWeb
       - Hide announcements if their symbol list does not exist
     
   
-
-  
-    
-    
       **Fixes**
       - Fixed a minor leverage setting error
     
   
-
-
 #### January 30, 2026 - v2.8.13
 
 
-  
-    
-    
       **Features**
       - Add a new RWA tab to the Market page
       - Add in tooltips for "hidden order", "Post Only", "IOC", "FOK" in order entry component
       - Optimize API requests, remove redundant API request.
     
   
-
-  
-    
-    
       **Fixes**
       - Fix deposit button display logic on mWeb
       - Fix network switching issues with Privy login
     
   
-
-
 #### January 16, 2026 - v2.8.12
 
 
-  
-    
-    
       **Fixes**
       - Fixed a bug where Vault page tab couldn't be opened under certain scenarios.
     
   
-
-
 #### January 14, 2026 - v2.8.11
 
 
-  
-    
-    
       **Features**
       - Implemented a feature in the order book to show the buy vs sell order ratio, allowing users to quickly see which side has more orders.
       - Added clear explanations about liquidation fees in both the order entry form and position list.
       - Support for a new message type: "Community Vote" for announcements.
     
   
-
-  
-    
-    
       **Fixes**
       - Fixed a bug with clearing leverage input.
     
   
-
-
 #### December 19, 2025 - v2.8.10
 
 
-  
-    
-    
       **Features**
       - Display est.pnl in reverse position modal.
       - MWeb – Show "Deposit" CTA when available balance is zero.
@@ -22234,67 +20250,40 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Update position liquidation price calculation.
     
   
-
-  
-    
-    
       **Fixes**
       - Fixed issue where Solana wallet disconnects on page refresh.
     
   
-
-
 #### December 19, 2025 - v2.8.9
 
 
-  
-    
-    
       **Features**
       - Users can now search by address or account ID to locate an account when withdrawing to Orderly accounts (Internal transfer).
       - Support for withdrawals to external Web3 wallets has been added. (Note: Brokers must submit an application to enable this feature.)
       - Enhanced the Reverse Position feature to handle additional edge cases (outside allowed range) and provide clearer user guidance.
     
   
-
-  
-    
-    
       **Fixes**
       - Fixed an issue where the main account could not properly manage or edit sub-account positions.
       - Fixed a PnL calculation error on the Portfolio page.
     
   
-
-
 #### December 9, 2025 - v2.8.8
 
 
-  
-    
-    
       **Features**
       - Added Convert and Transfer tabs in Portfolio history.
     
   
-
-  
-    
-    
       **Fixes**
       - Fixed TradingView symbol inconsistency issues.
       - Fixed behavior when Reduce-Only is enabled: TP/SL toggle should remain visible instead of hidden.
       - Fixed an issue where withdraw token options were not displayed.
     
   
-
-
 #### December 2, 2025 - v2.8.6
 
 
-  
-    
-    
       **Features**
       - One-click reverse position: allows users to instantly close their current open position and open an opposite position of the same size with a single action.
       - Optimize deposit / withdraw UX (friendly message for limits).
@@ -22302,14 +20291,9 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Update the vaults APY display.
     
   
-
-
 #### November 25, 2025 - v2.8.4
 
 
-  
-    
-    
       **Features**
       - Kline optimization – expanded historical data.
       - Close/Cancel all or specific-symbol positions and pending orders.
@@ -22317,24 +20301,15 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Removed deprecated account-level leverage display.
     
   
-
-  
-    
-    
       **Fixes**
       - Fixed announcement read-state updates.
       - Fixed vault balance check for withdrawals.
       - Fixed PnL / notional display styling in position list.
     
   
-
-
 #### November 12, 2025 - v2.8.2
 
 
-  
-    
-    
       **Features**
       - Deposit UX enhancement: prioritize tokens with existing balances.
       - Friendly message for insufficient gas.
@@ -22345,70 +20320,43 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Wallet connect: prioritize wallet options based on selected network.
     
   
-
-  
-    
-    
       **Fixes**
       - Fix PnL calculation: should exclude transfer-ins.
       - Fix mark price and 24h change figure flickering issue.
       - Fix SL calculation (positive/negative sign conversion issue).
     
   
-
-
 #### October 21, 2025 - v2.8.1
 
 
-  
-    
-    
       **Features**
       - Optimized error messages for withdrawals.
       - Added quick options in the Limit Close modal.
       - Enhanced TP/SL form UI.
     
   
-
-  
-    
-    
       **Fixes**
       - Fixed mweb styling issues.
       - Fixed estimated value calculation in Convert.
       - Fixed ROI calculation in shared PnL cards.
     
   
-
-
 #### October 15, 2025 - v2.8.0
 
 
-  
-    
-    
       **Features**
       - Support RWA markets.
       - Support ordering by initial margin.
       - Remember bar settings for next order when user sets order quantity using the bar.
     
   
-
-  
-    
-    
       **Fixes**
       - Withdrawing to another account no longer requires limiting it by the vault balance.
     
   
-
-
 #### September 30, 2025 - v2.7.4
 
 
-  
-    
-    
       **Features**
       - Added Asset section to the trading page.
       - Moved sound notification settings to the Settings page (builders can still choose to display the toggle in the order entry panel).
@@ -22416,36 +20364,22 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Added more user-friendly deposit error messages.
     
   
-
-  
-    
-    
       **Bug Fixes**
       - Resolved issue with announcement content rolling.
     
   
-
-
 #### September 24, 2025 - v2.7.3
 
 
-  
-    
-    
       **Features**
       - Enable Vaults SDK support for Solana accounts.
       - Display message for minimum withdrawal amount.
       - Remove max account leverage setting (migrated to symbol-level leverage).
     
   
-
-
 #### September 22, 2025 - v2.7.2
 
 
-  
-    
-    
       **Features**
       - Sorting preferences for Positions and Position History are now remembered.
       - Enhanced transaction notifications — click to dismiss.
@@ -22453,66 +20387,39 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Update decimal places and rounding rules in Markets UI.
     
   
-
-  
-    
-    
       **Bug Fixes**
       - Fixed black screen issue caused by cache.
       - Fix wallet switching issues.
       - Fixed unresponsive WalletConnect click.
     
   
-
-
 #### September 19, 2025 - v2.7.1
 
 
-  
-    
-    
       **Bug Fixes**
       - Fixed ROI / PnL calculation.
     
   
-
-
 #### September 16, 2025 - v2.7.0
 
 
-  
-    
-    
       **New Features**
       - Support adjust leverage by symbol to provide better flexibility.
     
   
-
-  
-    
-    
       **Enhancements**
       - Make dragging to adjust TP/SL on chart smoother.
       - Announcement UI enhancement.
       - Advanced market UI options (Left / Top / Bottom / Hide).
     
   
-
-  
-    
-    
       **Bug Fixes**
       - Fixed MWeb order time display issue.
     
   
-
-
 #### September 9, 2025 - v2.6.3
 
 
-  
-    
-    
       **New Features**
       - **Trailing stop orders**: A new order type that activates once the market reaches the set trigger price. After activation, it tracks the extreme price and triggers when the market retraces by the specified trailing amount.
       - **Enhanced liquidation info**: Displays more detailed account status data at the time of liquidation.
@@ -22521,23 +20428,14 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - **Orderbook preferences**: Remembers the user’s preferred orderbook granularity per token.
     
   
-
-  
-    
-    
       **Bug Fixes**
       - Fixed orderbook average price calculation.
       - Fixed orderbook display flickering issues.
     
   
-
-
 #### September 2, 2025 - v2.6.2
 
 
-  
-    
-    
       **New Features**
       - Edit TP/SL on pending orders.
       - Added PnL information to mWeb portfolio.
@@ -22545,10 +20443,6 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Added 0.5 step size to ETH aggregation.
     
   
-
-  
-    
-    
       **Bug Fixes**
       - Fixed issue with TP/SL edit validation triggering too early
       - Fixed issue with undefined symbol in Order Book quotes
@@ -22556,43 +20450,25 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Fixed issue with orderbook avg price calculation
     
   
-
-
 #### August 26, 2025 - v2.6.1
 
 
-  
-    
-    
       **New Features**
       - Setting TP/SL directly from the TradingView chart.
       - Configuration option to toggle sound alerts on/off.
     
   
-
-  
-    
-    
       **UI Enhancements**
       - Minimize mode: market bar can collapse to its smallest size.
     
   
-
-  
-    
-    
       **Bug Fixes**
       - Fixed missing data in portfolio PnL chart.
     
   
-
-
 #### August 19, 2025 - v2.6.0
 
 
-  
-    
-    
       **New Features**
       - TP/SL with Limit Orders: 
         - Users can now set Partial TP/SL or Full Position TP/SL.
@@ -22602,24 +20478,15 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Order Fill Notifications: Added sound alerts when orders are filled (configurable from settings).
     
   
-
-  
-    
-    
       **UI/UX Enhancements**
       - Scaled order: Updated “Upper / Lower Price” to “Start / End Price” for better clarity.
       - Transactions: Display estimated time for pending transactions.
       - Deposit & Approval: Smoother experience for repeated approvals and deposits.
     
   
-
-
 #### July 29, 2025 - v2.5.3
 
 
-  
-    
-    
       **New Features**
       - Config option for custom perp symbol list
       - Improved close position UI
@@ -22633,11 +20500,6 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Show fee in MWeb order history
     
   
-
-
-  
-    
-    
       **Bug Fixes**
       - Fixed issue placing orders with “max qty”
       - Fixed withdrawal issue with max available
@@ -22647,37 +20509,23 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Fixed WebSocket connection issues
     
   
-
-
 #### July 22, 2025 - v2.5.2
 
 
-  
-    
-    
       **New Features**
       - Full-Screen Mode: Expand the trading chart for a maximized viewing experience.
       - Configurable Slippage & Fee Display: Brokers can now choose whether to display slippage and fees.
       - Enhanced Header Navigation: Introduced a “More” menu for greater flexibility in customizing the navigation bar.
     
   
-
-  
-    
-    
       **Bug Fixes**
       - Auto-clear validation errors on order type change.
       - Fixed incorrect sorting in the funding rate comparison section.
     
   
-
-
 #### July 16, 2025 - v2.5.1
 
 
-  
-    
-    
       **New Features**
       - Multi-Collateral Support: Users can now deposit multiple assets as collateral for trading([about multi-collateral](https://orderly.network/docs/introduction/trade-on-orderly/multi-collateral)).
       - Market UI Enhancements: Added sorting by symbol and volume across all market-related components.
@@ -22685,23 +20533,14 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Customizable Header Navigation: Brokers can now configure custom header navigation items to better tailor the interface to their needs.
     
   
-
-
 #### July 7, 2025 - v2.4.1
 
 
-  
-    
-    
       **New Features**
       - Scaled Order: Traders can now place a series of limit orders across a defined price range for scaled entries or exits. Supports quick distribution setup with flat, ascending, descending, or custom skew.
       - Configurable Sidebar (mweb): Added support for a customizable sidebar to enable quick access to frequently used pages.
     
   
-
-  
-    
-    
       **UI/UX Enhancements**
       - Added user guidance when the favorites list is empty.
       - Leverage UI is now displayed at the top by default for improved visibility.
@@ -22709,38 +20548,21 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Updated trading volume color to enhance visual clarity.
     
   
-
-  
-    
-    
       **Builder features**
       - Added a configuration option to enable social login methods (Privy Wallet).
     
   
-
-  
-    
-    
       **Bug Fixes**
       - Resolved issues related to Solana wallet connection and network switching.
     
   
-
-
 #### July 4, 2025 - v2.3.2
 
 
-  
-    
-    
       **New Features**
       - Internal Transfers via Account ID: Enables users to perform internal transfers by withdrawing directly to another Orderly account using the `account_id`.
     
   
-
-  
-    
-    
       **UI/UX Enhancements**
       - Removed decimal places from the Total (USDC) column in the order book for improved readability.
       - Updated default order size decimal settings for better clarity:
@@ -22751,22 +20573,13 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - One-Click Network Switch from Wallet Prompt: Users can now switch networks directly from the wallet prompt message when required.
     
   
-
-  
-    
-    
       **Bug Fixes**
       - Fixed an issue where users were unable to edit their referral code on mweb.
     
   
-
-
 #### June 20, 2025 - v2.3.0
 
 
-  
-    
-    
       **New Features**
       - Users can now create sub-accounts to manage trading strategies or asset allocations separately.
       - The fee rate is now displayed directly in the Trading Panel.
@@ -22778,19 +20591,11 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Users can set the default orderbook view (e.g., Total BTC, Total USDC, Quantity BTC) on mobile.
     
   
-
-  
-    
-    
       **UI/UX Enhancements**
       - Improved default volume color in TradingView charts for better clarity.
       - Refined layout for a cleaner, more readable trading chart.
     
   
-
-  
-    
-    
       **Bug Fixes**
       - Fixed Solana wallet connect issue after repeated login/logout.
       - Fixed max account leverage not reflecting user settings.
@@ -22798,68 +20603,39 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Updated decimal precision for contract interactions.
     
   
-
-
 #### May 30, 2025 - v2.2.0
 
 
-  
-    
-    
       **New features**
       - Introduced a new Portfolio page in the mobile UI. Added a navigation bar for seamless page switching.
       - Integrated Abstract and Abstract Global Wallet.
       - Increased maximum account leverage to 100x, and updated the leverage UI accordingly.
     
   
-
-  
-    
-    
       **UI/UX Enhancements**
       - Improved the symbol search algorithm to prioritize prefix matches, enabling faster and more accurate results.
     
   
-
-  
-    
-    
       **Bug Fixes**
       - Fixed an issue on mobile where pull-to-refresh on the leaderboard failed to load new data and caused UI misalignment when not logged in.
     
   
-
-
 #### May 26, 2025 - v2.1.3
 
 
-  
-    
-    
       **UI/UX Enhancements**
       - Added sorting functionality to the Funding Rate Comparison section, allowing users to rank markets by rate values.
       - Replacing “Buy/Sell” with “Long/Short” for improved clarity and alignment with common trading language.
       - Sorting preference is now preserved when collapsing and expanding the market tab.
     
 
-  
-
-  
-    
-    
       **Bug Fixes**
       - Resolved an issue where error messages were not being displayed properly.
     
 
-  
-
-
 #### May 19, 2025 - v2.1.2
 
 
-  
-    
-    
       **New default supported languages**
       - Русский (ru) — Russian
       - Bahasa Indonesia (id) — Indonesian
@@ -22871,10 +20647,6 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Nederlands (nl) — Dutch
     
   
-
-  
-    
-    
       **UI/UX Enhancements**
       - Clicking on the order book now sets the price and automatically switches the order type to Limit
       - Order input is preserved after submission
@@ -22884,26 +20656,15 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Referral code input now auto-capitalizes to prevent lowercase input issues
     
 
-  
-
-  
-    
-    
       **Bug Fixes**
 
       - Take-Profit offset (%) now updates with market price changes
       - Fixed portfolio page UI alignment (content now aligned to the top)
     
 
-  
-
-
 #### April 24, 2025 - v2.1.1
 
 
-  
-    
-    
       **New default supported languages**
       - 日本語 (ja) — Japanese
       - Español (es) — Spanish
@@ -22913,10 +20674,6 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Français (fr) — French
     
   
-
-  
-    
-    
       **UI Enhancements**
       - Improved wallet connect modal styling
       - Enhanced announcement UI:
@@ -22929,14 +20686,9 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Removed swap/trade toggle from SDK for streamlined interface
     
   
-
-
 #### April 10, 2025 - v2.1.0
 
 
-  
-    
-    
       **Wallet & Authentication Overhaul**
       
       - Redesigned wallet connect modal UI with dual wallet connection support (EVM / Solana)
@@ -22945,10 +20697,6 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Flexible configuration options for brokers to customize supported wallet types
     
   
-
-  
-    
-    
       **Trading Leaderboard & Internationalization**
 
       - Comprehensive trading leaderboard showing past, ongoing, and upcoming campaigns
@@ -22958,35 +20706,20 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - New announcement UI for platform-wide notifications
     
 
-  
-
-  
-    
-    
       **Bug Fixes**
 
       - Fixed hostname display in link device modal to use current hostname
     
 
-  
-
-
 #### February 27, 2025 - v2.0.5
 
 
-  
-    
-    
       **Network Enhancements**
       
       - Added Monad testnet support
       - Improved Solana RPC stability using Orderly backend proxy
     
   
-
-  
-    
-    
       **UI Improvements and Bug Fixes**
 
       - Added navigation bar for tablet-sized displays (768-1024px)
@@ -22998,16 +20731,9 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
         - Corrected network display issues in mobile web
 
     
-
-  
-
-
 #### February 14, 2025 - v2.0.4
 
 
-  
-    
-    
       **Builder Configuration Improvements**
       
       - Added ability for builders to set default network
@@ -23015,10 +20741,6 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Removed story testnet environment
     
   
-
-  
-    
-    
       **UI/UX Enhancements**
 
       - Improved fee display with negative values and color-coding for Liquidator and Insurance Fund fees
@@ -23027,24 +20749,14 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Fixed critical issues with PnL display, TVL calculations, and estimated liquidation price
     
 
-  
-
-
 #### February 8, 2025 - v2.0.3
 
 
-  
-    
-    
       **Ledger Support for Solana**
       
       Added support for Ledger hardware wallet message signing on Solana network, enhancing security options for Solana users.
     
   
-
-  
-    
-    
       **UI/UX Improvements**
 
       - Enhanced market tabs interface for better navigation
@@ -23054,25 +20766,14 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Various bug fixes and performance improvements
 
     
-
-  
-
-
 #### January 17, 2025 - v2.0.2
 
 
-  
-    
-    
       **QR Code Device Linking**
       
       Introducing QR code functionality to seamlessly link desktop and mobile devices, enhancing cross-device user experience.
     
   
-
-  
-    
-    
       **Platform Enhancements**
 
       - Added broker controls for country and IP restrictions
@@ -23082,71 +20783,37 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Fixed regional number formatting to handle decimal separators consistently
 
     
-
-  
-
-
 #### May 19, 2024 - v1.5.4
 
 
-  
-    
-    
       **Updates to @orderly.network/hook v1.5.4**
 
       Adding component IDs to component SDK for more customization options.
 
     
-
-  
-
-
 #### May 17, 2024 - v1.5.3
 
 
-  
-    
-    
       **Updates to @orderly.network/hook v1.5.3**
 
       Bug fixes.
 
     
-
-  
-
-
 #### May 16, 2024 - v1.5.2
 
 
-  
-    
-    
       **Updates to @orderly.network/hook v1.5.2**
 
      Bug fixes.
 
     
-
-  
-
-
 #### May 15, 2024 - v1.5.1
 
 
-  
-    
-    
       **Updates to @orderly.network/hook v1.5.1**
 
       Bug fixes
 
-    
-
-  
-
-  
-    
     
       **Updates to @orderly.network/hook v1.5.1**
 
@@ -23155,15 +20822,9 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       > **Note:** TradingView v27^ is required to integrate hoooks v1.5.0^
 
     
-  
-
-
 #### April 29, 2024 - v1.4.3
 
 
-  
-    
-    
       **Updates to @orderly.network/hook v1.4.3**
 
       Fixes for some production bugs related to TP/SL, referral and PnL card sharing.
@@ -23171,41 +20832,21 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       Referral hooks are now a part of the hooks package.
 
     
-
-  
-
-
 #### April 26, 2024 - v1.4.0
 
 
-  
-    
-    
       **Updates to @orderly.network/hook v1.4.0**
 
       Long awaited TP/SL orders are here. Introducing a new set of hooks for take profit and stop loss orders. Detailed documentation [here](/sdks/hooks/orders/use-tp-sl)
 
     
-
-  
-
-
 #### April 21, 2024 - v1.3.2
 
 
-  
-    
-    
       **Updates to @orderly.network/hook v1.3.2**
 
       Pricing display issue with long-tail assets and performance improvements
 
-    
-
-  
-
-  
-    
     
       **New referral module @orderly.network/referral v0.1.2**
 
@@ -23224,32 +20865,15 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       ### Dashboard page:
 
       
-        
-      
-
       ### Affiliate page:
 
       
-        
-      
-
       ### Trader page:
 
       
-        
-      
-
-    
-
-  
-
-
 #### April 2, 2024 - v1.2.0
 
 
-  
-    
-    
       **Updates to @orderly.network/hook v1.2.0**
 
       **The following issues are fixed:**
@@ -23269,16 +20893,9 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Updates to PnL card with design enhancements.
 
     
-
-  
-
-
 #### March 19, 2024 - v1.1.9
 
 
-  
-    
-    
       **Updates to @orderly.network/hook v1.1.9**
 
       **The following issues are fixed:**
@@ -23288,31 +20905,17 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - Minor dependency issues.
 
     
-
-  
-
-
 #### March 20, 2024 - v1.1.8
 
 
-  
-    
-    
       **Updates to @orderly.network/hook v1.1.7**
 
       -  Minor internal issues fixed.
 
     
-
-  
-
-
 #### March 19, 2024 - v1.1.7
 
 
-  
-    
-    
       **Updates to @orderly.network/hook v1.1.7**
 
       **The following issues are fixed:**
@@ -23320,16 +20923,9 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       -  Dependency issues at runtime.
 
     
-
-  
-
-
 #### March 19, 2024 - v1.1.6
 
 
-  
-    
-    
       **Updates to @orderly.network/hook v1.1.6**
 
       **Fixes:**
@@ -23442,16 +21038,9 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
     ```
 
 
-    
-  
-
-
 #### March 5, 2024 - Patch Update
 
 
-  
-    
-    
       **Updates to @orderly.network/hook v1.1.4**
 
       - removed LZ scan library, no @axios dependency required.
@@ -23468,15 +21057,9 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
       - fixed WS connection issues.
 
     
-  
-
-
 #### February 22, 2024 - Minor Update
 
 
-  
-    
-    
       **Updates to @orderly.network/hook v1.1.3**
 
 
@@ -23500,15 +21083,9 @@ Source: [https://orderly.network/docs/changelog/sdk](https://orderly.network/doc
         - Added order/position lines in the desktop web kline.
 
     
-  
-
-
 #### February 7, 2024 - Major Update
 
 
-  
-    
-    
       **Updates to @orderly.network/hook v1.1.2**
 
       We are excited to announce the release of version 1.1.2 of the @orderly.network/hook SDK. This update introduces significant changes and new features designed to enhance your development experience and the capabilities of your applications. Below is an overview of the key updates:
@@ -23598,5 +21175,4 @@ Source: [https://orderly.network/docs/introduction/terms-of-service](https://ord
 Source: [https://orderly.network/docs/introduction/privacy-policy](https://orderly.network/docs/introduction/privacy-policy)
 
 *Full content available at [https://orderly.network/docs/introduction/privacy-policy](https://orderly.network/docs/introduction/privacy-policy)*
-
 
