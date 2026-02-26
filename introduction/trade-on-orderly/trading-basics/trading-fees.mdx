@@ -1,6 +1,6 @@
 ---
 title: "Trading Fees"
-description: "Understanding the fee structure for traders and the Builder Staking Programme"
+description: "Understanding the fee structure for Traders and the Builder Staking Programme"
 ---
 
 # Overview
@@ -8,13 +8,25 @@ description: "Understanding the fee structure for traders and the Builder Stakin
 Trading fees are the costs associated with buying, selling, or trading assets on an exchange, typically calculated as a percentage of the total transaction value.
 
 Orderly Network utilizes a dual-layer fee structure:
-1.  **Base Fees:** The foundational cost paid by the **Builder** to Orderly Network.
+1.  **Base Fees:** The foundational cost paid by the **Builder** (the DEX) to Orderly Network.
 2.  **User Fees:** The final fee paid by the **Trader** to the Builder.
 
 ### Fee types
-**Maker fees:** These fees are charged to traders who place orders that add liquidity to the market (not instantly filled orders that are added to the book), such as limit orders. Currently, the **Orderly Base Maker Fee is 0.00 bps** across all tiers.
+**Maker fees:** These fees are charged to Traders who place orders that add liquidity to the market (not instantly filled orders that are added to the book), such as limit orders. Currently, the **Orderly Base Maker Fee is 0.00 bps** across all tiers.
 
-**Taker fees:** These fees are charged to traders who remove liquidity from the market, such as market orders.
+**Taker fees:** These fees are charged to Traders who remove liquidity from the market, such as market orders.
+
+<Note>
+Perpetual Futures trading fees are charged after every trade in USDC and added to the cost position.
+</Note>
+
+# How fees work for Traders
+
+End-users (Traders) trade with the fees set by the Builder.
+
+*   **Total fee paid:** Traders pay a single, transparent fee per trade. This fee is set by the Builder and is typically inclusive of Orderly’s Base Fee plus the Builder's margin.
+*   **Cost realization:** For Perpetual Futures, fees are automatically deducted from the Trader's USDC balance upon trade execution and factored into the position's cost basis.
+*   **Execution types:** Traders are classified as either a **Maker** or a **Taker** based on whether their order provides or removes liquidity at the moment of execution.
 
 # How fees work for Builders
 
