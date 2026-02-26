@@ -1,28 +1,37 @@
 ---
 title: "Trading Fees"
-description: "Overview of trading fees and Builder Staking Programme"
+description: "Understanding the fee structure for traders and the Builder Staking Programme"
 ---
+
 # Overview
 
-Trading fees are the costs you pay to buy, sell, or trade assets on an exchange. These fees are charged as a percentage of the transaction value.
+Trading fees are the costs associated with buying, selling, or trading assets on an exchange, typically calculated as a percentage of the total transaction value.
 
-There are two main types of trading fees:
+Orderly Network utilizes a dual-layer fee structure:
+1.  **Base Fees:** The foundational cost paid by the **Builder** (broker) to Orderly Network.
+2.  **User Fees:** The final fee paid by the **Trader** to the Builder.
 
-**Maker fees:** These fees are charged to traders who place orders that add liquidity to the market (not instantly filled orders that are added to the book), such as limit orders.
+### Fee types
+**Maker fees:** These fees are charged to traders who place orders that add liquidity to the market (not instantly filled orders that are added to the book), such as limit orders. Currently, the **Orderly Base Maker Fee is 0.00 bps** across all tiers.
 
 **Taker fees:** These fees are charged to traders who remove liquidity from the market, such as market orders.
 
-# How fees are charged
-### Perpetual Futures Fees
-Perpetual Futures trading fees are charged after every trade in USDC and added to the cost position.
+# How fees work for Builders
+
+Orderly Network empowers Builders with full pricing autonomy. This allows you to define your own revenue margins while utilizing Orderly’s deep liquidity.
+
+*   **Customizable Spreads:** Builders set the final trading fees charged to their end-users. This fee must be equal to or higher than the **Base Fee**.
+*   **Revenue Generation:** Builders retain **100% of the additional margin** (the difference between the user-facing fee and the Orderly Base Fee).
+*   **Base Fee Retention:** Orderly retains the Base Taker Fee according to the Builder's current tier in the Staking Programme.
 
 # Builder Staking Programme
 
-Builders (brokers) on Orderly can unlock lower base fees and additional benefits by meeting volume or staking requirements. There are five tiers:
+Builders can unlock lower Base Fees and enhanced support by meeting monthly volume requirements or staking $ORDER tokens. As you move up the tiers, your Base Fee decreases, allowing for higher profit margins or more competitive pricing for your users.
 
 <Tabs>
   <Tab title="Public">
     **Requirements:** No volume or staking requirement.
+
 
     | Fee Type | Rate (bps) |
     |---|---|
@@ -36,7 +45,8 @@ Builders (brokers) on Orderly can unlock lower base fees and additional benefits
   </Tab>
 
   <Tab title="Silver">
-    **Requirements:** ≥ \$30M monthly volume **or** stake 100K \$ORDER
+    **Requirements:** ≥ \$30M monthly aggregate volume **or** stake 100K \$ORDER
+
 
     | Fee Type | Rate (bps) |
     |---|---|
@@ -53,7 +63,8 @@ Builders (brokers) on Orderly can unlock lower base fees and additional benefits
   </Tab>
 
   <Tab title="Gold">
-    **Requirements:** ≥ \$90M monthly volume **or** stake 250K \$ORDER
+    **Requirements:** ≥ \$90M monthly aggregate volume **or** stake 250K \$ORDER
+
 
     | Fee Type | Rate (bps) |
     |---|---|
@@ -71,11 +82,14 @@ Builders (brokers) on Orderly can unlock lower base fees and additional benefits
 
     **Product & Support:**
     - All Silver benefits
+    - Ability to designate Silver tier for broker referrals within the distributor programme.
+    - assign Silver and Gold tiers to your broker referrals."
     - 24/7 tech support with SLAs
   </Tab>
 
   <Tab title="Platinum">
-    **Requirements:** ≥ \$1B monthly volume **or** stake 2M \$ORDER
+    **Requirements:** ≥ \$1B monthly aggregate volume **or** stake 2M \$ORDER
+
 
     | Fee Type | Rate (bps) |
     |---|---|
@@ -92,6 +106,7 @@ Builders (brokers) on Orderly can unlock lower base fees and additional benefits
 
     **Product & Support:**
     - All Gold benefits
+    - Ability to designate Silver or Gold tier for broker referrals (subject to staking or volume requirements).
     - Dedicated account manager
     - Product beta access
     - Listing recommendations
@@ -99,7 +114,8 @@ Builders (brokers) on Orderly can unlock lower base fees and additional benefits
   </Tab>
 
   <Tab title="Diamond">
-    **Requirements:** ≥ \$10B monthly volume **or** stake 7M \$ORDER
+    **Requirements:** ≥ \$10B monthly aggregate volume **or** stake 7M \$ORDER
+
 
     | Fee Type | Rate (bps) |
     |---|---|
@@ -116,11 +132,12 @@ Builders (brokers) on Orderly can unlock lower base fees and additional benefits
 
     **Product & Support:**
     - All Platinum benefits
+    - Ability to designate Silver, Gold, or Platinum status for broker referrals (subject to staking or volume requirements).
     - Dedicated support team and customer service
     - Product advisory board seat
   </Tab>
 </Tabs>
 
 <Note>
-Monthly trading volume will be taken from the Orderly Dune Dashboard. Base fee snapshots will be taken daily.
+Monthly (30D) aggregate trading volume includes all activity from the Builder and their direct broker referrals. Daily snapshots determine tier eligibility.
 </Note>
