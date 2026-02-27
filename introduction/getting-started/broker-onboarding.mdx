@@ -1,138 +1,127 @@
-# How to Become a Broker on Orderly Network
+---
+title: "How to Become a Builder on Orderly Network"
+description: "A step-by-step guide to onboarding as a broker and setting up your trading platform."
+---
 
-Hi there — welcome!
+# How to Become a Builder on Orderly Network
 
-If you're reading this, I’m guessing you’re interested in becoming a broker partner with Orderly Network — that’s great to hear!
-Becoming a broker on Orderly Network gives you the opportunity to build trading applications, earn trading fees, and leverage the powerful infrastructure of our omnichain orderbook network.
+Hi there, welcome!
 
-This guide walks you through the full broker onboarding process.
+If you're reading this, you’re likely interested in becoming a broker partner (Builder) with Orderly Network. Becoming a Builder on Orderly allows you to launch high-performance trading applications, leverage our omnichain liquidity, and generate revenue through customizable trading fees.
+
+This guide walks you through the full onboarding process.
 
 ---
 
 ## 🚀 Step 1: Get in Touch with the Orderly Team
 
-Start by reaching out to someone from the Orderly team directly — either via official contact channels like [Discord](https://discord.com/invite/orderlynetwork) and [Telegram](https://t.me/Orderly_Discussions), the business development manager, or through [Orderly's website](https://orderly.network).
+Start by reaching out to the Orderly team directly via official channels like [Discord](https://discord.com) and [Telegram](https://t.me), or through the [Orderly Network website](https://orderly.network).
 
-Once connected, the team will guide you through setting up your broker profile.
+Once connected, our team will guide you through the initial configuration of your Builder profile.
 
 ---
 
 ## 📝 Step 2: Provide Initial Broker Information
 
-You will need to confirm the following details for your broker profile:
+You will need to confirm the following details to initialize your profile:
 
-- Broker ID: xxx
-- Broker Name: XXX
-- Default Taker Fee: 0.06%
-- Default Maker Fee: 0.03%
+- **Broker ID:** (e.g., `my_dex_identifier`)
+- **Broker Name:** (e.g., `MyDEX`)
+- **Default Taker Fee:** 0.06% (6 bps)
+- **Default Maker Fee:** 0.03% (3 bps)
 
+These rates are pre-filled with standard examples—you can adjust them now or modify them via the Admin Panel later.
 
-These informations are pre-filled with typical rates — you can confirm, or adjust them later after setup.
+### Understanding the Fee Model:
 
-### About Fees:
+Orderly utilizes a "Base + Margin" model, providing you with full pricing autonomy:
 
-- **Orderly charges** a base fee of **0.03%** taker fee and **0% maker fee**.
-- **Anything above the base is your profit.**
+- **Orderly Base Fee:** This is the cost Orderly retains. It starts at **3 bps (0.03%) for Taker** fees and **0 bps for Maker** fees.
+- **Builder Margin:** You decide the final fee charged to your users. Any amount set above the Orderly Base Fee is **100% your profit**.
   
-For example:  
-If you set a taker fee of 0.06%, you **earn** 0.03% (0.06% - 0.03%).
+**Example:**  
+If your current Base Taker Fee is 3 bps and you set your user-facing Taker Fee to 6 bps, you earn **3 bps** in profit on every taker trade.
 
-📖 [Learn more about Custom Fees](https://orderly.network/docs/build-on-omnichain/user-flows/custom-fees)
-
----
-
-### 🔥 Public Tier vs Staking Tier
-
-You must also decide whether you want to:
-- **Start in the Public Tier** (based on volume thresholds), or
-- **Stake ORDER tokens** to instantly qualify for better fee share tiers.
-
-📖 [Learn more about the Builder Staking Programme](/introduction/trade-on-orderly/trading-basics/trading-fees#builder-staking-programme)
-
->**NOTE**
->Once you choose your initial path (public or staking tier), it defines your starting broker privileges — but you can change later if your circumstances evolve.
+📖 [Learn more about Trading Fees & Revenue Share](/introduction/trade-on-orderly/trading-basics/trading-fees)
 
 ---
 
-## 🛠 Step 3: Broker Profile Setup by Orderly
+### 🔥 Public Tier vs. Staking Tier
 
-After receiving your broker details, the Orderly team will:
+During setup, you should determine your starting tier in the **Builder Staking Programme**:
+- **Public Tier:** Start with no staking or volume requirements (Base Taker Fee: 3 bps).
+- **Staking/Volume Tiers:** Stake $ORDER tokens or meet volume thresholds to instantly lower your Base Fee, increasing your profit margins.
 
-- Register your broker profile internally.
-- Assign your Broker ID.
-- Configure default fees and permissions.
+📖 [View the Builder Staking Tiers & Benefits](/introduction/trade-on-orderly/trading-basics/trading-fees#builder-staking-programme)
 
-⏳ This process typically takes **1 to 2 business days**.
+> **NOTE:** You can upgrade your tier at any time as your platform grows or as you stake more $ORDER.
 
-You will be notified once your broker profile is ready.
+---
+
+## 🛠 Step 3: Profile Setup by Orderly
+
+After receiving your details, the Orderly team will:
+- Register your Builder profile internally.
+- Assign your unique Broker ID.
+- Configure your initial fee levels and permissions.
+
+⏳ This process typically takes **1 to 2 business days**. You will be notified once your profile is live in the backend.
 
 ---
 
 ## 🔐 Step 4: Register Your Admin Account
 
-Once the broker profile is created, you will register your **admin account**.  
-This admin account:
-- Is **linked to the Broker ID**.
-- Allows you to **manage your broker settings**.
-- Collects your **earned trading fees**.
+Once your profile is ready, you must register your **Admin Account**. This account is linked to your Broker ID and is used to manage settings and collect your earned trading fees.
 
-### How to register:
+### Registration Steps:
 
-1. Visit the [Broker Registration Tool](https://github-dev.orderly.network/broker-registration/).
+1.  Visit the [Broker Registration Tool](https://github-dev.orderly.network).
+2.  Connect your wallet and complete the registration flow.
+3.  **Secure your keys:** After registration, you will receive an Orderly Public and Private Key.
+    ```text
+    Orderly Public Key: ed25519:xxxxxxxxxxxx
+    Orderly Private Key: ed25519:xxxxxxxxxxxx
+    ```
+4.  **Final Linkage:** Securely share your **Wallet Public Address** (not your private key) with the Orderly team.
 
-2. Connect your wallet and complete the registration flow.
+> **IMPORTANT:** Treat your Private Key as a secret. Never expose it to anyone, including the Orderly team. It is required for signing administrative requests.
 
-3. After successful registration, you will receive:
-
-```
- Orderly Public Key: ed25519:xxxxxxxxxxxx
- Orderly Private Key: ed25519:xxxxxxxxxxxx
-```
-
-These credentials are required to access your admin account. Once this step is completed, it means you have successfully registered an account on Orderly and is associated with your wallet address.
-
-
-4. Submit your **wallet's public address**(not Orderly public key) securely to the Orderly team.
-
->**IMPORTANT**  
->Treat the Private Key like a secret password — never expose it publicly, even the Orderly team.
-It is critical for signing requests and accessing broker functions.
-
-✅ Once your wallet address is received, the Orderly team will complete the final linkage in the backend. And you should have access to the [broker admin portal](https://admin.orderly.network) by then.
+✅ Once the final linkage is completed, you will have access to the [Orderly Admin Portal](https://admin.orderly.network).
 
 ---
 
 ## 📅 Estimated Timeline
 
-| Stage | Estimated Time |
-|:---|:---|
-| Provide broker information | Immediate |
-| Broker profile creation | 1–2 business days |
-| Admin account registration and final linkage | 2–3 business days |
 
-**Total onboarding time**: ~3–5 business days
+| Stage | Estimated Time |
+| :--- | :--- |
+| Provide Initial Information | Immediate |
+| Builder Profile Creation | 1–2 Business Days |
+| Admin Registration & Final Linkage | 2–3 Business Days |
+
+**Total onboarding time:** ~3–5 Business Days
 
 ---
 
 # 💬 FAQs
 
-### What if I want to change my default fees later?
-You can modify your maker/taker fees anytime using your broker admin panel after setup.
+### What if I want to change my user fees later?
+You can modify your maker and taker fees at any time through the [Admin Portal](https://admin.orderly.network). Changes reflect in real-time.
+
+### Can I change from the Public Tier to a Staking Tier later?
+Yes. You can move up the tiers at any time by staking the required amount of $ORDER or by reaching the aggregate volume thresholds.
 
 ### Can I register multiple admin accounts?
-Currently, each broker ID is tied to a **single admin account** at registration.  
-
-### Can I change from public tier to staking tier later?
-Yes! You can start as a public broker and later stake ORDER tokens to upgrade your tier.
+Currently, each Broker ID is associated with a single primary admin wallet address at registration.
 
 ---
 
 # 🎯 Summary
 
-1. **Connect with Orderly team**.
-2. **Confirm broker details and initial fees**.
-3. **Wait for profile creation**.
-4. **Register your admin account securely**.
-5. **Start building and earning as a broker!**
+1.  **Connect** with the Orderly team.
+2.  **Confirm** your Broker ID and initial fee settings.
+3.  **Wait** for the profile to be provisioned (1-2 days).
+4.  **Register** your Admin Account via the registration tool.
+5.  **Start Building** and earning revenue on Orderly!
 
-Welcome to Orderly Network. Let’s build the future of omnichain trading together!
+**Need technical help during the process?** Head over to our [Developer Documentation](https://docs.orderly.network) or ask in our developer channels.
