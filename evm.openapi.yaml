@@ -7535,6 +7535,642 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InternalTransferHistoryResponse"
+
+  /v1/admin/client/info:
+    get:
+      summary: Get Account Information
+      description: |
+        **Limit: 10 requests per 60 seconds**
+
+        `GET /v1/admin/client/info`
+
+      tags:
+        - private
+      parameters:
+        - name: user_account
+          in: query
+          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: user_address
+          in: query
+          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientInfoResponse"
+
+  /v1/admin/client/holding:
+    get:
+      summary: Get Current Holding
+      description: |
+        **Limit: 10 requests per 1 seconds**
+
+        `GET /v1/admin/client/holding`
+
+      tags:
+        - private
+      parameters:
+        - name: all
+          in: query
+          description: >-
+            true/false. If true then will return all token even if balance is
+            empty.
+          required: false
+          example: ""
+          schema:
+            type: boolean
+        - name: user_account
+          in: query
+          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: user_address
+          in: query
+          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientHoldingResponse"
+
+  /v1/admin/internal_transfer_history:
+    get:
+      summary: Get Internal Transfer History
+      description: |
+        **Limit: 10 requests per 1 seconds**
+
+        `GET /v1/admin/internal_transfer_history`
+
+      tags:
+        - private
+      parameters:
+        - name: status
+          in: query
+          description: "`CREATED`/`PENDING`/`COMPLETED`/`FAILED`"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: start_t
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: end_t
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: "start from 1"
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: size
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: side
+          in: query
+          description: "`IN`/`OUT`"
+          required: true
+          example: ""
+          schema:
+            type: string
+        - name: from_account_id
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: to_account_id
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: main_sub_only
+          in: query
+          description: |
+            If True, return only internal transfers between main account and sub-accounts. 
+            If False, return only internal transfers between main account and other main accounts. 
+            If empty, return all transfer history.
+          required: false
+          example: ""
+          schema:
+            type: boolean
+        - name: user_account
+          in: query
+          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: user_address
+          in: query
+          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetInternalTransferHistoryResponse"
+
+  /v1/admin/asset/history:
+    get:
+      summary: Get Asset History
+      description: |
+        **Limit 10 requests per 60 seconds**
+
+        `GET /v1/admin/asset/history`
+
+      tags:
+        - private
+      parameters:
+        - name: token
+          in: query
+          description: token name you want to search
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: side
+          in: query
+          description: "`DEPOSIT`/`WITHDRAW`"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: "`NEW`/`CONFIRM`/`PROCESSING`/`COMPLETED`/`FAILED`/`PENDING_REBALANCE`"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: start_t
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: end_t
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: page
+          in: query
+          description: "start from 1"
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: size
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: user_account
+          in: query
+          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: user_address
+          in: query
+          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssetHistoryResponse"
+
+  /v1/admin/client/leverage:
+    get:
+      summary: Get Leverage Setting
+      description: |
+        **Limit: 1 requests per 1 second per IP address**
+
+        `GET /v1/admin/asset/history`
+
+      tags:
+        - private
+      parameters:
+        - name: symbol
+          in: query
+          description: ""
+          required: true
+          example: "PERP_BTC_USDC"
+          schema:
+            type: string
+        - name: user_account
+          in: query
+          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: user_address
+          in: query
+          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeverageResponse"
+
+  /v1/admin/orders:
+    get:
+      summary: Get Orders
+      description: |
+        **Limit: 10 requests per 1 second**
+
+        `GET /v1/admin/orders`
+
+      tags:
+        - private
+      parameters:
+        - name: symbol
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: side
+          in: query
+          description: "`BUY`/`SELL`"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: order_type
+          in: query
+          description: "`LIMIT`/`MARKET`"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: >-
+            `NEW`/`CANCELLED`/`PARTIAL_FILLED`/`FILLED`/`REJECTED`/`INCOMPLETE`/`COMPLETED`
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: order_tag
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: start_t
+          in: query
+          description: >-
+            start time range that wish to query, noted the time stamp is
+            13-digits timestamp.
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: end_t
+          in: query
+          description: >-
+            end time range that wish to query, noted the time stamp is 13-digits
+            timestamp.
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: page
+          in: query
+          description: the page you wish to query. start from 1
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: size
+          in: query
+          description: "the page size you wish to query (max: 500)"
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: sort_by
+          in: query
+          description: |
+            If empty: 
+
+            Descending order by updated_time if user passed update_start_t or update_end_t; descending order by order_id if updated_time are the same; 
+
+            Otherwise descending order by created_time; descending order by order_id if created_time are the same;
+
+
+            If not empty:
+
+            If sort_by == `CREATED_TIME_DESC`, descending order by created_time. Descending order by order_id if created_time are same;
+
+            If sort_by == `CREATED_TIME_ASC`, ascending order by created_time. Ascending order by order_id if created_time are same;
+
+            If sort_by == `UPDATED_TIME_DESC`, descending order by updated_time. Descending order by order_id if updated_time are same;
+
+            If sort_by == `UPDATED_TIME_ASC`, ascending order by updated_time. Ascending order by order_id if updated_time are same;
+          schema:
+            type: string
+        - name: user_account
+          in: query
+          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: user_address
+          in: query
+          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrdersResponse"
+
+  /v1/admin/position/{symbol}:
+    get:
+      summary: Get One Position Info
+      description: |
+        **Limit: 30 requests per 10 second per user**
+
+        `GET /v1/admin/position/{symbol}`
+
+      tags:
+        - private
+      parameters:
+        - name: symbol
+          in: path
+          description: ""
+          required: true
+          schema:
+            type: string
+        - name: user_account
+          in: query
+          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: user_address
+          in: query
+          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PositionResponse"
+
+  /v1/admin/positions:
+    get:
+      summary: Get All Positions Info
+      description: |
+        **Limit: 30 requests per 10 second per user**
+
+        `GET /v1/admin/positions`
+
+      tags:
+        - private
+      parameters:
+        - name: user_account
+          in: query
+          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: user_address
+          in: query
+          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PositionsResponse"
+
+  /v1/admin/funding_fee/history:
+    get:
+      summary: Get Funding Fee History
+      description: |
+        **Limit: 20 requests per 60 second per user**
+
+        `GET /v1/admin/funding_fee/history`
+
+      tags:
+        - private
+      parameters:
+        - name: symbol
+          in: query
+          description: "omit to get funding fee history for all symbols"
+          required: false
+          example: PERP_ETH_USDC
+          schema:
+            type: string
+        - name: start_t
+          in: query
+          description: >-
+            start time range that you wish to query, noted that the time stamp
+            is a 13-digits timestamp.
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: end_t
+          in: query
+          description: >-
+            end time range that you wish to query, noted that the time stamp is
+            a 13-digits timestamp.
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: the page you wish to query. start from 1
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: size
+          in: query
+          description: "Default: 60"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: user_account
+          in: query
+          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: user_address
+          in: query
+          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundingFeeHistoryResponse"
+
+  /v1/admin/volume/user/stats:
+    get:
+      summary: Get User Volume Statistics
+      description: |
+        **Limit 10 requests per 60 seconds**
+
+        `GET /v1/admin/volume/user/stats`
+
+      tags:
+        - private
+      parameters:
+        - name: user_account
+          in: query
+          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: user_address
+          in: query
+          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VolumeStatsResponse"
+
 components:
   parameters:
     orderly_timestamp:
