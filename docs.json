@@ -43,9 +43,8 @@
                 "group": "Getting Started",
                 "pages": [
                   "introduction/getting-started/what-is-orderly",
-                  "introduction/getting-started/benefits",
-                  "introduction/getting-started/our-mission",
-                  "introduction/getting-started/roadmap"
+                  "introduction/getting-started/roadmap",
+                  "introduction/getting-started/broker-onboarding"
                 ]
               },
               {
@@ -143,19 +142,20 @@
                 "pages": [
                   "build-on-omnichain/building-on-omnichain",
                   "build-on-omnichain/overview",
-                  "build-on-omnichain/addresses"
+                  "build-on-omnichain/addresses",
+                  "build-on-omnichain/integration-checklist"
                 ]
               },
               {
-                "group": "Partner Support",
+                "group": "Partner Onboarding & Support",
                 "pages": [
                   "build-on-omnichain/partner-support",
-                  "build-on-omnichain/integration-checklist",
+                  "build-on-omnichain/affiliate-onboarding",
                   "build-on-omnichain/integration-faqs"
                 ]
               },
               {
-                "group": "User Flows",
+                "group": "Implementation Flows",
                 "pages": [
                   "build-on-omnichain/user-flows/accounts",
                   "build-on-omnichain/user-flows/wallet-authentication",
@@ -166,11 +166,12 @@
                   "build-on-omnichain/user-flows/delegate-signer",
                   "build-on-omnichain/user-flows/referral-system",
                   "build-on-omnichain/user-flows/algo-order-samples",
-                  "build-on-omnichain/user-flows/internal-transfer"
+                  "build-on-omnichain/user-flows/internal-transfer",
+                  "build-on-omnichain/evm-api/user-flow-walkthrough"
                 ]
               },
               {
-                "group": "About APIs",
+                "group": "API Fundamentals",
                 "pages": [
                   "build-on-omnichain/evm-api/introduction",
                   "build-on-omnichain/evm-api/api-authentication",
@@ -218,7 +219,6 @@
                       "build-on-omnichain/evm-api/restful-api/public/check-if-account-exists",
                       "build-on-omnichain/evm-api/restful-api/public/check-if-wallet-is-registered",
                       "build-on-omnichain/evm-api/restful-api/public/check-if-address-is-registered",
-                      "build-on-omnichain/evm-api/restful-api/public/get-all-accounts",
                       "build-on-omnichain/evm-api/restful-api/public/get-registration-nonce",
                       "build-on-omnichain/evm-api/restful-api/public/register-account"
                     ]
@@ -277,11 +277,11 @@
                     "group": "Sub-account",
                     "pages": [
                       "build-on-omnichain/evm-api/restful-api/private/add-sub-account",
-                      "build-on-omnichain/evm-api/restful-api/private/get-sub-account",
+                      "build-on-omnichain/evm-api/restful-api/private/get-sub-account-list",
                       "build-on-omnichain/evm-api/restful-api/private/update-sub-account",
-                      "build-on-omnichain/evm-api/restful-api/private/aggregate-positions",
-                      "build-on-omnichain/evm-api/restful-api/private/aggregate-holding",
-                      "build-on-omnichain/evm-api/restful-api/private/sub_account_settle_pnl"
+                      "build-on-omnichain/evm-api/restful-api/private/get-aggregate-positions",
+                      "build-on-omnichain/evm-api/restful-api/private/get-aggregate-holding",
+                      "build-on-omnichain/evm-api/restful-api/private/settle-sub-account-pnl"
                     ]
                   }
                 ]
@@ -340,7 +340,7 @@
                       "build-on-omnichain/evm-api/restful-api/private/request-pnl-settlement",
                       "build-on-omnichain/evm-api/restful-api/private/get-pnl-settlement-history",
                       "build-on-omnichain/evm-api/restful-api/private/create-internal-transfer",
-                      "build-on-omnichain/evm-api/restful-api/private/create-internal-transfer-v2",
+                      "build-on-omnichain/evm-api/restful-api/private/create-internal-transfer-with-wallet-signature",
                       "build-on-omnichain/evm-api/restful-api/private/get-transfer-nonce",
                       "build-on-omnichain/evm-api/restful-api/private/get-internal-transfer-history"
                     ]
@@ -367,9 +367,9 @@
                   {
                     "group": "Account",
                     "pages": [
-                      "build-on-omnichain/evm-api/restful-api/public/sv_nonce",
-                      "build-on-omnichain/evm-api/restful-api/public/sv_operation_request",
-                      "build-on-omnichain/evm-api/restful-api/public/account_sv_transaction_history"
+                      "build-on-omnichain/evm-api/restful-api/public/get-strategy-vault-nonce-for-account-transaction",
+                      "build-on-omnichain/evm-api/restful-api/public/create-strategy-vault-depositwithdrawal-request-with-account",
+                      "build-on-omnichain/evm-api/restful-api/public/get-account’s-strategy-vault-transaction-history"
                     ]
                   }
                 ]
@@ -394,7 +394,7 @@
                       "build-on-omnichain/evm-api/restful-api/private/get-valor-redeem-info",
                       "build-on-omnichain/evm-api/restful-api/public/get-valor2-pool-info",
                       "build-on-omnichain/evm-api/restful-api/public/get-valor2-batch-info",
-                      "build-on-omnichain/evm-api/restful-api/public/get-valor2-redeem",
+                      "build-on-omnichain/evm-api/restful-api/private/get-valor2-redeem-info",
                       "build-on-omnichain/evm-api/restful-api/public/get-valor2-revenue-buyback"
                     ]
                   }
@@ -478,17 +478,19 @@
                   {
                     "group": "Public API",
                     "pages": [
-                      "build-on-omnichain/evm-api/restful-api/public/get-stage-information",
-                      "build-on-omnichain/evm-api/restful-api/public/get-user-points-statistics",
-                      "build-on-omnichain/evm-api/restful-api/public/get-stage-rankings"
+                      "build-on-omnichain/evm-api/restful-api/public/get-information-about-stages",
+                      "build-on-omnichain/evm-api/restful-api/public/get-merits-leaderboard",
+                      "build-on-omnichain/evm-api/restful-api/public/get-users-merits",
+                      "build-on-omnichain/evm-api/restful-api/public/get-stage-rankings",
+                      "build-on-omnichain/evm-api/restful-api/public/get-number-of-merits-for-distribution"
                     ]
                   },
                   {
                     "group": "Admin API",
                     "pages": [
-                      "build-on-omnichain/evm-api/restful-api/private/create-stage-parameters",
+                      "build-on-omnichain/evm-api/restful-api/private/createupdate-stage-parameters",
                       "build-on-omnichain/evm-api/restful-api/private/get-stage-parameters",
-                      "build-on-omnichain/evm-api/restful-api/private/delete-stage"
+                      "build-on-omnichain/evm-api/restful-api/admin/delete-stage"
                     ]
                   }
                 ]
@@ -735,6 +737,7 @@
                       "sdks/hooks/referral/use-get-referral-code",
                       "sdks/hooks/referral/use-daily",
                       "sdks/hooks/referral/use-referee-info",
+                      "sdks/hooks/referral/use-referee-history",
                       "sdks/hooks/referral/use-referee-rebate-summary",
                       "sdks/hooks/referral/use-referral-info",
                       "sdks/hooks/referral/use-referral-rebate-summary"
@@ -921,28 +924,28 @@
                   {
                     "group": "Vault Details",
                     "pages": [
-                      "strategy-vault/strategy-vault/public/vault-info"
+                      "strategy-vault/vault/public/vault-info"
                     ]
                   },
                   {
                     "group": "Vault Statistics",
                     "pages": [
-                      "strategy-vault/strategy-vault/public/vault-overall-statistics",
-                      "strategy-vault/strategy-vault/public/user-overall-statistics",
-                      "strategy-vault/strategy-vault/public/vault-performance",
-                      "strategy-vault/strategy-vault/public/vault-performance-chart"
+                      "strategy-vault/vault/public/vault-overall-statistics",
+                      "strategy-vault/vault/public/user-overall-statistics",
+                      "strategy-vault/vault/public/vault-performance",
+                      "strategy-vault/vault/public/vault-performance-chart"
                     ]
                   },
                   {
                     "group": "Order Management",
                     "pages": [
-                      "strategy-vault/strategy-vault/public/vault-positions",
-                      "strategy-vault/strategy-vault/public/vault-open-orders",
-                      "strategy-vault/strategy-vault/public/vault-trade-history",
-                      "strategy-vault/strategy-vault/public/vault-liquidator-history"
+                      "strategy-vault/vault/public/vault-positions",
+                      "strategy-vault/vault/public/vault-open-orders",
+                      "strategy-vault/vault/public/vault-trade-history",
+                      "strategy-vault/vault/public/vault-liquidator-history"
                     ]
                   },
-                  "strategy-vault/strategy-vault/public/supplemental-terms"
+                  "strategy-vault/vault/public/supplemental-terms"
                 ]
               },
               {
@@ -1060,6 +1063,7 @@
               {
                 "group": "User Issues",
                 "pages": [
+                  "troubleshooting/user-issues/transaction-failures",
                   "troubleshooting/user-issues/withdrawal-issues",
                   "troubleshooting/user-issues/deposit-issues",
                   "troubleshooting/user-issues/liquidation-issues",
@@ -1069,13 +1073,12 @@
             ]
           },
           {
-            "tab": "Changelog",
+            "tab": "Release Notes",
             "groups": [
               {
                 "group": "Updates by area",
                 "pages": [
                   "changelog/evm",
-                  "changelog/near",
                   "changelog/sdk"
                 ]
               },
@@ -1109,7 +1112,7 @@
     "default": "dark"
   },
   "background": {
-    "image": "/images/color_bg.png"
+    "image": "/images/sdks/color-bg.png"
   },
   "navbar": {
     "links": [

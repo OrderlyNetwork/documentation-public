@@ -1,5 +1,6 @@
 ---
 title: "Orderly Orderbook Design"
+description: "How Orderly's central limit order book combines CEX-level performance with on-chain settlement."
 ---
 
 Orderly is an omnichain decentralized orderbook protocol that aims to provide a high-performance, low-latency trading infrastructure for builders looking to add perpetual futures trading to their product offering without the need to build the matching engine, everything related to it, bootstrapping liquidity and much more.
@@ -16,25 +17,25 @@ This means that all orders are settled and stored on the blockchain, which provi
 
 **Efficiency:** Orders can be executed very quickly and efficiently, thanks to the use of a high-performance matching engine.
 
-**Self-custody:** Users have full custody of their funds which eliminates the trust assumption in the protocol and guarantess solvency.
+**Self-custody:** Users have full custody of their funds, which eliminates the trust assumption in the protocol and guarantees solvency.
 
 ## Omnichain Approach
 
-Orderly has enabled omnichain orderbook by splitting the stack into three main components:
+Orderly has enabled an omnichain orderbook by splitting the stack into three main components:
 
 **Asset Layer (Asset Vaults)** \- resides on each chain Orderly supports
 
-- Users interact with this layer when registering/depositing/withdrawing and where the funds reside.
+- Users interact with this layer when registering, depositing, and withdrawing; this is where the funds reside.
 
 **Settlement Layer (Orderly L2)** \- resides on a single chain
 
-- Users do not interact with this directly and is used as a transaction ledger for storing transaction/user data.
+- Users do not interact with this directly; it is used as a transaction ledger for storing transaction and user data.
 
 **Engine Layer (Orderbook)** \- Orderbook and order-related services
 
-- Users interact with this when managing orders. This where trade execution happens and includes matching engine itself, risk engine, and other services.
+- Users interact with this when managing orders. This is where trade execution happens; it includes the matching engine, the risk engine, and other services.
 
-Orders from different chains come into the same orderbook, making it chain agnostic unifying liquidity unlike multichain DEXes. After the orders are matched, they are uploaded and settled on Orderly L2 chain built using OP Stack, settling to Ethereum peridically.
+Orders from different chains come into the same orderbook, making it chain-agnostic and unifying liquidity across chains, unlike multichain DEXes. After the orders are matched, they are settled on the Orderly L2 chain built using OP Stack, which settles to Ethereum periodically.
 
 With all orders being settled on-chain, Orderly’s settlement layer sends/receives deposit/withdrawal instructions from the engine layer and updates users’ on-chain balance. The settlement layer then relays these instructions to/from the Asset Vaults — all of this communication is powered by LayerZero.
 
@@ -47,7 +48,3 @@ Orderly also includes a number of features to protect users from MEV (miner extr
 **Deep liquidity:** Orderly's orderbook model provides deep liquidity, which makes it difficult for MEV extractors to manipulate prices.
 
 **Off-chain Order matching:** Orders are matched off-chain in a neutral environment, there’s no opportunity for MEV — just transparent, permissionless execution for every trader.
-
-<Note>
-  EVM and NEAR orderbook instances are independent and have slightly different architecture.
-</Note>

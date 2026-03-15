@@ -251,7 +251,6 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from requests import PreparedRequest, Request
 import urllib
 
-
 class Signer(object):
     def __init__(
         self,
@@ -294,7 +293,6 @@ class Signer(object):
             req.headers["Content-Type"] = "application/json"
 
         return req.prepare()
-
 
 def encode_key(key: bytes):
     return "ed25519:%s" % b58encode(key).decode("utf-8")

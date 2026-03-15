@@ -1,10 +1,70 @@
 ---
 title: EVM
-description: "Additions and updates to the EVM version"
+description: "Release notes for the EVM platform"
 icon: "layer-group"
 ---
 
 import { Chip } from "/snippets/chip.mdx";
+
+## January 27th, 2026 - Major Update
+
+<div style={{ display: "table", width: "auto" }}>
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="times" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Testnet: January 23, 2026 14:00pm (UTC +8)**
+
+      **Mainnet: January 27, 2026 14:00pm (UTC +8)**
+    </div>
+
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="new" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **New Features**
+
+      - Multilevel referral program
+    </div>
+
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="update" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Platform Enhancements**
+
+      - USD1 collateral listing
+      - SOL withdrawal to Ceffu support
+      - Cross-chain deposit disable/re-enable functionality
+      - Point system documentation
+      - System robustness improvements including database optimizations and rebalance enhancements
+      - Performance improvements and bug fixes
+    </div>
+
+  </div>
+</div>
 
 ## December 23rd, 2025 - Major Update
 
@@ -180,7 +240,7 @@ import { Chip } from "/snippets/chip.mdx";
     >
       **Platform Enhancements**
 
-      - Minimum trading fees configuration at broker level
+      - Minimum trading fees configuration at builder level
       - Position history updates for bankrupt cases
       - Enhanced liquidation message notifications
       - Tokenomics API updates for total and circulating supply
@@ -246,10 +306,10 @@ import { Chip } from "/snippets/chip.mdx";
 
       - Security enhancements including withdrawal checks and monitoring
       - Referral code sub-accounts volume support
-      - Custom broker tier
+      - Custom builder tier
       - Enhanced liquidation info and multi-collateral improvements
       - Solana dex account deposit/withdraw for Strategy Vault
-      - Campaign enhancements and broker whitelist withdrawal
+      - Campaign enhancements and builder whitelist withdrawal
       - Documentation updates and bug fixes
     </div>
 
@@ -534,7 +594,7 @@ import { Chip } from "/snippets/chip.mdx";
       **Updates**
 
       - Market maker reward leaderboard
-      - Added filtering capability for Broker Admin to view non-default users
+      - Added filtering capability for Builder Admin to view non-default users
     </div>
 
   </div>
@@ -592,7 +652,7 @@ import { Chip } from "/snippets/chip.mdx";
 
       - Updated API domain
       - Implemented chain-specific trading volume attribution
-      - Updated tiered base fee structure for brokers
+      - Updated tiered base fee structure for builders
       - Upgraded to Pyth Lazer for price feeds
     </div>
 
@@ -962,7 +1022,7 @@ import { Chip } from "/snippets/chip.mdx";
 
       - Adding optional `post_only_adjust` parameter to /v1/order POST body. Default value is false. If it is set to true, then it will adjust price to 1 tick close to current best price. Only supported for `POST_ONLY` type orders
 
-      - New endpoint /v1/get_broker to fetch all brokers where given address has been registered
+      - New endpoint /v1/get_broker to fetch all builders where given address has been registered
 
       - Performance improvements
     </div>
@@ -1095,7 +1155,7 @@ All order APIs now return realized PnL per position for orders closing or reduci
     >
       **Updated endpoints**
 
-Two new websocket topics `{broker_id}${symbol}@ticker` and `{broker_id}$tickers` to query each broker's voulme per market.
+Two new websocket topics `{broker_id}${symbol}@ticker` and `{broker_id}$tickers` to query each builder's volume per market.
 
 Two new endpoints for verifying and checking referral codes.
 
@@ -1119,11 +1179,11 @@ Two new endpoints for verifying and checking referral codes.
         width: "calc(80% - 30px)",
       }}
     >
-      **Brokers are now chain specific**
+      **Builders are now chain specific**
 
-Given Orderly's growth of supported chains, we understand some projects choose to only focus on certain chains, thus brokers can now choose which chain they want to operate on.
+Given Orderly's growth of supported chains, we understand some projects choose to only focus on certain chains, thus builders can now choose which chain they want to operate on.
 
-Supported brokers for each chain can be retrieved through `GET /v1/public/chain_info`
+Supported builders for each chain can be retrieved through `GET /v1/public/chain_info`
 
     </div>
 
@@ -1207,11 +1267,11 @@ Adding volume and fees of all referrees for the refferal code in response for `G
 
 Adding maker and taker volume breakdown in `GET /v1/volume/broker/daily` API
 
-Brokers can now retrieve total fees collected under the criteria (given broker_id, aggregate logic, order_tag filter, and etc.) + broker rebate via`GET /v1/volume/broker/daily` API
+Builders can now retrieve total fees collected under the criteria (given broker_id, aggregate logic, order_tag filter, and etc.) + builder rebate via`GET /v1/volume/broker/daily` API
 
 New query parameters in `GET /v1/referral/admin_info` API:
 
-- New query parameter user_address, to filter all codes of the matching user_address only (should only match 1 account since the broker_id has to match the broker admin one)
+- New query parameter user_address, to filter all codes of the matching user_address only (should only match 1 account since the broker_id has to match the builder admin one)
 
 - New query parameter account_id, to filter all codes of the matching account_id only
 
@@ -1267,7 +1327,7 @@ Added address in the response for `GET /v1/volume/broker/daily`
 
       All endpoints for the referral system can be found under the ["Referral Program"](/build-on-omnichain/evm-api/restful-api/private/create-referral-code) section.
 
-      To learn more about how the Orderly Referral System works, refer to [this article](build-on-omnichain/user-flows/referral-system).
+      To learn more about how the Orderly Referral System works, refer to [this article](/build-on-omnichain/user-flows/referral-system).
 
     </div>
 
@@ -1285,7 +1345,7 @@ Added address in the response for `GET /v1/volume/broker/daily`
     >
       **Introducing the new fee structure**
 
-      We're thrilled to unveil the latest enhancement to our services: the Custom Trading Fee System. This innovative feature introduces a suite of flexible fee-setting options, allowing brokers to tailor fee structures to their unique user bases more effectively than ever before. By departing from the limitations of Orderly's standard fees, brokers now have the freedom to set fees that align perfectly with their strategies and customer profiles.
+      We're thrilled to unveil the latest enhancement to our services: the Custom Trading Fee System. This innovative feature introduces a suite of flexible fee-setting options, allowing builders to tailor fee structures to their unique user bases more effectively than ever before. By departing from the limitations of Orderly's standard fees, builders now have the freedom to set fees that align perfectly with their strategies and customer profiles.
 
       We believe that this new feature will significantly enhance the developer experience on our platform, offering both improved user satisfaction and a competitive edge in the dynamic trading landscape.
 
@@ -1295,7 +1355,7 @@ Added address in the response for `GET /v1/volume/broker/daily`
 
       New volume-based fee rate setting tool can be found on our [GitHub](https://github.com/OrderlyNetwork/orderly-evm-broker-fee-admin).
 
-      To learn more about how the new fee structure works, refer to [this article](build-on-omnichain/user-flows/custom-fees).
+      To learn more about how the new fee structure works, refer to [this article](/build-on-omnichain/user-flows/custom-fees).
       </div>
 
   </div>
@@ -1355,7 +1415,7 @@ Added address in the response for `GET /v1/volume/broker/daily`
 
       New Delegate Signer APIs under ["Delegate Signer"](/build-on-omnichain/evm-api/restful-api/public/delegate-signer) section.
 
-      Full write-up of how Delegate Signer functionality works can be found in [this article](build-on-omnichain/user-flows/delegate-signer).
+      Full write-up of how Delegate Signer functionality works can be found in [this article](/build-on-omnichain/user-flows/delegate-signer).
     </div>
 
   </div>

@@ -17,8 +17,6 @@ For these actions, wallet owners will need to sign specific messages from their 
 
 For other actions, such as calling trading-related RESTful APIs, a successful Orderly Key generation is required in order to use it via [API authentication](/build-on-omnichain/evm-api/api-authentication).
 
-
-
 ### Domain
 
 Orderly utilizes the following EIP-712 domain and types for the registration, access key, withdrawal and settle PnL processes.
@@ -289,10 +287,8 @@ from base58 import b58encode
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from eth_account import Account, messages
 
-
 def encode_key(key: bytes):
     return "ed25519:%s" % b58encode(key).decode("utf-8")
-
 
 MESSAGE_TYPES = {
     "EIP712Domain": [

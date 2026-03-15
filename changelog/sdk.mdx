@@ -1,10 +1,49 @@
 ---
 title: TS SDK
-description: "Additions and updates to the TS SDK"
+description: "Release notes for the TypeScript SDK"
 icon: "layer-group"
 ---
 
 import { Chip } from "/snippets/chip.mdx";
+
+
+## March 13, 2026 - v2.10.0
+
+<div style={{ display: "table", width: "100%" }}>
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="new" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Features & Improvements**
+      - Introduced Deposit Zap-in for a streamlined deposit experience.
+      - Added an Open Interest column to the symbol table.
+      - Added tooltips to last price and order book middle price.
+      - Zap-In Deposit now supports dynamic chain configuration via API.
+      - Added funding rate timeframe display
+    </div>
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="bug" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Fixes**
+      - Show error toast if Metamask wallet does not have a Solana address.
+    </div>
+  </div>
+</div>
 
 
 ## February 13, 2026 - v2.9.0
@@ -206,7 +245,7 @@ import { Chip } from "/snippets/chip.mdx";
     >
       **Features**
       - Users can now search by address or account ID to locate an account when withdrawing to Orderly accounts (Internal transfer).
-      - Support for withdrawals to external Web3 wallets has been added. (Note: Brokers must submit an application to enable this feature.)
+      - Support for withdrawals to external Web3 wallets has been added. (Note: Builders must submit an application to enable this feature.)
       - Enhanced the Reverse Position feature to handle additional edge cases (outside allowed range) and provide clearer user guidance.
     </div>
   </div>
@@ -842,7 +881,7 @@ import { Chip } from "/snippets/chip.mdx";
     >
       **New Features**
       - Full-Screen Mode: Expand the trading chart for a maximized viewing experience.
-      - Configurable Slippage & Fee Display: Brokers can now choose whether to display slippage and fees.
+      - Configurable Slippage & Fee Display: Builders can now choose whether to display slippage and fees.
       - Enhanced Header Navigation: Introduced a “More” menu for greater flexibility in customizing the navigation bar.
     </div>
   </div>
@@ -880,8 +919,8 @@ import { Chip } from "/snippets/chip.mdx";
       **New Features**
       - Multi-Collateral Support: Users can now deposit multiple assets as collateral for trading([about multi-collateral](https://orderly.network/docs/introduction/trade-on-orderly/multi-collateral)).
       - Market UI Enhancements: Added sorting by symbol and volume across all market-related components.
-      - Order Book Precision Control: Brokers can now configure the default number of decimals displayed on the order book per symbol.
-      - Customizable Header Navigation: Brokers can now configure custom header navigation items to better tailor the interface to their needs.
+      - Order Book Precision Control: Builders can now configure the default number of decimals displayed on the order book per symbol.
+      - Customizable Header Navigation: Builders can now configure custom header navigation items to better tailor the interface to their needs.
     </div>
   </div>
 </div>
@@ -1290,7 +1329,7 @@ import { Chip } from "/snippets/chip.mdx";
       - Redesigned wallet connect modal UI with dual wallet connection support (EVM / Solana)
       - Added email and social login capabilities through Privy integration
       - Implemented embedded wallet creation functionality for both EVM and Solana
-      - Flexible configuration options for brokers to customize supported wallet types
+      - Flexible configuration options for builders to customize supported wallet types
     </div>
   </div>
 
@@ -1309,7 +1348,7 @@ import { Chip } from "/snippets/chip.mdx";
       - Comprehensive trading leaderboard showing past, ongoing, and upcoming campaigns
       - Real-time trading volume rankings for competitive user engagement
       - Full i18n support with English and Chinese languages included by default
-      - Customizable localization tools for brokers to add and manage translations
+      - Customizable localization tools for builders to add and manage translations
       - New announcement UI for platform-wide notifications
     </div>
 
@@ -1493,7 +1532,7 @@ import { Chip } from "/snippets/chip.mdx";
     >
       **Platform Enhancements**
 
-      - Added broker controls for country and IP restrictions
+      - Added builder controls for country and IP restrictions
       - Enhanced network menu UI for better usability
       - Improved TP/SL order messaging with clear mark price trigger explanations
       - Added symbol search functionality to funding rate page
