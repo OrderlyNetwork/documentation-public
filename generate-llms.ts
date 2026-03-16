@@ -37,7 +37,7 @@ async function main() {
   const llms = await readJson<LlmsConfig>("llms.config.json");
 
   const openApiSpecs = new Map<string, OpenApiSummaryMap>();
-  for (const specName of ["evm.openapi", "sv.openapi"]) {
+  for (const specName of ["orderly.openapi", "sv.openapi"]) {
     const summaries = await parseOpenApiSummaries(specName);
     openApiSpecs.set(specName, summaries);
   }

@@ -91,16 +91,16 @@ API Base: `https://api.orderly.org/` (Mainnet), `https://testnet-api.orderly.org
 
 ### Getting Started
 
-- [System Overview](https://orderly.network/docs/build-on-omnichain/building-on-omnichain): High-level architecture of Orderly's omnichain system layers and how builders integrate with them.
+- [Building on Orderly](https://orderly.network/docs/build-on-omnichain/building-on-omnichain): Start building your dApp on Orderly's omnichain trading infrastructure.
 - [Smart Contract Overview](https://orderly.network/docs/build-on-omnichain/overview): Visual overview of Orderly smart contract interactions for deposits, withdrawals, trades, and PnL settlement.
 - [Smart Contract Addresses](https://orderly.network/docs/build-on-omnichain/addresses): Smart contract addresses for Orderly vault, USDC, and Verifier on each supported chain (mainnet and testnet).
-- [Integration Checklist](https://orderly.network/docs/build-on-omnichain/integration-checklist): Structured approach to integrating with Orderly
+- [Integration Checklist](https://orderly.network/docs/build-on-omnichain/integration-checklist): A structured guide for builders integrating with Orderly Network.
 
 ### Partner Onboarding & Support
 
-- [Partner Support](https://orderly.network/docs/build-on-omnichain/partner-support): Resources and support programs available to builders and partners integrating with Orderly Network.
+- [Partner Support](https://orderly.network/docs/build-on-omnichain/partner-support): Technical support and resources for builders integrating with Orderly Network.
 - [Affiliate Onboarding Guide](https://orderly.network/docs/build-on-omnichain/affiliate-onboarding): Setup requirements for new affiliates including subdomain configuration, TradingView licensing, and branding.
-- [Integration FAQs](https://orderly.network/docs/build-on-omnichain/integration-faqs): Frequently asked questions for builders integrating with Orderly, covering accounts, APIs, fees, and testing.
+- [Integration FAQs](https://orderly.network/docs/build-on-omnichain/integration-faqs): Frequently asked questions for builders integrating with Orderly Network.
 
 ### Implementation Flows
 
@@ -114,346 +114,350 @@ API Base: `https://api.orderly.org/` (Mainnet), `https://testnet-api.orderly.org
 - [Referral System](https://orderly.network/docs/build-on-omnichain/user-flows/referral-system): How the Orderly referral system works, including code creation, fee splits, and affiliate tiers.
 - [Algo Order Sample Requests](https://orderly.network/docs/build-on-omnichain/user-flows/algo-order-samples): Sample API request payloads for creating STOP, TP/SL, Positional TP/SL, and Bracket algo orders.
 - [Internal Transfer](https://orderly.network/docs/build-on-omnichain/user-flows/internal-transfer): Overview of internal transfer flow
-- [User Flow Walkthrough](https://orderly.network/docs/build-on-omnichain/evm-api/user-flow-walkthrough): End-to-end walkthrough of Orderly account creation, key management, ordering, and settlement via the API.
+- [User Flow Walkthrough](https://orderly.network/docs/build-on-omnichain/user-flow-walkthrough): End-to-end walkthrough of Orderly account creation, key management, ordering, and settlement via the API.
 
 ### API Fundamentals
 
-- [Introduction](https://orderly.network/docs/build-on-omnichain/evm-api/introduction): Orderly EVM API overview covering REST and WebSocket endpoints, authentication, and request conventions.
-- [API Authentication](https://orderly.network/docs/build-on-omnichain/evm-api/api-authentication): All requests need to be signed using `orderly-key` and `orderly-secret`.
-- [Error Codes](https://orderly.network/docs/build-on-omnichain/evm-api/error-codes): Complete list of Orderly API error codes with HTTP status codes and descriptions.
+- [Introduction](https://orderly.network/docs/build-on-omnichain/introduction): Orderly EVM API overview covering REST and WebSocket endpoints, authentication, and request conventions.
+- [API Authentication](https://orderly.network/docs/build-on-omnichain/api-authentication): All requests need to be signed using `orderly-key` and `orderly-secret`.
+- [Error Codes](https://orderly.network/docs/build-on-omnichain/error-codes): Complete list of Orderly API error codes with HTTP status codes and descriptions.
 
 ### General API
 
 #### Builder Info
 
-- [Get Builder Volume](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-builder-volume): Get Builder Volume
-- [Get Builder List](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-builder-list): Get Builder List
-- [Get Builder Stats](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-builder-stats): Get Builder Stats
-- [Get Supported Chains Per Builder](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-supported-chains-per-builder): Get Supported Chains per Builder
-- [Get Market Volume By Builder](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-market-volume-by-builder): Get Market Volume by Builder
-- [Get Tvl By Builder](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-tvl-by-builder): Get TVL by Builder
+- [Get Builder Volume](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-builder-volume): Get Builder Volume
+- [Get Builder List](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-builder-list): Get Builder List
+- [Get Builder Stats](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-builder-stats): Get Builder Stats
+- [Get Supported Chains Per Builder](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-supported-chains-per-builder): Get Supported Chains per Builder
+- [Get Market Volume By Builder](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-market-volume-by-builder): Get Market Volume by Builder
+- [Get Tvl By Builder](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-tvl-by-builder): Get TVL by Builder
 
 #### System Info
 
-- [Get System Maintenance Status](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-system-maintenance-status): Get System Maintenance Status
-- [Get Vault Balance](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-vault-balance): Get Vault Balance
-- [Get Insurance Fund Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-insurance-fund-info): Get Insurance Fund Info
-- [Get Announcements](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-announcements): Get Announcements
-- [Get Ip Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-ip-info): Get IP Info
+- [Get System Maintenance Status](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-system-maintenance-status): Get System Maintenance Status
+- [Get Vault Balance](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-vault-balance): Get Vault Balance
+- [Get Insurance Fund Info](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-insurance-fund-info): Get Insurance Fund Info
+- [Get Announcements](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-announcements): Get Announcements
+- [Get Ip Info](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-ip-info): Get IP Info
 
 #### USDC Faucet
 
-- [Get Faucet Usdctestnet Only](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-faucet-usdctestnet-only): Get Faucet USDC(Testnet Only)
+- [Get Faucet Usdctestnet Only](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-faucet-usdctestnet-only): Get Faucet USDC(Testnet Only)
 
 
 ### User API
 
 #### Registration
 
-- [Check If Account Exists](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/check-if-account-exists): Check if Account Exists
-- [Check If Wallet Is Registered](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/check-if-wallet-is-registered): Check if Wallet is Registered
-- [Check If Address Is Registered](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/check-if-address-is-registered): Check if Address is Registered
-- [Get Registration Nonce](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-registration-nonce): Get Registration Nonce
-- [Register Account](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/register-account): Register Account
+- [Check If Account Exists](https://orderly.network/docs/build-on-omnichain/restful-api/public/check-if-account-exists): Check if Account Exists
+- [Check If Wallet Is Registered](https://orderly.network/docs/build-on-omnichain/restful-api/public/check-if-wallet-is-registered): Check if Wallet is Registered
+- [Check If Address Is Registered](https://orderly.network/docs/build-on-omnichain/restful-api/public/check-if-address-is-registered): Check if Address is Registered
+- [Get Registration Nonce](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-registration-nonce): Get Registration Nonce
+- [Register Account](https://orderly.network/docs/build-on-omnichain/restful-api/public/register-account): Register Account
 
 #### Key Management
 
-- [Get Orderly Key](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-orderly-key): Get Orderly Key
-- [Add Orderly Key](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/add-orderly-key): Add Orderly Key
-- [Remove Orderly Key](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/remove-orderly-key): Remove Orderly Key
-- [Get Current Orderly Key Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-current-orderly-key-info): Get Current Orderly Key Info
-- [Get Orderly Key Ip Restriction](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-orderly-key-ip-restriction): Get Orderly Key IP Restriction
-- [Set Orderly Key Ip Restriction](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/set-orderly-key-ip-restriction): Set Orderly Key IP Restriction
-- [Reset Orderly Key Ip Restriction](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/reset-orderly-key-ip-restriction): Reset Orderly Key IP Restriction
+- [Get Orderly Key](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-orderly-key): Get Orderly Key
+- [Add Orderly Key](https://orderly.network/docs/build-on-omnichain/restful-api/public/add-orderly-key): Add Orderly Key
+- [Remove Orderly Key](https://orderly.network/docs/build-on-omnichain/restful-api/private/remove-orderly-key): Remove Orderly Key
+- [Get Current Orderly Key Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-current-orderly-key-info): Get Current Orderly Key Info
+- [Get Orderly Key Ip Restriction](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-orderly-key-ip-restriction): Get Orderly Key IP Restriction
+- [Set Orderly Key Ip Restriction](https://orderly.network/docs/build-on-omnichain/restful-api/private/set-orderly-key-ip-restriction): Set Orderly Key IP Restriction
+- [Reset Orderly Key Ip Restriction](https://orderly.network/docs/build-on-omnichain/restful-api/private/reset-orderly-key-ip-restriction): Reset Orderly Key IP Restriction
 
 #### Account/User Info
 
-- [Get User Daily Volume](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-user-daily-volume): Get User Daily Volume
-- [Get User Volume Statistics](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-user-volume-statistics): Get User Volume Statistics
-- [Get User Statistics](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-user-statistics): Get User Statistics
-- [Get Account Information](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-account-information): Get Account Information
-- [Get User Daily Statistics](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-user-daily-statistics): Get User Daily Statistics
+- [Get User Daily Volume](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-user-daily-volume): Get User Daily Volume
+- [Get User Volume Statistics](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-user-volume-statistics): Get User Volume Statistics
+- [Get User Statistics](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-user-statistics): Get User Statistics
+- [Get Account Overview Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-account-overview-info): Get Account Overview Info
+- [Get Account Information](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-account-information): Get Account Information
+- [Get User Daily Statistics](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-user-daily-statistics): Get User Daily Statistics
 
 #### Account Notifications
 
-- [Get All Notifications](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-all-notifications): Get All Notifications
-- [Get Unread Notifications](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-unread-notifications): Get Unread Notifications
-- [Set Read Status Of Notifications](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/set-read-status-of-notifications): Set Read Status of Notifications
-- [Set Read Status Of All Notifications](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/set-read-status-of-all-notifications): Set Read Status of All Notifications
+- [Get All Notifications](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-all-notifications): Get All Notifications
+- [Get Unread Notifications](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-unread-notifications): Get Unread Notifications
+- [Set Read Status Of Notifications](https://orderly.network/docs/build-on-omnichain/restful-api/private/set-read-status-of-notifications): Set Read Status of Notifications
+- [Set Read Status Of All Notifications](https://orderly.network/docs/build-on-omnichain/restful-api/private/set-read-status-of-all-notifications): Set Read Status of All Notifications
 
 #### Account Config
 
-- [Get Leverage Setting](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-leverage-setting): Get Leverage Setting
-- [Update Leverage Setting](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/update-leverage-setting): Update Leverage Setting
-- [Get Max Leverage Setting](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-max-leverage-setting): Get Max Leverage Setting
-- [Get Leverage Configuration](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-leverage-configuration): Get Leverage Configuration
-- [Set Maintenance Config](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/set-maintenance-config): Set Maintenance Config
+- [Get Leverage Setting](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-leverage-setting): Get Leverage Setting
+- [Get All Leverage Settings](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-all-leverage-settings): Get All Leverage Settings
+- [Update Leverage Setting](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-leverage-setting): Reference page.
+- [Get Margin Modes](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-margin-modes): Get Margin Modes
+- [Get Max Leverage Setting](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-max-leverage-setting): Get Max Leverage Setting
+- [Get Leverage Configuration](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-leverage-configuration): Get Leverage Configuration
+- [Configure Auto Cancel During Maintenance](https://orderly.network/docs/build-on-omnichain/restful-api/private/configure-auto-cancel-during-maintenance): Configure Auto-Cancel During Maintenance
 
 #### Delegate Signer
 
-- [Delegate Signer](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/delegate-signer): Delegate Signer
-- [Add Delegate Signer Orderly Key](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/add-delegate-signer-orderly-key): Add Delegate Signer Orderly Key
-- [Delegate Signer Settle Pnl](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/delegate-signer-settle-pnl): Delegate Signer Settle PnL
-- [Delegate Signer Withdraw Request](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/delegate-signer-withdraw-request): Delegate Signer Withdraw Request
+- [Delegate Signer](https://orderly.network/docs/build-on-omnichain/restful-api/public/delegate-signer): Delegate Signer
+- [Add Delegate Signer Orderly Key](https://orderly.network/docs/build-on-omnichain/restful-api/public/add-delegate-signer-orderly-key): Add Delegate Signer Orderly Key
+- [Delegate Signer Settle Pnl](https://orderly.network/docs/build-on-omnichain/restful-api/private/delegate-signer-settle-pnl): Delegate Signer Settle PnL
+- [Delegate Signer Withdraw Request](https://orderly.network/docs/build-on-omnichain/restful-api/private/delegate-signer-withdraw-request): Delegate Signer Withdraw Request
 
 #### Sub-account
 
-- [Add Sub Account](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/add-sub-account): Add sub-account
-- [Get Sub Account List](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-sub-account-list): Get sub-account list
-- [Update Sub Account](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/update-sub-account): Update sub-account
-- [Get Aggregate Positions](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-aggregate-positions): Get aggregate positions
-- [Get Aggregate Holding](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-aggregate-holding): Get aggregate holding
-- [Settle Sub Account Pnl](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/settle-sub-account-pnl): Settle sub-account PnL
+- [Add Sub Account](https://orderly.network/docs/build-on-omnichain/restful-api/private/add-sub-account): Add sub-account
+- [Get Sub Account List](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-sub-account-list): Get sub-account list
+- [Update Sub Account](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-sub-account): Update sub-account
+- [Get Aggregate Positions](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-aggregate-positions): Get aggregate positions
+- [Get Aggregate Holding](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-aggregate-holding): Get aggregate holding
+- [Settle Sub Account Pnl](https://orderly.network/docs/build-on-omnichain/restful-api/private/settle-sub-account-pnl): Settle sub-account PnL
 
 
 ### Trading API
 
 #### Order Management
 
-- [Create Order](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/create-order): Create Order
-- [Batch Create Order](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/batch-create-order): Batch Create Order
-- [Create Algo Order](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/create-algo-order): Create Algo Order
-- [Edit Order](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/edit-order): Edit Order
-- [Edit Algo Order](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/edit-algo-order): Edit Algo Order
-- [Cancel Order](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/cancel-order): Cancel Order
-- [Cancel Algo Order](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/cancel-algo-order): Cancel Algo Order
-- [Cancel Order By Client Order Id](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/cancel-order-by-client_order_id): Cancel Order By client_order_id
-- [Cancel Algo Order By Client Order Id](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/cancel-algo-order-by-client_order_id): Cancel Algo Order By client_order_id
-- [Cancel All Pending Algo Orders](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/cancel-all-pending-algo-orders): Cancel All Pending Algo Orders
-- [Cancel All Pending Orders](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/cancel-all-pending-orders): Cancel All Pending Orders
-- [Cancel All After](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/cancel-all-after): Cancel All After
-- [Batch Cancel Orders](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/batch-cancel-orders): Batch Cancel Orders
-- [Batch Cancel Orders By Client Order Id](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/batch-cancel-orders-by-client_order_id): Batch Cancel Orders By client_order_id
-- [Get Order By Order Id](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-order-by-order_id): Get Order by order_id
-- [Get Order By Client Order Id](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-order-by-client_order_id): Get Order by client_order_id
-- [Get Algo Order By Order Id](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-algo-order-by-order_id): Get Algo Order by order_id
-- [Get Algo Order By Client Order Id](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-algo-order-by-client_order_id): Get Algo Order by client_order_id
-- [Get Orders](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-orders): Get Orders
-- [Get Algo Orders](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-algo-orders): Get Algo Orders
-- [Get Trades](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-trades): Get Trades
-- [Get Trade](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-trade): Get Trade
-- [Get All Trades Of Specific Order](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-all-trades-of-specific-order): Get All Trades of Specific Order
-- [Get All Trades Of Specific Algo Order](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-all-trades-of-specific-algo-order): Get All Trades of Specific Algo Order
+- [Create Order](https://orderly.network/docs/build-on-omnichain/restful-api/private/create-order): Create Order
+- [Batch Create Order](https://orderly.network/docs/build-on-omnichain/restful-api/private/batch-create-order): Batch Create Order
+- [Create Algo Order](https://orderly.network/docs/build-on-omnichain/restful-api/private/create-algo-order): Create Algo Order
+- [Edit Order](https://orderly.network/docs/build-on-omnichain/restful-api/private/edit-order): Edit Order
+- [Edit Algo Order](https://orderly.network/docs/build-on-omnichain/restful-api/private/edit-algo-order): Edit Algo Order
+- [Cancel Order](https://orderly.network/docs/build-on-omnichain/restful-api/private/cancel-order): Cancel Order
+- [Cancel Algo Order](https://orderly.network/docs/build-on-omnichain/restful-api/private/cancel-algo-order): Cancel Algo Order
+- [Cancel Order By Client Order Id](https://orderly.network/docs/build-on-omnichain/restful-api/private/cancel-order-by-client_order_id): Cancel Order By client_order_id
+- [Cancel Algo Order By Client Order Id](https://orderly.network/docs/build-on-omnichain/restful-api/private/cancel-algo-order-by-client_order_id): Cancel Algo Order By client_order_id
+- [Cancel All Pending Algo Orders](https://orderly.network/docs/build-on-omnichain/restful-api/private/cancel-all-pending-algo-orders): Cancel All Pending Algo Orders
+- [Cancel All Pending Orders](https://orderly.network/docs/build-on-omnichain/restful-api/private/cancel-all-pending-orders): Cancel All Pending Orders
+- [Cancel All After](https://orderly.network/docs/build-on-omnichain/restful-api/private/cancel-all-after): Cancel All After
+- [Batch Cancel Orders](https://orderly.network/docs/build-on-omnichain/restful-api/private/batch-cancel-orders): Batch Cancel Orders
+- [Batch Cancel Orders By Client Order Id](https://orderly.network/docs/build-on-omnichain/restful-api/private/batch-cancel-orders-by-client_order_id): Batch Cancel Orders By client_order_id
+- [Get Order By Order Id](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-order-by-order_id): Get Order by order_id
+- [Get Order By Client Order Id](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-order-by-client_order_id): Get Order by client_order_id
+- [Get Algo Order By Order Id](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-algo-order-by-order_id): Get Algo Order by order_id
+- [Get Algo Order By Client Order Id](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-algo-order-by-client_order_id): Get Algo Order by client_order_id
+- [Get Orders](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-orders): Get Orders
+- [Get Algo Orders](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-algo-orders): Get Algo Orders
+- [Get Trades](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-trades): Get Trades
+- [Get Trade](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-trade): Get Trade
+- [Get All Trades Of Specific Order](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-all-trades-of-specific-order): Get All Trades of Specific Order
+- [Get All Trades Of Specific Algo Order](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-all-trades-of-specific-algo-order): Get All Trades of Specific Algo Order
 
 #### Liquidations
 
-- [Get Positions Under Liquidation](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-positions-under-liquidation): Get Positions Under Liquidation
-- [Get Liquidated Positions Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-liquidated-positions-info): Get Liquidated Positions Info
-- [Get Liquidated Positions By Liquidator](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-liquidated-positions-by-liquidator): Get Liquidated Positions by Liquidator
-- [Get Liquidated Positions Of Account](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-liquidated-positions-of-account): Get Liquidated Positions of Account
-- [Claim Liquidated Positions](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/claim-liquidated-positions): Claim Liquidated Positions
-- [Claim Insurance Fund](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/claim-insurance-fund): Claim Insurance Fund
+- [Get Positions Under Liquidation](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-positions-under-liquidation): Get Positions Under Liquidation
+- [Get Liquidated Positions Info](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-liquidated-positions-info): Get Liquidated Positions Info
+- [Get Liquidated Positions By Liquidator](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-liquidated-positions-by-liquidator): Get Liquidated Positions by Liquidator
+- [Get Liquidated Positions Of Account](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-liquidated-positions-of-account): Get Liquidated Positions of Account
+- [Claim Liquidated Positions](https://orderly.network/docs/build-on-omnichain/restful-api/private/claim-liquidated-positions): Claim Liquidated Positions
+- [Claim Insurance Fund](https://orderly.network/docs/build-on-omnichain/restful-api/private/claim-insurance-fund): Claim Insurance Fund
 
 #### Assets/Withdraw/Settle PnL
 
-- [Get Asset History](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-asset-history): Get Asset History
-- [Get Current Holding](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-current-holding): Get Current Holding
-- [Get Withdrawal Nonce](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-withdrawal-nonce): Get Withdrawal Nonce
-- [Create Withdraw Request](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/create-withdraw-request): Create Withdraw Request
-- [Get Settle Pnl Nonce](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-settle-pnl-nonce): Get Settle PnL Nonce
-- [Request Pnl Settlement](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/request-pnl-settlement): Request PnL Settlement
-- [Get Pnl Settlement History](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-pnl-settlement-history): Get PnL Settlement History
-- [Create Internal Transfer](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/create-internal-transfer): Create Internal Transfer
-- [Create Internal Transfer With Wallet Signature](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/create-internal-transfer-with-wallet-signature): Create Internal Transfer With Wallet Signature
-- [Get Transfer Nonce](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-transfer-nonce): Get Transfer Nonce
-- [Get Internal Transfer History](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-internal-transfer-history): Get Internal Transfer History
+- [Get Asset History](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-asset-history): Get Asset History
+- [Get Current Holding](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-current-holding): Get Current Holding
+- [Get Withdrawal Nonce](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-withdrawal-nonce): Get Withdrawal Nonce
+- [Create Withdraw Request](https://orderly.network/docs/build-on-omnichain/restful-api/private/create-withdraw-request): Create Withdraw Request
+- [Get Settle Pnl Nonce](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-settle-pnl-nonce): Get Settle PnL Nonce
+- [Request Pnl Settlement](https://orderly.network/docs/build-on-omnichain/restful-api/private/request-pnl-settlement): Request PnL Settlement
+- [Get Pnl Settlement History](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-pnl-settlement-history): Get PnL Settlement History
+- [Create Internal Transfer](https://orderly.network/docs/build-on-omnichain/restful-api/private/create-internal-transfer): Create Internal Transfer
+- [Create Internal Transfer With Wallet Signature](https://orderly.network/docs/build-on-omnichain/restful-api/private/create-internal-transfer-with-wallet-signature): Create Internal Transfer With Wallet Signature
+- [Get Transfer Nonce](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-transfer-nonce): Get Transfer Nonce
+- [Get Internal Transfer History](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-internal-transfer-history): Get Internal Transfer History
 
 #### Positions
 
-- [Get All Positions Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-all-positions-info): Get All Positions Info
-- [Get One Position Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-one-position-info): Get One Position Info
-- [Get Position History](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-position-history): Get Position History
+- [Get All Positions Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-all-positions-info): Get All Positions Info
+- [Get Lite Positions Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-lite-positions-info): Get Lite Positions Info
+- [Get One Position Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-one-position-info): Get One Position Info
+- [Get Position History](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-position-history): Get Position History
 
 #### Funding
 
-- [Get Funding Fee History](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-funding-fee-history): Get Funding Fee History
+- [Get Funding Fee History](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-funding-fee-history): Get Funding Fee History
 
 
 ### Strategy Vault API
 
 #### Account
 
-- [Get Strategy Vault Nonce For Account Transaction](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-strategy-vault-nonce-for-account-transaction): Get Strategy Vault Nonce for Account Transaction
-- [Create Strategy Vault Depositwithdrawal Request With Account](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/create-strategy-vault-depositwithdrawal-request-with-account): Create Strategy Vault Deposit/Withdrawal Request with Account
-- [Get Account’S Strategy Vault Transaction History](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-account’s-strategy-vault-transaction-history): Get Account’s Strategy Vault Transaction history
+- [Get Strategy Vault Nonce For Account Transaction](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-strategy-vault-nonce-for-account-transaction): Get Strategy Vault Nonce for Account Transaction
+- [Create Strategy Vault Depositwithdrawal Request With Account](https://orderly.network/docs/build-on-omnichain/restful-api/public/create-strategy-vault-depositwithdrawal-request-with-account): Create Strategy Vault Deposit/Withdrawal Request with Account
+- [Get Account’S Strategy Vault Transaction History](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-account’s-strategy-vault-transaction-history): Get Account’s Strategy Vault Transaction history
 
 
 ### Staking & Valor API
 
 #### Staking
 
-- [Get Wallets Current Staked Balance](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-wallets-current-staked-balance): Get Wallet's Current Staked Balance
-- [Get Unstaking Order Details](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-unstaking-order-details): Get Unstaking ORDER Details
-- [Get Staking Overview](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-staking-overview): Get Staking Overview
-- [Get Esorder Vesting List](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-esorder-vesting-list): Get esORDER vesting list
+- [Get Wallets Current Staked Balance](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-wallets-current-staked-balance): Get Wallet's Current Staked Balance
+- [Get Unstaking Order Details](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-unstaking-order-details): Get Unstaking ORDER Details
+- [Get Staking Overview](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-staking-overview): Get Staking Overview
+- [Get Esorder Vesting List](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-esorder-vesting-list): Get esORDER vesting list
 
 #### Valor
 
-- [Get Valor Batch Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-valor-batch-info): Get Valor Batch Info
-- [Get Valor Pool Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-valor-pool-info): Get Valor Pool Info
-- [Get Valor Redeem Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-valor-redeem-info): Get Valor Redeem Info
-- [Get Valor2 Pool Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-valor2-pool-info): Get Valor2 Pool Info
-- [Get Valor2 Batch Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-valor2-batch-info): Get Valor2 Batch Info
-- [Get Valor2 Redeem Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-valor2-redeem-info): Get Valor2 Redeem Info
-- [Get Valor2 Revenue Buyback](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-valor2-revenue-buyback): Get Valor2 Revenue Buyback
+- [Get Valor Batch Info](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-valor-batch-info): Get Valor Batch Info
+- [Get Valor Pool Info](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-valor-pool-info): Get Valor Pool Info
+- [Get Valor Redeem Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-valor-redeem-info): Get Valor Redeem Info
+- [Get Valor2 Pool Info](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-valor2-pool-info): Get Valor2 Pool Info
+- [Get Valor2 Batch Info](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-valor2-batch-info): Get Valor2 Batch Info
+- [Get Valor2 Redeem Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-valor2-redeem-info): Get Valor2 Redeem Info
+- [Get Valor2 Revenue Buyback](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-valor2-revenue-buyback): Get Valor2 Revenue Buyback
 
 
 ### Builder API
 
 #### User Data
 
-- [Get Builders Users Volumes](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-builders-users-volumes): Get Builder's Users' Volumes
-- [Get Builders Leaderboard](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-builders-leaderboard): Get Builder's Leaderboard
+- [Get Builders Users Volumes](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-builders-users-volumes): Get Builder's Users' Volumes
+- [Get Builders Leaderboard](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-builders-leaderboard): Get Builder's Leaderboard
 
 #### Trading Campaigns
 
-- [Get Campaign Ranking](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-campaign-ranking): Get Campaign Ranking
-- [Get Campaign Statistics](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-campaign-statistics): Get Campaign Statistics
-- [Get Campaign User Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-campaign-user-info): Get Campaign User Info
-- [Get Detailed Campaign Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-detailed-campaign-info): Get Detailed Campaign Info
-- [Get List Of Campaigns](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-list-of-campaigns): Get List of Campaigns
-- [Get Campaign Verification](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-campaign-verification): Get Campaign Verification
-- [Sign Up Campaign](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/sign-up-campaign): Sign Up Campaign
+- [Get Campaign Ranking](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-campaign-ranking): Get Campaign Ranking
+- [Get Campaign Statistics](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-campaign-statistics): Get Campaign Statistics
+- [Get Campaign User Info](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-campaign-user-info): Get Campaign User Info
+- [Get Detailed Campaign Info](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-detailed-campaign-info): Get Detailed Campaign Info
+- [Get List Of Campaigns](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-list-of-campaigns): Get List of Campaigns
+- [Get Campaign Verification](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-campaign-verification): Get Campaign Verification
+- [Sign Up Campaign](https://orderly.network/docs/build-on-omnichain/restful-api/private/sign-up-campaign): Sign Up Campaign
 
 #### Fee Setting
 
-- [Update User Fee Rate](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/update-user-fee-rate): Update User Fee Rate
-- [Reset User Fee Rate](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/reset-user-fee-rate): Reset User Fee Rate
-- [Get Default Builder Fee](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-default-builder-fee): Get Default Builder Fee
-- [Update Default Builder Fee](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/update-default-builder-fee): Update Default Builder Fee
-- [Get User Fee Rates](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-user-fee-rates): Get User Fee Rates
+- [Update User Fee Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-user-fee-rate): Update User Fee Rate
+- [Reset User Fee Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/reset-user-fee-rate): Reset User Fee Rate
+- [Get Default Builder Fee](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-default-builder-fee): Get Default Builder Fee
+- [Update Default Builder Fee](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-default-builder-fee): Update Default Builder Fee
+- [Get User Fee Rates](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-user-fee-rates): Get User Fee Rates
 
 #### Referral Program
 
-- [Check Referral Code](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/check-referral-code): Check Referral Code
-- [Create Referral Code](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/create-referral-code): Create Referral Code
-- [Verify Referral Code](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/verify-referral-code): Verify Referral Code
-- [Get Referral Code Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-referral-code-info): Get Referral Code Info
-- [Update Referral Code](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/update-referral-code): Update Referral Code
-- [Bind Referral Code](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/bind-referral-code): Bind Referral Code
-- [Get Referral Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-referral-info): Get Referral Info
-- [Get Referee Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-referee-info): Get Referee Info
-- [Get Referee Rebate Summary](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-referee-rebate-summary): Get Referee Rebate Summary
-- [Get Referee History](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-referee-history): Get Referee History
-- [Get Referral History](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-referral-history): Get Referral History
-- [Get Referral Rebate Summary](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-referral-rebate-summary): Get Referral Rebate Summary
-- [Get Distribution History](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-distribution-history): Get Distribution History
-- [Edit Referral Code Split](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/edit-referral-code-split): Edit Referral Code Split
-- [Builder Admin Update Auto Referral](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/builder-admin-update-auto-referral): Builder admin update auto referral
-- [Builder Admin Get Auto Referral Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/builder-admin-get-auto-referral-info): Builder admin get auto referral info
-- [Get Auto Referral Progress](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-auto-referral-progress): Get auto referral progress
-- [Edit Referral Code](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/edit-referral-code): Edit Referral Code
+- [Check Referral Code](https://orderly.network/docs/build-on-omnichain/restful-api/public/check-referral-code): Check Referral Code
+- [Create Referral Code](https://orderly.network/docs/build-on-omnichain/restful-api/private/create-referral-code): Create Referral Code
+- [Verify Referral Code](https://orderly.network/docs/build-on-omnichain/restful-api/public/verify-referral-code): Verify Referral Code
+- [Get Referral Code Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-code-info): Get Referral Code Info
+- [Update Referral Code](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-referral-code): Update Referral Code
+- [Bind Referral Code](https://orderly.network/docs/build-on-omnichain/restful-api/private/bind-referral-code): Bind Referral Code
+- [Get Referral Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-info): Get Referral Info
+- [Get Referee Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referee-info): Get Referee Info
+- [Get Referee Rebate Summary](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referee-rebate-summary): Get Referee Rebate Summary
+- [Get Referee History](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referee-history): Get Referee History
+- [Get Referral History](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-history): Get Referral History
+- [Get Referral Rebate Summary](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-rebate-summary): Get Referral Rebate Summary
+- [Get Distribution History](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-distribution-history): Get Distribution History
+- [Edit Referral Code Split](https://orderly.network/docs/build-on-omnichain/restful-api/private/edit-referral-code-split): Edit Referral Code Split
+- [Builder Admin Update Auto Referral](https://orderly.network/docs/build-on-omnichain/restful-api/private/builder-admin-update-auto-referral): Builder admin update auto referral
+- [Builder Admin Get Auto Referral Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/builder-admin-get-auto-referral-info): Builder admin get auto referral info
+- [Get Auto Referral Progress](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-auto-referral-progress): Get auto referral progress
+- [Edit Referral Code](https://orderly.network/docs/build-on-omnichain/restful-api/private/edit-referral-code): Edit Referral Code
 
 #### Broker Admin
 
-- [Admin Client Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/admin-client-info): Get Account Information
-- [Admin Client Holding](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/admin-client-holding): Get Current Holding
-- [Admin Internal Transfer History](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/admin-internal-transfer-history): Get Internal Transfer History
-- [Admin Asset History](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/admin-asset-history): Get Asset History
-- [Admin Client Leverage](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/admin-client-leverage): Get Leverage Setting
-- [Admin Orders](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/admin-orders): Get Orders
-- [Admin Position](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/admin-position): Get One Position Info
-- [Admin Positions](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/admin-positions): Get All Positions Info
-- [Admin Funding Fee History](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/admin-funding-fee-history): Get Funding Fee History
-- [Admin Volume User Stats](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/admin-volume-user-stats): Get User Volume Statistics
+- [Admin Client Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-client-info): Get Account Information
+- [Admin Client Holding](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-client-holding): Get Current Holding
+- [Admin Internal Transfer History](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-internal-transfer-history): Get Internal Transfer History
+- [Admin Asset History](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-asset-history): Get Asset History
+- [Admin Client Leverage](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-client-leverage): Get Leverage Setting
+- [Admin Orders](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-orders): Get Orders
+- [Admin Position](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-position): Get One Position Info
+- [Admin Positions](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-positions): Get All Positions Info
+- [Admin Funding Fee History](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-funding-fee-history): Get Funding Fee History
+- [Admin Volume User Stats](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-volume-user-stats): Get User Volume Statistics
 
 
 ### Points Module
 
 #### Public API
 
-- [Get Information About Stages](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-information-about-stages): Get Information About Stages
-- [Get Merits Leaderboard](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-merits-leaderboard): Get Merits Leaderboard
-- [Get Users Merits](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-users-merits): Get User's Merits
-- [Get Stage Rankings](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-stage-rankings): Get Stage Rankings
-- [Get Number Of Merits For Distribution](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-number-of-merits-for-distribution): Get Number of Merits for Distribution
+- [Get Information About Stages](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-information-about-stages): Get Information About Stages
+- [Get Merits Leaderboard](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-merits-leaderboard): Get Merits Leaderboard
+- [Get Users Merits](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-users-merits): Get User's Merits
+- [Get Stage Rankings](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-stage-rankings): Get Stage Rankings
+- [Get Number Of Merits For Distribution](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-number-of-merits-for-distribution): Get Number of Merits for Distribution
 
 #### Admin API
 
-- [Createupdate Stage Parameters](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/createupdate-stage-parameters): Create/Update Stage Parameters
-- [Get Stage Parameters](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-stage-parameters): Get Stage Parameters
-- [Delete Stage](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/admin/delete-stage): Delete Stage
+- [Createupdate Stage Parameters](https://orderly.network/docs/build-on-omnichain/restful-api/private/createupdate-stage-parameters): Create/Update Stage Parameters
+- [Get Stage Parameters](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-stage-parameters): Get Stage Parameters
+- [Delete Stage](https://orderly.network/docs/build-on-omnichain/restful-api/admin/delete-stage): Delete Stage
 
 
 ### Market Data API
 
 #### TradingView
 
-- [Get Tradingview Localized Config Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-tradingview-localized-config-info): Get TradingView Localized Config Info
-- [Get Tradingview History Bars](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-tradingview-history-bars): Get TradingView History Bars
-- [Get Tradingview Symbol Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-tradingview-symbol-info): Get TradingView Symbol Info
+- [Get Tradingview Localized Config Info](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-tradingview-localized-config-info): Get TradingView Localized Config Info
+- [Get Tradingview History Bars](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-tradingview-history-bars): Get TradingView History Bars
+- [Get Tradingview Symbol Info](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-tradingview-symbol-info): Get TradingView Symbol Info
 
 #### Funding Rates
 
-- [Get Funding Rate History For One Market](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-funding-rate-history-for-one-market): Get Funding Rate History for One Market
-- [Get Predicted Funding Rate For One Market](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-predicted-funding-rate-for-one-market): Get Predicted Funding Rate for One Market
-- [Get Predicted Funding Rates For All Markets](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-predicted-funding-rates-for-all-markets): Get Predicted Funding Rates for All Markets
-- [Get Funding Rate For All Markets](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-funding-rate-for-all-markets): Get Funding Rate for All Markets
+- [Get Funding Rate History For One Market](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-funding-rate-history-for-one-market): Get Funding Rate History for One Market
+- [Get Predicted Funding Rate For One Market](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-predicted-funding-rate-for-one-market): Get Predicted Funding Rate for One Market
+- [Get Predicted Funding Rates For All Markets](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-predicted-funding-rates-for-all-markets): Get Predicted Funding Rates for All Markets
+- [Get Funding Rate For All Markets](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-funding-rate-for-all-markets): Get Funding Rate for All Markets
 
 #### Market Info
 
-- [Get Supported Collateral Info](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-supported-collateral-info): Get Supported Collateral Info
-- [Get Order Rules Per Symbol](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-order-rules-per-symbol): Get Order Rules per Symbol
-- [Get Available Symbols](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-available-symbols): Get Available Symbols
-- [Get Market Trades](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-market-trades): Get Market Trades
-- [Get Price Info For All Symbols](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-price-info-for-all-symbols): Get Price Info for All Symbols
-- [Get Open Interests For All Symbols](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-open-interests-for-all-symbols): Get Open Interests for All Symbols
-- [Get Market Info For All Symbols](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-market-info-for-all-symbols): Get Market Info for All Symbols
-- [Get Market Info For One Symbol](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-market-info-for-one-symbol): Get Market Info for One Symbol
-- [Get Index Price Source](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-index-price-source): Get Index Price Source
-- [Get Historical Price List For All Symbols](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-historical-price-list-for-all-symbols): Get Historical Price List for All Symbols
-- [Orderbook Snapshot](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/orderbook-snapshot): Orderbook Snapshot
-- [Get Kline](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/private/get-kline): Get Kline
-- [Get Kline History](https://orderly.network/docs/build-on-omnichain/evm-api/restful-api/public/get-kline-history): Get Kline History
+- [Get Supported Collateral Info](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-supported-collateral-info): Get Supported Collateral Info
+- [Get Order Rules Per Symbol](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-order-rules-per-symbol): Get Order Rules per Symbol
+- [Get Available Symbols](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-available-symbols): Get Available Symbols
+- [Get Market Trades](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-market-trades): Get Market Trades
+- [Get Price Info For All Symbols](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-price-info-for-all-symbols): Get Price Info for All Symbols
+- [Get Open Interests For All Symbols](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-open-interests-for-all-symbols): Get Open Interests for All Symbols
+- [Get Market Info For All Symbols](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-market-info-for-all-symbols): Get Market Info for All Symbols
+- [Get Market Info For One Symbol](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-market-info-for-one-symbol): Get Market Info for One Symbol
+- [Get Index Price Source](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-index-price-source): Get Index Price Source
+- [Get Historical Price List For All Symbols](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-historical-price-list-for-all-symbols): Get Historical Price List for All Symbols
+- [Orderbook Snapshot](https://orderly.network/docs/build-on-omnichain/restful-api/private/orderbook-snapshot): Orderbook Snapshot
+- [Get Kline](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-kline): Get Kline
+- [Get Kline History](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-kline-history): Get Kline History
 
 
 ### Websocket API
 
-- [Websocket API](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/introduction): WebSocket API base endpoints, available public and private topics, and subscription/unsubscription format.
-- [PING/PONG](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/ping-pong): WebSocket keep-alive mechanism using ping/pong messages with a 10-second interval.
-- [Authentication](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/authentication): How to authenticate WebSocket private stream connections using orderly-key and orderly-secret.
-- [Error Response](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/error-response): Format and example of WebSocket error responses, including the client ID mapping pattern.
+- [Websocket API](https://orderly.network/docs/build-on-omnichain/websocket-api/introduction): WebSocket API base endpoints, available public and private topics, and subscription/unsubscription format.
+- [PING/PONG](https://orderly.network/docs/build-on-omnichain/websocket-api/ping-pong): WebSocket keep-alive mechanism using ping/pong messages with a 10-second interval.
+- [Authentication](https://orderly.network/docs/build-on-omnichain/websocket-api/authentication): How to authenticate WebSocket private stream connections using orderly-key and orderly-secret.
+- [Error Response](https://orderly.network/docs/build-on-omnichain/websocket-api/error-response): Format and example of WebSocket error responses, including the client ID mapping pattern.
 
 #### Public Market Data
 
-- [Request orderbook](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/request-orderbook): Request a one-time orderbook snapshot for a symbol via WebSocket instead of subscribing to updates.
-- [Orderbook](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/orderbook): Subscribe to full depth-100 orderbook snapshots for a symbol via WebSocket, pushed every second.
-- [Order book update](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/order-book-update): Subscribe to incremental orderbook updates for a symbol via WebSocket, pushed every 200ms.
-- [Trade](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/trade): Subscribe to real-time trade execution events for a symbol via WebSocket.
-- [24h ticker](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/24-hour-ticker): Subscribe to 24-hour ticker data for a single symbol via WebSocket, pushed every second.
-- [24h tickers](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/24-hour-tickers): Subscribe to 24-hour ticker data for all symbols via WebSocket, pushed every second.
-- [24h ticker by builder](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/24-hour-ticker-by-builder): Subscribe to 24-hour ticker data for a single symbol filtered by builder ID via WebSocket.
-- [24h tickers by builder](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/24-hour-tickers-by-builder): Subscribe to 24-hour ticker data for all symbols filtered by builder ID via WebSocket.
-- [bbo](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/bbo): Subscribe to best bid and offer (BBO) updates for a single symbol via WebSocket, pushed every 10ms.
-- [bbos](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/bbos): Subscribe to best bid and offer (BBO) updates for all symbols via WebSocket, pushed every second.
-- [k-line](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/k-line): Subscribe to OHLC kline/candlestick updates for a symbol at configurable time intervals via WebSocket.
-- [Market Price Changes Info](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/price-changes): Subscribe to market price change information for all symbols via WebSocket, pushed every minute.
-- [Traders Open Interest](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/traders-open-interests): Subscribe to aggregated traders' open interest data via WebSocket, pushed every minute.
-- [Price for Small Charts](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/price-for-small-charts): Subscribe to historical price data for small chart rendering via WebSocket, pushed every minute.
-- [Index price](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/index-price): Subscribe to index price updates for a single symbol via WebSocket using the SPOT symbol format.
-- [Index prices](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/index-prices): Subscribe to index price updates for all symbols via WebSocket, pushed every second.
-- [Mark price](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/mark-price): Subscribe to mark price updates for a single symbol via WebSocket, pushed every second.
-- [Mark prices](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/mark-prices): Subscribe to mark price updates for all symbols via WebSocket, pushed every second.
-- [Open interest](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/open-interest): Subscribe to open interest updates for a symbol via WebSocket, with 1s change and 10s forced push.
-- [Estimated funding rate](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/estimated-funding-rate): Subscribe to estimated funding rate updates for a symbol via WebSocket, pushed every 15 seconds.
-- [Liquidation push](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/liquidation-push): Subscribe to real-time liquidation event notifications via WebSocket.
-- [System maintenance status](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/system-maintenance-status): Subscribe to real-time system maintenance status notifications via WebSocket.
-- [Announcement](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/public/announcement): Subscribe to real-time system announcements via WebSocket.
+- [Request orderbook](https://orderly.network/docs/build-on-omnichain/websocket-api/public/request-orderbook): Request a one-time orderbook snapshot for a symbol via WebSocket instead of subscribing to updates.
+- [Orderbook](https://orderly.network/docs/build-on-omnichain/websocket-api/public/orderbook): Subscribe to full depth-100 orderbook snapshots for a symbol via WebSocket, pushed every second.
+- [Order book update](https://orderly.network/docs/build-on-omnichain/websocket-api/public/order-book-update): Subscribe to incremental orderbook updates for a symbol via WebSocket, pushed every 200ms.
+- [Trade](https://orderly.network/docs/build-on-omnichain/websocket-api/public/trade): Subscribe to real-time trade execution events for a symbol via WebSocket.
+- [24h ticker](https://orderly.network/docs/build-on-omnichain/websocket-api/public/24-hour-ticker): Subscribe to 24-hour ticker data for a single symbol via WebSocket, pushed every second.
+- [24h tickers](https://orderly.network/docs/build-on-omnichain/websocket-api/public/24-hour-tickers): Subscribe to 24-hour ticker data for all symbols via WebSocket, pushed every second.
+- [24h ticker by builder](https://orderly.network/docs/build-on-omnichain/websocket-api/public/24-hour-ticker-by-builder): Subscribe to 24-hour ticker data for a single symbol filtered by builder ID via WebSocket.
+- [24h tickers by builder](https://orderly.network/docs/build-on-omnichain/websocket-api/public/24-hour-tickers-by-builder): Subscribe to 24-hour ticker data for all symbols filtered by builder ID via WebSocket.
+- [bbo](https://orderly.network/docs/build-on-omnichain/websocket-api/public/bbo): Subscribe to best bid and offer (BBO) updates for a single symbol via WebSocket, pushed every 10ms.
+- [bbos](https://orderly.network/docs/build-on-omnichain/websocket-api/public/bbos): Subscribe to best bid and offer (BBO) updates for all symbols via WebSocket, pushed every second.
+- [k-line](https://orderly.network/docs/build-on-omnichain/websocket-api/public/k-line): Subscribe to OHLC kline/candlestick updates for a symbol at configurable time intervals via WebSocket.
+- [Market Price Changes Info](https://orderly.network/docs/build-on-omnichain/websocket-api/public/price-changes): Subscribe to market price change information for all symbols via WebSocket, pushed every minute.
+- [Traders Open Interest](https://orderly.network/docs/build-on-omnichain/websocket-api/public/traders-open-interests): Subscribe to aggregated traders' open interest data via WebSocket, pushed every minute.
+- [Price for Small Charts](https://orderly.network/docs/build-on-omnichain/websocket-api/public/price-for-small-charts): Subscribe to historical price data for small chart rendering via WebSocket, pushed every minute.
+- [Index price](https://orderly.network/docs/build-on-omnichain/websocket-api/public/index-price): Subscribe to index price updates for a single symbol via WebSocket using the SPOT symbol format.
+- [Index prices](https://orderly.network/docs/build-on-omnichain/websocket-api/public/index-prices): Subscribe to index price updates for all symbols via WebSocket, pushed every second.
+- [Mark price](https://orderly.network/docs/build-on-omnichain/websocket-api/public/mark-price): Subscribe to mark price updates for a single symbol via WebSocket, pushed every second.
+- [Mark prices](https://orderly.network/docs/build-on-omnichain/websocket-api/public/mark-prices): Subscribe to mark price updates for all symbols via WebSocket, pushed every second.
+- [Open interest](https://orderly.network/docs/build-on-omnichain/websocket-api/public/open-interest): Subscribe to open interest updates for a symbol via WebSocket, with 1s change and 10s forced push.
+- [Estimated funding rate](https://orderly.network/docs/build-on-omnichain/websocket-api/public/estimated-funding-rate): Subscribe to estimated funding rate updates for a symbol via WebSocket, pushed every 15 seconds.
+- [Liquidation push](https://orderly.network/docs/build-on-omnichain/websocket-api/public/liquidation-push): Subscribe to real-time liquidation event notifications via WebSocket.
+- [System maintenance status](https://orderly.network/docs/build-on-omnichain/websocket-api/public/system-maintenance-status): Subscribe to real-time system maintenance status notifications via WebSocket.
+- [Announcement](https://orderly.network/docs/build-on-omnichain/websocket-api/public/announcement): Subscribe to real-time system announcements via WebSocket.
 
 #### Private User Data
 
-- [Account](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/private/account): Subscribe to real-time account status updates via private WebSocket stream.
-- [Balance](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/private/balance): Subscribe to real-time token balance updates via private WebSocket stream.
-- [Execution Report](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/private/execution-report): Subscribe to order execution reports, optionally filtered by symbol, via private WebSocket stream.
-- [Algo Execution Report](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/private/algo-execution-report): Subscribe to algo order execution reports via private WebSocket stream.
-- [Algo Execution Report v2](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/private/algo-execution-report-v2): Subscribe to v2 algo order execution reports with enhanced fields via private WebSocket stream.
-- [Notifications](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/private/notifications): Subscribe to real-time account notifications via private WebSocket stream.
-- [Position push](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/private/position-push): Subscribe to real-time position updates via private WebSocket stream.
-- [Liquidation on account push](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/private/liquidation-account-push): Subscribe to account-level liquidation event notifications via private WebSocket stream.
-- [Liquidator liquidations push](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/private/liquidator): Subscribe to liquidator-initiated liquidation updates via private WebSocket stream.
-- [PnL Settlement](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/private/pnl-settlement): Subscribe to PnL settlement status updates via private WebSocket stream.
-- [Wallet Transactions](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/private/wallet-transactions): Subscribe to deposit and withdrawal transaction updates via private WebSocket stream.
-- [Asset Convert](https://orderly.network/docs/build-on-omnichain/evm-api/websocket-api/private/asset-convert): Subscribe to asset conversion status updates via private WebSocket stream.
+- [Account](https://orderly.network/docs/build-on-omnichain/websocket-api/private/account): Subscribe to real-time account status updates via private WebSocket stream.
+- [Balance](https://orderly.network/docs/build-on-omnichain/websocket-api/private/balance): Subscribe to real-time token balance updates via private WebSocket stream.
+- [Execution Report](https://orderly.network/docs/build-on-omnichain/websocket-api/private/execution-report): Subscribe to order execution reports, optionally filtered by symbol, via private WebSocket stream.
+- [Algo Execution Report](https://orderly.network/docs/build-on-omnichain/websocket-api/private/algo-execution-report): Subscribe to algo order execution reports via private WebSocket stream.
+- [Algo Execution Report v2](https://orderly.network/docs/build-on-omnichain/websocket-api/private/algo-execution-report-v2): Subscribe to v2 algo order execution reports with enhanced fields via private WebSocket stream.
+- [Notifications](https://orderly.network/docs/build-on-omnichain/websocket-api/private/notifications): Subscribe to real-time account notifications via private WebSocket stream.
+- [Position push](https://orderly.network/docs/build-on-omnichain/websocket-api/private/position-push): Subscribe to real-time position updates via private WebSocket stream.
+- [Liquidation on account push](https://orderly.network/docs/build-on-omnichain/websocket-api/private/liquidation-account-push): Subscribe to account-level liquidation event notifications via private WebSocket stream.
+- [Liquidator liquidations push](https://orderly.network/docs/build-on-omnichain/websocket-api/private/liquidator): Subscribe to liquidator-initiated liquidation updates via private WebSocket stream.
+- [PnL Settlement](https://orderly.network/docs/build-on-omnichain/websocket-api/private/pnl-settlement): Subscribe to PnL settlement status updates via private WebSocket stream.
+- [Wallet Transactions](https://orderly.network/docs/build-on-omnichain/websocket-api/private/wallet-transactions): Subscribe to deposit and withdrawal transaction updates via private WebSocket stream.
+- [Asset Convert](https://orderly.network/docs/build-on-omnichain/websocket-api/private/asset-convert): Subscribe to asset conversion status updates via private WebSocket stream.
 
 
 ## SDKs

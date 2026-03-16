@@ -74,12 +74,12 @@ async function main() {
 }
 
 async function updateOpenApi() {
-  await rimraf("./build-on-omnichain/evm-api/restful-api");
+  await rimraf("./build-on-omnichain/restful-api");
   await runCommand(
-    "npx @mintlify/scraping@3.0.185 openapi-file ./evm.openapi.yaml -o ./build-on-omnichain/evm-api/restful-api"
+    "npx @mintlify/scraping@3.0.185 openapi-file ./orderly.openapi.yaml -o ./build-on-omnichain/restful-api"
   );
 
-  let basePath = "./build-on-omnichain/evm-api/restful-api";
+  let basePath = "./build-on-omnichain/restful-api";
   let files = await fs.readdir(basePath, { recursive: true });
   await Promise.all(
     files.map(async (fileName) => {
@@ -87,7 +87,7 @@ async function updateOpenApi() {
       const stat = await fs.stat(filePath);
       if (stat.isDirectory()) return;
       let file = await fs.readFile(filePath, { encoding: "utf-8" });
-      file = file.replace(/openapi: /, "openapi: evm.openapi ");
+      file = file.replace(/openapi: /, "openapi: orderly.openapi ");
       return fs.writeFile(filePath, file);
     })
   );

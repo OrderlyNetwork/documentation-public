@@ -13,7 +13,7 @@ Before writing code, align the product scope and technical setup with the Orderl
   - [React Hooks](/sdks/hooks/overview)
   - [React UI components](/sdks/react/overview)
   - [Python connector](https://github.com/OrderlyNetwork/orderly-evm-connector-python)
-  - Direct API access through the [EVM API docs](/build-on-omnichain/evm-api/introduction)
+  - Direct API access through the [EVM API docs](/build-on-omnichain/introduction)
 - **Set up builder identity:** Start from the [broker onboarding guide](/introduction/getting-started/broker-onboarding). If you are using Orderly One, go to [https://dex.orderly.network/](https://dex.orderly.network/) to create your builder ID and continue onboarding.
 - **Review system design:** Read the [Building on Orderly](/build-on-omnichain/building-on-omnichain), [Smart Contract Overview](/build-on-omnichain/overview), and [Smart Contract Addresses](/build-on-omnichain/addresses) pages.
 - **Define launch scope:** Confirm your core user flows, testnet plan, support process, and go-to-market milestones before development starts.
@@ -26,7 +26,7 @@ Implement the flows that every trading integration needs.
 - **[Wallet authentication and Orderly Keys](/build-on-omnichain/user-flows/wallet-authentication):** Set up authentication for signed API access and trading actions.
 - **[Deposit and withdrawal](/build-on-omnichain/user-flows/withdrawal-deposit):** Support funding and withdrawal flows from supported chains.
 - **[Order management](/build-on-omnichain/user-flows/order-management):** Implement order placement, cancellation, and order state handling.
-- **Market and symbol data:** Integrate market metadata, prices, orderbook data, and trade updates from the [WebSocket API](/build-on-omnichain/evm-api/websocket-api/introduction) and relevant REST endpoints such as [available symbols](/build-on-omnichain/evm-api/restful-api/public/get-available-symbols).
+- **Market and symbol data:** Integrate market metadata, prices, orderbook data, and trade updates from the [WebSocket API](/build-on-omnichain/websocket-api/introduction) and relevant REST endpoints such as [available symbols](/build-on-omnichain/restful-api/public/get-available-symbols).
 
 <Note>
   **Reduce-Only Orders:** Use the `reduce-only` flag for orders intended to close or reduce a position. This helps avoid cases where a closing order could otherwise increase Initial Margin Requirements (IMR) and fail because the account does not have enough margin.
@@ -38,7 +38,7 @@ Add the pieces that make the integration operationally complete.
 
 - **[Settle PnL](/build-on-omnichain/user-flows/settle-pnl):** Handle realized PnL settlement as part of the account lifecycle.
 - **[Custom fees](/build-on-omnichain/user-flows/custom-fees):** Configure default builder fees and any user-level fee logic you need.
-- **User data surfaces:** Display balances, positions, trade history, and account data using endpoints such as [Get account information](/build-on-omnichain/evm-api/restful-api/private/get-account-information).
+- **User data surfaces:** Display balances, positions, trade history, and account data using endpoints such as [Get account information](/build-on-omnichain/restful-api/private/get-account-information).
 - **Regulatory controls:** Implement the geo-blocking and compliance checks required for your product and jurisdiction.
 
 ## Phase 4: Testing & Launch Preparation
@@ -46,7 +46,7 @@ Add the pieces that make the integration operationally complete.
 Verify the integration end to end before going live.
 
 - **Validate on testnet:** Run through registration, authentication, deposits, withdrawals, trading, and settlement on testnet before launch.
-- **Prepare for maintenance:** Use the [system maintenance status endpoint](/build-on-omnichain/evm-api/restful-api/public/get-system-maintenance-status), ask the Orderly team for builder Telegram channel access, and make sure your UI handles maintenance windows clearly, including any order actions that remain available.
+- **Prepare for maintenance:** Use the [system maintenance status endpoint](/build-on-omnichain/restful-api/public/get-system-maintenance-status), ask the Orderly team for builder Telegram channel access, and make sure your UI handles maintenance windows clearly, including any order actions that remain available.
 - **Review support and launch readiness:** Make sure your team has clear ownership for user support, incident communication, and launch coordination with Orderly.
 
 <Warning>

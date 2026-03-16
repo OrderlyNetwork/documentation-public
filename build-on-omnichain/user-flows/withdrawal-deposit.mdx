@@ -208,7 +208,7 @@ await vaultContract.deposit(depositInput, { value: depositFee });
   Deposits will take some time to reflect depending on the origin chain, to allow for finalizing of
   the cross-chain transaction involved in the deposit. Once the deposit is credited, the balance
   will update and the transaction can be seen on the [Get asset history
-  API](/build-on-omnichain/evm-api/restful-api/private/get-asset-history).
+  API](/build-on-omnichain/restful-api/private/get-asset-history).
 </Note>
 
 ### Full example
@@ -427,7 +427,7 @@ Follow the following steps to withdraw your tokens from Orderly:
     additional cross-chain transaction fee will be deducted from the user's account.
   </Step>
   <Step title="Obtain a withdrawal nonce">
-    Get a nonce from [Get Withdrawal Nonce API](/build-on-omnichain/evm-api/restful-api/private/get-withdrawal-nonce).
+    Get a nonce from [Get Withdrawal Nonce API](/build-on-omnichain/restful-api/private/get-withdrawal-nonce).
   </Step>
   <Step title="Obtain a signature from EIP-712">
     Sign an EIP-712 message of [message type](/build-on-omnichain/user-flows/wallet-authentication#message-types) `Withdraw`:
@@ -467,12 +467,12 @@ where:
 | receiver      | string    | Y            | Address of the receiver, which should be equal to the address of the account.                                          |
 | token         | string    | Y            | The string representation of the token that is being withdrawn (eg "USDC")                                             |
 | amount        | string       | Y            | Amount of tokens to be withdrawn                                                                                       |
-| withdrawNonce | int       | Y            | Valid withdrawal nonce from [Get Withdrawal Nonce API](/build-on-omnichain/evm-api/restful-api/private/get-withdrawal-nonce) |
+| withdrawNonce | int       | Y            | Valid withdrawal nonce from [Get Withdrawal Nonce API](/build-on-omnichain/restful-api/private/get-withdrawal-nonce) |
 | timestamp     | timestamp | Y            | current timestamp in UNIX milliseconds                                                                                 |
 
   </Step>
   <Step title="Make a withdraw request">
-    Call the [Create withdraw request API](/build-on-omnichain/evm-api/restful-api/private/create-withdraw-request).
+    Call the [Create withdraw request API](/build-on-omnichain/restful-api/private/create-withdraw-request).
   </Step>
 </Steps>
 

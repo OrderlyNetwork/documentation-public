@@ -33,7 +33,7 @@ should not be manually edited.
 
 `yarn update` only exists to regenerate generated documentation content:
 
-- `build-on-omnichain/evm-api/restful-api/`
+- `build-on-omnichain/restful-api/`
 - `sdks/tech-doc/`
 
 Do not manually edit generated files in those directories unless you are changing
@@ -68,7 +68,7 @@ Canonical page minimum contract:
 Repo context policy:
 
 - Runtime docs surface: `docs.json`, hand-authored docs, required assets, and the maintenance scripts that define the live site.
-- Generated surface: `build-on-omnichain/evm-api/restful-api/`, `sdks/tech-doc/`, `llms.txt`, and `llms-full.txt`; regenerate instead of hand-editing.
+- Generated surface: `build-on-omnichain/restful-api/`, `sdks/tech-doc/`, `llms.txt`, and `llms-full.txt`; regenerate instead of hand-editing.
 - Internal surface: `docs/superpowers/`, `.sisyphus/`, `NOTES.md`, and similar maintenance-only files; exclude them from default AI context.
 
 <Note>
@@ -80,7 +80,7 @@ Repo context policy:
 ### The update script changes OpenAPI files
 
 It means someone modified generated API documentation or the OpenAPI source changed.
-Those files are regenerated from `evm.openapi.yaml` and the SDK docs source.
+Those files are regenerated from `orderly.openapi.yaml` and the SDK docs source.
 If there are changes to the OpenAPI file, run the update script after updating the
 source, then adjust `docs.json` only if navigation or visible site structure needs
 to change.
