@@ -2,14 +2,25 @@
 title: "Order Types"
 description: "Supported order types on Orderly including Market, IOC, FOK, Limit, and Post Only with execution rules."
 ---
-There are 5 order types on Orderly:
 
-    **MARKET:** It matches until the full size is executed. If the size is too large (larger than the whole book) or the matching price exceeds the price limit (refer to `price_range`), then the remaining quantity will be canceled.
-    
-    **IOC (Immediate or Cancel):** It matches as much as possible at the order\_price. If not fully executed, then the remaining quantity will be canceled.
-    
-    **FOK (Fill or Kill):** If the order can be fully executed at the order\_price, then the order gets fully executed otherwise would be canceled without any execution.
-    
-    **POST ONLY:** If the order executes with any maker trades at the time of placement, then it will be canceled without any execution.
-    
-    **REDUCE ONLY:** Executes buy or sell orders which only reduce a current position
+Orderly supports 5 order types:
+
+## Market
+
+Executes immediately at the best available prices until the full size is filled. If the order is larger than the entire book, or the matching price exceeds the [price limit](/introduction/trade-on-orderly/perpetual-futures/orders-price-limits), the remaining quantity is canceled.
+
+## IOC (Immediate or Cancel)
+
+Fills as much as possible at the specified price, immediately. Any unfilled portion is canceled -- it will not remain in the order book.
+
+## FOK (Fill or Kill)
+
+All-or-nothing. If the entire order can be filled at the specified price, it executes in full. Otherwise the entire order is canceled with no partial fill.
+
+## Post Only
+
+Guarantees you are the **maker**. If the order would match immediately upon placement (making you a taker), it is canceled instead. Use this to ensure you only pay maker fees.
+
+## Reduce Only
+
+Can only **decrease** an existing position. It will not open a new position or increase your current one. Useful for closing out a position without risk of accidentally flipping direction.

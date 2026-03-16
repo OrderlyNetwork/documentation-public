@@ -2,8 +2,13 @@
 title: "Accounts"
 description: "Account structure"
 ---
-Orderly has implemented an account structure where each address can have several accounts, one account per front-end that operates on Orderly. 
 
-The account address is derived from the user's wallet address and the builder ID they are trading from, so there is one account per integrator.
+On Orderly, each wallet gets a **separate account per front-end (DEX)**. Your account address is derived from your wallet address and the builder ID of the front-end you're trading on.
 
-Users' trading activity, such as trades, fees paid, and volume, is compartmentalized by front-end. Each account is completely independent, so trades placed through front-end A cannot be seen or modified through front-end B, even if both accounts are owned by the same wallet. Fee tiers are set per account.
+## What this means
+
+If you trade on DEX A and DEX B with the same wallet, you will have two independent accounts. Each account is fully isolated:
+
+- **Trades** placed through DEX A cannot be seen or modified through DEX B.
+- **Fees, volume, and fee tiers** are tracked separately per account.
+- **No shared state** exists between accounts, even if the same wallet owns both.

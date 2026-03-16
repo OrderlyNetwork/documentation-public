@@ -5,24 +5,24 @@ description: "Understanding the fee structure for Traders and the Builder Stakin
 
 # Overview
 
-Trading fees are the costs associated with buying, selling, or trading assets on an exchange, typically calculated in **basis points (1 bps = 0.01%)** of the total transaction value.
+Trading fees are the costs you pay when you buy, sell, or trade on an exchange. On Orderly, fees are measured in **basis points (1 bps = 0.01%)** of your trade's total value.
 
-Orderly Network utilizes a dual-layer fee structure:
-1.  **Base fees:** The foundational cost paid by the **Builder** (the DEX) to Orderly Network.
-2.  **User fees:** The final fee paid by the **Trader** to the Builder.
+Orderly Network uses a two-layer fee structure:
+1.  **Base fees:** The cost the **Builder** (the DEX) pays to Orderly Network.
+2.  **User fees:** The fee the **Trader** pays to the Builder.
 
-### 💡 The dual-layer example
-To see how this works in practice:
+### The dual-layer example
+Here's how the two layers work together in practice:
 *   **Orderly base taker fee:** 3 bps (0.03%)
 *   **Builder custom fee:** 5 bps (0.05%)
 *   **Result:** The **Trader pays 5 bps**. Orderly retains **3 bps**, and the **Builder keeps 2 bps** as profit.
 
 ### Fee types
-**Maker fees:** Charged to Traders who add liquidity to the market by placing orders that are not instantly filled (e.g., limit orders). Currently, the **Orderly base maker fee is 0.00 bps** across all tiers.
+**Maker fees:** Charged when your order adds liquidity to the order book -- for example, a limit order that doesn't fill right away. Currently, the **Orderly base maker fee is 0.00 bps** across all tiers.
 
-**Taker fees:** Charged to Traders who remove liquidity from the market by placing orders that are filled immediately (e.g., market orders).
+**Taker fees:** Charged when your order removes liquidity by filling immediately -- for example, a market order.
 
-**Liquidation fees:** In the event of a liquidation, a user liquidation fee applies to the liquidated position. Refer to the [liquidation fee](https://orderly.network) documentation for a detailed explanation.
+**Liquidation fees:** If your position gets liquidated, a liquidation fee is applied. See the [liquidation fee](https://orderly.network) docs for details.
 
 <Note>
 Perpetual futures trading fees are charged after every trade in USDC and are **factored into the position's average entry price**.
@@ -30,23 +30,23 @@ Perpetual futures trading fees are charged after every trade in USDC and are **f
 
 # How fees work for Traders
 
-End-users (Traders) trade with the fees set by the Builder.
+As a Trader, you pay a single fee per trade that's set by the Builder (the DEX you're using).
 
-*   **Total fee paid:** Traders pay a single, transparent fee per trade. This fee is set by the Builder and is typically inclusive of Orderly’s base fee plus the Builder's margin.
-*   **Cost realization:** Fees are automatically deducted from the Trader's USDC balance upon trade execution.
-*   **Execution types:** Traders are classified as either a **Maker** or a **Taker** based on whether their order provides or removes liquidity at the moment of execution.
+*   **Total fee paid:** You see one transparent fee per trade. This fee typically includes Orderly's base fee plus the Builder's margin.
+*   **How it's charged:** Fees are automatically deducted from your USDC balance when your trade executes.
+*   **Maker vs Taker:** Whether you pay the maker or taker rate depends on how your order is filled. If your order sits in the book and waits, you're a **Maker**. If it fills immediately, you're a **Taker**.
 
 # How fees work for Builders
 
-Orderly Network empowers Builders with full pricing autonomy. This allows you to define your own revenue margins while utilizing Orderly’s deep liquidity.
+Orderly gives Builders full control over their pricing. You set your own trading fees while tapping into Orderly's shared liquidity.
 
-*   **Customizable spreads:** Builders set the final trading fees charged to their end-users. This fee must be equal to or higher than the **base fee**.
-*   **Revenue generation:** Builders retain **100% of the additional margin** (the difference between the user-facing fee and the Orderly base fee).
-*   **Base fee retention:** Orderly retains the base taker fee according to the Builder's current tier in the Builder Staking programme.
+*   **Set your own fees:** You decide what to charge your users. The only rule: your fee must be at least as high as Orderly's **base fee**.
+*   **Keep the difference:** You retain **100% of the margin** between what you charge users and what Orderly charges you.
+*   **Base fee tiers:** The base fee Orderly charges you depends on your tier in the Builder Staking programme.
 
 ### Builder Staking programme
 
-Builders can unlock lower base fees and enhanced support by meeting monthly volume requirements **or** staking $ORDER tokens. **If a Builder qualifies for different tiers via both volume and staking, the higher tier (lowest fee) will automatically apply.**
+Builders can get lower base fees and better support by hitting monthly volume targets **or** staking $ORDER tokens. **If you qualify for different tiers through both volume and staking, you automatically get the higher tier (lower fee).**
 
 <Tabs>
   <Tab title="Overview">
