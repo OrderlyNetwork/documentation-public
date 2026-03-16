@@ -7,7 +7,7 @@ Any realized and unrealized PnL accrued from open or closed positions needs to b
 
 <Steps>
   <Step title="Get a Settle PnL nonce">
-    Get a nonce from [Get settle PnL nonce](/build-on-omnichain/evm-api/restful-api/private/get-settle-pnl-nonce).
+    Get a nonce from [Get settle PnL nonce](/build-on-omnichain/restful-api/private/get-settle-pnl-nonce).
   </Step>
   <Step title="Obtain signature from EIP-712">
     Sign an EIP-712 message in the following format:
@@ -24,14 +24,14 @@ where:
 
 | **Name**    | **Type**  | **Required** | **Description**                                              |
 | ----------- | --------- | ------------ | ------------------------------------------------------------ |
-| brokerId    | string    | Y            | Broker ID, the valid list can be found \[here\]              |
+| brokerId    | string    | Y            | Builder ID, the valid list can be found \[here\]             |
 | chainId     | int       | Y            | Chain ID of the connected chain where the message was signed |
-| settleNonce | int       | Y            | Valid withdrawal nonce from [Get settle PnL nonce](/build-on-omnichain/evm-api/restful-api/private/get-settle-pnl-nonce)           |
+| settleNonce | int       | Y            | Valid withdrawal nonce from [Get settle PnL nonce](/build-on-omnichain/restful-api/private/get-settle-pnl-nonce)           |
 | timestamp   | timestamp | Y            | current timestamp in UNIX milliseconds                       |
 
   </Step>
   <Step title="Request PnL settlement">
-    Request a PnL settlement through [Request Pnl settlement API](/build-on-omnichain/evm-api/restful-api/private/request-pnl-settlement).
+    Request a PnL settlement through [Request Pnl settlement API](/build-on-omnichain/restful-api/private/request-pnl-settlement).
   </Step>
 </Steps>
 

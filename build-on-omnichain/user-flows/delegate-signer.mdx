@@ -1,5 +1,6 @@
 ---
 title: "Delegate Signer"
+description: "How smart contracts trade on Orderly using the delegate signer pattern to bypass EOA-only signing."
 ---
 
 ## Smart Contract trading
@@ -85,7 +86,7 @@ interface IVault {
 
   </Step>
   <Step title="Accept the link from the Delegate Signer EOA">
-    Confirm the link by signing the [EIP-712](/build-on-omnichain/user-flows/wallet-authentication#message-types) with your Delegate Signer's wallet and send the information via [`delegate_signer` API](/build-on-omnichain/evm-api/restful-api/public/delegate-signer). You will also need to send the transaction hash from previous step.
+    Confirm the link by signing the [EIP-712](/build-on-omnichain/user-flows/wallet-authentication#message-types) with your Delegate Signer's wallet and send the information via [`delegate_signer` API](/build-on-omnichain/restful-api/public/delegate-signer). You will also need to send the transaction hash from previous step.
 
     This step will optionally create the account for the Smart Contract, if it does not yet exist. If it already exists it will just update the linked EOA account.
 
@@ -101,7 +102,7 @@ interface IVault {
     Start trading via regular trading APIs authenticated with above Orderly Key.
   </Step>
   <Step title="Settle PnL/Withdraw">
-    [Settle PnL](/build-on-omnichain/evm-api/restful-api/private/delegate-signer-settle-pnl) and [withdraw](/build-on-omnichain/evm-api/restful-api/private/delegate-signer-withdraw-request) via special Delegate Signer endpoints. Sign [EIP-712](/build-on-omnichain/user-flows/wallet-authentication) domains with Delegate Signer wallet.
+    [Settle PnL](/build-on-omnichain/restful-api/private/delegate-signer-settle-pnl) and [withdraw](/build-on-omnichain/restful-api/private/delegate-signer-withdraw-request) via special Delegate Signer endpoints. Sign [EIP-712](/build-on-omnichain/user-flows/wallet-authentication) domains with Delegate Signer wallet.
   </Step>
 </Steps>
 

@@ -1,0 +1,77 @@
+---
+title: "Orderbook"
+description: "Subscribe to full depth-100 orderbook snapshots for a symbol via WebSocket, pushed every second."
+
+---
+
+`{symbol}@orderbook` depth 100 push every 1s
+
+```json
+{
+    "id": "clientID2",
+    "topic": "PERP_WOO_USDC@orderbook",
+    "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name          | Type   | Required | Description           |
+|---------------|--------|----------|-----------------------|
+| id            | string | Y        | id generate by client |
+| event         | string | Y        | subscribe/unsubscribe |
+| topic         | string | Y        | `{symbol}@orderbook`    |
+| params.symbol | string | Y        | `{symbol}`              |
+
+<RequestExample>
+```json Response
+{
+    "id": "clientID2",
+    "event": "subscribe",
+    "success": true,
+    "ts": 1609924478533
+}
+```
+</RequestExample>
+
+<ResponseExample>
+```json Subscribed Message
+{
+    "topic": "PERP_WOO_USDC@orderbook",
+    "ts": 1614152140945,
+    "data": {
+        "symbol": "PERP_WOO_USDC",
+        "asks": [
+            [
+                0.31075,
+                2379.63
+            ],
+            [
+                0.31076,
+                4818.76
+            ],
+            [
+                0.31078,
+                8496.1
+            ],
+            ...
+        ],
+        "bids": [
+            [
+                0.30891,
+                2469.98
+            ],
+            [
+                0.3089,
+                482.5
+            ],
+            [
+                0.30877,
+                20
+            ],
+            ...
+        ]
+    }
+}
+```
+</ResponseExample>

@@ -11,7 +11,7 @@ To create an internal transfer request, users can follow the following steps:
 
 <Steps>
   <Step title="Obtain a transfer nonce">
-    Get a valid transfer nonce from the [Get Transfer Nonce API](/build-on-omnichain/evm-api/restful-api/private/get-transfer-nonce).
+    Get a valid transfer nonce from the [Get Transfer Nonce API](/build-on-omnichain/restful-api/private/get-transfer-nonce).
 
     <Note>
       This API requires Orderly authentication headers:
@@ -200,7 +200,7 @@ signature = signed_message.signature.hex()
   </Step>
 
   <Step title="Make an internal transfer request">
-    Call the [Create Internal Transfer With Wallet Signature API](/build-on-omnichain/evm-api/restful-api/private/create-internal-transfer-v2).
+Call the [Create Internal Transfer With Wallet Signature API](/build-on-omnichain/restful-api/private/create-internal-transfer-with-wallet-signature).
 
     The request body must include the generated signature and the message parameters used to create it:
 
@@ -438,7 +438,6 @@ RECEIVER_ACCOUNT_ID = "0x..."
 TRANSFER_AMOUNT = 1000000
 ORDERLY_TESTNET = ENV == 'testnet'
 
-
 def get_transfer_nonce(client):
     try:
         response = client._sign_request("GET", "/v1/transfer_nonce")
@@ -449,7 +448,6 @@ def get_transfer_nonce(client):
         return None
     except Exception:
         return None
-
 
 def sign_internal_transfer_message(
     receiver_account_id: str,
@@ -498,7 +496,6 @@ def sign_internal_transfer_message(
     signed_message = account.sign_message(signable_message)
     return signed_message.signature.hex()
 
-
 def create_internal_transfer_v2(
     client,
     receiver_account_id: str,
@@ -531,7 +528,6 @@ def create_internal_transfer_v2(
         return None
     except Exception:
         return None
-
 
 def test_internal_transfer_v2():
     try:
@@ -575,7 +571,6 @@ def test_internal_transfer_v2():
         )
     except Exception:
         return None
-
 
 if __name__ == "__main__":
     test_internal_transfer_v2()

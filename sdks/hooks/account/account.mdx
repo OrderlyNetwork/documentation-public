@@ -1,5 +1,6 @@
 ---
 title: "Overview"
+description: "Overview of account-related hooks for registration, key management, leverage, and wallet events."
 ---
 
 `@orderly.network/hooks` provides the following hooks for handling account-related logic:
@@ -24,13 +25,17 @@ Here are two examples:
 
 > Web3-Onboard is the quickest and easiest way to add multi-wallet and multi-chain support to your project. [more](https://onboard.blocknative.com/docs/modules/react)
 
-TODO
+Use your Web3-Onboard state as the source of truth for connection status, selected chain, and active wallet, then expose those values through `WalletConnectorContextState`.
+
+The custom provider pattern in [Wallet connect](/sdks/react/wallet#custom-wallet-connection-provider) shows where to implement `connect`, `disconnect`, `setChain`, `switchChain`, and the `wallet` object consumed by Orderly hooks.
 
 ### WalletConnect
 
 > WalletConnect provides developer toolkits empowering you to build engaging web3 experiences. [more](https://docs.walletconnect.com/)
 
-TODO
+When integrating WalletConnect directly, map the active session, connected accounts, and current chain into `WalletConnectorContextState`, then pass that provider above `OrderlyAppProvider`.
+
+If you want a ready-made example of the provider shape Orderly expects, refer to [Wallet connect](/sdks/react/wallet#custom-wallet-connection-provider) and the base app setup in [Getting started](/sdks/react/getting_started).
 
 ## Get and edit account leverage
 

@@ -1,0 +1,138 @@
+{
+  "site": {
+    "name": "Orderly Network",
+    "baseUrl": "https://orderly.network/docs",
+    "description": "Orderly is an omnichain orderbook-based trading infrastructure providing perpetual futures liquidity for decentralized exchanges.",
+    "apiBase": {
+      "mainnet": "https://api.orderly.org/",
+      "testnet": "https://testnet-api.orderly.org"
+    },
+    "auth": "Authentication uses ed25519 signatures. Symbol format: PERP_<TOKEN>_USDC."
+  },
+  "compactSections": [
+    {
+      "title": "Getting Started",
+      "routes": [
+        "introduction/getting-started/what-is-orderly",
+        "build-on-omnichain/building-on-omnichain",
+        "build-on-omnichain/integration-checklist"
+      ]
+    },
+    {
+      "title": "Authentication",
+      "routes": [
+        "build-on-omnichain/api-authentication",
+        "build-on-omnichain/user-flows/wallet-authentication"
+      ]
+    },
+    {
+      "title": "Accounts and Funding",
+      "routes": [
+        "build-on-omnichain/user-flows/accounts",
+        "build-on-omnichain/user-flows/withdrawal-deposit"
+      ]
+    },
+    {
+      "title": "Order Lifecycle",
+      "routes": [
+        "build-on-omnichain/user-flows/order-management",
+        "build-on-omnichain/restful-api/private/create-order",
+        "build-on-omnichain/restful-api/private/cancel-order",
+        "build-on-omnichain/restful-api/private/get-orders"
+      ]
+    },
+    {
+      "title": "Transfers and Settlement",
+      "routes": [
+        "build-on-omnichain/user-flows/internal-transfer",
+        "build-on-omnichain/user-flows/settle-pnl",
+        "build-on-omnichain/restful-api/private/create-internal-transfer"
+      ]
+    },
+    {
+      "title": "SDK Setup",
+      "routes": [
+        "sdks/overview",
+        "sdks/react/getting_started",
+        "sdks/hooks/setup"
+      ]
+    },
+    {
+      "title": "WebSocket & Real-Time Data",
+      "routes": [
+        "build-on-omnichain/websocket-api/introduction",
+        "build-on-omnichain/websocket-api/public/orderbook",
+        "build-on-omnichain/websocket-api/public/trade",
+        "build-on-omnichain/websocket-api/private/execution-report"
+      ]
+    },
+    {
+      "title": "API Reference",
+      "routes": [
+        "build-on-omnichain/introduction",
+        "build-on-omnichain/error-codes"
+      ]
+    },
+    {
+      "title": "Chains & Contracts",
+      "routes": [
+        "introduction/trade-on-orderly/supported-chains",
+        "build-on-omnichain/addresses"
+      ]
+    },
+    {
+      "title": "Troubleshooting",
+      "routes": [
+        "troubleshooting/introduction",
+        "troubleshooting/user-issues/transaction-failures",
+        "troubleshooting/user-issues/withdrawal-issues"
+      ]
+    }
+  ],
+  "canonicalPages": [
+    "home",
+    "introduction/getting-started/what-is-orderly",
+    "build-on-omnichain/building-on-omnichain",
+    "build-on-omnichain/integration-checklist",
+    "build-on-omnichain/user-flows/accounts",
+    "build-on-omnichain/api-authentication",
+    "build-on-omnichain/user-flows/wallet-authentication",
+    "build-on-omnichain/user-flows/withdrawal-deposit",
+    "build-on-omnichain/user-flows/order-management",
+    "build-on-omnichain/user-flows/internal-transfer",
+    "build-on-omnichain/user-flows/settle-pnl",
+    "sdks/overview",
+    "sdks/react/getting_started",
+    "sdks/hooks/setup",
+    "build-on-omnichain/websocket-api/introduction",
+    "build-on-omnichain/websocket-api/public/orderbook",
+    "build-on-omnichain/websocket-api/public/trade",
+    "build-on-omnichain/websocket-api/private/execution-report",
+    "build-on-omnichain/introduction",
+    "build-on-omnichain/error-codes",
+    "introduction/trade-on-orderly/supported-chains",
+    "build-on-omnichain/addresses",
+    "troubleshooting/introduction",
+    "troubleshooting/user-issues/transaction-failures",
+    "troubleshooting/user-issues/withdrawal-issues"
+  ],
+  "pageContract": {
+    "requiredSections": [],
+    "requiredFrontmatter": [
+      "title",
+      "description"
+    ],
+    "enforceOnCanonicalPages": true
+  },
+  "verification": {
+    "forbiddenRoutePatterns": [
+      "build-on-omnichain/user-flows/builder-staking-programme",
+      "build-on-omnichain/restful-api/private/get-sub-account",
+      "strategy-vault/strategy-vault/"
+    ],
+    "readOnlyGeneratedDirectories": [
+      "build-on-omnichain/restful-api",
+      "sdks/tech-doc"
+    ]
+  }
+}

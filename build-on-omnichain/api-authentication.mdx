@@ -1,0 +1,414 @@
+---
+title: "API Authentication"
+description: "All requests need to be signed using `orderly-key` and `orderly-secret`."
+---
+
+## Generate Request Signature
+
+Orderly uses the [`ed25519` elliptic curve standard](https://ed25519.cr.yp.to/) for request authentication via signature verification. The necessary steps in order to send a valid request to Orderly are provided below.
+
+<Steps>
+  <Step title="Orderly account ID">
+    Before being able to authenticate, you must first register your account and get your account ID.
+    The registration steps are provided [here](/build-on-omnichain/user-flows/accounts).
+    You need to add your account ID to the request header as `orderly-account-id`.
+  </Step>
+  <Step title="Access key (Orderly key)">
+    Your Orderly public key needs to be added to the request header as `orderly-key`. To generate and add a new Orderly key, please refer to [the documentation](/build-on-omnichain/user-flows/wallet-authentication#orderly-key).
+    You can also get Orderly keys from frontend builders like [WOOFi Pro](https://pro.woofi.com).
+  </Step>
+  <Step title="Timestamp">
+    Take the timestamp of the request in milliseconds and add it as `orderly-timestamp` to the request header.
+  </Step>
+  <Step title="Normalize request content">
+    The message that you need to sign with your Orderly private key needs to be normalized to a string via this method:
+
+    1. Get current timestamp in milliseconds, e.g. 1649920583000
+    2. Append HTTP method in uppercase, e.g. POST
+    3. Append path of request **including** query parameters (without base URL), e.g. /v1/orders?symbol=PERP_BTC_USDC
+    4. (optional) If request has method body, JSON stringify this and append it
+
+    The resulting string could look like following:
+
+```
+1649920583000POST/v1/order{"symbol": "PERP_ETH_USDC", "order_type": "LIMIT", "order_price": 1521.03, "order_quantity": 2.11, "side": "BUY"}
+```
+
+  </Step>
+  <Step title="Generate a signature">
+    Use the normalized request content to generate a signature using the `ed25519` algorithm, and encode the signature in base64 url-safe format. Add the result to the request headers as `orderly-signature`.
+  </Step>
+  <Step title="Content type">
+    Add `Content-Type` header. All `GET` and `DELETE` requests use `application/x-www-form-urlencoded`. Any other method type uses `application/json`.
+  </Step>
+  <Step title="Send the request">
+  The final request should have following headers:
+
+`Content-Type`, `orderly-account-id`, `orderly-key`, `orderly-signature`, `orderly-timestamp`
+
+  </Step>
+</Steps>
+
+<Note>
+  Orderly key should be used without the ed25519\: prefix when used in code samples below.
+</Note>
+
+### Full example
+
+<Tabs>
+  <Tab title="Java">
+    <CodeGroup>
+```Java AuthenticationExample.java
+import io.github.cdimascio.dotenv.Dotenv;
+import net.i2p.crypto.eddsa.EdDSAPrivateKey;
+import net.i2p.crypto.eddsa.spec.EdDSANamedCurveTable;
+import net.i2p.crypto.eddsa.spec.EdDSAParameterSpec;
+import net.i2p.crypto.eddsa.spec.EdDSAPrivateKeySpec;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+import org.bitcoinj.base.Base58;
+import org.json.JSONObject;
+
+public class AuthenticationExample {
+public static void main(String[] args) throws Exception {
+String baseUrl = "https://testnet-api.orderly.org";
+String orderlyAccountId = "<orderly-account-id>";
+
+      Dotenv dotenv = Dotenv.load();
+      OkHttpClient client = new OkHttpClient();
+
+      String key = dotenv.get("ORDERLY_SECRET");
+      EdDSAParameterSpec spec = EdDSANamedCurveTable.getByName(EdDSANamedCurveTable.ED_25519);
+      EdDSAPrivateKeySpec encoded = new EdDSAPrivateKeySpec(Base58.decode(key), spec);
+      EdDSAPrivateKey orderlyKey = new EdDSAPrivateKey(encoded);
+
+      Signer signer = new Signer(baseUrl, orderlyAccountId, orderlyKey);
+
+      JSONObject json = new JSONObject();
+      json.put("symbol", "PERP_ETH_USDC");
+      json.put("order_type", "MARKET");
+      json.put("order_quantity", 0.01);
+      json.put("side", "BUY");
+      Request req = signer.createSignedRequest("/v1/order", "POST", json);
+      String res;
+      try (Response response = client.newCall(req).execute()) {
+         res = response.body().string();
+      }
+      JSONObject obj = new JSONObject(res);
+
+}
+}
+
+````
+
+```Java Signer.java
+import java.io.UnsupportedEncodingException;
+import java.security.*;
+import java.time.Instant;
+import java.util.Base64;
+
+import org.json.JSONObject;
+
+import net.i2p.crypto.eddsa.EdDSAEngine;
+import net.i2p.crypto.eddsa.EdDSAPrivateKey;
+import okhttp3.MediaType;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+
+public class Signer {
+   public final String baseUrl;
+
+   private String accountId;
+   private EdDSAPrivateKey privateKey;
+
+   public Signer(String baseUrl, String accountId, EdDSAPrivateKey privateKey) {
+      this.baseUrl = baseUrl;
+      this.accountId = accountId;
+      this.privateKey = privateKey;
+   }
+
+   public Request createSignedRequest(String url)
+         throws SignatureException, UnsupportedEncodingException, InvalidKeyException, OrderlyClientException {
+      checkIsInitialized();
+      return createSignedRequest(url, "GET", null);
+   }
+
+   public Request createSignedRequest(String url, String method, JSONObject json)
+         throws OrderlyClientException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
+      checkIsInitialized();
+      if (method == "GET" || method == "DELETE") {
+         return createSignedFormRequest(url, method);
+      } else if ((method == "POST" || method == "PUT") && json != null) {
+         return createSignedJsonRequest(url, method, json);
+      } else {
+         throw new IllegalArgumentException();
+      }
+   }
+
+   private void checkIsInitialized() throws OrderlyClientException {
+      if (accountId == null) {
+         throw OrderlyClientExceptionReason.ACCOUNT_UNINITIALIZED.asException();
+      }
+      if (privateKey == null) {
+         throw OrderlyClientExceptionReason.KEYPAIR_UNINITIALIZED.asException();
+      }
+   }
+
+   private Request createSignedFormRequest(String url, String method)
+         throws SignatureException, UnsupportedEncodingException, InvalidKeyException {
+      long timestamp = Instant.now().toEpochMilli();
+      String message = "" + timestamp + method + url;
+
+      EdDSAEngine signature = new EdDSAEngine();
+      signature.initSign(privateKey);
+      byte[] orderlySignature = signature.signOneShot(message.getBytes("UTF-8"));
+
+      return new Request.Builder()
+            .url(baseUrl + url)
+            .addHeader("Content-Type", "x-www-form-urlencoded")
+            .addHeader("orderly-timestamp", "" + timestamp)
+            .addHeader("orderly-account-id", accountId)
+            .addHeader("orderly-key", Util.encodePublicKey(privateKey))
+            .addHeader("orderly-signature", Base64.getUrlEncoder().encodeToString(orderlySignature))
+            .get()
+            .build();
+   }
+
+   private Request createSignedJsonRequest(String url, String method, JSONObject json)
+         throws SignatureException, UnsupportedEncodingException, InvalidKeyException {
+      RequestBody body = RequestBody.create(json.toString(), MediaType.parse("application/json"));
+
+      long timestamp = Instant.now().toEpochMilli();
+      String message = "" + timestamp + method + url + json.toString();
+
+      EdDSAEngine signature = new EdDSAEngine();
+      signature.initSign(privateKey);
+      byte[] orderlySignature = signature.signOneShot(message.getBytes("UTF-8"));
+
+      return new Request.Builder()
+            .url(baseUrl + url)
+            .addHeader("Content-Type", "application/json")
+            .addHeader("orderly-timestamp", "" + timestamp)
+            .addHeader("orderly-account-id", accountId)
+            .addHeader("orderly-key", Util.encodePublicKey(privateKey))
+            .addHeader("orderly-signature", Base64.getUrlEncoder().encodeToString(orderlySignature))
+            .post(body)
+            .build();
+   }
+}
+````
+
+    </CodeGroup>
+
+  </Tab>
+  <Tab title="Python">
+    <CodeGroup>
+```py authentication_example.py
+import json
+import os
+from base58 import b58decode
+from requests import Request, Session
+
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+
+from signer import Signer
+
+base_url = "https://testnet-api.orderly.org"
+orderly_account_id = "<orderly-account-id>"
+
+key = b58decode(os.environ.get("ORDERLY_SECRET"))
+orderly_key = Ed25519PrivateKey.from_private_bytes(key)
+
+session = Session()
+signer = Signer(orderly_account_id, orderly_key)
+
+req = signer.sign_request(
+Request(
+"POST",
+"%s/v1/order" % base_url,
+json={
+"symbol": "PERP_ETH_USDC",
+"order_type": "MARKET",
+"order_quantity": 0.01,
+"side": "BUY",
+},
+)
+)
+res = session.send(req)
+response = json.loads(res.text)
+
+````
+
+```py signer.py
+from base58 import b58encode
+from base64 import urlsafe_b64encode
+from datetime import datetime
+import json
+import math
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+from requests import PreparedRequest, Request
+import urllib
+
+class Signer(object):
+    def __init__(
+        self,
+        account_id: str,
+        private_key: Ed25519PrivateKey,
+    ) -> None:
+        self._account_id = account_id
+        self._private_key = private_key
+
+    def sign_request(self, req: Request) -> PreparedRequest:
+        d = datetime.utcnow()
+        epoch = datetime(1970, 1, 1)
+        timestamp = math.trunc((d - epoch).total_seconds() * 1_000)
+
+        json_str = ""
+        if req.json is not None:
+            json_str = json.dumps(req.json)
+
+        url = urllib.parse.urlparse(req.url)
+        message = str(timestamp) + req.method + url.path + json_str
+        if len(url.query) > 0:
+            message += "?" + url.query
+
+        orderly_signature = urlsafe_b64encode(
+            self._private_key.sign(message.encode())
+        ).decode("utf-8")
+
+        req.headers = {
+            "orderly-timestamp": str(timestamp),
+            "orderly-account-id": self._account_id,
+            "orderly-key": encode_key(
+                self._private_key.public_key().public_bytes_raw()
+            ),
+            "orderly-signature": orderly_signature,
+        }
+        print(req.headers)
+        if req.method == "GET" or req.method == "DELETE":
+            req.headers["Content-Type"] = "application/x-www-form-urlencoded"
+        elif req.method == "POST" or req.method == "PUT":
+            req.headers["Content-Type"] = "application/json"
+
+        return req.prepare()
+
+def encode_key(key: bytes):
+    return "ed25519:%s" % b58encode(key).decode("utf-8")
+````
+
+    </CodeGroup>
+
+  </Tab>
+  <Tab title="TypeScript">
+    <CodeGroup>
+```ts authenticationExample.ts
+import bs58 from 'bs58';
+import { config } from 'dotenv';
+import { webcrypto } from 'node:crypto';
+
+import { signAndSendRequest } from "./signer";
+
+// this is only necessary in Node.js to make `@noble/ed25519` dependency work
+if (!globalThis.crypto) globalThis.crypto = webcrypto as any;
+
+config();
+
+async function main() {
+const baseUrl = 'https://testnet-api.orderly.org';
+const orderlyAccountId = '<orderly-account-id>';
+
+const orderlyKey = bs58.decode(process.env.ORDERLY_SECRET!);
+
+const res = await signAndSendRequest(orderlyAccountId, orderlyKey, `${baseUrl}/v1/order`, {
+method: 'POST',
+body: JSON.stringify({
+symbol: 'PERP_ETH_USDC',
+order_type: 'MARKET',
+order_quantity: 0.01,
+side: 'BUY'
+})
+});
+const response = await res.json();
+console.log(response);
+}
+
+main();
+
+````
+
+```ts signer.ts
+import { getPublicKeyAsync, signAsync } from '@noble/ed25519';
+import { encodeBase58 } from 'ethers';
+
+export async function signAndSendRequest(
+  orderlyAccountId: string,
+  privateKey: Uint8Array | string,
+  input: URL | string,
+  init?: RequestInit | undefined
+): Promise<Response> {
+  const timestamp = Date.now();
+  const encoder = new TextEncoder();
+
+  const url = new URL(input);
+  let message = `${String(timestamp)}${init?.method ?? 'GET'}${url.pathname}${url.search}`;
+  if (init?.body) {
+    message += init.body;
+  }
+  const orderlySignature = await signAsync(encoder.encode(message), privateKey);
+
+  return fetch(input, {
+    headers: {
+      'Content-Type':
+        init?.method !== 'GET' && init?.method !== 'DELETE'
+          ? 'application/json'
+          : 'application/x-www-form-urlencoded',
+      'orderly-timestamp': String(timestamp),
+      'orderly-account-id': orderlyAccountId,
+      'orderly-key': `ed25519:${encodeBase58(await getPublicKeyAsync(privateKey))}`,
+      'orderly-signature': Buffer.from(orderlySignature).toString('base64url'),
+      ...(init?.headers ?? {})
+    },
+    ...(init ?? {})
+  });
+}
+````
+
+    </CodeGroup>
+
+  </Tab>
+  <Tab title="Shell">
+  ``` shell cURL
+  curl --request POST \
+  --url https://api.orderly.org/v1/order \
+  --header 'Content-Type: application/json' \
+  --header 'orderly-account-id: <orderly-account-id>' \
+  --header 'orderly-key: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX' \
+  --header 'orderly-signature: dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==' \
+  --header 'orderly-timestamp: 1649920583000' \
+  --data '{
+  "symbol": "<symbol>",
+  "order_type": "<order_type>",
+  "side": "<side>",
+  "reduce_only": false
+}'
+```
+  </Tab>
+</Tabs>
+
+## Security
+
+There is a three-layer checker to verify a request is valid. Orderly server only accepts the request that passes all checks. The checker contains the following:
+
+### Request Timestamp
+
+The request would be considered expired and get rejected if the timestamp in `orderly-timestamp` header has 300+ seconds difference from the API server time.
+
+### HMAC Parameter Signature
+
+The request must have a `orderly-signature` header that is generated from request parameters and signed with your Orderly secret key.
+
+### Orderly Key Validity Check
+
+The request must have an `orderly-key` header, and the `orderly-key` has to be added to the network via the Add Key functionality, matched with the account and is still valid (not expired yet).

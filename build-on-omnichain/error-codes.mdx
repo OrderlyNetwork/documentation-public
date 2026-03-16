@@ -1,0 +1,39 @@
+---
+title: "Error Codes"
+description: "Complete list of Orderly API error codes with HTTP status codes and descriptions."
+---
+
+| Error Code | Status Code | Description                                                                                                                                                              |
+|------------|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| -1000      | 500         | An unknown error occurred while processing the request.                                                                                                                  |
+| -1000      | 500         | The data does not exist                                                                                                                                                  |
+| -1001      | 401         | The api key or secret is in wrong format.                                                                                                                                |
+| -1002      | 401         | API key or secret is invalid, it may be because key have insufficient permission or the key is expired/revoked.                                                          |
+| -1003      | 429         | Rate limit exceed.                                                                                                                                                       |
+| -1004      | 400         | An unknown parameter was sent.                                                                                                                                           |
+| -1005      | 400         | Some parameters are in wrong format for api.                                                                                                                             |
+| -1005      | 400         | ratio_qty_request should be in range 0-1.                                                                                                                                |
+| -1005      | 400         | extra_liquidation_ratio should be in range 0-1.                                                                                                                          |
+| -1005      | 400         | if you set extra_liquidation_ratio > 0, ratio_qty_request must be 1.                                                                                                     |
+| -1006      | 400         | The data is not found in server. For example, when client try canceling a CANCELLED order, will raise this error.                                                        |
+| -1007      | 409         | The data is already exists or your request is duplicated.                                                                                                                |
+| -1008      | 400         | The quantity of settlement is too high than you can request.                                                                                                             |
+| -1009      | 400         | Can not request withdrawal settlement, you need to deposit other arrears first.                                                                                          |
+| -1011      | 400         | Can not place/cancel orders, it may be because internal network error. Please try again in a few seconds.                                                                |
+| -1012      | 400         | The place/cancel order request is rejected by internal module, it may because the account is in liquidation or other internal errors. Please try again in a few seconds. |
+| -1012      | 400         | Another liquidation is in process                                                                                                                                        |
+| -1101      | 400         | The risk exposure for client is too high, it may cause by sending too big order or the leverage is too low. please refer to client info to check the current exposure.   |
+| -1101      | 400         | The margin will be insufficient after.                                                                                                                                   |
+| -1102      | 400         | The order value (price * size) is too small.                                                                                                                             |
+| -1103      | 400         | Order price is below the minimum allowed price {quote_min}.                                                                                                              |
+| -1103      | 400         | Order price exceeds the maximum allowed price {quote_max}.                                                                                                               |
+| -1103      | 400         | Order price does not match the tick size.                                                                                                                                |
+| -1104      | 400         | Order quantity is below the minimum allowed amount {base_min}.                                                                                                           |
+| -1104      | 400         | Order quantity exceeds the maximum allowed amount {base_max}.                                                                                                            |
+| -1104      | 400         | Order quantity does not match the step size.                                                                                                                             |
+| -1104      | 400         | Visible quantity does not match the step size.                                                                                                                           |
+| -1105      | 400         | Price is X% too high or X% too low from the mid price.                                                                                                                   |
+| -1201      | 400         | total notional < 10000, least req ratio should = 1                                                                                                                       |
+| -1201      | 400         | least req ratio should = xxxx                                                                                                                                            |
+| -1202      | 400         | No need to liquidation because user margin is enough.                                                                                                                    |
+| -1202      | 400         | Can not find given liquidationId.                                                                                                                                        |

@@ -1,53 +1,50 @@
 ---
-title: "System Overview"
+title: "Building on Orderly"
+description: "Start building your dApp on Orderly's omnichain trading infrastructure."
 ---
 
-## Introduction
+Orderly gives builders the trading infrastructure, liquidity access, and integration tooling needed to launch their own derivatives application without building the full stack from scratch.
 
-Orderly provides the infrastructure and tools necessary for developers to build their own DeFi dApps by accessing an array of products Orderly offers.
+Builders can create a perp DEX on top of Orderly's shared-liquidity orderbook, while users interact from supported chains without switching to a separate trading chain in the product experience.
 
-Builders can create their own Perps DEX on top of a low latency and shared liquidity CLOB trading infrastructure, accessible from all the main EVM chains.
+## What builders get
 
-A trader on Polygon can trade against traders on other chains like Arbitrum or AVAX, without leaving Polygon.
+- **Shared liquidity:** Access the same liquidity layer used across the Orderly ecosystem.
+- **Orderbook infrastructure:** Build on top of Orderly's matching and order management services instead of operating your own engine.
+- **Omnichain user flows:** Support registration, deposits, withdrawals, and trading from supported chains.
+- **Flexible integration paths:** Choose between SDKs, UI components, Python tooling, or direct API access.
+- **Self-custody model:** Users keep control of their wallets while interacting with your application.
 
-No need to bridge funds, no extra complexities. Go to your favorite dApp, connect your wallet, and start trading.
+## High-level architecture
 
-
-## High-level Architecture
+Orderly's omnichain system is organized into three layers:
 
 <img
   className="block dark:hidden"
-  src="/images/build-on-orderly/Light.png"
+  src="/images/build-on-omnichain/light.png"
   alt="Orderly Overview Light"
 />
 <img
   className="hidden dark:block"
-  src="/images/build-on-orderly/Dark.png"
+  src="/images/build-on-omnichain/dark.png"
   alt="Orderly Overview Dark"
 />
 
+1. **Asset Layer:** Lives on each supported chain and handles user-facing actions such as account registration, deposits, and withdrawals.
+2. **Settlement Layer:** Lives on a single chain and acts as the transaction ledger behind the scenes.
+3. **Engine Layer:** Runs the orderbook and related trading services used for order management and execution.
 
+## Start here
 
+Use these pages as your builder onboarding path:
 
-
-There are three main layers:
-
-**Asset Layer** \- resides on each chain Orderly supports
-   * Users interact with this layer when registering/depositing/withdrawing
-
-**Settlement Layer** \- resides on a single chain  
-   * Users do not interact with this directly and is used as a transaction ledger
-
-**Engine Layer** \- Orderbook and order-related services  
-   * Users interact with this when managing orders
-
-
+- **Plan the integration:** Start with the [Integration Checklist](/build-on-omnichain/integration-checklist) for the overall build and launch sequence.
+- **Understand the system:** Review the [Smart Contract Overview](/build-on-omnichain/overview) and [Smart Contract Addresses](/build-on-omnichain/addresses).
+- **Implement core user flows:** Follow [Accounts](/build-on-omnichain/user-flows/accounts), [Wallet Authentication](/build-on-omnichain/user-flows/wallet-authentication), [Withdrawal & Deposit](/build-on-omnichain/user-flows/withdrawal-deposit), and [Order Management](/build-on-omnichain/user-flows/order-management).
+- **Cover trading operations:** Add [Settle PnL](/build-on-omnichain/user-flows/settle-pnl), [Custom Fees](/build-on-omnichain/user-flows/custom-fees), and real-time integrations from the [WebSocket API docs](/build-on-omnichain/websocket-api/introduction).
+- **Integrate against the APIs:** Use the [API introduction](/build-on-omnichain/introduction) and [API authentication guide](/build-on-omnichain/api-authentication).
+- **Handle onboarding questions:** Use [Integration FAQs](/build-on-omnichain/integration-faqs) and [Partner Support](/build-on-omnichain/partner-support) for builder-facing support guidance.
 
 <Info>
-This guide is a WIP. If you have any suggestions or questions please contact us by [email](mailto:product@orderly.network?subject=Gitbook%20Feedback)
-</Info>
-
-
-<Info>
-For questions regarding building with us, send us an [email](mailto:product@orderly.network?subject=Inquiry:%20Building%20On%20Orderly) or reach out in the [discord](http://discord.gg/OrderlyNetwork)
+  Start with the [broker onboarding guide](/introduction/getting-started/broker-onboarding). If you are using Orderly One, continue from [https://dex.orderly.network/](https://dex.orderly.network/). For implementation questions, join our [Discord](https://discord.gg/OrderlyNetwork).
 </Info>

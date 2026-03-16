@@ -1,0 +1,55 @@
+---
+title: "Account"
+description: "Subscribe to real-time account status updates via private WebSocket stream."
+---
+
+Push interval: real-time push
+
+```json
+{
+  "id": "clientID3",
+  "topic": "account",
+  "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name  | Type   | Required | Description               |
+| ----- | ------ | -------- | ------------------------- |
+| id    | string | Y        | id generate by client     |
+| event | string | Y        | `subscribe`/`unsubscribe` |
+| topic | string | Y        | `account`                 |
+
+<RequestExample>
+```json Response
+{
+    "id": "clientID3",
+    "event": "subscribe",
+    "success": true,
+    "ts": 1609924478533
+}
+```
+</RequestExample>
+
+<ResponseExample>
+```json Subscribed Message
+{
+    "accountDetail": {
+        "marginMode": "SPOT_FUTURES",
+        "futuresLeverage": 10,
+        "takerFeeRate": 10,
+        "makerFeeRate": 10,
+        "futuresTakerFeeRate": 8,
+        "futuresMakerFeeRate": 4,
+        "rwaFuturesTakerFeeRate": 13.0,
+        "rwaFuturesMakerFeeRate": 12.0,
+        "maintenanceCancelFlag": false,
+        "symbolLeverage": {
+            "leverage": 20,
+            "symbol": "PERP_BTC_USDC"
+        }
+    }
+}
+```
+</ResponseExample>

@@ -4,6 +4,6 @@ description: "Account structure"
 ---
 Orderly has implemented an account structure where each address can have several accounts, one account per front-end that operates on Orderly. 
 
-Account address is derived from the user's wallet address and broker ID they are trading from, thus it is one account per integrator.
+The account address is derived from the user's wallet address and the builder ID they are trading from, so there is one account per integrator.
 
-User's trading activity, such as trades, fees paid, volume, is compartmentalized by front-end, thus each account is completely independent of each other so trades placed through front-end A cannot be seen or modified through front-end B, even though both accounts are owned by the same wallet. Fee tiers are per account.
+Users' trading activity, such as trades, fees paid, and volume, is compartmentalized by front-end. Each account is completely independent, so trades placed through front-end A cannot be seen or modified through front-end B, even if both accounts are owned by the same wallet. Fee tiers are set per account.
