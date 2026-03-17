@@ -1350,9 +1350,19 @@ paths:
       description: |
         **Limit: 5 requests per 60 second per user**
 
-        `POST /v1/client/leverage`
+        `POST /v1/client/leverages`
 
-        Allow users to customize leverage for each symbol or choose maximum leverage for account's futures mode.
+        Update leverage settings. This endpoint supports two modes:
+
+        **Single symbol mode:** When `symbol` is provided, update leverage for that specific symbol.
+
+        **Batch mode:** When `symbol` is omitted, set leverage for all symbols in a single atomic operation. Each symbol's new leverage will be adjusted to `min(requested_leverage, symbol_max_leverage)`.
+
+        For example, if BTC max leverage is 100, ETH max leverage is 100, and NEAR max leverage is 10, and the user requests leverage = 20, the result will be: BTC = 20, ETH = 20, NEAR = 10.
+
+        Batch update behavior with margin modes:
+        - **Cross margin symbols:** A margin check is performed assuming all cross-margin symbols are updated to the new leverage. Either all cross-margin symbol leverages are updated successfully, or none are updated.
+        - **Isolated margin symbols:** The leverage update will only apply to symbols with no active isolated positions or pending orders. The update for isolated margin symbols will always go through for eligible symbols.
 
         Validation Logic:
 
@@ -1382,6 +1392,12 @@ paths:
                 leverage:
                   type: integer
                   description: Integer between 1 to 100
+                margin_mode:
+                  type: string
+                  description: "Default: `CROSS`. Margin mode for the leverage update."
+                  enum:
+                    - CROSS
+                    - ISOLATED
               required:
                 - leverage
       responses:
@@ -1821,6 +1837,51 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AccountInfoResponse"
+
+  /v1/client/margin_mode:
+    post:
+      summary: Update Margin Mode
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per user**
+
+        `POST /v1/client/margin_mode`
+
+        Update the default margin mode for a specific symbol. Switching a symbol's margin mode is only possible when you have no open positions or pending orders on that symbol in the current mode.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                symbol:
+                  type: string
+                  description: "Symbol to update margin mode for"
+                  example: "PERP_BTC_USDC"
+                default_margin_mode:
+                  type: string
+                  description: "Target margin mode"
+                  enum:
+                    - CROSS
+                    - ISOLATED
+                  example: "ISOLATED"
+              required:
+                - symbol
+                - default_margin_mode
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
 
   /v1/client/margin_modes:
     get:
