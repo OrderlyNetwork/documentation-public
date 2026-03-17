@@ -21,19 +21,19 @@ API Base: `https://api.orderly.org/` (Mainnet), `https://testnet-api.orderly.org
 ### $ORDER Tokenomics
 
 - [Overview of $ORDER](https://orderly.network/docs/introduction/tokenomics/overview-of-order): What the $ORDER token is, who uses it, and what it does within the Orderly Network ecosystem.
-- [Distribution and Emission Schedule](https://orderly.network/docs/introduction/tokenomics/distribution-and-emission-schedule): $ORDER token supply, allocation breakdown (community, investors, team, foundation), and emission schedule over 200 epochs.
+- [Distribution and Emission Schedule](https://orderly.network/docs/introduction/tokenomics/distribution-and-emission-schedule): $ORDER token distribution breakdown and emission schedule across community, team, and ecosystem allocations.
 
 #### $ORDER Staking
 
-- [Staking](https://orderly.network/docs/introduction/tokenomics/order-staking/staking): How to stake $ORDER or esORDER, manage unstaking, redeem VALOR, and claim rewards across the legacy and new systems.
-- [Staking Information](https://orderly.network/docs/introduction/tokenomics/order-staking/staking-information): How VALOR works, treasury share calculations, and why long-term staking earns more.
+- [Staking](https://orderly.network/docs/introduction/tokenomics/order-staking/staking): Step-by-step guide to staking $ORDER or esORDER, managing unstaking, vesting, and claiming rewards.
+- [Staking Information](https://orderly.network/docs/introduction/tokenomics/order-staking/staking-information): How $ORDER staking works — VALOR mechanics, treasury share model, and advantages for long-term stakers.
 
-- [esORDER](https://orderly.network/docs/introduction/tokenomics/esorder): How esORDER (escrowed ORDER) works — staking benefits, vesting durations, conversion rates, and burn mechanics.
-- [$ORDER Related Smart Contract Addresses](https://orderly.network/docs/introduction/tokenomics/addresses): Smart contract addresses for $ORDER token, multisigs, OFT adapters, and cross-chain messaging contracts.
+- [esORDER](https://orderly.network/docs/introduction/tokenomics/esorder): How esORDER (escrowed ORDER) works, including staking benefits and vesting redemption schedules.
+- [$ORDER Related Smart Contract Addresses](https://orderly.network/docs/introduction/tokenomics/addresses): Smart contract addresses for the $ORDER token across Ethereum, Arbitrum, and other supported chains.
 
 ### Trade on Orderly
 
-- [Trade on Orderly](https://orderly.network/docs/introduction/trade-on-orderly/trade-on-orderly): Overview of trading on Orderly Network — shared liquidity, omnichain access, and multiple ways to trade.
+- [Trade on Orderly](https://orderly.network/docs/introduction/trade-on-orderly/trade-on-orderly): An overview of trading on Orderly Network — shared liquidity, omnichain access, and multiple ways to trade.
 - [Orderly Orderbook Design](https://orderly.network/docs/introduction/trade-on-orderly/trading-basics/orderbook-design): How Orderly's central limit order book combines CEX-level performance with on-chain settlement.
 
 #### Trading Basics
@@ -48,6 +48,7 @@ API Base: `https://api.orderly.org/` (Mainnet), `https://testnet-api.orderly.org
 
 - [Formulas and Definitions](https://orderly.network/docs/introduction/trade-on-orderly/perpetual-futures/formulas-definitions): Formulas for margin, collateral, free collateral, PnL, and liquidation price calculations on Orderly.
 - [Margin, Leverage & PnL](https://orderly.network/docs/introduction/trade-on-orderly/perpetual-futures/margin-leverage-and-pnl): Explanation of notional value, margin ratio, leverage tiers, and unrealized PnL on Orderly.
+- [Isolated Margin](https://orderly.network/docs/introduction/trade-on-orderly/perpetual-futures/isolated-margin): How Isolated Margin mode works on Orderly, including per-position margin allocation, independent leverage, and risk isolation.
 - [Mark Price, Index Price, and Last Price](https://orderly.network/docs/introduction/trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price): How Orderly computes Mark Price, Index Price, and Last Price with manipulation safeguards.
 - [Order Price Limit](https://orderly.network/docs/introduction/trade-on-orderly/perpetual-futures/orders-price-limits): Price range limits enforced on futures orders to prevent manipulation and protect against extreme moves.
 - [Funding Rate](https://orderly.network/docs/introduction/trade-on-orderly/perpetual-futures/funding-rate): How funding rates are calculated and settled between long and short traders on Orderly perpetual futures.
@@ -106,18 +107,18 @@ API Base: `https://api.orderly.org/` (Mainnet), `https://testnet-api.orderly.org
 - [Accounts](https://orderly.network/docs/build-on-omnichain/user-flows/accounts): Overview of account structure
 - [Wallet Authentication](https://orderly.network/docs/build-on-omnichain/user-flows/wallet-authentication): Overview of wallet authentication & Orderly keys
 - [Deposit/Withdrawal](https://orderly.network/docs/build-on-omnichain/user-flows/withdrawal-deposit): Overview of deposit and withdrawal flow
-- [Settle PnL](https://orderly.network/docs/build-on-omnichain/user-flows/settle-pnl): Key user flow walkthroughs
-- [Order Management](https://orderly.network/docs/build-on-omnichain/user-flows/order-management): Overview of order management related actions
+- [Settle PnL](https://orderly.network/docs/build-on-omnichain/user-flows/settle-pnl): How to settle realized and unrealized PnL into USDC balance via the Orderly API.
+- [Order Management](https://orderly.network/docs/build-on-omnichain/user-flows/order-management): How orders flow through Orderly's architecture, from placement to execution and settlement.
+- [Isolated Margin](https://orderly.network/docs/build-on-omnichain/user-flows/isolated-margin): Step-by-step guide to integrating Isolated Margin: switching margin modes, setting leverage, placing orders, and adjusting position margin.
 - [Custom Fee Structure](https://orderly.network/docs/build-on-omnichain/user-flows/custom-fees): How builders configure custom maker/taker fee structures for their users on top of Orderly base fees.
 - [Delegate Signer](https://orderly.network/docs/build-on-omnichain/user-flows/delegate-signer): How smart contracts trade on Orderly using the delegate signer pattern to bypass EOA-only signing.
-- [Referral System](https://orderly.network/docs/build-on-omnichain/user-flows/referral-system): How the Orderly referral system works, including code creation, fee splits, and affiliate tiers.
 - [Algo Order Sample Requests](https://orderly.network/docs/build-on-omnichain/user-flows/algo-order-samples): Sample API request payloads for creating STOP, TP/SL, Positional TP/SL, and Bracket algo orders.
 - [Internal Transfer](https://orderly.network/docs/build-on-omnichain/user-flows/internal-transfer): Overview of internal transfer flow
 - [User Flow Walkthrough](https://orderly.network/docs/build-on-omnichain/user-flow-walkthrough): End-to-end walkthrough of Orderly account creation, key management, ordering, and settlement via the API.
 
 ### API Fundamentals
 
-- [Introduction](https://orderly.network/docs/build-on-omnichain/introduction): Orderly EVM API overview covering REST and WebSocket endpoints, authentication, and request conventions.
+- [Introduction](https://orderly.network/docs/build-on-omnichain/introduction): Orderly API overview covering REST and WebSocket endpoints, authentication, and request conventions.
 - [API Authentication](https://orderly.network/docs/build-on-omnichain/api-authentication): All requests need to be signed using `orderly-key` and `orderly-secret`.
 - [Error Codes](https://orderly.network/docs/build-on-omnichain/error-codes): Complete list of Orderly API error codes with HTTP status codes and descriptions.
 
@@ -185,8 +186,10 @@ API Base: `https://api.orderly.org/` (Mainnet), `https://testnet-api.orderly.org
 
 - [Get Leverage Setting](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-leverage-setting): Get Leverage Setting
 - [Get All Leverage Settings](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-all-leverage-settings): Get All Leverage Settings
-- [Update Leverage Setting](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-leverage-setting): Reference page.
+- [Update Leverage Setting](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-leverage-setting): Update Leverage Setting
 - [Get Margin Modes](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-margin-modes): Get Margin Modes
+- [Update Margin Mode](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-margin-mode): Update Margin Mode
+- [Add Reduce Position Margin](https://orderly.network/docs/build-on-omnichain/restful-api/private/add-reduce-position-margin): Add or Reduce Position Margin
 - [Get Max Leverage Setting](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-max-leverage-setting): Get Max Leverage Setting
 - [Get Leverage Configuration](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-leverage-configuration): Get Leverage Configuration
 - [Configure Auto Cancel During Maintenance](https://orderly.network/docs/build-on-omnichain/restful-api/private/configure-auto-cancel-during-maintenance): Configure Auto-Cancel During Maintenance

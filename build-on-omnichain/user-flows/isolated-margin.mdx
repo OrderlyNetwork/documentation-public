@@ -1,0 +1,202 @@
+---
+title: "Isolated Margin"
+description: "Step-by-step guide to integrating Isolated Margin: switching margin modes, setting leverage, placing orders, and adjusting position margin."
+---
+
+## Overview
+
+This guide walks through the full lifecycle of using Isolated Margin via the API. For a conceptual overview, see [Isolated Margin basics](/introduction/trade-on-orderly/perpetual-futures/isolated-margin).
+
+```mermaid
+flowchart LR
+    A[Query margin modes] --> B[Switch to ISOLATED]
+    B --> C[Set leverage]
+    C --> D[Place order]
+    D --> E[Adjust position margin]
+    E --> F[Monitor position]
+```
+
+## Step 1: Query Current Margin Modes
+
+Before switching, check the current margin mode for each symbol.
+
+**API:** [GET `/v1/client/margin_modes`](/build-on-omnichain/restful-api/private/get-margin-modes)
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "rows": [
+      {
+        "symbol": "PERP_BTC_USDC",
+        "default_margin_mode": "CROSS"
+      },
+      {
+        "symbol": "PERP_ETH_USDC",
+        "default_margin_mode": "ISOLATED"
+      }
+    ]
+  }
+}
+```
+
+All symbols default to `CROSS` unless previously changed.
+
+## Step 2: Switch a Symbol to Isolated Margin
+
+Set the default margin mode for a specific symbol to `ISOLATED`.
+
+**API:** [POST `/v1/client/margin_mode`](/build-on-omnichain/restful-api/private/update-margin-mode)
+
+**Request body:**
+
+```json
+{
+  "symbol": "PERP_ETH_USDC",
+  "default_margin_mode": "ISOLATED"
+}
+```
+
+<Note>
+  You can only switch a symbol's margin mode when you have **no open positions or pending orders** on that symbol in the current mode. Close all positions and cancel all orders on the symbol before switching.
+</Note>
+
+## Step 3: Set Leverage for Isolated Mode
+
+Each symbol maintains independent leverage settings per margin mode. Set the leverage for the Isolated mode specifically.
+
+**API:** [POST `/v1/client/leverages`](/build-on-omnichain/restful-api/private/update-leverage-setting)
+
+**Request body (single symbol):**
+
+```json
+{
+  "symbol": "PERP_ETH_USDC",
+  "leverage": 10,
+  "margin_mode": "ISOLATED"
+}
+```
+
+You can also query the current leverage:
+
+**API:** [GET `/v1/client/leverage`](/build-on-omnichain/restful-api/private/get-leverage-setting) with query params `symbol=PERP_ETH_USDC&margin_mode=ISOLATED`
+
+<Note>
+  The leverage you set in Isolated mode determines how much margin is allocated from your available balance when opening a position. Higher leverage = less margin allocated = tighter liquidation price.
+</Note>
+
+### Batch Leverage Updates
+
+When using [POST `/v1/client/leverages`](/build-on-omnichain/restful-api/private/update-leverage-setting) without a `symbol` parameter, the behavior differs by mode:
+
+| Mode | Behavior |
+| --- | --- |
+| **Cross** | All cross-margin symbols update atomically — all succeed or none do |
+| **Isolated** | Only applies to symbols with no active isolated positions or pending orders; eligible symbols always update |
+
+## Step 4: Place an Order
+
+Place an order specifying the `margin_mode` parameter.
+
+**API:** [POST `/v1/order`](/build-on-omnichain/restful-api/private/create-order)
+
+**Request body:**
+
+```json
+{
+  "symbol": "PERP_ETH_USDC",
+  "order_type": "LIMIT",
+  "side": "BUY",
+  "order_price": 2500,
+  "order_quantity": 1,
+  "margin_mode": "ISOLATED"
+}
+```
+
+If `margin_mode` is omitted, the symbol's current default margin mode is used. After switching a symbol to `ISOLATED` in Step 2, new orders on that symbol will default to Isolated.
+
+### Dual Positions
+
+You can hold both a Cross position and an Isolated position on the same symbol simultaneously. For example, a Cross long and an Isolated short on `PERP_ETH_USDC`. Each position has its own margin calculation and liquidation price — they are completely independent.
+
+## Step 5: Adjust Position Margin
+
+After opening an Isolated position, you can add or reduce the margin allocated to it.
+
+**API:** [POST `/v1/position_margin`](/build-on-omnichain/restful-api/private/add-reduce-position-margin)
+
+**Add margin** (lowers liquidation price, reduces risk):
+
+```json
+{
+  "symbol": "PERP_ETH_USDC",
+  "amount": "100",
+  "type": "ADD"
+}
+```
+
+**Reduce margin** (raises liquidation price, frees up balance):
+
+```json
+{
+  "symbol": "PERP_ETH_USDC",
+  "amount": "50",
+  "type": "REDUCE"
+}
+```
+
+| Type | Effect |
+| --- | --- |
+| `ADD` | Transfers margin from available balance to the isolated position |
+| `REDUCE` | Transfers margin from the isolated position back to available balance |
+
+## Step 6: Monitor Position
+
+Query the position with the `margin_mode` parameter to get isolated-specific data.
+
+**API:** [GET `/v1/position/{symbol}`](/build-on-omnichain/restful-api/private/get-one-position-info) with query param `margin_mode=ISOLATED`
+
+Key fields in the response:
+
+| Field | Description |
+| --- | --- |
+| `margin` | Amount of margin allocated to this isolated position |
+| `margin_mode` | `ISOLATED` |
+| `leverage` | Current leverage for this position |
+| `est_liq_price` | Estimated liquidation price |
+| `position_qty` | Position size |
+| `unsettled_pnl` | Current unsettled PnL |
+| `imr` | Initial margin ratio |
+| `mmr` | Maintenance margin ratio |
+
+### WebSocket Updates
+
+Subscribe to the private `position` topic to receive real-time updates for position changes including margin, PnL, and liquidation price. See [WebSocket API](/build-on-omnichain/websocket-api/private/account) for details.
+
+### Account Balance
+
+The [GET `/v1/client/aggregate/holding`](/build-on-omnichain/restful-api/private/get-aggregate-holding) endpoint includes two isolated-margin-specific fields:
+
+| Field | Description |
+| --- | --- |
+| `isolated_margin` | Total margin currently allocated to all isolated positions |
+| `isolated_order_frozen` | Margin frozen in pending isolated orders |
+
+## Liquidation Behavior
+
+When an Isolated position is liquidated:
+
+- Only the margin assigned to that position is lost
+- Other positions (Cross or Isolated) and your account balance are **unaffected**
+- The position is handled independently by the liquidation engine
+
+For full details, see [Liquidations](/introduction/trade-on-orderly/perpetual-futures/liquidations).
+
+## Related Pages
+
+- [Isolated Margin basics](/introduction/trade-on-orderly/perpetual-futures/isolated-margin) — conceptual overview and comparison with Cross Margin
+- [Margin, Leverage & PnL](/introduction/trade-on-orderly/perpetual-futures/margin-leverage-and-pnl) — margin ratios, leverage tiers, and PnL calculations
+- [Order Management](/build-on-omnichain/user-flows/order-management) — order lifecycle and API reference
+- [Liquidations](/introduction/trade-on-orderly/perpetual-futures/liquidations) — liquidation process and tiers

@@ -1883,6 +1883,63 @@ paths:
               schema:
                 $ref: "#/components/schemas/BasicResponse"
 
+  /v1/position_margin:
+    post:
+      summary: Add or Reduce Position Margin
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per user**
+
+        `POST /v1/position_margin`
+
+        Add or reduce margin for an existing isolated margin position. This allows you to adjust the margin allocated to a specific isolated position after it has been opened.
+
+        - `ADD`: Transfer margin from your available balance to the isolated position, lowering the liquidation price.
+        - `REDUCE`: Transfer margin from the isolated position back to your available balance, raising the liquidation price.
+
+        **Prerequisites:** You must have an open isolated position on the specified symbol.
+
+        Note: This endpoint requires `trading` scope in Orderly Key.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                symbol:
+                  type: string
+                  description: "Symbol of the isolated position"
+                  example: "PERP_ETH_USDC"
+                amount:
+                  type: string
+                  description: "Amount of margin to add or reduce"
+                  example: "3"
+                type:
+                  type: string
+                  description: "Operation type"
+                  enum:
+                    - ADD
+                    - REDUCE
+                  example: "ADD"
+              required:
+                - symbol
+                - amount
+                - type
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+
   /v1/client/margin_modes:
     get:
       summary: Get Margin Modes
@@ -3937,6 +3994,12 @@ paths:
                 callbackValue:
                   type: string
                   description: "Callback value, only for algoType=`TRAILING_STOP`, i.e. the value = 100"
+                margin_mode:
+                  type: string
+                  description: "Margin mode for the order. Default: the symbol's current default margin mode."
+                  enum:
+                    - CROSS
+                    - ISOLATED
               example:
                 - symbol: "PERP_ETH_USDC"
                   algo_type: "BRACKET"
@@ -11356,6 +11419,12 @@ components:
           type: string
         order_tag:
           type: string
+        margin_mode:
+          type: string
+          description: "Margin mode for the order. Default: the symbol's current default margin mode."
+          enum:
+            - CROSS
+            - ISOLATED
 
     CancelAllAfterBody:
       required:
@@ -11530,6 +11599,12 @@ components:
         post_only_adjust:
           type: boolean
           description: "If set to true, then price will be adjusted to 1 tick close to current best price. Only supported for `POST_ONLY` type orders"
+        margin_mode:
+          type: string
+          description: "Margin mode for the order. Default: the symbol's current default margin mode."
+          enum:
+            - CROSS
+            - ISOLATED
 
     PostOrderResponse:
       allOf:
