@@ -1,69 +1,20 @@
 ---
 title: "Isolated Margin"
-description: "Step-by-step guide to integrating Isolated Margin: switching margin modes, setting leverage, placing orders, and adjusting position margin."
+description: "Step-by-step guide to integrating Isolated Margin: setting leverage, placing orders, and adjusting position margin."
 ---
 
 ## Overview
 
-This guide walks through the full lifecycle of using Isolated Margin via the API. For a conceptual overview, see [Isolated Margin basics](/introduction/trade-on-orderly/perpetual-futures/isolated-margin).
+This guide walks through the full lifecycle of using Isolated Margin via the API. Both Cross and Isolated margin modes are supported simultaneously — you can hold a Cross position and an Isolated position on the same symbol at the same time. Simply specify `margin_mode` when placing an order. For a conceptual overview, see [Isolated Margin basics](/introduction/trade-on-orderly/perpetual-futures/isolated-margin).
 
 ```mermaid
 flowchart LR
-    A[Query margin modes] --> B[Switch to ISOLATED]
-    B --> C[Set leverage]
-    C --> D[Place order]
-    D --> E[Adjust position margin]
-    E --> F[Monitor position]
+    A[Set leverage] --> B[Place order]
+    B --> C[Adjust position margin]
+    C --> D[Monitor position]
 ```
 
-## Step 1: Query Current Margin Modes
-
-Before switching, check the current margin mode for each symbol.
-
-**API:** [GET `/v1/client/margin_modes`](/build-on-omnichain/restful-api/private/get-margin-modes)
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "rows": [
-      {
-        "symbol": "PERP_BTC_USDC",
-        "default_margin_mode": "CROSS"
-      },
-      {
-        "symbol": "PERP_ETH_USDC",
-        "default_margin_mode": "ISOLATED"
-      }
-    ]
-  }
-}
-```
-
-All symbols default to `CROSS` unless previously changed.
-
-## Step 2: Switch a Symbol to Isolated Margin
-
-Set the default margin mode for a specific symbol to `ISOLATED`.
-
-**API:** [POST `/v1/client/margin_mode`](/build-on-omnichain/restful-api/private/update-margin-mode)
-
-**Request body:**
-
-```json
-{
-  "symbol": "PERP_ETH_USDC",
-  "default_margin_mode": "ISOLATED"
-}
-```
-
-<Note>
-  You can only switch a symbol's margin mode when you have **no open positions or pending orders** on that symbol in the current mode. Close all positions and cancel all orders on the symbol before switching.
-</Note>
-
-## Step 3: Set Leverage for Isolated Mode
+## Step 1: Set Leverage for Isolated Mode
 
 Each symbol maintains independent leverage settings per margin mode. Set the leverage for the Isolated mode specifically.
 
@@ -96,7 +47,7 @@ When using [POST `/v1/client/leverages`](/build-on-omnichain/restful-api/private
 | **Cross** | All cross-margin symbols update atomically — all succeed or none do |
 | **Isolated** | Only applies to symbols with no active isolated positions or pending orders; eligible symbols always update |
 
-## Step 4: Place an Order
+## Step 2: Place an Order
 
 Place an order specifying the `margin_mode` parameter.
 
@@ -115,13 +66,9 @@ Place an order specifying the `margin_mode` parameter.
 }
 ```
 
-If `margin_mode` is omitted, the symbol's current default margin mode is used. After switching a symbol to `ISOLATED` in Step 2, new orders on that symbol will default to Isolated.
+If `margin_mode` is omitted, the symbol's default margin mode is used. You can change the default via [POST `/v1/client/margin_mode`](/build-on-omnichain/restful-api/private/update-margin-mode).
 
-### Dual Positions
-
-You can hold both a Cross position and an Isolated position on the same symbol simultaneously. For example, a Cross long and an Isolated short on `PERP_ETH_USDC`. Each position has its own margin calculation and liquidation price — they are completely independent.
-
-## Step 5: Adjust Position Margin
+## Step 3: Adjust Position Margin
 
 After opening an Isolated position, you can add or reduce the margin allocated to it.
 
@@ -152,7 +99,7 @@ After opening an Isolated position, you can add or reduce the margin allocated t
 | `ADD` | Transfers margin from available balance to the isolated position |
 | `REDUCE` | Transfers margin from the isolated position back to available balance |
 
-## Step 6: Monitor Position
+## Step 4: Monitor Position
 
 Query the position with the `margin_mode` parameter to get isolated-specific data.
 
