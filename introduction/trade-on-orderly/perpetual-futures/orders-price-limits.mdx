@@ -3,26 +3,36 @@ title: "Order Price Limit"
 description: "Price range limits enforced on futures orders to prevent manipulation and protect against extreme moves."
 ---
 
-To ensure fair trading, Orderly imposes price limits on futures orders. These price limits are crucial in preventing market manipulation and protecting traders from extreme market movements and abnormal trading activity (e.g. widening of bid/ask spread, deviation of the bid/ask price from the Mark Price).
+Orderly places guardrails on the prices you can set for futures orders. These limits exist to keep trading fair and protect you from extreme price swings, flash crashes, or attempts by bad actors to manipulate the market.
+
+There are two types of limits: **Price Range** (how far above/below the Mark Price you can place an order) and **Price Scope** (how far away from the Mark Price your order can sit).
 
 ## Price Range
 
-* The price of buy limit orders should be less than or equal to Mark Price \* (1 + Price Range)
+The Price Range prevents orders from being placed or filled at prices that are too far above or below the current Mark Price. Think of it as a ceiling and floor around the Mark Price.
 
-* The price of sell limit orders should be greater than or equal to Mark Price \* (1 - Price Range)
+* Buy limit orders must be priced at or below Mark Price \* (1 + Price Range)
+
+* Sell limit orders must be priced at or above Mark Price \* (1 - Price Range)
 
 * Price Range = 3% for all markets
 
-In case of extreme volatility, the price of a contract might move significantly in a short period of time. If a trader places a Market order, this order may be partially filled up to the price levels specified above.
+For example, if the Mark Price of BTC-PERP is 60,000 USDC, a buy limit order cannot be priced higher than 61,800 USDC (60,000 * 1.03), and a sell limit order cannot be priced lower than 58,200 USDC (60,000 * 0.97).
 
-Open limit orders will be cancelled if, at any point in time, the limit price of the order crosses the Mark Price by more than the price range (e.g. for Buy orders, if the limit price is higher than the Mark Price by more than the Price Range)
+**What happens during high volatility:** If you place a market order and the price moves quickly, your order may only be partially filled up to the price range limit. Any portion beyond the limit will not be filled.
+
+**Existing orders:** Open limit orders will be automatically cancelled if the Mark Price moves so that the order's price is now more than the Price Range away from it.
 
 In the event of extreme price movements, Orderly reserves the right to change the value of the Price Range for one or several perpetual markets.
 
 ## Price Scope
 
-* The price of a buy limit order cannot be lower than Mark Price \* (1 - Price Scope)
+The Price Scope is the opposite of the Price Range. While the Price Range stops you from placing orders too close to or beyond the Mark Price in the wrong direction, the Price Scope stops you from placing orders too far away from the Mark Price.
 
-* The price of a sell limit order cannot be higher than Mark Price \* (1 + Price Scope)
+* Buy limit orders cannot be priced lower than Mark Price \* (1 - Price Scope)
+
+* Sell limit orders cannot be priced higher than Mark Price \* (1 + Price Scope)
 
 * Price Scope = 40% for all markets
+
+Using the same example, if the Mark Price of BTC-PERP is 60,000 USDC, a buy limit order cannot be priced lower than 36,000 USDC (60,000 * 0.60), and a sell limit order cannot be priced higher than 84,000 USDC (60,000 * 1.40).

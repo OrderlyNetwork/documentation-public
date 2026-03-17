@@ -1,0 +1,65 @@
+---
+title: "Isolated Margin"
+description: "How Isolated Margin mode works on Orderly, including per-position margin allocation, independent leverage, and risk isolation."
+---
+
+Orderly supports two margin modes for perpetual futures: **Cross Margin** and **Isolated Margin**. Cross Margin is the default and shares your entire account balance across all positions. Isolated Margin lets you allocate a fixed amount of margin to a single position, capping your maximum loss to that amount.
+
+This page explains how Isolated Margin works, how it differs from Cross Margin, and when to use each mode.
+
+## Cross Margin vs. Isolated Margin
+
+| | Cross Margin | Isolated Margin |
+| --- | --- | --- |
+| **Margin pool** | All positions share the account's available balance | Each position has its own dedicated margin |
+| **Risk scope** | A loss on one position reduces margin available to all others | Losses are capped at the margin assigned to that position |
+| **Liquidation impact** | Can trigger account-wide liquidation | Only the single isolated position is liquidated |
+| **Profit offset** | Profitable positions automatically offset losing ones | No offset between positions |
+
+In short, Cross Margin is more capital-efficient because your collateral backs everything at once. Isolated Margin gives you tighter control over how much you can lose on any single trade.
+
+## How Isolated Margin Works
+
+### Per-symbol configuration
+
+You set the margin mode on a per-symbol basis. For example, you might use Cross Margin for BTC-PERP and Isolated Margin for ETH-PERP. There is no account-wide toggle -- each trading pair is configured independently.
+
+### Independent leverage
+
+Each symbol can have different leverage settings under each margin mode. For example:
+
+- BTC-PERP Cross: 10x
+- BTC-PERP Isolated: 20x
+- ETH-PERP Isolated: 5x
+
+The leverage you set in Isolated mode determines how much margin is required for that position. Higher leverage means less margin allocated (and a tighter liquidation price).
+
+### Dual positions on the same symbol
+
+You can hold both a Cross position and an Isolated position on the same symbol at the same time. For example, you could open a Cross long and an Isolated short on ETH-PERP simultaneously. Each position has its own margin calculation and liquidation price -- they are completely independent.
+
+### Risk isolation
+
+If an Isolated position is liquidated, only the margin assigned to that position is lost. Your other positions and your account balance remain untouched. This is the core benefit of Isolated Margin: your worst-case loss on any single trade is known upfront.
+
+## When to Use Isolated Margin
+
+| Scenario | Why Isolated Margin helps |
+| --- | --- |
+| High-leverage speculation | Cap your maximum loss without putting your core positions at risk |
+| Multi-strategy trading | Run different strategies on different pairs with no risk bleed-through |
+| Experimental trades | Test a thesis on a volatile asset without exposing your whole account |
+| Defined-risk setups | Know exactly how much you can lose before you enter the trade |
+
+## Default Behavior
+
+All symbols default to Cross Margin unless you explicitly switch them to Isolated. If you have never changed your margin mode, your experience is unchanged -- existing positions and orders continue to work exactly as before.
+
+<Note>
+  Switching a symbol's margin mode is only possible when you have no open positions or pending orders on that symbol in the current mode.
+</Note>
+
+## Related Pages
+
+- [Margin, Leverage & PnL](/introduction/trade-on-orderly/perpetual-futures/margin-leverage-and-pnl) -- how margin ratios, leverage tiers, and PnL work
+- [Liquidations](/introduction/trade-on-orderly/perpetual-futures/liquidations) -- how the liquidation process is triggered and handled

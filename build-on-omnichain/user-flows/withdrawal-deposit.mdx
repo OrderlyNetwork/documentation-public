@@ -7,7 +7,7 @@ description: "Overview of deposit and withdrawal flow"
 
 Token deposits can be made on any supported chains (list [here](/introduction/trade-on-orderly/supported-chains))
 
-To create a deposit request, users can follow the following steps:
+To create a deposit request:
 
 <Steps>
   <Step title="Approve spending of the token by the Vault smart contract">
@@ -104,7 +104,7 @@ depositAmount);
 // get wei deposit fee for `deposit` call
 BigInteger depositFee = vault.getDepositFee(credentials.getAddress(), depositInput).send();
 
-````
+```
 
 ```py Python
 broker_id = "woofi_pro"
@@ -133,7 +133,7 @@ deposit_fee = vault.functions.getDepositFee(
     Web3.to_checksum_address(account.address),
     deposit_input,
 ).call()
-````
+```
 
 ```ts TypeScript
 const brokerId = "woofi_pro";
@@ -291,7 +291,7 @@ public class DepositExample {
 
 }
 
-````
+```
 
 ```py Python
 import json
@@ -354,7 +354,7 @@ deposit_fee = vault.functions.getDepositFee(
 vault.functions.deposit(deposit_input).transact(
     {"from": account.address, "value": deposit_fee}
 )
-````
+```
 
 ```ts TypeScript
 import { config } from "dotenv";
@@ -416,7 +416,7 @@ deposit();
 
 ## Withdrawal
 
-Follow the following steps to withdraw your tokens from Orderly:
+To withdraw tokens from Orderly:
 
 <Steps>
   <Step title="Choose a valid chain to withdraw your funds to">

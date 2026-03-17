@@ -3,148 +3,108 @@ title: "Staking"
 description: "Step-by-step guide to staking $ORDER or esORDER, managing unstaking, vesting, and claiming rewards."
 ---
 
-## **Overview**
+Stake $ORDER or esORDER to earn VALOR and claim a share of the protocol treasury. Staking is omnichain — you can stake, unstake, vest, and claim rewards from any supported blockchain network.
 
-Stake \$ORDER or esORDER to earn rewards. Enjoy a seamless omnichain experience with the flexibility to stake, unstake, vest, and claim rewards across the wide variety of blockchain networks supported by Orderly.
+## Staking interface
 
-## **Staking Interface**
-
-Access the [**Orderly App**](https://app.orderly.network/staking) and connect to your wallet to view your staking portfolio.
+Access the [Orderly App](https://app.orderly.network/staking) and connect your wallet to view your staking portfolio.
 
 <img
   className="block dark:hidden"
-        src="/images/order-tokenomics/staking-interface.png"
-  alt="Orderly Preview Light"
+  src="/images/order-tokenomics/staking-interface.png"
+  alt="Orderly Staking Interface Light"
 />
-<img className="hidden dark:block" src="/images/order-tokenomics/staking-interface.png" alt="Orderly Preview Dark" />
+<img
+  className="hidden dark:block"
+  src="/images/order-tokenomics/staking-interface.png"
+  alt="Orderly Staking Interface Dark"
+/>
 
-The Orderly App's staking page allows users to:
+From the staking page you can:
 
-- Stake \$ORDER
-- Unstake \$ORDER
-- Vest esORDER for \$ORDER
-- Redeem VALOR and claim \$USDC rewards (legacy system)
-- Redeem VALOR and claim esORDER rewards for staking under the new system (effective November 4, 2025, 0:00 UTC)
+- Stake and unstake $ORDER
+- Vest esORDER for $ORDER
+- Redeem VALOR and claim $USDC rewards (legacy system)
+- Redeem VALOR and claim esORDER rewards (new system, effective 4 November 2025)
 
-Apart from the user's \$ORDER wallet balance, all staking information is chain-agnostic \- consistent across all blockchain networks for a given EVM address.
+All staking information is chain-agnostic — consistent across all networks for a given EVM address. Only your $ORDER wallet balance is network-specific.
 
-## **Stake \$ORDER**
+## Stake $ORDER
 
-1. Users can view their \$ORDER wallet balance after connecting their wallet to the chosen blockchain network.
+1. Connect your wallet and view your $ORDER balance.
+2. Click **Stake** and enter the amount.
+3. After the on-chain transaction succeeds, your staked balance increases and VALOR accrual begins immediately.
 
-2. Click "Stake" or "Stake now" and specify the desired amount of \$ORDER to stake.
+## Unstake $ORDER
 
-3. Upon successful onchain transaction, the \$ORDER wallet balance will decrease, and the staked \$ORDER balance will increase.
+1. Click **Unstake** and enter the amount. A 7-day unstaking period begins.
+2. During unstaking, the tokens do not accrue VALOR, but previously accrued VALOR is unaffected.
+3. Only one active unstaking request is allowed at a time. A new request merges with the existing one and resets the 7-day timer. For example: 1,000 $ORDER unstaking with 5 days left + a new 500 $ORDER request = 1,500 $ORDER available in 7 days from the second request.
+4. You can **cancel** unstaking at any point during the 7-day period, which restakes the full amount.
+5. After 7 days, claim your unstaked $ORDER on whichever network you are connected to:
+   - Ethereum: receive $ORDER (ERC-20)
+   - Other networks: receive $ORDER (OFT)
 
-4. Users will begin earning VALOR immediately.
+## VALOR
 
-## **Unstake \$ORDER**
+VALOR is a non-transferable metric (not a token) that measures your staking position based on amount and duration. It can only be earned by staking $ORDER or esORDER.
 
-1. Click "Unstake" and enter the desired amount to request unstaking \$ORDER.
+### New system (effective 4 November 2025)
 
-2. Upon successful onchain transaction, the unstaking \$ORDER will enter a 7-day unstaking period. During this time, the unstaking \$ORDER will not accrue VALOR but any previously accrued VALOR will remain unaffected.
+- The new treasury pool receives 30% of Orderly's net fees daily, settled via an ORDER buyback at the end of each epoch.
+- Approximately 4.13 VALOR is distributed equally every second, proportional to each user's staked share.
+- VALOR can be redeemed for esORDER.
 
-3. Users can only have one active unstaking request at a time. If a new request is made while another is pending, the new amount will be added to the existing request. The entire unstaking amount will then be subject to a new 7-day availability period, starting from the time of the latest request. For example, if a user has 1,000 \$ORDER unstaking with 5 days remaining, and then requests to unstake an additional 500 \$ORDER, the full 1,500 \$ORDER will become available in 7 days from the time of the second request.
+### Legacy system
 
-4. Users can cancel an unstaking request at any point during the 7-day unstaking period by clicking the "Cancel" button. This action will restake the entire unstaking amount for the user.
+- The legacy treasury pool no longer receives new revenues.
+- VALOR accrued in the legacy system remains valid and can be used to claim $USDC until the pool is fully redeemed.
+- Legacy VALOR allocations were replicated 1:1 into the new system.
 
-5. After the 7-day period, users can claim their unstaked \$ORDER to the network they are connected to on the Orderly App. For example, if a user originally staked \$ORDER on the Polygon network, they have the flexibility to connect to the Optimism network to claim their unstaked \$ORDER.
+## Redeem VALOR
 
-   - When claiming unstaked \$ORDER on Ethereum, users will receive \$ORDER (ERC-20).
+In the **Reward accrual** section, redeem VALOR for esORDER (new system) or $USDC (legacy system).
 
-   - When claiming unstaked \$ORDER on all other blockchain networks, users will receive \$ORDER (OFT).
+**VALOR price:**
 
-## **VALOR**
+- New system: *(Treasury pool value)* ÷ *(Total circulating VALOR)*
+- Legacy system: *(Treasury pool value)* ÷ *(Total circulating VALOR)* — this ratio is fixed since no new revenue enters the legacy pool.
 
-VALOR is a non-transferable metric, not a token, that measures a user's \$ORDER staking position based on the amount and duration of their stake. VALOR can only be earned by staking \$ORDER or esORDER.
+**Redemption process:**
 
-Starting 4 November 2025 0:00 UTC, VALOR will no longer accrue in the legacy system and will instead begin accruing in the new system which is linked to esORDER rewards.
-
-- The new treasury pool will receive 30% of Orderly's net fees daily. These revenue inflows will be settled with an ORDER buyback at the end of each epoch. The legacy treasury pool will no longer receive new revenues.
-
-- VALOR accrued in the previous system remains valid and can be used to claim shares of the \$USDC treasury. This legacy treasury will remain operational until all \$USDC has been fully redeemed.
-
-- In the new system, approximately 4.13 VALOR will be distributed equally every second, based on the user's staked portion in proportion to the total pool. Emissions in the legacy system will cease.
-
-- VALOR can be redeemed for either esORDER (new system) or \$USDC (legacy system), depending on the system from which the VALOR was accrued. The exchange rate is determined by the current size of the protocol treasury pool and the available VALOR supply within each respective system's pool.
-
-- To safeguard the interests of existing stakers, all legacy VALOR allocations will be replicated in the new system on a 1:1 basis. For instance, a user who held 1% of the legacy VALOR will automatically begin with a 1% allocation in the new VALOR system.
-
-## **Redeem VALOR**
-
-In the **Reward accrual** section, users have the option to redeem their VALOR in either esORDER (new system) or \$USDC (legacy system), depending on the system where the VALOR was accrued.
-
-- The VALOR price is determined by dividing the treasury pool by the total VALOR supply within its respective system. This price represents an estimated current value of how much esORDER (for the new system) or USDC (for the legacy system) can be redeemed per VALOR. The formulas are as follows:
-
-  - (VALOR price)<sub>New</sub> \= (Treasury pool value)<sub>New</sub> ÷ (Total circulating supply of VALOR)<sub>New</sub>
-
-  - (VALOR price)<sub>Legacy</sub> \= (Treasury pool value)<sub>Legacy</sub> ÷ (Total circulating supply of VALOR)<sub>Legacy</sub>
-
-- With the new system taking effect on 4 November 2025, net revenue will only be added to the treasury pool in the new system. The redemption ratio in the legacy system, (VALOR price)<sub>Legacy</sub>, will remain fixed until its complete redemption.
-
-  - The legacy treasury pool remains active until it is fully redeemed.
-
-  - Upon launch, the treasury pool in the new system starts with \$0 or 0 esORDER. Orderly will upload 30% of the protocol's net revenue to the new treasury pool every epoch.
-
-  - The total circulating supply of VALOR is updated each time a user interacts with the smart contract to stake/unstake.
-
-- Users can redeem any amount of VALOR at any time \- partially or in full.
-
-  - These transactions can be tracked under "Redeeming" or "Settlement in progress" records.
-
-  - All VALOR redemptions within an epoch are processed at the same time on the subsequent settlement date (the end of each batch). This means that all redemptions within that epoch will settle at the same VALOR price, regardless of when individual users initiated their redemptions.
-
-  - Once submitted, a redemption request cannot be revoked.
-
-  - Users can submit multiple VALOR redemption requests across the same or different blockchain networks.
-
-- Whenever users redeem their VALOR, the redeemed amount is permanently burned, reducing the VALOR supply.
-
-  - In the new system, VALOR redemptions will not affect the legacy system, and vice versa. Similarly, other users' VALOR redemptions will not affect your proportional share of the treasury in either the new or legacy systems.
-
-  - Each batch comprises a 14-day period (i.e. an epoch length). Users will see their "Redeeming" VALOR converted to "Settlement in progress" esORDER (new system) or \$USDC (legacy system) at the end of each batch.
+- You can redeem any amount of VALOR at any time (partial or full).
+- All redemptions within an epoch are processed at the same VALOR price at the end of the batch (14-day epoch).
+- Once submitted, a redemption cannot be revoked.
+- Multiple redemption requests can be submitted across different networks.
+- Redeemed VALOR is permanently burned, reducing supply.
+- Redemptions in one system do not affect the other system.
 
 <Note>
-  ⚠️ When redeeming your VALOR, be sure to note the blockchain network you are connected to the
-  Orderly App, as this is where your \$USDC will become available for claiming. This selection
-  cannot be changed once the transaction is executed onchain. Remember to have enough gas fees to
-  claim your \$USDC rewards once the redemption is settled.
+When redeeming VALOR, note which network you are connected to — your rewards will be claimable on that network. This cannot be changed after the transaction is executed.
 </Note>
 
-Orderly contributes 30% of its daily net trading revenue to a new treasury, with settlements occurring each epoch. Consequently, users who hold their VALOR for extended periods before redemption will accumulate more esORDER per VALOR over time.
+## Claim $USDC (legacy system)
 
-## **Claim \$USDC (legacy system)**
+After a batch concludes, there is a 2-day waiting period before $USDC becomes claimable. Once settled, you can claim at any time on the network you specified during redemption.
 
-Users holding legacy VALOR can still redeem and claim their \$USDC shares from the legacy treasury pool until all \$USDC has been fully redeemed.
+## Claim esORDER (new system)
 
-- The redemption process involves a 2-day waiting period after each batch concludes. Following this, users can claim their \$USDC on their chosen blockchain network, as specified during redemption.
+After a batch concludes, there is a 7-day waiting period before esORDER becomes claimable. Once claimed, esORDER is automatically staked and begins accruing VALOR immediately.
 
-- Once the redemption is successfully settled, the \$USDC can be claimed by users at any time, without restrictions. When a user claims \$USDC on a particular blockchain network, the entire available amount for that network will be claimed.
+## FAQ
 
-## **Claim esORDER (new system)**
+**How is staking APR calculated?**
 
-Starting 4 November 2025 0:00 UTC, VALOR will begin accruing in the new system which is linked to esORDER rewards.
+It is the protocol's trailing 7-day average daily returns, annualized. Past performance does not guarantee future returns. Daily returns = 30% of protocol daily net revenue ÷ USD equivalent of total staked $ORDER and esORDER.
 
-- The redemption process involves a 7-day waiting period after each batch concludes. Following this, users can claim and stake their esORDER.
+**Do I earn back missed VALOR if I cancel unstaking?**
 
-- Upon successful redemption settlement, users can claim their esORDER at any time without restrictions. Once claimed, the esORDER will be automatically staked, and respective VALOR accrual will begin immediately.
+No. VALOR accrues every second while staked. You do not retroactively earn VALOR for the unstaking period. However, upon cancellation, VALOR accrual resumes immediately.
 
-## **FAQ**
+**Why can I stake and claim from different chains?**
 
-- How is staking APR calculated?
+Orderly's omnichain architecture lets you stake on one chain and claim on another. This is optional — you can complete the full flow on a single chain if you prefer.
 
-It is the protocol's trailing 7-day average daily returns (annualized). Note that past performance does not guarantee future returns.
+**What is OFT?**
 
-Starting 4 November 2025 0:00 UTC, daily returns refer to the 30% of the protocol daily net revenue divided by the latest USD equivalent of total staked \$ORDER and esORDER.
-
-- Do I earn back the VALOR that I've missed if I cancel my unstaking request?
-
-VALOR is earned every second when \$ORDER/esORDER is staked. Therefore, you do not retrospectively earn VALOR in the period of unstaking. However, upon the successful unstaking cancellation, you will start earning VALOR immediately.
-
-- Why can I stake & claim my unstaked \$ORDER from a different chain?
-
-One of Orderly's key value propositions is to support builders across different blockchain networks. This omnichain architecture supports all our users across different blockchain networks to stake/unstake with ease, not limiting them to stake/unstake from one specific blockchain. Versatile to various use cases, this design empowers our users with the flexibility to stake from one blockchain and claim their unstaked \$ORDER from another blockchain seamlessly. This omnichain design is completely optional and users can choose to complete staking and unstaking on the same blockchain.
-
-- What is OFT and why did Orderly decide to use it instead of just supporting an ERC-20 standard token?
-
-The Omnichain Fungible Token (OFT) standard by LayerZero allows fungible tokens to be seamlessly transferred across multiple blockchains without asset wrapping or middlechains. OFT resonates with Orderly's omnichain mission, enabling a multichain interoperability for users to receive their rewards and interact with Orderly with ease.
+The Omnichain Fungible Token (OFT) standard by LayerZero allows tokens to transfer across blockchains without wrapping or middlechains. It enables Orderly users to receive rewards and interact with the protocol from any supported network.

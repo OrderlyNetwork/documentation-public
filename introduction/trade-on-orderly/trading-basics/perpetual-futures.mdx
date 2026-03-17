@@ -3,28 +3,35 @@ title: "Perpetual Futures Trading"
 description: "Introduction to perpetual futures trading, explaining leverage, long/short mechanics, and settlement in USDC."
 ---
 
-A Perpetual Futures (Perps) contract is a derivative financial contract without an expiry date that allows traders to speculate on the underlying price movement with leverage, without owning that underlying. 
+A Perpetual Futures ("perps") contract is a derivative that lets you speculate on an asset's price movement with leverage, without owning the underlying asset. Unlike traditional futures, perps have **no expiry date**.
 
-## Key advantages of perps trading vs spot trading
+## Why trade perps instead of spot?
 
-1. **Possibility to long or short**: if you hold a token in the spot market, you can benefit only from its potential price appreciation. On the other hand, Perpetual Futures contracts allow you to profit from price movements in either direction: you can bet that the price of BTC will fall by entering a short BTC-PERP position and profit from its downtrend.
+1. **Long or short:** In the spot market, you can only profit when prices go up. With perps, you can also profit when prices fall by opening a short position.
 
-2. **Leverage**: if BTC price is at 30,000 USDC, on the spot market, you can only afford to buy 1 BTC if you have 30,000 USDC in your balance. However, with a 10x leverage on the BTC-PERP contract, you can open 1 BTC-PERP contract on **Orderly** with only 3,000 USDC as collateral. Perpetuals make trading **more capital efficient**.
+2. **Leverage:** With 10x leverage on BTC-PERP, you only need 3,000 USDC to control a 30,000 USDC position. This makes trading more capital efficient -- but leverage amplifies losses equally, so manage your risk.
 
-3. **Liquidity:** Futures market volume far surpasses spot trading volume, allowing users to access deeper liquidity and trade with minimal price impact.
+3. **Deeper liquidity:** Futures markets have significantly higher volume than spot, allowing you to enter and exit with less price impact.
 
 ## Orderly USDC Perpetual Futures contracts
 
-Orderly offers USDC-based Perpetual Futures contracts. Collateral is in USDC and all perpetual contracts are quoted and settled in USDC.
+All perps on Orderly are USDC-based. Your collateral is in USDC, and all contracts are quoted and settled in USDC.
 
-## Cross-margin
+## Margin modes
 
-Orderly currently offers only cross-margin mode. As a trader, you can deposit USDC collateral and it will be shared across all open positions to calculate the margin ratio.
+Orderly supports two margin modes, configurable per symbol:
+
+- **Cross Margin** (default): Your deposited USDC is shared across all cross-margin positions to calculate a single margin ratio. Profitable positions automatically offset losing ones.
+- **Isolated Margin**: Each position has its own dedicated margin. Losses are capped at the margin assigned to that position and do not affect the rest of your account.
+
+You can set each trading pair to either mode independently. For a detailed comparison, see [Isolated Margin](/introduction/trade-on-orderly/perpetual-futures/isolated-margin).
 
 ## Supported leverages
 
-Orderly will enable the following leverages: 1x, 2x, 3x, 4x, 5x, 10x, and 20x.
+Integer values from 1x to 100x (1x, 2x, 3x, ... 100x). The maximum leverage available depends on the specific market -- see [Margin, Leverage & PnL](/introduction/trade-on-orderly/perpetual-futures/margin-leverage-and-pnl) for per-market limits.
 
 ## Position mode
 
-Orderly currently allows only one-sided mode: traders cannot hold both long and short positions for a single Perpetual Futures contract.
+Under **Cross Margin**, Orderly uses one-sided position mode. You cannot hold both a long and a short on the same contract simultaneously -- opening the opposite direction will reduce or close your existing position.
+
+With **Isolated Margin**, you can hold both a Cross position and an Isolated position on the same symbol at the same time (e.g., a Cross long and an Isolated short on ETH-PERP), each with independent margin and liquidation price.

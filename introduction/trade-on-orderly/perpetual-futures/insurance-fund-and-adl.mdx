@@ -3,31 +3,42 @@ title: "Insurance Fund & ADL"
 description: "The Orderly Insurance Fund functions as a safeguard to protect bankrupt traders from being insolvent."
 ---
 
-## Protect bankrupt traders
+Every trading platform needs a safety net. On Orderly, the Insurance Fund is that safety net. It steps in when a trader's account goes underwater (meaning their losses exceed their collateral), making sure those bad debts don't spill over and hurt everyone else on the platform.
 
-An account is bankrupt if it has a negative total collateral value. Under this scenario, the Orderly Insurance Fund will take over all the account's positions and debt to protect other users.
+This page explains how the Insurance Fund works, how it grows, and what happens in the rare case that even the Insurance Fund runs low.
 
-## Insurance Fund growth
+## What does "bankrupt" mean here?
 
-In the majority of cases, Orderly Insurance Fund will collect part of liquidation fees from accounts that have enough margin. Over time, it should be growing. In the case of extreme market conditions, liquidators might not be able to liquidate positions in time. Some traders might become bankrupt, and this is where the Insurance Fund comes in and cover those losses.
+An account is bankrupt if it has a negative total collateral value. In plain terms, the trader owes more than they have.
 
-## Claiming of non-liquidated positions
+When this happens, the Orderly Insurance Fund takes over all of that account's positions and debt. This protects other users from absorbing those losses.
 
-If an Account Margin Ratio is insufficient to cover the minimum liquidator fee, all the positions and the remaining USDC balance of the liquidated account are transferred to the Insurance Fund.
+## How the Insurance Fund grows
 
-Liquidators can make a request to claim Insurance Fund positions at a discount. This discount is slightly less than the liquidator fee.
+The Insurance Fund earns money over time by collecting a portion of liquidation fees. Whenever a trader gets liquidated and still has enough margin to cover the fees, part of those fees flow into the Insurance Fund.
 
-## Specifications
+Think of it like a shared savings account that slowly fills up during normal market conditions. During extreme market swings, however, liquidators might not be able to close positions fast enough. Some traders may go bankrupt, and the Insurance Fund covers those losses by drawing from its reserves.
 
-The Insurance Fund is a special account that does not share the same margin requirements as a standard account. Important parameters are : 
+## What happens to positions that can't be liquidated normally?
 
-* `min_insurance_fund_margin_ratio`: corresponds to the maintenance margin ratio for the Insurance Fund
+Sometimes a trader's remaining margin is so low that it cannot even cover the minimum fee a liquidator would need. In that case:
 
-* `min_margin_ratio_solvency`: refers to the lowest level of margin ratio that the Insurance Fund must maintain to avoid becoming insolvent.
+1. All of the trader's positions and remaining USDC balance are transferred to the Insurance Fund.
+2. Liquidators can then request to claim those positions from the Insurance Fund at a discount (slightly less than the normal liquidator fee).
 
-## ADL
+This gives liquidators an incentive to step in and clean up these positions, even in tough market conditions.
 
-In the unlikely scenario where:
+## Key parameters
+
+The Insurance Fund operates as a special account with its own margin rules, separate from regular trader accounts. Two important parameters control it:
+
+* `min_insurance_fund_margin_ratio`: This is the maintenance margin ratio for the Insurance Fund. If the fund's margin ratio drops to this level, it signals trouble.
+
+* `min_margin_ratio_solvency`: This is the absolute floor -- the lowest margin ratio the Insurance Fund can reach before it is considered insolvent.
+
+## ADL (Auto-Deleveraging)
+
+ADL is the last resort. It only kicks in when all other safety mechanisms have failed. Specifically, ADL is triggered when all three of these conditions are true:
 
 1. Liquidators don't take over liquidated positions
 
@@ -35,7 +46,6 @@ In the unlikely scenario where:
 
 3. The Insurance Fund Margin Ratio falls below the `min_insurance_fund_margin_ratio`,
 
-ADL or Auto-Deleveraging will be triggered.
+When ADL activates, Orderly selects the traders who have both the most profit and the most leverage. Their positions are then used to offset the Insurance Fund's positions in each perpetual market, one by one.
 
-The process consists first in selecting the top traders with the most profit and leverage, then offsetting the positions of the insurance fund in each perpetual market, one by one.
-
+In practice, this means a highly profitable, highly leveraged trader could have part of their position automatically closed to keep the system solvent. This is extremely rare, but it is important to understand that it exists as a final safeguard.

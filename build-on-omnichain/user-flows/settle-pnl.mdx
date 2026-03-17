@@ -1,37 +1,40 @@
 ---
 title: "Settle PnL"
-description: "Key user flow walkthroughs"
+description: "How to settle realized and unrealized PnL into USDC balance via the Orderly API."
 ---
 
-Any realized and unrealized PnL accrued from open or closed positions needs to be “Settled” into the USDC balance of the account. PnL settlement can happen anytime for any account if other users trigger a settlement. Any user can also trigger PnL settlement of their own account by following these steps:
+Any realized and unrealized PnL accrued from open or closed positions needs to be "settled" into the USDC balance of the account. PnL settlement can be triggered at any time — either by other users or by the account owner.
+
+To trigger PnL settlement for your own account:
 
 <Steps>
   <Step title="Get a Settle PnL nonce">
-    Get a nonce from [Get settle PnL nonce](/build-on-omnichain/restful-api/private/get-settle-pnl-nonce).
+    Get a nonce from [Get Settle PnL Nonce](/build-on-omnichain/restful-api/private/get-settle-pnl-nonce).
   </Step>
   <Step title="Obtain signature from EIP-712">
     Sign an EIP-712 message in the following format:
+
 ```json
 {
-    "brokerId": "woofi_dex",
-    "chainId": 80001,
-    "settleNonce": 1,
-    "timestamp": 1685973017064
+  "brokerId": "woofi_dex",
+  "chainId": 80001,
+  "settleNonce": 1,
+  "timestamp": 1685973017064
 }
 ```
 
 where:
 
-| **Name**    | **Type**  | **Required** | **Description**                                              |
-| ----------- | --------- | ------------ | ------------------------------------------------------------ |
-| brokerId    | string    | Y            | Builder ID, the valid list can be found \[here\]             |
-| chainId     | int       | Y            | Chain ID of the connected chain where the message was signed |
-| settleNonce | int       | Y            | Valid withdrawal nonce from [Get settle PnL nonce](/build-on-omnichain/restful-api/private/get-settle-pnl-nonce)           |
-| timestamp   | timestamp | Y            | current timestamp in UNIX milliseconds                       |
+| **Name**    | **Type**  | **Required** | **Description**                                                                                                   |
+| ----------- | --------- | ------------ | ----------------------------------------------------------------------------------------------------------------- |
+| brokerId    | string    | Y            | Builder ID                                                                                                        |
+| chainId     | int       | Y            | Chain ID of the connected chain where the message was signed                                                      |
+| settleNonce | int       | Y            | Valid settlement nonce from [Get Settle PnL Nonce](/build-on-omnichain/restful-api/private/get-settle-pnl-nonce)   |
+| timestamp   | timestamp | Y            | Current timestamp in UNIX milliseconds                                                                            |
 
   </Step>
   <Step title="Request PnL settlement">
-    Request a PnL settlement through [Request Pnl settlement API](/build-on-omnichain/restful-api/private/request-pnl-settlement).
+    Submit the request through [Request PnL Settlement API](/build-on-omnichain/restful-api/private/request-pnl-settlement).
   </Step>
 </Steps>
 
