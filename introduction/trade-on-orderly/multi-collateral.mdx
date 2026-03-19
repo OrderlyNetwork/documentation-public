@@ -55,11 +55,11 @@ LTV = ( abs(min(USDC Balance, 0)) + abs(min(upnl, 0)) ) / [ sum( max(Collateral 
 | Term                | Definition                                                |
 | ------------------- | --------------------------------------------------------- |
 | USDC Balance        | The total absolute USDC balance that has been borrowed    |
-| min(upnl, 0)        | The isolated unrealized losses included                   |
-| Collateral Quantity | The quantity of a specific asset you hold as collateral   |
-| Index Price         | The current market price of the collateral                |
-| Weight              | The collateral weight (refer to Collateral Ratio section) |
-| max(upnl, 0)        | The isolated unrealized profits included                  |
+| min(upnl, 0)        | Unrealized losses from cross-margin positions              |
+| Collateral Quantity | The quantity of a specific asset you hold as collateral    |
+| Index Price         | The current market price of the collateral                 |
+| Weight              | The collateral weight (refer to Collateral Ratio section)  |
+| max(upnl, 0)        | Unrealized profits from cross-margin positions             |
 
 The acceptable range of LTV ratio remains below 95%. Auto conversion of collateral will be triggered if the LTV ratio reaches 95% and above.
 

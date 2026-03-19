@@ -20,9 +20,9 @@ In short, Cross Margin is more capital-efficient because your collateral backs e
 
 ## How Isolated Margin Works
 
-### Per-symbol configuration
+### Both modes work simultaneously
 
-You set the margin mode on a per-symbol basis. For example, you might use Cross Margin for BTC-PERP and Isolated Margin for ETH-PERP. There is no account-wide toggle -- each trading pair is configured independently.
+Cross Margin and Isolated Margin are not mutually exclusive -- both modes are supported at the same time. You specify the margin mode when placing each order, so you can use Cross Margin for some trades and Isolated Margin for others on any symbol, without needing to switch modes.
 
 ### Independent leverage
 
@@ -53,11 +53,7 @@ If an Isolated position is liquidated, only the margin assigned to that position
 
 ## Default Behavior
 
-All symbols default to Cross Margin unless you explicitly switch them to Isolated. If you have never changed your margin mode, your experience is unchanged -- existing positions and orders continue to work exactly as before.
-
-<Note>
-  Switching a symbol's margin mode is only possible when you have no open positions or pending orders on that symbol in the current mode.
-</Note>
+All symbols default to Cross Margin. When you place an order without specifying a `margin_mode`, the symbol's default margin mode is used. You can change a symbol's default display mode, but this only affects the frontend default -- it does not prevent you from using either mode at any time.
 
 ## Related Pages
 
