@@ -19,12 +19,12 @@ All perps on Orderly are USDC-based. Your collateral is in USDC, and all contrac
 
 ## Margin modes
 
-Orderly supports two margin modes, configurable per symbol:
+Orderly supports two margin modes, both available simultaneously on every symbol:
 
 - **Cross Margin** (default): Your deposited USDC is shared across all cross-margin positions to calculate a single margin ratio. Profitable positions automatically offset losing ones.
 - **Isolated Margin**: Each position has its own dedicated margin. Losses are capped at the margin assigned to that position and do not affect the rest of your account.
 
-You can set each trading pair to either mode independently. For a detailed comparison, see [Isolated Margin](/introduction/trade-on-orderly/perpetual-futures/isolated-margin).
+You specify the margin mode when placing each order. For a detailed comparison, see [Isolated Margin](/introduction/trade-on-orderly/perpetual-futures/isolated-margin).
 
 ## Supported leverages
 
@@ -32,6 +32,6 @@ Integer values from 1x to 100x (1x, 2x, 3x, ... 100x). The maximum leverage avai
 
 ## Position mode
 
-Under **Cross Margin**, Orderly uses one-sided position mode. You cannot hold both a long and a short on the same contract simultaneously -- opening the opposite direction will reduce or close your existing position.
+Orderly uses one-sided position mode within each margin mode. You cannot hold both a long and a short on the same contract in the same margin mode -- opening the opposite direction will reduce or close your existing position.
 
-With **Isolated Margin**, you can hold both a Cross position and an Isolated position on the same symbol at the same time (e.g., a Cross long and an Isolated short on ETH-PERP), each with independent margin and liquidation price.
+However, since Cross and Isolated are independent, you can hold a Cross position and an Isolated position on the same symbol at the same time (e.g., a Cross long and an Isolated short on ETH-PERP), each with independent margin and liquidation price.
