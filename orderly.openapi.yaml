@@ -4736,6 +4736,57 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/LeaderboardResponse"
+
+  /v1/broker/broker_info:
+    get:
+      summary: Get Broker Info
+      deprecated: false
+      description: |
+        **Limit 10 requests per 60 seconds**
+
+        `GET /v1/broker/broker_info`
+
+        Get broker tiered fee daily log information including staking balance, trading volume, and fee rates.
+      tags:
+        - private
+      parameters:
+        - name: orderly-timestamp
+          in: header
+          description: ""
+          required: true
+          example: "1649920583000"
+          schema:
+            type: string
+        - name: orderly-account-id
+          in: header
+          description: ""
+          required: true
+          example: "0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546"
+          schema:
+            type: string
+        - name: orderly-key
+          in: header
+          description: ""
+          required: true
+          example: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
+          schema:
+            type: string
+        - name: orderly-signature
+          in: header
+          description: ""
+          required: true
+          example: >-
+            dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetBrokerInfoResponse"
+
   /v1/client/statistics/daily:
     get:
       summary: Get User Daily Statistics
@@ -13735,6 +13786,53 @@ components:
                       url:
                         type: string
                         example: "https://orderly.network/docs/release-notes/omnichain"
+
+    GetBrokerInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                broker_id:
+                  type: string
+                  description: broker_id
+                  example: "orderlydemo"
+                total_staked_balance:
+                  type: number
+                  description: staking_volume
+                  example: 300730.5454
+                volume_last_30_days:
+                  type: number
+                  description: trading_volume
+                  example: 300730.5454
+                type:
+                  type: string
+                  description: type_final
+                  example: "DIAMOND"
+                base_maker_fee_rate:
+                  type: number
+                  description: maker_fee_rate
+                  example: 0.0
+                base_taker_fee_rate:
+                  type: number
+                  description: taker_fee_rate
+                  example: 1.0
+                base_rwa_maker_fee_rate:
+                  type: number
+                  description: maker_fee_rate
+                  example: 0.0
+                base_rwa_taker_fee_rate:
+                  type: number
+                  description: taker_fee_rate
+                  example: 1.0
+                updated_time:
+                  type: number
+                  description: updated_time
+                  example: 1702989203989
 
     GetBrokerDailyResponse:
       allOf:
