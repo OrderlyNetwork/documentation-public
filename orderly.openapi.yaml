@@ -108,7 +108,7 @@ paths:
 
         **Limit: 1 request per 60 seconds**
 
-        `GET v1/client/aggregate/positions`
+        `GET /v1/client/aggregate/positions`
 
         Only the main account is allowed to call this API.
       tags:
@@ -135,7 +135,7 @@ paths:
 
         `GET /v1/client/aggregate/holding`
 
-        Only the main account is allowed to call this API
+        Only the main account is allowed to call this API.
       tags:
         - private
       parameters:
@@ -221,6 +221,8 @@ paths:
 
         `GET /v1/ip_info`
 
+        Returns the detected IP address and location metadata for the calling client.
+
       tags:
         - public
       parameters: []
@@ -242,18 +244,19 @@ paths:
 
         `GET /v1/public/futures_market`
 
-        Get market volume filtered by broker.
+        Returns market-level trading volume data. Use `symbol` to filter by market and `broker_id` to filter by builder.
       tags:
         - public
       parameters:
         - name: symbol
           in: query
-          description: ""
+          description: Filter results to a specific market symbol, for example `PERP_ETH_USDC`.
           required: false
           schema:
             type: string
         - name: broker_id
           in: query
+          description: Filter results to a specific broker ID.
           required: false
           schema:
             type: string
@@ -275,13 +278,13 @@ paths:
 
         `GET /v1/public/balance/stats`
 
-        Get TVL(Total Balance + Unsettled PnL) by broker
+        Returns TVL (total balance plus unsettled PnL), optionally filtered by broker ID.
       tags:
         - public
       parameters:
         - name: broker_id
           in: query
-          description: "Return all TVL if not specified"
+          description: When omitted, returns TVL for all brokers.
           required: false
           schema:
             type: string
@@ -309,7 +312,7 @@ paths:
       parameters:
         - name: symbol
           in: query
-          description: ""
+          description: Symbol to query, for example `PERP_BTC_USDC`.
           required: true
           example: PERP_NEAR_USDC
           schema:
@@ -453,17 +456,16 @@ paths:
         `GET /v1/public/volume/stats`
 
 
-        Get the latest volume statistics of Orderly and its associated builders.
-        Note that for builder volume, the volume is counted as the sum of the
-        maker and taker volume, while for the full Orderly platform, the volume
-        is the total amount matched on the platform (ie taker and maker are not
-        double-counted.)
+        Returns the latest trading volume statistics for Orderly and its
+        associated builders. For a specific builder, volume is calculated as
+        maker volume plus taker volume. Platform-wide volume counts each matched
+        trade once.
       tags:
         - public
       parameters:
         - name: broker_id
           in: query
-          description: Provide broker_id to obtain statistics of a specific builder
+          description: Filter results to a specific broker ID.
           required: false
           example: test_broker
           schema:
@@ -486,13 +488,13 @@ paths:
 
         `GET /v1/public/broker/stats?broker_id={broker_id}`
 
-        Get the stats of a specific builder.
+        Returns statistics for builders on Orderly. Use `broker_id` to limit the response to a single builder.
       tags:
         - public
       parameters:
         - name: broker_id
           in: query
-          description: If provided, it will only return details for the particular builder.
+          description: Filter results to a specific broker ID.
           required: false
           example: test_broker
           schema:
@@ -515,13 +517,13 @@ paths:
 
         `GET /v1/public/broker/name?broker_id={broker_id}`
 
-        Get the list of builders currently onboarded on Orderly.
+        Returns the list of builders currently onboarded to Orderly. Use `broker_id` to retrieve a single builder entry.
       tags:
         - public
       parameters:
         - name: broker_id
           in: query
-          description: If provided, it will only return details for the particular builder.
+          description: Filter results to a specific broker ID.
           required: false
           example: test_broker
           schema:
@@ -771,7 +773,7 @@ paths:
             type: string
         - name: page
           in: query
-          description: "start from 1"
+          description: Page number to return. Starts from 1.
           required: false
           example: ""
           schema:
@@ -934,6 +936,8 @@ paths:
         **Limit: 10 requests per 1 second per IP address**
 
         `GET /v1/public/insurancefund`
+
+        Returns the current balance and risk metrics for the Orderly insurance fund.
       tags:
         - public
       parameters: []
@@ -1822,7 +1826,7 @@ paths:
 
         `GET /v1/account_info`
 
-        Get account overview information.
+        Returns account-level collateral, margin, and PnL overview metrics for the authenticated account.
       tags:
         - private
       parameters:
@@ -1974,7 +1978,7 @@ paths:
 
         `GET /v1/client/info`
 
-        Get basic account information including current user fee rates.
+        Returns account configuration details for the authenticated account, including fee rates and leverage settings.
       tags:
         - private
       parameters:
@@ -2160,7 +2164,7 @@ paths:
 
         `GET /v1/client/statistics`
 
-        Get statistics of the user account
+        Returns trading activity and fee statistics for the authenticated account.
       tags:
         - private
       parameters:
@@ -2184,55 +2188,55 @@ paths:
 
         `GET /v1/asset/history`
 
-        Get asset history, including token deposits/withdrawals.
+        Returns asset transfer history for the authenticated account, including deposits and withdrawals.
       tags:
         - private
       parameters:
         - name: token
           in: query
-          description: token name you want to search
+          description: Filter results to a specific token symbol.
           required: false
           example: ""
           schema:
             type: string
         - name: side
           in: query
-          description: "`DEPOSIT`/`WITHDRAW`"
+          description: "Filter by transfer direction: `DEPOSIT` or `WITHDRAW`."
           required: false
           example: ""
           schema:
             type: string
         - name: status
           in: query
-          description: "`NEW`/`CONFIRM`/`PROCESSING`/`COMPLETED`/`FAILED`/`PENDING_REBALANCE`"
+          description: "Filter by transfer status. Supported values: `NEW`, `CONFIRM`, `PROCESSING`, `COMPLETED`, `FAILED`, `PENDING_REBALANCE`."
           required: false
           example: ""
           schema:
             type: string
         - name: start_t
           in: query
-          description: ""
+          description: Filter results created at or after this timestamp in milliseconds.
           required: false
           example: ""
           schema:
             type: number
         - name: end_t
           in: query
-          description: ""
+          description: Filter results created at or before this timestamp in milliseconds.
           required: false
           example: ""
           schema:
             type: number
         - name: page
           in: query
-          description: "start from 1"
+          description: Page number to return. Starts from 1.
           required: false
           example: ""
           schema:
             type: number
         - name: size
           in: query
-          description: ""
+          description: Number of records to return per page.
           required: false
           example: ""
           schema:
@@ -2280,15 +2284,14 @@ paths:
       summary: Get System Maintenance Status
       deprecated: false
       description: >-
-        **Limit: 1 requests per 1 second per IP address**
+        **Limit: 1 request per 1 second per IP address**
 
 
         `GET /v1/public/system_info`
 
 
-        Retrieve the current system maintenance status of Orderly. A
-        return value of status = 0 means the system is functioning properly and
-        a return value of status = 2 means the system is under maintenance.
+        Returns the current system status for Orderly. `status = 0` indicates
+        normal operation. `status = 2` indicates maintenance mode.
       tags:
         - public
       parameters: []
@@ -2333,7 +2336,7 @@ paths:
 
         `GET /v1/get_account`
 
-        Check whether a wallet has a registered account with provided broker_id.
+        Check whether a wallet has a registered account with the provided builder ID.
       tags:
         - public
       parameters:
@@ -2346,7 +2349,7 @@ paths:
             type: string
         - name: broker_id
           in: query
-          description: The builder that the account is registered on
+          description: Builder ID to check for the wallet address.
           required: true
           example: ""
           schema:
@@ -2374,6 +2377,8 @@ paths:
         **Limit: 10 requests per 1 second per IP address**
 
         `GET /v1/get_all_accounts`
+
+        Returns all accounts associated with the provided wallet address and builder ID.
       tags:
         - public
       parameters:
@@ -2386,7 +2391,7 @@ paths:
             type: string
         - name: broker_id
           in: query
-          description: The builder that the account is registered on
+          description: Builder ID whose accounts should be returned.
           required: true
           example: ""
           schema:
@@ -2415,13 +2420,13 @@ paths:
 
         `GET /v1/get_broker`
 
-        Check whether an address is registered already.
+        Checks whether an address is already registered and returns the associated builder IDs.
       tags:
         - public
       parameters:
         - name: address
           in: query
-          description: The address of the user
+          description: Wallet address to check.
           required: true
           example: ""
           schema:
@@ -2451,9 +2456,8 @@ paths:
         `POST /v1/register_account`
 
 
-        Registers a new account to Orderly. Note an account is unique
-        for each wallet address + builder id (ie the same wallet address can have
-        multiple accounts with Orderly, 1 with each builder)
+        Registers a new account for the provided wallet under the specified
+        builder.
       tags:
         - public
       parameters: []
@@ -2512,9 +2516,9 @@ paths:
 
         `POST /v1/orderly_key`
 
-        Adds an Orderly access key to an account.
+        Adds an Orderly Key to an account.
 
-        Main account's Orderly key can control sub-account.
+        A main account's Orderly Key can manage its sub-accounts.
       tags:
         - public
       parameters: []
@@ -2540,7 +2544,7 @@ paths:
 
         `POST /v1/client/remove_orderly_key`
 
-        Remove an Orderly key from an account, deactivating it from all usage
+        Removes an Orderly Key from an account and deactivates it for future use.
       tags:
         - private
       parameters: []
@@ -2564,7 +2568,9 @@ paths:
 
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET v1/public/config`
+        `GET /v1/public/config`
+
+        Returns the leverage configuration available to users on Orderly.
       tags:
         - public
       parameters: []
@@ -2584,13 +2590,13 @@ paths:
 
         `GET /v1/public/chain_info`
 
-        Get chains specified builder is available on.
+        Returns the chains supported by the specified builder. When `broker_id` is omitted, the response includes all supported chains.
       tags:
         - public
       parameters:
         - name: broker_id
           in: query
-          description: return chains that supports this builder
+          description: Filter results to a specific broker ID.
           required: false
           example: "woofi_pro"
           schema:
@@ -3108,6 +3114,8 @@ paths:
         **Limit 10 requests per 60 seconds**
 
         `GET /v1/volume/user/stats`
+
+        Returns cumulative trading volume statistics for the authenticated account.
       tags:
         - private
       parameters:
@@ -3130,19 +3138,21 @@ paths:
         **Limit 10 requests per 60 seconds**
 
         `GET /v1/volume/user/daily`
+
+        Returns the authenticated account's daily perpetual trading volume for the requested date range.
       tags:
         - private
       parameters:
         - name: start_date
           in: query
-          description: Format YYYY-MM-DD
+          description: Start date in `YYYY-MM-DD` format.
           required: true
           example: ""
           schema:
             type: string
         - name: end_date
           in: query
-          description: Format YYYY-MM-DD
+          description: End date in `YYYY-MM-DD` format.
           required: true
           example: ""
           schema:
@@ -3169,7 +3179,7 @@ paths:
         `GET /v1/withdraw_nonce`
 
 
-        Retrieve a nonce used for requesting a withdrawal on Orderly.
+        Retrieves a nonce required to sign a withdrawal request.
         Each nonce can only be used once.
       tags:
         - private
@@ -3196,7 +3206,7 @@ paths:
         `GET /v1/settle_nonce`
 
 
-        Retrieve a nonce used for requesting a withdrawal on Orderly.
+        Retrieves a nonce required to sign a PnL settlement request.
         Each nonce can only be used once.
       tags:
         - private
@@ -3227,9 +3237,8 @@ paths:
         `0x6F7a338F2aA472838dEFD3283eB360d4Dff5D203`.
 
 
-        This API will throw an error with message `22 - Cross-chain withdrawal
-        required for this withdrawal request.` if `allow_cross_chain_withdrawal`
-        is `false` while the request is a cross-chain request.
+        If `allowCrossChainWithdraw` is `false` for a cross-chain withdrawal
+        request, the request is rejected.
       tags:
         - private
       parameters:
@@ -3535,13 +3544,13 @@ paths:
 
         `GET /v1/client/key_info`
 
-        Retrieve all the registered Orderly key pairs under the account.
+        Retrieves all registered Orderly Keys under the account.
       tags:
         - private
       parameters:
         - name: key_status
           in: query
-          description: Filter by the status of the key (ACTIVE / REMOVING / REMOVED)
+          description: "Filter by Orderly Key status. Supported values: `ACTIVE`, `REMOVING`, or `REMOVED`."
           required: false
           example: ""
           schema:
@@ -3611,8 +3620,8 @@ paths:
         - name: ip_restriction_list
           in: query
           description: >-
-            List of IP or IP ranges (comma separated), that will be allowed to
-            place orders with the orderly_key.
+            List of IP addresses or IP ranges, comma separated, that are allowed
+            to use the `orderly_key`.
           required: true
           example: ""
           schema:
@@ -3643,7 +3652,7 @@ paths:
       parameters:
         - name: orderly_key
           in: query
-          description: The Orderly Key to set the IP restriction list
+          description: The Orderly Key whose IP restriction will be reset.
           required: true
           example: ""
           schema:
@@ -3651,8 +3660,8 @@ paths:
         - name: reset_mode
           in: query
           description: >-
-            The new mode of the IP restriction for this Orderly Key
-            (ALLOW_ALL_IPS, DISALLOW_ALL_IPS).
+            Reset mode to apply. Use `ALLOW_ALL_IPS` to remove all IP
+            restrictions, or `DISALLOW_ALL_IPS` to block all IPs for this key.
           required: true
           example: ""
           schema:
@@ -3677,15 +3686,15 @@ paths:
 
         `GET /v1/notification/inbox/notifications`
 
-        Get all notifications for the user.
+        Returns notification records for the user.
 
-        Currently the only supported message type is the order filled message.
+        Use `type` to filter the categories returned.
       tags:
         - private
       parameters:
         - name: type
           in: query
-          description: Filter nofications by type (TRADE / SYSTEM).
+          description: "Filter notifications by type: `TRADE` or `SYSTEM`."
           required: false
           example: ""
           schema:
@@ -3699,7 +3708,7 @@ paths:
             type: number
         - name: size
           in: query
-          description: ""
+          description: Number of notifications to return per page.
           required: false
           example: ""
           schema:
@@ -3814,20 +3823,21 @@ paths:
     get:
       summary: Get Vault Balance
       deprecated: false
-      description: ""
+      description: |-
+        Returns the current vault balance by chain and token. Use `chain_id` and `token` to narrow the result set.
       tags:
         - public
       parameters:
         - name: chain_id
           in: query
-          description: "id of the chain you wish to query. `900900900` for Solana."
+          description: Chain ID to query. Use `900900900` for Solana.
           required: false
           example: ""
           schema:
             type: string
         - name: token
           in: query
-          description: the token you wish to query
+          description: Token symbol to query, for example `USDC`. If omitted, returns all supported tokens.
           required: false
           example: ""
           schema:
@@ -3846,25 +3856,18 @@ paths:
         - url: https://testnet-operator-sol.orderly.org
       summary: Get Faucet USDC(Testnet Only)
       deprecated: false
-      description: >-
-        For `EVM`:
+      description: |-
+        Testnet-only endpoint for requesting faucet USDC.
 
+        `POST https://testnet-operator-evm.orderly.org/v1/faucet/usdc`
 
-        `GET https://testnet-operator-evm.orderly.org/v1/faucet/usdc`
+        `POST https://testnet-operator-sol.orderly.org/v1/faucet/usdc`
 
+        EVM testnet claims receive 1,000 USDC. Solana testnet claims receive 100 USDC.
 
-        For `Solana`:
+        Each account can claim from the faucet up to 5 times.
 
-
-        `GET https://testnet-operator-sol.orderly.org/v1/faucet/usdc`
-
-
-        Receive 1,000 USDC in the EVM Testnet environment or 100 USDC in the Solana Testnet environment. Each account may only use
-        the faucet a maximum of 5 times.
-
-
-        This API is only available on Testnet so make sure to use Testnet domain
-        as above instead of Mainnet domain.
+        Use the EVM operator domain for EVM addresses and the Solana operator domain for Solana addresses. Do not use a mainnet domain.
       tags:
         - public
       requestBody:
@@ -3878,13 +3881,13 @@ paths:
               properties:
                 chain_id:
                   type: string
-                  description: The chain ID that the test USDC should be deposited to. Not applicable to Solana faucet.
+                  description: Destination chain ID for EVM faucet deposits. Omit this field for Solana.
                 user_address:
                   type: string
-                  description: The address of the user account. Use `Zions51qQNUgWNyp4JegUFoMUpgFx43jBUsYmHtDPdr` for Solana address.
+                  description: Wallet address that will receive the test USDC. For Solana, provide a base58 address such as `Zions51qQNUgWNyp4JegUFoMUpgFx43jBUsYmHtDPdr`.
                 broker_id:
                   type: string
-                  description: Builder ID of an account
+                  description: Broker ID associated with the receiving account.
       responses:
         "200":
           description: OK
@@ -4159,7 +4162,7 @@ paths:
       parameters:
         - name: symbol
           in: query
-          description: ""
+          description: Symbol of the algo order to cancel.
           required: true
           example: ""
           schema:
@@ -4508,6 +4511,8 @@ paths:
 
         `GET /v1/public/announcement`
 
+        Returns active platform announcements published by Orderly.
+
       tags:
         - public
       responses:
@@ -4736,54 +4741,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/LeaderboardResponse"
-  /v1/client/statistics/daily:
+
+  /v1/broker/broker_info:
     get:
-      summary: Get User Daily Statistics
+      summary: Get Broker Info
       deprecated: false
       description: |
         **Limit 10 requests per 60 seconds**
 
-        `GET /v1/client/statistics/daily`
+        `GET /v1/broker/broker_info`
 
-        Get user daily statistics of assets/pnl/volume.
+        Get broker tiered fee daily log information including staking balance, trading volume, and fee rates.
       tags:
         - private
       parameters:
-        - name: start_date
-          in: query
-          description: Format YYYY-MM-DD
-          required: true
-          example: ""
-          schema:
-            type: string
-        - name: end_date
-          in: query
-          description: Format YYYY-MM-DD
-          required: true
-          example: ""
-          schema:
-            type: string
-        - name: page
-          in: query
-          description: "start from 1"
-          required: false
-          example: ""
-          schema:
-            type: number
-        - name: size
-          in: query
-          description: ""
-          required: false
-          example: ""
-          schema:
-            type: number
-        - name: include_historical_data
-          in: query
-          description: "When include_historical_data is set to True, the rate limit for this API becomes 1 request per 60 seconds, the API response will include archived data."
-          required: false
-          example: "False"
-          schema:
-            type: boolean
         - name: orderly-timestamp
           in: header
           description: ""
@@ -4808,6 +4779,91 @@ paths:
         - name: orderly-signature
           in: header
           description: ""
+          required: true
+          example: >-
+            dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetBrokerInfoResponse"
+
+  /v1/client/statistics/daily:
+    get:
+      summary: Get User Daily Statistics
+      deprecated: false
+      description: |
+        **Limit 10 requests per 60 seconds**
+
+        `GET /v1/client/statistics/daily`
+
+        Returns daily account snapshots for account value, PnL, and trading volume over the requested date range.
+      tags:
+        - private
+      parameters:
+        - name: start_date
+          in: query
+          description: Start date in `YYYY-MM-DD` format.
+          required: true
+          example: ""
+          schema:
+            type: string
+        - name: end_date
+          in: query
+          description: End date in `YYYY-MM-DD` format.
+          required: true
+          example: ""
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number to return. Starts from 1.
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: size
+          in: query
+          description: Number of records to return per page.
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: include_historical_data
+          in: query
+          description: When set to `true`, the response also includes archived data and the rate limit becomes 1 request per 60 seconds.
+          required: false
+          example: "False"
+          schema:
+            type: boolean
+        - name: orderly-timestamp
+          in: header
+          description: Timestamp of the signed request in milliseconds.
+          required: true
+          example: "1649920583000"
+          schema:
+            type: string
+        - name: orderly-account-id
+          in: header
+          description: Account ID of the authenticated account.
+          required: true
+          example: "0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546"
+          schema:
+            type: string
+        - name: orderly-key
+          in: header
+          description: Public Orderly Key used to sign the request.
+          required: true
+          example: ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX
+          schema:
+            type: string
+        - name: orderly-signature
+          in: header
+          description: Signature of the request payload generated with the Orderly Key.
           required: true
           example: >-
             dG4bkKiqG0dUYLzViRZkvbI6Sy239JxAdNMIBxFZ4w030Jofr0ORV06GHtvXZkaZaWUXE+XAU3fnzKN/5fDeBQ==
@@ -6148,6 +6204,8 @@ paths:
         **Limit: 1 requests per second**
 
         `POST /v1/delegate_signer`
+
+        Registers a delegate signer relationship for an account using a wallet-signed message.
       tags:
         - public
       requestBody:
@@ -6171,6 +6229,8 @@ paths:
         **Limit: 1 requests per second**
 
         `POST /v1/delegate_orderly_key`
+
+        Adds an Orderly Key for a delegate signer after the delegate relationship has been authorized.
       tags:
         - public
       requestBody:
@@ -6194,6 +6254,8 @@ paths:
         **Limit: 1 requests per second**
 
         `POST /v1/delegate_withdraw_request`
+
+        Creates a withdrawal request on behalf of an account using an authorized delegate signer.
       tags:
         - private
       parameters:
@@ -6222,6 +6284,8 @@ paths:
         **Limit: 1 requests per second**
 
         `POST /v1/delegate_settle_pnl`
+
+        Requests PnL settlement on behalf of an account using an authorized delegate signer.
       tags:
         - private
       parameters:
@@ -8422,7 +8486,7 @@ components:
     orderly_timestamp:
       name: orderly-timestamp
       in: header
-      description: ""
+      description: Timestamp of the signed request in milliseconds.
       required: true
       style: simple
       explode: false
@@ -8432,7 +8496,7 @@ components:
     orderly_account_id:
       name: orderly-account-id
       in: header
-      description: ""
+      description: Account ID of the authenticated account.
       required: true
       style: simple
       explode: false
@@ -8442,7 +8506,7 @@ components:
     orderly_key:
       name: orderly-key
       in: header
-      description: ""
+      description: Public Orderly Key used to sign the request.
       required: true
       style: simple
       explode: false
@@ -8452,7 +8516,7 @@ components:
     orderly_signature:
       name: orderly-signature
       in: header
-      description: ""
+      description: Signature of the request payload generated with the Orderly Key.
       required: true
       style: simple
       explode: false
@@ -8474,9 +8538,11 @@ components:
       type: object
       properties:
         success:
+          description: Indicates whether the request was successful.
           type: boolean
           example: true
         timestamp:
+          description: Server timestamp in milliseconds.
           type: integer
           example: 1702989203989
     AddSubAccountResponse:
@@ -8615,9 +8681,11 @@ components:
                 - rows
               properties:
                 main_account_id:
+                  description: Account ID of the main account that owns the listed sub-accounts.
                   type: string
                   example: "0x7ecc7eb7dc60d7fb5c5ea9cc637da1a46e265a744efda327b9914d7a21725bbf"
                 rows:
+                  description: Sub-accounts under the main account.
                   type: array
                   items:
                     type: object
@@ -8626,9 +8694,11 @@ components:
                       - description
                     properties:
                       sub_account_id:
+                        description: Account ID of the sub-account.
                         type: string
                         example: "0x86987799a1433266cacd80c817b670336d6779468f69defd6f8dc384a07b6457"
                       description:
+                        description: User-defined label for the sub-account.
                         type: string
                         example: "abc"
 
@@ -8660,6 +8730,7 @@ components:
                 - rows
               properties:
                 rows:
+                  description: Aggregate position records for the main account and its sub-accounts.
                   type: array
                   items:
                     type: object
@@ -8709,59 +8780,85 @@ components:
               type: object
               properties:
                 rows:
+                  description: Aggregate position records for the main account and its sub-accounts.
                   type: array
                   items:
                     type: object
                     properties:
                       account_id:
+                        description: Account ID that owns the position.
                         type: string
                       IMR_withdraw_orders:
+                        description: Initial margin ratio after accounting for pending withdraw orders.
                         type: number
                       MMR_with_orders:
+                        description: Maintenance margin ratio after accounting for open orders.
                         type: number
                       average_open_price:
+                        description: Average entry price of the position.
                         type: number
                       cost_position:
+                        description: Cost basis of the position.
                         type: number
                       est_liq_price:
+                        description: Estimated liquidation price of the position.
                         type: number
                       fee_24_h:
+                        description: Trading fees paid over the last 24 hours for the position.
                         type: number
                       imr:
+                        description: Current initial margin ratio of the position.
                         type: number
                       last_sum_unitary_funding:
+                        description: Latest cumulative unit funding value applied to the position.
                         type: number
                       mark_price:
+                        description: Current mark price of the symbol.
                         type: number
                       mmr:
+                        description: Current maintenance margin ratio of the position.
                         type: number
                       pending_long_qty:
+                        description: Pending long order quantity for the symbol.
                         type: number
                       pending_short_qty:
+                        description: Pending short order quantity for the symbol.
                         type: number
                       pnl_24_h:
+                        description: Profit and loss over the last 24 hours.
                         type: number
                       position_qty:
+                        description: Current position quantity.
                         type: number
                       settle_price:
+                        description: Latest settlement price of the symbol.
                         type: number
                       symbol:
+                        description: Trading symbol of the position.
                         type: string
                       seq:
+                        description: Sequence number of the latest position update.
                         type: number
                       timestamp:
+                        description: Timestamp of the position snapshot in milliseconds.
                         type: number
                       updated_time:
+                        description: Timestamp of the latest position update in milliseconds.
                         type: number
                       unsettled_pnl:
+                        description: Unrealized PnL that has not been settled.
                         type: number
                       leverage:
+                        description: Effective leverage applied to the position.
                         type: integer
                       margin_mode:
+                        description: Margin mode used by the position.
                         type: string
                       margin:
+                        description: Margin currently allocated to the position.
                         type: number
                       accrued_funding_fee:
+                        description: Funding fee accrued by the position.
                         type: number
               example:
                 - account_id: "0x11111"
@@ -8818,25 +8915,34 @@ components:
               type: object
               properties:
                 rows:
+                  description: Aggregate asset balances for the main account and its sub-accounts.
                   type: array
                   items:
                     type: object
                     properties:
                       account_id:
+                        description: Account ID that owns the balance.
                         type: string
                       updated_time:
+                        description: Timestamp of the latest balance update in milliseconds.
                         type: number
                       token:
+                        description: Token symbol of the balance entry.
                         type: string
                       holding:
+                        description: Current balance held in the account.
                         type: number
                       frozen:
+                        description: Balance currently frozen by open orders or system processes.
                         type: number
                       pending_short:
+                        description: Balance reserved for pending short exposure.
                         type: number
                       isolated_margin:
+                        description: Balance allocated as isolated margin.
                         type: number
                       isolated_order_frozen:
+                        description: Balance frozen by open isolated-margin orders.
                         type: number
               example:
                 - account_id: "0x1111"
@@ -8876,15 +8982,18 @@ components:
               type: object
               properties:
                 symbol:
+                  description: Trading symbol for the leverage setting.
                   type: string
                   example: "PERP_BTC_USDC"
                 margin_mode:
+                  description: Margin mode for the returned leverage setting.
                   type: string
                   enum:
                     - CROSS
                     - ISOLATED
                   example: "ISOLATED"
                 leverage:
+                  description: Configured leverage value for the symbol.
                   type: integer
                   example: 19
 
@@ -8897,6 +9006,7 @@ components:
               type: object
               properties:
                 rows:
+                  description: Leverage settings for the authenticated account.
                   type: array
                   items:
                     type: object
@@ -8937,36 +9047,47 @@ components:
                 - total_pnl_24h
               properties:
                 current_margin_ratio_with_orders:
+                  description: Current margin ratio after accounting for open orders.
                   type: number
                   example: 1.2385
                 free_collateral:
+                  description: Collateral currently available under the current account state.
                   type: number
                   example: 450315.09115
                 initial_margin_ratio:
+                  description: Current initial margin ratio of the account.
                   type: number
                   example: 0.1
                 initial_margin_ratio_with_orders:
+                  description: Initial margin ratio after accounting for open orders.
                   type: number
                   example: 0.1
                 maintenance_margin_ratio:
+                  description: Current maintenance margin ratio of the account.
                   type: number
                   example: 0.05
                 maintenance_margin_ratio_with_orders:
+                  description: Maintenance margin ratio after accounting for open orders.
                   type: number
                   example: 0.05
                 margin_ratio:
+                  description: Current account margin ratio.
                   type: number
                   example: 1.2385
                 open_margin_ratio:
+                  description: Margin ratio based on open positions only.
                   type: number
                   example: 1.2102
                 total_collateral_value:
+                  description: Total collateral value across the account.
                   type: number
                   example: 489865.71329
                 account_value:
+                  description: Total account value including collateral and PnL.
                   type: number
                   example: 500000
                 total_pnl_24h:
+                  description: Total profit and loss over the last 24 hours.
                   type: number
                   example: 0
 
@@ -8983,6 +9104,7 @@ components:
                 - rows
               properties:
                 rows:
+                  description: Default margin mode settings for the authenticated account.
                   type: array
                   items:
                     type: object
@@ -9046,15 +9168,18 @@ components:
               type: object
               properties:
                 city:
+                  description: Detected city for the calling IP address.
                   type: string
                   example: "Toronto"
                 ip:
+                  description: Detected public IP address of the calling client.
                   type: string
                   example: "192.192.192.0"
                 checked:
                   type: boolean
                   example: false
                 region:
+                  description: Detected region or country for the calling IP address.
                   type: string
                   example: "Canada"
 
@@ -9071,6 +9196,7 @@ components:
                 - rows
               properties:
                 rows:
+                  description: Market volume entries that match the requested filters.
                   type: array
                   items:
                     $ref: "#/components/schemas/FutureInfo"
@@ -9086,12 +9212,15 @@ components:
               type: object
               properties:
                 total_holding:
+                  description: Total balance across the selected scope.
                   type: number
                   example: 100
                 total_unsettled_balance:
+                  description: Total unsettled PnL across the selected scope.
                   type: number
                   example: 21
                 last_update_time:
+                  description: Timestamp of the most recent TVL update in milliseconds.
                   type: number
                   example: 1702989203989
 
@@ -9583,21 +9712,27 @@ components:
               type: object
               properties:
                 perp_volume_ytd:
+                  description: Perpetual trading volume year to date for the selected scope.
                   type: number
                   example: 274148.0364
                 perp_volume_ltd:
+                  description: Perpetual trading volume since launch for the selected scope.
                   type: number
                   example: 274148.0364
                 perp_volume_today:
+                  description: Perpetual trading volume since 00:00 UTC for the selected scope.
                   type: number
                   example: 120272.7674
                 perp_volume_last_1_day:
+                  description: Perpetual trading volume over the last 24 hours for the selected scope.
                   type: number
                   example: 120272.7674
                 perp_volume_last_7_days:
+                  description: Perpetual trading volume over the last 7 days for the selected scope.
                   type: number
                   example: 120272.7674
                 perp_volume_last_30_days:
+                  description: Perpetual trading volume over the last 30 days for the selected scope.
                   type: number
                   example: 300730.5454
 
@@ -9614,6 +9749,7 @@ components:
                 - rows
               properties:
                 rows:
+                  description: Builders that match the requested filters.
                   type: array
                   items:
                     type: object
@@ -9622,9 +9758,11 @@ components:
                       - broker_name
                     properties:
                       broker_id:
+                        description: Unique broker ID for the builder.
                         type: string
                         example: "woofi_pro"
                       broker_name:
+                        description: Display name of the builder.
                         type: string
                         example: "WOOFi Pro"
 
@@ -9641,6 +9779,7 @@ components:
                 - rows
               properties:
                 rows:
+                  description: Statistics for the requested builders.
                   type: array
                   items:
                     type: object
@@ -9648,6 +9787,7 @@ components:
                       - connected_user
                     properties:
                       connected_user:
+                        description: Number of connected users for the builder.
                         type: integer
                         example: "274148"
 
@@ -10306,30 +10446,39 @@ components:
                 - total_pnl_24_h
               properties:
                 min_insurance_fund_initial_margin_ratio:
+                  description: Minimum initial margin ratio configured for the insurance fund.
                   type: number
                   example: 0.3
                 min_insurance_fund_margin_ratio:
+                  description: Minimum maintenance margin ratio configured for the insurance fund.
                   type: number
                   example: 0.25
                 margin_ratio:
+                  description: Current margin ratio of the insurance fund.
                   type: integer
                   example: 10
                 total_collateral_value:
+                  description: Total collateral value held by the insurance fund.
                   type: number
                   example: 1.0008662996861E7
                 balance:
+                  description: Current balance of the insurance fund.
                   type: number
                   example: 1.0001908678983E7
                 free_collateral:
+                  description: Collateral currently available for use.
                   type: number
                   example: 1.0008662996861E7
                 total_account_value:
+                  description: Total account value of the insurance fund.
                   type: number
                   example: 1.0008662996861E7
                 total_pnl_24_h:
+                  description: Total profit and loss over the last 24 hours.
                   type: integer
                   example: 0
                 rows:
+                  description: Open position details currently held by the insurance fund.
                   type: array
                   items:
                     type: object
@@ -11118,6 +11267,7 @@ components:
                         type: number
                         example: 123
                       id:
+                        description: Unique ID of the internal transfer record.
                         type: string
                         example: "230707030600002"
                       token:
@@ -12104,39 +12254,50 @@ components:
                 - taker_fee_rate
               properties:
                 account_id:
+                  description: Account ID of the authenticated account.
                   type: string
                 email:
+                  description: Email address bound to the account, when available.
                   type: string
                   example: "test@test.com"
                 account_mode:
                   type: string
                   example: "FUTURES"
-                  description: account mode
+                  description: Account mode enabled for the account.
                 max_leverage:
+                  description: Maximum leverage available to the account.
                   type: number
                   example: 20
                 taker_fee_rate:
+                  description: Taker fee rate applied to standard markets.
                   type: number
                   example: 0
                 maker_fee_rate:
+                  description: Maker fee rate applied to standard markets.
                   type: number
                   example: 0
                 rwa_taker_fee_rate:
+                  description: Taker fee rate applied to RWA markets.
                   type: number
                   example: 0
                 rwa_maker_fee_rate:
+                  description: Maker fee rate applied to RWA markets.
                   type: number
                   example: 0
                 futures_taker_fee_rate:
+                  description: Taker fee rate applied to perpetual futures markets.
                   type: number
                   example: 0
                 futures_maker_fee_rate:
+                  description: Maker fee rate applied to perpetual futures markets.
                   type: number
                   example: 0
                 maintenance_cancel_orders:
+                  description: Whether pending orders are automatically canceled during maintenance.
                   type: boolean
                   example: true
                 imr_factor:
+                  description: Initial margin ratio factor configured for each symbol.
                   type: object
                   additionalProperties:
                     type: number
@@ -12144,6 +12305,7 @@ components:
                     PERP_BTC_USDC: 0.000000091
                     PERP_ETH_USDC: 0.0000012345
                 max_notional:
+                  description: Maximum notional value allowed for each symbol.
                   type: object
                   additionalProperties:
                     type: number
@@ -12212,36 +12374,47 @@ components:
                 - trading_volume_ytd
               properties:
                 days_since_registration:
+                  description: Number of days since the account was registered.
                   type: integer
                   example: 109
                 fees_paid_last_30_days:
+                  description: Total fees paid across all markets during the last 30 days.
                   type: number
                   example: 0
                 perp_fees_paid_last_30_days:
+                  description: Total perpetual futures fees paid during the last 30 days.
                   type: number
                   example: 0
                 perp_trading_volume_last_24_hours:
+                  description: Perpetual futures trading volume during the last 24 hours.
                   type: number
                   example: 0
                 perp_trading_volume_last_7_days:
+                  description: Perpetual futures trading volume during the last 7 days.
                   type: number
                   example: 0
                 perp_trading_volume_last_30_days:
+                  description: Perpetual futures trading volume during the last 30 days.
                   type: number
                   example: 0
                 perp_trading_volume_ytd:
+                  description: Perpetual futures trading volume year to date.
                   type: number
                   example: 0
                 perp_trading_volume_ltd:
+                  description: Perpetual futures trading volume since account registration.
                   type: number
                   example: 0
                 trading_volume_last_24_hours:
+                  description: Total trading volume during the last 24 hours.
                   type: number
                   example: 0
                 trading_volume_last_30_days:
+                  description: Total trading volume during the last 30 days.
                   type: number
                   example: 0
                 trading_volume_ytd:
+                  description: Total trading volume year to date.
                   type: number
                   example: 459.7436
 
@@ -12280,30 +12453,39 @@ components:
                         type: string
                         example: "230707030600002"
                       tx_id:
+                        description: On-chain transaction hash associated with the transfer.
                         type: string
                         example: "0x4b0714c63cc7abae72bf68e84e25860b88ca651b7d27dad1e32bf4c027fa5326"
                       side:
+                        description: Transfer direction of the record.
                         type: string
                         example: "WITHDRAW"
                       token:
+                        description: Token symbol involved in the transfer.
                         type: string
                         example: "USDC"
                       amount:
+                        description: Transfer amount.
                         type: number
                         example: 555
                       fee:
+                        description: Fee charged for the transfer.
                         type: number
                         example: 0
                       trans_status:
+                        description: Current processing status of the transfer.
                         type: string
                         example: "FAILED"
                       created_time:
+                        description: Timestamp when the transfer request was created in milliseconds.
                         type: number
                         example: 1688699193034
                       updated_time:
+                        description: Timestamp of the latest transfer update in milliseconds.
                         type: number
                         example: 1688699193096
                       chain_id:
+                        description: Chain ID associated with the transfer.
                         type: string
                         example: "986532"
 
@@ -12370,18 +12552,23 @@ components:
                 - status
               properties:
                 status:
+                  description: System status code. `0` means normal operation and `2` means maintenance mode.
                   type: number
                   example: 0
                 scheduled_maintenance:
+                  description: Scheduled maintenance window, when available.
                   type: object
                   properties:
                     startTime:
+                      description: Scheduled maintenance start time in milliseconds.
                       type: number
                       example: 1618822380000
                     endTime:
+                      description: Scheduled maintenance end time in milliseconds.
                       type: number
                       example: 1618822440000
                 msg:
+                  description: Human-readable status message.
                   type: string
 
     RegistrationNonceResponse:
@@ -12397,6 +12584,7 @@ components:
                 - registration_nonce
               properties:
                 registration_nonce:
+                  description: Registration nonce used to sign account registration requests.
                   type: string
                   example: "194528949540"
 
@@ -12414,9 +12602,11 @@ components:
                 - user_id
               properties:
                 user_id:
+                  description: Internal user ID associated with the wallet and builder.
                   type: integer
                   example: 24
                 account_id:
+                  description: Account ID associated with the wallet and builder.
                   type: string
                   example: "0xb129e074a17dfba8d652ae1eca21c7d6bb6904f1aa693f4886d50db170933a46"
 
@@ -12444,22 +12634,25 @@ components:
                       - user_type
                     properties:
                       user_id:
+                        description: Internal user ID associated with the account.
                         type: integer
                         example: 24
                       account_id:
+                        description: Account ID returned for the wallet and builder combination.
                         type: string
                         example: "0xb129e074a17dfba8d652ae1eca21c7d6bb6904f1aa693f4886d50db170933a46"
                       broker_id:
+                        description: Builder ID associated with the account.
                         type: string
                         example: "aden"
                       chain_type:
                         type: string
                         example: "EVM"
-                        description: "`EVM` or `SOL`"
+                        description: "Chain type of the account. Supported values are `EVM` or `SOL`."
                       user_type:
                         type: string
                         example: "SUB"
-                        description: "`SUB`, `MAIN`, `SP`, `PV`, `UV`"
+                        description: "Account role. Supported values are `SUB`, `MAIN`, `SP`, `PV`, and `UV`."
 
     GetBrokerResponse:
       allOf:
@@ -12472,6 +12665,7 @@ components:
               type: object
               properties:
                 broker_id:
+                  description: Broker IDs associated with the queried wallet address.
                   type: array
                   items:
                     type: string
@@ -12511,18 +12705,18 @@ components:
             registrationNonce:
               type: integer
               example: 161111791392
-              description: Message object containing the message that is signed by the wallet owner
+              description: Registration nonce returned by the delegate signer registration flow.
             txHash:
               type: string
-              description: ""
+              description: Transaction hash of the delegate signer authorization transaction.
               example: "0xtxhash"
         signature:
           type: string
-          description: The signature generated by signing the message object via EIP-712
+          description: Signature generated by signing the message object.
           example: "0x8668447f28534dc1b76566e41f5fcdeb6b131355b9cf428f3fae5c134e9a0fc55642a2771860484651e61043e8ac67a1a6e54031a4c66de44acd77c9d9b281e81b"
         userAddress:
           type: string
-          description: The address of the wallet signing the message object via EIP-712
+          description: Address of the wallet that signed the message object.
           example: "0xDd3287043493E0a08d2B348397554096728B459c"
 
     RegisterAccountBody:
@@ -12554,13 +12748,14 @@ components:
               description: timestamp in UNIX milliseconds
             registrationNonce:
               type: string
-          description: Message object containing the message that is signed by the wallet owner
+              description: Registration nonce returned by Get Registration Nonce.
+          description: Message object signed by the wallet owner.
         signature:
           type: string
-          description: The signature generated by signing the message object via EIP-712
+          description: Signature generated by signing the message object.
         userAddress:
           type: string
-          description: The address of the wallet signing the message object via EIP-712
+          description: Address of the wallet that signed the message object.
 
     RegisterAccountResponse:
       allOf:
@@ -12592,15 +12787,19 @@ components:
                 - scope
               properties:
                 orderly_key:
+                  description: Orderly Key associated with the account.
                   type: string
                   example: "ed25519:7tEoJo5hMBKBrQsqmc8yw1xNfoQCFQBVwQT1eFafRNRf"
                 scope:
+                  description: Scopes granted to the Orderly Key.
                   type: string
                   example: "read,trading"
                 expiration:
+                  description: Expiration timestamp of the Orderly Key in milliseconds.
                   type: integer
                   example: 1689086651947
                 tag:
+                  description: Optional tag associated with the Orderly Key.
                   type: string
 
     DelegateOrderlyKeyBody:
@@ -12623,7 +12822,7 @@ components:
           properties:
             delegateContract:
               type: string
-              description: ""
+              description: Delegate contract address authorized to act for the account.
             brokerId:
               type: string
               description: Builder ID
@@ -12635,20 +12834,20 @@ components:
               description: Orderly Key to be added
             scope:
               type: string
-              description: Valid nonce from Get Registration Nonce
+              description: "Valid scopes are `read`, `trading`, and `asset`. Multiple scopes can be sent as a comma-separated string such as `read,trading`."
             timestamp:
               type: number
               description: timestamp in UNIX milliseconds
             expiration:
               type: number
-              description: Expiration time of the key in UNIX milliseconds. Maximum allowed expiration is 365 days from add
+              description: Expiration time of the key in UNIX milliseconds. The maximum allowed expiration is 365 days from creation.
           description: Message object containing the message that is signed by the wallet owner
         signature:
           type: string
-          description: The signature generated by signing the message object via EIP-712
+          description: Signature generated by signing the message object.
         userAddress:
           type: string
-          description: The address of the wallet signing the message object via EIP-712
+          description: Address of the wallet that signed the message object.
 
     OrderlyKeyBody:
       type: object
@@ -12687,13 +12886,13 @@ components:
               description: timestamp in UNIX milliseconds
             expiration:
               type: number
-              description: Expiration time of the key in UNIX milliseconds. Maximum allowed expiration is 365 days from add
+              description: Expiration time of the key in UNIX milliseconds. The maximum allowed expiration is 365 days from creation.
             tag:
               type: string
               description: An optional tag of string values.
             subAccountId:
               type: string
-              description: create the api key for the input subAccountId
+              description: Creates the Orderly Key for the specified sub-account ID.
           description: Message object containing the message that is signed by the wallet owner
         signature:
           type: string
@@ -12724,9 +12923,11 @@ components:
                 - orderly_key
               properties:
                 id:
+                  description: Internal ID of the created Orderly Key record.
                   type: integer
                   example: 123
                 orderly_key:
+                  description: Orderly Key added to the account.
                   type: string
                   example: "ed25519:FRXntsPJBCy6dzKv9WPw4eYSw3rKU9Npz3T6UmvvJc9Z"
 
@@ -12743,6 +12944,7 @@ components:
                 - available_futures_leverage
               properties:
                 available_futures_leverage:
+                  description: Comma-separated list of leverage values available for futures trading.
                   type: string
                   example: "1,2,3,4,5,10,15,20"
 
@@ -12759,6 +12961,7 @@ components:
                 - rows
               properties:
                 rows:
+                  description: Chains available for the requested builder scope.
                   type: array
                   items:
                     type: object
@@ -12771,27 +12974,35 @@ components:
                       - vault_address
                     properties:
                       name:
+                        description: Human-readable chain name.
                         type: string
                         example: "Arbitrum"
                       public_rpc_url:
+                        description: Public RPC endpoint for the chain.
                         type: string
                         example: "https://arb1.arbitrum.io/rpc"
                       chain_id:
+                        description: Chain ID used for deposits and withdrawals.
                         type: string
                         example: "42161"
                       currency_symbol:
+                        description: Native gas token symbol for the chain.
                         type: string
                         example: "ETH"
                       currency_decimal:
+                        description: Number of decimals used by the native gas token.
                         type: number
                         example: 18
                       explorer_base_url:
+                        description: Base URL of the chain explorer.
                         type: string
                         example: https://arbiscan.io
                       vault_address:
+                        description: Orderly vault address on the chain.
                         type: string
                         example: "0x816f722424B49Cf1275cc86DA9840Fbd5a6167e9"
                       broker_ids:
+                        description: Builders available on the chain.
                         type: array
                         items:
                           type: string
@@ -13041,6 +13252,7 @@ components:
           properties:
             data:
               type: array
+              description: Daily perpetual trading volume entries for the requested date range.
               items:
                 type: object
                 required:
@@ -13048,9 +13260,11 @@ components:
                   - perp_volume
                 properties:
                   date:
+                    description: Date of the reported volume in `YYYY-MM-DD` format.
                     type: string
                     example: 2024-01-01
                   perp_volume:
+                    description: Perpetual futures trading volume for the date.
                     type: number
                     example: 100.24
 
@@ -13067,6 +13281,7 @@ components:
                 - withdraw_nonce
               properties:
                 withdraw_nonce:
+                  description: Nonce used to sign a withdrawal request.
                   type: integer
                   example: 1
 
@@ -13083,6 +13298,7 @@ components:
                 - settle_nonce
               properties:
                 settle_nonce:
+                  description: Nonce used to sign a PnL settlement request.
                   type: integer
                   example: 1
 
@@ -13102,10 +13318,10 @@ components:
           description: The address of the wallet signing the message object via EIP-712
         verifyingContract:
           type: string
-          description: Address of the Orderly ledger contract
+          description: Contract address used to verify the wallet signature.
         message:
           type: object
-          description: Message object containing the message that is signed by the wallet owner
+          description: Message object signed by the wallet owner.
           required:
             - brokerId
             - chainId
@@ -13120,13 +13336,13 @@ components:
               description: Builder ID
             chainId:
               type: integer
-              description: Chain ID of registering chain (within those that are supported by the Network)
+              description: Chain ID associated with the withdrawal request.
             chainType:
               type: string
-              description: "`EVM` or `SOL`"
+              description: "Chain type of the signing wallet. Supported values are `EVM` and `SOL`."
             receiver:
               type: string
-              description: Chain ID of registering chain (within those that are supported by the Network)
+              description: Destination wallet address for the withdrawal.
             token:
               type: string
               description: The string representation of the token that is being withdrawn (eg "USDC")
@@ -13141,7 +13357,7 @@ components:
               description: current timestamp in UNIX milliseconds
             allowCrossChainWithdraw:
               type: boolean
-              description: Whether to allow cross-chain withdrawal, default false
+              description: Whether to allow a cross-chain withdrawal. Defaults to `false`.
 
     DelegateWithdrawRequestBody:
       required:
@@ -13159,10 +13375,10 @@ components:
           description: The address of the wallet signing the message object via EIP-712
         verifyingContract:
           type: string
-          description: Address of the Orderly ledger contract
+          description: Contract address used to verify the wallet signature.
         message:
           type: object
-          description: Message object containing the message that is signed by the wallet owner
+          description: Message object signed by the wallet owner.
           required:
             - delegateContract
             - brokerId
@@ -13180,7 +13396,7 @@ components:
               description: Builder ID
             chainId:
               type: integer
-              description: Chain ID of registering chain (within those that are supported by the Network)
+              description: Chain ID associated with the settlement request.
             receiver:
               type: string
               description: The address of the receiver
@@ -13332,10 +13548,10 @@ components:
               description: Chain ID of registering chain (within those that are supported by the Network)
             chainType:
               type: string
-              description: "`EVM` or `SOL`"
+              description: "Chain type of the signing wallet. Supported values are `EVM` and `SOL`."
             settleNonce:
               type: integer
-              description: Nonce from Get settle PnL Nonce
+              description: Nonce returned by Get Settle PnL Nonce.
             timestamp:
               type: integer
               description: current timestamp in UNIX milliseconds
@@ -13350,16 +13566,16 @@ components:
       properties:
         signature:
           type: string
-          description: The signature generated by signing the message object via EIP-712
+          description: Signature generated by signing the message object.
         userAddress:
           type: string
-          description: The address of the wallet signing the message object via EIP-712
+          description: Address of the wallet that signed the message object.
         verifyingContract:
           type: string
-          description: Address of the Orderly ledger contract
+          description: Contract address used to verify the wallet signature.
         message:
           type: object
-          description: Message object containing the message that is signed by the wallet owner
+          description: Message object signed by the wallet owner.
           required:
             - delegateContract
             - brokerId
@@ -13374,10 +13590,10 @@ components:
               description: Builder ID
             chainId:
               type: integer
-              description: Chain ID of registering chain (within those that are supported by the Network)
+              description: Chain ID associated with the settlement request.
             settleNonce:
               type: integer
-              description: Nonce from Get settle PnL Nonce
+              description: Nonce returned by Get Settle PnL Nonce.
             timestamp:
               type: integer
               description: current timestamp in UNIX milliseconds
@@ -13472,29 +13688,33 @@ components:
                     type: object
                     properties:
                       orderly_key:
+                        description: Orderly Key registered under the account.
                         type: string
                         example: ed25519:B4yEc8xMjoqdUiKT5ZT1b2cUy5cggZrbMPvCrqyjkQhf
                       key_status:
                         type: string
-                        description: ACTIVE / REMOVING / REMOVED
+                        description: "Current key status. Supported values are `ACTIVE`, `REMOVING`, and `REMOVED`."
                         example: "ACTIVE"
                       ip_restriction_list:
+                        description: List of IP addresses or ranges allowed to use the key.
                         type: array
                         items:
                           type: string
                       ip_restriction_status:
                         type: string
-                        description: ALLOW_RESTRICTION_LIST / ALLOW_ALL_IPS / DISALLOW_ALL_IPS
+                        description: "IP restriction mode for the key. Supported values are `ALLOW_RESTRICTION_LIST`, `ALLOW_ALL_IPS`, and `DISALLOW_ALL_IPS`."
                         example: "ALLOW_ALL_IPS"
                       expiration:
+                        description: Expiration timestamp of the Orderly Key in milliseconds.
                         type: integer
                         example: 1689086651947
                       scope:
+                        description: Scopes granted to the Orderly Key.
                         type: string
                         example: "read,trading"
                       tag:
                         type: string
-                        description: Optional tag when present
+                        description: Optional tag associated with the Orderly Key.
 
     IpRestrictionResponse:
       allOf:
@@ -13512,12 +13732,15 @@ components:
                 - tag
               properties:
                 account_id:
+                  description: Account ID that owns the Orderly Key.
                   type: string
                   example: "0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546"
                 orderly_key:
+                  description: Orderly Key whose IP restrictions are returned.
                   type: string
                   example: "ed25519:8tm7dnKYkSc3FzgPuJaw1wztr79eeZpN35nHW5pL5XhX"
                 ip_restriction_list:
+                  description: List of allowed IP addresses or IP ranges for the key.
                   type: array
                   items:
                     type: string
@@ -13525,7 +13748,7 @@ components:
                 tag:
                   type: string
                   # TODO optional, but required?
-                  description: "Optional, could be null if there wasn't a tag"
+                  description: Optional tag associated with the Orderly Key. This field can be `null`.
 
     SetIpRestrictionResponse:
       allOf:
@@ -13570,35 +13793,39 @@ components:
       # TODO required
       properties:
         id:
+          description: Unique ID of the notification.
           type: integer
           example: 12345
         message_type:
           type: string
-          description: ORDER_FILLED
+          description: Internal message type of the notification payload.
           example: "ORDER_FILLED"
         email:
           type: string
-          description: email if bounded to the account
+          description: Email address bound to the account, when available.
           example: test@orderly.network
         application_id:
           type: string
-          description: wallet address of the account
+          description: Wallet address associated with the account.
           example: "0x0f29bfb4c1bc9fea3f3be46bab6d795e22a6272354b136fde05f6b80cfcad546"
         title:
+          description: Notification title shown to the user.
           type: string
           example: " Your order has been filled"
         type:
           type: string
-          description: TRADE / SYSTEM
+          description: "Notification category. Supported values are `TRADE` and `SYSTEM`."
           example: "TRADE"
         level:
           type: string
-          description: GENERAL / IMPORTANT
+          description: "Notification priority level. Supported values are `GENERAL` and `IMPORTANT`."
           example: "GENERAL"
         content_summary:
+          description: Short summary shown in notification lists.
           type: string
           example: "Your order to buy 1 NEAR-PERP has been filled: 0.5/1 at 1.9876."
         content:
+          description: Full notification content, which may include HTML formatting.
           type: string
           example: "<p>Your order to buy 1 NEAR-PERP has been filled: 0.5/1 at 1.9876.</p>"
         content_raw:
@@ -13631,15 +13858,18 @@ components:
               example: 1567382401000
         mark_read:
           type: integer
-          description: "1 = READ, 0 = UNREAD"
+          description: "Read state of the notification. `1` means read and `0` means unread."
           example: 1
         operator:
+          description: Internal operator identifier associated with the notification event.
           type: integer
           example: 1
         created_time:
+          description: Timestamp when the notification was created in milliseconds.
           type: integer
           example: 1670425970373
         announcement_id:
+          description: Related announcement ID when the notification comes from an announcement.
           type: integer
 
     UnreadNotificationsResponse:
@@ -13675,17 +13905,21 @@ components:
                 - rows
               properties:
                 rows:
+                  description: Vault balance entries that match the requested filters.
                   type: array
                   items:
                     type: object
                     properties:
                       chain_id:
+                        description: Chain ID for the reported balance.
                         type: integer
                         example: 80001
                       token:
+                        description: Token symbol for the reported balance.
                         type: string
                         example: "USDC"
                       balance:
+                        description: Available vault balance for the token on the chain.
                         type: number
                         example: 1000.12345
 
@@ -13722,19 +13956,70 @@ components:
                 - rows
               properties:
                 rows:
+                  description: Active platform announcements.
                   type: array
                   items:
                     type: object
                     properties:
                       announcement_id:
+                        description: Unique ID of the announcement.
                         type: number
                         example: 1
                       message:
+                        description: Announcement message shown to users.
                         type: string
                         example: "Position information is incorrect due to a 1-minute delay."
                       url:
+                        description: Optional link with more details about the announcement.
                         type: string
                         example: "https://orderly.network/docs/release-notes/omnichain"
+
+    GetBrokerInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                broker_id:
+                  type: string
+                  description: broker_id
+                  example: "orderlydemo"
+                total_staked_balance:
+                  type: number
+                  description: staking_volume
+                  example: 300730.5454
+                volume_last_30_days:
+                  type: number
+                  description: trading_volume
+                  example: 300730.5454
+                type:
+                  type: string
+                  description: type_final
+                  example: "DIAMOND"
+                base_maker_fee_rate:
+                  type: number
+                  description: maker_fee_rate
+                  example: 0.0
+                base_taker_fee_rate:
+                  type: number
+                  description: taker_fee_rate
+                  example: 1.0
+                base_rwa_maker_fee_rate:
+                  type: number
+                  description: maker_fee_rate
+                  example: 0.0
+                base_rwa_taker_fee_rate:
+                  type: number
+                  description: taker_fee_rate
+                  example: 1.0
+                updated_time:
+                  type: number
+                  description: updated_time
+                  example: 1702989203989
 
     GetBrokerDailyResponse:
       allOf:
@@ -13752,6 +14037,7 @@ components:
                   type: number
                   example: 1702989203989
                 rows:
+                  description: Daily account statistic snapshots for the requested date range.
                   type: array
                   items:
                     type: object
@@ -13869,18 +14155,23 @@ components:
                     type: object
                     properties:
                       account_value:
+                        description: Total account value captured in the daily snapshot.
                         type: number
                         example: 456789.12
                       date:
+                        description: Snapshot date in `YYYY-MM-DD` format.
                         type: string
                         example: "2023-09-14"
                       perp_volume:
+                        description: Perpetual futures trading volume for the day.
                         type: number
                         example: 451580.9523
                       pnl:
+                        description: Profit and loss recorded for the day.
                         type: number
                         example: 123.45
                       snapshot_time:
+                        description: Timestamp when the daily snapshot was generated in milliseconds.
                         type: number
                         example: 1722989203989
 
