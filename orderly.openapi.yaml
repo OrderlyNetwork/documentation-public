@@ -16894,6 +16894,295 @@ components:
                   type: string
                   example: "100"
 
+    GetMaxRebateRateResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                max_rebate_rate:
+                  type: number
+                  example: 0.3
+
+    ClaimCodeResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                referral_code:
+                  type: string
+                  example: "mycode"
+                default_referee_rebate_rate:
+                  type: number
+                  example: 0.1
+
+    GetRebateInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                referral_code:
+                  type: string
+                  example: "mycode"
+                max_rebate_rate:
+                  type: number
+                  example: 0.3
+                direct_bonus_rebate_rate:
+                  type: number
+                  example: 0.1
+                default_referee_rebate_rate:
+                  type: number
+                  example: 0.1
+                direct_invites:
+                  type: number
+                  example: 2
+                indirect_invites:
+                  type: number
+                  example: 1
+                direct_volume:
+                  type: number
+                  example: 10000
+                indirect_volume:
+                  type: number
+                  example: 1000
+                direct_rebate:
+                  type: number
+                  example: 123
+                direct_bonus_rebate:
+                  type: number
+                  example: 123
+                indirect_rebate:
+                  type: number
+                  example: 123
+
+    GetMultiLevelStatisticsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                direct_invites:
+                  type: number
+                  example: 3
+                indirect_invites:
+                  type: number
+                  example: 1
+                direct_traded:
+                  type: number
+                  example: 1
+                indirect_traded:
+                  type: number
+                  example: 1
+                direct_volume:
+                  type: number
+                  example: 1000
+                indirect_volume:
+                  type: number
+                  example: 1000
+                direct_rebate:
+                  type: number
+                  example: 1000
+                direct_bonus_rebate:
+                  type: number
+                  example: 1000
+                indirect_rebate:
+                  type: number
+                  example: 1000
+
+    GetRefereeListResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      address:
+                        type: string
+                      account_id:
+                        type: string
+                      code_binding_time:
+                        type: number
+                      bind_type:
+                        type: string
+                      bind_code:
+                        type: string
+                      referral_rebate_rate:
+                        type: number
+                      referee_rebate_rate:
+                        type: number
+                      is_default_rate:
+                        type: boolean
+                      direct_invites:
+                        type: number
+                      indirect_invites:
+                        type: number
+                      direct_volume:
+                        type: number
+                      indirect_volume:
+                        type: number
+                      direct_rebate:
+                        type: number
+                      indirect_rebate:
+                        type: number
+                      direct_bonus_rebate:
+                        type: number
+                meta:
+                  $ref: "#/components/schemas/MetaData"
+
+    GetVolumePrerequisiteResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                required_volume:
+                  type: number
+                  example: 1000
+                current_volume:
+                  type: number
+                  example: 100
+
+    GetMultiLevelAdminConfigResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                enable:
+                  type: boolean
+                  example: true
+                required_volume:
+                  type: number
+                  example: 1000
+                max_rebate_rate:
+                  type: number
+                  example: 0.4
+                direct_bonus_rebate_rate:
+                  type: number
+                  example: 0.1
+
+    GetMultiLevelAdminInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      account_id:
+                        type: string
+                      user_address:
+                        type: string
+                      referral_code:
+                        type: string
+                      referrer_account_id:
+                        type: string
+                      referrer_address:
+                        type: string
+                      bound_code:
+                        type: string
+                      level:
+                        type: number
+                      max_rebate_rate:
+                        type: number
+                      default_referee_rebate_rate:
+                        type: number
+                      direct_bonus_rebate_rate:
+                        type: number
+                      total_direct_invites:
+                        type: number
+                      total_indirect_invites:
+                        type: number
+                      total_direct_traded:
+                        type: number
+                      total_indirect_traded:
+                        type: number
+                      total_direct_volume:
+                        type: number
+                      total_indirect_volume:
+                        type: number
+                      broker_fee:
+                        type: number
+                      total_direct_rebate:
+                        type: number
+                      total_indirect_rebate:
+                        type: number
+                      total_direct_bonus_rebate:
+                        type: number
+                meta:
+                  $ref: "#/components/schemas/MetaData"
+
+    GetMultiLevelAdminSummaryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      account_id:
+                        type: string
+                      user_address:
+                        type: string
+                      total_direct_invites:
+                        type: number
+                      total_indirect_invites:
+                        type: number
+                      total_invites:
+                        type: number
+                      total_direct_traded:
+                        type: number
+                      total_indirect_traded:
+                        type: number
+                      total_direct_volume:
+                        type: number
+                      total_indirect_volume:
+                        type: number
+                      total_volume:
+                        type: number
+                      broker_fee:
+                        type: number
+                      total_direct_rebate:
+                        type: number
+                      total_indirect_rebate:
+                        type: number
+                      total_direct_bonus_rebate:
+                        type: number
+                      date:
+                        type: string
+                meta:
+                  $ref: "#/components/schemas/MetaData"
+
 servers:
   - url: https://api.orderly.org
     description: Mainnet
