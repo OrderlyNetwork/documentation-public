@@ -5803,6 +5803,682 @@ paths:
               schema:
                 $ref: "#/components/schemas/BasicResponse"
 
+
+  /v1/referral/multi_level/max_rebate_rate:
+    get:
+      summary: Get max rebate rate
+      deprecated: false
+      description: |
+        **Limit: 1 request per second**
+
+        `GET /v1/referral/multi_level/max_rebate_rate`
+
+        Returns the maximum rebate rate for multi-level referral.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMaxRebateRateResponse"
+
+  /v1/referral/multi_level/claim_code:
+    post:
+      summary: Claim referral code
+      deprecated: false
+      description: |
+        **Limit: 1 request per second**
+
+        `POST /v1/referral/multi_level/claim_code`
+
+        Claims a referral code for the user.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                referee_rebate_rate:
+                  type: number
+                  description: New rebate rate for referees
+              required:
+                - referee_rebate_rate
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClaimCodeResponse"
+
+  /v1/referral/multi_level/rebate_info:
+    get:
+      summary: Get rebate info
+      deprecated: false
+      description: |
+        **Limit: 1 request per second**
+
+        `GET /v1/referral/multi_level/rebate_info`
+
+        Returns detailed rebate information for the referral code.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetRebateInfoResponse"
+
+  /v1/referral/multi_level/rebate_rate/update:
+    post:
+      summary: Update referee rebate rate
+      deprecated: false
+      description: |
+        **Limit: 1 request per second**
+
+        `POST /v1/referral/multi_level/rebate_rate/update`
+
+        Updates the rebate rate for referees. Users can only update the rate for their next level referees.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                referee_rebate_rate:
+                  type: number
+                  description: New rebate rate for referees
+                account_ids:
+                  type: array
+                  items:
+                    type: string
+                  description: The referee account to update. Updates default rate if not provided.
+              required:
+                - referee_rebate_rate
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+
+  /v1/referral/multi_level/rebate_rate/set_default:
+    post:
+      summary: Reset referee rebate rate
+      deprecated: false
+      description: |
+        **Limit: 1 request per second**
+
+        `POST /v1/referral/multi_level/rebate_rate/set_default`
+
+        Resets the referee rebate rate to default. Users can only update the rate for level-1 referees.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                account_ids:
+                  type: array
+                  items:
+                    type: string
+                  description: The referee account to update
+              required:
+                - account_ids
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+
+  /v1/referral/multi_level/statistics:
+    get:
+      summary: Get multi-level statistics
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/referral/multi_level/statistics`
+
+        Returns multi-level referral statistics for the user.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+        - name: time_range
+          in: query
+          description: "Time range for statistics: 1d, 7d, 30d, all_time"
+          required: true
+          example: "7d"
+          schema:
+            type: string
+            enum:
+              - 1d
+              - 7d
+              - 30d
+              - all_time
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMultiLevelStatisticsResponse"
+
+  /v1/referral/multi_level/referee_list:
+    get:
+      summary: Get referee list
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/referral/multi_level/referee_list`
+
+        Returns the list of referees. Can only view L1 referees. Backward compatible to Legacy codes.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+        - name: page
+          in: query
+          description: "Page number"
+          required: false
+          example: 1
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: "Page size"
+          required: false
+          example: 25
+          schema:
+            type: integer
+        - name: address
+          in: query
+          description: "Filter by address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: sort_by
+          in: query
+          description: "Sort by field: code_binding_time, referral_rebate_rate, referee_rebate_rate, direct_invites, indirect_invites, direct_volume, indirect_volume"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: sort_order
+          in: query
+          description: "Sort order: ascending, descending"
+          required: false
+          example: ""
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetRefereeListResponse"
+
+  /v1/referral/multi_level/volume_prerequisite:
+    get:
+      summary: Get volume prerequisite
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/referral/multi_level/volume_prerequisite`
+
+        Returns the volume prerequisite for multi-level referral.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetVolumePrerequisiteResponse"
+
+  /v1/referral/multi_level/admin:
+    post:
+      summary: Enable or configure multi-level referral
+      deprecated: false
+      description: |
+        **Limit: 1 request per second**
+
+        `POST /v1/referral/multi_level/admin`
+
+        Enables or configures the multi-level referral program. Restricted to Admin users only.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enable:
+                  type: boolean
+                  description: Enable Multi-Level Referral program
+              required:
+                - enable
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EnableMultiLevelResponse"
+
+    get:
+      summary: Get multi-level referral config
+      deprecated: false
+      description: |
+        **Limit: 1 request per second**
+
+        `GET /v1/referral/multi_level/admin`
+
+        Returns the multi-level referral configuration. Restricted to Admin users only.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMultiLevelConfigResponse"
+
+  /v1/referral/multi_level/admin/update:
+    post:
+      summary: Update multi-level referral config
+      deprecated: false
+      description: |
+        **Limit: 1 request per second**
+
+        `POST /v1/referral/multi_level/admin/update`
+
+        Updates the multi-level referral configuration. Restricted to Admin users only.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                required_volume:
+                  type: number
+                  description: Required volume for referral
+                default_rebate_rate:
+                  type: number
+                  description: Default max rebate rate
+              required:
+                - required_volume
+                - default_rebate_rate
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+
+  /v1/referral/multi_level/admin/update/affiliate:
+    post:
+      summary: Update L1 affiliate rebate rate
+      deprecated: false
+      description: |
+        **Limit: 1 request per second**
+
+        `POST /v1/referral/multi_level/admin/update/affiliate`
+
+        Updates the max rebate rate of an L1 affiliate. Broker (DEX owner) can only update the rate for L1 affiliates. Restricted to Admin users only.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rebate_rate:
+                  type: number
+                  description: Custom rebate rate for the target affiliate(s)
+                account_ids:
+                  type: array
+                  items:
+                    type: string
+                  description: The L1 affiliate account(s) to update
+              required:
+                - rebate_rate
+                - account_ids
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+
+  /v1/referral/multi_level/admin/reset/affiliate:
+    post:
+      summary: Reset L1 affiliate rebate rate
+      deprecated: false
+      description: |
+        **Limit: 1 request per second**
+
+        `POST /v1/referral/multi_level/admin/reset/affiliate`
+
+        Resets an L1 affiliate's rebate rate. Admin can only update the rate for L1 referees. Restricted to Admin users only.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                account_ids:
+                  type: array
+                  items:
+                    type: string
+                  description: The referee account to update
+              required:
+                - account_ids
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+
+  /v1/referral/multi_level/admin/info:
+    get:
+      summary: Get multi-level info
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/referral/multi_level/admin/info`
+
+        Returns detailed multi-level referral information. Users without a created code will not appear in the response. Restricted to Admin users only.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+        - name: user_address
+          in: query
+          description: "Only one of user_address and account_id can be provided"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: account_id
+          in: query
+          description: "Only one of user_address and account_id can be provided"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: referrer_account
+          in: query
+          description: "Only one of referrer_account and referrer_address can be provided"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: referrer_address
+          in: query
+          description: "Only one of referrer_account and referrer_address can be provided"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: "Page number"
+          required: false
+          example: 1
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: "Page size"
+          required: false
+          example: 25
+          schema:
+            type: integer
+        - name: sort_by
+          in: query
+          description: "Sort by field: total_invites, total_traded, referee_volume"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: level
+          in: query
+          description: "Return all if not provided"
+          required: false
+          example: ""
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMultiLevelInfoResponse"
+
+  /v1/referral/multi_level/admin/summary:
+    get:
+      summary: Get multi-level summary info
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/referral/multi_level/admin/summary`
+
+        Returns summary information for multi-level referral. Restricted to Admin users only.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+        - name: start_date
+          in: query
+          description: "Start date (YYYY-MM-DD)"
+          required: true
+          example: "2025-01-01"
+          schema:
+            type: string
+        - name: end_date
+          in: query
+          description: "End date (YYYY-MM-DD)"
+          required: true
+          example: "2025-12-31"
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: "Page number, default 1"
+          required: false
+          example: 1
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: "Page size, default 20"
+          required: false
+          example: 20
+          schema:
+            type: integer
+        - name: aggregate_by
+          in: query
+          description: "Aggregate by: date, account_id"
+          required: true
+          example: "account_id"
+          schema:
+            type: string
+            enum:
+              - date
+              - account_id
+        - name: account_id
+          in: query
+          description: "Only one of account_id and user_address can be provided"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: user_address
+          in: query
+          description: "Only one of account_id and user_address can be provided"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: sort_by
+          in: query
+          description: "Sort by field: broker_fee, total_volume, total_invites"
+          required: false
+          example: ""
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMultiLevelSummaryResponse"
+
+  /v1/referral/multi_level/admin/create/affiliate:
+    post:
+      summary: Create multilevel referral code on affiliate's behalf
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `POST /v1/referral/multi_level/admin/create/affiliate`
+
+        Creates a multilevel referral code on an affiliate's behalf. Restricted to Admin users only.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                account_id:
+                  type: string
+                  description: The account ID to create referral code for
+                referral_code:
+                  type: string
+                  description: The referral code to create
+                max_rebate_rate:
+                  type: number
+                  description: Maximum rebate rate
+              required:
+                - account_id
+                - max_rebate_rate
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+
   /v1/public/points/leaderboard:
     get:
       summary: Get merits leaderboard
