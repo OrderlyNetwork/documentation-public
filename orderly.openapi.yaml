@@ -17183,6 +17183,26 @@ components:
                 meta:
                   $ref: "#/components/schemas/MetaData"
 
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        code:
+          type: string
+          example: "INVALID_CODE"
+        message:
+          type: string
+          example: "Invalid code."
+        timestamp:
+          type: number
+          example: 1702989203989
+      required:
+        - success
+        - message
+        - timestamp
+
 servers:
   - url: https://api.orderly.org
     description: Mainnet
