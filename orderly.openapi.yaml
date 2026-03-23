@@ -6149,7 +6149,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GetMultiLevelConfigResponse"
+                $ref: "#/components/schemas/GetMultiLevelAdminConfigResponse"
 
   /v1/referral/multi_level/admin/update:
     post:
@@ -6350,7 +6350,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GetMultiLevelInfoResponse"
+                $ref: "#/components/schemas/GetMultiLevelAdminInfoResponse"
 
   /v1/referral/multi_level/admin/summary:
     get:
@@ -6434,7 +6434,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GetMultiLevelSummaryResponse"
+                $ref: "#/components/schemas/GetMultiLevelAdminSummaryResponse"
 
   /v1/referral/multi_level/admin/create/affiliate:
     post:
@@ -17202,6 +17202,18 @@ components:
         - success
         - message
         - timestamp
+
+    EnableMultiLevelResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                total_rebate:
+                  type: string
+                  example: "100.5"
 
 servers:
   - url: https://api.orderly.org
