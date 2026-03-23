@@ -1,10 +1,13 @@
 ---
 title: "Margin, Leverage & PnL"
+description: "Explanation of notional value, margin ratio, leverage tiers, and unrealized PnL on Orderly."
 ---
+
+This page covers the core concepts you need to understand before trading perpetual futures on Orderly: how much your positions are worth (notional value), how much collateral you need (margin), and how profits and losses are tracked (PnL).
 
 ## Notional Value
 
-The notional of a position corresponds to the total position size in USDC value
+The notional value of a position is simply how much that position is worth in USDC terms. For example, if you hold 0.5 BTC and the current Mark Price is 60,000 USDC, your notional value is 30,000 USDC.
 
 ```
 Notional Value = Position Qty * Mark Price
@@ -12,7 +15,7 @@ Notional Value = Position Qty * Mark Price
 
 ## Account Margin Ratio
 
-The margin ratio of an account is equal to the total collateral value (ie the USDC balance + any unrealized profit/loss) divided by the total open notional of the account (the sum of the absolute notional value of all positions)
+Your Account Margin Ratio is the single most important number for understanding your account's health. It tells you the ratio between your total collateral (your USDC balance plus any unrealized profit or loss) and the total size of your open positions.
 
 For an account having positions on multiple contracts:
 
@@ -20,23 +23,25 @@ For an account having positions on multiple contracts:
 Account Margin Ratio = Total Collateral Value / Sum(Abs(Position Notional i))
 ```
 
-The margin ratio defines the risk level of your account: a higher margin ratio equates to a lower risk level (with a default margin ratio set to 1000% when there are no open positions)
+A higher margin ratio means lower risk. When you have no open positions, the default margin ratio is 1000%. As you take on larger positions or your collateral decreases, this ratio drops. If it drops too low, you face liquidation.
 
 ## Initial Margin Ratio
 
-To open a new futures position or execute withdrawals, the Margin Ratio of the Account has to be higher than the Initial Margin ratio. Otherwise, the account will not be able to open any new futures position or execute withdrawals.
+The Initial Margin Ratio (IMR) is the minimum margin ratio your account needs in order to open new positions or make withdrawals. Think of it as the entry requirement -- if your margin ratio is below the IMR, the system will not let you take on more risk.
 
-Each Perpetual Futures market has a defined **Initial Margin Ratio** (Base IMR) and maximum leverage equal to 1/Base IMR.
+Each perpetual futures market has its own **Base IMR**, and the maximum leverage for that market is simply 1 divided by the Base IMR. For example, a Base IMR of 1% means up to 100x leverage.
 
 ```
 IMR i = Max(1 / Max Account Leverage, Base IMR i, IMR Factor i * Abs(Position Notional i)^(4/5))
 ```
 
-**IMR Factors** are specific coefficients used to calculate the required margin for large positions. The larger the position, the lower the actual leverage that can be used.
+**IMR Factors** are coefficients that kick in for large positions. The bigger your position, the more margin you need relative to its size. This means your effective leverage decreases as your position grows, which protects both you and the platform from oversized risk.
 
 ## Maintenance Margin Ratio
 
-An account will be liquidated if the Margin Ratio of the account is lower than the Maintenance Margin Ratio required.
+The Maintenance Margin Ratio (MMR) is the absolute minimum margin ratio your account must maintain. If your Account Margin Ratio drops below the MMR, your positions will be liquidated.
+
+The MMR is always lower than the IMR, which creates a buffer zone. You will first lose the ability to open new positions (when you drop below IMR) before you face liquidation (when you drop below MMR).
 
 ```
 MMR i = Max(Base MMR i, Base MMR i / Base IMR i * IMR Factor i * Abs(Position Notional i)^(4/5))
@@ -46,6 +51,8 @@ MMR i = Max(Base MMR i, Base MMR i / Base IMR i * IMR Factor i * Abs(Position No
   We will gradually decrease Base IMR and Base MMR and increase maximum leverage for major markets
   after launch.
 </Note>
+
+The table below shows the margin parameters for every perpetual market on Orderly. The "Base IMR" column also shows the maximum leverage in parentheses.
 
 | Perp Market     | Base IMR (max leverage) | Base MMR | IMR Factor   |
 | --------------- | ----------------------- | -------- | ------------ |
@@ -150,13 +157,15 @@ MMR i = Max(Base MMR i, Base MMR i / Base IMR i * IMR Factor i * Abs(Position No
 
 ## PnL (Profit and Loss)
 
-The unrealized PnL of an open position refers to the profits or losses of that position based on the Mark Price:
+PnL stands for Profit and Loss. There are two types:
+
+**Unrealized PnL** is the paper profit or loss on a position you still have open. It changes constantly as the market moves. If BTC is at 62,000 and you bought at 60,000, your unrealized PnL is positive.
 
 ```
 Unrealized PnL(Perp Market i) = Position Qty * (Mark Price - Position Average Entry Price)
 ```
 
-The realized PnL refers to the profits or losses after closing a position:
+**Realized PnL** is your actual profit or loss after you close (or reduce) a position. Once a position is closed, the PnL is locked in.
 
 ```
 Realized PnL(Perp Market i) = Position Qty * (Average Price - Position Average Entry Price)
@@ -164,21 +173,23 @@ Realized PnL(Perp Market i) = Position Qty * (Average Price - Position Average E
 
 ## PnL settlement
 
-Settling PnL allow traders to move their profit or loss from all perpetual markets to their balance. PnL Settlement has no impact on the Account Margin Ratio or open positions.
+PnL settlement is the process of moving your profits or losses from your perpetual positions into your USDC balance. This is important because you cannot withdraw unrealized or unsettled profits -- you need to settle first.
 
-It should be noted that settled/unsettled PnL and realized/unrealized PnL are different. PnL is realized when closing or reducing a position. The resulting realized PnL moves into the balance only when the trader triggers a PnL settlement.
+A few key points to understand:
 
-Settled PnL into balance can be used for perpetual futures trading or withdrawn, but doing so will impact your margin ratio.
+- **Settlement does not affect your margin ratio or open positions.** It is purely an accounting step.
+- **Settled vs. unsettled PnL is different from realized vs. unrealized PnL.** PnL becomes "realized" when you close or reduce a position. But that realized PnL stays "unsettled" until you explicitly trigger a settlement. Only after settlement does it move into your withdrawable balance.
+- **Settled PnL can be used for trading or withdrawn**, but withdrawing reduces your margin ratio.
 
-The process of PnL Settlement is as follows:
+### How the settlement process works
 
-When account X makes a call to settle PnL, Orderly will choose the top accounts with the largest unsettled opposing PnL. Starting from the largest account, each account's unsettled PnL will be offset with account X, until account X has no more remaining PnL to settle.
+When your account (Account X) triggers a PnL settlement, Orderly finds the accounts with the largest unsettled PnL on the opposite side. Starting with the largest, each account's unsettled PnL is offset against yours until your PnL is fully settled.
 
-As an Example: Account X has +20,000 USDC unsettled PnL with a balance of 100 USDC. The top 2 facing Accounts A and B have -15,000 USDC and -5,000 USDC unsettled PnL respectively:
+**Example:** Account X has +20,000 USDC of unsettled PnL and a balance of 100 USDC. The two largest opposing accounts are Account A (-15,000 USDC) and Account B (-5,000 USDC):
 
-- First, settling Account X vs Account A will increase Account X's balance by 15,000 USDC and decrease Account A's balance by 15,000 USDC. Account X has a remaining unsettled PnL of +5,000 USDC and a balance of 15,100 USDC.
+- First, Account X settles against Account A. Account X's balance goes up by 15,000 USDC (now 15,100 USDC), and Account A's balance goes down by 15,000 USDC. Account X still has 5,000 USDC of unsettled PnL remaining.
 
-- Then, settling Account X vs Account B will increase Account X's balance by 5,000 USDC and decrease Account B's balance by 5,000 USDC. Account X has a remaining unsettled PnL of 0 and a balance of 20,100 USDC. The settlement process ends since Account X has no remaining unsettled PnL.
+- Then, Account X settles against Account B. Account X's balance goes up by 5,000 USDC (now 20,100 USDC), and Account B's balance goes down by 5,000 USDC. Account X now has 0 unsettled PnL. Settlement is complete.
 
 <Note>
 Settling PnL will NOT change the user's balance as displayed user balance already includes unsettled PnL in the calculation.
@@ -191,7 +202,7 @@ All settling PnL does is move profits into user's account so user is able to wit
 
 ## Max notional amount
 
-Orderly imposes position limits per perpetual market per user. These limits will be increased and/or removed after Beta launch.
+Orderly sets a cap on how large your position can be in any single perpetual market. This is a risk management measure. These limits will be increased and/or removed after Beta launch.
 
 | Perp Market | Max Notional (USDC) |
 | ----------- | ------------------- |

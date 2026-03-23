@@ -1,8 +1,9 @@
 ---
 title: "Overview"
+description: "Overview of low-level API hooks for making custom REST and WebSocket requests to Orderly."
 ---
 
-Orderly provides both public and private APIs. Public APIs can be fetched directly. Private APIs require [authentication](/build-on-omnichain/evm-api/api-authentication) and these can be performed using hooks from `@orderly.network/hooks`.
+Orderly provides both public and private APIs. Public APIs can be fetched directly. Private APIs require [authentication](/build-on-omnichain/api-authentication) and these can be performed using hooks from `@orderly.network/hooks`.
 
 <Note>
   **Reminder:** Most often you might not have to use the following hooks, as
@@ -42,4 +43,4 @@ Use `usePrivateQuery`, `usePrivateInfiniteQuery` or `useMutation` to access any 
 
 `@orderly.network/hooks` provides a `useWS` hook for accessing Orderly's Websocket API. `useWS` returns the `WS` instance of `@orderly.network/net`. Builders can use `WS` to subscribe, cancel, or to send messages through the Websocket.
 
-For all available topics of the Websocket, please check the [Websocket API documentation](/build-on-omnichain/evm-api/websocket-api/introduction).
+For all available topics of the Websocket, please check the [Websocket API documentation](/build-on-omnichain/websocket-api/introduction).

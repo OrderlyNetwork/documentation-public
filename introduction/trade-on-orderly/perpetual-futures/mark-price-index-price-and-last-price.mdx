@@ -1,12 +1,21 @@
 ---
 title: "Mark Price, Index Price, and Last Price"
+description: "How Orderly computes Mark Price, Index Price, and Last Price with manipulation safeguards."
 ---
+
+When trading perpetual futures, you will see three different prices: the Index Price, the Mark Price, and the Last Price. Each serves a different purpose, and understanding them will help you make sense of how your positions are valued and when liquidations might happen.
+
+- **Index Price** is a fair market price for the underlying asset, calculated from multiple major exchanges. It answers the question: "What is this asset actually worth right now?"
+- **Mark Price** is Orderly's best estimate of what the perpetual futures contract itself is worth. It is used for calculating your unrealized PnL and determining liquidations.
+- **Last Price** is simply the most recent price at which the contract was traded on Orderly.
+
+The Mark Price is the most important of the three for your account health, because it is what Orderly uses to decide whether your positions should be liquidated. It is designed to be resistant to manipulation and short-term volatility.
 
 ## Index Price
 
 For a given contract, the Index price is the volume-weighted average of the underlying asset prices listed on major spot exchanges.
 
-In order to mitigate the risk of market manipulation on one specific venue or exchanges outages or connectivity issues, Orderly undertakes the following protection measures:
+Because no single exchange should have the power to move this price on its own, Orderly applies several safeguards to prevent manipulation, outages, or connectivity problems from distorting the Index Price:
 
 1. If, for any source, the price deviates by more than **5%** from the median price of all sources, Orderly caps/floors the value at +/- 5%. Once the source price falls within the 5% range, its original value will be taken.
 
@@ -14,7 +23,9 @@ In order to mitigate the risk of market manipulation on one specific venue or ex
 
 3. If a specific source is not sending any price for over **10 seconds**, it will be disregarded from the Index Price calculation completely.
 
-In the Index Price calculation, the weights are computed every 5 minutes and are based on the 4-hour trading volume over the spot trading pairs of the selected centralized exchanges.
+### How the weights are calculated
+
+The weights used in the Index Price calculation are updated every 5 minutes. They are based on how much trading volume each exchange had over the past 4 hours. Exchanges with more volume have more influence on the Index Price.
 
 ```
 Weight (CEX_i) = Volume (CEX_i) / Total Volume (CEXes)
@@ -23,10 +34,14 @@ where:
     Total Volume (CEXes) refers to the sum of the 4-hour trading volume accross all relevant CEXes for the specific pair
 ```
 
-In addition to Orderly's in-house oracle, [Stork](https://www.stork.network/) serves as a backup oracle, verifying the index price for all pairs listed on Orderly.
-Stork is an ultra-low-latency (sub-millisecond), decentralized hybrid oracle network designed for EVM-compatible price feeds. Stork prioritizes performance, using ultra-fast WebSockets across multiple regions and node providers to ensure Orderly’s reference prices are available for verification in real-time, at the millisecond level, similar to the data speeds used in traditional finance trading venues.
+### Backup oracle
 
-The relevant exchanges for each trading pair can be find in the following table :
+In addition to Orderly's in-house oracle, [Stork](https://www.stork.network/) serves as a backup oracle, verifying the index price for all pairs listed on Orderly.
+Stork is an ultra-low-latency (sub-millisecond), decentralized hybrid oracle network designed for EVM-compatible price feeds. Stork prioritizes performance, using ultra-fast WebSockets across multiple regions and node providers to ensure Orderly's reference prices are available for verification in real-time, at the millisecond level, similar to the data speeds used in traditional finance trading venues.
+
+### Exchange sources per trading pair
+
+The tables below show which exchanges are used as price sources for each trading pair. An "X" means that exchange is included in the Index Price calculation for that pair.
 
 | Symbol    | Binance | OKX | Huobi | Gateio | Bybit | Kucoin | MEXC | Bitget | BingX | Stork | Hyperliquid | Pyth | LBank | Binance Futures |
 | --------- | ------- | --- | ----- | ------ | ----- | ------ | ---- | ------ | ----- | ----- | ----------- | ---- | ----- | --------------- |
@@ -136,9 +151,11 @@ The relevant exchanges for each trading pair can be find in the following table 
 
 ## Mark Price
 
-The Mark Price represents the best estimate of a Perpetual Futures contract value and prevents unnecessary liquidations that would potentially be caused by market manipulation: it is less volatile than the Index Price or Last Price.
+The Mark Price is the price Orderly uses to value your perpetual futures positions. It is designed to be a stable, manipulation-resistant estimate of what the contract is actually worth. Orderly uses the Mark Price (not the Last Price) for calculating unrealized PnL and triggering liquidations, because it is less volatile and harder to manipulate.
 
-First we compute the Median Price of the three following components :
+### How it is calculated
+
+The Mark Price is built in two steps. First, Orderly computes a Median Price from three components:
 
 ```
 Median Price = Median(P1, P2, Futures Price)
@@ -153,7 +170,7 @@ dt = Funding Period = 8 hours
 
 ```
 
-Then Orderly applies a cap to the Mark Price relative to the Index Price defined by Factor (see table below) and Cap/Floor funding (cf Funding Rate section)
+Then Orderly applies a cap so the Mark Price cannot deviate too far from the Index Price. This cap is defined by a "Factor" and the cap/floor funding rates (see the Funding Rate section for details):
 
 ```
 Mark Price = Clamp(Median Price, Index Price * (1 + Factor * Cap Funding), Index Price * (1 + Factor * Floor_funding))
@@ -169,4 +186,4 @@ cap_funding and floor_funding depend on the perpetual market (cf Funding Rate se
 
 ## Last Price
 
-The Last Price refers to the last traded price of a Perpetual Futures contract.
+The Last Price is the simplest of the three. It is just the most recent price at which someone bought or sold the perpetual futures contract on Orderly. While it reflects real trading activity, it can be more volatile and easier to manipulate than the Mark Price, which is why it is not used for liquidation decisions.

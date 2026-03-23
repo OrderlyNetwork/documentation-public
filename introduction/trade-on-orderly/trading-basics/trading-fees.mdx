@@ -1,17 +1,165 @@
 ---
-title: "Trading Fees"
-description: "Overview of trading fees"
+title: "Trading fees"
+description: "Understanding the fee structure for Traders and the Builder Staking programme"
 ---
+
 # Overview
 
-Trading fees are the costs you pay to buy, sell, or trade assets on an exchange. These fees are charged as a percentage of the transaction value.
+Trading fees are the costs you pay when you buy, sell, or trade on an exchange. On Orderly, fees are measured in **basis points (1 bps = 0.01%)** of your trade's total value.
 
-There are two main types of trading fees:
+Orderly Network uses a two-layer fee structure:
+1.  **Base fees:** The cost the **Builder** (the DEX) pays to Orderly Network.
+2.  **User fees:** The fee the **Trader** pays to the Builder.
 
-**Maker fees:** These fees are charged to traders who place orders that add liquidity to the market (not instantly filled orders that are added to the book), such as limit orders.
+### The dual-layer example
+Here's how the two layers work together in practice:
+*   **Orderly base taker fee:** 3 bps (0.03%)
+*   **Builder custom fee:** 5 bps (0.05%)
+*   **Result:** The **Trader pays 5 bps**. Orderly retains **3 bps**, and the **Builder keeps 2 bps** as profit.
 
-**Taker fees:** These fees are charged to traders who remove liquidity from the market, such as market orders.
+### Fee types
+**Maker fees:** Charged when your order adds liquidity to the order book -- for example, a limit order that doesn't fill right away. Currently, the **Orderly base maker fee is 0.00 bps** across all tiers.
 
-# How fees are charged
-### Perpetual Futures Fees
-Perpetual Futures trading fees are charged after every trade in USDC and added to the cost position.
+**Taker fees:** Charged when your order removes liquidity by filling immediately -- for example, a market order.
+
+**Liquidation fees:** If your position gets liquidated, a liquidation fee is applied. See the [liquidation fee](https://orderly.network) docs for details.
+
+<Note>
+Perpetual futures trading fees are charged after every trade in USDC and are **factored into the position's average entry price**.
+</Note>
+
+# How fees work for Traders
+
+As a Trader, you pay a single fee per trade that's set by the Builder (the DEX you're using).
+
+*   **Total fee paid:** You see one transparent fee per trade. This fee typically includes Orderly's base fee plus the Builder's margin.
+*   **How it's charged:** Fees are automatically deducted from your USDC balance when your trade executes.
+*   **Maker vs Taker:** Whether you pay the maker or taker rate depends on how your order is filled. If your order sits in the book and waits, you're a **Maker**. If it fills immediately, you're a **Taker**.
+
+# How fees work for Builders
+
+Orderly gives Builders full control over their pricing. You set your own trading fees while tapping into Orderly's shared liquidity.
+
+*   **Set your own fees:** You decide what to charge your users. The only rule: your fee must be at least as high as Orderly's **base fee**.
+*   **Keep the difference:** You retain **100% of the margin** between what you charge users and what Orderly charges you.
+*   **Base fee tiers:** The base fee Orderly charges you depends on your tier in the Builder Staking programme.
+
+### Builder Staking programme
+
+Builders can get lower base fees and better support by hitting monthly volume targets **or** staking $ORDER tokens. **If you qualify for different tiers through both volume and staking, you automatically get the higher tier (lower fee).**
+
+<Tabs>
+  <Tab title="Overview">
+      <img src="/images/getting-started/orderly-builder-staking-program-1x.png" />
+  </Tab>
+
+  <Tab title="Public">
+    **Requirements:** No volume or staking requirement.
+
+
+
+    | Fee type | Rate (bps) |
+    |---|---|
+    | Crypto base taker fee | 3.00 |
+    | RWA base taker fee | 5.00 |
+    | Orderly base maker fee | 0.00 |
+
+    **Marketing benefits:** None
+
+    **Product & support:** SDK access & docs
+  </Tab>
+
+  <Tab title="Silver">
+    **Requirements:** ≥ \$30M monthly aggregate volume **or** stake 100K \$ORDER
+
+
+
+    | Fee type | Rate (bps) |
+    |---|---|
+    | Crypto base taker fee | 2.75 |
+    | RWA base taker fee | 4.75 |
+    | Orderly base maker fee | 0.00 |
+
+    **Marketing benefits:**
+    - Launch RT/QT from Orderly
+
+    **Product & support:**
+    - All Public benefits
+    - Telegram support group
+  </Tab>
+
+  <Tab title="Gold">
+    **Requirements:** ≥ \$90M monthly aggregate volume **or** stake 250K \$ORDER
+
+
+
+    | Fee type | Rate (bps) |
+    |---|---|
+    | Crypto base taker fee | 2.50 |
+    | RWA base taker fee | 4.50 |
+    | Orderly base maker fee | 0.00 |
+
+    **Marketing benefits:**
+    - All Silver benefits
+    - Co-marketing & social support
+    - Partner intros
+
+    **Product & support:**
+    - All Silver benefits
+    - **Referral privilege:** Can **sponsor referred Builders to receive Silver-tier pricing** (subject to requirements).
+    - 24/7 tech support with SLAs
+  </Tab>
+
+  <Tab title="Platinum">
+    **Requirements:** ≥ \$1B monthly aggregate volume **or** stake 2M \$ORDER
+
+
+
+    | Fee type | Rate (bps) |
+    |---|---|
+    | Crypto base taker fee | 2.00 |
+    | RWA base taker fee | 4.00 |
+    | Orderly base maker fee | 0.00 |
+
+    **Marketing benefits:**
+    - All Gold benefits
+    - Joint campaigns
+    - "Platinum Builder" badge on website
+
+    **Product & support:**
+    - All Gold benefits
+    - **Referral privilege:** Can **sponsor referred Builders to receive Silver or Gold-tier pricing** (subject to requirements).
+    - Dedicated account manager
+    - Product beta access
+  </Tab>
+
+  <Tab title="Diamond">
+    **Requirements:** ≥ \$10B monthly aggregate volume **or** stake 7M \$ORDER
+
+
+
+    | Fee type | Rate (bps) |
+    |---|---|
+    | Crypto base taker fee | 1.00 |
+    | RWA base taker fee | 3.00 |
+    | Orderly base maker fee | 0.00 |
+
+    **Marketing benefits:**
+    - All Platinum benefits
+    - Flagship partner program
+    - PR & paid media
+
+    **Product & support:**
+    - All Platinum benefits
+    - **Referral privilege:** Can **sponsor referred Builders to receive Silver, Gold, or Platinum-tier pricing** (subject to requirements).
+    - Dedicated support team and product advisory board seat
+  </Tab>
+</Tabs>
+
+<Note>
+Monthly (30-day) aggregate trading volume includes all activity from the Builder and their direct Builder referrals. Daily snapshots determine tier eligibility.
+</Note>
+
+<Note>
+**RWA fees:** These apply specifically to real-world asset markets (e.g., tokenized treasuries) listed on Orderly.
+</Note>

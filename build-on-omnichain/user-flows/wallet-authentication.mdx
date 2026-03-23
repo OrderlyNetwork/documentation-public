@@ -15,9 +15,7 @@ Orderly relies on the [EIP-712](https://eips.ethereum.org/EIPS/eip-712) standard
 
 For these actions, wallet owners will need to sign specific messages from their wallet and pass the signature through the REST APIs to complete the action. The following sections describe the steps needed to complete these actions.
 
-For other actions, such as calling trading-related RESTful APIs, a successful Orderly Key generation is required in order to use it via [API authentication](/build-on-omnichain/evm-api/api-authentication).
-
-
+For other actions, such as calling trading-related RESTful APIs, a successful Orderly Key generation is required in order to use it via [API authentication](/build-on-omnichain/api-authentication).
 
 ### Domain
 
@@ -92,38 +90,38 @@ The message types are required for the EIP-712 algorithm to do a proper signing.
         { "name": "timestamp", "type": "uint64" },
     ],
     "DelegateSigner": [
-        { "name": "delegateContract", type: "address" },
-        { "name": "brokerId", type: "string" },
-        { "name": "chainId", type: "uint256" },
-        { "name": "timestamp", type: "uint64" },
-        { "name": "registrationNonce", type: "uint256" },
-        { "name": "txHash", type: "bytes32" },
+        { "name": "delegateContract", "type": "address" },
+        { "name": "brokerId", "type": "string" },
+        { "name": "chainId", "type": "uint256" },
+        { "name": "timestamp", "type": "uint64" },
+        { "name": "registrationNonce", "type": "uint256" },
+        { "name": "txHash", "type": "bytes32" },
     ],
     "DelegateAddOrderlyKey": [
-        { "name": "delegateContract", type: "address" },
-        { "name": "brokerId", type: "string" },
-        { "name": "chainId", type: "uint256" },
-        { "name": "orderlyKey", type: "string" },
-        { "name": "scope", type: "string" },
-        { "name": "timestamp", type: "uint64" },
-        { "name": "expiration", type: "uint64" },
+        { "name": "delegateContract", "type": "address" },
+        { "name": "brokerId", "type": "string" },
+        { "name": "chainId", "type": "uint256" },
+        { "name": "orderlyKey", "type": "string" },
+        { "name": "scope", "type": "string" },
+        { "name": "timestamp", "type": "uint64" },
+        { "name": "expiration", "type": "uint64" },
     ],
     "DelegateWithdraw": [
-        { "name": "delegateContract", type: "address" },
-        { "name": "brokerId", type: "string" },
-        { "name": "chainId", type: "uint256" },
-        { "name": "receiver", type: "address"},     
-        { "name": "token", type: "string" },
-        { "name": "amount", type: "uint256" },
-        { "name": "withdrawNonce", type: "uint64" },
-        { "name": "timestamp", type: "uint64" },
+        { "name": "delegateContract", "type": "address" },
+        { "name": "brokerId", "type": "string" },
+        { "name": "chainId", "type": "uint256" },
+        { "name": "receiver", "type": "address" },
+        { "name": "token", "type": "string" },
+        { "name": "amount", "type": "uint256" },
+        { "name": "withdrawNonce", "type": "uint64" },
+        { "name": "timestamp", "type": "uint64" },
     ],
     "DelegateSettlePnl": [
-        { "name": "delegateContract", type: "address" },
-        { "name": "brokerId", type: "string" },
-        { "name": "chainId", type: "uint256" },
-        { "name": "settleNonce", type: "uint64" },
-        { "name": "timestamp", type: "uint64" },
+        { "name": "delegateContract", "type": "address" },
+        { "name": "brokerId", "type": "string" },
+        { "name": "chainId", "type": "uint256" },
+        { "name": "settleNonce", "type": "uint64" },
+        { "name": "timestamp", "type": "uint64" },
     ],
 }
 ```
@@ -131,13 +129,13 @@ The message types are required for the EIP-712 algorithm to do a proper signing.
 ## Orderly key
 
 Orderly uses the `ed25519` elliptic curve standard for Orderly keys. Users can generate Orderly keys using any public `ed25519` libraries and then be added to any account through the REST API.
-An Orderly key is necessary to perform [API authentication](/build-on-omnichain/evm-api/api-authentication).
+An Orderly key is necessary to perform [API authentication](/build-on-omnichain/api-authentication).
 
-Orderly keys can have different scopes. A `read` scope API can access all private read-only APIs, and a `trading` scope can, in addition, access all order APIs (create order, batch create order, edit order, cancel order, cancel order by client\_order-Id, cancel orders in bulk, batch cancel orders, batch cancel orders by client\_order\_id).
+Orderly keys can have different scopes. A `read` scope can access all private read-only APIs, and a `trading` scope can, in addition, access all order APIs (create order, batch create order, edit order, cancel order, cancel order by client\_order\_id, cancel orders in bulk, batch cancel orders, batch cancel orders by client\_order\_id).
 
 Orderly keys also have expirations for security reasons. The maximum allowed expiration of an Orderly key is 365 days.
 
-Follow the following steps to add a new Orderly key on Orderly:
+To add a new Orderly key:
 
 <Steps>
   <Step title="Generate an ed25519 key-pair">
@@ -166,10 +164,10 @@ where:
 | orderlyKey | string    | Y            | ed25519 public key                                                                            |
 | scope      | string    | Y            | valid scopes are `read`, `trading` and `asset`. Multiple scopes can be sent, comma separated  |
 | timestamp  | timestamp | Y            | timestamp in UNIX milliseconds                                                                |
-| expiration | timestamp | Y            | Expiration time of the key in UNIX millisecondsMaximum allowed expiration is 365 days from add |
+| expiration | timestamp | Y            | Expiration time of the key in UNIX milliseconds. Maximum allowed expiration is 365 days from add |
   </Step>
   <Step title="Add Orderly key">
-     Send all the necessary information via [Add Orderly key API](/build-on-omnichain/evm-api/restful-api/public/add-orderly-key).
+     Send all the necessary information via [Add Orderly key API](/build-on-omnichain/restful-api/public/add-orderly-key).
   </Step>
 </Steps>
 
@@ -289,10 +287,8 @@ from base58 import b58encode
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from eth_account import Account, messages
 
-
 def encode_key(key: bytes):
     return "ed25519:%s" % b58encode(key).decode("utf-8")
-
 
 MESSAGE_TYPES = {
     "EIP712Domain": [

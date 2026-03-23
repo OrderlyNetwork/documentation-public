@@ -3,14 +3,14 @@ iframe.preview {
   min-height: 500px;
 }
 
-/* 适用于桌面端 */
+/* Desktop layout */
 @media screen and (min-width: 1024px) {
   .container {
-    display: flex; /* 设置父元素为 flex 布局 */
+    display: flex;
   }
 
   .left {
-    width: 30%; /* 设置左右两部分的宽度 */
+    width: 30%;
   }
 
   .right {
@@ -133,7 +133,7 @@ iframe.preview {
 
   .coin98_logo {
     height: 85px;
-    /* 移除左边距，统一居中 */
+    /* Remove left margin, center uniformly */
     margin-left: 0;
     object-fit: contain;
   }
@@ -271,7 +271,41 @@ iframe.preview {
   }
 }
 
-/* 移动端优化 */
+/* ── Home page theme ──────────────────────────────────── */
+
+:root {
+  --home-text-muted: rgb(148, 163, 184);
+  --home-border: rgba(148, 163, 184, 0.15);
+  --home-hero-bg: linear-gradient(
+    135deg,
+    rgba(170, 92, 248, 0.06) 0%,
+    rgba(170, 92, 248, 0.14) 100%
+  );
+  --home-hero-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+}
+
+:root:not(.dark) {
+  --home-text-muted: rgb(100, 116, 139);
+  --home-border: rgba(148, 163, 184, 0.22);
+  --home-hero-bg: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.04) 0%,
+    rgba(170, 92, 248, 0.08) 100%
+  );
+  --home-hero-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+}
+
+/* Card light-mode override */
+html:not(.dark) .card.block {
+  background-color: #ffffff !important;
+  border-color: rgba(148, 163, 184, 0.25) !important;
+}
+
+html:not(.dark) .card.block:hover {
+  border-color: #aa5cf8 !important;
+}
+
+/* Mobile layout */
 @media screen and (max-width: 768px) {
   .container {
     display: flex;
@@ -297,7 +331,7 @@ iframe.preview {
     transform: scale(0.98);
   }
 
-  /* 徽章：移动端常驻显示 */
+  /* Badges: always visible on mobile */
   .card .gold,
   .card .silver,
   .card .bronze {
@@ -343,19 +377,19 @@ iframe.preview {
     justify-content: center;
     align-items: center;
     width: 100%;
-    min-height: 80px; /* 统一卡片内高度 */
+    min-height: 80px;
   }
 
-  /* 确保 logo 最小高度，避免太小被压缩 */
+  /* Ensure minimum logo height */
   .logo,
   .coin98_logo {
     max-height: 65px;
-    min-height: 40px; /* 新增，确保至少 40px 高度 */
+    min-height: 40px;
     max-width: 100%;
     object-fit: contain;
   }
 
-  /* 搜索与筛选区优化 */
+  /* Search and filter section */
   .search-builders-input,
   .search-builders-tier,
   .search-builders-network {

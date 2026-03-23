@@ -1,0 +1,88 @@
+---
+title: "Algo Execution Report"
+description: "Subscribe to algo order execution reports via private WebSocket stream."
+---
+
+Push interval: real-time push
+
+```json
+{
+  "id": "clientID3",
+  "topic": "algoexecutionreport",
+  "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name  | Type   | Required | Description               |
+| ----- | ------ | -------- | ------------------------- |
+| id    | string | Y        | id generate by client     |
+| event | string | Y        | `subscribe`/`unsubscribe` |
+| topic | string | Y        | `algoexecutionreport`     |
+
+<RequestExample>
+
+```json Response
+{
+  "id": "clientID3",
+  "event": "subscribe",
+  "success": true,
+  "ts": 1609924478533
+}
+```
+
+</RequestExample>
+<ResponseExample>
+```json Subscribed Message
+{
+  "topic": "algoexecutionreport",
+  "ts": 1750997326998,
+  "data": [
+    {
+      "symbol": "PERP_NEAR_USDC",
+      "rootAlgoOrderId": 654400003,
+      "parentAlgoOrderId": 0,
+      "algoOrderId": 654400003,
+      "clientOrderId": "clientOrderId123",
+      "orderTag": "tag1",
+      "status": "FILLED",
+      "algoType": "STOP",
+      "side": "SELL",
+      "quantity": 3,
+      "triggerStatus": "SUCCESS",
+      "price": 1.25,
+      "type": "MARKET",
+      "triggerTradePrice": 1.3,
+      "triggerTime": 1750997326000,
+      "tradeId": 10001,
+      "executedPrice": 1.3,
+      "executedQuantity": 3,
+      "fee": 1.2,
+      "feeAsset": "USDC",
+      "totalExecutedQuantity": 3,
+      "averageExecutedPrice": 1.3,
+      "totalFee": 1.2,
+      "timestamp": 1750997326991,
+      "visibleQuantity": 3,
+      "reduceOnly": true,
+      "callbackRate": null,
+      "callbackValue": null,
+      "extremePrice": null,
+      "activatedPrice": null,
+      "triggered": true,
+      "activated": null,
+      "maker": true,
+      "isMaker": true,
+      "rootAlgoStatus": "FILLED",
+      "algoStatus": "FILLED",
+      "isActivated": true,
+      "triggerPrice": 1.25,
+      "triggerPriceType": "MARK_PRICE",
+      "createdTime": 1750997261728,
+      "marginMode": "CROSS"
+    }
+  ]
+}
+```
+</ResponseExample>

@@ -1,5 +1,6 @@
 ---
 title: "Wallet connect"
+description: "How to integrate wallet connection with the Orderly React SDK using WalletConnectorContext."
 ---
 
 `@orderly.network/react-app` is an application layer of the Orderly API. It is mainly responsible for rendering the UI, handling user interaction events, and completing trading actions. Therefore, it does not include built-in wallet connection functionality.
@@ -48,7 +49,7 @@ The Privy wallet connector consists of three parts:
 ### Configuration options
 
 - `network` (**required**) – e.g., `mainnet` or `testnet`. This determines the network used by wallets like Solana and Abstract.
-- `customChains` (**optional**) – Brokers can define which chains to display.
+- `customChains` (**optional**) – Builders can define which chains to display.
 - `termsOfUse` (**optional**) – URL for Terms of Use; if not provided, terms section won't be shown.
 
 ```ts
@@ -148,7 +149,7 @@ export const WalletConnector = ({ children }: PropsWithChildren) => {
 };
 ```
 
-After defining the component, you also need to add this component to the parent of [`OrderlyAppProvider`](/sdks/react/configuration#orderlyappprovider).
+After defining the component, you also need to add this component to the parent of [`OrderlyAppProvider`](/sdks/react/getting_started#add-a-global-configuration-provider).
 
 ### Interface & Context
 

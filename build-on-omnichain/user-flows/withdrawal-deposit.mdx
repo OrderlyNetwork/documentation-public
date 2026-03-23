@@ -7,7 +7,7 @@ description: "Overview of deposit and withdrawal flow"
 
 Token deposits can be made on any supported chains (list [here](/introduction/trade-on-orderly/supported-chains))
 
-To create a deposit request, users can follow the following steps:
+To create a deposit request:
 
 <Steps>
   <Step title="Approve spending of the token by the Vault smart contract">
@@ -104,7 +104,7 @@ depositAmount);
 // get wei deposit fee for `deposit` call
 BigInteger depositFee = vault.getDepositFee(credentials.getAddress(), depositInput).send();
 
-````
+```
 
 ```py Python
 broker_id = "woofi_pro"
@@ -133,7 +133,7 @@ deposit_fee = vault.functions.getDepositFee(
     Web3.to_checksum_address(account.address),
     deposit_input,
 ).call()
-````
+```
 
 ```ts TypeScript
 const brokerId = "woofi_pro";
@@ -208,7 +208,7 @@ await vaultContract.deposit(depositInput, { value: depositFee });
   Deposits will take some time to reflect depending on the origin chain, to allow for finalizing of
   the cross-chain transaction involved in the deposit. Once the deposit is credited, the balance
   will update and the transaction can be seen on the [Get asset history
-  API](/build-on-omnichain/evm-api/restful-api/private/get-asset-history).
+  API](/build-on-omnichain/restful-api/private/get-asset-history).
 </Note>
 
 ### Full example
@@ -291,7 +291,7 @@ public class DepositExample {
 
 }
 
-````
+```
 
 ```py Python
 import json
@@ -300,7 +300,6 @@ import os
 from eth_account import Account
 from web3 import Web3
 from web3.middleware import construct_sign_and_send_raw_middleware
-
 
 broker_id = "woofi_pro"
 token_id = "USDC"
@@ -355,7 +354,7 @@ deposit_fee = vault.functions.getDepositFee(
 vault.functions.deposit(deposit_input).transact(
     {"from": account.address, "value": deposit_fee}
 )
-````
+```
 
 ```ts TypeScript
 import { config } from "dotenv";
@@ -417,7 +416,7 @@ deposit();
 
 ## Withdrawal
 
-Follow the following steps to withdraw your tokens from Orderly:
+To withdraw tokens from Orderly:
 
 <Steps>
   <Step title="Choose a valid chain to withdraw your funds to">
@@ -428,7 +427,7 @@ Follow the following steps to withdraw your tokens from Orderly:
     additional cross-chain transaction fee will be deducted from the user's account.
   </Step>
   <Step title="Obtain a withdrawal nonce">
-    Get a nonce from [Get Withdrawal Nonce API](/build-on-omnichain/evm-api/restful-api/private/get-withdrawal-nonce).
+    Get a nonce from [Get Withdrawal Nonce API](/build-on-omnichain/restful-api/private/get-withdrawal-nonce).
   </Step>
   <Step title="Obtain a signature from EIP-712">
     Sign an EIP-712 message of [message type](/build-on-omnichain/user-flows/wallet-authentication#message-types) `Withdraw`:
@@ -468,12 +467,12 @@ where:
 | receiver      | string    | Y            | Address of the receiver, which should be equal to the address of the account.                                          |
 | token         | string    | Y            | The string representation of the token that is being withdrawn (eg "USDC")                                             |
 | amount        | string       | Y            | Amount of tokens to be withdrawn                                                                                       |
-| withdrawNonce | int       | Y            | Valid withdrawal nonce from [Get Withdrawal Nonce API](/build-on-omnichain/evm-api/restful-api/private/get-withdrawal-nonce) |
+| withdrawNonce | int       | Y            | Valid withdrawal nonce from [Get Withdrawal Nonce API](/build-on-omnichain/restful-api/private/get-withdrawal-nonce) |
 | timestamp     | timestamp | Y            | current timestamp in UNIX milliseconds                                                                                 |
 
   </Step>
   <Step title="Make a withdraw request">
-    Call the [Create withdraw request API](/build-on-omnichain/evm-api/restful-api/private/create-withdraw-request).
+    Call the [Create withdraw request API](/build-on-omnichain/restful-api/private/create-withdraw-request).
   </Step>
 </Steps>
 

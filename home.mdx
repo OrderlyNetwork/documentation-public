@@ -1,110 +1,261 @@
 ---
 title: "Orderly Home Page"
+description: "Landing page for builders to navigate Orderly architecture, APIs, SDKs, and troubleshooting resources."
 mode: "custom"
 ---
 
-export function openSearch() {
-  document.getElementById("search-bar-entry").click();
-}
-
 <div
-  className="relative w-full flex items-center justify-center"
-  style={{ height: '24rem', backgroundColor: '#1F1F33', overflow: 'hidden' }}
+  style={{
+    maxWidth: '72rem',
+    margin: '0 auto',
+    padding: '2.5rem 1.25rem 5rem',
+  }}
 >
-  <div style={{ flex: 'none' }}>
-    <img
-      src="images/home_banner.jpg"
-      style={{ height: '400px', width: '2000px', pointerEvents: 'none'  }}
-    />
-  </div>
-  <div style={{ position: 'absolute', textAlign: 'center' }}>
-    <div
+  <div
+    style={{
+      border: '1px solid var(--home-border)',
+      borderRadius: '28px',
+      padding: '2rem',
+      background: 'var(--home-hero-bg)',
+      boxShadow: 'var(--home-hero-shadow)',
+      marginBottom: '2rem',
+    }}
+  >
+    <h1
       style={{
-        color: 'white',
-        fontWeight: '400',
-        fontSize: '48px',
-        margin: '0',
+        margin: '0 0 0.75rem',
+        fontSize: 'clamp(1.875rem, 3vw, 2.5rem)',
+        lineHeight: '1.2',
+        letterSpacing: '-0.02em',
       }}
     >
-      Orderly Documentation
+      Everything you need to build on Orderly
+    </h1>
+
+    <p
+      style={{
+        margin: '0',
+        fontSize: '1.05rem',
+        lineHeight: '1.7',
+        color: 'var(--home-text-muted)',
+      }}
+    >
+      Platform architecture, API references, and SDK guides for builders at every
+      stage — from first integration to production operations.
+    </p>
+  </div>
+
+  <div style={{ marginBottom: '3rem' }}>
+    <div
+      style={{
+        marginBottom: '1.25rem',
+      }}
+    >
+      <div
+        style={{
+          fontSize: '1.45rem',
+          fontWeight: '700',
+          marginBottom: '0.4rem',
+        }}
+      >
+        Understand the system
+      </div>
+      <p
+        style={{
+          margin: '0',
+          color: 'var(--home-text-muted)',
+          lineHeight: '1.6',
+        }}
+      >
+        Learn what Orderly is, how the system is structured, and what the integration path looks like.
+      </p>
+    </div>
+
+    <CardGroup cols={2}>
+      <Card title="What is Orderly?" icon="book-open" href="/introduction/getting-started/what-is-orderly">
+        Understand the product model, shared liquidity layer, and who Orderly is built for.
+      </Card>
+      <Card title="Building on Omnichain" icon="gear-code" href="/build-on-omnichain/building-on-omnichain">
+        See how Orderly's system layers connect and where your integration plugs in.
+      </Card>
+      <Card title="Integration Checklist" icon="rocket" href="/build-on-omnichain/integration-checklist">
+        Follow the step-by-step path from tech stack selection through development to go-live.
+      </Card>
+      <Card title="Live Builders" icon="link-simple" href="/introduction/trade-on-orderly/builders">
+        Browse the builders already live on Orderly and the platforms they've shipped.
+      </Card>
+    </CardGroup>
+  </div>
+
+  <div style={{ marginBottom: '3rem' }}>
+    <div
+      style={{
+        marginBottom: '1.25rem',
+      }}
+    >
+      <div
+        style={{
+          fontSize: '1.45rem',
+          fontWeight: '700',
+          marginBottom: '0.4rem',
+        }}
+      >
+        Implement core flows
+      </div>
+      <p
+        style={{
+          margin: '0',
+          color: 'var(--home-text-muted)',
+          lineHeight: '1.6',
+        }}
+      >
+        Jump directly into the integration work most teams need first: auth, accounts,
+        funding, real-time data, and SDK selection.
+      </p>
+    </div>
+
+    <CardGroup cols={2}>
+      <Card title="API Authentication" icon="key" href="/build-on-omnichain/api-authentication">
+        Generate signatures correctly, manage Orderly keys, and send authenticated requests.
+      </Card>
+      <Card title="Accounts" icon="user" href="/build-on-omnichain/user-flows/accounts">
+        Register user accounts, map wallets to builders, and understand account lifecycle steps.
+      </Card>
+      <Card title="Deposit and Withdrawal" icon="arrows-rotate" href="/build-on-omnichain/user-flows/withdrawal-deposit">
+        Implement deposits and withdrawals across supported chains with the right contract calls and API requests.
+      </Card>
+      <Card title="Websocket API" icon="signal-stream" href="/build-on-omnichain/websocket-api/introduction">
+        Stream real-time market data, order updates, and account events over persistent connections.
+      </Card>
+      <Card title="SDK Overview" icon="wrench" href="/sdks/overview">
+        Choose between React components, hooks, core utilities, or lower-level programmatic access.
+      </Card>
+    </CardGroup>
+  </div>
+
+  <div style={{ marginBottom: '3rem' }}>
+    <div
+      style={{
+        marginBottom: '1.25rem',
+      }}
+    >
+      <div
+        style={{
+          fontSize: '1.45rem',
+          fontWeight: '700',
+          marginBottom: '0.4rem',
+        }}
+      >
+        Expand your market offering
+      </div>
+      <p
+        style={{
+          margin: '0',
+          color: 'var(--home-text-muted)',
+          lineHeight: '1.6',
+        }}
+      >
+        Add builder-controlled market expansion once your core trading integration is already in place.
+      </p>
+    </div>
+
+    <CardGroup cols={2}>
+      <Card title="Permissionless Listing" icon="chart-network" href="/introduction/trade-on-orderly/permissionless-listing">
+        Learn how builders can bring additional markets live and what market-specific constraints users need to understand.
+      </Card>
+    </CardGroup>
+  </div>
+
+  <div style={{ marginBottom: '3rem' }}>
+    <div
+      style={{
+        marginBottom: '1.25rem',
+      }}
+    >
+<div
+      style={{
+        fontSize: '1.45rem',
+        fontWeight: '700',
+        marginBottom: '0.4rem',
+      }}
+    >
+      Explore vault products
     </div>
     <p
       style={{
-        color: 'white',
-        fontWeight: '400',
-        fontSize: '20px',
-        opacity: '0.7',
+        margin: '0',
+        color: 'var(--home-text-muted)',
+        lineHeight: '1.6',
       }}
     >
-      What can we help you build?
+      Understand how strategy-based yield products work in the Orderly ecosystem.
     </p>
-    <button
-      type="button"
-      className="mx-auto w-full flex items-center text-sm leading-6 shadow-sm text-gray-400 bg-white ring-1 ring-gray-400/20 focus:outline-primary"
-      id="home-search-entry"
-      style={{
-        maxWidth: '24rem',
-        borderRadius: '4px',
-        marginTop: '3rem',
-        paddingLeft: '0.75rem',
-        paddingRight: '0.75rem',
-        paddingTop: '0.75rem',
-        paddingBottom: '0.75rem',
-      }}
-      onClick={openSearch}
-    >
-      <svg
-        className="h-4 w-4 ml-1.5 mr-3 flex-none bg-gray-500 hover:bg-gray-600 dark:bg-white/50 dark:hover:bg-white/70"
-        style={{
-          maskImage:
-            'url("images/home_banner.jpg")',
-          maskRepeat: 'no-repeat',
-          maskPosition: 'center center',
-        }}
-      />
-      Start a chat with us...
-    </button>
+    </div>
+
+    <CardGroup cols={2}>
+      <Card title="Strategy Vault" icon="vault" href="/introduction/orderly-omniVault/overview">
+        Learn how OmniVault works and where strategy-based yield products fit into the broader Orderly ecosystem.
+      </Card>
+    </CardGroup>
   </div>
-</div>
-<div style={{marginTop: '6rem', marginBottom: '8rem', maxWidth: '70rem', marginLeft: 'auto',
-    marginRight: 'auto', paddingLeft: '1.25rem',
-    paddingRight: '1.25rem' }}>
-<div
-  style={{
-    textAlign: 'center',
-    fontSize: '24px',
-    fontWeight: '600',
-    color: '#121142',
-    marginBottom: '3rem',
-  }}
->
-  <span className="text-primary">Choose a topic below</span>
-</div>
 
-<CardGroup cols={3}>
-  <Card title="Guides" icon="book-open" href="/introduction">
-    About Orderly.
-  </Card>
-  <Card title="Reference" icon="code-simple" href="/build-on-omnichain/building-on-omnichain">
-    Comprehensive details about the Orderly API.
-  </Card>
-  <Card
-    title="Examples"
-    icon="grid-round"
-    iconType="solid"
-    href="https://github.com/OrderlyNetwork/example-dex"
+  <div style={{ marginBottom: '2.5rem' }}>
+    <div
+      style={{
+        marginBottom: '1.25rem',
+      }}
+    >
+      <div
+        style={{
+          fontSize: '1.45rem',
+          fontWeight: '700',
+          marginBottom: '0.4rem',
+        }}
+      >
+        Operate and troubleshoot
+      </div>
+      <p
+        style={{
+          margin: '0',
+          color: 'var(--home-text-muted)',
+          lineHeight: '1.6',
+        }}
+      >
+        Use these pages when something is broken, behavior looks off, or you need production
+        support context fast.
+      </p>
+    </div>
+
+    <CardGroup cols={2}>
+      <Card title="Troubleshooting" icon="magnifying-glass" href="/troubleshooting/introduction">
+        Start with the common diagnostic path for account, transaction, and trading issues.
+      </Card>
+      <Card title="Error Codes" icon="triangle-exclamation" href="/build-on-omnichain/error-codes">
+        Look up API and platform error codes to quickly identify what went wrong.
+      </Card>
+      <Card title="Partner Support" icon="handshake" href="/build-on-omnichain/partner-support">
+        Access developer support, marketing resources, grants, and partnership programs for your integration.
+      </Card>
+      <Card title="Example DEX" icon="github" iconType="brands" href="https://github.com/OrderlyNetwork/example-dex">
+        Inspect a concrete integration example when you need implementation patterns, not just docs.
+      </Card>
+    </CardGroup>
+  </div>
+
+  <div
+    style={{
+      borderTop: '1px solid var(--home-border)',
+      paddingTop: '1rem',
+      color: 'var(--home-text-muted)',
+      fontSize: '0.95rem',
+      lineHeight: '1.8',
+    }}
   >
-    Hands-on example of Orderly SDK.
-  </Card>
-  <Card title="Integrations" icon="link-simple" href="/introduction/trade-on-orderly/builders">
-    A growing number of front-ends built on Orderly.
-  </Card>
-  <Card title="Tools" icon="wrench" href="/sdks">
-    Tooling and SDKs to for integrating Orderly.
-  </Card>
-  <Card title="Releases" icon="party-horn" href="/changelog">
-    News about features and changes in Orderly.
-  </Card>
-</CardGroup>
-
+    Quick links: [Release Notes](/release-notes/omnichain) ·{' '}
+    [Contract Overview](/build-on-omnichain/overview) ·{' '}
+    [Addresses](/build-on-omnichain/addresses) ·{' '}
+    [Websocket API](/build-on-omnichain/websocket-api/introduction) ·{' '}
+    [SDK Release Notes](/sdks/release-notes) ·{' '}
+    [Supported Chains](/introduction/trade-on-orderly/supported-chains)
+  </div>
 </div>

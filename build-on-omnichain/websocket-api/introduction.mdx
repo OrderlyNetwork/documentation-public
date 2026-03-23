@@ -1,0 +1,27 @@
+---
+title: "Websocket API"
+description: "WebSocket API base endpoints, available public and private topics, and subscription/unsubscription format."
+sidebarTitle: "Introduction"
+---
+
+## Market Data Base Endpoints:
+
+Mainnet: `wss://ws-evm.orderly.org/ws/stream/{account_id}`
+
+Testnet: `wss://testnet-ws-evm.orderly.org/ws/stream/{account_id}`
+
+`{account_id}` is your account id.
+
+Users can subscribe/unsubscribe to topics such as: `orderbook`, `trade`, `ticker`, `kline_1m`. See individual topic pages for the full list of available topics.
+
+## Private User Data Stream Base Endpoints:
+
+Mainnet: `wss://ws-private-evm.orderly.org/v2/ws/private/stream/{account_id}`
+
+Testnet: `wss://testnet-ws-private-evm.orderly.org/v2/ws/private/stream/{account_id}`
+
+`{account_id}` is your account id
+
+Users need to be authenticated before subscribing to any topic. They would be disconnected if authentication fails. For more information, refer to the [Authentication](/build-on-omnichain/websocket-api/authentication) section.
+
+Users can subscribe/unsubscribe to topics such as: `account`, `balance`, `position`, `executionreport`. See individual topic pages for the full list of available topics.

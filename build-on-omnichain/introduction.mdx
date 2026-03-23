@@ -1,0 +1,48 @@
+---
+title: "Introduction"
+description: "Orderly API overview covering REST and WebSocket endpoints, authentication, and request conventions."
+---
+
+Orderly provides two interfaces for client communication:
+
+- [**RESTful API**](#restful-api): For actions such as creating/canceling orders, fetching balances, and managing accounts.
+- [**WebSocket API**](#websocket-api): For real-time orderbook data feeds and order update feeds.
+
+## Base Endpoints
+
+| Environment | URL |
+| --- | --- |
+| **Mainnet** | `https://api.orderly.org/` |
+| **Testnet** | `https://testnet-api.orderly.org` |
+
+## REST Request Conventions
+
+- `GET` and `DELETE`: parameters must be sent as a **query string**.
+- `POST` and `PUT`: parameters must be sent in the **request body** with content type `application/json`.
+- Parameters may be sent in any order.
+
+## Authorization
+
+All private endpoints require signing via cryptographically secure keys (Orderly key). Set the corresponding headers in your request — see [API Authentication](/build-on-omnichain/api-authentication) for details.
+
+## Symbol Format
+
+Orderly uses the format `PERP_<SYMBOL>_USDC` for symbol names, e.g. `PERP_ETH_USDC`.
+
+## Rate Limit
+
+Rate limits are counted per Orderly key. If your application exceeds the rate limit for an endpoint, the server will return HTTP `429`. Wait until the next time window before retrying.
+
+## Error Message
+
+Errors consist of three parts: an error code, a detail message, and a success flag.
+
+```json
+{
+  "success": false,
+  "code": -1005,
+  "message": "order_price must be a positive number"
+}
+```
+
+All APIs return this format on failure. The `message` field contains the specific error detail. See [Error Codes](/build-on-omnichain/error-codes) for the full list.

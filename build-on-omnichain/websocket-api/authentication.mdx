@@ -1,0 +1,48 @@
+---
+title: "Authentication"
+description: "How to authenticate WebSocket private stream connections using orderly-key and orderly-secret."
+---
+
+Refer to [API authentication](/build-on-omnichain/api-authentication) for more details about how to sign the request with `orderly-key` and `orderly-secret`. The **request method, request path,** and **request body** are all blank. The message to sign is therefore just the **timestamp**.
+
+You can authenticate when creating the WebSocket connection by appending the authentication parameters to the subscription URL as query parameters. This eliminates the need to send a separate auth request. 
+
+
+For example, `wss://ws-private-evm.orderly.org/v2/ws/private/stream/0xd7379678a303b57d7d43eb23c64dd7528ac8cb4efe983a3aedcfe9b4aa4cb984?orderly_key=xxxxxxxx&timestamp=xxxxx&sign=xxxxx` will authenticate the user when creating the connection, no need to send auth request again.
+
+| Name        | Type      | Required | Description |
+|-------------|-----------|----------|-------------|
+| orderly_key | string    | Y        | Orderly Key |
+| sign        | string    | Y        | signature   |
+| timestamp   | timestamp | Y        | timestamp   |
+
+<RequestExample>
+
+```bash
+{
+    "id":"123r",
+    "event":"auth",
+    "params":{
+        "orderly_key":"ed25519:CUS69ZJOXwSV38xo...",
+        "sign":"4180da84117fc9753b...",
+        "timestamp":1621910107900
+    }
+}
+```
+
+</RequestExample>
+
+
+
+<ResponseExample>
+
+```json
+{
+    "id":"123r",
+    "event":"auth",
+    "success":true,
+    "ts":1621910107315
+}
+```
+
+</ResponseExample>

@@ -1,5 +1,6 @@
 ---
 title: "Multi-Collateral"
+description: "Supported collateral types, per-chain deposit caps, discount rates, and cross-chain collateral rules."
 ---
 
 ## Collaterals
@@ -19,6 +20,7 @@ These values represent the maximum amount of each collateral type (USDT or ETH) 
 | YUSD       | Ethereum | 500,000                 |
 | YUSD       | BSC      | 500,000                 |
 | SOL        | SOL      | 40,000                  |
+| USDT       | SOL      | 1,500,000               |
 | BNB        | BSC      | 10,000                  |
 | WBTC       | Ethereum | 80                      |
 | USD1       | Ethereum | 1,000,000               |
@@ -38,7 +40,7 @@ These values represent the maximum amount of each collateral type (USDT or ETH) 
 
 ## What is Loan-to-value (LTV)?
 
-Loan-to-Value (LTV) is a key risk metric that measures the ratio of your negative USDC value which includes your negative balance (`USDC_balance`) and unrealized PnL (`upnl`), to your collateral’s value. On Orderly, LTV replaces traditional credit scores to determine your borrowing power in our asset-backed lending system. A lower LTV signifies a safer loan.
+Loan-to-Value (LTV) is a key risk metric that measures the ratio of your negative USDC value, which includes your negative balance (`USDC_balance`) and unrealized PnL (`upnl`), to your collateral's value. On Orderly, LTV replaces traditional credit scores to determine your borrowing power in our asset-backed lending system. A lower LTV signifies a safer loan.
 
 By maintaining a healthy LTV, you can maximize the loan you can access while enhancing the safety of your position against market volatility. This empowers you to borrow with confidence. Your collateral is held securely by Orderly until the loan is repaid, providing a clear and powerful way for you to leverage your holdings.
 
@@ -53,11 +55,11 @@ LTV = ( abs(min(USDC Balance, 0)) + abs(min(upnl, 0)) ) / [ sum( max(Collateral 
 | Term                | Definition                                                |
 | ------------------- | --------------------------------------------------------- |
 | USDC Balance        | The total absolute USDC balance that has been borrowed    |
-| min(upnl, 0)        | The isolated unrealized losses included                   |
-| Collateral Quantity | The quantity of a specific asset you hold as collateral   |
-| Index Price         | The current market price of the collateral                |
-| Weight              | The collateral weight (refer to Collateral Ratio section) |
-| max(upnl, 0)        | The isolated unrealized profits included                  |
+| min(upnl, 0)        | Unrealized losses from cross-margin positions              |
+| Collateral Quantity | The quantity of a specific asset you hold as collateral    |
+| Index Price         | The current market price of the collateral                 |
+| Weight              | The collateral weight (refer to Collateral Ratio section)  |
+| max(upnl, 0)        | Unrealized profits from cross-margin positions             |
 
 The acceptable range of LTV ratio remains below 95%. Auto conversion of collateral will be triggered if the LTV ratio reaches 95% and above.
 
@@ -180,7 +182,7 @@ Each collateral’s minimum and maximum swap amount can be found in the table be
 | USDT       | 500,000         | 1,000,000 | 500,000 | 500,000 |
 | ETH        | 100             | 500       | --      | --      |
 | YUSD       | --              | 50,000    | --      | 50,000  |
-| SOL        | 500             | --        | --      | --      |
+| SOL        | --              | --        | 500     | --      |
 | BNB        | --              | --        | --      | 500     |
-| WBTC       | 5               | --        | --      | --      |
+| WBTC       | --              | 5         | --      | --      |
 | USD1       | --              | 10,000    | --      | 10,000  |

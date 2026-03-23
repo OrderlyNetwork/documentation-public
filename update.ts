@@ -7,7 +7,66 @@ import { rimraf } from "rimraf";
 import chalk from "chalk";
 
 const techdocPath = "./sdks/tech-doc";
-const groupName = "Technical Documentation";
+
+function toPosixPath(value: string) {
+  return value.split(path.sep).join(path.posix.sep);
+}
+
+function buildTechDocLinkLookup(files: string[]) {
+  const lookup = new Map<string, string>();
+
+  for (const file of files) {
+    if (!file.endsWith(".md")) continue;
+
+    const slug = toPosixPath(file.substring(0, file.length - 3));
+    lookup.set(path.posix.basename(slug), path.posix.join("/sdks/tech-doc", slug));
+  }
+
+  return lookup;
+}
+
+function resolveTechDocLink(href: string, currentFile: string, lookup: Map<string, string>) {
+  if (
+    href.startsWith("http") ||
+    href.startsWith("/") ||
+    href.startsWith("#") ||
+    href.startsWith("mailto:")
+  ) {
+    return href;
+  }
+
+  const hashIndex = href.indexOf("#");
+  const rawTarget = hashIndex === -1 ? href : href.slice(0, hashIndex);
+  const fragment = hashIndex === -1 ? "" : href.slice(hashIndex);
+  const normalizedTarget = toPosixPath(rawTarget);
+  const currentDir = path.posix.dirname(toPosixPath(currentFile));
+
+  if (normalizedTarget.startsWith(".")) {
+    return path.posix.join("/sdks/tech-doc", path.posix.normalize(path.posix.join(currentDir, normalizedTarget))) + fragment;
+  }
+
+  const lookedUpTarget = lookup.get(normalizedTarget);
+  if (lookedUpTarget) {
+    return `${lookedUpTarget}${fragment}`;
+  }
+
+  if (normalizedTarget.includes("/")) {
+    return path.posix.join("/sdks/tech-doc", path.posix.normalize(path.posix.join(currentDir, normalizedTarget))) + fragment;
+  }
+
+  return href;
+}
+
+function rewriteTechDocLinks(content: string, currentFile: string, lookup: Map<string, string>) {
+  return content.replace(/\]\(([^)]+)\)/g, (match, href: string) => {
+    const resolvedHref = resolveTechDocLink(href, currentFile, lookup);
+    if (resolvedHref === href) {
+      return match;
+    }
+
+    return match.replace(href, resolvedHref);
+  });
+}
 
 async function main() {
   await updateOpenApi();
@@ -15,14 +74,12 @@ async function main() {
 }
 
 async function updateOpenApi() {
-  try {
-    await rimraf("./build-on-omnichain/evm-api/restful-api");
-  } catch (err) {}
+  await rimraf("./build-on-omnichain/restful-api");
   await runCommand(
-    "npx @mintlify/scraping@3.0.185 openapi-file ./evm.openapi.yaml -o ./build-on-omnichain/evm-api/restful-api"
+    "npx @mintlify/scraping@3.0.185 openapi-file ./orderly.openapi.yaml -o ./build-on-omnichain/restful-api"
   );
 
-  let basePath = "./build-on-omnichain/evm-api/restful-api";
+  let basePath = "./build-on-omnichain/restful-api";
   let files = await fs.readdir(basePath, { recursive: true });
   await Promise.all(
     files.map(async (fileName) => {
@@ -30,36 +87,11 @@ async function updateOpenApi() {
       const stat = await fs.stat(filePath);
       if (stat.isDirectory()) return;
       let file = await fs.readFile(filePath, { encoding: "utf-8" });
-      file = file.replace(/openapi: /, "openapi: evm.openapi ");
+      file = file.replace(/openapi: /, "openapi: orderly.openapi ");
       return fs.writeFile(filePath, file);
     })
   );
 
-  await rimraf("./build-on-near/near-api/restful-api");
-  await runCommand(
-    "npx @mintlify/scraping@3.0.185 openapi-file ./near.openapi.yaml -o ./build-on-near/near-api/restful-api"
-  );
-  await fs.rename(
-    "./build-on-near/near-api/restful-api/restful_public",
-    "./build-on-near/near-api/restful-api/public"
-  );
-  await fs.rename(
-    "./build-on-near/near-api/restful-api/restful_private",
-    "./build-on-near/near-api/restful-api/private"
-  );
-
-  basePath = "./build-on-near/near-api/restful-api";
-  files = await fs.readdir(basePath, { recursive: true });
-  await Promise.all(
-    files.map(async (fileName) => {
-      const filePath = path.join(basePath, fileName);
-      const stat = await fs.stat(filePath);
-      if (stat.isDirectory()) return;
-      let file = await fs.readFile(filePath, { encoding: "utf-8" });
-      file = file.replace(/openapi: /, "openapi: near.openapi ");
-      return fs.writeFile(filePath, file);
-    })
-  );
 }
 
 async function generateTechDocs() {
@@ -69,28 +101,16 @@ async function generateTechDocs() {
     `git clone --depth 1 --branch docs https://github.com/OrderlyNetwork/js-sdk.git ${tmpFolder}`
   );
   process.chdir(tmpFolder);
-  await runCommand(`pnpm install --no-frozen-lockfile`);
-  await runCommand("pnpm run build");
-  await runCommand("pnpm run docs");
+  await runCommand("npx pnpm install --no-frozen-lockfile");
+  await runCommand("npx pnpm run build");
+  await runCommand("npx pnpm run docs");
   process.chdir(currentCwd);
   const sdkPath = path.join(tmpFolder, "docs");
 
-  try {
-    await fs.rm(techdocPath, { recursive: true, force: true });
-  } catch {}
+  await fs.rm(techdocPath, { recursive: true, force: true });
   await fs.mkdir(techdocPath, { recursive: true });
-  try {
-    await fs.unlink("./mint.json");
-  } catch {}
-
-  const mint = JSON.parse(await fs.readFile("./mint-base.json", { encoding: "utf-8" }));
-  const techDoc: { group: string; pages: (string | { group: string; pages: string[] })[] } = {
-    group: groupName,
-    pages: []
-  };
-  mint.navigation.push(techDoc);
-
   const files = await fs.readdir(sdkPath, { recursive: true });
+  const techDocLinkLookup = buildTechDocLinkLookup(files);
   for (const file of files) {
     if (!file.endsWith(".md")) continue;
 
@@ -100,54 +120,13 @@ async function generateTechDocs() {
     // remove .md from links
     fileContent = fileContent.replace(/\.md/g, "");
 
-    // make all links relative so that they are not opened in new tab
-    const regex = /\][(]([^/].*?)[)]/;
-    let match = fileContent.match(regex);
-    while (
-      match != null &&
-      match[1] != null &&
-      !match[1].startsWith("http") &&
-      match.index != null
-    ) {
-      const fixedLink = path.join("/sdks/tech-doc", path.dirname(file), match[1]);
-      fileContent =
-        fileContent.slice(0, match.index + 2) +
-        fixedLink +
-        fileContent.slice(match.index + match[1].length + 2);
-
-      match = fileContent.match(regex);
-    }
+    fileContent = rewriteTechDocLinks(fileContent, file, techDocLinkLookup);
 
     const techdocFilePath = path.join(techdocPath, `${file}x`);
     const techdocDirPath = path.dirname(techdocFilePath);
     await fs.mkdir(techdocDirPath, { recursive: true });
     await fs.writeFile(techdocFilePath, fileContent);
-
-    const relativePath = path.relative(techdocPath, techdocDirPath);
-    if (!relativePath) {
-      techDoc.pages.push(path.join(techdocPath, file.substring(0, file.length - 3)));
-    } else {
-      const subGroupName = `${relativePath.charAt(0).toUpperCase()}${relativePath.substring(1)}`;
-      let subCategory = techDoc.pages.find((nav) => {
-        if (typeof nav === "object") {
-          return nav.group === subGroupName;
-        } else {
-          false;
-        }
-      }) as
-        | {
-            group: string;
-            pages: string[];
-          }
-        | undefined;
-      if (!subCategory) {
-        subCategory = { group: subGroupName, pages: [] };
-        techDoc.pages.push(subCategory);
-      }
-      subCategory.pages.push(path.join(techdocPath, file.substring(0, file.length - 3)));
-    }
   }
-  await fs.writeFile("./mint.json", JSON.stringify(mint, undefined, 2));
 
   await rimraf(tmpFolder);
 }

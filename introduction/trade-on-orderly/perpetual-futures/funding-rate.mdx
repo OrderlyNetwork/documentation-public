@@ -1,75 +1,89 @@
 ---
 title: "Funding Rate"
+description: "How funding rates are calculated and settled between long and short traders on Orderly perpetual futures."
 ---
 
-Funding Fees are cash flows that are periodically exchanged between traders holding long positions and traders holding short positions. Those cash flows are based on a Funding Rate. This aims to ensure the Futures price closely follows the underlying asset price (ie the Index Price). Usually, in Orderly, Funding payments with a settlement frequency of every eight hours start at 00:00 (UTC), 08:00 (UTC), and 16:00 (UTC). Funding payments with a settlement frequency of every four hours start at 00:00 (UTC), 04:00 (UTC), 08:00 (UTC), 12:00 (UTC), 16:00 (UTC), and 20:00 (UTC). In the event of extreme market volatility, Orderly reserves the right to update the Funding Rate Floor and Cap, as well as the funding interval of a perpetual contract that differs from the default 8-hour funding interval. In some cases, such as new listing or extreme volatility on a specific symbol, Orderly reserves the right to update the funding rate interval to a shorter time frame 4h, 2h or 1h.
+Funding Fees are cash flows periodically exchanged between long and short position holders. These fees are based on a **Funding Rate** designed to keep the futures price aligned with the underlying Index Price.
 
-The Funding rate is determined by two components: the Premium and the Interest Rate.
+## Settlement schedule
 
-## Premium calculation
+Funding payments settle at fixed intervals depending on the market's funding period:
 
-The Funding Rate is determined mainly by the Premium, which measures the deviation between the Futures price and the Index Price (ie the Basis). In order to avoid manipulation, Orderly uses Impact Bid and Ask prices, rather than the highest bid and lowest ask only.
+| Period   | Settlement times (UTC)                          |
+| -------- | ----------------------------------------------- |
+| 1 hour   | Every hour on the hour                          |
+| 4 hours  | 00:00, 04:00, 08:00, 12:00, 16:00, 20:00       |
+| 8 hours  | 00:00, 08:00, 16:00                             |
 
-- The Impact Bid Price represents the average fill price to execute a sell order with the size of the Impact Margin Notional.
+<Note>
+In the event of extreme market volatility or for new listings, Orderly reserves the right to adjust the funding interval (e.g. from 8h to 4h, 2h, or 1h), as well as update the Funding Rate Cap and Floor.
+</Note>
 
-- The Impact Ask Price represents the average fill price to execute a buy order with the size of the Impact Margin Notional.
+## Rate components
 
-- The Impact Margin Notional is the notional available to trade with 1,000 USDC of collateral at the maximum leverage of the specific market. For example, for NEAR-USDC, the maximum leverage is 10x, so Impact Margin Notional is 10,000 USDC.
+The Funding Rate is determined by two components: the **Premium** and the **Interest Rate**.
 
-Every 15 seconds, Orderly computes the Premium index according to the following formula:
+### Premium calculation
+
+The Premium measures the deviation between the futures price and the Index Price (i.e. the basis). To avoid manipulation, Orderly uses **Impact Bid and Ask prices** rather than the simple best bid/ask:
+
+- **Impact Bid Price** — the average fill price to execute a sell order with the size of the Impact Margin Notional.
+- **Impact Ask Price** — the average fill price to execute a buy order with the size of the Impact Margin Notional.
+- **Impact Margin Notional** — the notional available to trade with 1,000 USDC of collateral at the maximum leverage of the specific market. For example, for NEAR-USDC with 10x max leverage, the Impact Margin Notional is 10,000 USDC.
+
+Every 15 seconds, Orderly computes the Premium:
 
 ```
 Premium = [Max(0, Impact Bid Price - I) - Max(0, I - Impact Ask Price)] / I
 
-I = Index Price
+where I = Index Price
 ```
 
-## Piecewise linear funding rate function
+### Piecewise linear funding function
 
-For each funding period, Orderly calculates the Premium every 15 seconds. The number of Premium points depends on the funding period: N = 240 points for 1-hour periods, N = 960 points for 4-hour periods, and N = 1,920 points for 8-hour periods. An Average Premium is then computed:
+For each funding period, Orderly calculates the Premium every 15 seconds. The number of sample points depends on the funding period:
+
+| Funding period | Sample points (N) |
+| -------------- | ----------------- |
+| 1 hour         | 240               |
+| 4 hours        | 960               |
+| 8 hours        | 1,920             |
+
+An Average Premium is then computed:
 
 ```
 Average Premium = (Premium_1 + Premium_2 + ... + Premium_N) / N
 ```
 
-Once the Average Premium for the funding period has been computed, a funding piecewise linear function with three regions is applied to the Average Premium
+A piecewise linear function with **increasing slopes** is applied to the Average Premium (`x`), allowing faster convergence when prices deviate significantly:
 
-The **Funding Function** is defined as follows to allow for faster convergence in case the prices deviate significantly:
+| Region | Condition            | Slope | Formula                                    |
+| ------ | -------------------- | ----- | ------------------------------------------ |
+| Low    | \|x\| < 0.5%        | 1x    | `f(x) = x`                                |
+| Medium | 0.5% ≤ \|x\| < 1.5% | 2x    | `f(x) = 0.5% * sign(x) + (x - 0.5% * sign(x)) * 2` |
+| Large  | \|x\| ≥ 1.5%        | 4x    | `f(x) = 2.5% * sign(x) + (x - 1.5% * sign(x)) * 4` |
 
-```
-Funding Function(x) =
-  x , if |x| < 0.5%
-  0.5%  * sign(x) + (x - 0.5% * sign(x)) * 2, if 0.5% < |x| < 1.5%
-  [0.5% + (1.5% - 0.5%) * 2] * sign(x) + (x - 1.5% * sign(x)) * 4, if |x| > 1.5%
+In the **Low** range, the function equals the premium itself. In the **Medium** range, each additional basis point of deviation counts double. In the **Large** range, it counts 4x -- pushing the funding rate to correct faster.
 
-NB: x refers here to the Average Premium
-```
+### Interest Rate
 
-| Premium | Range               | Slope |
-| ------- | ------------------- | ----- |
-| Low     | \|x\| < 0.5%        | 1     |
-| Medium  | 0.5% < \|x\| < 1.5% | 1     |
-| Large   | 1.5% < \|x\|        | 1     |
-
-## Interest Rate
-
-To this funding function, we add the second component of the funding rate which is the Interest Rate. By definition, it is equal to:
+The second component is the Interest Rate:
 
 ```
-Interest Rate = (USDC Interest - Underlying Base Asset interest) / Funding Interval
+Interest Rate = (USDC Interest - Underlying Asset Interest) / Funding Interval
 ```
 
-The Interest Rate is fixed to be 0.01% for all Perpetual Markets (assuming USDC interest of 0.06%, Asset interest rate equal to 0.03%). Orderly reserves the right to adjust the Interest Rate depending on market conditions.
+The Interest Rate is fixed at **0.01%** for most perpetual markets (assuming USDC interest of 0.06% and asset interest of 0.03%). Orderly reserves the right to adjust this depending on market conditions.
 
 ## Final Funding Rate
 
-The final Funding Rate is then a combination of the Average Premium and the Interest Rate.
+The final Funding Rate combines the Premium function and Interest Rate, subject to per-market caps and floors:
 
 ```
-Funding Rate = clamp[Funding Function(Average Premium) + clamp(Interest Rate - Average Premium , cap_ir, floor_ir) / (8/N), Cap Funding, Floor Funding]
+Funding Rate = clamp[Funding Function(Average Premium) + clamp(Interest Rate - Average Premium, cap_ir, floor_ir) / (8/N), Cap Funding, Floor Funding]
 ```
 
-The funding rate is also capped and floored respectively by a `Cap Funding` and a `Floor Funding`. The specific values depend on each perpetual market. In the event of extreme market conditions, Orderly may change these parameters, which will enable the funding rate model's higher slope to kick in.
+The `Cap Funding` and `Floor Funding` values are specific to each perpetual market. In extreme market conditions, Orderly may adjust these parameters to allow the higher-slope regions of the funding function to take effect.
 
 | Perp Market     | Interval | Cap Funding | Floor Funding | Interest Rate | Cap IR | Floor IR |
 | --------------- | -------- | ----------- | ------------- | ------------- | ------ | -------- |
@@ -85,14 +99,16 @@ The funding rate is also capped and floored respectively by a `Cap Funding` and 
 | ARB             | 8 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.01%  | \-0.01%  |
 | ASTER           | 4 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
 | AVAX            | 8 hours  | 0.3750%     | \-0.3750%     | 0.01000%      | 0.01%  | \-0.01%  |
+| AXS             | 4 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.01%  | \-0.01%  |
 | BCH             | 8 hours  | 0.3750%     | \-0.3750%     | 0.01000%      | 0.01%  | \-0.01%  |
 | BERA            | 4 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
 | BIO             | 4 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
+| BIRB            | 1 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.01%  | \-0.01%  |
 | BNB             | 8 hours  | 0.3750%     | \-0.3750%     | 0.01000%      | 0.01%  | \-0.01%  |
 | BTC             | 8 hours  | 0.3000%     | \-0.3000%     | 0.01000%      | 0.04%  | \-0.04%  |
 | CAKE            | 4 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
-| CRV             | 8 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.01%  | \-0.01%  |
 | CRO             | 8 hours  | 4.00%       | \-4.00%       | 0.01000%      | 0.02%  | \-0.02%  |
+| CRV             | 8 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.01%  | \-0.01%  |
 | DASH            | 8 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.01%  | \-0.01%  |
 | DOGE            | 8 hours  | 0.4875%     | \-0.4875%     | 0.01000%      | 0.01%  | \-0.01%  |
 | DOT             | 8 hours  | 0.4875%     | \-0.4875%     | 0.01000%      | 0.02%  | \-0.02%  |
@@ -104,6 +120,7 @@ The funding rate is also capped and floored respectively by a `Cap Funding` and 
 | FET             | 8 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.01%  | \-0.01%  |
 | FIL             | 8 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.01%  | \-0.01%  |
 | GOAT            | 4 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
+| GOOGL           | 8 hours  | 0.3000%     | \-0.3000%     | 0.01000%      | 0.07%  | \-0.07%  |
 | H               | 4 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
 | HBAR            | 8 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.01%  | \-0.01%  |
 | HYPE            | 4 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
@@ -123,6 +140,7 @@ The funding rate is also capped and floored respectively by a `Cap Funding` and 
 | MYX             | 4 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
 | NAS100          | 8 hours  | 0.3000%     | \-0.3000%     | 0.01000%      | 0.07%  | \-0.07%  |
 | NEAR            | 8 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.01%  | \-0.01%  |
+| NVDA            | 8 hours  | 0.3000%     | \-0.3000%     | 0.01000%      | 0.07%  | \-0.07%  |
 | OKB             | 4 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
 | ONDO            | 4 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
 | OP              | 8 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.01%  | \-0.01%  |
@@ -135,6 +153,8 @@ The funding rate is also capped and floored respectively by a `Cap Funding` and 
 | RAY             | 4 hours  | 0.7500%     | \-0.7500%     | 0.00500%      | 0.01%  | \-0.01%  |
 | S               | 4 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
 | SEI             | 8 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.01%  | \-0.01%  |
+| SENT            | 1 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.01%  | \-0.01%  |
+| SKR             | 1 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
 | SKY             | 4 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
 | SNX             | 8 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.01%  | \-0.01%  |
 | SOL             | 8 hours  | 0.3750%     | \-0.3750%     | 0.01000%      | 0.01%  | \-0.01%  |
@@ -147,6 +167,7 @@ The funding rate is also capped and floored respectively by a `Cap Funding` and 
 | TON             | 4 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
 | TRUMP           | 4 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
 | TRX             | 8 hours  | 0.4875%     | \-0.4875%     | 0.01000%      | 0.01%  | \-0.01%  |
+| TSLA            | 8 hours  | 0.3000%     | \-0.3000%     | 0.01000%      | 0.07%  | \-0.07%  |
 | UNI             | 8 hours  | 0.4500%     | \-0.4500%     | 0.01000%      | 0.02%  | \-0.02%  |
 | USELESS         | 4 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
 | VIRTUAL         | 4 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
@@ -160,33 +181,27 @@ The funding rate is also capped and floored respectively by a `Cap Funding` and 
 | XMR             | 8 hours  | 0.7500%     | \-0.7500%     | 0.01000%      | 0.01%  | \-0.01%  |
 | XPL             | 4 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
 | XRP             | 8 hours  | 0.3750%     | \-0.3750%     | 0.01000%      | 0.01%  | \-0.01%  |
+| ZAMA            | 4 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.01%  | \-0.01%  |
 | ZEC             | 8 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.01%  | \-0.01%  |
 | ZEN             | 8 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.02%  | \-0.02%  |
 | ZORA            | 4 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
 | ZRO             | 4 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
-| AXS             | 4 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.01%  | \-0.01%  |
-| SKR             | 1 hours  | 2.00%       | \-2.00%       | 0.00500%      | 0.01%  | \-0.01%  |
-| BIRB            | 1 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.01%  | \-0.01%  |
-| SENT            | 1 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.01%  | \-0.01%  |
-| ZAMA            | 4 hours  | 2.00%       | \-2.00%       | 0.01000%      | 0.01%  | \-0.01%  |
-| GOOGL           | 8 hours  | 0.3000%     | \-0.3000%     | 0.01000%      | 0.07%  | \-0.07%  |
-| TSLA            | 8 hours  | 0.3000%     | \-0.3000%     | 0.01000%      | 0.07%  | \-0.07%  |
-| NVDA            | 8 hours  | 0.3000%     | \-0.3000%     | 0.01000%      | 0.07%  | \-0.07%  |
 
+## Funding period
 
-
-## Funding Period
-
-The Funding Period for Orderly perpetual futures contracts can be 1 hour, 4 hours, or 8 hours depending on the specific market. The Funding Rate is expressed on the basis of the funding period for each market. Most markets use an 8-hour funding period, while some markets use 4-hour or 1-hour periods to better respond to market conditions.
+The Funding Period for Orderly perpetual futures can be 1 hour, 4 hours, or 8 hours depending on the market. The Funding Rate is expressed on the basis of the funding period for each market.
 
 ## Accrued Funding
 
-At each funding settlement time, a position on a Perpetual Futures contract will accrue the following funding:
+At each funding settlement time, a position accrues the following funding:
 
 ```
-Accrued Funding(dt) = Position Size * Mark Price * Funding Rate
+Accrued Funding = Position Size × Mark Price × Funding Rate
 ```
+
+- **Positive funding rate**: longs pay shorts
+- **Negative funding rate**: shorts pay longs
 
 ## Funding settlement
 
-The accrued funding of an account's position is settled when a PNL settlement is being called on that account (see [PNL settlement](/introduction/trade-on-orderly/perpetual-futures/margin-leverage-and-pnl#pnl-settlement)).
+The accrued funding of an account's position is settled when a PNL settlement is triggered on that account (see [PNL settlement](/introduction/trade-on-orderly/perpetual-futures/margin-leverage-and-pnl#pnl-settlement)).

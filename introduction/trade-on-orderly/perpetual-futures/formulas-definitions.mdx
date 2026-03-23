@@ -1,32 +1,47 @@
 ---
 title: "Formulas and Definitions"
+description: "Formulas for margin, collateral, free collateral, PnL, and liquidation price calculations on Orderly."
 ---
+
+This page is a reference for all the key formulas used on Orderly. Each section explains what a value means in plain language, then gives the exact formula. If you are building a trading bot or just want to double-check the numbers you see in the UI, this is the page to bookmark.
 
 ## Margin and Balance Formulas
 
 ### Futures Margin Ratio
 
+Your margin ratio tells you how healthy your account is. It compares how much collateral you have against how large your open positions are. A higher ratio means your account is in better shape.
+
 Current margin ratio = `total_collateral_value / sum(abs(position_notional_i))`
 
 ### Total Collateral
+
+This is the total value of everything backing your positions. It includes your USDC balance plus any unrealized profit or loss you have not yet settled. It does not factor in pending orders.
 
 Total collateral of the user (doesn't account for any pending orders, includes unsettled PnL) = `total_balance + upnl + pending_short_USDC`
 
 ### Free Collateral
 
+Free collateral is the portion of your collateral that is still available for opening new trades. Unlike total collateral, it does account for margin already reserved by your pending orders.
+
 Available collateral/balance to trade (accounts for any pending orders, includes unsettled PnL) = `collateral + upnl - total_initial_margin_with_orders - pending_short_USDC`
 
 ### Portfolio Value
 
-Total potfolio value including position notionals = `USDC Balance + (non USDC assets) * mid_price + unsettled pnl`
+This is the total dollar value of everything in your account, including the notional value of your positions.
+
+Total portfolio value including position notionals = `USDC Balance + (non USDC assets) * mid_price + unsettled pnl`
 
 ### Withdrawable Balance
 
+This is how much you can actually withdraw from your account right now. It is more conservative than free collateral because it excludes any unrealized profits (you can only withdraw profits after settling PnL).
+
 Collateral available to withdraw (excludes unsettled PnL) = `total_balance - total_initial_margin_with_orders - positive_upnl`
 
-Ex. 1 user's `total_balance` = 100 USDC, unsettled PnL = -40 USDC, => total_collateral is then 60 USDC. User has a position which takes up 20 USDC maintenance margin, then `free_collateral` or `withdrawable_balance` = 60 - 20 = 40 USDC
+Here are two examples to show the difference between free collateral and withdrawable balance:
 
-Ex. 2 user's `total_balance` = 100 USDC, unsettled PnL = 40 USDC, => total_collateral is then 100 USDC. User has a position which takes up 20 USDC maintenance margin, then `free_collateral` = 100 - 20 = 80 USDC and `withdrawable_balance` = 80 - 40 = 40 USDC
+**Example 1 (unrealized loss):** Your `total_balance` = 100 USDC, unsettled PnL = -40 USDC, so total_collateral is 60 USDC. You have a position using 20 USDC of maintenance margin. In this case, `free_collateral` or `withdrawable_balance` = 60 - 20 = 40 USDC.
+
+**Example 2 (unrealized profit):** Your `total_balance` = 100 USDC, unsettled PnL = +40 USDC, so total_collateral is 140 USDC. But for withdrawal purposes, only 100 USDC counts. With 20 USDC of maintenance margin, `free_collateral` = 140 - 20 = 120 USDC, but `withdrawable_balance` = 100 - 20 = 80 USDC.
 
 <Note>
 Withdrawable balance/collateral does not equal to total or free collateral.
@@ -34,6 +49,8 @@ Withdrawable balance/collateral does not equal to total or free collateral.
 
 
 ### Initial Margin Ratio
+
+The Initial Margin Ratio (IMR) determines how much margin you need to open or maintain a position. It scales up for larger positions, meaning you need proportionally more margin as your position grows. This prevents traders from taking on dangerously large positions with minimal collateral.
 
 ```
 IMR i = Max(1 / Max Account Leverage, Base IMR i, IMR Factor i * Abs(Position Notional i)^(4/5))
@@ -44,6 +61,8 @@ initial_margin_ratio = sum (weighted_initial_margin_ratio_i)
 
 ### Maintenance Margin Ratio
 
+The Maintenance Margin Ratio (MMR) is the minimum margin ratio your account must hold to avoid liquidation. It is always lower than the IMR, giving you a buffer between "you can't open new positions" and "your positions get liquidated."
+
 ```
 MMR i = Max(Base MMR i, (Base MMR i / Base IMR i) * IMR Factor i * Abs(Position Notional i)^(4/5))
 maintenance_margin_i= abs (position_notional_i * MMR_i)
@@ -53,11 +72,15 @@ maintenance_margin_ratio = sum (weighted_maintenance_margin_ratio_i)
 
 ## Positions PnL
 
+These formulas let you calculate how much you are making or losing on your open positions, and at what price your position would get liquidated.
+
+**Unrealized PnL** tells you the current profit or loss on an open position, based on the current mark price compared to your entry price.
+
 **Unrealized PnL** = `position_qty * (mark_price - avg_open)`
 
- 
 
-**Liquidation Price**
+
+**Liquidation Price** is the price at which your account would fall below the maintenance margin and get liquidated. Knowing this number helps you manage risk.
 
 ```
 Qi = position_qty
@@ -65,15 +88,19 @@ Qi = position_qty
 liquidation_price  = max[( Mark Price + ( total_collateral_value - total_notional * MMR ) / ( |Qi| * MMRi - Qi )), 0]
 ```
 
- 
+
+
+**Notional** is the total USDC value of a single position. It is simply the mark price multiplied by the number of contracts you hold.
 
 **Notional** = `position_notional_i = abs(mark_price_i * position_qty_i)`
 
- 
+
+
+**Fut Notional or Total Notional** is the sum of the notional values across all your positions.
 
 **Fut Notional or Total Notional** = `sum (abs (position_notional_i))`
 
- 
+
 <Note>
 Unsettled PnL is retrieved from the API and cannot be calculated
 </Note>
@@ -81,6 +108,8 @@ Unsettled PnL is retrieved from the API and cannot be calculated
 ## Order placement formulas
 
 ### Max Order Quantity
+
+This formula calculates the largest order you can place for a given market, based on your available collateral and the margin requirements. The system also checks whether you already have enough margin or whether iterative calculation is needed for very large orders.
 
 ```
 newOrderSize  = (total_collateral_value - others_IM) * min(1/Base_IMR_i,maxLeverage_account) / markPrice
@@ -92,6 +121,9 @@ MMR i = Max(Base MMR i, (Base MMR i / Base IMR i) * IMR Factor i * Abs(Position 
 aftertrade_IMR.i → Max(1 / Max Account Leverage, Base_IMR_i, IMR Factor i * Abs(After Trade Position Notional i)^(4/5))
 
 ```
+
+The full logic, including edge cases when your collateral is already fully used, works as follows:
+
 ```
 If total_collateral_value < total_initial_margin_with_orders
     if (side == buy && position_qty >=0 ) or (side == sell && position_qty < 0)
@@ -109,14 +141,14 @@ else
         others = -holding - pendingLongQty
     else
         others = holding + pendingShortQty
-    
+
     if totalCollatValue >= newTotalIM
         return max(0, newOrderSize * 99.5% + others)
     else
         newOrderSize_iter = ITERATE()
         return max(0, newOrderSize_iter * 99.5% + others)
-        
-with : 
+
+with :
 total_collateral_value = total_balance + upnl + pending_short_USDC
 total_initial_margin_with_orders =  sum (position_notional_with_orders_i * IMR_i (with_orders))
 position_qty_with_orders_i = max[abs(position_qty + sum_position_qty_buy_orders),abs(pos_qty + sum_position_qty_sell_orders)]
@@ -125,8 +157,11 @@ others_IM = sum[i#j)(initial_margin_with_orders_i) (where j represents the pair 
 ```
 
 ### Liquidation Price
+
+This estimates your liquidation price after a new order would be filled. It is useful for previewing the risk of a trade before you submit it.
+
 ```
-Qi = position_qty + order_qty 
+Qi = position_qty + order_qty
 
 liquidation_price  = max( Mark Price + ( total_collateral_value - total_notional_with_order * MMR_with_order ) / ( |Qi| * MMR_with_order_i - Qi )), 0)
 ```

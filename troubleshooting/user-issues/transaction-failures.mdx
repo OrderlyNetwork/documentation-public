@@ -1,3 +1,27 @@
 ---
 title: "Transaction/order issues"
+description: "How to triage failed transactions and orders by separating on-chain from API-level failures."
 ---
+
+Use this page when a user reports a failed deposit, withdrawal, registration, or order request and the failure reason is still unclear.
+
+<Steps>
+  <Step title="Confirm what failed">
+    Collect the wallet address, builder ID, chain, market symbol, timestamp, and any transaction hash, order ID, or API error message.
+
+    <Note>
+      Distinguish between an on-chain transaction failure and an Orderly API or order placement failure before continuing.
+    </Note>
+  </Step>
+  <Step title="Check the relevant flow and prerequisites">
+    For wallet and account setup issues, verify that the user followed the [Accounts](/build-on-omnichain/user-flows/accounts) and [Wallet Authentication](/build-on-omnichain/user-flows/wallet-authentication) guides.
+
+    For trading requests, confirm that the user submitted the correct payload and review the [API error codes](/build-on-omnichain/error-codes).
+  </Step>
+  <Step title="Check chain-specific transaction status">
+    If the failure is on-chain, confirm the user is interacting with a supported deployment from the [address list](/build-on-omnichain/addresses), then inspect the transaction in the relevant explorer for revert reasons, gas issues, or confirmation delays.
+  </Step>
+  <Step title="Escalate with complete context">
+    If the failure is still unresolved, send the collected details, the failing request payload, and any explorer or API response evidence to Orderly support so the issue can be reproduced quickly.
+  </Step>
+</Steps>

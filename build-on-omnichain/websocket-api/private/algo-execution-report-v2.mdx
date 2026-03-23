@@ -1,0 +1,127 @@
+---
+title: "Algo Execution Report v2"
+description: "Subscribe to v2 algo order execution reports with enhanced fields via private WebSocket stream."
+---
+
+Push interval: real-time push
+
+```json
+{
+  "id": "clientID3",
+  "topic": "algoexecutionreportv2",
+  "event": "subscribe"
+}
+```
+
+**Parameters**
+
+| Name  | Type   | Required | Description               |
+| ----- | ------ | -------- | ------------------------- |
+| id    | string | Y        | id generate by client     |
+| event | string | Y        | `subscribe`/`unsubscribe` |
+| topic | string | Y        | `algoexecutionreportv2`   |
+
+<RequestExample>
+
+```json Response
+{
+  "id": "clientID3",
+  "event": "subscribe",
+  "success": true,
+  "ts": 1609924478533
+}
+```
+
+</RequestExample>
+<ResponseExample>
+```json Subscribed Message
+{
+  "topic": "algoexecutionreportv2",
+  "ts": 1714017148719,
+  "data": {
+    "algoOrderId": 10000,
+    "clientOrderId": "cl_oid",
+    "rootAlgoOrderId": 10000,
+    "parentAlgoOrderId": 0,
+    "symbol": "PERP_NEAR_USDC",
+    "orderTag": "o_tag",
+    "algoType": "TP_SL",
+    "side": "SELL",
+    "quantity": 1.5,
+    "isTriggered": true,
+    "triggerPrice": 7.2,
+    "triggerStatus": "SUCCESS",
+    "type": "MARKET",
+    "status": "FILLED",
+    "rootAlgoStatus": "FILLED",
+    "algoStatus": "FILLED",
+    "triggerPriceType": "MARK_PRICE",
+    "price": 0,
+    "triggerTradePrice": 7.25,
+    "triggerTime": 1714017148700,
+    "totalExecutedQuantity": 1.5,
+    "visibleQuantity": 1.5,
+    "averageExecutedPrice": 7.25,
+    "totalFee": 0.01,
+    "feeAsset": "USDC",
+    "reduceOnly": false,
+    "createdTime": 1714017110010,
+    "timestamp": 1714017110086,
+    "isActivated": true,
+    "callbackRate": null,
+    "callbackValue": null,
+    "extremePrice": null,
+    "activatedPrice": null,
+    "tradeId": 123456789,
+    "executedPrice": 7.25,
+    "executedQuantity": 1.5,
+    "fee": 0.01,
+    "isMaker": false,
+    "marginMode": "CROSS",
+    "childOrders": [
+      {
+        "algoOrderId": 10001,
+        "clientOrderId": "cl_oid_child",
+        "rootAlgoOrderId": 10000,
+        "parentAlgoOrderId": 10000,
+        "symbol": "PERP_NEAR_USDC",
+        "orderTag": "o_tag_child",
+        "algoType": "TAKE_PROFIT",
+        "side": "SELL",
+        "quantity": 1.5,
+        "isTriggered": true,
+        "triggerPrice": 7.2,
+        "triggerStatus": "SUCCESS",
+        "type": "MARKET",
+        "status": "FILLED",
+        "rootAlgoStatus": "FILLED",
+        "algoStatus": "FILLED",
+        "triggerPriceType": "MARK_PRICE",
+        "price": 0,
+        "triggerTradePrice": 7.25,
+        "triggerTime": 1714017148701,
+        "totalExecutedQuantity": 1.5,
+        "visibleQuantity": 1.5,
+        "averageExecutedPrice": 7.25,
+        "totalFee": 0.01,
+        "feeAsset": "USDC",
+        "reduceOnly": false,
+        "createdTime": 1714017110011,
+        "timestamp": 1714017110087,
+        "isActivated": true,
+        "callbackRate": null,
+        "callbackValue": null,
+        "extremePrice": null,
+        "activatedPrice": null,
+        "tradeId": 123456790,
+        "executedPrice": 7.25,
+        "executedQuantity": 1.5,
+        "fee": 0.01,
+        "isMaker": false,
+        "childOrders": []
+      }
+    ]
+  }
+}
+```
+</ResponseExample>

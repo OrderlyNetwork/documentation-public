@@ -1,0 +1,74 @@
+---
+title: "Execution Report"
+description: "Subscribe to order execution reports, optionally filtered by symbol, via private WebSocket stream."
+---
+
+Push interval: real-time push
+
+```json
+{
+  "id": "clientID3",
+  "topic": "executionreport",
+  "event": "subscribe",
+  "params": {
+    "symbol": "PERP_BTC_USDC,PERP_ETH_USDC"
+  }
+}
+```
+
+**Parameters**
+
+| Name          | Type   | Required | Description               |
+| ------------- | ------ | -------- | ------------------------- |
+| id            | string | Y        | id generate by client     |
+| event         | string | Y        | `subscribe`/`unsubscribe` |
+| topic         | string | Y        | `executionreport`         |
+| params        | object | N        | Defaults to all symbols   |
+| params.symbol | string | N        | Symbols, comma separated  |
+
+<RequestExample>
+
+```json Response
+{
+  "id": "clientID3",
+  "event": "subscribe",
+  "success": true,
+  "ts": 1609924478533
+}
+```
+
+</RequestExample>
+<ResponseExample>
+
+``` json Subscribed Message
+{
+   "topic":"executionreport",
+   "ts":1704679472455,
+   "data":{
+      "symbol":"PERP_MATIC_USDC",
+      "clientOrderId":"",
+      "orderId":292820969,
+      "type":"LIMIT",
+      "side":"BUY",
+      "quantity":7029.0,
+      "price":0.7699,
+      "tradeId":0,
+      "executedPrice":0.0,
+      "executedQuantity":0.0,
+      "fee":0.0,
+      "feeAsset":"USDC",
+      "totalExecutedQuantity":0.0,
+      "avgExecutedPrice":0,
+      "status":"NEW",
+      "reason":"",
+      "totalFee":0.0,
+      "visibleQuantity":7029.0,
+      "timestamp":1704679472448,
+      "marginMode":"CROSS",
+      "maker":false,
+      "match_id":"1707119522287540609",
+      "seq":1730181536341943600
+   }
+}
+```
+</ResponseExample>

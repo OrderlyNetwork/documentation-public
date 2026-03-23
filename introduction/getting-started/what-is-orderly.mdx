@@ -1,41 +1,53 @@
 ---
 title: "What is Orderly?"
-description: "A Unified Trading Infrastructure for Decentralized Exchanges"
+description: "What Orderly is, who it is for, and where builders should go next in the docs."
 ---
 
-<img className="block dark:hidden" src="/images/preview_image.jpeg" alt="Orderly Preview Light" />
-<img className="hidden dark:block" src="/images/preview_image.jpeg" alt="Orderly Preview Dark" />
+<img src="/images/getting-started/preview-image.jpeg" alt="Orderly Preview" />
 
-## Introduction
+Orderly is trading infrastructure for teams that want to launch their own trading experience on top of shared liquidity. Instead of building a matching engine, liquidity network, and settlement stack from scratch, builders integrate Orderly's APIs, SDKs, and smart contracts to launch their own product.
 
-Orderly is a combination of an orderbook-based trading infrastructure and a robust liquidity layer offering perpetual futures orderbooks. Unlike traditional platforms, Orderly doesn't have a front end; instead, it operates at the core of the ecosystem, providing essential services to projects built on top of it.
+Orderly is not a consumer-facing exchange. It is a headless trading backend that sits underneath partner applications and powers account, trading, market data, and settlement flows for those applications' users.
 
-Our DEX white-label solution is carefully crafted to save builders time and capital while granting access to our bootstrapped liquidity. Picture having the best features of CEXs while keeping settlements on-chain and maintaining full self-custody.
+The core model is simple: your team owns the frontend, branding, and user relationship, while Orderly provides the trading infrastructure underneath.
 
-With Orderly, anyone can create a trading application thanks to our seamless plug-and-play experience leveraging our liquidity and composability.
+## Who Orderly Is For
 
-Looking ahead, our grand vision is to create an omnichain protocol, connecting traders from both EVM and non-EVM chains within the same orderbook.
+- **DEX builders and trading apps:** Launch a branded perps experience on top of shared liquidity instead of operating a standalone venue.
+- **Wallets, custodians, and partner platforms:** Add trading functionality to an existing product without building the backend trading stack yourself.
+- **Trading teams and API integrators:** Connect programmatically to trading, account, and market-data interfaces while using the same infrastructure as partner frontends.
 
-## Uses cases
+## Why Teams Build On Orderly
 
-**Brokers:** Create your own Perps DEX effortlessly on EVM and Solana. Benefit from our professional trading infrastructure and deep liquidity.
+- **Shared liquidity from day one:** Builders connect to a common orderbook instead of trying to bootstrap isolated liquidity market by market.
+- **CEX-like performance with on-chain settlement:** Orderly combines low-latency trading infrastructure with documented deposit, withdrawal, and settlement rails.
+- **Flexible integration paths:** Teams can build with APIs, SDKs, UI components, or Orderly One depending on how much control they need.
+- **Builder-owned product experience:** Builders control the user-facing product, fee strategy, and go-to-market approach.
 
-**Perps Aggregators:** Unlock the power of shared orderbook and liquidity. Access to all of Orderly's Perps ecosystem liquidity directly by creating a front-end.
+## What Orderly Provides
 
-**Wallets & Custodians:** Connect to Orderly and offer your users the best Swap rates for major assets. Build your own Swap widget powered by Orderly and open up our ecosystem to all your users.
+Orderly's primary product is omnichain trading infrastructure for perpetual futures. In practical terms, that includes:
 
-**Trading Desks & Sophisticated Traders:** Use our API and enjoy a CEX-level trading experience thanks to our low-latency orderbook.
+- shared liquidity and orderbook access
+- account, order, and market data APIs
+- smart contract rails for deposit, withdrawal, and settlement
+- builder-facing controls for fees, referrals, and operational workflows
 
-**Games/dApps:** Use the built-in widget to enhance your in-app experience and token utility with our in-game Swaps. Keep your users engaged in your app and avoid redirecting them to third parties.
+## How To Build On Orderly
 
-**Trading Bots:** Connect to our orderbook and offer the industry's best Perps rates. Enjoy SL/limit orders, gasless transactions, and fully customizable fees.
+Different teams need different levels of control. Builders can choose between:
 
-**Hedging:** Safeguard your positions on other exchanges by using our orderbook for effective hedging strategies.
+- **Direct API access:** Build your own backend and frontend against Orderly's REST and WebSocket interfaces.
+- **SDKs and connectors:** Use the [React SDK](/sdks/react/overview), [Hooks SDK](/sdks/hooks/overview), or [Python connector](https://github.com/OrderlyNetwork/orderly-evm-connector-python) to accelerate implementation.
+- **Orderly One:** Launch with a lower-code path when you want a faster route to market. See [Builder Guidelines](/introduction/orderly-one/builder-guidelines) for the code of conduct and branding standards.
 
-## The move toward an omnichain future
+Orderly also has adjacent product areas, such as [Strategy Vault](/introduction/orderly-omniVault/overview), but those sit alongside the core builder integration path rather than replacing it.
 
-DeFi has been one of the fastest-growing sectors in the blockchain industry, providing users with access to various financial services without third-party custodians, mitigating the principal-agent problems. However, DeFi is facing issues of composability, where users have to bridge funds when they want to access certain dApps or ecosystems. This can be complex and time-consuming.
+## Where To Go Next
 
-The next iteration of Orderly will enable seamless trading between users on different chains in the same orderbook. No bridging, no complexities, just deposit the funds and start trading.
+Use this page to understand the product model. Then pick the next page based on what you need:
 
-This opens up new opportunities for everyone building on Orderly to gain visibility, attract users, and foster growth. With the ability to interact with multiple blockchains, developers can leverage the strengths and features of different networks, creating a more robust and versatile DeFi ecosystem.
+- **Need the system view?** Go to [Building on Orderly](/build-on-omnichain/building-on-omnichain) for the architecture and integration surface area.
+- **Ready to set up your builder identity?** Go to [Builder Onboarding](/introduction/getting-started/builder-onboarding).
+- **Ready to start implementation?** Follow the [Integration Checklist](/build-on-omnichain/integration-checklist).
+- **Need support during setup?** Use [Partner Support](/build-on-omnichain/partner-support) and [Integration FAQs](/build-on-omnichain/integration-faqs).

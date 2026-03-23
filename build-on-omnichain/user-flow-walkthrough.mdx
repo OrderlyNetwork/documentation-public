@@ -1,0 +1,185 @@
+---
+title: "User Flow Walkthrough"
+description: "End-to-end walkthrough of Orderly account creation, key management, ordering, and settlement via the API."
+---
+
+## Accounts / Access Keys
+
+### Account Structure
+
+A wallet owner can register an account on Orderly for each supported builder. Each wallet owner can thus have multiple accounts (not interlinked with each other) registered with Orderly.
+
+### Account ID
+
+Each account is identified by an account ID, calculated as follows:
+
+1. Convert the wallet address to bytes
+2. Convert the keccak256 hash of the `brokerId` string to bytes
+3. Concatenate the results of (1) and (2)
+4. Take the keccak256 hash of (3) and convert back to a hex string
+
+### Authorization
+
+Orderly uses the EIP-712 standard to authenticate wallets and accounts for critical actions, such as:
+
+- Account creation
+- Access key (Orderly key) addition
+- Withdrawal requests
+
+For these actions, wallet owners must sign specific messages from their wallet and pass the signature through the REST APIs. The following sections describe the steps needed to complete each action.
+
+Depositing into Orderly is a direct on-chain transaction that also requires signing from the wallet owner.
+
+For other actions, such as calling trading-related RESTful APIs, only the Orderly Key is required.
+
+### Access Key (Orderly Key)
+
+Orderly uses the ed25519 elliptic curve standard for access keys. Users can generate access keys using any public ed25519 library and then add them to any account through a REST API.
+
+Access keys can have different scopes:
+
+- **read** — access all private read-only APIs
+- **trading** — in addition to read access, access all order APIs (create order, batch create order, edit order, cancel order, cancel order by client_order_id, cancel orders in bulk, batch cancel orders, batch cancel orders by client_order_id)
+
+Access keys also have expirations for security reasons. The maximum allowed expiration is 365 days.
+
+### Account Registration
+
+To register an account on Orderly:
+
+1. Choose a valid chain/builder to register the account on
+2. Check if the wallet is already registered via [this](/build-on-omnichain/restful-api/public/check-if-wallet-is-registered) API or if the account already exists via [this](/build-on-omnichain/restful-api/public/check-if-account-exists) API
+3. Get a nonce from the [Get registration nonce](/build-on-omnichain/restful-api/public/get-registration-nonce) API
+4. Sign a message from the wallet using the EIP-712 standard in the following format and obtain the signature:
+
+```json
+{
+  "brokerId": "woofi_dex",
+  "chainId": 80001,
+  "timestamp": 1685973017064,
+  "registrationNonce": "194528949540"
+}
+```
+
+where:
+
+| Name              | Type      | Required | Description                                                                                              |
+| ----------------- | --------- | -------- | -------------------------------------------------------------------------------------------------------- |
+| brokerId          | string    | Y        | Builder ID                                                                                               |
+| chainId           | int       | Y        | Chain ID of registering chain (within those supported by the Network)                                    |
+| timestamp         | timestamp | Y        | Timestamp in UNIX milliseconds                                                                           |
+| registrationNonce | string    | Y        | Valid nonce from [Get registration nonce](/build-on-omnichain/restful-api/public/get-registration-nonce)  |
+
+### Add Access Key
+
+To add a new access key on Orderly:
+
+1. Generate an ed25519 key pair
+2. Sign a message from the wallet using the EIP-712 standard in the following format and obtain the signature:
+
+```json
+{
+  "brokerId": "woofi_dex",
+  "orderlyKey": "ed25519:HqN9uKJioHjAJZbadgQRGzq2e7huKg6foCyNY43hWbCk",
+  "scope": "trading",
+  "timestamp": 1685973094398,
+  "expiration": 1686081094398
+}
+```
+
+where:
+
+| Name       | Type      | Required | Description                                                                                       |
+| ---------- | --------- | -------- | ------------------------------------------------------------------------------------------------- |
+| brokerId   | string    | Y        | Builder ID                                                                                        |
+| chainId    | int       | Y        | Chain ID of registering chain (within those supported by the Network)                             |
+| orderlyKey | string    | Y        | ed25519 public key                                                                                |
+| scope      | string    | Y        | Valid scopes are `read`, `trading`; multiple scopes can be sent, comma separated                  |
+| timestamp  | timestamp | Y        | Timestamp in UNIX milliseconds                                                                    |
+| expiration | timestamp | Y        | Expiration time of the key in UNIX milliseconds. Maximum allowed expiration is 365 days from add  |
+
+3. Send all the necessary information via the [Add Orderly key](/build-on-omnichain/restful-api/public/add-orderly-key) API
+
+Users can also check the validity of a particular Orderly access key via the Get Orderly key API.
+
+## Deposits / Withdrawals
+
+### Deposit
+
+Token deposits can be made on any supported chain.
+
+To create a deposit request:
+
+1. Approve spending of the token by the smart contract
+2. Call the deposit function of the smart contract with the following structured data:
+
+| Name        | Type  | Required | Description                                           |
+| ----------- | ----- | -------- | ----------------------------------------------------- |
+| accountId   | bytes | Y        | The account ID of the user in bytes                   |
+| brokerHash  | bytes | Y        | The keccak256 hash of the builder ID (e.g. "woofi_dex") |
+| tokenHash   | bytes | Y        | The keccak256 hash of the token string (e.g. "USDC")  |
+| tokenAmount | int   | Y        | Amount of tokens to be deposited                      |
+
+Note that deposits will take some time to reflect depending on the origin chain, to allow for finalization of the cross-chain transaction. Once the deposit is credited, the balance will update and the transaction can be seen on the Get asset history API.
+
+### Withdrawal
+
+To withdraw tokens from Orderly:
+
+1. Choose a valid chain to withdraw your funds to
+2. Check if the chain has sufficient liquidity
+3. Get a withdrawal nonce
+4. Sign an EIP-712 message in the following format:
+
+```json
+{
+  "brokerId": "woofi_dex",
+  "chainId": 80001,
+  "receiver": "0x036Cb579025d3535a0ADcD929D05481a3189714b",
+  "token": "USDC",
+  "amount": "1000000",
+  "withdrawNonce": 1,
+  "timestamp": 1685973017064
+}
+```
+
+where:
+
+| Name          | Type      | Required | Description                                                                                                 |
+| ------------- | --------- | -------- | ----------------------------------------------------------------------------------------------------------- |
+| brokerId      | string    | Y        | Builder ID                                                                                                  |
+| chainId       | int       | Y        | Chain ID of withdrawing chain (within those supported by the Network)                                       |
+| receiver      | string    | Y        | Address of the receiver, which should be equal to the address of the account                                |
+| token         | string    | Y        | The string representation of the token being withdrawn (e.g. "USDC")                                       |
+| amount        | string    | Y        | Amount of tokens to be withdrawn                                                                            |
+| withdrawNonce | int       | Y        | Valid withdrawal nonce from [Get withdrawal nonce](/build-on-omnichain/restful-api/private/get-withdrawal-nonce) |
+| timestamp     | timestamp | Y        | Current timestamp in UNIX milliseconds                                                                      |
+
+5. Call the request to withdraw API to complete the withdrawal request
+
+### Settle PnL
+
+Any realized and unrealized PnL accrued from open or closed positions needs to be "settled" into the USDC balance of the account. PnL settlement can happen anytime for any account if other users trigger a settlement. Any user can also trigger PnL settlement of their own account by following these steps:
+
+1. Get a Settle PnL nonce
+2. Sign an EIP-712 message in the following format:
+
+```json
+{
+  "brokerId": "woofi_dex",
+  "chainId": 80001,
+  "settleNonce": 1,
+  "timestamp": 1685973017064
+}
+```
+
+where:
+
+| Name        | Type      | Required | Description                                                                                                |
+| ----------- | --------- | -------- | ---------------------------------------------------------------------------------------------------------- |
+| brokerId    | string    | Y        | Builder ID                                                                                                 |
+| chainId     | int       | Y        | Chain ID of registering chain (within those supported by the Network)                                      |
+| settleNonce | int       | Y        | Valid settlement nonce from [Get Settle PnL nonce](/build-on-omnichain/restful-api/private/get-settle-pnl-nonce) |
+| timestamp   | timestamp | Y        | Current timestamp in UNIX milliseconds                                                                     |
+
+3. Call the Settle PnL API to complete the request
