@@ -9,13 +9,16 @@ Permissionless Listing removes that bottleneck. Qualified Builders can list new 
 
 ## Standard Listing vs. Permissionless Listing
 
-In the standard listing model, every market on Orderly shares the same infrastructure:
+There are two ways to list markets on Orderly. While the standard model is built for platform-wide stability, Permissionless Listing is built for Builder-level autonomy.
 
-- **Shared Insurance Fund:** All markets draw from the same pool, so the platform carefully manages which assets are added.
-- **Platform-managed process:** Orderly evaluates each listing request, since every new market affects the platform's overall risk profile.
-- **Unified parameters:** Markets go through a standardized process because they share a common risk framework.
+| Feature | Standard Listing | Permissionless Listing |
+| :--- | :--- | :--- |
+| **Who manages it** | Orderly | Individual Builder |
+| **Insurance Fund** | Shared across the platform | Dedicated per Builder |
+| **Listing Process** | Evaluated & approved by Orderly | Instant & self-managed |
+| **Risk Parameters** | Standardized & conservative | Customizable by Builder |
 
-This model is well-suited for established, high-liquidity assets. But for long-tail assets, emerging tokens, or markets that a specific Builder's user base demands, it can be too slow and too conservative. Permissionless Listing provides an alternative path for these cases.
+Standard listing is well-suited for established assets. But for long-tail assets or markets that a specific Builder's user base demands, Permissionless Listing provides a faster, more flexible path.
 
 ## How Permissionless Listing Works
 
@@ -25,7 +28,7 @@ Permissionless Listing decouples the risk of new markets from the rest of the pl
 
 Each Builder that lists a market must set up and manage their own accounts:
 
-- **Insurance Fund (IF) account** -- A dedicated sub-account that covers liquidation losses for all of the Builder's listed markets. The minimum required balance is **$50,000 per active symbol** (e.g., 3 active markets = $150,000 minimum). If the IF drops too low, the system will automatically restrict trading or trigger delisting.
+- **Insurance Fund (IF) account** -- A dedicated sub-account that covers liquidation losses for all of the Builder's listed markets. The minimum required balance is **\$50,000 per active symbol** (e.g., 3 active markets = \$150,000 minimum). If the IF drops too low, the system will automatically restrict trading or trigger delisting.
 - **Market Maker (MM) accounts** -- Optional sub-accounts for market-making. Builders can bind one or more MM accounts to their listed symbols to provide liquidity.
 
 The IF is completely separate from Orderly's platform IF and from any other Builder's IF. If a liquidation loss occurs, it draws only from that Builder's IF. If the IF is fully depleted, auto-deleveraging (ADL) is scoped to that specific market only. No other markets or users on the platform are affected.
@@ -36,14 +39,14 @@ This is why all permissionlessly listed markets are **Isolated Margin only**. If
 
 Multiple Builders can list the same underlying asset independently. If Orderly already has a standard `PERP_BTC_USDC` market and Builder A lists their own BTC perpetual, these are completely separate markets -- separate order books, separate liquidity, separate Insurance Funds, separate risk parameters. Builder B can also list BTC. None of these interfere with each other.
 
-On the frontend, users see the same display name (e.g., `PERP_BTC_USDC`) but each market is clearly attributed to the Builder operating it.
+On the trading page, each market is displayed with the symbol and the Builder's name (e.g., `BTC woofi`) to clearly show who is operating it.
 
 ### Controlled launch sequence
 
 New markets don't go straight to full trading. They follow a phased launch:
 
 1. **POST_ONLY** -- The market is live but only accepts limit orders. This gives Market Makers time to build liquidity on both sides of the order book before real trading begins.
-2. **ACTIVE** -- Once ±2% order book depth reaches $100,000 on both bid and ask sides and holds for 10 minutes, the market automatically opens for full trading including market orders.
+2. **ACTIVE** -- Once ±2% order book depth reaches \$100,000 on both bid and ask sides and holds for 10 minutes, the market automatically opens for full trading including market orders.
 
 If conditions deteriorate after launch -- insufficient depth, Insurance Fund running low, funding rate anomalies -- the system can automatically force the market into **REDUCE_ONLY** mode (only position-closing allowed) or initiate delisting entirely. These circuit breakers apply per-market, not platform-wide.
 
