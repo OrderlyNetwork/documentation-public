@@ -1,0 +1,32 @@
+# Cursor Rules for Orderly Docs
+
+Follow these rules when working on this repository to ensure consistency and AI-friendliness.
+
+## Development Workflow
+
+1.  **Do Not Manually Edit Generated Files**:
+    *   `build-on-omnichain/restful-api/**`
+    *   `sdks/tech-doc/**`
+    *   `llms.txt`
+    *   `llms-full.txt`
+2.  **Modifying API Docs**:
+    *   Edit `orderly.openapi.yaml` (main REST API).
+    *   Run `yarn update` to regenerate MDX files.
+3.  **Updating AI Context**:
+    *   If you add a new high-signal guide or task, add its route to `llms.config.json` under `canonicalPages`.
+    *   Run `yarn update:llms` after any structural change.
+4.  **Verification**:
+    *   Run `yarn check:ai-docs` before committing to ensure all canonical pages have the required `title` and `description` frontmatter.
+
+## Frontmatter Standard
+
+Every authored `.mdx` file should follow this structure:
+
+---
+title: "Clear Title"
+description: "A 1-2 sentence summary of what this page helps a developer achieve."
+---
+
+## Navigation
+
+- Always edit `docs.json` for site structure and navigation changes.

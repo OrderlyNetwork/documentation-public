@@ -1,6 +1,6 @@
 ---
-title: "Wallet Authentication"
-description: "Overview of wallet authentication & Orderly keys"
+title: Wallet Authentication
+description: "Authenticate wallets and manage Orderly Keys for secure API access."
 ---
 
 ## EIP-712
@@ -9,7 +9,7 @@ Orderly relies on the [EIP-712](https://eips.ethereum.org/EIPS/eip-712) standard
 
 * Account creation
 
-* Orderly key addition
+* Orderly Key addition
 
 * Withdrawal requests
 
@@ -126,16 +126,16 @@ The message types are required for the EIP-712 algorithm to do a proper signing.
 }
 ```
 
-## Orderly key
+## Orderly Key
 
 Orderly uses the `ed25519` elliptic curve standard for Orderly keys. Users can generate Orderly keys using any public `ed25519` libraries and then be added to any account through the REST API.
-An Orderly key is necessary to perform [API authentication](/build-on-omnichain/api-authentication).
+An Orderly Key is necessary to perform [API authentication](/build-on-omnichain/api-authentication).
 
 Orderly keys can have different scopes. A `read` scope can access all private read-only APIs, and a `trading` scope can, in addition, access all order APIs (create order, batch create order, edit order, cancel order, cancel order by client\_order\_id, cancel orders in bulk, batch cancel orders, batch cancel orders by client\_order\_id).
 
-Orderly keys also have expirations for security reasons. The maximum allowed expiration of an Orderly key is 365 days.
+Orderly keys also have expirations for security reasons. The maximum allowed expiration of an Orderly Key is 365 days.
 
-To add a new Orderly key:
+To add a new Orderly Key:
 
 <Steps>
   <Step title="Generate an ed25519 key-pair">
@@ -166,8 +166,8 @@ where:
 | timestamp  | timestamp | Y            | timestamp in UNIX milliseconds                                                                |
 | expiration | timestamp | Y            | Expiration time of the key in UNIX milliseconds. Maximum allowed expiration is 365 days from add |
   </Step>
-  <Step title="Add Orderly key">
-     Send all the necessary information via [Add Orderly key API](/build-on-omnichain/restful-api/public/add-orderly-key).
+  <Step title="Add Orderly Key">
+     Send all the necessary information via [Add Orderly Key API](/build-on-omnichain/restful-api/public/add-orderly-key).
   </Step>
 </Steps>
 

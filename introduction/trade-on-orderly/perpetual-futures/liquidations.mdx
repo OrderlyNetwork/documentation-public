@@ -1,6 +1,6 @@
 ---
 title: "Liquidations"
-description: "How Orderly triggers and processes liquidations when account margin falls below the maintenance threshold."
+description: "Understand how Orderly triggers and processes liquidations when margin falls below the threshold."
 ---
 
 Liquidation is the process of closing out a trader's positions when their account no longer has enough margin to support them. Think of it as a safety valve: it prevents one trader's losses from growing so large that they affect other users on the platform.
@@ -28,9 +28,33 @@ Further details on how to claim liquidating positions can be found in the API do
 
 ## What triggers a liquidation?
 
-A liquidation is triggered if the Account Margin Ratio (AMR) drops below the Maintenance Margin Ratio (MMR) required for the account. For details on how MMR is calculated, see [Maintenance Margin Ratio](/introduction/trade-on-orderly/perpetual-futures/margin-leverage-and-pnl#maintenance-margin-ratio).
+## Liquidation Decision Flow
 
-## Liquidation tiers
+The liquidation process follows a strict hierarchy of steps to ensure system stability.
+
+<Steps>
+  <Step title="Detection">
+    Orderly's risk engine detects that the **Account Margin Ratio (AMR)** has fallen below the **Maintenance Margin Ratio (MMR)** required for the account.
+  </Step>
+  <Step title="Freeze & Cancel">
+    - All open orders for the account are cancelled immediately.
+    - All account actions (withdrawals, transfers) are frozen.
+  </Step>
+  <Step title="Liquidation Calculation">
+    The system determines how many positions need to be transferred to bring the AMR back to the **Initial Margin Ratio (IMR)**. It groups positions into **Low Tier (BTC/ETH)** or **High Tier (others)** for liquidators to claim.
+  </Step>
+  <Step title="Transfer & Settlement">
+    Liquidators claim the positions at a discount. If the liquidated account still has a positive balance, the fees are split between the liquidator and the **Insurance Fund**.
+  </Step>
+  <Step title="Insurance Fund Coverage (If Bankrupt)">
+    If the account's total value is less than zero (bankrupt), or insufficient to pay the liquidator:
+    - The liquidator is still paid the **Liquidator Fee** from the Insurance Fund.
+    - The Insurance Fund absorbs the remaining debt and takes over any un-liquidated positions.
+  </Step>
+</Steps>
+
+## Liquidation Tiers
+
 
 Not all trading pairs carry the same risk. Orderly groups them into two tiers, which affects how liquidators can claim positions:
 

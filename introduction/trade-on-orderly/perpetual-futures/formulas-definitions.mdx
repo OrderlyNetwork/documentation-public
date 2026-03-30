@@ -1,6 +1,6 @@
 ---
 title: "Formulas and Definitions"
-description: "Formulas for margin, collateral, free collateral, PnL, and liquidation price calculations on Orderly."
+description: "Explore the formulas for margin, collateral, PnL, and liquidation price calculations on Orderly."
 ---
 
 This page is a reference for all the key formulas used on Orderly. Each section explains what a value means in plain language, then gives the exact formula. If you are building a trading bot or just want to double-check the numbers you see in the UI, this is the page to bookmark.
@@ -101,11 +101,64 @@ liquidation_price  = max[( Mark Price + ( total_collateral_value - total_notiona
 **Fut Notional or Total Notional** = `sum (abs (position_notional_i))`
 
 
-<Note>
-Unsettled PnL is retrieved from the API and cannot be calculated
-</Note>
+## API Data Mapping
 
-## Order placement formulas
+To implement these formulas, you can retrieve the base values from the following API endpoints:
+
+| Formula Variable | API Endpoint | JSON Field |
+| :--- | :--- | :--- |
+| `total_balance` | `GET /v1/client/info` | `wallet_balance` |
+| `upnl` | `GET /v1/positions` | `unrealized_pnl` |
+| `position_notional_i` | `GET /v1/positions` | `notional` |
+| `mark_price_i` | `GET /v1/public/market_info` | `mark_price` |
+| `IMR_i` | `GET /v1/public/config` | `base_imr` (adjusted by factor) |
+| `MMR_i` | `GET /v1/public/config` | `base_mmr` (adjusted by factor) |
+
+---
+
+## Risk Management Pseudocode
+
+The following pseudocode demonstrates how to integrate the formulas into a cohesive risk management logic for a trading bot.
+
+```ts
+/**
+ * Consolidated Risk Management Logic
+ * Use this to verify account health before and after placing orders.
+ */
+
+function calculateAccountHealth(accountInfo, positions, marketConfig) {
+  let totalNotional = 0;
+  let totalInitialMargin = 0;
+  let totalMaintenanceMargin = 0;
+  let totalUpnl = 0;
+
+  for (const pos of positions) {
+    const notional = Math.abs(pos.qty * pos.markPrice);
+    const imr = calculateDynamicRatio(pos.baseImr, pos.imrFactor, notional, accountInfo.maxLeverage);
+    const mmr = calculateDynamicRatio(pos.baseMmr, (pos.baseMmr / pos.baseImr) * pos.imrFactor, notional);
+
+    totalNotional += notional;
+    totalInitialMargin += notional * imr;
+    totalMaintenanceMargin += notional * mmr;
+    totalUpnl += pos.unrealizedPnl;
+  }
+
+  const totalCollateral = accountInfo.walletBalance + totalUpnl;
+  const currentMarginRatio = totalNotional > 0 ? (totalCollateral / totalNotional) : Infinity;
+
+  return {
+    isLiquidatable: currentMarginRatio < (totalMaintenanceMargin / totalNotional),
+    canOpenNewPosition: totalCollateral > totalInitialMargin,
+    withdrawable: Math.max(0, accountInfo.walletBalance - totalInitialMargin - Math.max(0, totalUpnl)),
+    liquidationPrice: calculateLiquidationPrice(totalCollateral, totalNotional, totalMaintenanceMargin)
+  };
+}
+
+function calculateDynamicRatio(baseRatio, factor, notional, maxLeverage = null) {
+  const cap = maxLeverage ? 1 / maxLeverage : 0;
+  return Math.max(cap, baseRatio, factor * Math.pow(notional, 0.8));
+}
+```
 
 ### Max Order Quantity
 

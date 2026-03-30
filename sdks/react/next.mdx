@@ -8,7 +8,7 @@ Setting up Orderly SDK in a Next.js project.
 <Steps>
 <Step title="Create your project">
 
-Start by creating a new Next.js project if you don’t have one set up already. The most common approach is to use [Create Next App](https://nextjs.org/docs/api-reference/create-next-app).
+Start by creating a new Next.js project if you don't have one set up already. The most common approach is to use [Create Next App](https://nextjs.org/docs/api-reference/create-next-app).
 
 ```bash
 npx create-next-app@latest my-exchange --app --typescript --eslint
@@ -43,7 +43,7 @@ export default function Trading({ params }: { params: { symbol: string } }) {
         networkId="testnet"
         brokerId="<Your broker id>"
         brokerName="<Your name>"
-        appIcons={...}
+        appIcons={"/logo.svg"} // Path to your app icons
       >
         <TradingPage
           symbol={params.symbol}

@@ -25,7 +25,7 @@ description: "Migration guide from Orderly SDK v1 to v2, covering breaking chang
    4. Markets
    5. Trading Rewards
 7. Base UI component library: A new base component library, @orderly.network/ui, has been created to facilitate builders in developing custom components that maintain a consistent style with the components provided by the SDK.
-8. Independent Widgets: Separated additional widgets for standalone use, with each page widget’s components available for export:
+8. Independent Widgets: Separated additional widgets for standalone use, with each page widget's components available for export:
    1. Positions Widget
    2. Orders Widget
    3. Order Entry Widget
@@ -98,7 +98,7 @@ import { EthersProvider } from "@orderly.network/web3-provider-ethers";
 </OrderlyConfigProvider>;
 ```
 
-If you are using the UI components directly from the Orderly SDK, you can ignore this change, as the SDK’s wallet connection components will support both EVM and Solana by default.
+If you are using the UI components directly from the Orderly SDK, you can ignore this change, as the SDK's wallet connection components will support both EVM and Solana by default.
 
 However, if you want to support only EVM or Solana, refer to the following configuration:
 
@@ -174,10 +174,10 @@ You can find a full example using the Components SDK in [this Github repository]
 
 #### `@orderly.network/react`（Deprecation）
 
-- The package `@orderly.network/react` has been deprecated and split into：
+- The package `@orderly.network/react` has been deprecated and split into:
   - `@orderly.network/ui-scaffold`: For page layout components.
   - `@orderly.network/trading`: For trading page components.
-- `@orderly.network/ui-scaffold` provides layout functionalities, including top navigation menus, bottom status bars, and left-side navigation.If you want to customize the top navigation component, note that the v1 Layout component attributes are no longer supported. Configuration should be migrated to the Scaffold component.
+- `@orderly.network/ui-scaffold` provides layout functionalities, including top navigation menus, bottom status bars, and left-side navigation. If you want to customize the top navigation component, note that the v1 Layout component attributes are no longer supported. Configuration should be migrated to the Scaffold component.
 - The `@orderly.network/ui-scaffold` package not only includes the default Scaffold component but also exports subcomponents like ChainMenuWidget, AccountMenuWidget, etc. These can be freely combined to suit your needs. Refer to the `@orderly.network/ui-scaffold` documentation for details.
 - The SDK only provides page components; you are responsible for organizing the routing. It is recommended to use a React router library that supports nested routes to reuse layout components, minimize page reloads, and improve user experience. If you are using Next.js, refer to the Next.js template.
 

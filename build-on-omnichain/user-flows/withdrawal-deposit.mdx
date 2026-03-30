@@ -1,6 +1,6 @@
 ---
 title: "Deposit/Withdrawal"
-description: "Overview of deposit and withdrawal flow"
+description: "Implement secure cross-chain deposits and withdrawals with step-by-step smart contract and API integration guides."
 ---
 
 ## Deposit
@@ -173,7 +173,7 @@ const depositFee = await vaultContract.getDepositFee(wallet.address, depositInpu
 | ----------- | -------- | ------------ | ----------------------------------------------------- |
 | accountId   | bytes    | Y            | The account id of the user in bytes.                  |
 | brokerHash  | bytes    | Y            | The keccak256 hash of the builder id (eg "woofi\_dex") |
-| tokenHash   | bytes    | Y            | The keccak256 hash of the token string (eg “USDC“)    |
+| tokenHash   | bytes    | Y            | The keccak256 hash of the token string (eg "USDC")    |
 | tokenAmount | int      | Y            | Amount of tokens to be deposited                      |
 
     <Accordion title="Example code">
@@ -478,4 +478,4 @@ where:
 
 ### Example
 
-The example code is very similar to the [Orderly key registration](/build-on-omnichain/user-flows/wallet-authentication#full-example), except it uses the EIP-712 [on-chain domain](/build-on-omnichain/user-flows/wallet-authentication#on-chain-domain) and the signed message is different.
+The example code is very similar to the [Orderly Key registration](/build-on-omnichain/user-flows/wallet-authentication#full-example), except it uses the EIP-712 [on-chain domain](/build-on-omnichain/user-flows/wallet-authentication#on-chain-domain) and the signed message is different.

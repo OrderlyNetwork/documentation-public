@@ -1,6 +1,6 @@
 ---
 title: "Getting started"
-description: "Step-by-step guide to install the Orderly React SDK, configure providers, and build trading pages."
+description: "Quickly install and configure the Orderly React SDK to build professional trading interfaces."
 ---
 
 Follow the steps below to integrate the Orderly SDK into your project:
@@ -31,7 +31,13 @@ import { OrderlyAppProvider } from "@orderly.network/react-app";
 
 const App: FC<{ children: ReactNode }> = (props) => {
   return (
-    <OrderlyAppProvider brokerId="orderly" brokerName="Orderly" networkId="testnet" appIcons={""}>
+    <OrderlyAppProvider
+      brokerId="orderly"
+      brokerName="Orderly"
+      networkId="testnet"
+      appIcons={"/logo.svg"} // Path to your app icons
+    >
+
       {props.children}
     </OrderlyAppProvider>
   );
@@ -40,7 +46,7 @@ const App: FC<{ children: ReactNode }> = (props) => {
 
 ### Add Wallet Connection
 
-Orderly SDK provides a built-in wallet connection component supporting both EVM and Solana. Here’s how to integrate it:
+Orderly SDK provides a built-in wallet connection component supporting both EVM and Solana. Here's how to integrate it:
 
 #### Install Wallet Connector Dependencies
 
@@ -59,7 +65,13 @@ import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 const App: FC<{ children: ReactNode }> = (props) => {
   return (
     <WalletConnectorProvider solanaInitial={{network: WalletAdapterNetwork.Mainnet }}>
-      <OrderlyAppProvider brokerId="orderly" brokerName="Orderly" networkId="testnet" appIcons={""}>
+      <OrderlyAppProvider
+        brokerId="orderly"
+        brokerName="Orderly"
+        networkId="testnet"
+        appIcons={"/logo.svg"} // Path to your app icons
+      >
+
         {props.children}
       </OrderlyAppProvider>
     </WalletConnectorProvider>
@@ -74,7 +86,7 @@ interface from `@orderly.network/hooks`.
 
 ### Page Layout
 
-If you want to use the SDK’s built-in top navigation, side navigation, and other layout features, install the layout library:
+If you want to use the SDK's built-in top navigation, side navigation, and other layout features, install the layout library:
 
 ```
 npm install @orderly.network/ui-scaffold
