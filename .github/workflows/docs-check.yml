@@ -1,0 +1,28 @@
+name: Documentation Quality Check
+
+on:
+  push:
+    branches: [main, staging]
+  pull_request:
+
+jobs:
+  check:
+    if: github.repository == 'OrderlyNetwork/documentation'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Verify AI docs artifacts
+        run: npm run check:ai-docs
+
+      - name: Run broken links check
+        run: npx mintlify broken-links

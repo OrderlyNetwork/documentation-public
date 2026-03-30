@@ -15,6 +15,10 @@
     "update": "tsx ./update.ts",
     "update:llms": "tsx ./generate-llms.ts",
     "check:ai-docs": "tsx ./verify-ai-docs.ts",
+    "lint": "markdownlint '**/*.mdx' --ignore node_modules --ignore sdks/tech-doc",
+    "lint:fix": "markdownlint '**/*.mdx' --ignore node_modules --ignore sdks/tech-doc --fix",
+    "format": "prettier --write '**/*.mdx' --ignore-path .gitignore",
+    "format:check": "prettier --check '**/*.mdx' --ignore-path .gitignore",
     "dev": "npx mintlify dev"
   },
   "devDependencies": {
