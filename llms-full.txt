@@ -1840,7 +1840,7 @@ If `margin_mode` is omitted, the symbol's default margin mode is used. You can c
 
 After opening an Isolated position, you can add or reduce the margin allocated to it.
 
-**API:** [POST `/v1/position_margin`](/build-on-omnichain/restful-api/private/add-reduce-position-margin)
+**API:** [POST `/v1/position_margin`](/build-on-omnichain/restful-api/private/add-or-reduce-position-margin)
 
 **Add margin** (lowers liquidation price, reduces risk):
 
@@ -2565,7 +2565,7 @@ Source: https://orderly.network/docs/build-on-omnichain/error-codes
 - [Get Vault Balance](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-vault-balance): [GET /v1/public/vault_balance] Get vault balance
 - [Get Insurance Fund Info](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-insurance-fund-info): [GET /v1/public/insurancefund] Get insurance fund info
 - [Get Announcements](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-announcements): [GET /v1/public/announcement] Get announcements
-- [Get IP info](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-ip-info): [GET /v1/ip_info] Get IP info
+- [Get Ip Info](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-ip-info): [GET /v1/ip_info] Get IP info
 
 #### USDC faucet
 
@@ -2602,7 +2602,7 @@ Source: https://orderly.network/docs/build-on-omnichain/restful-api/public/regis
 - [Get User Volume Statistics](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-user-volume-statistics): [GET /v1/volume/user/stats] Get user volume statistics
 - [Get User Statistics](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-user-statistics): [GET /v1/client/statistics] Get user statistics
 - [Get Account Overview Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-account-overview-info): [GET /v1/account_info] Get account overview info
-### Get Account Information
+### Get account information
 Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/get-account-information
 
 
@@ -2632,7 +2632,7 @@ Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/upda
 
 
 ### Add or reduce position margin
-Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/add-reduce-position-margin
+Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/add-or-reduce-position-margin
 
 
 
@@ -2711,7 +2711,7 @@ Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/add-
 
 #### Positions
 
-### Get All Positions
+### Get all positions info
 Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/get-all-positions-info
 
 
@@ -2816,40 +2816,14 @@ Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/get-
 - [Edit Referral Code](https://orderly.network/docs/build-on-omnichain/restful-api/private/edit-referral-code): [POST /v1/referral/edit_referral_code] Edit referral code
 - [Get Referral History](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-history): [GET /v1/referral/referral_history] Get referral history
 - [Get Referral Rebate Summary](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-rebate-summary): [GET /v1/referral/rebate_summary] Get referral rebate summary
-- [Get Referral Multi Level Max Rebate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-multi-level-max-rebate-rate): [GET /v1/referral/multi_level/max_rebate_rate] Get max rebate rate
-- [Claim Referral Multi Level Code](https://orderly.network/docs/build-on-omnichain/restful-api/private/claim-referral-multi-level-code): [POST /v1/referral/multi_level/claim_code] Claim referral code
-- [Get Referral Multi Level Rebate Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-multi-level-rebate-info): [GET /v1/referral/multi_level/rebate_info] Get rebate info
-- [Update Referral Multi Level Rebate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-referral-multi-level-rebate-rate): [POST /v1/referral/multi_level/rebate_rate/update] Update referee rebate rate
-- [Set Default Referral Multi Level Rebate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/set-default-referral-multi-level-rebate-rate): [POST /v1/referral/multi_level/rebate_rate/set_default] Reset referee rebate rate
-- [Get Referral Multi Level Statistics](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-multi-level-statistics): [GET /v1/referral/multi_level/statistics] Get multilevel statistics
-- [Get Referral Multi Level Referee List](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-multi-level-referee-list): [GET /v1/referral/multi_level/referee_list] Get referee list
-- [Get Referral Multi Level Volume Prerequisite](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-multi-level-volume-prerequisite): [GET /v1/referral/multi_level/volume_prerequisite] Get volume prerequisite
 
 ##### Multilevel admin
 
-- [Enable Referral Multi Level Admin](https://orderly.network/docs/build-on-omnichain/restful-api/private/enable-referral-multi-level-admin): [POST /v1/referral/multi_level/admin] Enable or configure multilevel referral
-- [Get Referral Multi Level Admin Config](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-multi-level-admin-config): [GET /v1/referral/multi_level/admin] Get multilevel referral config
-- [Update Referral Multi Level Admin Config](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-referral-multi-level-admin-config): [POST /v1/referral/multi_level/admin/update] Update multilevel referral config
-- [Update Referral Multi Level Affiliate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-referral-multi-level-affiliate-rate): [POST /v1/referral/multi_level/admin/update/affiliate] Update L1 affiliate rebate rate
-- [Reset Referral Multi Level Affiliate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/reset-referral-multi-level-affiliate-rate): [POST /v1/referral/multi_level/admin/reset/affiliate] Reset L1 affiliate rebate rate
-- [Get Referral Multi Level Admin Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-multi-level-admin-info): [GET /v1/referral/multi_level/admin/info] Get multilevel info
-- [Get Referral Multi Level Admin Summary](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-multi-level-admin-summary): [GET /v1/referral/multi_level/admin/summary] Get multilevel summary info
-- [Create Referral Multi Level Affiliate Code](https://orderly.network/docs/build-on-omnichain/restful-api/private/create-referral-multi-level-affiliate-code): [POST /v1/referral/multi_level/admin/create/affiliate] Create multilevel referral code on affiliate's behalf
 
 
 #### Broker admin
 
 - [Get Broker Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-broker-info): [GET /v1/broker/broker_info] Get broker info
-- [Admin Client Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-client-info): [GET /v1/admin/client/info] Get account information
-- [Admin Client Holding](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-client-holding): [GET /v1/admin/client/holding] Get current holding
-- [Admin Internal Transfer History](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-internal-transfer-history): [GET /v1/admin/internal_transfer_history] Get internal transfer history
-- [Admin Asset History](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-asset-history): [GET /v1/admin/asset/history] Get asset history
-- [Admin Client Leverage](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-client-leverage): [GET /v1/admin/client/leverage] Get leverage setting
-- [Admin Orders](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-orders): [GET /v1/admin/orders] Get orders
-- [Admin Position](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-position): [GET /v1/admin/position/{symbol}] Get one position info
-- [Admin Positions](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-positions): [GET /v1/admin/positions] Get all positions info
-- [Admin Funding Fee History](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-funding-fee-history): [GET /v1/admin/funding_fee/history] Get funding fee history
-- [Admin Volume User Stats](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-volume-user-stats): [GET /v1/admin/volume/user/stats] Get user volume statistics
 
 
 ### Points module
