@@ -1,6 +1,6 @@
 ---
-title: "Orderly DEX’s Affiliate Program (Affiliate’s Quick Guide)"
-description: "Quick guide for affiliates using Orderly DEX’s Affiliate Program."
+title: "Orderly DEX's Affiliate Program (Affiliate's Quick Guide)"
+description: "Follow this quick guide for affiliates to get started with the Orderly DEX Affiliate Program."
 ---
 
 ## 1. Overview
@@ -55,36 +55,41 @@ For every trade executed by a user $(L_N)$ on the DEX, the affiliates within the
 
 | Role                | Affiliate commission rate                    | Affiliate commission                                                                 |
 | ------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------ |
-| **$L_1$ affiliate**  | $(X_1 - X_2)$ where $X_2 \in [0, X_1]$      | $(X_1 - X_2) \times \text{(Fee)}_\text{Builder}$                                    |
-| **$L_2$ affiliate**  | $(X_2 - X_3)$ where $X_3 \in [0, X_2]$      | $(X_2 - X_3) \times \text{(Fee)}_\text{Builder}$                                    |
-| **$L_3$ affiliate**  | $(X_3 - X_4)$ where $X_4 \in [0, X_3]$      | $(X_3 - X_4) \times \text{(Fee)}_\text{Builder}$                                    |
+| **$L_1$ affiliate**  | $(X_1 - X_2)$ where $X_2 \in [0, X_1]$      | $(X_1 - X_2) \times \text{Fee}_\text{Builder}$                                    |
+| **$L_2$ affiliate**  | $(X_2 - X_3)$ where $X_3 \in [0, X_2]$      | $(X_2 - X_3) \times \text{Fee}_\text{Builder}$                                    |
+| **$L_3$ affiliate**  | $(X_3 - X_4)$ where $X_4 \in [0, X_3]$      | $(X_3 - X_4) \times \text{Fee}_\text{Builder}$                                    |
 | **…**               | …                                            | …                                                                                    |
-| **$L_{N-1}$ user**   | $(X_{N-1} - X_N)$ where $X_N \in [0, X_{N-1}]$ | $[(X_{N-1} - X_N) + 10\%] \times \text{(Fee)}_\text{Builder}$<br/>$L_{N-1}$ user earns a 10% bonus as the direct referrer. |
-| **$L_N$ user**      |                                              | *Earn referee's commission:* $X_N \times \text{(Fee)}_\text{Builder}$                |
+| **$L_{N-1}$ user (direct referrer)** | $X_{N-1} + 10\%$ | $[X_{N-1} + 10\%] \times \text{Fee}_\text{Builder}$ — Direct referrer earns full rate plus 10% bonus |
 
 > Note: Direct referrers earn a 10% bonus referral commission rate from trades executed by their direct referees.
 
-### 5.2 Referee’s commission
+#### Example: 3-Level Referral Network
 
-For every trade executed by a user $(L_N)$ on the DEX, the user can earn the following referee’s commission within the multilevel referral network:
+Consider a trade where Builder revenue for a given trade = $100, with the following commission rates:
+- $X_1 = 40\%$ ($L_1$ affiliate rate set by builder)
+- $X_2 = 25\%$ ($L_2$ rate set by $L_1$)
+- $X_3 = 15\%$ ($L_3$ rate set by $L_2$)
 
-$$
-X_N \times \text{(Fee)}_\text{Builder}
-$$
+**Commission distribution for $100 Builder revenue:**
 
-where $X_N$ is the commission rate allocated by the direct referrer $(L_{N-1})$.
+| Role | Calculation | Commission |
+|------|-------------|------------|
+| $L_1$ affiliate | $(40\% - 25\%) \times 100$ | **$15** |
+| $L_2$ affiliate | $(25\% - 15\%) \times 100$ | **$10** |
+| $L_3$ affiliate (direct referrer) | $(15\% + 10\%) \times 100$ | **$25** |
+| **Total distributed** | | **$50** |
 
-> Note: $L_1$ users have no referrers above them and earn no referee’s commissions from their own trades.
+In this example, when $L_4$ (the trader) executes a trade, $L_3$ earns their full $15\%$ rate plus the $10\%$ bonus, totaling $25. The $L_4$ trader does not earn commission from their own trade.
 
-### 5.3 Referee’s commission rate adjustments
+### 5.2 Referee's commission rate adjustments
 
-#### 5.3.1 Default referee’s commission rate
+#### 5.2.1 Default referee's commission rate
 
 Each referral code has a default commission rate for referees who use it to create an account on the DEX. The affiliate owning the code can update this rate, subject to the following rules:
 
 - If the code has no referees, the affiliate can freely adjust the default commission rate up or down.
 - If the code has direct referees, the affiliate may only increase the default commission rate, applying changes to all direct referees on that rate. This restriction protects existing referrals and prevents unfavourable downstream changes.
 
-#### 5.3.2 Custom referee’s commission rate
+#### 5.2.2 Custom referee's commission rate
 
 Affiliates may customize a higher commission rate to overwrite the default rate for any direct referees, but cannot decrease it.

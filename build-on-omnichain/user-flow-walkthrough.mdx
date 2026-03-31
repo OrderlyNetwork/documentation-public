@@ -23,7 +23,7 @@ Each account is identified by an account ID, calculated as follows:
 Orderly uses the EIP-712 standard to authenticate wallets and accounts for critical actions, such as:
 
 - Account creation
-- Access key (Orderly key) addition
+- Access key (Orderly Key) addition
 - Withdrawal requests
 
 For these actions, wallet owners must sign specific messages from their wallet and pass the signature through the REST APIs. The following sections describe the steps needed to complete each action.
@@ -38,8 +38,8 @@ Orderly uses the ed25519 elliptic curve standard for access keys. Users can gene
 
 Access keys can have different scopes:
 
-- **read** — access all private read-only APIs
-- **trading** — in addition to read access, access all order APIs (create order, batch create order, edit order, cancel order, cancel order by client_order_id, cancel orders in bulk, batch cancel orders, batch cancel orders by client_order_id)
+- **read** -- access all private read-only APIs
+- **trading** -- in addition to read access, access all order APIs (create order, batch create order, edit order, cancel order, cancel order by client_order_id, cancel orders in bulk, batch cancel orders, batch cancel orders by client_order_id)
 
 Access keys also have expirations for security reasons. The maximum allowed expiration is 365 days.
 
@@ -98,9 +98,9 @@ where:
 | timestamp  | timestamp | Y        | Timestamp in UNIX milliseconds                                                                    |
 | expiration | timestamp | Y        | Expiration time of the key in UNIX milliseconds. Maximum allowed expiration is 365 days from add  |
 
-3. Send all the necessary information via the [Add Orderly key](/build-on-omnichain/restful-api/public/add-orderly-key) API
+3. Send all the necessary information via the [Add Orderly Key](/build-on-omnichain/restful-api/public/add-orderly-key) API
 
-Users can also check the validity of a particular Orderly access key via the Get Orderly key API.
+Users can also check the validity of a particular Orderly access key via the Get Orderly Key API.
 
 ## Deposits / Withdrawals
 

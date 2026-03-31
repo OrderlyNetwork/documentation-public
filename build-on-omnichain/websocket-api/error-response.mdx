@@ -3,18 +3,23 @@ title: "Error Response"
 description: "Format and example of WebSocket error responses, including the client ID mapping pattern."
 ---
 
-Example response if there is an error.
-
-You can use the `id` field in response to map the error response with the request. 
+Error responses follow the same format as successful responses, with `success` set to `false` and an `errorMsg` field explaining the issue. You can use the `id` field to map the error response with the corresponding request.
 
 ```json
 {
-    "id": "clientID7",
-    "event": "subscribe",
-    "success": false,
-    "ts": 1614141150601,
-    "errorMsg": "invalid symbol SPOT_WOO_USDC.e"
+  "id": "clientID7",
+  "event": "subscribe",
+  "success": false,
+  "ts": 1614141150601,
+  "errorMsg": "invalid symbol PERP_BTC_USDC"
 }
 ```
 
-Example response if there is an error.
+## Common error messages
+
+| Error message | Description |
+| --- | --- |
+| `invalid symbol <symbol>` | The requested symbol does not exist |
+| `invalid topic <topic>` | The requested topic is not supported |
+| `auth failed` | Authentication failed due to invalid credentials |
+| `missing required parameter <param>` | A required parameter is missing |

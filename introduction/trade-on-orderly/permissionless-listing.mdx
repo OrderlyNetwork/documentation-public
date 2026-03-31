@@ -1,0 +1,101 @@
+---
+title: "Permissionless Listing"
+description: "Learn how qualified Builders can list additional perpetual markets on Orderly."
+---
+
+On most perpetual exchanges, listing a new market is a platform decision -- the team evaluates the asset, sets up the infrastructure, and takes on the risk. This works for high-demand assets, but it also means the platform becomes the bottleneck: every new market competes for the same listing queue, the same shared Insurance Fund, and the same risk budget.
+
+Permissionless Listing removes that bottleneck. Qualified Builders can list new perpetual markets themselves, on their own timeline, without waiting for Orderly to evaluate and approve each one. In return, the Builder takes direct responsibility for the market they introduce -- funding the Insurance Fund, supporting liquidity, and managing risk for that market independently.
+
+## Standard Listing vs. Permissionless Listing
+
+There are two ways to list markets on Orderly. While the standard model is built for platform-wide stability, Permissionless Listing is built for Builder-level autonomy.
+
+| Feature | Standard Listing | Permissionless Listing |
+| :--- | :--- | :--- |
+| **Who manages it** | Orderly | Individual Builder |
+| **Insurance Fund** | Shared across the platform | Dedicated per Builder |
+| **Listing Process** | Evaluated & approved by Orderly | Instant & self-managed |
+| **Risk Parameters** | Standardized & conservative | Customizable by Builder |
+
+Standard listing is well-suited for established assets. But for long-tail assets or markets that a specific Builder's user base demands, Permissionless Listing provides a faster, more flexible path.
+
+## How Permissionless Listing Works
+
+Permissionless Listing decouples the risk of new markets from the rest of the platform. The key design principle: **a Builder's market should only be able to affect that Builder's own risk exposure.**
+
+### Per-Builder risk isolation
+
+Each Builder that lists a market must set up and manage their own accounts:
+
+- **Insurance Fund (IF) account** -- A dedicated sub-account that covers liquidation losses for all of the Builder's listed markets. The minimum required balance is **\$50,000 per active symbol** (e.g., 3 active markets = \$150,000 minimum). If the IF drops too low, the system will automatically restrict trading or trigger delisting.
+- **Market Maker (MM) accounts** -- Optional sub-accounts for market-making. Builders can bind one or more MM accounts to their listed symbols to provide liquidity.
+
+The IF is completely separate from Orderly's platform IF and from any other Builder's IF. If a liquidation loss occurs, it draws only from that Builder's IF. If the IF is fully depleted, auto-deleveraging (ADL) is scoped to that specific market only. No other markets or users on the platform are affected.
+
+This is why all permissionlessly listed markets are **Isolated Margin only**. If these markets allowed Cross Margin, a sudden crash on a long-tail token could cascade into a user's BTC or ETH positions. Isolated Margin ensures that each position's risk is self-contained -- the worst case for a trader is losing the margin allocated to that specific position.
+
+### Per-Builder symbols
+
+Multiple Builders can list the same underlying asset independently. If Orderly already has a standard `PERP_BTC_USDC` market and Builder A lists their own BTC perpetual, these are completely separate markets -- separate order books, separate liquidity, separate Insurance Funds, separate risk parameters. Builder B can also list BTC. None of these interfere with each other.
+
+On the trading page, each market is displayed with the symbol and the Builder's name (e.g., `BTC woofi`) to clearly show who is operating it.
+
+### Controlled launch sequence
+
+New markets don't go straight to full trading. They follow a phased launch:
+
+1. **POST_ONLY** -- The market is live but only accepts limit orders. This gives Market Makers time to build liquidity on both sides of the order book before real trading begins.
+2. **ACTIVE** -- Once ±2% order book depth reaches \$100,000 on both bid and ask sides and holds for 10 minutes, the market automatically opens for full trading including market orders.
+
+If conditions deteriorate after launch -- insufficient depth, Insurance Fund running low, funding rate anomalies -- the system can automatically force the market into **REDUCE_ONLY** mode (only position-closing allowed) or initiate delisting entirely. These circuit breakers apply per-market, not platform-wide.
+
+### Price sources
+
+Index prices are aggregated from a combination of CEX price feeds and on-chain oracles. Builders select which sources to use when configuring a market; at least one valid source is required, and two or more are recommended to reduce single-point-of-failure risk.
+
+Currently supported oracle sources are **Pyth** and **Stork**. If all configured sources become unavailable, the market is automatically placed into reduce-only mode.
+
+### Real-time monitoring
+
+Builders receive **real-time Telegram notifications** throughout the market lifecycle -- from launch status updates to risk alerts when IF balance, order book depth, or funding rate thresholds are breached.
+
+## Who Can List
+
+Permissionless Listing is available to Builders in the **Diamond Tier** of the [Builder Staking Program](/introduction/trade-on-orderly/trading-basics/trading-fees#builder-staking-programme). Each Builder can have up to **5 active markets** by default (adjustable by Orderly). Builders configure price sources, trading parameters, and Insurance Fund setup through the Builder dashboard.
+
+## How Community Listed Markets Differ for Traders
+
+Permissionlessly listed markets appear on the frontend as **"Community Listed"**. They work like standard Orderly perpetuals in most ways -- same matching engine, same order types, same settlement -- but with several important differences:
+
+| | Standard Orderly markets | Community Listed markets |
+| --- | --- | --- |
+| **Who operates it** | Orderly | Individual Builder |
+| **Insurance Fund** | Shared platform IF, managed by Orderly | Dedicated per-Builder IF, funded by the Builder |
+| **Margin mode** | Cross Margin and Isolated Margin | **Isolated Margin only** |
+| **What happens if IF is depleted** | Platform backstop | ADL applied only to positions in that market |
+| **Liquidity** | Platform-coordinated | Depends entirely on the Builder's market-making |
+| **Risk controls** | Platform-wide standards | Market-specific, can be restricted independently |
+
+### What this means in practice
+
+- **Your other positions are safe.** A liquidation on a Community Listed position cannot touch your margin on other markets. Your BTC cross-margin position is unaffected even if a Community Listed token crashes.
+- **Liquidity varies.** Community Listed markets depend on the Builder's own market-making setup, which means spreads and depth can vary significantly compared to standard markets.
+- **Markets can be restricted or delisted.** If a Community Listed market's liquidity, funding rate, or Insurance Fund health deteriorates beyond thresholds, the system will automatically restrict or delist it. This protects traders from continuing to trade in unhealthy conditions.
+- **A risk disclosure is shown before your first trade.** The first time you trade a Community Listed market, a disclosure explains the differences so you can make an informed decision.
+
+## What's Next
+
+Permissionless Listing is the first step toward a fully open market infrastructure. Planned future expansions include:
+
+- **Custom oracle support** -- Allow Builders to integrate their own oracle sources beyond the current supported set.
+- **RWA market support** -- Extend Permissionless Listing to real-world asset (RWA) perpetual markets.
+- **Permissionless Vault** -- Enable community-driven vault strategies built around permissionlessly listed markets.
+- **Public MM Program** -- Open market-making participation beyond Builder-managed MM accounts, allowing broader liquidity provision for Community Listed markets.
+
+## Related Pages
+
+- [Builders](/introduction/trade-on-orderly/builders)
+- [Isolated Margin](/introduction/trade-on-orderly/perpetual-futures/isolated-margin)
+- [Supported Markets](/introduction/trade-on-orderly/supported-markets)
+- [Trading Fees](/introduction/trade-on-orderly/trading-basics/trading-fees)

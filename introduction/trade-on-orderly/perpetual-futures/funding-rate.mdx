@@ -1,6 +1,6 @@
 ---
 title: "Funding Rate"
-description: "How funding rates are calculated and settled between long and short traders on Orderly perpetual futures."
+description: "Learn how funding rates are calculated and settled between long and short traders."
 ---
 
 Funding Fees are cash flows periodically exchanged between long and short position holders. These fees are based on a **Funding Rate** designed to keep the futures price aligned with the underlying Index Price.
@@ -27,9 +27,9 @@ The Funding Rate is determined by two components: the **Premium** and the **Inte
 
 The Premium measures the deviation between the futures price and the Index Price (i.e. the basis). To avoid manipulation, Orderly uses **Impact Bid and Ask prices** rather than the simple best bid/ask:
 
-- **Impact Bid Price** — the average fill price to execute a sell order with the size of the Impact Margin Notional.
-- **Impact Ask Price** — the average fill price to execute a buy order with the size of the Impact Margin Notional.
-- **Impact Margin Notional** — the notional available to trade with 1,000 USDC of collateral at the maximum leverage of the specific market. For example, for NEAR-USDC with 10x max leverage, the Impact Margin Notional is 10,000 USDC.
+- **Impact Bid Price** -- the average fill price to execute a sell order with the size of the Impact Margin Notional.
+- **Impact Ask Price** -- the average fill price to execute a buy order with the size of the Impact Margin Notional.
+- **Impact Margin Notional** -- the notional available to trade with 1,000 USDC of collateral at the maximum leverage of the specific market. For example, for NEAR-USDC with 10x max leverage, the Impact Margin Notional is 10,000 USDC.
 
 Every 15 seconds, Orderly computes the Premium:
 

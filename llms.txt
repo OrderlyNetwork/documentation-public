@@ -6,45 +6,46 @@ API Base: `https://api.orderly.org/` (Mainnet), `https://testnet-api.orderly.org
 
 ## Getting Started
 
-- [What is Orderly?](https://orderly.network/docs/introduction/getting-started/what-is-orderly): What Orderly is, who it is for, and how partners build on it.
+- [What is Orderly?](https://orderly.network/docs/introduction/getting-started/what-is-orderly): Discover what Orderly is, who it is for, and how to get started with the documentation.
+- [Builder Onboarding](https://orderly.network/docs/introduction/getting-started/builder-onboarding): Learn how to become a Builder on Orderly, choose a launch path, set up your builder profile, and move into implementation.
 - [Building on Orderly](https://orderly.network/docs/build-on-omnichain/building-on-omnichain): Start building your dApp on Orderly's omnichain trading infrastructure.
 - [Integration Checklist](https://orderly.network/docs/build-on-omnichain/integration-checklist): A structured guide for builders integrating with Orderly Network.
 
 ## Authentication
 
-- [API Authentication](https://orderly.network/docs/build-on-omnichain/api-authentication): All requests need to be signed using `orderly-key` and `orderly-secret`.
-- [Wallet Authentication](https://orderly.network/docs/build-on-omnichain/user-flows/wallet-authentication): Overview of wallet authentication & Orderly keys
+- [API Authentication](https://orderly.network/docs/build-on-omnichain/api-authentication): Implement secure request signing for the Orderly API using the ed25519 standard.
+- [Wallet Authentication](https://orderly.network/docs/build-on-omnichain/user-flows/wallet-authentication): Authenticate wallets and manage Orderly Keys for secure API access.
 
 ## Accounts and Funding
 
-- [Accounts](https://orderly.network/docs/build-on-omnichain/user-flows/accounts): Overview of account structure
-- [Deposit/Withdrawal](https://orderly.network/docs/build-on-omnichain/user-flows/withdrawal-deposit): Overview of deposit and withdrawal flow
+- [Accounts](https://orderly.network/docs/build-on-omnichain/user-flows/accounts): Learn how to register user accounts, manage account states, and map wallets to builders on Orderly.
+- [Deposit/Withdrawal](https://orderly.network/docs/build-on-omnichain/user-flows/withdrawal-deposit): Implement secure cross-chain deposits and withdrawals with step-by-step smart contract and API integration guides.
 
 ## Order Lifecycle
 
 - [Order Management](https://orderly.network/docs/build-on-omnichain/user-flows/order-management): How orders flow through Orderly's architecture, from placement to execution and settlement.
-- [Create Order](https://orderly.network/docs/build-on-omnichain/restful-api/private/create-order): Create Order
-- [Cancel Order](https://orderly.network/docs/build-on-omnichain/restful-api/private/cancel-order): Cancel Order
-- [Get Orders](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-orders): Get Orders
+- [Create Order](https://orderly.network/docs/build-on-omnichain/restful-api/private/create-order): [POST /v1/order] Create order
+- [Cancel Order](https://orderly.network/docs/build-on-omnichain/restful-api/private/cancel-order): [DELETE /v1/order] Cancel order
+- [Get Orders](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-orders): [GET /v1/orders] Get orders
 
 ## Isolated Margin
 
-- [Isolated Margin](https://orderly.network/docs/build-on-omnichain/user-flows/isolated-margin): Step-by-step guide to integrating Isolated Margin: switching margin modes, setting leverage, placing orders, and adjusting position margin.
-- [Isolated Margin](https://orderly.network/docs/introduction/trade-on-orderly/perpetual-futures/isolated-margin): How Isolated Margin mode works on Orderly, including per-position margin allocation, independent leverage, and risk isolation.
-- [Update Margin Mode](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-margin-mode): Update Margin Mode
-- [Get Margin Modes](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-margin-modes): Get Margin Modes
-- [Add Reduce Position Margin](https://orderly.network/docs/build-on-omnichain/restful-api/private/add-reduce-position-margin): Add or Reduce Position Margin
+- [Isolated Margin](https://orderly.network/docs/build-on-omnichain/user-flows/isolated-margin): Step-by-step guide to integrating Isolated Margin: setting leverage, placing orders, and adjusting position margin.
+- [Isolated Margin](https://orderly.network/docs/introduction/trade-on-orderly/perpetual-futures/isolated-margin): Discover how Isolated Margin mode works on Orderly, including per-position risk isolation.
+- [Update margin mode](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-margin-mode): [POST /v1/client/margin_mode] Update margin mode
+- [Get margin modes](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-margin-modes): [GET /v1/client/margin_modes] Get margin modes
+- [Add or reduce position margin](https://orderly.network/docs/build-on-omnichain/restful-api/private/add-or-reduce-position-margin): [POST /v1/position_margin] Add or reduce position margin
 
 ## Transfers and Settlement
 
-- [Internal Transfer](https://orderly.network/docs/build-on-omnichain/user-flows/internal-transfer): Overview of internal transfer flow
-- [Settle PnL](https://orderly.network/docs/build-on-omnichain/user-flows/settle-pnl): How to settle realized and unrealized PnL into USDC balance via the Orderly API.
-- [Create Internal Transfer](https://orderly.network/docs/build-on-omnichain/restful-api/private/create-internal-transfer): Create Internal Transfer
+- [Internal Transfer](https://orderly.network/docs/build-on-omnichain/user-flows/internal-transfer): Discover how to perform internal transfers between accounts and sub-accounts using wallet-signed requests.
+- [Settle PnL](https://orderly.network/docs/build-on-omnichain/user-flows/settle-pnl): Learn how to settle realized and unrealized PnL into USDC balances via the Orderly API.
+- [Create Internal Transfer](https://orderly.network/docs/build-on-omnichain/restful-api/private/create-internal-transfer): [POST /v1/internal_transfer] Create internal transfer
 
 ## SDK Setup
 
 - [List of SDKs](https://orderly.network/docs/sdks/overview): Comparison of Orderly SDKs (React components, hooks, core, perp) to help choose the right starting point.
-- [Getting started](https://orderly.network/docs/sdks/react/getting_started): Step-by-step guide to install the Orderly React SDK, configure providers, and build trading pages.
+- [Getting started](https://orderly.network/docs/sdks/react/getting_started): Quickly install and configure the Orderly React SDK to build professional trading interfaces.
 - [Setup](https://orderly.network/docs/sdks/hooks/setup): How to install, configure, and connect wallet adapters with the Orderly React hooks SDK.
 
 ## WebSocket & Real-Time Data
@@ -61,7 +62,7 @@ API Base: `https://api.orderly.org/` (Mainnet), `https://testnet-api.orderly.org
 
 ## Chains & Contracts
 
-- [Supported Chains](https://orderly.network/docs/introduction/trade-on-orderly/supported-chains): A list of supported chains
+- [Supported Chains](https://orderly.network/docs/introduction/trade-on-orderly/supported-chains): Explore the list of supported chains on Orderly Network.
 - [Smart Contract Addresses](https://orderly.network/docs/build-on-omnichain/addresses): Smart contract addresses for Orderly vault, USDC, and Verifier on each supported chain (mainnet and testnet).
 
 ## Troubleshooting

@@ -1,6 +1,6 @@
 ---
 title: "API Authentication"
-description: "All requests need to be signed using `orderly-key` and `orderly-secret`."
+description: "Implement secure request signing for the Orderly API using the ed25519 standard."
 ---
 
 ## Generate Request Signature
@@ -13,7 +13,7 @@ Orderly uses the [`ed25519` elliptic curve standard](https://ed25519.cr.yp.to/) 
     Add your account ID to the request header as `orderly-account-id`.
   </Step>
   <Step title="Orderly Key">
-    Add your Orderly public key to the request header as `orderly-key`. To generate and add a new Orderly key, see [the documentation](/build-on-omnichain/user-flows/wallet-authentication#orderly-key).
+    Add your Orderly public key to the request header as `orderly-key`. To generate and add a new Orderly Key, see [the documentation](/build-on-omnichain/user-flows/wallet-authentication#orderly-key).
     You can also obtain Orderly keys from frontend builders like [WOOFi Pro](https://pro.woofi.com).
   </Step>
   <Step title="Timestamp">
@@ -56,8 +56,53 @@ Orderly uses the [`ed25519` elliptic curve standard](https://ed25519.cr.yp.to/) 
 </Steps>
 
 <Note>
-  The Orderly key should be used without the `ed25519:` prefix when used in code samples below.
+  The Orderly Key should be used without the `ed25519:` prefix when used in code samples below.
 </Note>
+
+### Minimal Example
+
+This is a concise, single-file TypeScript example that demonstrates how to sign and send a request to the Orderly API using the `@noble/ed25519` library.
+
+```ts
+import { signAsync, getPublicKeyAsync } from '@noble/ed25519';
+import bs58 from 'bs58';
+
+async function main() {
+  const orderlyAccountId = 'YOUR_ACCOUNT_ID';
+  const orderlySecret = 'YOUR_ORDERLY_SECRET'; // base58 encoded
+  const baseUrl = 'https://testnet-api.orderly.org';
+  const url = new URL(`${baseUrl}/v1/order`);
+  const method = 'POST';
+  const body = JSON.stringify({
+    symbol: 'PERP_ETH_USDC',
+    order_type: 'MARKET',
+    order_quantity: 0.01,
+    side: 'BUY'
+  });
+  const timestamp = Date.now();
+
+  const privateKey = bs58.decode(orderlySecret);
+  const message = `${timestamp}${method}${url.pathname}${url.search}${body}`;
+  const signature = await signAsync(new TextEncoder().encode(message), privateKey);
+
+  const response = await fetch(url, {
+    method,
+    body,
+    headers: {
+      'Content-Type': 'application/json',
+      'orderly-account-id': orderlyAccountId,
+      'orderly-key': `ed25519:${bs58.encode(await getPublicKeyAsync(privateKey))}`,
+      'orderly-timestamp': String(timestamp),
+      'orderly-signature': Buffer.from(signature).toString('base64url'),
+    },
+  });
+
+  const data = await response.json();
+  console.log(data);
+}
+
+main();
+```
 
 ### Full Example
 

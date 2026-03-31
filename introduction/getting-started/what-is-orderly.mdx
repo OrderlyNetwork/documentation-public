@@ -1,34 +1,26 @@
 ---
 title: "What is Orderly?"
-description: "What Orderly is, who it is for, and how partners build on it."
+description: "Discover what Orderly is, who it is for, and how to get started with the documentation."
 ---
 
-<img className="block dark:hidden" src="/images/getting-started/preview-image.jpeg" alt="Orderly Preview Light" />
-<img className="hidden dark:block" src="/images/getting-started/preview-image.jpeg" alt="Orderly Preview Dark" />
+<img src="/images/getting-started/preview-image.jpeg" alt="Orderly Preview" />
 
-Orderly is trading infrastructure for partners that want to build their own trading experience on top of shared liquidity. Instead of building a matching engine, liquidity network, and settlement stack from scratch, builders integrate Orderly's APIs, SDKs, and smart contracts to launch their own product.
+Orderly is a headless omnichain trading infrastructure. Instead of building matching engines or settlement stacks, developers use Orderly's APIs and SDKs to launch branded trading experiences on top of shared liquidity.
 
-Orderly is not a consumer-facing exchange. It is a headless trading backend that sits underneath partner applications and powers the account, trading, market data, and settlement flows those applications expose to their own users.
-
-The core model is simple: your team owns the product, frontend, branding, and user relationship, while Orderly provides the trading infrastructure underneath.
+The core model: You own the frontend and user relationship; Orderly provides the trading backend.
 
 ## Who Orderly Is For
 
 - **DEX builders and trading apps:** Launch a branded perps experience on top of shared liquidity instead of operating a standalone venue.
-
-- **Wallets, custodians, and partner platforms:** Add trading functionality to an existing product without building the full backend trading stack yourself.
-
-- **Trading teams and API integrators:** Connect programmatically to trading, account, and market data interfaces while using the same core infrastructure as partner front ends.
+- **Wallets, custodians, and partner platforms:** Add trading functionality to an existing product without building the backend trading stack yourself.
+- **Trading teams and API integrators:** Connect programmatically to trading, account, and market-data interfaces while using the same infrastructure as partner frontends.
 
 ## Why Teams Build On Orderly
 
-- **You keep the frontend and user relationship:** Your team controls the product experience while Orderly handles the backend trading stack.
-
-- **You connect to shared liquidity instead of starting from zero:** Builders plug into a common trading backend and shared orderbook rather than trying to bootstrap isolated liquidity market by market.
-
-- **You get CEX-like trading performance with on-chain settlement:** Orderly combines low-latency trading infrastructure with documented on-chain deposit, withdrawal, and settlement flows.
-
-- **You get a builder-friendly business model:** Partners can define their own end-user fee structure on top of Orderly's base fee model.
+- **Shared liquidity from day one:** Builders connect to a common orderbook instead of trying to bootstrap isolated liquidity market by market.
+- **CEX-like performance with on-chain settlement:** Orderly combines low-latency trading infrastructure with documented deposit, withdrawal, and settlement rails.
+- **Flexible integration paths:** Teams can build with APIs, SDKs, UI components, or Orderly One depending on how much control they need.
+- **Builder-owned product experience:** Builders control the user-facing product, fee strategy, and go-to-market approach.
 
 ## What Orderly Provides
 
@@ -37,40 +29,23 @@ Orderly's primary product is omnichain trading infrastructure for perpetual futu
 - shared liquidity and orderbook access
 - account, order, and market data APIs
 - smart contract rails for deposit, withdrawal, and settlement
-- partner-facing controls for fees, referrals, and operational workflows
+- builder-facing controls for fees, referrals, and operational workflows
 
-## Why Omnichain Matters
-
-Orderly's architecture is designed so partner applications can serve users across supported chains while connecting into the same trading system and shared orderbook. That reduces the need to fragment liquidity by chain and makes it easier to deliver a consistent trading experience from a single partner product.
-
-If you want the system-level view, start with the [System Overview](/build-on-omnichain/building-on-omnichain), which explains how the Asset Layer, Settlement Layer, and Engine Layer fit together.
-
-## How You Can Build On Orderly
+## How To Build On Orderly
 
 Different teams need different levels of control. Builders can choose between:
 
 - **Direct API access:** Build your own backend and frontend against Orderly's REST and WebSocket interfaces.
+- **SDKs and connectors:** Use the [React SDK](/sdks/react/overview), [Hooks SDK](/sdks/hooks/overview), or [Python connector](https://github.com/OrderlyNetwork/orderly-evm-connector-python) to accelerate implementation.
+- **Orderly One:** Launch with a lower-code path when you want a faster route to market. See [Builder Guidelines](/introduction/orderly-one/builder-guidelines) for the code of conduct and branding standards.
 
-- **SDKs and connectors:** Use our [React SDK](/sdks/react/overview), [Hooks SDK](/sdks/hooks/overview), or [Python connector](https://github.com/OrderlyNetwork/orderly-evm-connector-python) to accelerate implementation.
+Orderly also has adjacent product areas, such as [Strategy Vault](/introduction/orderly-omniVault/overview), but those sit alongside the core builder integration path rather than replacing it.
 
-- **Partner onboarding support:** Work with Orderly on builder setup, launch planning, and operational readiness when needed.
+## Where To Go Next
 
-Orderly also has complementary product areas and programs, such as [Orderly One](/introduction/orderly-one/builder-guidelines) and [Orderly OmniVault](/introduction/orderly-omniVault/overview), but those sit alongside the core builder integration story rather than replacing it.
+Use this page to understand the product model. Then pick the next page based on what you need:
 
-## Why We Are Building This
-
-Orderly's mission is to make it easier for partners to build and scale trading products without rebuilding the entire market infrastructure themselves.
-
-That means reducing two of the hardest problems in launching a trading venue: liquidity is difficult to bootstrap, and infrastructure is expensive to build and maintain.
-
-The goal is not just more trading interfaces. It is a stronger ecosystem of partner products built on common infrastructure.
-
-## Where To Start
-
-- Read [System Overview](/build-on-omnichain/building-on-omnichain) for the architecture and product model.
-
-- Follow the [Integration Checklist](/build-on-omnichain/integration-checklist) for the practical implementation path.
-
-- Review [API Authentication](/build-on-omnichain/api-authentication) before wiring up private requests.
-
-- Use [Builder Onboarding](/introduction/getting-started/broker-onboarding) when you are ready to set up your builder profile and go live.
+- **Need the system view?** Go to [Building on Orderly](/build-on-omnichain/building-on-omnichain) for the architecture and integration surface area.
+- **Ready to set up your builder identity?** Go to [Builder Onboarding](/introduction/getting-started/builder-onboarding).
+- **Ready to start implementation?** Follow the [Integration Checklist](/build-on-omnichain/integration-checklist).
+- **Need support during setup?** Use [Partner Support](/build-on-omnichain/partner-support) and [Integration FAQs](/build-on-omnichain/integration-faqs).

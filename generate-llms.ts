@@ -26,9 +26,10 @@ type PageInfo = {
   title: string;
   summary: string;
   sourceUrl: string;
+  content: string;
 };
 
-type OpenApiSummaryMap = Map<string, string>;
+type OpenApiSummaryMap = Map<string, { summary: string; method: string; path: string }>;
 
 const ROOT = process.cwd();
 
@@ -135,6 +136,7 @@ function buildFullOutput(config: LlmsConfig, docs: DocsJson, pages: Map<string, 
   );
   lines.push("");
 
+  const canonicalSet = new Set(config.canonicalPages.map(normalizeRoute));
   const latestVersion = docs.navigation?.versions?.find((entry) => entry.version === "latest");
   const tabs = latestVersion?.tabs ?? [];
 
@@ -144,14 +146,20 @@ function buildFullOutput(config: LlmsConfig, docs: DocsJson, pages: Map<string, 
     lines.push("");
 
     for (const group of tab.groups ?? []) {
-      emitGroup(group, pages, lines, 3);
+      emitGroup(group, pages, canonicalSet, lines, 3);
     }
   }
 
   return `${lines.join("\n").trim()}\n`;
 }
 
-function emitGroup(group: DocsGroup | DocsNode, pages: Map<string, PageInfo>, lines: string[], depth: number) {
+function emitGroup(
+  group: DocsGroup | DocsNode,
+  pages: Map<string, PageInfo>,
+  canonicalSet: Set<string>,
+  lines: string[],
+  depth: number
+) {
   const g = group as { group?: string; pages?: DocsNode[] };
   if (!g.group || !g.pages) return;
 
@@ -163,21 +171,47 @@ function emitGroup(group: DocsGroup | DocsNode, pages: Map<string, PageInfo>, li
     if (typeof node === "string") {
       const page = pages.get(normalizeRoute(node));
       if (page) {
-        lines.push(`- [${page.title}](${page.sourceUrl}): ${page.summary}`);
+        const isReleaseNote = page.route.startsWith("release-notes/");
+        if (canonicalSet.has(page.route) && !isReleaseNote) {
+          lines.push(`### ${page.title}`);
+          lines.push(`Source: ${page.sourceUrl}`);
+          lines.push("");
+          if (page.content.length > 10000) {
+            console.warn(`Warning: Truncating long canonical page: ${page.route} (${page.content.length} chars)`);
+          }
+          const truncatedContent = page.content.length > 10000 
+            ? page.content.slice(0, 9900) + "... (truncated for brevity)"
+            : page.content;
+          lines.push(truncatedContent);
+          lines.push("");
+        } else {
+          lines.push(`- [${page.title}](${page.sourceUrl}): ${page.summary}`);
+        }
       }
     } else if (node.group) {
-      // Flush any bullet lines with a blank line before sub-group heading
-      if (lines[lines.length - 1] !== "") {
+      if (lines[lines.length - 1] !== "" && lines[lines.length - 1]?.startsWith("- ")) {
         lines.push("");
       }
-      emitGroup(node, pages, lines, depth + 1);
+      emitGroup(node, pages, canonicalSet, lines, depth + 1);
       continue;
     } else if (node.pages) {
       for (const child of node.pages) {
         if (typeof child === "string") {
           const page = pages.get(normalizeRoute(child));
           if (page) {
-            lines.push(`- [${page.title}](${page.sourceUrl}): ${page.summary}`);
+            const isReleaseNote = page.route.startsWith("release-notes/");
+            if (canonicalSet.has(page.route) && !isReleaseNote) {
+              lines.push(`### ${page.title}`);
+              lines.push(`Source: ${page.sourceUrl}`);
+              lines.push("");
+              const truncatedContent = page.content.length > 10000 
+                ? page.content.slice(0, 9900) + "... (truncated for brevity)"
+                : page.content;
+              lines.push(truncatedContent);
+              lines.push("");
+            } else {
+              lines.push(`- [${page.title}](${page.sourceUrl}): ${page.summary}`);
+            }
           }
         }
       }
@@ -210,17 +244,32 @@ async function readPage(
 
   const raw = await fs.readFile(filePath, "utf8");
   const title = extractTitle(raw, route);
-    const summary =
-      route === "home"
+  const summary =
+    route === "home"
       ? "Orderly documentation landing page with navigation to integration guides, API references, SDKs, Strategy Vault docs, troubleshooting, and release notes."
       : extractSummary(raw, openApiSpecs);
+
+  const content = cleanFullContent(raw);
 
   return {
     route,
     title,
     summary,
-    sourceUrl: `${baseUrl}/${route}`
+    sourceUrl: `${baseUrl}/${route}`,
+    content
   };
+}
+
+function cleanFullContent(raw: string) {
+  return raw
+    .replace(/^---[\s\S]*?---\s*/m, "") // Remove frontmatter
+    .replace(/import\s+[\s\S]*?from\s+['"].*?['"];?/g, "") // Remove imports
+    .replace(/export\s+const\s+[\s\S]*?;/g, "") // Remove exports
+    .replace(/<style[\s\S]*?>[\s\S]*?<\/style>/gi, "") // Remove <style> blocks
+    .replace(/style=\{\{[\s\S]*?\}\}/g, "") // Remove inline React styles
+    .replace(/className=['"].*?['"]/g, "") // Remove CSS classes (noise for AI)
+    .replace(/<svg[\s\S]*?>[\s\S]*?<\/svg>/gi, "[SVG Illustration]") // Replace heavy SVGs
+    .trim();
 }
 
 async function resolveRouteFile(route: string) {
@@ -275,9 +324,9 @@ function extractSummary(content: string, openApiSpecs?: Map<string, OpenApiSumma
     const specMap = openApiSpecs.get(specName);
     if (specMap) {
       const key = `${method} ${apiPath}`;
-      const apiSummary = specMap.get(key);
-      if (apiSummary) {
-        return apiSummary;
+      const apiInfo = specMap.get(key);
+      if (apiInfo) {
+        return `[${apiInfo.method.toUpperCase()} ${apiInfo.path}] ${apiInfo.summary}`;
       }
     }
   }
@@ -368,6 +417,7 @@ function isLikelyMarkup(line: string) {
   return /<\/?[A-Za-z]|\/>|className=|style=\{\{|onClick=|src=|title=|icon=|href=|target=|rel=|cols=|\{[^}]*\}/.test(line);
 }
 
+
 function getFrontmatter(content: string) {
   const match = content.match(/^---\n([\s\S]*?)\n---/);
   return match?.[1] ?? "";
@@ -417,7 +467,11 @@ async function parseOpenApiSummaries(specName: string): Promise<OpenApiSummaryMa
       const summaryMatch = line.match(/^      summary:\s*["']?(.+?)["']?\s*$/);
       if (summaryMatch) {
         const key = `${currentMethod} ${currentPath}`;
-        summaries.set(key, summaryMatch[1]);
+        summaries.set(key, {
+          summary: summaryMatch[1],
+          method: currentMethod,
+          path: currentPath
+        });
         currentMethod = "";
         continue;
       }
