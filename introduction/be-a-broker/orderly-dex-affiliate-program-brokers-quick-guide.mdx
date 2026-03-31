@@ -75,6 +75,24 @@ For every trade executed by a user $(L_N)$ on the DEX, the affiliates within the
 
 > Note: Direct referrers earn a 10% bonus referral commission rate from trades executed by their direct referees.
 
+#### Example: 3-Level Referral Network
+
+Consider a trade where Builder Fee = $100, with the following commission rates:
+- $X_1 = 40\%$ ($L_1$ affiliate rate set by builder)
+- $X_2 = 25\%$ ($L_2$ rate set by $L_1$)
+- $X_3 = 15\%$ ($L_3$ rate set by $L_2$)
+
+**Commission distribution for a $100 Builder Fee:**
+
+| Role | Calculation | Commission |
+|------|-------------|------------|
+| $L_1$ affiliate | $(40\% - 25\%) \times 100$ | **$15** |
+| $L_2$ affiliate | $(25\% - 15\%) \times 100$ | **$10** |
+| $L_3$ affiliate (direct referrer) | $(15\% + 10\%) \times 100$ | **$25** |
+| **Total distributed** | | **$50** |
+
+In this example, when $L_4$ (the trader) executes a trade, $L_3$ earns their full $15\%$ rate plus the $10\%$ bonus, totaling $25. The $L_4$ trader does not earn commission from their own trade.
+
 ### 5.3 $L_1$ affiliate commission rate adjustments
 
 Admin console: [https://admin.orderly.network/referral](https://admin.orderly.network/referral) 
