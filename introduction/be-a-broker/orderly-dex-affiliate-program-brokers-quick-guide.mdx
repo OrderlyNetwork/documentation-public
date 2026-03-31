@@ -71,24 +71,11 @@ For every trade executed by a user $(L_N)$ on the DEX, the affiliates within the
 | **$L_2$ affiliate**  | $(X_2 - X_3)$ where $X_3 \in [0, X_2]$      | $(X_2 - X_3) \times \text{(Fee)}_\text{Builder}$                                    |
 | **$L_3$ affiliate**  | $(X_3 - X_4)$ where $X_4 \in [0, X_3]$      | $(X_3 - X_4) \times \text{(Fee)}_\text{Builder}$                                    |
 | **…**               | …                                            | …                                                                                    |
-| **$L_{N-1}$ user**   | $(X_{N-1} - X_N)$ where $X_N \in [0, X_{N-1}]$ | $[(X_{N-1} - X_N) + 10\%] \times \text{(Fee)}_\text{Builder}$<br/>$L_{N-1}$ user earns a 10% bonus as the direct referrer. |
-| **$L_N$ user**      |                                              | *Earn referee's commission:* $X_N \times \text{(Fee)}_\text{Builder}$                |
+| **$L_{N-1}$ user (direct referrer)** | $(X_{N-1} - X_N) + 10\%$ where $X_N \in [0, X_{N-1}]$ | $[(X_{N-1} - X_N) + 10\%] \times \text{(Fee)}_\text{Builder}$<br/>Direct referrer earns their share plus a 10% bonus from direct referees. |
 
-> Note: Direct referrers earn a 10% bonus referral commission rate from trades executed by their direct referees.
+> Note: Direct referrers earn a 10% bonus referral commission rate from trades executed by their direct referees. The $X_N$ portion is distributed up the referral chain to the direct referrer, not kept by the referee.
 
-### 5.3 Referee's commission
-
-For every trade executed by a user $(L_N)$ on the DEX, the user can earn the following referee's commission within the multilevel referral network:
-
-$$
-X_N \times \text{(Fee)}_\text{Builder}
-$$
-
-where $X_N$ is the commission rate allocated by the direct referrer $(L_{N-1})$.
-
-> Note: $L_1$ users have no referrers above them and earn no referee's commissions from their own trades.
-
-### 5.4 $L_1$ affiliate commission rate adjustments
+### 5.3 $L_1$ affiliate commission rate adjustments
 
 Admin console: [https://admin.orderly.network/referral](https://admin.orderly.network/referral) 
 
