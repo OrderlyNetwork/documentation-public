@@ -696,6 +696,8 @@ paths:
         **Limit: 10 requests per 1 second per IP address**
 
         `GET /v1/public/liquidation`
+
+        Returns a list of positions that are currently being liquidated. These are positions where the margin has dropped below the maintenance margin requirement and are in the process of being closed by the liquidation engine.
       tags:
         - public
       parameters:
@@ -747,26 +749,28 @@ paths:
         **Limit: 10 requests per 1 second per IP address**
 
         `GET /v1/public/liquidated_positions`
+
+        Returns a list of positions that have been fully liquidated. This includes historical data on positions that were closed by the liquidation engine after margin was exhausted.
       tags:
         - public
       parameters:
         - name: symbol
           in: query
-          description: ""
+          description: Filter results to a specific trading symbol, for example `PERP_ETH_USDC`.
           required: false
           example: PERP_ETH_USDC
           schema:
             type: string
         - name: start_t
           in: query
-          description: ""
+          description: Start time of the query range as a 13-digit Unix timestamp in milliseconds.
           required: false
           example: ""
           schema:
             type: string
         - name: end_t
           in: query
-          description: ""
+          description: End time of the query range as a 13-digit Unix timestamp in milliseconds.
           required: false
           example: ""
           schema:
@@ -780,7 +784,7 @@ paths:
             type: string
         - name: size
           in: query
-          description: ""
+          description: Number of records to return per page.
           required: false
           example: ""
           schema:
@@ -1241,788 +1245,9 @@ paths:
       parameters:
         - name: symbol
           in: query
-          description: ""
+          description: Filter results to a specific trading symbol, for example `PERP_ETH_USDC`.
           required: false
-          example: ""
-          schema:
-            type: string
-        - name: start_t
-          in: query
-          description: ""
-          required: false
-          example: ""
-          schema:
-            type: number
-        - name: end_t
-          in: query
-          description: ""
-          required: false
-          example: ""
-          schema:
-            type: number
-        - name: page
-          in: query
-          description: "start from 1"
-          required: false
-          example: ""
-          schema:
-            type: number
-        - name: size
-          in: query
-          description: ""
-          required: false
-          example: ""
-          schema:
-            type: number
-        - $ref: "#/components/parameters/orderly_timestamp"
-        - $ref: "#/components/parameters/orderly_account_id"
-        - $ref: "#/components/parameters/orderly_key"
-        - $ref: "#/components/parameters/orderly_signature"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LiquidatorLiquidationsResponse"
-  /v1/client/leverage:
-    get:
-      summary: Get leverage setting
-      deprecated: false
-      description: |
-        **Limit: 1 requests per 1 second per IP address**
-
-        `GET /v1/client/leverage`
-
-        Get account's leverage setting for a specific symbol.
-      tags:
-        - private
-      parameters:
-        - name: symbol
-          in: query
-          description: ""
-          required: true
-          example: "PERP_BTC_USDC"
-          schema:
-            type: string
-        - name: margin_mode
-          in: query
-          description: "Default: `CROSS`. Supported values: `CROSS`/`ISOLATED`"
-          required: false
-          schema:
-            type: string
-            enum:
-              - CROSS
-              - ISOLATED
-        - $ref: "#/components/parameters/orderly_timestamp"
-        - $ref: "#/components/parameters/orderly_account_id"
-        - $ref: "#/components/parameters/orderly_key"
-        - $ref: "#/components/parameters/orderly_signature"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LeverageResponse"
-
-  /v1/client/leverages:
-    get:
-      summary: Get all leverage settings
-      deprecated: false
-      description: |
-        `GET /v1/client/leverages`
-
-        Get leverage settings for all symbols.
-      tags:
-        - private
-      parameters:
-        - $ref: "#/components/parameters/orderly_timestamp"
-        - $ref: "#/components/parameters/orderly_account_id"
-        - $ref: "#/components/parameters/orderly_key"
-        - $ref: "#/components/parameters/orderly_signature"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LeveragesResponse"
-    post:
-      summary: Update leverage setting
-      deprecated: false
-      description: |
-        **Limit: 5 requests per 60 second per user**
-
-        `POST /v1/client/leverages`
-
-        Update leverage settings. This endpoint supports two modes:
-
-        **Single symbol mode:** When `symbol` is provided, update leverage for that specific symbol.
-
-        **Batch mode:** When `symbol` is omitted, set leverage for all symbols in a single atomic operation. Each symbol's new leverage will be adjusted to `min(requested_leverage, symbol_max_leverage)`.
-
-        For example, if BTC max leverage is 100, ETH max leverage is 100, and NEAR max leverage is 10, and the user requests leverage = 20, the result will be: BTC = 20, ETH = 20, NEAR = 10.
-
-        Batch update behavior with margin modes:
-        - **Cross margin symbols:** A margin check is performed assuming all cross-margin symbols are updated to the new leverage. Either all cross-margin symbol leverages are updated successfully, or none are updated.
-        - **Isolated margin symbols:** The leverage update will only apply to symbols with no active isolated positions or pending orders. The update for isolated margin symbols will always go through for eligible symbols.
-
-        Validation Logic:
-
-        1. Check the leverage range is eligible
-
-        2. Check if the position notional under the updated leverage is acceptable
-           - `max_notional = (1 / (symbol_leverage * imr_factor)) ^ (1/0.8)`
-           - `symbol_leverage_max = round down to int → min(1 / (imr_factor * notional ^ 0.8), 1/base_imr)`
-
-        3. Check if the margin is enough
-      tags:
-        - private
-      parameters:
-        - $ref: "#/components/parameters/orderly_timestamp"
-        - $ref: "#/components/parameters/orderly_account_id"
-        - $ref: "#/components/parameters/orderly_key"
-        - $ref: "#/components/parameters/orderly_signature"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                symbol:
-                  type: string
-                  example: "PERP_BTC_USDC"
-                leverage:
-                  type: integer
-                  description: Integer between 1 to 100
-                margin_mode:
-                  type: string
-                  description: "Default: `CROSS`. Margin mode for the leverage update."
-                  enum:
-                    - CROSS
-                    - ISOLATED
-              required:
-                - leverage
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LeverageResponse"
-
-  /v1/public/leverage:
-    get:
-      summary: Get max leverage setting
-      deprecated: false
-      description: |
-        **Limit: 10 requests per 1 second per IP address**
-
-        `GET /v1/public/leverage`
-
-        Get max leverage setting
-      tags:
-        - public
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetLeverageSettingResponse"
-
-  /v1/liquidations:
-    get:
-      summary: Get liquidated positions of account
-      deprecated: false
-      description: |
-        **Limit: 10 requests per 1 second per IP address**
-
-        `GET /v1/liquidations`
-      tags:
-        - private
-      parameters:
-        - name: symbol
-          in: query
-          description: ""
-          required: false
-          example: ""
-          schema:
-            type: string
-        - name: start_t
-          in: query
-          description: ""
-          required: false
-          example: ""
-          schema:
-            type: number
-        - name: end_t
-          in: query
-          description: ""
-          required: false
-          example: ""
-          schema:
-            type: number
-        - name: page
-          in: query
-          description: "start from 1"
-          required: false
-          example: ""
-          schema:
-            type: number
-        - name: size
-          in: query
-          description: ""
-          required: false
-          example: ""
-          schema:
-            type: number
-        - name: sort_by
-          in: query
-          description: "`liquidation_id`/`time`"
-          required: false
-          example: ""
-          schema:
-            type: string
-        - name: liquidation_id
-          in: query
-          description: "return the designed liquidation_id only"
-          required: false
-          example: ""
-          schema:
-            type: number
-        - $ref: "#/components/parameters/orderly_timestamp"
-        - $ref: "#/components/parameters/orderly_account_id"
-        - $ref: "#/components/parameters/orderly_key"
-        - $ref: "#/components/parameters/orderly_signature"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LiquidationsResponse"
-  /v1/liquidation:
-    post:
-      summary: Claim liquidated positions
-      deprecated: false
-      description: |
-        **Limit: 5 requests per 1 second**
-
-        `POST /v1/liquidation`
-      tags:
-        - private
-      parameters:
-        - $ref: "#/components/parameters/orderly_timestamp"
-        - $ref: "#/components/parameters/orderly_account_id"
-        - $ref: "#/components/parameters/orderly_key"
-        - $ref: "#/components/parameters/orderly_signature"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/LiquidationBody"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PostLiquidationResponse"
-  /v1/order:
-    post:
-      summary: Create order
-      deprecated: false
-      description: >-
-        **Limit: 10 requests per 1 second**
-
-
-        `POST /v1/order`
-
-
-        Place order maker/taker, the order executed information will be update
-        from websocket stream.
-
-        will response immediately with an order created message.
-
-
-        `MARKET` type order behavior: it matches until the full size is
-        executed. If the size is too large (larger than whole book) or the
-        matching price exceeds the price limit (refer to `price_range`), then
-        the remaining quantity will be cancelled.
-
-
-        `IOC` type order behavior: it matches as much as possible at the
-        order_price. If not fully executed, then remaining quantity will be
-        cancelled.
-
-
-        `FOK` type order behavior: if the order can be fully executed at the
-        order_price then the order gets fully executed otherwise would be
-        cancelled without any execution.
-
-
-        `POST_ONLY` type order behavior: if the order will be executed with any
-        maker trades at the time of placement, then it will be cancelled without
-        any execution.
-
-
-        `ASK` type order behavior: the order price is guranteed to be the best
-        ask price of the orderbook at the time it gets accepted.
-
-
-        `BID` type order behavior: the order price is guranteed to be the best
-        bid price of the orderbook at the time it gets accepted.
-
-
-        `visible_quantity` behavior: it sets the maximum quantity to be shown on
-        orderbook. By default, it is equal to order_quantity, negative number
-        and number larger than `order_quantity` is not allowed. If it sets to 0,
-        the order would be hidden from the orderbook. It doesn't work for
-        `MARKET`/`IOC`/`FOK` orders since orders with these types would be
-        executed and cancelled immediately and not be shown on orderbook. For
-        `LIMIT` order, as long as it's not complete,
-        `visible_quantity` is the maximum quantity that shown on orderbook.
-
-
-        `order_quantity` are provided. The precision of the number should be within 8 digits.
-
-
-        `client_order_id` behavior: customized order_id, a unique id among open
-        orders. Orders with the same `client_order_id` can be accepted only when
-        the previous one if completed, otherwise the order will be rejected.
-
-
-        Note: This endpoint requires `trading` scope in orderly key.
-      tags:
-        - private
-      parameters:
-        - $ref: "#/components/parameters/orderly_timestamp"
-        - $ref: "#/components/parameters/orderly_account_id"
-        - $ref: "#/components/parameters/orderly_key"
-        - $ref: "#/components/parameters/orderly_signature"
-        - $ref: "#/components/parameters/recv_window_header"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/PostOrderBody"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PostOrderResponse"
-    delete:
-      summary: Cancel order
-      deprecated: false
-      description: |
-        **Limit: 10 requests per 1 second**
-
-        `DELETE /v1/order?order_id={order_id}&symbol={symbol}`
-
-        Cancels a single order by `order_id`.
-
-        Note: This endpoint requires `trading` scope in orderly key.
-      tags:
-        - private
-      parameters:
-        - name: symbol
-          in: query
-          description: ""
-          required: true
-          example: ""
-          schema:
-            type: string
-        - name: order_id
-          in: query
-          description: ""
-          required: true
-          example: ""
-          schema:
-            type: number
-        - $ref: "#/components/parameters/orderly_timestamp"
-        - $ref: "#/components/parameters/orderly_account_id"
-        - $ref: "#/components/parameters/orderly_key"
-        - $ref: "#/components/parameters/orderly_signature"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DeleteOrderResponse"
-    put:
-      summary: Edit order
-      deprecated: false
-      description: >-
-        **Limit: 10 request per 1 second**
-
-
-        `PUT /v1/order`
-
-
-        Edit a pending order by `order_id`. Only the `order_price` or
-        `order_quantity` can be amended.
-
-
-        Note: This endpoint requires `trading` scope in orderly key.
-      tags:
-        - private
-      parameters:
-        - $ref: "#/components/parameters/orderly_timestamp"
-        - $ref: "#/components/parameters/orderly_account_id"
-        - $ref: "#/components/parameters/orderly_key"
-        - $ref: "#/components/parameters/orderly_signature"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/OrderBody"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PutOrderResponse"
-  /v1/order/{order_id}:
-    get:
-      summary: Get order by order_id
-      deprecated: false
-      description: |
-        **Limit: 10 requests per 1 second**
-
-        `GET /v1/order/{order_id}`
-
-        Get details of a single order by `order_id`.
-      tags:
-        - private
-      parameters:
-        - name: order_id
-          in: path
-          description: id of the order
-          required: true
-          schema:
-            type: string
-        - $ref: "#/components/parameters/orderly_timestamp"
-        - $ref: "#/components/parameters/orderly_account_id"
-        - $ref: "#/components/parameters/orderly_key"
-        - $ref: "#/components/parameters/orderly_signature"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/OrderResponse"
-  /v1/trades:
-    get:
-      summary: Get trades
-      deprecated: false
-      description: |
-        **Limit: 10 requests per 1 second**
-
-        `GET /v1/trades`
-
-        Return client’s trades history within a time range.
-
-        Only return the latest 500 entries.
-      tags:
-        - private
-      parameters:
-        - name: symbol
-          in: query
-          description: ""
-          required: false
-          example: ""
-          schema:
-            type: string
-        - name: start_t
-          in: query
-          description: >-
-            start time range that wish to query, noted the time stamp is
-            13-digits timestamp.
-          required: false
-          example: ""
-          schema:
-            type: number
-        - name: end_t
-          in: query
-          description: >-
-            end time range that wish to query, noted the time stamp is 13-digits
-            timestamp.
-          required: false
-          example: ""
-          schema:
-            type: number
-        - name: page
-          in: query
-          description: the page you wish to query. start from 1
-          required: false
-          example: ""
-          schema:
-            type: number
-        - name: size
-          in: query
-          description: "the page size you wish to query. (max: 500)"
-          required: false
-          example: ""
-          schema:
-            type: number
-        - $ref: "#/components/parameters/orderly_timestamp"
-        - $ref: "#/components/parameters/orderly_account_id"
-        - $ref: "#/components/parameters/orderly_key"
-        - $ref: "#/components/parameters/orderly_signature"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TradesResponse"
-  /v1/client/holding:
-    get:
-      summary: Get current holding
-      deprecated: false
-      description: |
-        **Limit: 10 requests per 1 seconds**
-
-        `GET /v1/client/holding`
-
-        Get the current summary of user token holdings.
-      tags:
-        - private
-      parameters:
-        - name: all
-          in: query
-          description: >-
-            true/false. If true then will return all token even if balance is
-            empty.
-          required: false
-          example: ""
-          schema:
-            type: boolean
-        - $ref: "#/components/parameters/orderly_timestamp"
-        - $ref: "#/components/parameters/orderly_account_id"
-        - $ref: "#/components/parameters/orderly_key"
-        - $ref: "#/components/parameters/orderly_signature"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClientHoldingResponse"
-
-  /v1/account_info:
-    get:
-      summary: Get account overview info
-      deprecated: false
-      description: |
-        **Limit: 10 requests per 1 second per user**
-
-        `GET /v1/account_info`
-
-        Returns account-level collateral, margin, and PnL overview metrics for the authenticated account.
-      tags:
-        - private
-      parameters:
-        - $ref: "#/components/parameters/orderly_timestamp"
-        - $ref: "#/components/parameters/orderly_account_id"
-        - $ref: "#/components/parameters/orderly_key"
-        - $ref: "#/components/parameters/orderly_signature"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AccountInfoResponse"
-
-  /v1/client/margin_mode:
-    post:
-      summary: Update margin mode
-      deprecated: false
-      description: |
-        **Limit: 10 requests per 1 second per user**
-
-        `POST /v1/client/margin_mode`
-
-        Update the default margin mode for a specific symbol. Switching a symbol's margin mode is only possible when you have no open positions or pending orders on that symbol in the current mode.
-      tags:
-        - private
-      parameters:
-        - $ref: "#/components/parameters/orderly_timestamp"
-        - $ref: "#/components/parameters/orderly_account_id"
-        - $ref: "#/components/parameters/orderly_key"
-        - $ref: "#/components/parameters/orderly_signature"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                symbol:
-                  type: string
-                  description: "Symbol to update margin mode for"
-                  example: "PERP_BTC_USDC"
-                default_margin_mode:
-                  type: string
-                  description: "Target margin mode"
-                  enum:
-                    - CROSS
-                    - ISOLATED
-                  example: "ISOLATED"
-              required:
-                - symbol
-                - default_margin_mode
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BasicResponse"
-
-  /v1/position_margin:
-    post:
-      summary: Add or reduce position margin
-      deprecated: false
-      description: |
-        **Limit: 10 requests per 1 second per user**
-
-        `POST /v1/position_margin`
-
-        Add or reduce margin for an existing isolated margin position. This allows you to adjust the margin allocated to a specific isolated position after it has been opened.
-
-        - `ADD`: Transfer margin from your available balance to the isolated position, lowering the liquidation price.
-        - `REDUCE`: Transfer margin from the isolated position back to your available balance, raising the liquidation price.
-
-        **Prerequisites:** You must have an open isolated position on the specified symbol.
-
-        Note: This endpoint requires `trading` scope in orderly key.
-      tags:
-        - private
-      parameters:
-        - $ref: "#/components/parameters/orderly_timestamp"
-        - $ref: "#/components/parameters/orderly_account_id"
-        - $ref: "#/components/parameters/orderly_key"
-        - $ref: "#/components/parameters/orderly_signature"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                symbol:
-                  type: string
-                  description: "Symbol of the isolated position"
-                  example: "PERP_ETH_USDC"
-                amount:
-                  type: string
-                  description: "Amount of margin to add or reduce"
-                  example: "3"
-                type:
-                  type: string
-                  description: "Operation type"
-                  enum:
-                    - ADD
-                    - REDUCE
-                  example: "ADD"
-              required:
-                - symbol
-                - amount
-                - type
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/BasicResponse"
-
-  /v1/client/margin_modes:
-    get:
-      summary: Get margin modes
-      deprecated: false
-      description: |
-        **Limit: 10 requests per 1 second per user**
-
-        `GET /v1/client/margin_modes`
-
-        Get default margin mode for all symbols.
-      tags:
-        - private
-      parameters:
-        - $ref: "#/components/parameters/orderly_timestamp"
-        - $ref: "#/components/parameters/orderly_account_id"
-        - $ref: "#/components/parameters/orderly_key"
-        - $ref: "#/components/parameters/orderly_signature"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MarginModesResponse"
-
-  /v1/client/info:
-    get:
-      summary: Get account information
-      deprecated: false
-      description: |
-        **Limit: 10 requests per 60 seconds**
-
-        `GET /v1/client/info`
-
-        Returns account configuration details for the authenticated account, including fee rates and leverage settings.
-      tags:
-        - private
-      parameters:
-        - $ref: "#/components/parameters/orderly_timestamp"
-        - $ref: "#/components/parameters/orderly_account_id"
-        - $ref: "#/components/parameters/orderly_key"
-        - $ref: "#/components/parameters/orderly_signature"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ClientInfoResponse"
-  /v1/orders:
-    get:
-      summary: Get orders
-      deprecated: false
-      description: >
-        **Limit: 10 requests per 1 second**
-
-
-        `GET /v1/orders`
-
-
-        Get orders by customized filters.
-
-
-        For filter by status, one can reference special bundled statuses below
-        for ease of access of Open (ie `INCOMPLETE`) orders or `COMPLETED`
-        orders.
-
-
-        - `INCOMPLETE` = `NEW` + `PARTIAL_FILLED`
-
-        - `COMPLETED` = `CANCELLED` + `FILLED`
-      tags:
-        - private
-      parameters:
-        - name: symbol
-          in: query
-          description: ""
-          required: false
-          example: ""
+          example: PERP_ETH_USDC
           schema:
             type: string
         - name: side
@@ -2049,7 +1274,7 @@ paths:
             type: string
         - name: order_tag
           in: query
-          description: ""
+          description: Filter by a custom tag assigned to the order.
           required: false
           example: ""
           schema:
@@ -4314,7 +3539,7 @@ paths:
             type: string
         - name: order_tag
           in: query
-          description: ""
+          description: Filter by a custom tag assigned to the order.
           required: false
           example: ""
           schema:
@@ -4580,7 +3805,7 @@ paths:
             type: string
         - name: order_tag
           in: query
-          description: ""
+          description: Filter by a custom tag assigned to the order.
           required: false
           example: ""
           schema:
@@ -4694,7 +3919,7 @@ paths:
             type: number
         - name: order_tag
           in: query
-          description: ""
+          description: Filter by a custom tag assigned to the order.
           required: false
           example: ""
           schema:
@@ -7332,7 +6557,7 @@ paths:
               example: "PERP_WOO_USDC"
         - name: order_tag
           in: query
-          description: ""
+          description: Filter by a custom tag assigned to the order.
           required: false
           example: ""
           schema:
@@ -8846,14 +8071,16 @@ paths:
 
         `GET /v1/admin/orders`
 
+        Note: This endpoint requires `trading` scope in orderly key.
+
       tags:
         - private
       parameters:
         - name: symbol
           in: query
-          description: ""
+          description: Filter results to a specific trading symbol, for example `PERP_ETH_USDC`.
           required: false
-          example: ""
+          example: PERP_ETH_USDC
           schema:
             type: string
         - name: side
@@ -8880,7 +8107,7 @@ paths:
             type: string
         - name: order_tag
           in: query
-          description: ""
+          description: Filter by a custom tag assigned to the order.
           required: false
           example: ""
           schema:
