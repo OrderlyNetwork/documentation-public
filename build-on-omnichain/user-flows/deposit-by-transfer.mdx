@@ -62,24 +62,18 @@ The **DepositFactory** acts as a beacon that stores the current implementation a
     </Warning>
   </Step>
 
-  <Step title="Poll for transfer status">
-    After the user transfers, poll [Get Receiver Events](/build-on-omnichain/restful-api/private/get-receiver-events) to track the deposit status. We recommend polling every 10 seconds.
+  <Step title="Poll for pending transfers">
+    After the user transfers, poll [Get Receiver Events](/build-on-omnichain/restful-api/private/get-receiver-events) to check for pending transfers. We recommend polling every 10 seconds.
 
-    **Status values:**
-    | Status | Meaning |
-    | ------ | ------- |
-    | `PENDING` | Transfer detected, waiting for processing |
-    | `PROCESSED` | Deposit transaction submitted on-chain |
-    | `COMPLETED` | Funds credited to account |
-    | `FAILED` | Deposit failed (auto-retries in progress) |
+    This endpoint returns transfers that have been detected but **not yet deposited** into the Vault. Once a transfer is fully processed and credited, it is removed from this list.
 
     <Note>
-      Only transfers with `amount >= minimum_deposit` are returned.
+      Only transfers with `amount >= minimum_deposit` are returned. Dust transfers are ignored.
     </Note>
   </Step>
 
   <Step title="Verify the deposit">
-    Once the status is `COMPLETED`, the balance is credited. You can confirm via the [Get Asset History](/build-on-omnichain/restful-api/private/get-asset-history) endpoint with `side=DEPOSIT`.
+    When a transfer disappears from receiver events, the deposit is complete. You can confirm the credited balance via the [Get Asset History](/build-on-omnichain/restful-api/private/get-asset-history) endpoint with `side=DEPOSIT`.
   </Step>
 </Steps>
 
