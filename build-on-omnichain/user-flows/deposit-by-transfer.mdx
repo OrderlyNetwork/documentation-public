@@ -1,0 +1,119 @@
+---
+title: "Exclusive Receiver Address"
+description: "Each account gets a unique deposit address — users can fund their perp account by simply transferring USDC, with no wallet connection, gas, or contract interaction required."
+---
+
+Each Orderly account is assigned an **exclusive receiver address** — a unique, deterministic deposit address. Users can fund their perp account by simply sending USDC to this address, from a wallet, CEX withdrawal, or any on-chain transfer. No gas tokens, wallet connection, or smart contract interaction is needed on the user's side.
+
+## How It Works
+
+Each user gets a unique receiver address derived via the [CREATE2](https://eips.ethereum.org/EIPS/eip-1014) algorithm. When USDC lands at that address, Orderly's backend automatically detects the transfer, deploys a minimal proxy contract (if needed), and deposits the funds into the Vault — all in a single atomic transaction paid for by the platform.
+
+```
+User sends USDC ──► Receiver Address ──► Orderly detects transfer
+                                              │
+                                    Deploy proxy (if first time)
+                                              │
+                                    Deposit into Vault atomically
+                                              │
+                                    Balance credited to account
+```
+
+## Supported Chains & Tokens
+
+| Parameter | Value |
+| --------- | ----- |
+| Chain | Arbitrum (chain ID: `42161`) |
+| Token | USDC |
+| Minimum deposit | 5 USDC |
+
+<Warning>
+  Only USDC on Arbitrum is supported. Sending other tokens or transferring on other chains will result in **permanent loss of funds** with no recovery path.
+</Warning>
+
+## Smart Contract Addresses
+
+| Contract | Arbitrum Mainnet Address |
+| -------- | ----------------------- |
+| DepositFactory | `0x8dCBDFF1758d9Bd77b37ff78982912C35FDc2F21` |
+| DepositBeaconImpl | `0x43001EF2e62Ac260FA78D5a0Af8787261e4D82F9` |
+
+The **DepositFactory** acts as a beacon that stores the current implementation address. Each user's receiver address is a lightweight **DepositProxy** that delegates to the **DepositBeaconImpl** for deposit logic. Proxies are deployed on-demand during the first deposit.
+
+## Integration Flow
+
+<Steps>
+  <Step title="Get the user's receiver address">
+    Call [Get Receiver Address](/build-on-omnichain/restful-api/private/get-receiver-address) to retrieve the user's unique receiver address. This address is deterministic and will not change.
+
+    The response includes `receiver_address`, `token_address` (USDC contract), and `minimum_deposit`.
+  </Step>
+
+  <Step title="User transfers USDC to the receiver address">
+    The user sends USDC (ERC-20 transfer) to the `receiver_address` returned above. This can be done from:
+    - Any EVM wallet (MetaMask, Rabby, etc.)
+    - A CEX withdrawal (Binance, OKX, etc.)
+    - A smart contract or multisig
+
+    No approval or special transaction format is needed — a standard ERC-20 transfer is all it takes.
+
+    <Warning>
+      The transfer amount **must meet or exceed** the `minimum_deposit` value returned by [Get Receiver Address](/build-on-omnichain/restful-api/private/get-receiver-address). Transfers below this threshold are treated as dust — they will **not** be deposited, refunded, or recoverable.
+    </Warning>
+  </Step>
+
+  <Step title="Poll for pending transfers">
+    After the user transfers, poll [Get Receiver Events](/build-on-omnichain/restful-api/private/get-receiver-events) to check for pending transfers. We recommend polling every 10 seconds.
+
+    This endpoint returns transfers that have been detected but **not yet deposited** into the Vault. Once a transfer is fully processed and credited, it is removed from this list.
+
+    <Note>
+      Only transfers with `amount >= minimum_deposit` are returned. Dust transfers are ignored.
+    </Note>
+  </Step>
+
+  <Step title="Verify the deposit">
+    When a transfer disappears from receiver events, the deposit is complete. You can confirm the credited balance via the [Get Asset History](/build-on-omnichain/restful-api/private/get-asset-history) endpoint with `side=DEPOSIT`.
+  </Step>
+</Steps>
+
+## Eligibility
+
+Not all accounts can use this feature:
+
+| Requirement | Detail |
+| ----------- | ------ |
+| Account type | Must be a **regular** account (not sub-accounts or Strategy Providers) |
+| Chain type | Must be an **EVM** account (Solana accounts are not supported) |
+
+**Error codes from `GET /v1/client/asset/receiver_address`:**
+
+| Code | Meaning |
+| ---- | ------- |
+| 82 | Chain ID does not exist |
+| 83 | Chain ID not supported for this feature |
+| 84 | Account type not eligible |
+| 86 | Solana accounts not supported |
+
+## Limitations & Edge Cases
+
+<AccordionGroup>
+  <Accordion title="What happens if I send less than the minimum deposit?">
+    Transfers below 5 USDC are treated as dust and will **not** be deposited or refunded. The funds remain in the receiver contract with no recovery mechanism.
+  </Accordion>
+  <Accordion title="What if I send the wrong token or use the wrong chain?">
+    Only USDC on Arbitrum is supported. Sending any other token or transferring on an unsupported chain will result in **permanent loss** — there is no recovery path.
+  </Accordion>
+  <Accordion title="Can I send multiple transfers at once?">
+    Yes. Each transfer is tracked and processed independently as a separate deposit record (1:1 mapping).
+  </Accordion>
+  <Accordion title="How long does the deposit take?">
+    Most deposits complete within 1–2 minutes. If a deposit remains in `PENDING` for more than 15 minutes, contact support.
+  </Accordion>
+  <Accordion title="Are there any fees?">
+    No additional fees are charged for deposits via transfer. The platform absorbs the gas cost.
+  </Accordion>
+  <Accordion title="Does the receiver address ever change?">
+    No. The receiver address is deterministic (derived via CREATE2) and remains the same for the lifetime of the account.
+  </Accordion>
+</AccordionGroup>
