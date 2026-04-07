@@ -1477,6 +1477,128 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AssetHistoryResponse"
+  /v1/client/asset/receiver_address:
+    get:
+      summary: Get receiver address
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second**
+
+        `GET /v1/client/asset/receiver_address`
+
+        Returns the exclusive receiver address for the authenticated account. Users can deposit USDC by transferring directly to this address without wallet connection or gas.
+      tags:
+        - private
+      parameters:
+        - name: chain_id
+          in: query
+          description: "Chain ID to get the receiver address for. Currently only Arbitrum (`42161`) is supported."
+          required: true
+          example: 42161
+          schema:
+            type: integer
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  timestamp:
+                    type: number
+                    description: Server timestamp in UNIX milliseconds.
+                    example: 1775551039161
+                  data:
+                    type: object
+                    properties:
+                      receiver_address:
+                        type: string
+                        description: The unique deposit address for this account.
+                        example: "0x13a8f4736c001fed44731177c95302055a0a6df0"
+                      token_address:
+                        type: string
+                        description: The USDC contract address on the specified chain.
+                        example: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
+                      minimum_deposit:
+                        type: number
+                        description: Minimum deposit amount in USDC. Transfers below this are treated as dust and cannot be recovered.
+                        example: 5
+  /v1/client/asset/receiver_events:
+    get:
+      summary: Get receiver events
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second**
+
+        `GET /v1/client/asset/receiver_events`
+
+        Returns pending transfer events detected at the user's exclusive receiver address that have not yet been fully deposited into the Vault. Use this endpoint to poll for deposit status after a user transfers USDC to their receiver address.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  timestamp:
+                    type: number
+                    description: Server timestamp in UNIX milliseconds.
+                    example: 1775551039035
+                  data:
+                    type: object
+                    properties:
+                      rows:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            chain_id:
+                              type: integer
+                              description: Chain ID where the transfer was detected.
+                              example: 42161
+                            tx_id:
+                              type: string
+                              description: Transaction hash of the user's USDC transfer.
+                              example: "0xabc123..."
+                            token:
+                              type: string
+                              description: Token symbol.
+                              example: "USDC"
+                            amount:
+                              type: string
+                              description: Transfer amount.
+                              example: "100.0"
+                            status:
+                              type: string
+                              description: "Current status: `PENDING`, `PROCESSED`, `COMPLETED`, or `FAILED`."
+                              example: "PENDING"
+                            created_time:
+                              type: number
+                              description: Timestamp when the transfer was detected (UNIX ms).
+                              example: 1712000000000
+                            updated_time:
+                              type: number
+                              description: Timestamp of last status update (UNIX ms).
+                              example: 1712000000000
   /v1/claim_insurance_fund:
     post:
       summary: Claim insurance fund
