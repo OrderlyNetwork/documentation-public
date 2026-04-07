@@ -1507,30 +1507,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  timestamp:
-                    type: number
-                    description: Server timestamp in UNIX milliseconds.
-                    example: 1775551039161
-                  data:
-                    type: object
-                    properties:
-                      receiver_address:
-                        type: string
-                        description: The unique deposit address for this account.
-                        example: "0x13a8f4736c001fed44731177c95302055a0a6df0"
-                      token_address:
-                        type: string
-                        description: The USDC contract address on the specified chain.
-                        example: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
-                      minimum_deposit:
-                        type: number
-                        description: Minimum deposit amount in USDC. Transfers below this are treated as dust and cannot be recovered.
-                        example: 5
+                $ref: "#/components/schemas/ReceiverAddressResponse"
   /v1/client/asset/receiver_events:
     get:
       summary: Get receiver events
@@ -1554,51 +1531,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  timestamp:
-                    type: number
-                    description: Server timestamp in UNIX milliseconds.
-                    example: 1775551039035
-                  data:
-                    type: object
-                    properties:
-                      rows:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            chain_id:
-                              type: integer
-                              description: Chain ID where the transfer was detected.
-                              example: 42161
-                            tx_id:
-                              type: string
-                              description: Transaction hash of the user's USDC transfer.
-                              example: "0xabc123..."
-                            token:
-                              type: string
-                              description: Token symbol.
-                              example: "USDC"
-                            amount:
-                              type: string
-                              description: Transfer amount.
-                              example: "100.0"
-                            status:
-                              type: string
-                              description: "Current status: `PENDING`, `PROCESSED`, `COMPLETED`, or `FAILED`."
-                              example: "PENDING"
-                            created_time:
-                              type: number
-                              description: Timestamp when the transfer was detected (UNIX ms).
-                              example: 1712000000000
-                            updated_time:
-                              type: number
-                              description: Timestamp of last status update (UNIX ms).
-                              example: 1712000000000
+                $ref: "#/components/schemas/ReceiverEventsResponse"
   /v1/claim_insurance_fund:
     post:
       summary: Claim insurance fund
@@ -8557,6 +8490,67 @@ components:
         type: number
       example: 20
   schemas:
+    ReceiverAddressResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                receiver_address:
+                  type: string
+                  description: The unique deposit address for this account.
+                  example: "0x13a8f4736c001fed44731177c95302055a0a6df0"
+                token_address:
+                  type: string
+                  description: The USDC contract address on the specified chain.
+                  example: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
+                minimum_deposit:
+                  type: number
+                  description: Minimum deposit amount in USDC. Transfers below this are treated as dust and cannot be recovered.
+                  example: 5
+    ReceiverEventsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      chain_id:
+                        type: integer
+                        description: Chain ID where the transfer was detected.
+                        example: 42161
+                      tx_id:
+                        type: string
+                        description: Transaction hash of the user's USDC transfer.
+                        example: "0xabc123..."
+                      token:
+                        type: string
+                        description: Token symbol.
+                        example: "USDC"
+                      amount:
+                        type: string
+                        description: Transfer amount.
+                        example: "100.0"
+                      status:
+                        type: string
+                        description: "Current status: `PENDING`, `PROCESSED`, `COMPLETED`, or `FAILED`."
+                        example: "PENDING"
+                      created_time:
+                        type: number
+                        description: Timestamp when the transfer was detected (UNIX ms).
+                        example: 1712000000000
+                      updated_time:
+                        type: number
+                        description: Timestamp of last status update (UNIX ms).
+                        example: 1712000000000
     BasicResponse:
       required:
         - success
