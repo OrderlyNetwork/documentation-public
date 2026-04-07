@@ -8516,34 +8516,37 @@ components:
         - type: object
           properties:
             data:
-              type: array
-              items:
-                type: object
-                properties:
-                  chain_id:
-                    type: string
-                    description: Chain ID where the transfer was detected.
-                    example: "42161"
-                  tx_id:
-                    type: string
-                    description: Transaction hash of the user's USDC transfer.
-                    example: "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
-                  token:
-                    type: string
-                    description: Token symbol.
-                    example: "USDC"
-                  amount:
-                    type: number
-                    description: Transfer amount.
-                    example: 29.619521
-                  created_time:
-                    type: number
-                    description: Timestamp when the transfer was detected (UNIX ms).
-                    example: 1767848705855
-                  updated_time:
-                    type: number
-                    description: Timestamp of last status update (UNIX ms).
-                    example: 1767848724143
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      chain_id:
+                        type: string
+                        description: Chain ID where the transfer was detected.
+                        example: "42161"
+                      tx_id:
+                        type: string
+                        description: Transaction hash of the user's USDC transfer.
+                        example: "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+                      token:
+                        type: string
+                        description: Token symbol.
+                        example: "USDC"
+                      amount:
+                        type: number
+                        description: Transfer amount.
+                        example: 29.619521
+                      created_time:
+                        type: number
+                        description: Timestamp when the transfer was detected (UNIX ms).
+                        example: 1767848705855
+                      updated_time:
+                        type: number
+                        description: Timestamp of last status update (UNIX ms).
+                        example: 1767848724143
     BasicResponse:
       required:
         - success
