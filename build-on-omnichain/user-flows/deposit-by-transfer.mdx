@@ -60,6 +60,10 @@ The **DepositFactory** acts as a beacon that stores the current implementation a
     - A smart contract or multisig
 
     No approval or special transaction format is needed — a standard ERC-20 transfer is all it takes.
+
+    <Warning>
+      The transfer amount **must meet or exceed** the `minimum_deposit` value returned by [Get Receiver Address](/build-on-omnichain/restful-api/private/get-receiver-address). Transfers below this threshold are treated as dust — they will **not** be deposited, refunded, or recoverable.
+    </Warning>
   </Step>
 
   <Step title="Poll for transfer status">
