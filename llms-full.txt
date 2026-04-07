@@ -2771,14 +2771,6 @@ Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/get-
 - [Get Campaign Verification](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-campaign-verification): [GET /v1/public/campaign/check] Get campaign verification
 - [Sign Up Campaign](https://orderly.network/docs/build-on-omnichain/restful-api/private/sign-up-campaign): [POST /v1/client/campaign/sign_up] Sign up campaign
 
-#### Fee setting
-
-- [Update User Fee Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-user-fee-rate): [POST /v1/broker/fee_rate/set] Update user fee rate
-- [Reset User Fee Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/reset-user-fee-rate): [POST /v1/broker/fee_rate/set_default] Reset user fee rate
-- [Get Default Builder Fee](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-default-builder-fee): [GET /v1/broker/fee_rate/default] Get default builder fee
-- [Update Default Builder Fee](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-default-builder-fee): [POST /v1/broker/fee_rate/default] Update default builder fee
-- [Get User Fee Rates](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-user-fee-rates): [GET /v1/broker/user_info] Get user fee rates
-
 #### Referral program
 
 ##### Referral code management (legacy)
@@ -2816,14 +2808,51 @@ Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/get-
 - [Edit Referral Code](https://orderly.network/docs/build-on-omnichain/restful-api/private/edit-referral-code): [POST /v1/referral/edit_referral_code] Edit referral code
 - [Get Referral History](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-history): [GET /v1/referral/referral_history] Get referral history
 - [Get Referral Rebate Summary](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-rebate-summary): [GET /v1/referral/rebate_summary] Get referral rebate summary
-
-##### Multilevel admin
-
+- [Get Max Rebate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-max-rebate-rate): [GET /v1/referral/multi_level/max_rebate_rate] Get max rebate rate
+- [Claim Referral Code](https://orderly.network/docs/build-on-omnichain/restful-api/private/claim-referral-code): [POST /v1/referral/multi_level/claim_code] Claim referral code
+- [Get Rebate Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-rebate-info): [GET /v1/referral/multi_level/rebate_info] Get rebate info
+- [Update Referral Multi Level Rebate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-referral-multi-level-rebate-rate): [POST /v1/referral/multi_level/rebate_rate/update] Update referee rebate rate
+- [Set Default Referral Multi Level Rebate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/set-default-referral-multi-level-rebate-rate): [POST /v1/referral/multi_level/rebate_rate/set_default] Reset referee rebate rate
+- [Get Multilevel Statistics](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-multilevel-statistics): [GET /v1/referral/multi_level/statistics] Get multilevel statistics
+- [Get Referral Multi Level Referee List](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-multi-level-referee-list): [GET /v1/referral/multi_level/referee_list] Get referee list
+- [Get Referral Multi Level Volume Prerequisite](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-multi-level-volume-prerequisite): [GET /v1/referral/multi_level/volume_prerequisite] Get volume prerequisite
 
 
 #### Broker admin
 
+##### User data
+
 - [Get Broker Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-broker-info): [GET /v1/broker/broker_info] Get broker info
+- [Admin Client Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-client-info): [GET /v1/admin/client/info] Get account information
+- [Admin Client Holding](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-client-holding): [GET /v1/admin/client/holding] Get current holding
+- [Admin Internal Transfer History](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-internal-transfer-history): [GET /v1/admin/internal_transfer_history] Get internal transfer history
+- [Admin Asset History](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-asset-history): [GET /v1/admin/asset/history] Get asset history
+- [Admin Client Leverage](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-client-leverage): [GET /v1/admin/client/leverage] Get leverage setting
+- [Admin Orders](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-orders): [GET /v1/admin/orders] Get orders
+- [Admin Position](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-position): [GET /v1/admin/position/{symbol}] Get one position info
+- [Admin Positions](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-positions): [GET /v1/admin/positions] Get all positions info
+- [Admin Funding Fee History](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-funding-fee-history): [GET /v1/admin/funding_fee/history] Get funding fee history
+- [Admin Volume User Stats](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-volume-user-stats): [GET /v1/admin/volume/user/stats] Get user volume statistics
+
+##### Multilevel referral admin
+
+- [Enable Or Configure Multilevel Referral](https://orderly.network/docs/build-on-omnichain/restful-api/private/enable-or-configure-multilevel-referral): [POST /v1/referral/multi_level/admin] Enable or configure multilevel referral
+- [Get Multilevel Referral Config](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-multilevel-referral-config): [GET /v1/referral/multi_level/admin] Get multilevel referral config
+- [Update Multilevel Referral Config](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-multilevel-referral-config): [POST /v1/referral/multi_level/admin/update] Update multilevel referral config
+- [Update Referral Multi Level Affiliate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-referral-multi-level-affiliate-rate): [POST /v1/referral/multi_level/admin/update/affiliate] Update L1 affiliate rebate rate
+- [Reset Referral Multi Level Affiliate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/reset-referral-multi-level-affiliate-rate): [POST /v1/referral/multi_level/admin/reset/affiliate] Reset L1 affiliate rebate rate
+- [Get Multilevel Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-multilevel-info): [GET /v1/referral/multi_level/admin/info] Get multilevel info
+- [Get Multilevel Summary Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-multilevel-summary-info): [GET /v1/referral/multi_level/admin/summary] Get multilevel summary info
+- [Create Multilevel Referral Code On Affiliates Behalf](https://orderly.network/docs/build-on-omnichain/restful-api/private/create-multilevel-referral-code-on-affiliates-behalf): [POST /v1/referral/multi_level/admin/create/affiliate] Create multilevel referral code on affiliate's behalf
+
+##### Fee settings
+
+- [Update User Fee Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-user-fee-rate): [POST /v1/broker/fee_rate/set] Update user fee rate
+- [Reset User Fee Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/reset-user-fee-rate): [POST /v1/broker/fee_rate/set_default] Reset user fee rate
+- [Get Default Builder Fee](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-default-builder-fee): [GET /v1/broker/fee_rate/default] Get default builder fee
+- [Update Default Builder Fee](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-default-builder-fee): [POST /v1/broker/fee_rate/default] Update default builder fee
+- [Get User Fee Rates](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-user-fee-rates): [GET /v1/broker/user_info] Get user fee rates
+
 
 
 ### Points module
