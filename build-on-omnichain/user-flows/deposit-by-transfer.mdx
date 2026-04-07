@@ -44,27 +44,9 @@ The **DepositFactory** acts as a beacon that stores the current implementation a
 
 <Steps>
   <Step title="Get the user's receiver address">
-    Call the private endpoint to retrieve the user's unique receiver address. This address is deterministic and will not change.
+    Call [Get Receiver Address](/build-on-omnichain/restful-api/private/get-receiver-address) to retrieve the user's unique receiver address. This address is deterministic and will not change.
 
-    ```bash
-    GET /v1/client/asset/receiver_address?chain_id=42161
-    ```
-
-    **Response:**
-    ```json
-    {
-      "success": true,
-      "data": {
-        "receiver_address": "0x...",
-        "token_address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
-        "minimum_deposit": 5.0
-      }
-    }
-    ```
-
-    <Note>
-      This is a private endpoint requiring standard Orderly authentication headers (`orderly-account-id`, `orderly-key`, `orderly-signature`, `orderly-timestamp`).
-    </Note>
+    The response includes `receiver_address`, `token_address` (USDC contract), and `minimum_deposit`.
   </Step>
 
   <Step title="User transfers USDC to the receiver address">
@@ -74,34 +56,14 @@ The **DepositFactory** acts as a beacon that stores the current implementation a
     - A smart contract or multisig
 
     No approval or special transaction format is needed — a standard ERC-20 transfer is all it takes.
+
+    <Warning>
+      The transfer amount **must meet or exceed** the `minimum_deposit` value returned by [Get Receiver Address](/build-on-omnichain/restful-api/private/get-receiver-address). Transfers below this threshold are treated as dust — they will **not** be deposited, refunded, or recoverable.
+    </Warning>
   </Step>
 
   <Step title="Poll for transfer status">
-    After the user transfers, poll the receiver events endpoint to track the deposit status:
-
-    ```bash
-    GET /v1/client/asset/receiver_events
-    ```
-
-    **Response:**
-    ```json
-    {
-      "success": true,
-      "data": {
-        "rows": [
-          {
-            "chain_id": 42161,
-            "tx_id": "0x...",
-            "token": "USDC",
-            "amount": "100.0",
-            "status": "PENDING",
-            "created_time": 1712000000000,
-            "updated_time": 1712000000000
-          }
-        ]
-      }
-    }
-    ```
+    After the user transfers, poll [Get Receiver Events](/build-on-omnichain/restful-api/private/get-receiver-events) to track the deposit status. We recommend polling every 10 seconds.
 
     **Status values:**
     | Status | Meaning |
@@ -112,16 +74,12 @@ The **DepositFactory** acts as a beacon that stores the current implementation a
     | `FAILED` | Deposit failed (auto-retries in progress) |
 
     <Note>
-      We recommend polling every 10 seconds. Only transfers with `amount >= minimum_deposit` are returned.
+      Only transfers with `amount >= minimum_deposit` are returned.
     </Note>
   </Step>
 
   <Step title="Verify the deposit">
-    Once the status is `COMPLETED`, the balance is credited. You can confirm via the existing asset history endpoint:
-
-    ```bash
-    GET /v1/asset/history?side=DEPOSIT
-    ```
+    Once the status is `COMPLETED`, the balance is credited. You can confirm via the [Get Asset History](/build-on-omnichain/restful-api/private/get-asset-history) endpoint with `side=DEPOSIT`.
   </Step>
 </Steps>
 
