@@ -1330,6 +1330,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PostLiquidationResponse"
+
   /v1/client/liquidator_liquidations:
     get:
       summary: Get liquidated positions by liquidator
@@ -1343,9 +1344,80 @@ paths:
       parameters:
         - name: symbol
           in: query
-          description: Filter results to a specific trading symbol, for example `PERP_ETH_USDC`.
+          description: ""
           required: false
-          example: PERP_ETH_USDC
+          example: ""
+          schema:
+            type: string
+        - name: start_t
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: end_t
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: page
+          in: query
+          description: "start from 1"
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: size
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: number
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LiquidatorLiquidationsResponse"
+  /v1/orders:
+    get:
+      summary: Get orders
+      deprecated: false
+      description: >
+        **Limit: 10 requests per 1 second**
+
+
+        `GET /v1/orders`
+
+
+        Get orders by customized filters.
+
+
+        For filter by status, one can reference special bundled statuses below
+        for ease of access of Open (ie `INCOMPLETE`) orders or `COMPLETED`
+        orders.
+
+
+        - `INCOMPLETE` = `NEW` + `PARTIAL_FILLED`
+
+        - `COMPLETED` = `CANCELLED` + `FILLED`
+      tags:
+        - private
+      parameters:
+        - name: symbol
+          in: query
+          description: ""
+          required: false
+          example: ""
           schema:
             type: string
         - name: side
@@ -1372,7 +1444,7 @@ paths:
             type: string
         - name: order_tag
           in: query
-          description: Filter by a custom tag assigned to the order.
+          description: ""
           required: false
           example: ""
           schema:
@@ -1412,9 +1484,9 @@ paths:
         - name: sort_by
           in: query
           description: |
-            If empty: 
+            If empty:
 
-            Descending order by updated_time if user passed update_start_t or update_end_t; descending order by order_id if updated_time are the same; 
+            Descending order by updated_time if user passed update_start_t or update_end_t; descending order by order_id if updated_time are the same;
 
             Otherwise descending order by created_time; descending order by order_id if created_time are the same;
 
