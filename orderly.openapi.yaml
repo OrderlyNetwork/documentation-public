@@ -1232,6 +1232,104 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/FundingFeeHistoryResponse"
+  /v1/liquidations:
+    get:
+      summary: Get liquidated positions of account
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/liquidations`
+      tags:
+        - private
+      parameters:
+        - name: symbol
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: start_t
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: end_t
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: page
+          in: query
+          description: "start from 1"
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: size
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: sort_by
+          in: query
+          description: "`liquidation_id`/`time`"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: liquidation_id
+          in: query
+          description: "return the designed liquidation_id only"
+          required: false
+          example: ""
+          schema:
+            type: number
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LiquidationsResponse"
+  /v1/liquidation:
+    post:
+      summary: Claim liquidated positions
+      deprecated: false
+      description: |
+        **Limit: 5 requests per 1 second**
+
+        `POST /v1/liquidation`
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LiquidationBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostLiquidationResponse"
   /v1/client/liquidator_liquidations:
     get:
       summary: Get liquidated positions by liquidator
