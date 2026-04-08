@@ -1232,6 +1232,150 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/FundingFeeHistoryResponse"
+  /v1/client/leverage:
+    get:
+      summary: Get leverage setting
+      deprecated: false
+      description: |
+        **Limit: 1 requests per 1 second per IP address**
+
+        `GET /v1/client/leverage`
+
+        Get account's leverage setting for a specific symbol.
+      tags:
+        - private
+      parameters:
+        - name: symbol
+          in: query
+          description: ""
+          required: true
+          example: "PERP_BTC_USDC"
+          schema:
+            type: string
+        - name: margin_mode
+          in: query
+          description: "Default: `CROSS`. Supported values: `CROSS`/`ISOLATED`"
+          required: false
+          schema:
+            type: string
+            enum:
+              - CROSS
+              - ISOLATED
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeverageResponse"
+  /v1/client/leverages:
+    get:
+      summary: Get all leverage settings
+      deprecated: false
+      description: |
+        `GET /v1/client/leverages`
+
+        Get leverage settings for all symbols.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeveragesResponse"
+    post:
+      summary: Update leverage setting
+      deprecated: false
+      description: |
+        **Limit: 5 requests per 60 second per user**
+
+        `POST /v1/client/leverages`
+
+        Update leverage settings. This endpoint supports two modes:
+
+        **Single symbol mode:** When `symbol` is provided, update leverage for that specific symbol.
+
+        **Batch mode:** When `symbol` is omitted, set leverage for all symbols in a single atomic operation. Each symbol's new leverage will be adjusted to `min(requested_leverage, symbol_max_leverage)`.
+
+        For example, if BTC max leverage is 100, ETH max leverage is 100, and NEAR max leverage is 10, and the user requests leverage = 20, the result will be: BTC = 20, ETH = 20, NEAR = 10.
+
+        Batch update behavior with margin modes:
+        - **Cross margin symbols:** A margin check is performed assuming all cross-margin symbols are updated to the new leverage. Either all cross-margin symbol leverages are updated successfully, or none are updated.
+        - **Isolated margin symbols:** The leverage update will only apply to symbols with no active isolated positions or pending orders. The update for isolated margin symbols will always go through for eligible symbols.
+
+        Validation Logic:
+
+        1. Check the leverage range is eligible
+
+        2. Check if the position notional under the updated leverage is acceptable
+           - `max_notional = (1 / (symbol_leverage * imr_factor)) ^ (1/0.8)`
+           - `symbol_leverage_max = round down to int → min(1 / (imr_factor * notional ^ 0.8), 1/base_imr)`
+
+        3. Check if the margin is enough
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                symbol:
+                  type: string
+                  example: "PERP_BTC_USDC"
+                leverage:
+                  type: integer
+                  description: Integer between 1 to 100
+                margin_mode:
+                  type: string
+                  description: "Default: `CROSS`. Margin mode for the leverage update."
+                  enum:
+                    - CROSS
+                    - ISOLATED
+              required:
+                - leverage
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeverageResponse"
+  /v1/public/leverage:
+    get:
+      summary: Get max leverage setting
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/leverage`
+
+        Get max leverage setting
+      tags:
+        - public
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetLeverageSettingResponse"
   /v1/liquidations:
     get:
       summary: Get liquidated positions of account
@@ -1674,6 +1818,178 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ClientHoldingResponse"
+  /v1/account_info:
+    get:
+      summary: Get account overview info
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per user**
+
+        `GET /v1/account_info`
+
+        Returns account-level collateral, margin, and PnL overview metrics for the authenticated account.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountInfoResponse"
+  /v1/client/margin_mode:
+    post:
+      summary: Update margin mode
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per user**
+
+        `POST /v1/client/margin_mode`
+
+        Update the default margin mode for a specific symbol. Switching a symbol's margin mode is only possible when you have no open positions or pending orders on that symbol in the current mode.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                symbol:
+                  type: string
+                  description: "Symbol to update margin mode for"
+                  example: "PERP_BTC_USDC"
+                default_margin_mode:
+                  type: string
+                  description: "Target margin mode"
+                  enum:
+                    - CROSS
+                    - ISOLATED
+                  example: "ISOLATED"
+              required:
+                - symbol
+                - default_margin_mode
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+  /v1/position_margin:
+    post:
+      summary: Add or reduce position margin
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per user**
+
+        `POST /v1/position_margin`
+
+        Add or reduce margin for an existing isolated margin position. This allows you to adjust the margin allocated to a specific isolated position after it has been opened.
+
+        - `ADD`: Transfer margin from your available balance to the isolated position, lowering the liquidation price.
+        - `REDUCE`: Transfer margin from the isolated position back to your available balance, raising the liquidation price.
+
+        **Prerequisites:** You must have an open isolated position on the specified symbol.
+
+        Note: This endpoint requires `trading` scope in orderly key.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                symbol:
+                  type: string
+                  description: "Symbol of the isolated position"
+                  example: "PERP_ETH_USDC"
+                amount:
+                  type: string
+                  description: "Amount of margin to add or reduce"
+                  example: "3"
+                type:
+                  type: string
+                  description: "Operation type"
+                  enum:
+                    - ADD
+                    - REDUCE
+                  example: "ADD"
+              required:
+                - symbol
+                - amount
+                - type
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+  /v1/client/margin_modes:
+    get:
+      summary: Get margin modes
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 1 second per user**
+
+        `GET /v1/client/margin_modes`
+
+        Get default margin mode for all symbols.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MarginModesResponse"
+  /v1/client/info:
+    get:
+      summary: Get account information
+      deprecated: false
+      description: |
+        **Limit: 10 requests per 60 seconds**
+
+        `GET /v1/client/info`
+
+        Returns account configuration details for the authenticated account, including fee rates and leverage settings.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClientInfoResponse"
   /v1/orders:
     get:
       summary: Get orders
