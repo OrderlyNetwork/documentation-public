@@ -274,14 +274,16 @@ There are two primary ways to launch on Orderly. Pick the path that matches your
 Orderly One is the faster path to market if you want a lower-code route and a branded trading experience with less custom frontend work.
 
 - **Best for:** teams that want to launch quickly with a more packaged setup
-- **Next step:** continue from the [Orderly One portal](https://dex.orderly.network/dex)
+- **Graduation fee:** $100
+- **Next step:** sign up on the [Orderly One portal](https://dex.orderly.network/dex) and create your DEX frontend
 
 ### Option B: Custom SDK/API integration
 
 Custom integration is the better fit when you want full control over product design, frontend behavior, and integration logic.
 
 - **Best for:** wallets, existing exchanges, and teams building a more customized trading journey
-- **Next step:** continue through the builder setup steps on this page, then move into the [Integration Checklist](/build-on-omnichain/integration-checklist)
+- **Graduation fee:** $10
+- **Next step:** sign up on the [Orderly One portal](https://dex.orderly.network/dex), create your builder profile, and graduate to obtain your broker ID. You do not need to create a DEX frontend. Then continue through the builder setup steps on this page and move into the [Integration Checklist](/build-on-omnichain/integration-checklist)
 
 ## Step 2: Contact Orderly and align onboarding
 
@@ -290,6 +292,10 @@ Start by reaching out through an official Orderly channel so the team can align 
 - [Discord](https://discord.com/invite/orderlynetwork)
 - [Telegram](https://t.me/Orderly_Discussions)
 - [Orderly website](https://orderly.network)
+
+<Note>
+  All builders should sign up on the Orderly One portal and complete the setup/graduation process first. Low-code builders will create a DEX frontend using the Orderly One service. If you are taking the custom SDK/API integration path, you can create your builder profile and graduate yourself to obtain the broker ID without creating a DEX frontend. Only reach out to the team for further help and assistance after you have created your builder profile.
+</Note>
 
 This step is where you confirm the launch path, builder profile setup, and the practical sequence for getting to go-live.
 
@@ -301,6 +307,7 @@ To initialize your setup, you should be ready to provide the core information Or
 - **Builder name**
 - **Initial fee configuration**
 - **Launch path** (Orderly One or custom integration)
+- **Distributor referral code** (if you were referred by a distributor)
 
 Once this information is confirmed, Orderly can provision your builder profile, assign the appropriate permissions, and help you move toward admin registration.
 
@@ -318,18 +325,23 @@ Base fees depend on your tier in the [Builder Staking Programme](/introduction/t
 
 Once your builder profile is ready, register the admin account that will manage builder-level settings and fee configuration.
 
-### For Orderly One builders
+### For low-code builders
 
 1. Complete the setup or graduation flow in the [Orderly One portal](https://dex.orderly.network/dex).
-2. Secure any Orderly keys issued during setup.
-3. Complete the wallet-linking steps required by the onboarding process.
+2. If you were referred by a distributor, input the distributor code for binding at profile creation or before/at graduation.
+3. Pay the **$100 graduation fee** in USDC, USDT, or ORDER.
+4. Secure any Orderly keys issued during setup.
+5. Complete the wallet-linking steps required by the onboarding process.
 
 ### For custom SDK/API builders
 
-1. Visit the [builder registration tool](https://github-dev.orderly.network/broker-registration/).
-2. Connect your wallet and complete the registration flow.
-3. Secure any Orderly keys issued during setup.
-4. Complete the wallet-linking steps required to finish admin setup.
+1. Sign up on the [Orderly One portal](https://dex.orderly.network/dex) and complete the graduation flow to obtain your broker ID. You do not need to create a DEX frontend.
+2. If you were referred by a distributor, input the distributor code for binding at profile creation or before/at graduation.
+3. Pay the **$10 graduation fee** in USDC, USDT, or ORDER.
+4. Visit the [builder registration tool](https://github-dev.orderly.network/broker-registration/).
+5. Connect your wallet and complete the registration flow.
+6. Secure any Orderly keys issued during setup.
+7. Complete the wallet-linking steps required to finish admin setup.
 
 After the linkage is complete, you can access the [Orderly admin portal](https://admin.orderly.network).
 
@@ -509,6 +521,7 @@ All contract addresses and details [here](/build-on-omnichain/addresses#solana)
 
 - [Multi-Collateral](https://orderly.network/docs/introduction/trade-on-orderly/multi-collateral): Understand supported collateral types, deposit caps, discount rates, and cross-chain rules.
 - [Builders](https://orderly.network/docs/introduction/trade-on-orderly/builders): Discover how to shape the future of DeFi with Orderly.
+- [Emergency Exit — Offboarding Tool](https://orderly.network/docs/introduction/trade-on-orderly/emergency-exit-offboarding-tool): A simple and quick tool for closing all positions and withdrawing funds from Orderly Network DEXs.
 
 ### Affiliate program
 
@@ -1671,6 +1684,7 @@ Example:
   "chainId": 80001,
   ... (truncated for brevity)
 
+- [Exclusive Receiver Address](https://orderly.network/docs/build-on-omnichain/user-flows/deposit-by-transfer): Each account gets a unique deposit address — users can fund their perp account by simply transferring USDC, with no wallet connection, gas, or contract interaction required.
 ### Settle PnL
 Source: https://orderly.network/docs/build-on-omnichain/user-flows/settle-pnl
 
@@ -2708,6 +2722,8 @@ Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/add-
 - [Create Internal Transfer With Wallet Signature](https://orderly.network/docs/build-on-omnichain/restful-api/private/create-internal-transfer-with-wallet-signature): [POST /v2/internal_transfer] Create internal transfer with wallet signature
 - [Get Transfer Nonce](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-transfer-nonce): [GET /v1/transfer_nonce] Get transfer nonce
 - [Get Internal Transfer History](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-internal-transfer-history): [GET /v1/internal_transfer_history] Get internal transfer history
+- [Get Receiver Address](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-receiver-address): [GET /v1/client/asset/receiver_address] Get receiver address
+- [Get Receiver Events](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-receiver-events): [GET /v1/client/asset/receiver_events] Get receiver events
 
 #### Positions
 
@@ -3162,7 +3178,6 @@ Push interval: real-time push
 
 - [Algo Execution Report](https://orderly.network/docs/build-on-omnichain/websocket-api/private/algo-execution-report): Subscribe to algo order execution reports via private WebSocket stream.
 - [Algo Execution Report v2](https://orderly.network/docs/build-on-omnichain/websocket-api/private/algo-execution-report-v2): Subscribe to v2 algo order execution reports with enhanced fields via private WebSocket stream.
-- [Notifications](https://orderly.network/docs/build-on-omnichain/websocket-api/private/notifications): Subscribe to real-time account notifications via private WebSocket stream.
 - [Position push](https://orderly.network/docs/build-on-omnichain/websocket-api/private/position-push): Subscribe to real-time position updates via private WebSocket stream.
 - [Liquidation on account push](https://orderly.network/docs/build-on-omnichain/websocket-api/private/liquidation-account-push): Subscribe to account-level liquidation event notifications via private WebSocket stream.
 - [Liquidator liquidations push](https://orderly.network/docs/build-on-omnichain/websocket-api/private/liquidator): Subscribe to liquidator-initiated liquidation updates via private WebSocket stream.
