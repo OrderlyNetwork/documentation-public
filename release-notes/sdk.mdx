@@ -7,6 +7,45 @@ icon: "layer-group"
 import { Chip } from "/snippets/chip.mdx";
 
 
+## April 14, 2026 - v2.12.2
+
+<div style={{ display: "table", width: "100%" }}>
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="new" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Features & Improvements**
+      - **Dynamic i18n Resource Loading** — Locale translation files are now loaded dynamically via import, reducing initial bundle size for multi-language deployments
+      - **Smarter TP/SL Detection on TradingView** — When dragging to set TP/SL on the chart, the system now uses the target price relative to mark price (instead of entry price) to determine whether the order is a Take Profit or Stop Loss, enabling lock-profit stop-loss scenarios for profitable positions
+    </div>
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="bug" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Fixes**
+      - Fixed incorrect validation logic for TP/SL on short positions that could prevent valid orders from being placed
+      - Fixed a crash caused by base_min being undefined on certain symbols
+      - Fixed Account ID not being copyable in the Switch Account modal on mobile devices
+      - Fixed SL trigger price calculation error when using PnL mode (DEX-2923)
+    </div>
+  </div>
+</div>
+
+
 ## March 31, 2026 - v2.12.0
 
 <div style={{ display: "table", width: "100%" }}>
