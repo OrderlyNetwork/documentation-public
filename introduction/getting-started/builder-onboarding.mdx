@@ -16,28 +16,41 @@ This guide helps you:
 - choose the right launch path
 - set up your builder profile
 - understand how builder fees and tiers work
+- complete graduation and obtain your broker ID
 - register your admin account
 - hand off cleanly into implementation and launch preparation
 
-## Step 1: Choose your launch path
+## Step 1: Sign up for a builder profile and choose your launch path
+
+All builders start by signing up on the [Orderly One portal](https://dex.orderly.network/dex) — connecting wallet, verifying ownership and creating a builder profile. Orderly One serves as the builder portal for profile setup and broker ID creation, regardless of which launch path you choose.
+
+Profile information to provide:
+
+- **Builder name**
+- **Distributor code** (if you were referred by a distributor)
+- **Launch path** (low-code or SDK/API integration)
+
+If you were referred by a distributor, input the distributor code for binding at profile creation or before/at graduation.
 
 There are two primary ways to launch on Orderly. Pick the path that matches your product scope and engineering needs.
 
-### Option A: Orderly One
+### Option A: Low-code
 
-Orderly One is the faster path to market if you want a lower-code route and a branded trading experience with less custom frontend work.
+The low-code path is the faster route to market if you want a branded trading experience with less custom frontend work.
 
 - **Best for:** teams that want to launch quickly with a more packaged setup
-- **Next step:** continue from the [Orderly One portal](https://dex.orderly.network/dex)
+- **Graduation fee:** $100
+- **What to do:** create your DEX frontend using the Orderly One portal. You will need to create the frontend DEX with Orderly One in order to complete the builder profile creation and setup.
 
 ### Option B: Custom SDK/API integration
 
 Custom integration is the better fit when you want full control over product design, frontend behavior, and integration logic.
 
 - **Best for:** wallets, existing exchanges, and teams building a more customized trading journey
-- **Next step:** continue through the builder setup steps on this page, then move into the [Integration Checklist](/build-on-omnichain/integration-checklist)
+- **Graduation fee:** $10
+- **What to do:** graduate to obtain your broker ID via the Orderly One portal. You do not need to create a DEX frontend — just create your builder profile with the listed information above. Then continue through the builder setup steps on this page and move into the [Integration Checklist](/build-on-omnichain/integration-checklist)
 
-## Step 2: Contact Orderly and align onboarding
+## Step 2: Contact Orderly and align onboarding (if needed)
 
 Start by reaching out through an official Orderly channel so the team can align with you on onboarding, launch scope, and any commercial or operational requirements.
 
@@ -45,20 +58,13 @@ Start by reaching out through an official Orderly channel so the team can align 
 - [Telegram](https://t.me/Orderly_Discussions)
 - [Orderly website](https://orderly.network)
 
+<Note>
+  If you are taking the custom SDK/API integration path, you can graduate yourself to obtain the broker ID without creating a DEX frontend. Reach out to the team for further help and assistance if needed.
+</Note>
+
 This step is where you confirm the launch path, builder profile setup, and the practical sequence for getting to go-live.
 
-## Step 3: Prepare your builder profile
-
-To initialize your setup, you should be ready to provide the core information Orderly needs to create your builder profile:
-
-- **Builder ID**
-- **Builder name**
-- **Initial fee configuration**
-- **Launch path** (Orderly One or custom integration)
-
-Once this information is confirmed, Orderly can provision your builder profile, assign the appropriate permissions, and help you move toward admin registration.
-
-## Step 4: Review the fee model and builder tiering
+## Step 3: Review the fee model and builder tiering
 
 Before launch, make sure your team understands how builder monetization works:
 
@@ -68,24 +74,44 @@ Before launch, make sure your team understands how builder monetization works:
 
 Base fees depend on your tier in the [Builder Staking Programme](/introduction/trade-on-orderly/trading-basics/trading-fees#builder-staking-programme), so this page does not repeat the fee tables. Use the canonical [Trading fees](/introduction/trade-on-orderly/trading-basics/trading-fees) page when you need the current tiers, requirements, and fee rates.
 
-## Step 5: Register your admin account
+## Step 4: Complete graduation
 
-Once your builder profile is ready, register the admin account that will manage builder-level settings and fee configuration.
+Graduate your builder profile to obtain your broker ID. Graduation must be completed before admin account registration.
 
-### For Orderly One builders
+### For low-code builders
 
 1. Complete the setup or graduation flow in the [Orderly One portal](https://dex.orderly.network/dex).
-2. Secure any Orderly keys issued during setup.
-3. Complete the wallet-linking steps required by the onboarding process.
+2. If you were referred by a distributor, input the distributor code for binding at profile creation or before/at graduation.
+3. Pay the **$100 graduation fee** in USDC, USDT, or ORDER.
 
 ### For custom SDK/API builders
 
+1. Complete the graduation flow in the [Orderly One portal](https://dex.orderly.network/dex) to obtain your broker ID. You do not need to create a DEX frontend.
+2. If you were referred by a distributor, input the distributor code for binding at profile creation or before/at graduation.
+3. Pay the **$10 graduation fee** in USDC, USDT, or ORDER.
+
+## Step 5: Register your admin account
+
+Once your builder profile is graduated, register the admin account that will manage builder-level settings and fee configuration.
+
+### Via the Orderly One portal
+
+1. Complete the admin registration flow in the [Orderly One portal](https://dex.orderly.network/dex).
+2. Secure any Orderly keys issued during setup.
+3. Complete the delegation steps required to finish admin setup (applicable to multisig configuration).
+
+### Via the broker registration tool
+
 1. Visit the [builder registration tool](https://github-dev.orderly.network/broker-registration/).
 2. Connect your wallet and complete the registration flow.
-3. Secure any Orderly keys issued during setup.
-4. Complete the wallet-linking steps required to finish admin setup.
 
-After the linkage is complete, you can access the [Orderly admin portal](https://admin.orderly.network).
+<Warning>
+  When using the broker registration tool, make sure you use the same creator wallet or the designated admin wallet that was used to create the builder profile. Otherwise, the Orderly keys will not map correctly and the admin account setup cannot be completed.
+</Warning>
+
+3. Secure any Orderly keys issued during setup.
+
+After securing the Orderly keys, you can access the [Orderly admin portal](https://admin.orderly.network).
 
 ## Step 6: Confirm readiness and move into implementation
 
@@ -106,11 +132,13 @@ From there, continue with the technical build and launch path:
 
 | Stage | Estimated time |
 | :--- | :--- |
-| Choose launch path and provide builder information | Immediate |
-| Builder profile creation | 1-2 business days |
-| Admin registration and final linkage | 2-3 business days |
+| Sign up for a builder profile and choose launch path | Immediate |
+| Builder profile creation and graduation | Almost immediate |
+| Admin registration and final setup | \< 1 hour |
+| Low-code DEX launch | As fast as under 30 minutes (if using quick launch) or \< 1 day (may take longer if custom domain is required) |
+| SDK/API integration | Varies; subject to builder resources and support |
 
-**Total onboarding time:** ~3-5 business days
+**Total onboarding time:** Profile setup and admin registration can be completed within an hour. Launch timing depends on your chosen path.
 
 ## FAQs
 
