@@ -4026,6 +4026,11 @@ paths:
                   description: "`SELL`/`BUY`, required if `STOP` type"
                 order_tag:
                   type: string
+                  description: |
+                    Optional tag for the order. Supports two formats:
+                    - Referral code: plain string (e.g., `REFERRAL2026`) - overrides referral relationship
+                    - Order enum: `enum:<UPPERCASE_ID>` (e.g., `enum:STRATEGY_DCA`) - adds fee on top of existing fees, preserves referral
+                    Max length: 36 characters. Cannot be modified after order placement.
                 child_orders:
                   type: array
                   items:
@@ -9211,6 +9216,259 @@ paths:
               schema:
                 $ref: "#/components/schemas/VolumeStatsResponse"
 
+  /v1/public/broker/{broker_id}/order_enums:
+    get:
+      summary: List order enums for a broker
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/broker/{broker_id}/order_enums`
+
+        List order enums for a broker.
+      tags:
+        - public
+      parameters:
+        - name: broker_id
+          in: path
+          description: Broker ID
+          required: true
+          schema:
+            type: string
+        - name: symbol
+          in: query
+          description: Filter by symbol
+          required: false
+          schema:
+            type: string
+        - name: enum_id
+          in: query
+          description: Filter by enum ID
+          required: false
+          schema:
+            type: string
+        - name: include_archived
+          in: query
+          description: Include archived enums
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetOrderEnumsResponse"
+
+  /v1/public/broker/{broker_id}/order_enum/{enum_id}:
+    get:
+      summary: Get single order enum
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/public/broker/{broker_id}/order_enum/{enum_id}`
+
+        Get a single order enum by ID.
+      tags:
+        - public
+      parameters:
+        - name: broker_id
+          in: path
+          description: Broker ID
+          required: true
+          schema:
+            type: string
+        - name: enum_id
+          in: path
+          description: Enum ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetOrderEnumResponse"
+
+  /v1/broker/order_enum:
+    post:
+      summary: Create order enum
+      description: |
+        **Limit: 1 request per second**
+
+        `POST /v1/broker/order_enum`
+
+        Create a new order enum. Requires X-Broker-Signature header.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+        - $ref: "#/components/parameters/broker_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOrderEnumBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+
+  /v1/broker/order_enum/{enum_id}:
+    put:
+      summary: Update order enum
+      description: |
+        **Limit: 1 request per second**
+
+        `PUT /v1/broker/order_enum/{enum_id}`
+
+        Update an order enum. Cannot change enum_id.
+      tags:
+        - private
+      parameters:
+        - name: enum_id
+          in: path
+          description: Enum ID
+          required: true
+          schema:
+            type: string
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateOrderEnumBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasicResponse"
+    get:
+      summary: Get single order enum with stats
+      description: |
+        **Limit: 10 requests per 1 second**
+
+        `GET /v1/broker/order_enum/{enum_id}`
+
+        Get a single order enum with usage stats.
+      tags:
+        - private
+      parameters:
+        - name: enum_id
+          in: path
+          description: Enum ID
+          required: true
+          schema:
+            type: string
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetOrderEnumWithStatsResponse"
+
+  /v1/broker/order_enums:
+    get:
+      summary: List all order enums for broker
+      description: |
+        **Limit: 10 requests per 1 second**
+
+        `GET /v1/broker/order_enums`
+
+        List all order enums for the broker with usage stats.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetOrderEnumsWithStatsResponse"
+
+  /v1/broker/order_enum/{enum_id}/archive:
+    post:
+      summary: Archive an order enum
+      description: |
+        **Limit: 1 request per second**
+
+        `POST /v1/broker/order_enum/{enum_id}/archive`
+
+        Archive an order enum.
+      tags:
+        - private
+      parameters:
+        - name: enum_id
+          in: path
+          description: Enum ID
+          required: true
+          schema:
+            type: string
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArchiveOrderEnumResponse"
+
+  /v1/broker/order_enum/{enum_id}/unarchive:
+    post:
+      summary: Unarchive an order enum
+      description: |
+        **Limit: 1 request per second**
+
+        `POST /v1/broker/order_enum/{enum_id}/unarchive`
+
+        Unarchive an order enum.
+      tags:
+        - private
+      parameters:
+        - name: enum_id
+          in: path
+          description: Enum ID
+          required: true
+          schema:
+            type: string
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArchiveOrderEnumResponse"
+
 components:
   parameters:
     orderly_timestamp:
@@ -9261,6 +9519,15 @@ components:
       schema:
         type: number
       example: 20
+    broker_signature:
+      name: x-broker-signature
+      in: header
+      description: Broker signature for admin operations
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
   schemas:
     ReceiverAddressResponse:
       allOf:
@@ -12330,6 +12597,11 @@ components:
           type: string
         order_tag:
           type: string
+          description: |
+            Optional tag for the order. Supports two formats:
+            - Referral code: plain string (e.g., `REFERRAL2026`) - overrides referral relationship
+            - Order enum: `enum:<UPPERCASE_ID>` (e.g., `enum:STRATEGY_DCA`) - adds fee on top of existing fees, preserves referral
+            Max length: 36 characters. Cannot be modified after order placement.
 
     BatchCreateOrderBody:
       required:
@@ -12356,6 +12628,11 @@ components:
           type: string
         order_tag:
           type: string
+          description: |
+            Optional tag for the order. Supports two formats:
+            - Referral code: plain string (e.g., `REFERRAL2026`) - overrides referral relationship
+            - Order enum: `enum:<UPPERCASE_ID>` (e.g., `enum:STRATEGY_DCA`) - adds fee on top of existing fees, preserves referral
+            Max length: 36 characters. Cannot be modified after order placement.
         margin_mode:
           type: string
           description: "Margin mode for the order. Default: the symbol's current default margin mode."
@@ -12530,6 +12807,11 @@ components:
           description: "`MARKET` orders beyond this slippage will not be executed"
         order_tag:
           type: string
+          description: |
+            Optional tag for the order. Supports two formats:
+            - Referral code: plain string (e.g., `REFERRAL2026`) - overrides referral relationship
+            - Order enum: `enum:<UPPERCASE_ID>` (e.g., `enum:STRATEGY_DCA`) - adds fee on top of existing fees, preserves referral
+            Max length: 36 characters. Cannot be modified after order placement.
         level:
           type: number
           description: "Integer value from `0` to `4`. This parameter controls wether to present the price of bid0 to bid4 or ask0 to ask4. Only allowed when `order_type` is `BID` or `ASK`."
@@ -12750,6 +13032,8 @@ components:
           type: string
           nullable: true
           example: null
+          description: |
+            Optional tag for the order. Supports plain string (referral code) or `enum:<UPPERCASE_ID>` format.
         margin_mode:
           type: string
           example: "CROSS"
@@ -12805,6 +13089,8 @@ components:
         order_tag:
           type: string
           example: "test_tag"
+          description: |
+            Optional tag for the order. Supports plain string (referral code) or `enum:<UPPERCASE_ID>` format.
         parent_algo_order_id:
           type: number
           example: 0
@@ -12934,6 +13220,16 @@ components:
         margin_mode:
           type: string
           example: "CROSS"
+        order_enum_fee:
+          type: number
+          description: "Additional fee charged due to order enum, in fee_asset units"
+          example: 0.05
+          nullable: true
+        order_enum_fee_rate:
+          type: number
+          description: "The order enum fee rate applied at execution time"
+          example: 0.005
+          nullable: true
 
     AlgoTrade:
       type: object
@@ -12972,6 +13268,16 @@ components:
         match_id:
           type: string
           example: ""
+        order_enum_fee:
+          type: number
+          description: "Additional fee charged due to order enum, in fee_asset units"
+          example: 0.05
+          nullable: true
+        order_enum_fee_rate:
+          type: number
+          description: "The order enum fee rate applied at execution time"
+          example: 0.005
+          nullable: true
 
     ClientHoldingResponse:
       allOf:
@@ -17325,6 +17631,185 @@ components:
                 total_rebate:
                   type: string
                   example: "100.5"
+
+    GetOrderEnumsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                broker_id:
+                  type: string
+                  example: "woofi_pro"
+                order_enums:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/OrderEnum"
+
+    GetOrderEnumResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/OrderEnum"
+
+    GetOrderEnumsWithStatsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                broker_id:
+                  type: string
+                  example: "woofi_pro"
+                order_enums:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/OrderEnumWithStats"
+
+    GetOrderEnumWithStatsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/OrderEnumWithStats"
+
+    CreateOrderEnumBody:
+      type: object
+      required:
+        - enum_id
+        - fee_structure
+      properties:
+        enum_id:
+          type: string
+          description: "UPPERCASE alphanumeric + underscores, max 31 chars"
+          example: "STRATEGY_DCA"
+        name:
+          type: string
+          example: "DCA Strategy"
+        description:
+          type: string
+          example: "Dollar Cost Averaging strategy orders"
+        fee_structure:
+          type: object
+          required:
+            - default_fee_rate
+          properties:
+            default_fee_rate:
+              type: number
+              description: "0.00001 to 0.01 (0.001% to 1%)"
+              example: 0.005
+            pair_overrides:
+              type: object
+              additionalProperties:
+                type: number
+              example:
+                PERP_BTC_USDC: 0.003
+
+    UpdateOrderEnumBody:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "DCA Strategy"
+        description:
+          type: string
+          example: "Dollar Cost Averaging strategy orders"
+        fee_structure:
+          type: object
+          required:
+            - default_fee_rate
+          properties:
+            default_fee_rate:
+              type: number
+              description: "0.00001 to 0.01 (0.001% to 1%)"
+              example: 0.005
+            pair_overrides:
+              type: object
+              additionalProperties:
+                type: number
+              example:
+                PERP_BTC_USDC: 0.003
+
+    OrderEnum:
+      type: object
+      properties:
+        enum_id:
+          type: string
+          example: "STRATEGY_DCA"
+        status:
+          type: string
+          enum: [active, archived]
+          example: "active"
+        fee_structure:
+          type: object
+          properties:
+            default_fee_rate:
+              type: number
+              example: 0.005
+            pair_overrides:
+              type: object
+              additionalProperties:
+                type: number
+              example:
+                PERP_BTC_USDC: 0.003
+        created_at:
+          type: number
+          example: 1710300000000
+        updated_at:
+          type: number
+          example: 1710300000000
+
+    OrderEnumWithStats:
+      allOf:
+        - $ref: "#/components/schemas/OrderEnum"
+        - type: object
+          properties:
+            name:
+              type: string
+              example: "DCA Strategy"
+            description:
+              type: string
+              example: "Dollar Cost Averaging strategy orders"
+            usage_stats:
+              type: object
+              properties:
+                total_orders:
+                  type: number
+                  example: 12543
+                total_volume:
+                  type: string
+                  example: "1234567.89"
+                total_fees_collected:
+                  type: string
+                  example: "6172.84"
+
+    ArchiveOrderEnumResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                enum_id:
+                  type: string
+                  example: "STRATEGY_DCA"
+                status:
+                  type: string
+                  example: "archived"
+                archived_at:
+                  type: number
+                  example: 1710400000000
+                message:
+                  type: string
+                  example: "Order enum archived. Existing orders will continue processing. Permanently purged after 30 days."
 
 servers:
   - url: https://api.orderly.org
