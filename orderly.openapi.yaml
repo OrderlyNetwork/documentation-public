@@ -9216,6 +9216,283 @@ paths:
               schema:
                 $ref: "#/components/schemas/VolumeStatsResponse"
 
+  /v1/admin/liquidations:
+    get:
+      summary: Get liquidated positions (admin)
+      description: |
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/admin/liquidations`
+
+        Get liquidated positions for admin usage.
+      tags:
+        - private
+      parameters:
+        - name: symbol
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: start_t
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: end_t
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: page
+          in: query
+          description: "start from 1"
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: size
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: sort_by
+          in: query
+          description: "`liquidation_id`/`time`"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: liquidation_id
+          in: query
+          description: "return the designed liquidation_id only"
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: user_account
+          in: query
+          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: user_address
+          in: query
+          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminLiquidationsResponse"
+
+  /v1/admin/algo/orders:
+    get:
+      summary: Get algo orders (admin)
+      description: |
+        **Limit: 5 requests per 1 second**
+
+        `GET /v1/admin/algo/orders`
+
+        Get algo order details by customized filters for admin usage.
+      tags:
+        - private
+      parameters:
+        - name: symbol
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: order_type
+          in: query
+          description: "`LIMIT`/`MARKET`"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: "`NEW`/`CANCELLED`/`PARTIAL_FILLED`/`FILLED`/`REJECTED`/`INCOMPLETE`/`COMPLETED`"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: order_tag
+          in: query
+          description: Filter by a custom tag assigned to the order.
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: start_t
+          in: query
+          description: "start time range that wish to query, noted the time stamp is 13-digits timestamp."
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: end_t
+          in: query
+          description: "end time range that wish to query, noted the time stamp is 13-digits timestamp."
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: page
+          in: query
+          description: "the page you wish to query. start from 1"
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: size
+          in: query
+          description: "the page size you wish to query (max: 500)"
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: side
+          in: query
+          description: "`BUY`/`SELL`"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: algo_type
+          in: query
+          description: "Supported types are `STOP`, `TPSL`, `positional_TPSL`"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: is_triggered
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: user_account
+          in: query
+          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: user_address
+          in: query
+          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminAlgoOrdersResponse"
+
+  /v1/admin/trades:
+    get:
+      summary: Get trades (admin)
+      description: |
+        **Limit: 10 requests per 1 second**
+
+        `GET /v1/admin/trades`
+
+        Return client's trades history within a time range for admin usage.
+
+        Only return the latest 500 entries.
+      tags:
+        - private
+      parameters:
+        - name: symbol
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: start_t
+          in: query
+          description: "start time range that wish to query, noted the time stamp is 13-digits timestamp."
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: end_t
+          in: query
+          description: "end time range that wish to query, noted the time stamp is 13-digits timestamp."
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: page
+          in: query
+          description: "the page you wish to query. start from 1"
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: size
+          in: query
+          description: "the page size you wish to query. (max: 500)"
+          required: false
+          example: ""
+          schema:
+            type: number
+        - name: user_account
+          in: query
+          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: user_address
+          in: query
+          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminTradesResponse"
+
   /v1/public/broker/{broker_id}/order_enums:
     get:
       summary: List order enums for a broker
@@ -17810,6 +18087,277 @@ components:
                 message:
                   type: string
                   example: "Order enum archived. Existing orders will continue processing. Permanently purged after 30 days."
+
+    AdminLiquidationsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - meta
+                - rows
+              properties:
+                meta:
+                  $ref: "#/components/schemas/PaginationMeta"
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      liquidation_id:
+                        type: number
+                        example: 101
+                      user_id:
+                        type: number
+                        example: 12345
+                      timestamp:
+                        type: number
+                        example: 1663313562090
+                      transfer_amount_to_insurance_fund:
+                        type: number
+                        example: 0
+                      margin_ratio:
+                        type: number
+                        example: 0.10436069
+                      account_mmr:
+                        type: number
+                        example: 0.012
+                      position_notional:
+                        type: number
+                        example: 28.415534
+                      collateral_value:
+                        type: number
+                        example: 2.965465
+                      positions_by_perp:
+                        type: array
+                        items:
+                          type: object
+                          required:
+                            - total_position
+                            - abs_insurance_fund_fee
+                            - abs_liquidation_fee
+                            - cost_position_transfer
+                            - insurance_fund_fee
+                            - liquidator_fee
+                            - position_qty
+                            - symbol
+                            - transfer_price
+                          properties:
+                            total_position:
+                              type: number
+                              example: 41.6
+                            mark_price:
+                              type: number
+                              example: 123400
+                            symbol:
+                              type: string
+                              example: "PERP_BTC_USDC"
+                            position_qty:
+                              type: number
+                              example: 0.00017
+                            liquidator_fee:
+                              type: number
+                              example: 0.006
+                            cost_position_transfer:
+                              type: number
+                              example: 21.002786
+                            transfer_price:
+                              type: number
+                              example: 123545.8
+                            insurance_fund_fee:
+                              type: number
+                              example: 0.006
+                            abs_insurance_fund_fee:
+                              type: number
+                              example: 0.126017
+                            abs_liquidator_fee:
+                              type: number
+                              example: 0.252034
+
+    AdminTradesResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - meta
+                - rows
+              properties:
+                meta:
+                  $ref: "#/components/schemas/PaginationMeta"
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        example: 2
+                      user_id:
+                        type: number
+                        example: 12345
+                      symbol:
+                        type: string
+                        example: "PERP_BTC_USDC"
+                      fee:
+                        type: number
+                        example: 0.0001
+                      fee_asset:
+                        type: string
+                        example: "USDC"
+                        description: "fee. use Base as unit when BUY, use Quote as unit when SELL"
+                      side:
+                        type: string
+                        example: "BUY"
+                      order_id:
+                        type: number
+                        example: 1
+                      executed_price:
+                        type: number
+                        example: 123
+                      executed_quantity:
+                        type: number
+                        example: 0.05
+                      executed_timestamp:
+                        type: number
+                        example: 1567382401000
+                      is_maker:
+                        type: number
+                        example: 1
+                      realized_pnl:
+                        type: number
+                        example: 0
+                      match_id:
+                        type: number
+                        example: 1773456866666462000
+                      margin_token:
+                        type: string
+                        example: "USDC"
+                      margin_change_qty:
+                        type: number
+                        example: 0
+                      margin_mode:
+                        type: string
+                        example: "CROSS"
+                      order_enum_fee:
+                        type: number
+                        description: "Additional fee charged due to order enum, in fee_asset units"
+                        example: 0.05
+                        nullable: true
+                      order_enum_fee_rate:
+                        type: number
+                        description: "The order enum fee rate applied at execution time"
+                        example: 0.005
+                        nullable: true
+
+    AdminAlgoOrdersResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - meta
+                - rows
+              properties:
+                meta:
+                  $ref: "#/components/schemas/PaginationMeta"
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      algo_order_id:
+                        type: number
+                        example: 168400010
+                      user_id:
+                        type: number
+                        example: 12345
+                      algo_status:
+                        type: string
+                        example: NEW
+                      algo_type:
+                        type: string
+                        example: STOP
+                      fee_asset:
+                        type: string
+                        example: USDC
+                      is_triggered:
+                        type: string
+                        example: "false"
+                      order_tag:
+                        type: string
+                        example: test_tag
+                      parent_algo_order_id:
+                        type: number
+                        example: 0
+                      quantity:
+                        type: number
+                        example: 5.5
+                      root_algo_order_id:
+                        type: number
+                        example: 168400010
+                      root_algo_order_status:
+                        type: string
+                        example: NEW
+                      side:
+                        type: string
+                        example: BUY
+                      symbol:
+                        type: string
+                        example: PERP_NEAR_USDC
+                      margin_mode:
+                        type: string
+                        enum:
+                          - CROSS
+                          - ISOLATED
+                        example: CROSS
+                      executed_quantity:
+                        type: number
+                        example: 0
+                      total_executed_quantity:
+                        type: number
+                        example: 0
+                      total_fee:
+                        type: number
+                        example: 0
+                      trigger_price:
+                        type: number
+                        example: 2.5
+                      trigger_price_type:
+                        type: string
+                        example: MARK_PRICE
+                      type:
+                        type: string
+                        example: MARKET
+                      created_time:
+                        type: number
+                        example: 1702871974317
+                      updated_time:
+                        type: number
+                        example: 1702871974317
+                      visible_quantity:
+                        type: number
+                        example: 5.5
+                      realized_pnl:
+                        type: number
+                        example: 0
+                      child_orders:
+                        type: array
+                        items:
+                          type: object
+                        description: Array of algo orders
 
 servers:
   - url: https://api.orderly.org
