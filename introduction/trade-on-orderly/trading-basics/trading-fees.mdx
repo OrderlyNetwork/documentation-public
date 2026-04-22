@@ -18,7 +18,7 @@ Here's how the two layers work together in practice:
 *   **Result:** The **Trader pays 5 bps**. Orderly retains **3 bps**, and the **Builder keeps 2 bps** as profit.
 
 ### Fee types
-**Maker fees:** Charged when your order adds liquidity to the order book -- for example, a limit order that doesn't fill right away. Currently, the **Orderly base maker fee is 0.00 bps** across all tiers.
+**Maker fees:** Charged when your order adds liquidity to the order book -- for example, a limit order that doesn't fill right away. Maker fees can be **negative** (rebates) for higher tiers, meaning you **receive** a rebate when your order adds liquidity.
 
 **Taker fees:** Charged when your order removes liquidity by filling immediately -- for example, a market order.
 
@@ -41,7 +41,7 @@ As a Trader, you pay a single fee per trade that's set by the Builder (the DEX y
 Orderly gives Builders full control over their pricing. You set your own trading fees while tapping into Orderly's shared liquidity.
 
 *   **Set your own fees:** You decide what to charge your users. The only rule: your fee must be at least as high as Orderly's **base fee**.
-*   **Keep the difference:** You retain **100% of the margin** between what you charge users and what Orderly charges you.
+*   **Keep the difference:** You retain **100% of the margin** between what you charge users and what Orderly charges you. You have full ownership to decide how to redistribute this margin — for example, using a portion to fund referral programs to help with platform growth, offering user rebates, or creating other incentive structures.
 *   **Base fee tiers:** The base fee Orderly charges you depends on your tier in the Builder Staking programme.
 
 ### Builder Staking programme
@@ -62,7 +62,8 @@ Builders can get lower base fees and better support by hitting monthly volume ta
     |---|---|
     | Crypto base taker fee | 3.00 |
     | RWA base taker fee | 5.00 |
-    | Orderly base maker fee | 0.00 |
+    | Crypto base maker fee | 0.00 |
+    | RWA base maker fee | 0.00 |
 
     **Marketing benefits:** None
 
@@ -78,7 +79,8 @@ Builders can get lower base fees and better support by hitting monthly volume ta
     |---|---|
     | Crypto base taker fee | 2.75 |
     | RWA base taker fee | 4.75 |
-    | Orderly base maker fee | 0.00 |
+    | Crypto base maker fee | -0.05 |
+    | RWA base maker fee | -0.15 |
 
     **Marketing benefits:**
     - Launch RT/QT from Orderly
@@ -97,7 +99,8 @@ Builders can get lower base fees and better support by hitting monthly volume ta
     |---|---|
     | Crypto base taker fee | 2.50 |
     | RWA base taker fee | 4.50 |
-    | Orderly base maker fee | 0.00 |
+    | Crypto base maker fee | -0.10 |
+    | RWA base maker fee | -0.25 |
 
     **Marketing benefits:**
     - All Silver benefits
@@ -119,7 +122,8 @@ Builders can get lower base fees and better support by hitting monthly volume ta
     |---|---|
     | Crypto base taker fee | 2.00 |
     | RWA base taker fee | 4.00 |
-    | Orderly base maker fee | 0.00 |
+    | Crypto base maker fee | -0.15 |
+    | RWA base maker fee | -0.35 |
 
     **Marketing benefits:**
     - All Gold benefits
@@ -142,7 +146,8 @@ Builders can get lower base fees and better support by hitting monthly volume ta
     |---|---|
     | Crypto base taker fee | 1.00 |
     | RWA base taker fee | 3.00 |
-    | Orderly base maker fee | 0.00 |
+    | Crypto base maker fee | -0.20 |
+    | RWA base maker fee | -0.50 |
 
     **Marketing benefits:**
     - All Platinum benefits
@@ -157,9 +162,10 @@ Builders can get lower base fees and better support by hitting monthly volume ta
 </Tabs>
 
 <Note>
-Monthly (30-day) aggregate trading volume includes all activity from the Builder and their direct Builder referrals. Daily snapshots determine tier eligibility.
-</Note>
+**Fee tier notes:**
 
-<Note>
-**RWA fees:** These apply specifically to real-world asset markets (e.g., tokenized treasuries) listed on Orderly.
+- **Volume calculation:** Monthly aggregate trading volume includes all activity from the Builder and their direct Builder referrals, calculated from daily snapshots to determine tier eligibility.
+- **RWA support:** RWA markets receive higher taker fees and higher maker rebates to account for weaker natural liquidity, external liquidity onboarding costs, wider spreads, inventory risk, and lower natural trading activity.
+- **Minimum tier assignments:** Minimum tiers may come from the distributor program or internal strategic assignments. They act as a floor, but builders can still move to higher tiers through staking or volume at the next daily refresh.
+- **Negative maker fees:** Builders at Silver tier and above receive maker rebates on qualifying orders. Trader rebates settle immediately on each execution; builder-side rebates are batched and settled once per day based on aggregated maker activity.
 </Note>

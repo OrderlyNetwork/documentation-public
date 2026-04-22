@@ -14,7 +14,7 @@ The Custom Trading Fee System allows builders to tailor fee structures for their
 | **Maker** | 0 bps | Set by builder |
 
 <Note>
-  The base fee is subject to change according to the [builder staking programme](/introduction/trade-on-orderly/trading-basics/trading-fees#builder-staking-programme).
+  The base fee is subject to change according to the [builder staking programme](/introduction/trade-on-orderly/trading-basics/trading-fees#builder-staking-programme). Higher tiers can receive negative maker fees (maker rebates).
 </Note>
 
 ## User Flow for Builders
@@ -29,7 +29,7 @@ The Custom Trading Fee System allows builders to tailor fee structures for their
     Orderly provides a [fee tier assignment tool](https://github.com/OrderlyNetwork/orderly-evm-broker-fee-admin) for volume-based tiers.
 
     <Note>
-      The fee rate is the total charged to the user (Orderly base fee + custom fee). It cannot be less than the Orderly base fee.
+      The fee rate is the total charged to the user (Orderly base fee + custom fee). For taker fees, the custom fee cannot be less than the Orderly base fee. For maker fees, builders can set negative maker fees (rebates) for users when the builder's base maker fee is negative.
     </Note>
   </Step>
   <Step title="Set the default fee rate">
@@ -69,7 +69,7 @@ Builders receive daily rebates in their fee wallet, calculated after deducting a
     Orderly provides a [fee tier assignment tool](https://github.com/OrderlyNetwork/orderly-evm-broker-fee-admin) to help builders assign users to volume-based tiers.
   </Accordion>
   <Accordion title="How does the rebate work for builders?">
-    Builders keep all fees above the Orderly base fee (3 bps taker, 0 bps maker).
+    Builders keep all fees above the Orderly base fee. With negative maker fees (rebates), the builder receives the maker rebate from Orderly and can choose to pass it on to users.
   </Accordion>
   <Accordion title="How are fee rebates distributed?">
     Builder fee rebates are distributed daily to the builder's Orderly account registered with the wallet provided during the builder ID setup.
