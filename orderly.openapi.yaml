@@ -9719,7 +9719,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ArchiveOrderEnumResponse"
+                $ref: "#/components/schemas/UnarchiveOrderEnumResponse"
 
   /v1/broker/order_enum/unarchive:
     post:
@@ -18085,6 +18085,42 @@ components:
                 status:
                   type: string
                   example: "archived"
+                default_fee_rate:
+                  type: number
+                  example: 0.005
+                pair_overrides:
+                  type: object
+                  additionalProperties:
+                    type: number
+                  example:
+                    PERP_BTC_USDC: 0.003
+                created_time:
+                  type: number
+                  example: 1710300000000
+                updated_time:
+                  type: number
+                  example: 1710400000000
+
+    UnarchiveOrderEnumResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                enum_id:
+                  type: string
+                  example: "STRATEGY_DCA"
+                name:
+                  type: string
+                  example: "DCA Strategy"
+                description:
+                  type: string
+                  example: "Dollar Cost Averaging strategy orders"
+                status:
+                  type: string
+                  example: "active"
                 default_fee_rate:
                   type: number
                   example: 0.005
