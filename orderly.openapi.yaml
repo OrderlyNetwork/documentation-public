@@ -9685,58 +9685,70 @@ paths:
               schema:
                 $ref: "#/components/schemas/GetOrderEnumsWithStatsResponse"
 
-  /v1/broker/order_enum/{enum_id}/archive:
+  /v1/broker/order_enum/archive:
     post:
       summary: Archive an order enum
       description: |
         **Limit: 1 request per second**
 
-        `POST /v1/broker/order_enum/{enum_id}/archive`
+        `POST /v1/broker/order_enum/archive`
 
         Archive an order enum.
       tags:
         - private
       parameters:
-        - name: enum_id
-          in: path
-          description: Enum ID
-          required: true
-          schema:
-            type: string
         - $ref: "#/components/parameters/orderly_timestamp"
         - $ref: "#/components/parameters/orderly_account_id"
         - $ref: "#/components/parameters/orderly_key"
         - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - enum_id
+              properties:
+                enum_id:
+                  type: string
+                  description: Enum ID to archive
+                  example: "STRATEGY_DCA"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ArchiveOrderEnumResponse"
+                $ref: "#/components/schemas/UnarchiveOrderEnumResponse"
 
-  /v1/broker/order_enum/{enum_id}/unarchive:
+  /v1/broker/order_enum/unarchive:
     post:
       summary: Unarchive an order enum
       description: |
         **Limit: 1 request per second**
 
-        `POST /v1/broker/order_enum/{enum_id}/unarchive`
+        `POST /v1/broker/order_enum/unarchive`
 
         Unarchive an order enum.
       tags:
         - private
       parameters:
-        - name: enum_id
-          in: path
-          description: Enum ID
-          required: true
-          schema:
-            type: string
         - $ref: "#/components/parameters/orderly_timestamp"
         - $ref: "#/components/parameters/orderly_account_id"
         - $ref: "#/components/parameters/orderly_key"
         - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - enum_id
+              properties:
+                enum_id:
+                  type: string
+                  description: Enum ID to unarchive
+                  example: "STRATEGY_DCA"
       responses:
         "200":
           description: OK
@@ -17960,7 +17972,7 @@ components:
       type: object
       required:
         - enum_id
-        - fee_structure
+        - default_fee_rate
       properties:
         enum_id:
           type: string
@@ -17972,21 +17984,16 @@ components:
         description:
           type: string
           example: "Dollar Cost Averaging strategy orders"
-        fee_structure:
+        default_fee_rate:
+          type: number
+          description: "0.00001 to 0.01 (0.001% to 1%)"
+          example: 0.005
+        pair_overrides:
           type: object
-          required:
-            - default_fee_rate
-          properties:
-            default_fee_rate:
-              type: number
-              description: "0.00001 to 0.01 (0.001% to 1%)"
-              example: 0.005
-            pair_overrides:
-              type: object
-              additionalProperties:
-                type: number
-              example:
-                PERP_BTC_USDC: 0.003
+          additionalProperties:
+            type: number
+          example:
+            PERP_BTC_USDC: 0.003
 
     UpdateOrderEnumBody:
       type: object
@@ -17997,21 +18004,16 @@ components:
         description:
           type: string
           example: "Dollar Cost Averaging strategy orders"
-        fee_structure:
+        default_fee_rate:
+          type: number
+          description: "0.00001 to 0.01 (0.001% to 1%)"
+          example: 0.005
+        pair_overrides:
           type: object
-          required:
-            - default_fee_rate
-          properties:
-            default_fee_rate:
-              type: number
-              description: "0.00001 to 0.01 (0.001% to 1%)"
-              example: 0.005
-            pair_overrides:
-              type: object
-              additionalProperties:
-                type: number
-              example:
-                PERP_BTC_USDC: 0.003
+          additionalProperties:
+            type: number
+          example:
+            PERP_BTC_USDC: 0.003
 
     OrderEnum:
       type: object
@@ -18023,18 +18025,15 @@ components:
           type: string
           enum: [active, archived]
           example: "active"
-        fee_structure:
+        default_fee_rate:
+          type: number
+          example: 0.005
+        pair_overrides:
           type: object
-          properties:
-            default_fee_rate:
-              type: number
-              example: 0.005
-            pair_overrides:
-              type: object
-              additionalProperties:
-                type: number
-              example:
-                PERP_BTC_USDC: 0.003
+          additionalProperties:
+            type: number
+          example:
+            PERP_BTC_USDC: 0.003
         created_at:
           type: number
           example: 1710300000000
@@ -18077,15 +18076,66 @@ components:
                 enum_id:
                   type: string
                   example: "STRATEGY_DCA"
+                name:
+                  type: string
+                  example: "DCA Strategy"
+                description:
+                  type: string
+                  example: "Dollar Cost Averaging strategy orders"
                 status:
                   type: string
                   example: "archived"
-                archived_at:
+                default_fee_rate:
+                  type: number
+                  example: 0.005
+                pair_overrides:
+                  type: object
+                  additionalProperties:
+                    type: number
+                  example:
+                    PERP_BTC_USDC: 0.003
+                created_time:
+                  type: number
+                  example: 1710300000000
+                updated_time:
                   type: number
                   example: 1710400000000
-                message:
+
+    UnarchiveOrderEnumResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                enum_id:
                   type: string
-                  example: "Order enum archived. Existing orders will continue processing. Permanently purged after 30 days."
+                  example: "STRATEGY_DCA"
+                name:
+                  type: string
+                  example: "DCA Strategy"
+                description:
+                  type: string
+                  example: "Dollar Cost Averaging strategy orders"
+                status:
+                  type: string
+                  example: "active"
+                default_fee_rate:
+                  type: number
+                  example: 0.005
+                pair_overrides:
+                  type: object
+                  additionalProperties:
+                    type: number
+                  example:
+                    PERP_BTC_USDC: 0.003
+                created_time:
+                  type: number
+                  example: 1710300000000
+                updated_time:
+                  type: number
+                  example: 1710400000000
 
     AdminLiquidationsResponse:
       allOf:
