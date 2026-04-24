@@ -9493,20 +9493,20 @@ paths:
               schema:
                 $ref: "#/components/schemas/AdminTradesResponse"
 
-  /v1/public/broker/{broker_id}/order_enums:
+  /v1/public/broker/order_enums:
     get:
       summary: List order enums for a broker
       description: |
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET /v1/public/broker/{broker_id}/order_enums`
+        `GET /v1/public/broker/order_enums?broker_id={broker_id}`
 
         List order enums for a broker.
       tags:
         - public
       parameters:
         - name: broker_id
-          in: path
+          in: query
           description: Broker ID
           required: true
           schema:
