@@ -9537,26 +9537,26 @@ paths:
               schema:
                 $ref: "#/components/schemas/GetOrderEnumsResponse"
 
-  /v1/public/broker/{broker_id}/order_enum/{enum_id}:
+  /v1/public/broker/order_enum:
     get:
       summary: Get single order enum
       description: |
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET /v1/public/broker/{broker_id}/order_enum/{enum_id}`
+        `GET /v1/public/broker/order_enum?broker_id=woofi_pro&enum_id=STRATEGY_DCA`
 
         Get a single order enum by ID.
       tags:
         - public
       parameters:
         - name: broker_id
-          in: path
+          in: query
           description: Broker ID
           required: true
           schema:
             type: string
         - name: enum_id
-          in: path
+          in: query
           description: Enum ID
           required: true
           schema:
@@ -9673,6 +9673,24 @@ paths:
       tags:
         - private
       parameters:
+        - name: symbol
+          in: query
+          description: Filter by trading pair (e.g., `PERP_BTC_USDC`)
+          required: false
+          schema:
+            type: string
+        - name: enum_id
+          in: query
+          description: Filter by enum ID (partial match supported)
+          required: false
+          schema:
+            type: string
+        - name: include_archived
+          in: query
+          description: "Include archived enums in results (default: false)"
+          required: false
+          schema:
+            type: boolean
         - $ref: "#/components/parameters/orderly_timestamp"
         - $ref: "#/components/parameters/orderly_account_id"
         - $ref: "#/components/parameters/orderly_key"
@@ -9719,7 +9737,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UnarchiveOrderEnumResponse"
+                $ref: "#/components/schemas/ArchiveOrderEnumResponse"
 
   /v1/broker/order_enum/unarchive:
     post:
@@ -9755,7 +9773,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ArchiveOrderEnumResponse"
+                $ref: "#/components/schemas/UnarchiveOrderEnumResponse"
 
 components:
   parameters:
@@ -18022,10 +18040,10 @@ components:
             type: number
           example:
             PERP_BTC_USDC: 0.003
-        created_at:
+        created_time:
           type: number
           example: 1710300000000
-        updated_at:
+        updated_time:
           type: number
           example: 1710300000000
 
