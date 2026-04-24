@@ -17926,15 +17926,9 @@ components:
         - type: object
           properties:
             data:
-              type: object
-              properties:
-                broker_id:
-                  type: string
-                  example: "woofi_pro"
-                order_enums:
-                  type: array
-                  items:
-                    $ref: "#/components/schemas/OrderEnum"
+              type: array
+              items:
+                $ref: "#/components/schemas/OrderEnum"
 
     GetOrderEnumResponse:
       allOf:
@@ -17950,15 +17944,9 @@ components:
         - type: object
           properties:
             data:
-              type: object
-              properties:
-                broker_id:
-                  type: string
-                  example: "woofi_pro"
-                order_enums:
-                  type: array
-                  items:
-                    $ref: "#/components/schemas/OrderEnumWithStats"
+              type: array
+              items:
+                $ref: "#/components/schemas/OrderEnumWithStats"
 
     GetOrderEnumWithStatsResponse:
       allOf:
