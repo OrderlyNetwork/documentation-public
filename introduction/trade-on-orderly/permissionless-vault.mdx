@@ -1,0 +1,123 @@
+---
+title: "Permissionless Vault"
+description: "Learn how anyone can create and manage a Strategy Vault on Orderly without permission or manual onboarding."
+---
+
+Today, launching a Strategy Vault on Orderly requires manual coordination across multiple teams -- contract deployment, multi-sig proposals, database configuration, and custodial setup. The process takes 2–5 business days and involves 5+ people across 29 manual steps.
+
+Permissionless Vault removes all of that. Any EOA wallet can deploy a fully functional Strategy Vault in a single transaction. Backend automation handles the rest -- from cross-chain registration to account provisioning. Time to live: **under 30 minutes, zero manual intervention**.
+
+> Disclaimer: A permissionlessly created vault is deployed and operated by its creator, not by Orderly. Orderly does not vet, operate, or backstop these vaults. Users should assess the vault's strategy, track record, and risk profile before depositing.
+
+## Standard Vault vs. Permissionless Vault
+
+| Feature | Standard Vault (Current) | Permissionless Vault |
+| :--- | :--- | :--- |
+| **Who creates it** | Orderly team (manual onboarding) | Any EOA wallet holder |
+| **Setup time** | 2–5 business days | < 30 minutes |
+| **Manual steps** | 29 steps, 5+ people | 1 transaction, 0 people |
+| **Multi-sig required** | Yes (4–24h bottleneck) | No |
+| **Database configuration** | 20+ manual SQL operations | Fully automated |
+
+## How It Works
+
+Permissionless Vault leverages deterministic contract deployment (CREATE3), cross-chain messaging (LayerZero V2), and automated backend provisioning to turn vault creation into a single on-chain action.
+
+### Creating a vault
+
+1. **Configure** -- The creator selects vault parameters through the frontend: vault name, description, broker, strategy provider (SP) address, SP name, performance fee rate, deployment chain, and first period start time.
+2. **Deploy** -- The creator signs a single `createPermissionlessVault()` transaction on their chosen chain. The factory contract deploys the vault using CREATE3 (deterministic address), registers it with the cross-chain manager, and sends a configuration message to the Orderly Chain via LayerZero V2.
+3. **Register** -- The Orderly Chain ledger receives the cross-chain message and automatically configures the vault: broker assignment, fee rates, and strategy provider authorization. This typically completes within 1–5 minutes.
+4. **Provision** -- The indexer captures on-chain events and syncs vault data to the CeFi backend, which auto-provisions all necessary accounts and configurations (replacing the 20+ manual SQL operations from the old flow).
+5. **Live** -- The vault appears in the vault listing and is ready for LP deposits.
+
+### What the creator provides
+
+| Parameter | Notes |
+| :--- | :--- |
+| **Vault Name** | Max 50 characters. Alphanumeric, spaces, hyphens, underscores, dots. Immutable after creation. |
+| **Description** | Max 500 characters. Markdown supported. Modifiable after creation. |
+| **Deployment Chain** | Single chain for initial deployment (Arbitrum, Base, Optimism, or Sei). More chains can be added later. |
+| **Broker** | Selected from available brokers (searchable dropdown). |
+| **SP Address** | The strategy provider's wallet address. Immutable after creation. |
+| **SP Name** | Max 50 characters. Immutable after creation. |
+| **Performance Fee Rate** | Integer 0–50 (representing 0%–50%). Immutable after creation. |
+| **1st Period Start** | Must be a round hour and at least 24 hours in the future, or left unset (0). Modifiable after creation (with restrictions). |
+
+Parameters marked **immutable** cannot be changed after vault creation. If a change is absolutely necessary, the creator must contact Orderly support.
+
+### Deployment status
+
+After submitting the creation transaction, the frontend shows a simplified two-state model:
+
+- **Pending** -- Transaction submitted; the vault is being provisioned across the pipeline.
+- **Complete** -- The vault is fully operational and queryable via the vault info API.
+
+The full provisioning pipeline (contract deployed → ledger registered → CeFi provisioned → complete) typically finishes within 30 minutes. If any stage stalls, the system triggers automated alerts for investigation.
+
+## Managing Your Vault
+
+### Modifiable settings
+
+After creation, the vault creator can update two settings:
+
+| Setting | Restrictions |
+| :--- | :--- |
+| **Description** | No restrictions. Can be changed at any time. |
+| **1st Period Start** | Can only be changed if the current time is more than 6 hours before the existing start time. New value must be a round hour and at least 24 hours in the future. Cannot be set back to unset (0) once set -- use a far-future time to delay. |
+
+Each modification requires a separate on-chain transaction. The change propagates through the indexer to the backend, and the frontend polls the vault info API until the updated value appears.
+
+### Adding chain support
+
+After the initial vault is live, the creator can expand to additional chains one at a time:
+
+1. Call `createPermissionlessVault()` on the new chain's factory with the same parameters (same deterministic salt → same vault address).
+2. The factory deploys the vault proxy on the new chain and sends the configuration cross-chain.
+3. The ledger registers the new chain for the existing vault.
+4. The backend updates its configuration to include the new chain.
+
+Parameters are auto-filled from the original creation -- the creator cannot modify them, as different parameters would produce a different deterministic address.
+
+## Cross-Chain Recovery
+
+If the LayerZero cross-chain message fails to deliver (network issue, gas spike), the vault will be deployed on the EVM chain but not yet registered on the Orderly Chain ledger.
+
+- **Automatic retry** -- LayerZero V2 has built-in retry for queued messages.
+- **Manual re-send** -- The creator can call `resendConfiguration()` on the factory to re-trigger the cross-chain message. This is safe because the ledger configuration is idempotent.
+- **Timeout alert** -- If registration hasn't completed within 30 minutes, the system alerts the operations team.
+
+The vault remains usable on its deployment chain (deposits and withdrawals work). Only cross-chain settlement is blocked until ledger registration completes.
+
+## How Permissionless Vaults Differ for LPs
+
+Permissionless Vaults work like standard Strategy Vaults in most ways -- same deposit/withdrawal flow, same settlement mechanics, same period structure. Key differences:
+
+| | Standard Vaults | Permissionless Vaults |
+| :--- | :--- | :--- |
+| **Who operates it** | Orderly-vetted Strategy Providers | Any creator with an EOA wallet |
+| **Onboarding review** | Reviewed by Orderly team | No review -- fully permissionless |
+| **Strategy transparency** | Varies by vault | Varies by vault |
+| **Risk** | Orderly performs due diligence on SP | LP must independently evaluate the creator and strategy |
+
+### What this means in practice
+
+- **Do your own research.** Permissionless Vaults are not vetted by Orderly. Evaluate the Strategy Provider's track record, strategy description, and fee structure before depositing.
+- **Performance fee is locked in.** The performance fee rate is set at vault creation and cannot be changed. What you see is what you get.
+- **Same infrastructure, different operator.** The underlying smart contracts, cross-chain messaging, and settlement mechanics are identical to standard vaults. The difference is who creates and manages the trading strategy.
+
+## What's Next
+
+Permissionless Vault V1 focuses on the core creation and management flow. Planned future expansions include:
+
+- **Creator transfer** -- Allow vault creators to transfer ownership to another address.
+- **Configurable parameters** -- Open up additional vault settings (min deposit amount, period duration, etc.) for creator customization.
+- **Enhanced analytics** -- Richer performance dashboards and LP reporting for permissionless vaults.
+- **Fee flexibility** -- More granular fee structures beyond the current flat performance fee.
+
+## Related Pages
+
+- [Strategy Vault Overview](/introduction/orderly-omniVault/overview)
+- [Strategy Vault Mechanics](/introduction/orderly-omniVault/mechanics)
+- [Permissionless Listing](/introduction/trade-on-orderly/permissionless-listing)
+- [Supported Chains](/introduction/trade-on-orderly/supported-chains)
