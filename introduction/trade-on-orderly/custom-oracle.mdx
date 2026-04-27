@@ -3,48 +3,91 @@ title: "Custom Oracle"
 description: "Learn how Builders can provide custom oracle feeds for permissionlessly listed markets on Orderly."
 ---
 
-Custom Oracle lets qualified Builders provide their own Index Price feeds for markets they list through [Permissionless Listing](/introduction/trade-on-orderly/permissionless-listing). This expands the range of markets Builders can support, especially when a market needs a price source that is not fully covered by existing CEX or platform oracle sources.
+Custom Oracle lets qualified Builders bring additional Index Price sources into [Permissionless Listing](/introduction/trade-on-orderly/permissionless-listing). It is designed for markets that need pricing beyond Orderly's standard CEX feeds and platform oracle sources.
 
-## How Custom Oracle works
+There are two Custom Oracle modes:
 
-A Builder can register a custom oracle feed for a base asset, publish prices to Orderly, and select that feed as one of the Index Price sources when listing a market.
+| Mode | Best for | How prices reach Orderly |
+| --- | --- | --- |
+| **Builder Oracle** | Builders with their own pricing model, index service, or aggregation backend. | The Builder pushes prices to Orderly over WebSocket. |
+| **Bring Your Own Key (BYOK) Oracle** | Builders that want to use their own provider account for a supported oracle provider such as Pyth or Stork. | Orderly uses the Builder's provider credentials to pull prices from the oracle provider. |
 
-Custom oracle feeds can be used alone or mixed with other supported source types:
+Both modes can be selected as Index Price sources during Permissionless Listing. They can also be combined with CEX feeds and platform oracle sources, with each selected source assigned a weight.
 
-| Source type | Description |
-| --- | --- |
-| **CEX feeds** | Supported centralized exchange price sources. |
-| **Platform oracles** | Orderly-supported oracle sources such as Pyth and Stork. |
-| **Builder Oracle** | A Builder-provided price feed pushed to Orderly. |
-| **Bring Your Own Key (BYOK) Oracle** | A Builder-owned oracle connection using the Builder's own provider credentials. |
+## Builder Oracle
 
-When multiple sources are selected, each source is assigned a weight and the weighted sources are used to calculate the market's Index Price.
+Builder Oracle is the push-based Custom Oracle mode. The Builder owns the price calculation and pushes the resulting Index Price to Orderly.
 
-## Feed visibility
+Use Builder Oracle when you have your own pricing infrastructure, for example:
 
-Builders control whether a custom oracle feed is private or public:
+- an internal index service;
+- an exchange aggregation service;
+- a pricing model for a long-tail asset;
+- an RWA data provider integration.
 
-- **Private feeds** are visible only to the Builder that owns the feed. This is useful for testing or for markets the Builder operates directly.
-- **Public feeds** can be selected by other Builders when they list markets.
+### How Builder Oracle works
 
-If a Builder selects a public custom oracle feed operated by another Builder, the selecting Builder is responsible for understanding the availability and quality risk of that source.
+1. The Builder registers a feed for a `base_ccy`, such as `BTC`, `AAPL`, or another supported asset.
+2. Orderly creates the Builder Oracle source for that Builder. The source is identified as `ORACLE_<broker_id>`.
+3. The Builder connects to Orderly's oracle WebSocket and publishes `indexpricefeed` messages.
+4. The feed can be selected as an Index Price source when listing a market.
+
+Builder Oracle feeds are created as `active` and `private` by default. This lets the Builder test the feed privately before making it available to other Builders.
+
+### Visibility
+
+Builder Oracle visibility is controlled per feed:
+
+- **Private** feeds are visible only to the Builder that owns the feed.
+- **Public** feeds can be selected by other Builders when they list markets.
+
+If another Builder selects a public Builder Oracle feed, that Builder is responsible for understanding the availability and quality risk of the third-party feed.
+
+### Builder responsibilities
+
+With Builder Oracle, the Builder is responsible for operating the price feed:
+
+- keep the WebSocket connection active during the relevant market session;
+- publish valid prices at the required frequency;
+- monitor stale data, skipped prices, and feed availability;
+- use multiple sources where possible to reduce single-source risk.
+
+If a Builder Oracle feed becomes unhealthy, the affected market can be restricted or placed into reduce-only mode according to the Permissionless Listing risk rules.
+
+## Bring Your Own Key (BYOK) Oracle
+
+Bring Your Own Key (BYOK) Oracle is the provider-key mode. Instead of building and operating a WebSocket price publisher, the Builder connects a supported oracle provider account to Orderly.
+
+Use BYOK Oracle when you want to rely on a supported oracle provider, but use your own provider credentials and account relationship.
+
+Initial BYOK provider support includes Pyth and Stork. Chainlink support is planned for a future rollout.
+
+### How BYOK Oracle works
+
+1. The Builder selects a supported BYOK provider, such as Pyth or Stork.
+2. The Builder submits the provider credentials through Orderly's private API.
+3. Orderly validates the provider credentials and creates a provider-specific source, such as `PYTH_<broker_id>` or `STORK_<broker_id>`.
+4. The Builder registers feeds under that BYOK provider.
+5. Orderly pulls prices from the provider and makes the feed available for listing source selection.
+
+BYOK feeds have their own status and health model. The Builder controls whether the feed is active or inactive, while Orderly reports provider-side health such as missing symbols, pull failures, invalid keys, or quota issues.
+
+### BYOK responsibilities
+
+With BYOK Oracle, the Builder does not need to run a WebSocket publisher, but still needs to manage the provider relationship:
+
+- keep provider credentials valid;
+- monitor key status and provider health;
+- manage which BYOK feeds are active;
+- understand provider quota, coverage, and availability constraints.
 
 ## Custom Oracle and RWA markets
 
-Custom Oracle can be used with supported real-world asset (RWA) markets. RWA support currently covers **US markets only**, including regular US stock hours, extended US stock hours, and US futures hours.
+Both Builder Oracle and BYOK Oracle can be used with supported real-world asset (RWA) markets. RWA support currently covers **US markets only**, including regular US stock hours, extended US stock hours, and US futures hours.
 
 Support for additional RWA market sessions, including **Hong Kong (HK)**, **China (CN)**, and **Korea (KR)**, is planned to be added gradually.
 
 RWA trading sessions are configured at the listed market level through `market_session`; they are not configured on the oracle feed itself.
-
-## Builder responsibilities
-
-Custom Oracle gives Builders more flexibility, but it also shifts more responsibility to the Builder:
-
-- Keep the feed active and publishing during the relevant market session.
-- Monitor feed quality, update frequency, and stale-data alerts.
-- Use multiple sources where possible to reduce single-source risk.
-- Understand that unhealthy price sources can cause the listed market to be restricted or placed into reduce-only mode.
 
 ## Integration flow
 
