@@ -2258,17 +2258,24 @@ paths:
 
         `GET /v1/client/asset/receiver_address`
 
-        Returns the exclusive receiver address for the authenticated account. Users can deposit USDC by transferring directly to this address without wallet connection or gas.
+        Returns the exclusive receiver address for the authenticated account. Users can deposit supported tokens by transferring directly to this address without wallet connection or gas.
       tags:
         - private
       parameters:
         - name: chain_id
           in: query
-          description: "Chain ID to get the receiver address for. Currently only Arbitrum (`42161`) is supported."
+          description: "Chain ID to get the receiver address for. Supported chains: Arbitrum (`42161`), BNB Chain (`56`)."
           required: true
           example: 42161
           schema:
             type: integer
+        - name: token
+          in: query
+          description: "Token symbol. Supported tokens: `USDC`, `USDT`. Defaults to `USDC` if omitted."
+          required: false
+          example: "USDC"
+          schema:
+            type: string
         - $ref: "#/components/parameters/orderly_timestamp"
         - $ref: "#/components/parameters/orderly_account_id"
         - $ref: "#/components/parameters/orderly_key"
@@ -2289,7 +2296,7 @@ paths:
 
         `GET /v1/client/asset/receiver_events`
 
-        Returns pending transfer events detected at the user's exclusive receiver address that have not yet been fully deposited into the Vault. Use this endpoint to poll for deposit status after a user transfers USDC to their receiver address.
+        Returns transfer events detected at the user's exclusive receiver address. Use this endpoint to poll for deposit status after a user transfers tokens to their receiver address.
       tags:
         - private
       parameters:
@@ -9817,11 +9824,11 @@ components:
                   example: "0x13a8f4736c001fed44731177c95302055a0a6df0"
                 token_address:
                   type: string
-                  description: The USDC contract address on the specified chain.
+                  description: The token contract address on the specified chain.
                   example: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
                 minimum_deposit:
                   type: number
-                  description: Minimum deposit amount in USDC. Transfers below this are treated as dust and cannot be recovered.
+                  description: Minimum deposit amount. Transfers below this are treated as dust and cannot be recovered.
                   example: 5
     ReceiverEventsResponse:
       allOf:
@@ -9842,7 +9849,7 @@ components:
                         example: "42161"
                       tx_id:
                         type: string
-                        description: Transaction hash of the user's USDC transfer.
+                        description: Transaction hash of the user's token transfer.
                         example: "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
                       token:
                         type: string
@@ -11433,6 +11440,10 @@ components:
                               type: string
                               description: "`USDC.e` for `Mantle` chain"
                               example: "ETH"
+                            exclusive_deposit_supported:
+                              type: boolean
+                              description: "Whether this token on this chain supports deposit via exclusive receiver address."
+                              example: false
 
     GetIndexPriceSourceResponse:
       allOf:
