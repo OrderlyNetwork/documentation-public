@@ -2258,17 +2258,24 @@ paths:
 
         `GET /v1/client/asset/receiver_address`
 
-        Returns the exclusive receiver address for the authenticated account. Users can deposit USDC by transferring directly to this address without wallet connection or gas.
+        Returns the exclusive receiver address for the authenticated account. Users can deposit supported tokens by transferring directly to this address without wallet connection or gas.
       tags:
         - private
       parameters:
         - name: chain_id
           in: query
-          description: "Chain ID to get the receiver address for. Currently only Arbitrum (`42161`) is supported."
+          description: "Chain ID to get the receiver address for. Supported chains: Arbitrum (`42161`), BNB Chain (`56`)."
           required: true
           example: 42161
           schema:
             type: integer
+        - name: token
+          in: query
+          description: "Token symbol. Supported tokens: `USDC`, `USDT`. Defaults to `USDC` if omitted."
+          required: false
+          example: "USDC"
+          schema:
+            type: string
         - $ref: "#/components/parameters/orderly_timestamp"
         - $ref: "#/components/parameters/orderly_account_id"
         - $ref: "#/components/parameters/orderly_key"
@@ -2289,7 +2296,7 @@ paths:
 
         `GET /v1/client/asset/receiver_events`
 
-        Returns pending transfer events detected at the user's exclusive receiver address that have not yet been fully deposited into the Vault. Use this endpoint to poll for deposit status after a user transfers USDC to their receiver address.
+        Returns transfer events detected at the user's exclusive receiver address. Use this endpoint to poll for deposit status after a user transfers tokens to their receiver address.
       tags:
         - private
       parameters:
@@ -9493,20 +9500,20 @@ paths:
               schema:
                 $ref: "#/components/schemas/AdminTradesResponse"
 
-  /v1/public/broker/{broker_id}/order_enums:
+  /v1/public/broker/order_enums:
     get:
       summary: List order enums for a broker
       description: |
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET /v1/public/broker/{broker_id}/order_enums`
+        `GET /v1/public/broker/order_enums?broker_id=woofi_pro`
 
         List order enums for a broker.
       tags:
         - public
       parameters:
         - name: broker_id
-          in: path
+          in: query
           description: Broker ID
           required: true
           schema:
@@ -9536,38 +9543,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GetOrderEnumsResponse"
-
-  /v1/public/broker/{broker_id}/order_enum/{enum_id}:
-    get:
-      summary: Get single order enum
-      description: |
-        **Limit: 10 requests per 1 second per IP address**
-
-        `GET /v1/public/broker/{broker_id}/order_enum/{enum_id}`
-
-        Get a single order enum by ID.
-      tags:
-        - public
-      parameters:
-        - name: broker_id
-          in: path
-          description: Broker ID
-          required: true
-          schema:
-            type: string
-        - name: enum_id
-          in: path
-          description: Enum ID
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetOrderEnumResponse"
 
   /v1/broker/order_enum:
     post:
@@ -9673,6 +9648,24 @@ paths:
       tags:
         - private
       parameters:
+        - name: symbol
+          in: query
+          description: Filter by trading pair (e.g., `PERP_BTC_USDC`)
+          required: false
+          schema:
+            type: string
+        - name: enum_id
+          in: query
+          description: Filter by enum ID (partial match supported)
+          required: false
+          schema:
+            type: string
+        - name: include_archived
+          in: query
+          description: "Include archived enums in results (default: false)"
+          required: false
+          schema:
+            type: boolean
         - $ref: "#/components/parameters/orderly_timestamp"
         - $ref: "#/components/parameters/orderly_account_id"
         - $ref: "#/components/parameters/orderly_key"
@@ -9685,28 +9678,34 @@ paths:
               schema:
                 $ref: "#/components/schemas/GetOrderEnumsWithStatsResponse"
 
-  /v1/broker/order_enum/{enum_id}/archive:
+  /v1/broker/order_enum/archive:
     post:
       summary: Archive an order enum
       description: |
         **Limit: 1 request per second**
 
-        `POST /v1/broker/order_enum/{enum_id}/archive`
+        `POST /v1/broker/order_enum/archive`
 
         Archive an order enum.
       tags:
         - private
       parameters:
-        - name: enum_id
-          in: path
-          description: Enum ID
-          required: true
-          schema:
-            type: string
         - $ref: "#/components/parameters/orderly_timestamp"
         - $ref: "#/components/parameters/orderly_account_id"
         - $ref: "#/components/parameters/orderly_key"
         - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - enum_id
+              properties:
+                enum_id:
+                  type: string
+                  description: Enum ID to archive
+                  example: "STRATEGY_DCA"
       responses:
         "200":
           description: OK
@@ -9715,35 +9714,41 @@ paths:
               schema:
                 $ref: "#/components/schemas/ArchiveOrderEnumResponse"
 
-  /v1/broker/order_enum/{enum_id}/unarchive:
+  /v1/broker/order_enum/unarchive:
     post:
       summary: Unarchive an order enum
       description: |
         **Limit: 1 request per second**
 
-        `POST /v1/broker/order_enum/{enum_id}/unarchive`
+        `POST /v1/broker/order_enum/unarchive`
 
         Unarchive an order enum.
       tags:
         - private
       parameters:
-        - name: enum_id
-          in: path
-          description: Enum ID
-          required: true
-          schema:
-            type: string
         - $ref: "#/components/parameters/orderly_timestamp"
         - $ref: "#/components/parameters/orderly_account_id"
         - $ref: "#/components/parameters/orderly_key"
         - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - enum_id
+              properties:
+                enum_id:
+                  type: string
+                  description: Enum ID to unarchive
+                  example: "STRATEGY_DCA"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ArchiveOrderEnumResponse"
+                $ref: "#/components/schemas/UnarchiveOrderEnumResponse"
 
 components:
   parameters:
@@ -9819,11 +9824,11 @@ components:
                   example: "0x13a8f4736c001fed44731177c95302055a0a6df0"
                 token_address:
                   type: string
-                  description: The USDC contract address on the specified chain.
+                  description: The token contract address on the specified chain.
                   example: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
                 minimum_deposit:
                   type: number
-                  description: Minimum deposit amount in USDC. Transfers below this are treated as dust and cannot be recovered.
+                  description: Minimum deposit amount. Transfers below this are treated as dust and cannot be recovered.
                   example: 5
     ReceiverEventsResponse:
       allOf:
@@ -9844,7 +9849,7 @@ components:
                         example: "42161"
                       tx_id:
                         type: string
-                        description: Transaction hash of the user's USDC transfer.
+                        description: Transaction hash of the user's token transfer.
                         example: "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
                       token:
                         type: string
@@ -11435,6 +11440,10 @@ components:
                               type: string
                               description: "`USDC.e` for `Mantle` chain"
                               example: "ETH"
+                            exclusive_deposit_supported:
+                              type: boolean
+                              description: "Whether this token on this chain supports deposit via exclusive receiver address."
+                              example: false
 
     GetIndexPriceSourceResponse:
       allOf:
@@ -17914,15 +17923,9 @@ components:
         - type: object
           properties:
             data:
-              type: object
-              properties:
-                broker_id:
-                  type: string
-                  example: "woofi_pro"
-                order_enums:
-                  type: array
-                  items:
-                    $ref: "#/components/schemas/OrderEnum"
+              type: array
+              items:
+                $ref: "#/components/schemas/OrderEnum"
 
     GetOrderEnumResponse:
       allOf:
@@ -17938,15 +17941,9 @@ components:
         - type: object
           properties:
             data:
-              type: object
-              properties:
-                broker_id:
-                  type: string
-                  example: "woofi_pro"
-                order_enums:
-                  type: array
-                  items:
-                    $ref: "#/components/schemas/OrderEnumWithStats"
+              type: array
+              items:
+                $ref: "#/components/schemas/OrderEnumWithStats"
 
     GetOrderEnumWithStatsResponse:
       allOf:
@@ -17960,7 +17957,7 @@ components:
       type: object
       required:
         - enum_id
-        - fee_structure
+        - default_fee_rate
       properties:
         enum_id:
           type: string
@@ -17972,21 +17969,16 @@ components:
         description:
           type: string
           example: "Dollar Cost Averaging strategy orders"
-        fee_structure:
+        default_fee_rate:
+          type: number
+          description: "0.00001 to 0.01 (0.001% to 1%)"
+          example: 0.005
+        pair_overrides:
           type: object
-          required:
-            - default_fee_rate
-          properties:
-            default_fee_rate:
-              type: number
-              description: "0.00001 to 0.01 (0.001% to 1%)"
-              example: 0.005
-            pair_overrides:
-              type: object
-              additionalProperties:
-                type: number
-              example:
-                PERP_BTC_USDC: 0.003
+          additionalProperties:
+            type: number
+          example:
+            PERP_BTC_USDC: 0.003
 
     UpdateOrderEnumBody:
       type: object
@@ -17997,21 +17989,16 @@ components:
         description:
           type: string
           example: "Dollar Cost Averaging strategy orders"
-        fee_structure:
+        default_fee_rate:
+          type: number
+          description: "0.00001 to 0.01 (0.001% to 1%)"
+          example: 0.005
+        pair_overrides:
           type: object
-          required:
-            - default_fee_rate
-          properties:
-            default_fee_rate:
-              type: number
-              description: "0.00001 to 0.01 (0.001% to 1%)"
-              example: 0.005
-            pair_overrides:
-              type: object
-              additionalProperties:
-                type: number
-              example:
-                PERP_BTC_USDC: 0.003
+          additionalProperties:
+            type: number
+          example:
+            PERP_BTC_USDC: 0.003
 
     OrderEnum:
       type: object
@@ -18023,22 +18010,19 @@ components:
           type: string
           enum: [active, archived]
           example: "active"
-        fee_structure:
+        default_fee_rate:
+          type: number
+          example: 0.005
+        pair_overrides:
           type: object
-          properties:
-            default_fee_rate:
-              type: number
-              example: 0.005
-            pair_overrides:
-              type: object
-              additionalProperties:
-                type: number
-              example:
-                PERP_BTC_USDC: 0.003
-        created_at:
+          additionalProperties:
+            type: number
+          example:
+            PERP_BTC_USDC: 0.003
+        created_time:
           type: number
           example: 1710300000000
-        updated_at:
+        updated_time:
           type: number
           example: 1710300000000
 
@@ -18077,15 +18061,66 @@ components:
                 enum_id:
                   type: string
                   example: "STRATEGY_DCA"
+                name:
+                  type: string
+                  example: "DCA Strategy"
+                description:
+                  type: string
+                  example: "Dollar Cost Averaging strategy orders"
                 status:
                   type: string
                   example: "archived"
-                archived_at:
+                default_fee_rate:
+                  type: number
+                  example: 0.005
+                pair_overrides:
+                  type: object
+                  additionalProperties:
+                    type: number
+                  example:
+                    PERP_BTC_USDC: 0.003
+                created_time:
+                  type: number
+                  example: 1710300000000
+                updated_time:
                   type: number
                   example: 1710400000000
-                message:
+
+    UnarchiveOrderEnumResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                enum_id:
                   type: string
-                  example: "Order enum archived. Existing orders will continue processing. Permanently purged after 30 days."
+                  example: "STRATEGY_DCA"
+                name:
+                  type: string
+                  example: "DCA Strategy"
+                description:
+                  type: string
+                  example: "Dollar Cost Averaging strategy orders"
+                status:
+                  type: string
+                  example: "active"
+                default_fee_rate:
+                  type: number
+                  example: 0.005
+                pair_overrides:
+                  type: object
+                  additionalProperties:
+                    type: number
+                  example:
+                    PERP_BTC_USDC: 0.003
+                created_time:
+                  type: number
+                  example: 1710300000000
+                updated_time:
+                  type: number
+                  example: 1710400000000
 
     AdminLiquidationsResponse:
       allOf:
