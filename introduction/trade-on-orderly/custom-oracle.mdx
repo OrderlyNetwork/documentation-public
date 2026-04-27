@@ -1,0 +1,58 @@
+---
+title: "Custom Oracle"
+description: "Learn how Builders can provide custom oracle feeds for permissionlessly listed markets on Orderly."
+---
+
+Custom Oracle lets qualified Builders provide their own Index Price feeds for markets they list through [Permissionless Listing](/introduction/trade-on-orderly/permissionless-listing). This expands the range of markets Builders can support, especially when a market needs a price source that is not fully covered by existing CEX or platform oracle sources.
+
+## How Custom Oracle works
+
+A Builder can register a custom oracle feed for a base asset, publish prices to Orderly, and select that feed as one of the Index Price sources when listing a market.
+
+Custom oracle feeds can be used alone or mixed with other supported source types:
+
+| Source type | Description |
+| --- | --- |
+| **CEX feeds** | Supported centralized exchange price sources. |
+| **Platform oracles** | Orderly-supported oracle sources such as Pyth and Stork. |
+| **Builder Oracle** | A Builder-provided price feed pushed to Orderly. |
+| **Bring Your Own Key (BYOK) Oracle** | A Builder-owned oracle connection using the Builder's own provider credentials. |
+
+When multiple sources are selected, each source is assigned a weight and the weighted sources are used to calculate the market's Index Price.
+
+## Feed visibility
+
+Builders control whether a custom oracle feed is private or public:
+
+- **Private feeds** are visible only to the Builder that owns the feed. This is useful for testing or for markets the Builder operates directly.
+- **Public feeds** can be selected by other Builders when they list markets.
+
+If a Builder selects a public custom oracle feed operated by another Builder, the selecting Builder is responsible for understanding the availability and quality risk of that source.
+
+## Custom Oracle and RWA markets
+
+Custom Oracle can be used with supported real-world asset (RWA) markets. RWA support currently covers **US markets only**, including regular US stock hours, extended US stock hours, and US futures hours.
+
+Support for additional RWA market sessions, including **Hong Kong (HK)**, **China (CN)**, and **Korea (KR)**, is planned to be added gradually.
+
+RWA trading sessions are configured at the listed market level through `market_session`; they are not configured on the oracle feed itself.
+
+## Builder responsibilities
+
+Custom Oracle gives Builders more flexibility, but it also shifts more responsibility to the Builder:
+
+- Keep the feed active and publishing during the relevant market session.
+- Monitor feed quality, update frequency, and stale-data alerts.
+- Use multiple sources where possible to reduce single-source risk.
+- Understand that unhealthy price sources can cause the listed market to be restricted or placed into reduce-only mode.
+
+## Integration flow
+
+For the API sequence, feed setup, source selection, RWA `market_session`, and listing submit example, see [Permissionless Listing with Custom Oracle](/build-on-omnichain/user-flows/permissionless-listing-custom-oracle).
+
+## Related Pages
+
+- [Permissionless Listing](/introduction/trade-on-orderly/permissionless-listing)
+- [Supported Markets](/introduction/trade-on-orderly/supported-markets)
+- [Mark Price, Index Price, and Last Price](/introduction/trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price)
+- [Permissionless Listing with Custom Oracle](/build-on-omnichain/user-flows/permissionless-listing-custom-oracle)
