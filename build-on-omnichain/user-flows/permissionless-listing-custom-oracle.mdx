@@ -1,0 +1,345 @@
+---
+title: "Permissionless Listing with Custom Oracle"
+description: "How qualified Builders can list a market using custom oracle feeds, Bring Your Own Key oracle sources, and RWA market sessions."
+---
+
+This flow is for qualified Builders who want to list a permissionless perpetual market and use a custom oracle feed as one of the market's Index Price sources.
+
+Use this page together with the [Permissionless Listing overview](/introduction/trade-on-orderly/permissionless-listing). The overview explains Builder responsibility, Insurance Fund requirements, Isolated Margin behavior, and trader-facing risk disclosures. This page focuses on the integration flow and API sequence.
+
+<Note>
+  RWA support currently covers US market sessions only: regular US stock hours, extended US stock hours, and US futures hours. Support for Hong Kong (HK), China (CN), and Korea (KR) market sessions is planned to be added gradually.
+</Note>
+
+## Source types
+
+When configuring a permissionlessly listed market, Builders can select from multiple Index Price source types:
+
+| Source type | Description |
+| --- | --- |
+| CEX | Centralized exchange price feeds supported by Orderly. |
+| Platform oracle | Orderly-supported oracle sources such as Pyth and Stork. |
+| Builder Oracle | A custom oracle feed pushed by a Builder to Orderly. |
+| Bring Your Own Key (BYOK) Oracle | A Builder-owned oracle connection using the Builder's own provider credentials, such as Pyth or Stork credentials. |
+
+Selected sources are submitted with weights. The weights must be positive integers and sum to `100`.
+
+## Core listing flow
+
+<Steps>
+  <Step title="Create or update a custom oracle feed">
+    Use `POST /v1/broker/listing/oracle/feed` to register the feed that your listing will use.
+
+    For a Builder Oracle feed, omit `oracle`. For a BYOK feed, set `oracle` to the provider, such as `pyth` or `stork`.
+
+```json
+{
+  "base_ccy": "AAPL",
+  "visibility": "private",
+  "status": "active"
+}
+```
+
+    A new feed is active and private by default. Keep the feed private while testing. Change `visibility` to `public` only if you want other Builders to be able to select it.
+  </Step>
+
+  <Step title="Push custom oracle prices">
+    Builder Oracle feeds publish Index Price updates to the dedicated oracle WebSocket endpoint.
+
+```json
+{
+  "id": "push_aapl_001",
+  "event": "publish",
+  "topic": "indexpricefeed",
+  "ts": 1711440000000,
+  "data": {
+    "base_ccy": "AAPL",
+    "price": 213.55
+  }
+}
+```
+
+    The feed uses `data.base_ccy` to match the registered feed. Builders should publish at least once per second while the market session is open.
+
+    See [Full example](#full-example) for a complete client pattern with signing, application-level ping/pong handling, and price publishing.
+  </Step>
+
+  <Step title="Check listing context">
+    Call `POST /v1/broker/listing/symbol_context` with the base symbol you want to list.
+
+```json
+{
+  "symbol": "AAPL"
+}
+```
+
+    The response provides listing parameters and indicates whether the symbol is an RWA symbol. If `is_rwa` is `true`, the listing must include a valid `market_session` in the final submit request.
+  </Step>
+
+  <Step title="Fetch available price sources">
+    Call `GET /v1/broker/listing/index_sources` to retrieve the available source list. The response can include CEX, platform oracle, Builder Oracle, and BYOK Oracle sources.
+
+    To fetch runtime price and health details for Builder Oracle and BYOK sources, call:
+
+```http
+GET /v1/broker/listing/builder_sources?base_ccy=AAPL
+```
+
+    This returns active public feeds, plus the Builder's own private feeds. Other Builders cannot see or select your private feeds.
+  </Step>
+
+  <Step title="Select an RWA market session if needed">
+    If `symbol_context` identifies the symbol as RWA, call:
+
+```http
+GET /v1/public/rwa/market_sessions
+```
+
+    Current RWA listing sessions are US-only, including `US_STOCK`, `US_STOCK_EXT`, and `US_FUTURES`. The response includes the session name, timezone, trading hours, and holiday and early-close calendar.
+  </Step>
+
+  <Step title="Submit the listing">
+    Submit the market with selected sources and weights through `POST /v1/broker/listing/submit`.
+
+```json
+{
+  "symbol": "AAPL",
+  "sources": [
+    {
+      "source": "ORACLE_woofi_pro",
+      "source_symbol": "AAPL",
+      "price_multiplier": 1,
+      "weight": 60
+    },
+    {
+      "source": "PYTH_woofi_pro",
+      "source_symbol": "AAPL",
+      "price_multiplier": 1,
+      "weight": 40
+    }
+  ],
+  "market_session": "US_STOCK"
+}
+```
+
+    For non-RWA symbols, omit `market_session`. For RWA symbols, `market_session` is required and must match a supported market session.
+  </Step>
+
+  <Step title="Monitor the listed market">
+    After submission, monitor source health, feed visibility, Insurance Fund balance, liquidity, and market status. If all configured Index Price sources become unavailable, the market can be placed into reduce-only mode.
+  </Step>
+</Steps>
+
+## Visibility and responsibility
+
+Custom oracle feeds can be either private or public:
+
+- **Private feeds** are visible only to the Builder that owns the feed.
+- **Public feeds** can be selected by other Builders.
+
+If a Builder selects a public custom oracle feed operated by another Builder, that Builder is responsible for understanding the availability and quality risk of the selected source.
+
+## RWA constraints
+
+RWA markets are controlled by Orderly's supported RWA list. Builders cannot turn an arbitrary symbol into an RWA market by passing `market_session` directly.
+
+- If the symbol is RWA, `market_session` is required.
+- If the symbol is not RWA, `market_session` should be omitted.
+- RWA trading sessions are configured at the listed market level, not at the source level.
+
+### Full example
+
+The following example separates the reusable WebSocket client from your provider logic. The SDK file signs the connection, keeps the WebSocket alive, handles reconnects, and publishes `indexpricefeed` messages. The provider file only decides which price to publish.
+
+<Warning>
+  Never hardcode production keys or secrets in source code. Load `ORDERLY_ACCOUNT_ID`, `ORDERLY_KEY`, and `ORDERLY_SECRET` from a secure secret manager or environment variables.
+</Warning>
+
+`ORDERLY_KEY` is your Orderly public key and may include the `ed25519:` prefix. `ORDERLY_SECRET` should be the base58-encoded raw Ed25519 private key without the `ed25519:` prefix.
+
+This sample reconnects after connection or runtime errors. If authentication fails repeatedly, verify the account ID, key, secret, timestamp, and WebSocket endpoint.
+
+<CodeGroup>
+```bash Shell
+# Requires Python 3.11+
+pip install websockets cryptography base58
+
+export ORDERLY_ACCOUNT_ID="0x..."
+export ORDERLY_KEY="ed25519:..."
+export ORDERLY_SECRET="..."
+export BASE_CCY="AAPL"
+
+python provider_ws_example.py
+```
+
+```py orderly_oracle_sdk.py
+import asyncio
+import base64
+import json
+import time
+import uuid
+from dataclasses import dataclass
+from urllib.parse import urlencode
+
+import base58
+import websockets
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+
+
+PUSH_TOPIC = "indexpricefeed"
+WS_PATH = "/v1/ws/oracle/push"
+DEFAULT_DOMAIN = "wss://ws-oracle.orderly.org"
+
+
+@dataclass
+class OracleProviderConfig:
+    account_id: str
+    orderly_key: str
+    orderly_secret: str
+    base_ccy: str
+    domain: str = DEFAULT_DOMAIN
+    reconnect_delay_s: float = 5.0
+
+
+class OracleProviderClient:
+    def __init__(self, config: OracleProviderConfig):
+        self.config = config
+        self._private_key = Ed25519PrivateKey.from_private_bytes(
+            base58.b58decode(config.orderly_secret)
+        )
+        self._connected = asyncio.Event()
+        self._running = False
+        self._task = None
+        self._ws = None
+
+    def _sign(self, message: str) -> str:
+        signature = self._private_key.sign(message.encode())
+        # Orderly WebSocket auth uses unpadded base64url signatures.
+        return base64.urlsafe_b64encode(signature).decode().rstrip("=")
+
+    def _build_url(self) -> str:
+        timestamp = str(int(time.time() * 1000))
+        query = urlencode({
+            "orderly_key": self.config.orderly_key,
+            "timestamp": timestamp,
+            "sign": self._sign(timestamp),
+        })
+        return f"{self.config.domain}{WS_PATH}/{self.config.account_id}?{query}"
+
+    async def _receive_loop(self):
+        async for raw in self._ws:
+            message = json.loads(raw)
+            if message.get("event") == "ping":
+                await self._ws.send(json.dumps({"event": "pong"}))
+            elif message.get("event") == "publish" and not message.get("success"):
+                print("publish rejected", message)
+
+    async def _connect_once(self):
+        async with websockets.connect(self._build_url()) as ws:
+            self._ws = ws
+            auth = json.loads(await ws.recv())
+            if not auth.get("success"):
+                raise RuntimeError(f"auth failed: {auth.get('errorMsg')}")
+            print(f"authenticated; publishing {self.config.base_ccy}")
+            self._connected.set()
+            await self._receive_loop()
+
+    async def _run_forever(self):
+        while self._running:
+            try:
+                await self._connect_once()
+            except asyncio.CancelledError:
+                raise
+            except Exception as error:
+                print(f"oracle websocket error: {error}; reconnecting...")
+            finally:
+                self._connected.clear()
+                self._ws = None
+
+            if self._running:
+                await asyncio.sleep(self.config.reconnect_delay_s)
+
+    async def start(self):
+        if self._task is not None:
+            return
+        self._running = True
+        self._task = asyncio.create_task(self._run_forever())
+
+    async def stop(self):
+        self._running = False
+        if self._ws is not None:
+            await self._ws.close()
+        if self._task is not None:
+            self._task.cancel()
+            try:
+                await self._task
+            except asyncio.CancelledError:
+                pass
+            self._task = None
+
+    async def push_price(self, price: float, wait_timeout: float = 10.0) -> bool:
+        try:
+            await asyncio.wait_for(self._connected.wait(), timeout=wait_timeout)
+        except asyncio.TimeoutError:
+            return False
+
+        payload = {
+            "id": uuid.uuid4().hex[:8],
+            "event": "publish",
+            "topic": PUSH_TOPIC,
+            "ts": int(time.time() * 1000),
+            "data": {
+                "base_ccy": self.config.base_ccy,
+                "price": round(price, 8),
+            },
+        }
+        ws = self._ws
+        if ws is None:
+            return False
+        await ws.send(json.dumps(payload))
+        return True
+
+    async def __aenter__(self):
+        await self.start()
+        return self
+
+    async def __aexit__(self, *exc):
+        await self.stop()
+```
+
+```py provider_ws_example.py
+import asyncio
+import os
+
+from orderly_oracle_sdk import OracleProviderClient, OracleProviderConfig
+
+
+PUSH_INTERVAL_S = 1
+
+
+async def get_latest_price_from_your_source() -> float:
+    # Replace this with your own price source, such as your index service,
+    # broker backend, RWA data provider, or exchange aggregation job.
+    raise NotImplementedError("connect your production price source here")
+
+
+async def run():
+    config = OracleProviderConfig(
+        account_id=os.environ["ORDERLY_ACCOUNT_ID"],
+        orderly_key=os.environ["ORDERLY_KEY"],
+        orderly_secret=os.environ["ORDERLY_SECRET"],
+        base_ccy=os.getenv("BASE_CCY", "AAPL"),
+        domain=os.getenv("ORACLE_WS_DOMAIN", "wss://ws-oracle.orderly.org"),
+    )
+
+    async with OracleProviderClient(config) as client:
+        while True:
+            price = await get_latest_price_from_your_source()
+            if await client.push_price(price):
+                print(f"pushed {config.base_ccy} @ {price}")
+            await asyncio.sleep(PUSH_INTERVAL_S)
+
+
+asyncio.run(run())
+```
+</CodeGroup>
