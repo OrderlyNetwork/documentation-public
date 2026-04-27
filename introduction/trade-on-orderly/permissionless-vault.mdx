@@ -55,6 +55,34 @@ After submitting the creation transaction, the frontend shows a simplified two-s
 
 The full provisioning pipeline (contract deployed → ledger registered → CeFi provisioned → complete) typically finishes within 30 minutes. If any stage stalls, the system triggers automated alerts for investigation.
 
+## Fees & Costs
+
+Creating a Permissionless Vault (or adding a new chain) requires the creator to pay the following fees in a single transaction:
+
+| Fee | Source | Description |
+| :--- | :--- | :--- |
+| **Gas Fee** | Network (RPC estimate) | Standard blockchain gas for deploying the vault contract and executing on-chain operations. Varies with network congestion. |
+| **Cross-Chain Fee** | `quoteFee()` on factory contract | LayerZero V2 messaging fee for syncing vault configuration to the Orderly Chain ledger. Any excess is refunded to the creator. |
+| **Vault Operation Reserve** | `assetsTransferCrossChainFee()` on factory contract | Native token (ETH) deposited into the vault contract to cover future cross-chain transfer operations (moving user funds from Vault to DEX). Currently fixed at **0.1 ETH** per chain. This deposit is **non-refundable** and remains in the vault contract. |
+
+> **Important:** The Vault Operation Reserve is essential for vault operations. If the vault's ETH balance is depleted, cross-chain fund transfers will fail and new LP deposits cannot enter the DEX for trading. The creator is responsible for maintaining sufficient ETH balance in the vault.
+
+> None of these fees are collected by Orderly Network. They are paid to the blockchain network and cross-chain infrastructure providers.
+
+## System Parameters (Non-Configurable)
+
+The following operational parameters are set by the system and **cannot be modified** by the vault creator. They apply uniformly to all Permissionless Vaults:
+
+| Parameter | Value | Notes |
+| :--- | :--- | :--- |
+| **Minimum Deposit Amount (LP)** | 300 USDC | Minimum amount an LP must deposit into the vault. |
+| **Minimum Withdrawal Amount** | 10 USDC | Minimum amount for LP withdrawal requests. |
+| **Period Duration** | 3 days (4,320 minutes) | The vault operates in fixed periods for settlement. |
+| **Deposit Lock-up Duration** | 7 days (10,080 minutes) | Deposits are locked starting from the beginning of the vault period in which the deposit is processed. |
+| **Reserve Margin (SP)** | 50,000 USDC | Minimum margin the Strategy Provider must maintain. |
+
+> These parameters may become configurable in future versions. See [What's Next](#whats-next) for planned expansions.
+
 ## Managing Your Vault
 
 ### Modifiable settings
@@ -111,9 +139,10 @@ Permissionless Vaults work like standard Strategy Vaults in most ways -- same de
 Permissionless Vault V1 focuses on the core creation and management flow. Planned future expansions include:
 
 - **Creator transfer** -- Allow vault creators to transfer ownership to another address.
-- **Configurable parameters** -- Open up additional vault settings (min deposit amount, period duration, etc.) for creator customization.
+- **Configurable parameters** -- Open up additional vault settings (min deposit amount, period duration, reserve margin, etc.) for creator customization.
 - **Enhanced analytics** -- Richer performance dashboards and LP reporting for permissionless vaults.
 - **Fee flexibility** -- More granular fee structures beyond the current flat performance fee.
+- **Vault Operation Reserve management** -- Tools for creators to monitor and top-up the vault's ETH reserve balance.
 
 ## Related Pages
 
