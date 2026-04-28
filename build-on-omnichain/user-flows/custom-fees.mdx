@@ -38,6 +38,12 @@ The Custom Trading Fee System allows builders to tailor fee structures for their
       The fee rate is the total charged to, or rebated to, the user (Orderly base fee + custom fee). For taker fees, the custom fee cannot be less than the Orderly base fee. For maker fees, builders can configure a negative user-facing maker fee so qualifying maker trades receive a rebate.
     </Note>
 
+    <Note>
+      Custom user and default fee rates must be set in decimal-rate increments of `0.00001`, which
+      equals `0.001%` or `0.1 bps`. This precision rule applies to standard custom fee settings, not
+      order enum fee settings.
+    </Note>
+
   </Step>
   <Step title="Set the default fee rate">
     Set the `default` fee rate through [POST `/v1/broker/fee_rate/default`](/build-on-omnichain/restful-api/private/update-default-builder-fee).
