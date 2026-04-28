@@ -19,7 +19,10 @@ All-or-nothing. If the entire order can be filled at the specified price, it exe
 
 ## Post Only
 
-Guarantees you are the **maker**. If the order would match immediately upon placement (making you a taker), it is canceled instead. Use this to ensure you only pay maker fees.
+Guarantees you are the **maker**. If the order would match visible quantity
+immediately upon placement, it is canceled instead. If it matches only hidden
+quantity, the incoming Post Only order is marked as maker and the resting hidden
+order is marked as taker.
 
 ## Reduce Only
 
