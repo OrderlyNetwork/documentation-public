@@ -22,6 +22,12 @@ Here's how the two layers work together in practice:
 
 **Taker fees:** Charged when your order removes liquidity by filling immediately -- for example, a market order.
 
+**Hidden order fills:** When hidden quantity from a resting limit order is
+matched by a new incoming order, the hidden side is marked as **Taker** and
+charged the taker fee. If the incoming order is eligible to be maker, such as a
+Post Only order that matches only hidden quantity, the incoming order is marked
+as **Maker** and charged the maker fee.
+
 **Liquidation fees:** If your position gets liquidated, a liquidation fee is applied. See the [liquidation fee](https://orderly.network) docs for details.
 
 <Note>

@@ -1567,7 +1567,10 @@ paths:
 
         `POST_ONLY` type order behavior: if the order will be executed with any
         maker trades at the time of placement, then it will be cancelled without
-        any execution.
+        any execution. If a `POST_ONLY` order would match only with hidden
+        quantity at the price level, the incoming `POST_ONLY` order is treated
+        as the maker side for that execution and the resting hidden order is
+        treated as the taker side.
 
 
         `ASK` type order behavior: the order price is guranteed to be the best
@@ -1585,7 +1588,11 @@ paths:
         `MARKET`/`IOC`/`FOK` orders since orders with these types would be
         executed and cancelled immediately and not be shown on orderbook. For
         `LIMIT` order, as long as it's not complete,
-        `visible_quantity` is the maximum quantity that shown on orderbook.
+        `visible_quantity` is the maximum quantity that shown on orderbook. When
+        hidden quantity is matched by a new incoming order, the hidden side is
+        marked as taker and charged the taker fee. If an order has both hidden
+        and visible quantity, the hidden quantity is matched before the visible
+        quantity.
 
 
         `order_quantity` are provided. The precision of the number should be within 8 digits.
