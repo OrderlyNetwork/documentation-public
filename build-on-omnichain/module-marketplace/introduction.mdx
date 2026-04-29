@@ -19,7 +19,42 @@ Browse existing modules for inspiration or install them directly into your DEX. 
 | Fast Place Order | Draggable quick-order widget for one-click market buy/sell | Orderly | `@orderly.network/fast-place-order-plugin` | [demo](https://github-dev.orderly.network/fast-place-order-plugin/iframe.html?id=fast-place-order--default&viewMode=story) | [GitHub](https://github.com/OrderlyNetwork/fast-place-order-plugin) |
 | OrderBook Shimmer | Desktop orderbook shimmer/flash effect | Orderly | `@orderly.network/orderbook-shimmer-plugin` | [demo](https://github-dev.orderly.network/orderbook-shimmer-plugin/iframe.html?id=orderbook-shimmer-plugin--default&viewMode=story) | [GitHub](https://github.com/OrderlyNetwork/orderbook-shimmer-plugin) |
 
-## List on the Module Marketplace
+## Build Your Own
+
+### What you can build
+
+Modules can range from simple UI enhancements to full-stack trading strategies. The SDK plugin system handles the frontend; the Orderly REST and WebSocket API handles the trading infrastructure. Builders decide how to combine them. For examples:
+
+**Modules without a backend** — the plugin uses SDK hooks for data and order actions. Everything runs client-side in the browser, no separate backend needed. Build using the SDK's plugin system to ensure your module stays compatible across SDK upgrades and is shareable with other builders. See the [Plugin Developer Handbook](plugin-developer-handbook) for the full development guide.
+- Analytics dashboard, market screener, notification widgets
+- Social PnL sharing
+- Custom deposit/withdraw UI, fiat on-ramp
+- Portfolio visualization
+
+**Modules with a backend** — a frontend plugin provides the user-facing UI, while a builder-hosted backend service handles persistent logic (e.g. strategy execution, order management) by talking directly to the Orderly REST and WebSocket API.
+- TWAP, Grid Bot, DCA
+- Copy Trading
+- Leaderboard
+- Portfolio Rebalancer
+- Alert / notification system
+
+### Plugin developer toolchain
+
+The following tools are for building the frontend plugin portion of your module. If you use an AI coding agent (Cursor, Claude Code, Codex, etc.), install the plugin skills and MCP server alongside the CLI for guided workflows.
+
+| Tool | What it does | Install |
+|------|-------------|---------|
+| orderly-devkit CLI | Scaffold, build, and submit plugins | `pnpm add -g @orderly.network/devkit` |
+| Plugin agent skills | Guided workflows for AI coding agents (create → write → integrate → submit) | `orderly-devkit skills install` |
+| SDK Docs MCP | Query Orderly SDK docs from your agent | `orderly-devkit mcp install` |
+
+For the full development guide, see the [Plugin Developer Handbook](plugin-developer-handbook). If you use an AI coding agent, start with the [skills-first workflow](skills-first).
+
+### Connect your backend (if needed)
+
+For modules that require persistent logic beyond the browser session, use the Orderly REST and WebSocket API directly from your backend service. See the API reference in the sidebar for details.
+
+### List on the Module Marketplace
 
 Once your module is published to npm, you can submit it for listing on the Module Marketplace. Follow the [Marketplace submission tutorial](marketplace-submission) to get started.
 
@@ -28,67 +63,3 @@ Why list your module:
 - **Distribution** — listed modules appear across Orderly-powered UIs, giving your module instant reach
 - **Discoverability** — builders and AI agents can explore and install modules through `orderly-devkit`, making your work easy to find and adopt
 - **Monetization** — modules that provide a service can monetize through their own business model (e.g. transaction fees, subscriptions, or profit sharing through the module's backend)
-
-## Build Your Own
-
-### What you can build
-
-Modules can range from simple UI enhancements to full-stack trading strategies. The SDK plugin system handles the frontend; the Orderly API handles the trading infrastructure. Builders decide how to combine them. For examples:
-
-**Modules without a backend** — the plugin uses SDK hooks for data and order actions. Everything runs in the browser, no separate backend needed.
-- Analytics dashboard, market screener, notification widgets
-- Social PnL sharing, leaderboard
-- Custom deposit/withdraw UI, fiat on-ramp
-- TP/SL management, trailing stop widgets
-- Portfolio visualization
-
-**Modules with a backend** — a builder-hosted service runs logic that must persist beyond the browser session, talking directly to the Orderly API.
-- TWAP, Grid Bot, DCA
-- Copy Trading
-- Portfolio Rebalancer
-- Alert / notification system
-- Vault strategies
-
-### Architecture
-
-**Without a backend** — your plugin uses SDK hooks to read market data, account state, and place orders. Everything runs client-side.
-
-```mermaid
-graph TD
-    A["Frontend Plugin (@orderly.network SDK)<br/>SDK Hooks → Your UI + Orderly API"]
-    style A fill:#1a1a2e,stroke:#aa5cf8,color:#fff
-```
-
-**With a backend** — a frontend plugin provides the user-facing UI. A builder-hosted backend runs the persistent logic. The diagram below is one common pattern — builders have full flexibility over how they design this.
-
-```mermaid
-graph TD
-    A["Frontend Plugin (@orderly.network SDK)<br/>• Config UI (params, start/stop)<br/>• Live status display<br/>• SDK Hooks for market data"]
-    B["Builder Backend (you host)<br/>• Execution logic<br/>• Orderly REST API<br/>• Orderly WebSocket API"]
-    C["Orderly Network<br/>(matching engine, settlement)"]
-
-    A -->|"Your API"| B
-    B -->|"REST + WebSocket"| C
-
-    style A fill:#1a1a2e,stroke:#aa5cf8,color:#fff
-    style B fill:#1a1a2e,stroke:#aa5cf8,color:#fff
-    style C fill:#1a1a2e,stroke:#BE7CFF,color:#fff
-```
-
-### Developer toolchain
-
-The `orderly-devkit` CLI is the main tool for building and managing plugins. If you use an AI coding agent (Cursor, Claude Code, Codex, etc.), install the plugin skills and MCP server alongside the CLI for guided workflows.
-
-| Tool | What it does | Install |
-|------|-------------|---------|
-| **`orderly-devkit`** CLI | Scaffold, build, and submit plugins | `pnpm add -g @orderly.network/devkit` |
-| **Plugin agent skills** (optional) | Guided workflows for AI coding agents (create → write → integrate → submit) | `orderly-devkit skills install` |
-| **SDK Docs MCP** (optional) | Query Orderly SDK docs from your agent | `orderly-devkit mcp install` |
-
-For the full development guide, see the [Plugin Developer Handbook](plugin-developer-handbook). If you use an AI coding agent, start with the [skills-first workflow](skills-first).
-
-### Connect your backend (if needed)
-
-For modules that require persistent logic beyond the browser session, use the Orderly REST and WebSocket API directly from your backend service.
-
-**[Full API Reference →](/build-on-omnichain/building-on-omnichain)**
