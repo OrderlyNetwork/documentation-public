@@ -1,0 +1,101 @@
+---
+title: "Module Marketplace"
+description: "Discover, install, and publish trading modules built on the Orderly SDK and API."
+---
+
+The Orderly Module Marketplace is where builders discover, install, and publish trading modules. Each module is built on top of the [Orderly SDK](/sdks/overview) and the Orderly REST/WebSocket API — the SDK plugin system handles the frontend UI, and the API provides the full trading infrastructure behind it.
+
+<Note>
+**Terminology:** A **module** is the complete feature you ship — it may include an SDK **plugin** (frontend UI) and optionally a builder-hosted backend service. In code, the frontend portion uses SDK plugin APIs (`registerPlugin`, `pluginId`, etc.).
+</Note>
+
+## Live Modules
+
+Browse existing modules for inspiration or install them directly into your DEX. Builders and AI agents can also explore modules through [`orderly-devkit`](#developer-toolchain). Please test thoroughly in your own environment before deploying to production.
+
+| Module | Builder | npm | Demo | Description | Source |
+|--------|---------|-----|------|-------------|--------|
+| Onramper | Orderly | `@orderly.network/onramper-plugin` | [demo](https://demo.orderly.network/) | Fiat-to-crypto on-ramp — adds a Buy Crypto tab to the Transfer dialog (Deposit → Buy Crypto) | [GitHub](https://github.com/Orderly-Leo/onramper-plugin) |
+| Fast Place Order | Orderly | `@orderly.network/fast-place-order-plugin` | [demo](https://github-dev.orderly.network/fast-place-order-plugin/iframe.html?id=fast-place-order--default&viewMode=story) | Draggable quick-order widget for one-click market buy/sell | [GitHub](https://github.com/OrderlyNetwork/fast-place-order-plugin) |
+| OrderBook Shimmer | Orderly | `@orderly.network/orderbook-shimmer-plugin` | [demo](https://github-dev.orderly.network/orderbook-shimmer-plugin/iframe.html?id=orderbook-shimmer-plugin--default&viewMode=story) | Desktop orderbook shimmer/flash effect | [GitHub](https://github.com/OrderlyNetwork/orderbook-shimmer-plugin) |
+
+## List on the Module Marketplace
+
+Once your module is published to npm, you can submit it for listing on the Module Marketplace. See the [`orderly-devkit submit` documentation](https://www.npmjs.com/package/@orderly.network/devkit) to get started.
+
+Why list your module:
+
+- **Distribution** — listed modules appear across Orderly-powered UIs, giving your module instant reach
+- **Discoverability** — builders and AI agents can explore and install modules through `orderly-devkit`, making your work easy to find and adopt
+- **Monetization** — modules that provide a service can monetize through their own business model (e.g. transaction fees, subscriptions, or profit sharing through the module's backend)
+
+## Build Your Own
+
+### What you can build
+
+Modules can range from simple UI enhancements to full-stack trading strategies. The SDK plugin system handles the frontend; the Orderly API handles the trading infrastructure. Builders decide how to combine them. For examples:
+
+**Modules without a backend** — the plugin uses SDK hooks for data and order actions. Everything runs in the browser, no separate backend needed.
+- Analytics dashboard, market screener, notification widgets
+- Social PnL sharing, leaderboard
+- Custom deposit/withdraw UI, fiat on-ramp
+- TP/SL management, trailing stop widgets
+- Portfolio visualization
+
+**Modules with a backend** — a builder-hosted service runs logic that must persist beyond the browser session, talking directly to the Orderly API.
+- TWAP, Grid Bot, DCA
+- Copy Trading
+- Portfolio Rebalancer
+- Alert / notification system
+- Vault strategies
+
+### Architecture
+
+**Without a backend** — your plugin uses SDK hooks to read market data, account state, and place orders. Everything runs client-side.
+
+```
+┌─────────────────────────────────────────┐
+│  Frontend Plugin (@orderly.network SDK) │
+│  SDK Hooks → Your UI + Orderly API      │
+└─────────────────────────────────────────┘
+```
+
+**With a backend** — a frontend plugin provides the user-facing UI. A builder-hosted backend runs the persistent logic. The diagram below is one common pattern — builders have full flexibility over how they design this.
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  Frontend Plugin (@orderly.network SDK)                 │
+│  • Config UI (params, start/stop)                       │
+│  • Live status display                                  │
+│  • SDK Hooks for market data                            │
+└──────────────────────┬──────────────────────────────────┘
+                       │ Your API
+┌──────────────────────▼──────────────────────────────────┐
+│  Builder Backend (you host)                              │
+│  • Execution logic                                      │
+│  • Orderly REST API                                     │
+│  • Orderly WebSocket API                                │
+└──────────────────────┬──────────────────────────────────┘
+                       │ REST + WebSocket
+┌──────────────────────▼──────────────────────────────────┐
+│  Orderly Network (matching engine, settlement)          │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Developer toolchain
+
+The `orderly-devkit` CLI is the main tool for building and managing plugins. If you use an AI coding agent (Cursor, Claude Code, Codex, etc.), install the plugin skills and MCP server alongside the CLI for guided workflows.
+
+| Tool | What it does | Install |
+|------|-------------|---------|
+| **`orderly-devkit`** CLI | Scaffold, build, and submit plugins | `pnpm add -g @orderly.network/devkit` |
+| **Plugin agent skills** (optional) | Guided workflows for AI coding agents (create → write → integrate → submit) | `orderly-devkit skills install` |
+| **SDK Docs MCP** (optional) | Query Orderly SDK docs from your agent | `orderly-devkit mcp install` |
+
+For more details on the CLI and toolchain, see the [`@orderly.network/devkit` package on npm](https://www.npmjs.com/package/@orderly.network/devkit).
+
+### Connect your backend (if needed)
+
+For modules that require persistent logic beyond the browser session, use the Orderly REST and WebSocket API directly from your backend service.
+
+**[Full API Reference →](/build-on-omnichain/building-on-omnichain)**
