@@ -53,33 +53,26 @@ Modules can range from simple UI enhancements to full-stack trading strategies. 
 
 **Without a backend** — your plugin uses SDK hooks to read market data, account state, and place orders. Everything runs client-side.
 
-```
-┌─────────────────────────────────────────┐
-│  Frontend Plugin (@orderly.network SDK) │
-│  SDK Hooks → Your UI + Orderly API      │
-└─────────────────────────────────────────┘
+```mermaid
+graph TD
+    A["Frontend Plugin (@orderly.network SDK)<br/>SDK Hooks → Your UI + Orderly API"]
+    style A fill:#1a1a2e,stroke:#aa5cf8,color:#fff
 ```
 
 **With a backend** — a frontend plugin provides the user-facing UI. A builder-hosted backend runs the persistent logic. The diagram below is one common pattern — builders have full flexibility over how they design this.
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  Frontend Plugin (@orderly.network SDK)                 │
-│  • Config UI (params, start/stop)                       │
-│  • Live status display                                  │
-│  • SDK Hooks for market data                            │
-└──────────────────────┬──────────────────────────────────┘
-                       │ Your API
-┌──────────────────────▼──────────────────────────────────┐
-│  Builder Backend (you host)                              │
-│  • Execution logic                                      │
-│  • Orderly REST API                                     │
-│  • Orderly WebSocket API                                │
-└──────────────────────┬──────────────────────────────────┘
-                       │ REST + WebSocket
-┌──────────────────────▼──────────────────────────────────┐
-│  Orderly Network (matching engine, settlement)          │
-└─────────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    A["Frontend Plugin (@orderly.network SDK)<br/>• Config UI (params, start/stop)<br/>• Live status display<br/>• SDK Hooks for market data"]
+    B["Builder Backend (you host)<br/>• Execution logic<br/>• Orderly REST API<br/>• Orderly WebSocket API"]
+    C["Orderly Network<br/>(matching engine, settlement)"]
+
+    A -->|"Your API"| B
+    B -->|"REST + WebSocket"| C
+
+    style A fill:#1a1a2e,stroke:#aa5cf8,color:#fff
+    style B fill:#1a1a2e,stroke:#aa5cf8,color:#fff
+    style C fill:#1a1a2e,stroke:#BE7CFF,color:#fff
 ```
 
 ### Developer toolchain
