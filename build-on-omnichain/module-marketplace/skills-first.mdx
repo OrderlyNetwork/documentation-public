@@ -1,0 +1,92 @@
+---
+title: "Skills-first workflow (recommended)"
+description: "This is the recommended way to work with the Orderly SDK for plugin authoring, integration, and Marketplace submission, especially when you use an AI coding ..."
+---
+
+This is the **recommended way** to work with the Orderly SDK for **plugin authoring, integration, and Marketplace submission**, especially when you use an **AI coding agent** (Cursor, Claude Code, Codex, OpenCode, etc.).
+
+The idea is simple: **install the official Orderly plugin skills once**, pair them with the **Orderly SDK Docs MCP** server, and let the agent follow **consistent playbooks** instead of rediscovering devkit flags and SDK APIs from scratch every time.
+
+## Why skills + MCP matter
+
+| Without skills-first | With skills-first |
+| --- | --- |
+| You memorize `orderly-devkit` subcommands and flags. | The agent loads skill context and suggests the **right command** at the right step. |
+| API usage is guessed or outdated. | **MCP** returns indexed docs (`orderly_docs_search`, `orderly_docs_get_component`, …) aligned with this repo. |
+| Integration steps scatter across chat turns. | **orderly-plugin-add** centers on finding **`OrderlyAppProvider`** and the **`plugins`** array. |
+
+Skills do **not** replace the CLI or the SDK—they **steer** you (and your agent) toward **`orderly-devkit`**, **`registerPlugin`**, and **`@orderly.network/*`** packages correctly.
+
+## What gets installed
+
+The devkit’s default skills catalog resolves to **`OrderlyNetwork/orderly-skills`** (see the **`@orderly.network/devkit`** package for the default repo constant). `orderly-devkit skills install` installs **four** skills by default:
+
+| Skill ID | Purpose | Typical triggers (examples) |
+| --- | --- | --- |
+| **orderly-plugin-create** | Scaffold a new plugin from the official template via **`orderly-devkit create plugin`**. | “New Orderly plugin”, “scaffold plugin”, “generate plugin” |
+| **orderly-plugin-write** | Implement interceptors, hooks, lifecycle, and SDK usage after scaffold. | “Add interceptor”, “develop plugin”, “Orderly hooks in plugin” |
+| **orderly-plugin-add** | Wire a plugin into a **DEX host** (`OrderlyAppProvider`, deps, `plugins` prop). | “Install plugin in app”, “register plugin”, “integrate Orderly plugin” |
+| **orderly-plugin-submit** | Prepare **`usagePrompt`**, manifest, README (with consent), run **`orderly-devkit submit`**. | “Publish plugin”, “Marketplace”, “usagePrompt”, `orderly-devkit submit` |
+
+Each skill’s playbook lives in that repo under `skills/<skill-id>/SKILL.md` (plus `reference.md` where present). Treat this handbook as the **human-facing** companion; treat skills as the **agent-facing** playbooks.
+
+## One-time setup (developer machine)
+
+1. **Devkit** (command runner):
+
+   ```bash
+   pnpm add -g @orderly.network/devkit
+   ```
+
+2. **Plugin skills** (agent playbooks + triggers):
+
+   ```bash
+   orderly-devkit skills install
+   orderly-devkit skills install --list       # list skills in catalog
+   orderly-devkit skills install --agent cursor  # target agent when supported
+   ```
+
+   For options (`--skill`, custom source, `npx` forwarding), see [CLI: skills install](cli-reference#skills-install).
+
+3. **Orderly SDK Docs MCP** (API truth for `@orderly.network/*` while coding or in chat):
+
+   ```bash
+   orderly-devkit mcp install
+   ```
+
+   See [MCP reference](mcp-sdk-docs). Plugin authors should prefer **`orderly_docs_search`** then **`orderly_docs_get_component`** / **`orderly_docs_get_type`**; older notes may reference a non-existent `orderly_docs_get_hook`—see [Agent skills alignment](agent-skills-alignment).
+
+## Recommended end-to-end flow
+
+Use this order for a **new plugin from zero → running in a host → Marketplace**:
+
+```text
+orderly-plugin-create   →  orderly-plugin-write  →  orderly-plugin-add  →  orderly-plugin-submit
+     │                           │                         │                          │
+     └── orderly-devkit          └── SDK + MCP             └── OrderlyAppProvider      └── orderly-devkit login/submit
+         create plugin               hooks/ui docs               plugins=[…]               usagePrompt + manifest
+```
+
+1. **Create** — Run **`orderly-devkit create plugin`** (interactive or `--no-interactive`). Skill **orderly-plugin-create** encodes naming (PascalCase name, plugin id rules) and `--interceptor` choices.
+2. **Write** — Edit generated code; use MCP for **`@orderly.network/hooks`**, **`@orderly.network/ui`**, interceptor `(Original, props, api) => ReactNode`. Skill **orderly-plugin-write** covers patterns (wrapper vs inner component for Hooks).
+3. **Add** — Add dependency and **`plugins={[registerXxx()]}`** on **`OrderlyAppProvider`**. Skill **orderly-plugin-add** stresses locating the provider first.
+4. **Submit** — **`orderly-devkit login`**, **`submit --dry-run`**, then **`submit`**; polish **`usagePrompt`**. Skill **orderly-plugin-submit** gates destructive steps on user confirmation.
+
+Human tutorials: [T1 First plugin](first-plugin) → [T2 Integrate host](integrate-host) → [T3 Marketplace](marketplace-submission).
+
+## How the agent is supposed to use this
+
+- **User intent** (“I want a plugin that …”) should match a skill by **description/triggers** so the right playbook loads.
+- **CLI** is invoked as **`orderly-devkit`** (bin name for `@orderly.network/devkit`).
+- **Docs** for symbols and props come from **MCP**, not from memory—skills explicitly call this out for **orderly-plugin-write**.
+- **Marketplace** steps require explicit **user confirmation** before **`submit`**—see **orderly-plugin-submit** skill rules.
+
+## When you are not using an agent
+
+You can still follow this handbook and the CLI alone: read the same four stages above and use [CLI reference](cli-reference); install **`@orderly.network/plugin-core`** from npm for the full GUIDE/TECH. Installing skills is optional but keeps your future AI sessions aligned with Orderly’s intended flows.
+
+## See also
+
+- [Getting started](getting-started) — installs devkit, skills, MCP, first scaffold.
+- [CLI reference: skills](cli-reference#skills-install)
+- [Agent skills alignment](agent-skills-alignment) — MCP tool names vs. legacy skill text.

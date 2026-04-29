@@ -1,0 +1,37 @@
+---
+title: "How to choose a plugin type: Widget, Page, or Layout"
+description: "Orderly supports three common shapes. Extended discussion ships with @orderly.network/plugin-core on npm (GUIDE § Supported plugin types). This page is a sho..."
+---
+
+Orderly supports three common shapes. Extended discussion ships with **`@orderly.network/plugin-core`** on npm (GUIDE § Supported plugin types). This page is a short decision guide.
+
+## Summary
+
+| Type | Mechanism | Typical integration |
+| --- | --- | --- |
+| **Widget** | Interceptor with `target` + `component` | `plugins={[registerX()]}` on `OrderlyAppProvider` |
+| **Page** | Ordinary React page using SDK UI + hooks | Host router (React Router, Next.js, etc.)—not via interceptor registry for the page shell |
+| **Layout** | Interceptor on `Trading.Layout.Desktop` + layout strategy | Same `plugins` array; watch conflicts with host `layoutStrategy` props |
+
+## Widget
+
+- Use when you need UI **anchored** to an existing trading surface (order entry, order book, menus, etc.).
+- You must use a path that exists in [Runtime injector targets](runtime-injector-targets).
+- In dev mode, use the **Inspector** to discover registered paths if you are unsure.
+
+## Page
+
+- Use for standalone experiences (history, leaderboards, settings) that behave like normal app routes.
+- Build with `@orderly.network/ui`, `@orderly.network/hooks`, etc., like the host app.
+- The host application wires the route; the “plugin” is often just a package the host imports.
+
+## Layout
+
+- Use to restructure the **desktop trading page** (columns, sidebars, grid).
+- Primary interceptor target: **`Trading.Layout.Desktop`**.
+- When the host already passes layout props, read **`@orderly.network/layout-core`** on npm (layout customization docs).
+
+## See also
+
+- [Interceptor strategies](interceptor-strategies)
+- [Tutorial: First plugin](first-plugin)

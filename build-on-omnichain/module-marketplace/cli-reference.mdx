@@ -1,0 +1,159 @@
+---
+title: "CLI reference (`orderly-devkit`)"
+description: "Package: @orderly.network/devkit. Binary: orderly-devkit."
+---
+
+Package: `@orderly.network/devkit`. Binary: **`orderly-devkit`**.
+
+All examples in this handbook use **`orderly-devkit`**. If you see `orderly` in older snippets, replace it with `orderly-devkit`.
+
+Run `orderly-devkit <command> --help` for flags.
+
+**Requirements:** Node.js v20.19.0+.
+
+## Authentication
+
+| Command | Purpose |
+| --- | --- |
+| `orderly-devkit login` | Browser OAuth; writes `~/.orderly/auth.json` |
+| `orderly-devkit login --force` | Re-authenticate |
+| `orderly-devkit whoami` | Show current session |
+| `orderly-devkit logout` | Clear session |
+
+The OAuth redirect callback listens on a **fixed** port shipped with **`@orderly.network/devkit`** (`CLI_CALLBACK_PORT`, default **9876**); there is no `--port` flag. If that port is in use, free it and retry.
+
+Marketplace commands **`submit`**, **`list`**, **`update`**, and **`view`** require a logged-in session (Bearer token).
+
+## `create plugin`
+
+Scaffolds from **`OrderlyNetwork/orderly-plugin-template`**, optionally writes **`.orderly-manifest.json`**.
+
+### Interactive
+
+```bash
+orderly-devkit create plugin
+```
+
+### Non-interactive
+
+Requires `--no-interactive` plus `--name` and `--interceptor`. If `--id` or `--target` are omitted, they default from `--name` (see devkit implementation). You can also pass all four to skip prompts.
+
+| Option | Description |
+| --- | --- |
+| `--name` / `-n` | Plugin display name; normalized to **PascalCase** |
+| `--id` / `-i` | Plugin id; **kebab-style** string, also used for `registerPlugin` / manifest when valid |
+| `--interceptor` | One of CLI `INTERCEPTOR_TARGETS` (subset of SDK—see [Interceptors](interceptors)) |
+| `--target` / `-t` | Output directory; must be empty or non-existent |
+| `--skip-install` | Skip `npm install` in generated folder |
+| `--no-interactive` | No prompts |
+
+```bash
+orderly-devkit create plugin --no-interactive \
+  --name MyPlugin \
+  --id my-plugin \
+  --interceptor Trading.OrderEntry.SubmitSection \
+  --target ./MyPlugin
+```
+
+### `create module`
+
+```bash
+orderly-devkit create module
+orderly-devkit create module --name my-module
+```
+
+**Note:** Module file generation may be **not implemented**—the command can collect choices and print a summary only. Check `orderly-devkit create module --help` for current behavior.
+
+## `submit`
+
+Register a new plugin from a local directory. Resolves metadata from **`.orderly-manifest.json`** and/or **`package.json`**; can pick up `repoUrl` from `git remote origin` when missing.
+
+| Option | Description |
+| --- | --- |
+| `--path` / `-p` | Plugin root (default: prompt or `./`) |
+| `--tags` / `-t` | Comma-separated; [valid tags](manifest-and-submit#valid-marketplace-tags) |
+| `--storybook-url` | Optional Storybook base URL |
+| `--dry-run` / `-d` | Validate and print payload only |
+
+```bash
+orderly-devkit submit --path ./my-plugin --dry-run
+orderly-devkit submit -p ./my-plugin --tags UI,Trading
+```
+
+## `list`
+
+Lists plugins for the authenticated account.
+
+```bash
+orderly-devkit list
+orderly-devkit list --json
+```
+
+## `update`
+
+PATCH metadata for an existing listing. Requires **`pluginId`** in `.orderly-manifest.json`.
+
+```bash
+orderly-devkit update --path ./my-plugin --dry-run
+orderly-devkit update -p ./my-plugin
+```
+
+## `view`
+
+Fetch one plugin by Marketplace id (JSON to stdout).
+
+```bash
+orderly-devkit view <plugin-id>
+```
+
+Requires **login** in the current CLI implementation.
+
+## `mcp install`
+
+Installs **Orderly SDK Docs** MCP config for AI clients. Forwards to the same behavior as `orderly-sdk-docs-mcp install`.
+
+| Option | Values |
+| --- | --- |
+| `--client` | `claude`, `codex`, `cursor`, `opencode`, `all`, or comma-separated |
+| `--scope` | `user` (default) or `project` |
+| `--name` | MCP server key (default: `orderly-sdk-docs`) |
+| `--dry-run` | Preview without writing |
+| `--force` | Overwrite existing same-name server entry |
+
+```bash
+orderly-devkit mcp install --client cursor --scope project --dry-run
+```
+
+Details: [MCP: install](mcp-sdk-docs#install-subcommand).
+
+## `skills install`
+
+Installs agent skills (default: **orderly-plugin-create**, **orderly-plugin-write**, **orderly-plugin-add**, **orderly-plugin-submit**) via the upstream `skills` CLI.
+
+**Concept:** Prefer **`skills install` + `mcp install`** alongside devkit when building plugins—see [**Skills-first workflow**](skills-first).
+
+| Option | Description |
+| --- | --- |
+| `[source]` | GitHub `owner/repo`, URL, or local path (built-in default if omitted) |
+| `--list` | List skills without installing |
+| `--skill` / `-s` | Repeatable; restrict to named skills |
+| `--all` | Forward to upstream |
+| `--global` / `-g` | Global skills CLI install |
+| `--agent` / `-a` | e.g. `-a cursor` |
+| `--copy` | Copy files instead of symlink |
+| `--yes` / `-y` | With `--list` only |
+| `--` | Forward remaining args to upstream CLI |
+
+```bash
+orderly-devkit skills install
+orderly-devkit skills install --list
+orderly-devkit skills install --dry-run
+```
+
+## Troubleshooting
+
+- **401 / login**: Run `orderly-devkit login`.
+- **Port in use** (`login`): Free the fixed OAuth callback port used by devkit (see `CLI_CALLBACK_PORT` inside the published **`@orderly.network/devkit`** package), then retry.
+- **Marketplace API errors**: Network or server; confirm `whoami` and retry.
+
+On npm, **`@orderly.network/devkit`** publishes its own readme with the same command surface as this page.

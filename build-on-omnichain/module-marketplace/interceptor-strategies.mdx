@@ -1,0 +1,66 @@
+---
+title: "How to implement interceptor strategies"
+description: "Interceptor entries use:"
+---
+
+Interceptor entries use:
+
+```typescript
+component: (Original, props, api) => ReactNode;
+```
+
+`Original` is the default UI component; `props` are its props; `api` exposes SDK surfaces (for example event subscriptions — see **`@orderly.network/plugin-core`** GUIDE on npm).
+
+## Rule: no Hooks on the outer function
+
+The interceptor callback is **not** a React component. You **cannot** call `useXxx` hooks directly in its body. Use one of the following patterns.
+
+### Strategy A: Enhance (wrap with extra UI)
+
+Return JSX that composes `Original`:
+
+```typescript
+component: (Original, props) => (
+  <div className="oui-flex oui-flex-col oui-gap-2">
+    <aside className="oui-text-xs">Extra context</aside>
+    <Original {...props} />
+  </div>
+),
+```
+
+### Strategy B: Inner component (needs Hooks)
+
+Define a child component that *is* a React component and use Hooks there:
+
+```typescript
+{
+  target: "Trading.OrderEntry.SubmitSection",
+  component: (Original, props, api) => {
+    function Enhanced() {
+      // Hooks allowed here
+      return (
+        <div>
+          <Original {...props} />
+        </div>
+      );
+    }
+    return <Enhanced />;
+  },
+},
+```
+
+### Strategy C: Replace
+
+Return markup **without** rendering `Original` when you intentionally replace the default.
+
+## Discovering targets
+
+Authoritative paths in this handbook: [Runtime injector targets](runtime-injector-targets).
+
+The devkit template lists a **subset** of targets for `--interceptor` (same page, **create plugin --interceptor subset**); your plugin code may target any injectable path the SDK exposes.
+
+## Docs-first development
+
+Use the Orderly SDK Docs MCP ([reference](mcp-sdk-docs)) to resolve component APIs: `orderly_docs_search`, then `orderly_docs_get_component` or `orderly_docs_get_type`. For narrative examples: `orderly_docs_get_component_doc`, `orderly_docs_get_workflow`, `orderly_docs_get_recipe`.
+
+There is **no** `orderly_docs_get_hook` tool in the current server; use search + get_component/get_type instead ([alignment notes](agent-skills-alignment)).

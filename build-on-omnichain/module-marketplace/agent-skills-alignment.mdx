@@ -1,0 +1,42 @@
+---
+title: "Agent skills and upstream documentation alignment"
+description: "Orderly publishes agent skills (install via orderly-devkit skills install) for orderly-plugin-create, orderly-plugin-write, orderly-plugin-add, orderly-plugi..."
+---
+
+Orderly publishes agent skills (install via `orderly-devkit skills install`) for **`orderly-plugin-create`**, **`orderly-plugin-write`**, **`orderly-plugin-add`**, **`orderly-plugin-submit`** (source repo: **`OrderlyNetwork/orderly-skills`**, per devkit constants).
+
+**Recommended usage:** See [**Skills-first workflow**](skills-first) for why skills + MCP + devkit are the preferred stack for Orderly plugin work.
+
+This handbook is the **in-repo, versioned** companion. If you maintain skills in that external repo, keep the following in sync with shipping CLIs and MCP.
+
+## MCP tool name: `orderly_docs_get_hook`
+
+Some older or external skills mention **`orderly_docs_get_hook`**. The `@orderly.network/sdk-docs` MCP server **does not** register that tool.
+
+**Use instead:**
+
+- `orderly_docs_search` — find symbols and narrative hits.
+- `orderly_docs_get_component` — component props / metadata.
+- `orderly_docs_get_type` — types and enums.
+- `orderly_docs_get_component_doc` — markdown examples.
+- `orderly_docs_get_workflow` / `orderly_docs_get_recipe` — curated prose.
+
+See [MCP reference](mcp-sdk-docs).
+
+## `orderly-devkit view` authentication
+
+External prose sometimes states that `orderly-devkit view <plugin-id>` works **without** login.
+
+The shipped **`@orderly.network/devkit`** **`view`** command requires **`orderly-devkit login`** and sends an **Authorization: Bearer** header.
+
+**Handbook rule:** Document **`view` as requiring login** unless the API and CLI are explicitly changed to support anonymous access.
+
+## Interceptor tables
+
+Skills may ship extended placeholder tables. **Runtime paths** in this handbook: [Runtime injector targets](runtime-injector-targets) and [Interceptors](interceptors). CLI template subset is listed on the same page.
+
+## Naming conventions
+
+- **Plugin display name:** PascalCase (template prompts normalize).
+- **Plugin id string:** Same rules as Marketplace / `registerPlugin({ id })` — `/^[a-zA-Z][a-zA-Z0-9-]*$/`.
+- **npm `name`:** Must be a valid npm package name; devkit may derive from plugin id when id is already npm-compliant.
