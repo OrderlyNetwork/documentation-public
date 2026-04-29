@@ -3,11 +3,28 @@ title: "Permissionless Vault"
 description: "Learn how anyone can create and manage a Strategy Vault on Orderly without permission or manual onboarding."
 ---
 
-Today, launching a Strategy Vault on Orderly requires manual coordination across multiple teams -- contract deployment, multi-sig proposals, database configuration, and custodial setup. The process takes 2–5 business days and involves 5+ people across 29 manual steps.
+**Permissionless Vault lets any EOA wallet deploy a fully functional Strategy Vault in a single transaction** -- no applications, no approvals, no waiting. Backend automation handles cross-chain registration, account provisioning, and all configuration. Time to live: **under 30 minutes, zero manual intervention**.
 
-Permissionless Vault removes all of that. Any EOA wallet can deploy a fully functional Strategy Vault in a single transaction. Backend automation handles the rest -- from cross-chain registration to account provisioning. Time to live: **under 30 minutes, zero manual intervention**.
+Previously, launching a Strategy Vault required manual coordination across multiple teams -- contract deployment, multi-sig proposals, database configuration, and custodial setup. That process took 2–5 business days and involved 5+ people across 29 manual steps. Permissionless Vault removes all of that.
 
 > Disclaimer: A permissionlessly created vault is deployed and operated by its creator, not by Orderly. Orderly does not vet, operate, or backstop these vaults. Users should assess the vault's strategy, track record, and risk profile before depositing.
+
+## Part of the Orderly Permissionless Ecosystem
+
+Permissionless Vault is not a standalone feature -- it is a core component of Orderly Network's permissionless infrastructure, alongside [Permissionless Listing](/introduction/trade-on-orderly/permissionless-listing).
+
+| | What it does | Who uses it |
+| :--- | :--- | :--- |
+| **Permissionless Listing (PML)** | Lets qualified Builders list new perpetual markets without Orderly approval | Builders / Brokers |
+| **Permissionless Vault (PMV)** | Lets anyone create and operate a Strategy Vault without manual onboarding | Strategy Providers / Fund Managers |
+
+**How they work together:**
+
+- **PMV provides liquidity infrastructure for PML.** Vaults created through PMV are managed by Strategy Providers (SPs). An SP can choose to connect with a specific Broker through an opt-in mechanism, providing liquidity support for that Broker's markets -- including permissionlessly listed ones.
+- **Participation is voluntary.** Whether an SP connects with a Broker is entirely the SP's decision. There is no forced assignment or automatic linking.
+- **Each works independently.** PMV and PML operate on their own. A Permissionless Vault can function purely as an investment fund without any Broker association, and a permissionlessly listed market does not require a Permissionless Vault.
+
+Together, PML and PMV form the foundation of Orderly's vision for a fully permissionless trading ecosystem -- where both market creation and liquidity provisioning can happen without centralized gatekeeping.
 
 ## Standard Vault vs. Permissionless Vault
 
