@@ -50,19 +50,18 @@ The plugin system requires **Orderly SDK v3.0.0 or above**.
 
 ### What you can build
 
-Modules can range from simple UI enhancements to full-stack trading strategies. The SDK plugin system handles the frontend; the Orderly REST and WebSocket API handles the trading infrastructure. Builders decide how to combine them. For examples:
+Modules can range from simple UI enhancements to full-stack trading strategies. The SDK plugin system handles the frontend; the Orderly REST and WebSocket API handles the trading infrastructure. Builders decide how to combine them.
 
-**Modules without a backend** — the plugin uses SDK hooks for data and order actions. Everything runs client-side in the browser, no separate backend needed. Build using the SDK's plugin system to ensure your module stays compatible across SDK upgrades and is shareable with other builders. See the [Plugin Developer Handbook](plugin-developer-handbook) for the full development guide.
-- Analytics dashboard, market screener, notification widgets
-- Social PnL sharing
-- Custom deposit/withdraw UI, fiat on-ramp
-- Portfolio visualization
+**Frontend-only modules** — everything runs client-side in the browser, no builder-hosted server needed. Your plugin can use SDK hooks, call the Orderly REST and WebSocket API directly (the SDK provides the authenticated context), or embed third-party services. Build using the SDK's plugin system to ensure your module stays compatible across SDK upgrades and is shareable with other builders. See the [Plugin Developer Handbook](plugin-developer-handbook) for the full development guide. For example:
+- Custom UI and styling enhancements
+- Analytics dashboard, market screener, leaderboard
+- Social PnL sharing, notification widgets
+- Custom deposit/withdraw UI, portfolio visualization
+- Third-party service integrations
 
-**Modules with a backend** — a frontend plugin provides the user-facing UI, while a builder-hosted backend service handles persistent logic (e.g. strategy execution, order management) by talking directly to the Orderly REST and WebSocket API.
+**Modules with your own backend** — a frontend plugin provides the user-facing UI, while your backend service handles persistent logic that outlives a browser session (e.g. strategy execution, scheduled orders, cross-user features) by talking directly to the Orderly REST and WebSocket API. For example:
 - TWAP, Grid Bot, DCA
-- Copy Trading
-- Leaderboard
-- Portfolio Rebalancer
+- Copy Trading, Portfolio Rebalancer
 - Alert / notification system
 
 ### Plugin developer toolchain
