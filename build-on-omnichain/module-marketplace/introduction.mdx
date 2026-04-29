@@ -19,6 +19,29 @@ Browse existing modules for inspiration or install them directly into your DEX. 
 | Fast Place Order | Draggable quick-order widget for one-click market buy/sell | Orderly | `@orderly.network/fast-place-order-plugin` | [demo](https://github-dev.orderly.network/fast-place-order-plugin/iframe.html?id=fast-place-order--default&viewMode=story) | [GitHub](https://github.com/OrderlyNetwork/fast-place-order-plugin) |
 | OrderBook Shimmer | Desktop orderbook shimmer/flash effect | Orderly | `@orderly.network/orderbook-shimmer-plugin` | [demo](https://github-dev.orderly.network/orderbook-shimmer-plugin/iframe.html?id=orderbook-shimmer-plugin--default&viewMode=story) | [GitHub](https://github.com/OrderlyNetwork/orderbook-shimmer-plugin) |
 
+## Install a Module
+
+Install the npm package and register it in your `OrderlyAppProvider`:
+
+```bash
+npm install @orderly.network/onramper-plugin
+```
+
+```tsx
+import { OrderlyAppProvider } from "@orderly.network/react-app";
+import { registerOnramperPlugin } from "@orderly.network/onramper-plugin";
+
+<OrderlyAppProvider
+  brokerId="your-broker-id"
+  networkId="mainnet"
+  plugins={[registerOnramperPlugin()]}
+>
+  <TradingPage />
+</OrderlyAppProvider>
+```
+
+Each module's source repo includes specific configuration options. For more integration patterns, see the [host integration guide](integrate-host).
+
 ## Build Your Own
 
 <Note>
