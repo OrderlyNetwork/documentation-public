@@ -7,14 +7,20 @@ The Custom Trading Fee System allows builders to tailor fee structures for their
 
 ## Overview of Fee Structure
 
-| | Base Fee | Custom Fee |
-| --- | --- | --- |
-| **Who receives** | Orderly (100%) | Builder (100%) |
-| **Taker** | 3 bps | Set by builder |
-| **Maker** | 0 bps | Set by builder |
+|                  | Orderly Base Fee                                 | Builder-Set User Fee            |
+| ---------------- | ------------------------------------------------ | ------------------------------- |
+| **Who receives** | Orderly (100%)                                   | Builder (100%)                  |
+| **Taker**        | Based on the Builder's fee tier                  | Set by builder                  |
+| **Maker**        | Based on the Builder's fee tier; can be negative | Set by builder; can be negative |
 
 <Note>
-  The base fee is subject to change according to the [builder staking programme](/introduction/trade-on-orderly/trading-basics/trading-fees#builder-staking-programme).
+  Orderly base fees are set by the Builder's [builder staking
+  programme](/introduction/trade-on-orderly/trading-basics/trading-fees#builder-staking-programme).
+  This tiering applies to the Builder's base fee paid to Orderly. Builders still configure the
+  user-facing maker fee for their trading platform, and can set it negative so eligible maker trades
+  receive a rebate. Use the [Trading
+  fees](/introduction/trade-on-orderly/trading-basics/trading-fees) page for the current taker and
+  maker base fee tiers.
 </Note>
 
 ## User Flow for Builders
@@ -29,8 +35,15 @@ The Custom Trading Fee System allows builders to tailor fee structures for their
     Orderly provides a [fee tier assignment tool](https://github.com/OrderlyNetwork/orderly-evm-broker-fee-admin) for volume-based tiers.
 
     <Note>
-      The fee rate is the total charged to the user (Orderly base fee + custom fee). It cannot be less than the Orderly base fee.
+      The fee rate is the total charged to, or rebated to, the user (Orderly base fee + custom fee). For taker fees, the custom fee cannot be less than the Orderly base fee. For maker fees, builders can configure a negative user-facing maker fee so qualifying maker trades receive a rebate.
     </Note>
+
+    <Note>
+      Custom user and default fee rates must be set in decimal-rate increments of `0.00001`, which
+      equals `0.001%` or `0.1 bps`. This precision rule applies to standard custom fee settings, not
+      order enum fee settings.
+    </Note>
+
   </Step>
   <Step title="Set the default fee rate">
     Set the `default` fee rate through [POST `/v1/broker/fee_rate/default`](/build-on-omnichain/restful-api/private/update-default-builder-fee).
@@ -45,6 +58,7 @@ The Custom Trading Fee System allows builders to tailor fee structures for their
     <Note>
       All users are assigned the default fee rate unless overridden by the builder.
     </Note>
+
   </Step>
   <Step title="Retrieve fee rates">
     - User fee rate: [GET `/v1/broker/user_info`](/build-on-omnichain/restful-api/private/get-user-fee-rates)
@@ -60,19 +74,26 @@ Builders receive daily rebates in their fee wallet, calculated after deducting a
 
 <AccordionGroup>
   <Accordion title="Will there be limitations on how often fee rates can be changed?">
-    There are no inherent limitations besides API rate limits, but we recommend prudent management to maintain consistency and trust with end users.
+    There are no inherent limitations besides API rate limits, but we recommend prudent management
+    to maintain consistency and trust with end users.
   </Accordion>
   <Accordion title="How to set fees for users?">
-    Builders can develop a custom tiered structure based on different parameters like volume, staked tokens, etc.
+    Builders can develop a custom tiered structure based on different parameters like volume, staked
+    tokens, etc.
   </Accordion>
   <Accordion title="Can I get help determining and setting fees?">
-    Orderly provides a [fee tier assignment tool](https://github.com/OrderlyNetwork/orderly-evm-broker-fee-admin) to help builders assign users to volume-based tiers.
+    Orderly provides a [fee tier assignment
+    tool](https://github.com/OrderlyNetwork/orderly-evm-broker-fee-admin) to help builders assign
+    users to volume-based tiers.
   </Accordion>
   <Accordion title="How does the rebate work for builders?">
-    Builders keep all fees above the Orderly base fee (3 bps taker, 0 bps maker).
+    Builders keep all fees above the Orderly base fee. When the Builder's base maker fee is
+    negative, the builder receives the maker rebate from Orderly and can choose to pass it on by
+    configuring a negative user-facing maker fee.
   </Accordion>
   <Accordion title="How are fee rebates distributed?">
-    Builder fee rebates are distributed daily to the builder's Orderly account registered with the wallet provided during the builder ID setup.
+    Builder fee rebates are distributed daily to the builder's Orderly account registered with the
+    wallet provided during the builder ID setup.
   </Accordion>
   <Accordion title="What are the fee wallet requirements?">
     Currently EOA only, with multisig support upcoming.

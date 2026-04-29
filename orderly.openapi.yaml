@@ -4822,7 +4822,7 @@ paths:
 
         `GET /v1/broker/broker_info`
 
-        Get broker tiered fee daily log information including staking balance, trading volume, and fee rates.
+        Get broker tiered fee daily log information including staking balance, trading volume, and fee rates. Fee rate fields returned by this endpoint are in bps.
       tags:
         - private
       parameters:
@@ -5030,14 +5030,16 @@ paths:
               properties:
                 maker_fee_rate:
                   type: number
-                  description: "Maker fee charged to users by default (0.0001 = 0.01%)"
+                  description: "Maker fee charged to users (0.0001 = 0.01%). Must be set in decimal-rate increments of 0.00001 (0.001% or 0.1 bps)."
                 taker_fee_rate:
                   type: number
-                  description: "Taker fee charged to users by default (0.0001 = 0.01%)"
+                  description: "Taker fee charged to users (0.0001 = 0.01%). Must be set in decimal-rate increments of 0.00001 (0.001% or 0.1 bps)."
                 rwa_taker_fee_rate:
                   type: number
+                  description: "RWA taker fee charged to users (0.0001 = 0.01%). Must be set in decimal-rate increments of 0.00001 (0.001% or 0.1 bps)."
                 rwa_maker_fee_rate:
                   type: number
+                  description: "RWA maker fee charged to users (0.0001 = 0.01%). Must be set in decimal-rate increments of 0.00001 (0.001% or 0.1 bps)."
                 account_ids:
                   type: array
                   items:
@@ -5122,14 +5124,16 @@ paths:
               properties:
                 maker_fee_rate:
                   type: number
-                  description: "Maker fee charged to users by default (0.0001 = 0.01%)"
+                  description: "Maker fee charged to users by default (0.0001 = 0.01%). Must be set in decimal-rate increments of 0.00001 (0.001% or 0.1 bps)."
                 taker_fee_rate:
                   type: number
-                  description: "Taker fee charged to users by default (0.0001 = 0.01%)"
+                  description: "Taker fee charged to users by default (0.0001 = 0.01%). Must be set in decimal-rate increments of 0.00001 (0.001% or 0.1 bps)."
                 rwa_taker_fee_rate:
                   type: number
+                  description: "RWA taker fee charged to users by default (0.0001 = 0.01%). Must be set in decimal-rate increments of 0.00001 (0.001% or 0.1 bps)."
                 rwa_maker_fee_rate:
                   type: number
+                  description: "RWA maker fee charged to users by default (0.0001 = 0.01%). Must be set in decimal-rate increments of 0.00001 (0.001% or 0.1 bps)."
               required:
                 - maker_fee_rate
                 - taker_fee_rate
@@ -5873,8 +5877,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BasicResponse"
-
-
   /v1/referral/multi_level/max_rebate_rate:
     get:
       summary: Get max rebate rate
@@ -6707,7 +6709,7 @@ paths:
         `GET /v1/public/points/rankings`
 
         Returns the rankings for a specific stage.
-        
+
         Note: Need to aggregate the point data from all sub accounts with the same address.
       tags:
         - public
@@ -13033,7 +13035,7 @@ components:
                 internal_transfer_request_id:
                   type: integer
                   example: 123
-                  
+
     CreateInternalTransferV1Response:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
@@ -15387,19 +15389,19 @@ components:
                   example: "DIAMOND"
                 base_maker_fee_rate:
                   type: number
-                  description: maker_fee_rate
+                  description: Base maker fee rate in bps.
                   example: 0.0
                 base_taker_fee_rate:
                   type: number
-                  description: taker_fee_rate
+                  description: Base taker fee rate in bps.
                   example: 1.0
                 base_rwa_maker_fee_rate:
                   type: number
-                  description: maker_fee_rate
+                  description: Base RWA maker fee rate in bps.
                   example: 0.0
                 base_rwa_taker_fee_rate:
                   type: number
-                  description: taker_fee_rate
+                  description: Base RWA taker fee rate in bps.
                   example: 1.0
                 updated_time:
                   type: number
@@ -16570,7 +16572,7 @@ components:
                           example: 20
                         rank:
                           type: number
-                          example: 1    
+                          example: 1
 
     GetStageRankingsResponse:
       allOf:
