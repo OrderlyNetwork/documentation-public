@@ -1,0 +1,56 @@
+---
+title: "How to wire plugin packages in a host (workspace, path, npm)"
+description: "Use the pattern that matches your repository layout."
+---
+
+Use the pattern that matches your repository layout.
+
+## Monorepo (pnpm workspace)
+
+1. Ensure the plugin package directory is included in `pnpm-workspace.yaml` (e.g. `packages/*`, or the plugin folder path).
+2. In the host `package.json`:
+
+```json
+{
+  "dependencies": {
+    "@scope/my-plugin": "workspace:*"
+  }
+}
+```
+
+3. Run `pnpm install` from the repo root.
+
+**Verification:** `pnpm why @scope/my-plugin` resolves to the workspace package.
+
+## Local path (development)
+
+When testing without publishing:
+
+```json
+"@scope/my-plugin": "file:../relative/path/to-plugin"
+```
+
+Run install from the host directory. Bumps to the plugin source are picked up on reinstall or via workspace protocols depending on your setup.
+
+## Published npm
+
+After publishing:
+
+```json
+"@scope/my-plugin": "^1.0.0"
+```
+
+Align **`@orderly.network/plugin-core`** (and other peers) with the host to avoid duplicate React or incompatible SDK instances.
+
+## Runtime registration
+
+Regardless of how the package is linked, the host must:
+
+1. Import the register function.
+2. Pass `plugins={[registerFn(...)]}` on `OrderlyAppProvider` (or equivalent app provider used by the host).
+
+See [Tutorial: Integrate into host](integrate-host).
+
+## Marketplace packages
+
+`orderly-devkit view <plugin-id>` (authenticated) prints metadata including the npm package identifier and `usagePrompt`. Prefer following **`usagePrompt`** when present.

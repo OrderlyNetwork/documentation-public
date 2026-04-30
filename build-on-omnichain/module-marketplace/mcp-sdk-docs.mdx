@@ -1,0 +1,53 @@
+---
+title: "Orderly SDK Docs MCP (`orderly-sdk-docs`)"
+description: "Runtime npm package: @orderly.network/sdk-docs. MCP server binary: orderly-sdk-docs-mcp (stdio), commonly installed via orderly-devkit mcp install."
+---
+
+Runtime npm package: **`@orderly.network/sdk-docs`**. MCP server binary: **`orderly-sdk-docs-mcp`** (stdio), commonly installed via **`orderly-devkit mcp install`**.
+
+If the documentation bundle fails to load, tools return guidance in the payload (often mentioning regenerating bundled indexes — see **`orderly_docs_health`** and npm metadata for **`@orderly.network/sdk-docs`**).
+
+## `install` subcommand
+
+Config-only install (does not start stdio):
+
+```bash
+orderly-sdk-docs-mcp install --client all --scope user
+```
+
+Forwarded by **`orderly-devkit mcp install`**.
+
+| Option | Description |
+| --- | --- |
+| `--client` | `claude`, `codex`, `cursor`, `opencode`, `all` (default), or comma-separated |
+| `--scope` | `user` (default) or `project` |
+| `--name` | MCP key in client config (default: `orderly-sdk-docs`) |
+| `--dry-run` | Print actions without writing |
+| `--force` | Replace existing same-name Orderly MCP entry |
+
+## Registered MCP tools
+
+There is **no** `orderly_docs_get_hook` — use **`orderly_docs_search`** plus **`orderly_docs_get_component`** / **`orderly_docs_get_type`** ([alignment](agent-skills-alignment)).
+
+| Tool | Purpose |
+| --- | --- |
+| `orderly_docs_health` | Bundle metadata: gitSha, generatedAt, paths |
+| `orderly_docs_search` | Semantic search; optional `k`, `kinds`, `packages` |
+| `orderly_docs_get_component` | Exact component metadata by symbol or `@package/name:Export` |
+| `orderly_docs_get_component_doc` | Markdown narrative / examples |
+| `orderly_docs_get_type` | Type / enum metadata |
+| `orderly_docs_get_package_surface` | Export list for an npm package |
+| `orderly_docs_get_release_context` | Manifest / release stamp |
+| `orderly_docs_get_workflow` | Workflow markdown by slug (e.g. `plugin-create`) |
+| `orderly_docs_get_recipe` | Recipe markdown by name |
+| `orderly_docs_get_guardrails` | Guardrails markdown |
+| `orderly_docs_fetch_sdk_source` | Fetch source from public SDK GitHub |
+
+### Recommended usage for plugin authors
+
+1. `orderly_docs_search` → topic.
+2. `orderly_docs_get_component` / `orderly_docs_get_type` follow-ups from hit IDs.
+
+## Environment / bundled indexes
+
+Consumers usually rely on **bundled** indexes published with **`@orderly.network/sdk-docs`**. Advanced setups may set repository-root env vars described in tool errors when the bundle is missing.
