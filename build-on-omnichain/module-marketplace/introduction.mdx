@@ -3,10 +3,10 @@ title: "Introduction"
 description: "Discover, install, and publish trading modules built on the Orderly SDK and API."
 ---
 
-The Orderly Module Marketplace is where builders discover, install, and publish trading modules. Each module is built on top of the [Orderly SDK](/sdks/overview) and the Orderly REST/WebSocket API — the SDK plugin system handles the frontend UI, and the API provides the full trading infrastructure behind it.
+The Orderly Module Marketplace lets DEX builders install ready-made trading features, build custom modules, and publish them for other builders to use. Modules are built on top of the [Orderly SDK](/sdks/overview) and the Orderly REST/WebSocket API.
 
 <Note>
-**Terminology:** A **module** is the complete feature you ship — it may include an SDK **plugin** (frontend UI) and optionally a builder-hosted backend service. In code, the frontend portion uses SDK plugin APIs (`registerPlugin`, `pluginId`, etc.).
+**Terminology:** A **module** is the complete feature you ship. It includes a **plugin** (the frontend UI that plugs into your DEX) and optionally a builder-hosted backend service for persistent logic.
 </Note>
 
 ## Live Modules
@@ -78,7 +78,7 @@ For the full development guide, see the [Plugin Developer Handbook](plugin-devel
 
 ### Connect your backend (if needed)
 
-For modules that require persistent logic beyond the browser session, use the Orderly REST and WebSocket API directly from your backend service. See the API reference in the sidebar for details.
+If your module needs persistent logic beyond the browser session, you can run your own backend service. How you design it is up to you — your backend can call the Orderly REST and WebSocket API, run its own logic, or both. See the API reference in the sidebar for details.
 
 ### List on the Module Marketplace
 
