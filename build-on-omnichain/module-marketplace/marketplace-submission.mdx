@@ -1,0 +1,86 @@
+---
+title: "Tutorial 3: Submit a plugin to the Orderly Marketplace"
+description: "Goal: Authenticate with the devkit, validate a local plugin folder, and submit it for Marketplace review."
+---
+
+**Goal:** Authenticate with the devkit, validate a local plugin folder, and submit it for Marketplace review.
+
+**Prerequisite:** Plugin repo with valid `package.json` **name**, GitHub **`origin`** remote (HTTPS form preferred), and metadata aligned with [Manifest and submit](manifest-and-submit). Optional: **`orderly-devkit skills install`** — see below.
+
+## Using agent skills for this tutorial
+
+The **orderly-plugin-submit** skill is for publishing to the Marketplace. It aligns with **`orderly-devkit`** the same way as the sections below:
+
+| CLI step below | Skill behavior |
+| --- | --- |
+| **`login`**, **`whoami`** | Requires real login before **`submit`**; skill should not pretend auth succeeded. |
+| **`submit --dry-run`** | Validate manifest / `package.json` / **`repoUrl`** / tags / **`usagePrompt`** length — run before any real **`submit`**. |
+| **`submit`** | Typical flags: **`--path`**, **`--tags`**, **`--storybook-url`**. Skill should obtain **explicit user confirmation** before calling the Marketplace API (no unattended submit). |
+| **`usagePrompt`** / **`README`** | Skill guides drafting **`usagePrompt`** (install → register snippet → pitfalls); README edits only with user consent. |
+| **`list`**, **`update`**, **`view`** | Same CLI as §4–§5 — **`view`** requires login. |
+
+Full skill–MCP alignment: [Agent skills alignment](agent-skills-alignment); overview: [Skills-first workflow](skills-first).
+
+**Example prompts:** “Prepare my plugin folder for Marketplace: dry-run then submit” / “Draft a `usagePrompt` for `@scope/plugin` matching `submit` constraints.” Always confirm **`submit`** in the UI or chat before the agent runs the real command.
+
+## 1. Log in
+
+```bash
+orderly-devkit login
+orderly-devkit whoami
+```
+
+Credentials are stored under `~/.orderly/auth.json`.
+
+## 2. Dry run (validate only)
+
+From the plugin root:
+
+```bash
+orderly-devkit submit --path . --dry-run
+```
+
+Fix any validation errors (npm name, `repoUrl`, `pluginId`, tags, `usagePrompt` length). See [Manifest and submit](manifest-and-submit).
+
+## 3. Submit
+
+```bash
+orderly-devkit submit --path .
+```
+
+Optional flags:
+
+```bash
+orderly-devkit submit -p ./my-plugin --tags UI,Trading --storybook-url https://example.com/storybook
+```
+
+Invalid tags are dropped with a warning; valid tags only are kept.
+
+**Verification:** HTTP **201** response — plugin submitted (often status `under_review`). See status table in [Manifest and submit](manifest-and-submit).
+
+## 4. List and update listings
+
+```bash
+orderly-devkit list
+orderly-devkit list --json
+```
+
+Update metadata for an existing listing (requires `pluginId` in `.orderly-manifest.json`):
+
+```bash
+orderly-devkit update --path ./my-plugin --dry-run
+orderly-devkit update -p ./my-plugin
+```
+
+## 5. View a plugin by id
+
+```bash
+orderly-devkit view <plugin-id>
+```
+
+Requires **`orderly-devkit login`** in the current CLI implementation.
+
+## Next steps
+
+- Write or refine **`usagePrompt`** for integrators and AI assistants: [Usage prompt and README](usage-prompt-and-readme).
+- Short checklist: [Marketplace submit recipe](marketplace-submit-recipe).

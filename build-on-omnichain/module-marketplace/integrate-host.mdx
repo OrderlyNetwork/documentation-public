@@ -1,0 +1,102 @@
+---
+title: "Tutorial 2: Integrate a plugin into the host app"
+description: "Goal: Load an existing plugin package through OrderlyAppProvider’s plugins prop."
+---
+
+**Goal:** Load an existing plugin package through **`OrderlyAppProvider`**’s `plugins` prop.
+
+**Prerequisite:** A plugin package that exports a register function (e.g. `registerMyPlugin()`), either from [Tutorial 1](first-plugin) or published npm. Optional: **`orderly-devkit skills install`** plus [Skills-first workflow](skills-first).
+
+## Using agent skills for this tutorial
+
+The **orderly-plugin-add** skill matches “integrate / install / register an Orderly plugin in a DEX host.” It is built around the same steps as below and stresses:
+
+1. **Find `OrderlyAppProvider`** (`grep`, or search the repo) — the skill treats this as the non-negotiable first step.
+2. **Resolve the package** — workspace **`workspace:*`**, **`file:`**, or **npm**, then **`pnpm install`**.
+3. **Import **`registerXxxPlugin`** and add **`plugins={[…]}`** on the provider.
+4. Optionally **`orderly-devkit view <plugin-id>`** (after **`orderly-devkit login`**) to read **`usagePrompt`** / package name for Marketplace plugins — same as the **Import** and **Marketplace metadata** sections below.
+
+**Example prompts:** “Wire `@scope/my-local-plugin` into this host’s `OrderlyAppProvider`” / “Install the Marketplace plugin `<id>` and follow usagePrompt.” The skill should mirror this tutorial and refuse to guess **`plugins`** wiring.
+
+## 1. Find `OrderlyAppProvider`
+
+Search the host codebase:
+
+```bash
+grep -r "OrderlyAppProvider" --include="*.tsx" --include="*.ts" src/
+```
+
+Open the file and inspect the existing `plugins` prop (if any).
+
+## 2. Add the dependency
+
+Pick one pattern:
+
+| Pattern | When |
+| --- | --- |
+| **pnpm workspace** | Monorepo: add the package to `pnpm-workspace.yaml` if needed, then `"@scope/plugin-name": "workspace:*"` in the host `package.json`. |
+| **Local path** | `"@scope/plugin-name": "file:../path-to-plugin"` for local development. |
+| **Published npm** | `"@scope/plugin-name": "^x.y.z"` after publish. |
+
+Run `pnpm install` (or npm/yarn) from the workspace root.
+
+**Verification:** `pnpm why @scope/plugin-name` (or equivalent) resolves in the host.
+
+## 3. Import the register function
+
+```tsx
+import registerMyPlugin from "@orderly.network/your-plugin";
+```
+
+Use the export path from the plugin’s `package.json` / README / Marketplace metadata.
+
+### Marketplace metadata
+
+If the plugin is listed on the Marketplace, you can inspect metadata with the devkit after logging in:
+
+```bash
+orderly-devkit login
+orderly-devkit view <plugin-id>
+```
+
+Read **`usagePrompt`** first when present—it describes integration steps from the author. The CLI **`view`** command requires authentication today (Bearer token); see [Agent skills alignment](agent-skills-alignment).
+
+## 4. Register on `OrderlyAppProvider`
+
+```tsx
+import { OrderlyAppProvider } from "@orderly.network/react-app";
+
+<OrderlyAppProvider
+  brokerId="..."
+  brokerName="..."
+  plugins={[registerMyPlugin(/* optional options */)]}
+>
+  {children}
+</OrderlyAppProvider>
+```
+
+Merge with existing plugins:
+
+```tsx
+plugins={[...existingPlugins, registerMyPlugin()]}
+```
+
+This is the **core integration step**; everything else supports it.
+
+## 5. Verify
+
+1. Typecheck / build the host.
+2. Run the app and open UI surfaces affected by the plugin’s interceptors.
+3. Optional grep:
+
+```bash
+grep -r "registerMyPlugin" src/
+```
+
+## Layout plugins
+
+If the plugin targets **`Trading.Layout.Desktop`**, ensure you understand precedence between plugin layout strategies and host-provided `layoutStrategy` / `getInitialLayout`. See **`@orderly.network/layout-core`** on npm (layout customization docs) and the [plugin types](plugin-types) guide.
+
+## Optional: Storybook
+
+If the host uses `OrderlyAppProvider` in Storybook, register the same `plugins` entry there for local UI testing.
