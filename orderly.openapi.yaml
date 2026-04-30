@@ -6425,6 +6425,106 @@ paths:
               schema:
                 $ref: "#/components/schemas/GetMultiLevelAdminInfoResponse"
 
+  /v1/referral/multi_level/admin/referee_list:
+    get:
+      summary: Get admin referee list
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/referral/multi_level/admin/referee_list`
+
+        Returns a list of referees for a builder admin. Includes legacy code referrals. Restricted to Admin users only.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+        - name: page
+          in: query
+          description: "Page number"
+          required: false
+          example: 1
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: "Page size"
+          required: false
+          example: 25
+          schema:
+            type: integer
+        - name: user_address
+          in: query
+          description: "Only one of user_address and account_id can be provided"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: account_id
+          in: query
+          description: "Only one of user_address and account_id can be provided"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: referrer_address
+          in: query
+          description: "Filter by referrer address"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: sort_by
+          in: query
+          description: "Sort by field: code_binding_time, referral_rebate_rate, referee_rebate_rate, direct_invites, indirect_invites, direct_volume, indirect_volume"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: sort_order
+          in: query
+          description: "Sort order: ascending, descending"
+          required: false
+          example: ""
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetAdminRefereeListResponse"
+              example:
+                success: true
+                data:
+                  rows:
+                    - address: "0x8a85dba77065b4d15d8bf15286ff063f2211abc5"
+                      account_id: "0x73fa2172f74191a5a954054d2778f42f062e54d9743fc32e592acd288271dfae"
+                      referrer_account_id: "0xc7df73049deb449cf199391baff3dfa2ee32accd83b0fdbc9e8a3fd556321d4e"
+                      referrer_address: "0xf4345e417de88a6be6a29f2278ba4209f82fb395"
+                      bind_code: "IRHETJUT"
+                      code_binding_time: 1769153820470
+                      bind_type: "multi_level"
+                      referral_rebate_rate: 0.15
+                      referee_rebate_rate: 0.2
+                      is_default_rate: true
+                      direct_invites: 1
+                      indirect_invites: 1
+                      direct_volume: 0
+                      indirect_volume: 1386.913
+                      direct_rebate: 0
+                      indirect_rebate: 0.057997
+                      direct_bonus_rebate: 0
+                  meta:
+                    total: 1
+                    records_per_page: 20
+                    current_page: 1
+                timestamp: 1777534781316
+
   /v1/referral/multi_level/admin/summary:
     get:
       summary: Get multilevel summary info
@@ -17731,6 +17831,9 @@ components:
                         type: number
                       bind_type:
                         type: string
+                        enum:
+                          - multi_level
+                          - legacy
                       bind_code:
                         type: string
                       referral_rebate_rate:
@@ -17753,6 +17856,79 @@ components:
                         type: number
                       direct_bonus_rebate:
                         type: number
+                meta:
+                  $ref: "#/components/schemas/MetaData"
+
+    GetAdminRefereeListResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                rows:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      address:
+                        type: string
+                        example: "0x8a85dba77065b4d15d8bf15286ff063f2211abc5"
+                      account_id:
+                        type: string
+                        example: "0x73fa2172f74191a5a954054d2778f42f062e54d9743fc32e592acd288271dfae"
+                      referrer_address:
+                        type: string
+                        example: "0xf4345e417de88a6be6a29f2278ba4209f82fb395"
+                      referrer_account_id:
+                        type: string
+                        example: "0xc7df73049deb449cf199391baff3dfa2ee32accd83b0fdbc9e8a3fd556321d4e"
+                      code_binding_time:
+                        type: number
+                        example: 1769153820470
+                      bind_type:
+                        type: string
+                        enum:
+                          - multi_level
+                          - legacy
+                        example: multi_level
+                      bind_code:
+                        type: string
+                        example: "IRHETJUT"
+                      referral_rebate_rate:
+                        type: number
+                        description: Remaining rebate rate kept by the referrer after splitting the rebate with the referee.
+                        example: 0.15
+                      referee_rebate_rate:
+                        type: number
+                        description: The rebate rate split given by the referrer.
+                        example: 0.2
+                      is_default_rate:
+                        type: boolean
+                        description: Whether the referee's rebate split given by the referrer follows the referrer's default split settings.
+                        example: true
+                      direct_invites:
+                        type: number
+                        example: 1
+                      indirect_invites:
+                        type: number
+                        example: 1
+                      direct_volume:
+                        type: number
+                        example: 0
+                      indirect_volume:
+                        type: number
+                        example: 1386.913
+                      direct_rebate:
+                        type: number
+                        example: 0
+                      indirect_rebate:
+                        type: number
+                        example: 0.057997
+                      direct_bonus_rebate:
+                        type: number
+                        example: 0
                 meta:
                   $ref: "#/components/schemas/MetaData"
 
@@ -18157,6 +18333,9 @@ components:
                       user_id:
                         type: number
                         example: 12345
+                      account_id:
+                        type: string
+                        example: "0x114f583aea808c5812e16109b6c087660285a26f0a31dcc0f9b54f1a6a0fefbd"
                       timestamp:
                         type: number
                         example: 1663313562090
