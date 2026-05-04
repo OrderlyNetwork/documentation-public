@@ -1,43 +1,47 @@
 ---
 title: "Custom Trading Fee Per Order"
-description: "Integrate order enums to apply custom trading fees to specific order flows."
+description: "Integrate order tags to apply custom trading fees to specific order flows."
 ---
 
-Order enums let builders apply custom trading fees per order by assigning an enum-backed `order_tag` such as `enum:STRATEGY_DCA` during order placement. Use this guide when your DEX, strategy backend, vault, bot flow, campaign, or broker-specific UX needs fee rules that differ by order category.
+Order tags let builders apply custom trading fees per order by assigning an `order_tag` such as `enum:STRATEGY_DCA` during order placement. The order tag value can be either a plain referral code or `enum:<enum_id>`. The `enum_id` is the fee config identifier; to apply custom trading fee per order, the order tag sent on an order must include the `enum:` prefix. Use this guide when your DEX, strategy backend, vault, bot flow, campaign, or broker-specific UX needs fee rules that differ by order category.
 
 This guide explains the integration flow and links to the API reference pages. It intentionally does not duplicate the full API specs.
 
 ## Integration Flow
 
 <Steps>
-  <Step title="Create order enums">
-    Builder admins create one or more order enums with a `default_fee_rate` and optional `pair_overrides`.
+  <Step title="Create order tags">
+    Builder admins create one or more order tag fee configs with a `default_fee_rate` and optional `pair_overrides`.
 
     Use [POST `/v1/broker/order_enum`](/build-on-omnichain/restful-api/private/create-order-enum).
+
   </Step>
-  <Step title="Expose active enums to your DEX">
-    Your DEX or backend fetches active enums with `broker_id` so it can decide which enum to apply and disclose the extra fee to users.
+  <Step title="Expose active order tags to your DEX">
+    Your DEX or backend fetches active order tag configs with `broker_id` so it can decide which tag to apply and disclose the extra fee to users.
 
     Use [GET `/v1/public/broker/order_enums`](/build-on-omnichain/restful-api/public/get-order-enums).
+
   </Step>
-  <Step title="Apply the enum during order placement">
-    Set `order_tag` to `enum:<UPPERCASE_ID>` on supported order creation requests, for example `enum:STRATEGY_DCA`.
+  <Step title="Apply the order tag during order placement">
+    Set `order_tag` to `enum:<enum_id>` on supported order creation requests, for example `enum:STRATEGY_DCA`.
 
     Use [POST `/v1/order`](/build-on-omnichain/restful-api/private/create-order), [POST `/v1/batch-order`](/build-on-omnichain/restful-api/private/batch-create-order), or [POST `/v1/algo/order`](/build-on-omnichain/restful-api/private/create-algo-order).
+
   </Step>
   <Step title="Reconcile order and trade results">
     Read `order_tag` on orders for attribution and use trade-level fee fields for reporting and reconciliation.
 
     Use the order and trade APIs listed below.
+
   </Step>
-  <Step title="Operate the enum lifecycle">
-    Update fee rates, archive inactive enums, unarchive enums when needed, and review usage stats through admin APIs.
+  <Step title="Operate the order tag lifecycle">
+    Update fee rates, archive inactive order tags, unarchive order tags when needed, and review usage stats through admin APIs.
   </Step>
 </Steps>
 
 ## Public DEX Integration
 
-Use [GET `/v1/public/broker/order_enums`](/build-on-omnichain/restful-api/public/get-order-enums) from your DEX or backend service to discover available order enums for a builder.
+Use [GET `/v1/public/broker/order_enums`](/build-on-omnichain/restful-api/public/get-order-enums) from your DEX or backend service to discover available order tag fee configs for a builder.
 
 The public list endpoint is unauthenticated and takes `broker_id` as a query parameter:
 
@@ -49,65 +53,67 @@ Optional filters include `symbol`, `enum_id`, and `include_archived`.
 
 ### Fee Disclosure
 
-The order enum fee is charged in addition to the user's existing trading fee:
+When `order_tag` uses the `enum:<enum_id>` format, the matching order tag fee config applies an additional custom trading fee on top of the standard fee schedule. The `enum:` prefix is required for custom trading fee per order. This is different from a plain referral-code `order_tag`, which is treated as referral attribution and does not apply the custom trading fee per order.
+
+The order tag fee is charged in addition to the user's existing trading fee:
 
 ```text
-final fee = trading fee + order enum fee
+final fee = trading fee + order tag fee
 ```
 
-If `pair_overrides` includes the order symbol, use that symbol-specific enum fee rate. Otherwise, use `default_fee_rate`. Display the enum fee separately from the standard trading fee so users understand both components before placing an order.
+`default_fee_rate` is the fallback fee rate for the order tag. `pair_overrides` lets builders override that fallback for specific symbols, so one order tag can charge different additional fee rates by market. If `pair_overrides` includes the order symbol, use that symbol-specific order tag fee rate. Otherwise, use `default_fee_rate`. Display the order tag fee separately from the standard trading fee so users understand both components before placing an order.
 
-## Applying Order Enums to Orders
+## Applying Order Tags to Orders
 
 Set `order_tag` on supported order creation APIs:
 
-| API | Integration note |
-|-----|------------------|
-| [POST `/v1/order`](/build-on-omnichain/restful-api/private/create-order) | Set `order_tag` on the order request body. |
-| [POST `/v1/batch-order`](/build-on-omnichain/restful-api/private/batch-create-order) | Set `order_tag` on each order object inside `orders` that should use the enum. |
-| [POST `/v1/algo/order`](/build-on-omnichain/restful-api/private/create-algo-order) | Set `order_tag` on the algo order request body. |
+| API                                                                                  | Integration note                                                                               |
+| ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
+| [POST `/v1/order`](/build-on-omnichain/restful-api/private/create-order)             | Set `order_tag` on the order request body.                                                     |
+| [POST `/v1/batch-order`](/build-on-omnichain/restful-api/private/batch-create-order) | Set `order_tag` on each order object inside `orders` that should use the order tag fee config. |
+| [POST `/v1/algo/order`](/build-on-omnichain/restful-api/private/create-algo-order)   | Set `order_tag` on the algo order request body.                                                |
 
 `order_tag` supports two formats:
 
-| Format | Example | Behavior |
-|--------|---------|----------|
-| Referral code | `REFERRAL2026` | Plain string. Overrides the referral relationship. |
-| Order enum | `enum:STRATEGY_DCA` | Adds the configured order enum fee on top of existing fees and preserves referral. |
+| Format               | Example             | Behavior                                                                                             |
+| -------------------- | ------------------- | ---------------------------------------------------------------------------------------------------- |
+| Referral code        | `REFERRAL2026`      | Plain string. Overrides the referral relationship.                                                   |
+| Order tag fee config | `enum:STRATEGY_DCA` | Applies an additional custom trading fee on top of the standard fee schedule and preserves referral. |
 
-Order enum tags must use this format:
+Custom trading fee order tags must use this format:
 
 ```text
-enum:<UPPERCASE_ID>
+enum:<enum_id>
 ```
 
-`order_tag` is immutable after order placement. To change the enum on an open order, cancel the order and place a new one with the intended `order_tag`.
+`order_tag` is immutable after order placement. To change the tag on an open order, cancel the order and place a new one with the intended `order_tag`.
 
 ## Returned Order and Trade Data
 
 Use order APIs for attribution and UI display:
 
-| API | Relevant data |
-|-----|---------------|
-| [GET `/v1/order/{order_id}`](/build-on-omnichain/restful-api/private/get-order-by-order_id) | Returns `order_tag` on the order. |
-| [GET `/v1/client/order/{client_order_id}`](/build-on-omnichain/restful-api/private/get-order-by-client_order_id) | Returns `order_tag` on the order. |
-| [GET `/v1/orders`](/build-on-omnichain/restful-api/private/get-orders) | Returns `order_tag` on each order row. |
+| API                                                                                                              | Relevant data                          |
+| ---------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| [GET `/v1/order/{order_id}`](/build-on-omnichain/restful-api/private/get-order-by-order_id)                      | Returns `order_tag` on the order.      |
+| [GET `/v1/client/order/{client_order_id}`](/build-on-omnichain/restful-api/private/get-order-by-client_order_id) | Returns `order_tag` on the order.      |
+| [GET `/v1/orders`](/build-on-omnichain/restful-api/private/get-orders)                                           | Returns `order_tag` on each order row. |
 
 Use trade APIs for fee reporting and reconciliation:
 
-| API | Relevant data |
-|-----|---------------|
-| [GET `/v1/trades`](/build-on-omnichain/restful-api/private/get-trades) | Returns `fee`, `order_enum_fee`, and `order_enum_fee_rate` on trade rows. |
-| [GET `/v1/trade/{trade_id}`](/build-on-omnichain/restful-api/private/get-trade) | Returns `fee`, `order_enum_fee`, and `order_enum_fee_rate`. |
-| [GET `/v1/order/{order_id}/trades`](/build-on-omnichain/restful-api/private/get-all-trades-of-specific-order) | Returns order trades with enum fee fields. |
-| [GET `/v1/algo/order/{order_id}/trades`](/build-on-omnichain/restful-api/private/get-all-trades-of-specific-algo-order) | Returns algo order trades with enum fee fields. |
+| API                                                                                                                     | Relevant data                                                             |
+| ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| [GET `/v1/trades`](/build-on-omnichain/restful-api/private/get-trades)                                                  | Returns `fee`, `order_enum_fee`, and `order_enum_fee_rate` on trade rows. |
+| [GET `/v1/trade/{trade_id}`](/build-on-omnichain/restful-api/private/get-trade)                                         | Returns `fee`, `order_enum_fee`, and `order_enum_fee_rate`.               |
+| [GET `/v1/order/{order_id}/trades`](/build-on-omnichain/restful-api/private/get-all-trades-of-specific-order)           | Returns order trades with order tag fee fields.                           |
+| [GET `/v1/algo/order/{order_id}/trades`](/build-on-omnichain/restful-api/private/get-all-trades-of-specific-algo-order) | Returns algo order trades with order tag fee fields.                      |
 
-On trade records, `fee` includes both the standard trading fee and the order enum fee:
+On trade records, `fee` includes both the standard trading fee and the order tag fee:
 
 ```text
 fee = standard trading fee + order_enum_fee
 ```
 
-If you need the amount excluding the enum fee, calculate:
+If you need the amount excluding the order tag fee, calculate:
 
 ```text
 standard trading fee = fee - order_enum_fee
@@ -117,34 +123,34 @@ standard trading fee = fee - order_enum_fee
 
 Admin endpoints require standard Orderly signed request headers and should only be called from secured builder admin tooling or backend services.
 
-| Action | API reference |
-|--------|---------------|
-| Create enum | [POST `/v1/broker/order_enum`](/build-on-omnichain/restful-api/private/create-order-enum) |
-| Update enum | [PUT `/v1/broker/order_enum/{enum_id}`](/build-on-omnichain/restful-api/private/update-order-enum) |
-| List enums with usage stats | [GET `/v1/broker/order_enums`](/build-on-omnichain/restful-api/private/get-order-enums-for-broker) |
-| Get single enum with usage stats | [GET `/v1/broker/order_enum/{enum_id}`](/build-on-omnichain/restful-api/private/get-order-enum-for-broker) |
-| Archive enum | [POST `/v1/broker/order_enum/archive`](/build-on-omnichain/restful-api/private/archive-order-enum) |
-| Unarchive enum | [POST `/v1/broker/order_enum/unarchive`](/build-on-omnichain/restful-api/private/unarchive-order-enum) |
+| Action                                | API reference                                                                                              |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Create order tag                      | [POST `/v1/broker/order_enum`](/build-on-omnichain/restful-api/private/create-order-enum)                  |
+| Update order tag                      | [PUT `/v1/broker/order_enum/{enum_id}`](/build-on-omnichain/restful-api/private/update-order-enum)         |
+| List order tags with usage stats      | [GET `/v1/broker/order_enums`](/build-on-omnichain/restful-api/private/get-order-enums-for-broker)         |
+| Get single order tag with usage stats | [GET `/v1/broker/order_enum/{enum_id}`](/build-on-omnichain/restful-api/private/get-order-enum-for-broker) |
+| Archive order tag                     | [POST `/v1/broker/order_enum/archive`](/build-on-omnichain/restful-api/private/archive-order-enum)         |
+| Unarchive order tag                   | [POST `/v1/broker/order_enum/unarchive`](/build-on-omnichain/restful-api/private/unarchive-order-enum)     |
 
 ## Data Model Notes
 
-| Field | Description |
-|-------|-------------|
-| `enum_id` | Unique uppercase enum ID, for example `STRATEGY_DCA`. |
-| `status` | `active` or `archived`. |
-| `default_fee_rate` | Default fee rate applied when no symbol override exists. |
-| `pair_overrides` | Optional map of symbol to fee rate. |
-| `created_time` | Creation timestamp in milliseconds. |
-| `updated_time` | Last update timestamp in milliseconds. |
+| Field              | Description                                                                                      |
+| ------------------ | ------------------------------------------------------------------------------------------------ |
+| `enum_id`          | Unique uppercase fee config ID, for example `STRATEGY_DCA`. The order tag value must be `enum:<enum_id>`, for example `enum:STRATEGY_DCA`. |
+| `status`           | `active` or `archived`.                                                                          |
+| `default_fee_rate` | Default fee rate applied when no symbol override exists.                                         |
+| `pair_overrides`   | Optional map of symbol to fee rate.                                                              |
+| `created_time`     | Creation timestamp in milliseconds.                                                              |
+| `updated_time`     | Last update timestamp in milliseconds.                                                           |
 
 Admin list responses include usage stats such as `total_orders`, `total_volume`, and `total_fees_collected`.
 
 ## Implementation Notes
 
-- Treat `enum_id` as immutable. If the classification semantics change, create a new enum rather than reusing a misleading ID.
+- Treat `enum_id` as immutable. If the classification semantics change, create a new fee config rather than reusing a misleading ID.
 - Use uppercase alphanumeric characters and underscores only, with a maximum `enum_id` length of 31 characters.
-- The full `order_tag` value must fit within 36 characters, including the `enum:` prefix.
-- Archived enums should not be used for new orders.
+- The full `order_tag` value must fit within 36 characters, including the required `enum:` prefix.
+- Archived order tags should not be used for new orders.
 - Do not expose admin endpoints, account credentials, or signing keys in the DEX frontend.
-- Cache public enum responses briefly to avoid rate limit pressure, but refresh when admin configuration changes need to be reflected quickly.
+- Cache public order tag responses briefly to avoid rate limit pressure, but refresh when admin configuration changes need to be reflected quickly.
 - Fee configuration is evaluated at execution time, so updates can affect later fills of existing open orders.
