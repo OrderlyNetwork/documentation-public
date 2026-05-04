@@ -53,13 +53,15 @@ Optional filters include `symbol`, `enum_id`, and `include_archived`.
 
 ### Fee Disclosure
 
+When `order_tag` uses the `enum:<UPPERCASE_ID>` format, the matching order tag fee config applies an additional custom trading fee on top of the standard fee schedule. This is different from a plain referral-code `order_tag`, which is treated as referral attribution and does not apply the custom trading fee per order.
+
 The order tag fee is charged in addition to the user's existing trading fee:
 
 ```text
 final fee = trading fee + order tag fee
 ```
 
-If `pair_overrides` includes the order symbol, use that symbol-specific order tag fee rate. Otherwise, use `default_fee_rate`. Display the order tag fee separately from the standard trading fee so users understand both components before placing an order.
+`default_fee_rate` is the fallback fee rate for the order tag. `pair_overrides` lets builders override that fallback for specific symbols, so one order tag can charge different additional fee rates by market. If `pair_overrides` includes the order symbol, use that symbol-specific order tag fee rate. Otherwise, use `default_fee_rate`. Display the order tag fee separately from the standard trading fee so users understand both components before placing an order.
 
 ## Applying Order Tags to Orders
 
@@ -73,10 +75,10 @@ Set `order_tag` on supported order creation APIs:
 
 `order_tag` supports two formats:
 
-| Format               | Example             | Behavior                                                                          |
-| -------------------- | ------------------- | --------------------------------------------------------------------------------- |
-| Referral code        | `REFERRAL2026`      | Plain string. Overrides the referral relationship.                                |
-| Order tag fee config | `enum:STRATEGY_DCA` | Adds the configured order tag fee on top of existing fees and preserves referral. |
+| Format               | Example             | Behavior                                                                                             |
+| -------------------- | ------------------- | ---------------------------------------------------------------------------------------------------- |
+| Referral code        | `REFERRAL2026`      | Plain string. Overrides the referral relationship.                                                   |
+| Order tag fee config | `enum:STRATEGY_DCA` | Applies an additional custom trading fee on top of the standard fee schedule and preserves referral. |
 
 Custom trading fee order tags must use this format:
 
