@@ -14,7 +14,9 @@ Install the default plugin skills once — see [Skills-first workflow](skills-fi
 | Skill | What it covers | CLI / tool it leads you to |
 | --- | --- | --- |
 | **orderly-plugin-create** | Scaffold from the official template; naming (`--name`, `--id`), `--interceptor`, `--target`. | **`orderly-devkit create plugin`** (interactive or `--no-interactive` + flags). |
-| **orderly-plugin-write** | Interceptor patterns, Hooks in inner components, docs-first API lookup. | Editing generated code; **Orderly SDK Docs MCP** (`orderly_docs_search`, `orderly_docs_get_component`, `orderly_docs_get_type` — not `orderly_docs_get_hook`). |
+| **orderly-plugin-write** | Interceptor patterns, Hooks in inner components, docs-first API lookup. | Editing generated code; **Orderly SDK Docs MCP** (`orderly_docs_search`, `orderly_docs_get_component`, `orderly_docs_get_hook`, `orderly_docs_get_type`). |
+
+**MCP note:** Prefer **`orderly_docs_get_hook`** for hook APIs (params/returns/JSDoc) and **`orderly_docs_get_component`** for components such as **`OrderlyAppProvider`** (`plugins` prop). Searching alone may not surface structured metadata.
 
 **Example prompts (agent with skills loaded):** “Scaffold an Orderly plugin named `FeeHint` with interceptor `Trading.OrderEntry.SubmitSection` under `./fee-hint`” → maps to **create**. “Add a wrapper around the submit section that shows a small label” → maps to **write** + your code changes.
 
