@@ -3,7 +3,7 @@ title: "Custom Trading Fee Per Order"
 description: "Integrate order tags to apply custom trading fees to specific order flows."
 ---
 
-Order tags let builders apply custom trading fees per order by assigning an `order_tag` such as `enum:STRATEGY_DCA` during order placement. The API parameter names still use `enum` terms such as `enum_id`, but builders and integrators can think of this as custom trading fee per order via order tag. Use this guide when your DEX, strategy backend, vault, bot flow, campaign, or broker-specific UX needs fee rules that differ by order category.
+Order tags let builders apply custom trading fees per order by assigning an `order_tag` such as `enum:STRATEGY_DCA` during order placement. The order tag value can be either a plain referral code or `enum:<enum_id>`. The `enum_id` is the fee config identifier; to apply custom trading fee per order, the order tag sent on an order must include the `enum:` prefix. Use this guide when your DEX, strategy backend, vault, bot flow, campaign, or broker-specific UX needs fee rules that differ by order category.
 
 This guide explains the integration flow and links to the API reference pages. It intentionally does not duplicate the full API specs.
 
@@ -23,7 +23,7 @@ This guide explains the integration flow and links to the API reference pages. I
 
   </Step>
   <Step title="Apply the order tag during order placement">
-    Set `order_tag` to `enum:<UPPERCASE_ID>` on supported order creation requests, for example `enum:STRATEGY_DCA`.
+    Set `order_tag` to `enum:<enum_id>` on supported order creation requests, for example `enum:STRATEGY_DCA`.
 
     Use [POST `/v1/order`](/build-on-omnichain/restful-api/private/create-order), [POST `/v1/batch-order`](/build-on-omnichain/restful-api/private/batch-create-order), or [POST `/v1/algo/order`](/build-on-omnichain/restful-api/private/create-algo-order).
 
@@ -53,7 +53,7 @@ Optional filters include `symbol`, `enum_id`, and `include_archived`.
 
 ### Fee Disclosure
 
-When `order_tag` uses the `enum:<UPPERCASE_ID>` format, the matching order tag fee config applies an additional custom trading fee on top of the standard fee schedule. This is different from a plain referral-code `order_tag`, which is treated as referral attribution and does not apply the custom trading fee per order.
+When `order_tag` uses the `enum:<enum_id>` format, the matching order tag fee config applies an additional custom trading fee on top of the standard fee schedule. The `enum:` prefix is required for custom trading fee per order. This is different from a plain referral-code `order_tag`, which is treated as referral attribution and does not apply the custom trading fee per order.
 
 The order tag fee is charged in addition to the user's existing trading fee:
 
@@ -83,7 +83,7 @@ Set `order_tag` on supported order creation APIs:
 Custom trading fee order tags must use this format:
 
 ```text
-enum:<UPPERCASE_ID>
+enum:<enum_id>
 ```
 
 `order_tag` is immutable after order placement. To change the tag on an open order, cancel the order and place a new one with the intended `order_tag`.
@@ -136,7 +136,7 @@ Admin endpoints require standard Orderly signed request headers and should only 
 
 | Field              | Description                                                                                      |
 | ------------------ | ------------------------------------------------------------------------------------------------ |
-| `enum_id`          | Unique uppercase order tag ID, for example `STRATEGY_DCA`. The API field name remains `enum_id`. |
+| `enum_id`          | Unique uppercase fee config ID, for example `STRATEGY_DCA`. The order tag value must be `enum:<enum_id>`, for example `enum:STRATEGY_DCA`. |
 | `status`           | `active` or `archived`.                                                                          |
 | `default_fee_rate` | Default fee rate applied when no symbol override exists.                                         |
 | `pair_overrides`   | Optional map of symbol to fee rate.                                                              |
@@ -147,9 +147,9 @@ Admin list responses include usage stats such as `total_orders`, `total_volume`,
 
 ## Implementation Notes
 
-- Treat `enum_id` as immutable. If the classification semantics change, create a new order tag rather than reusing a misleading ID.
+- Treat `enum_id` as immutable. If the classification semantics change, create a new fee config rather than reusing a misleading ID.
 - Use uppercase alphanumeric characters and underscores only, with a maximum `enum_id` length of 31 characters.
-- The full `order_tag` value must fit within 36 characters, including the `enum:` prefix.
+- The full `order_tag` value must fit within 36 characters, including the required `enum:` prefix.
 - Archived order tags should not be used for new orders.
 - Do not expose admin endpoints, account credentials, or signing keys in the DEX frontend.
 - Cache public order tag responses briefly to avoid rate limit pressure, but refresh when admin configuration changes need to be reflected quickly.
