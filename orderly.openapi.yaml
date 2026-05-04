@@ -4043,7 +4043,7 @@ paths:
                   description: |
                     Optional tag for the order. Supports two formats:
                     - Referral code: plain string (e.g., `REFERRAL2026`) - overrides referral relationship
-                    - Order tag fee config: `enum:<UPPERCASE_ID>` (e.g., `enum:STRATEGY_DCA`) - adds fee on top of existing fees, preserves referral
+                    - Order tag fee config: `enum:<enum_id>` (e.g., `enum:STRATEGY_DCA`) - adds fee on top of existing fees, preserves referral
                     Max length: 36 characters. Cannot be modified after order placement.
                 child_orders:
                   type: array
@@ -9635,7 +9635,7 @@ paths:
             type: string
         - name: enum_id
           in: query
-          description: Filter by order tag ID (`enum_id`)
+          description: Filter by fee config ID (`enum_id`)
           required: false
           schema:
             type: string
@@ -9661,7 +9661,7 @@ paths:
 
         `POST /v1/broker/order_enum`
 
-        Create a new order tag fee config. The API field name for the order tag ID is `enum_id`.
+        Create a new order tag fee config. The fee config identifier is `enum_id`; the order tag value sent on orders is `enum:<enum_id>`.
       tags:
         - private
       parameters:
@@ -9696,7 +9696,7 @@ paths:
       parameters:
         - name: enum_id
           in: path
-          description: Order tag ID (`enum_id`)
+          description: Fee config ID (`enum_id`)
           required: true
           schema:
             type: string
@@ -9729,7 +9729,7 @@ paths:
       parameters:
         - name: enum_id
           in: path
-          description: Order tag ID (`enum_id`)
+          description: Fee config ID (`enum_id`)
           required: true
           schema:
             type: string
@@ -9765,7 +9765,7 @@ paths:
             type: string
         - name: enum_id
           in: query
-          description: Filter by order tag ID (`enum_id`, partial match supported)
+          description: Filter by fee config ID (`enum_id`, partial match supported)
           required: false
           schema:
             type: string
@@ -9813,7 +9813,7 @@ paths:
               properties:
                 enum_id:
                   type: string
-                  description: Order tag ID (`enum_id`) to archive
+                  description: Fee config ID (`enum_id`) to archive
                   example: "STRATEGY_DCA"
       responses:
         "200":
@@ -9849,7 +9849,7 @@ paths:
               properties:
                 enum_id:
                   type: string
-                  description: Order tag ID (`enum_id`) to unarchive
+                  description: Fee config ID (`enum_id`) to unarchive
                   example: "STRATEGY_DCA"
       responses:
         "200":
@@ -12994,7 +12994,7 @@ components:
           description: |
             Optional tag for the order. Supports two formats:
             - Referral code: plain string (e.g., `REFERRAL2026`) - overrides referral relationship
-            - Order tag fee config: `enum:<UPPERCASE_ID>` (e.g., `enum:STRATEGY_DCA`) - adds fee on top of existing fees, preserves referral
+            - Order tag fee config: `enum:<enum_id>` (e.g., `enum:STRATEGY_DCA`) - adds fee on top of existing fees, preserves referral
             Max length: 36 characters. Cannot be modified after order placement.
 
     BatchCreateOrderBody:
@@ -13025,7 +13025,7 @@ components:
           description: |
             Optional tag for the order. Supports two formats:
             - Referral code: plain string (e.g., `REFERRAL2026`) - overrides referral relationship
-            - Order tag fee config: `enum:<UPPERCASE_ID>` (e.g., `enum:STRATEGY_DCA`) - adds fee on top of existing fees, preserves referral
+            - Order tag fee config: `enum:<enum_id>` (e.g., `enum:STRATEGY_DCA`) - adds fee on top of existing fees, preserves referral
             Max length: 36 characters. Cannot be modified after order placement.
         margin_mode:
           type: string
@@ -13204,7 +13204,7 @@ components:
           description: |
             Optional tag for the order. Supports two formats:
             - Referral code: plain string (e.g., `REFERRAL2026`) - overrides referral relationship
-            - Order tag fee config: `enum:<UPPERCASE_ID>` (e.g., `enum:STRATEGY_DCA`) - adds fee on top of existing fees, preserves referral
+            - Order tag fee config: `enum:<enum_id>` (e.g., `enum:STRATEGY_DCA`) - adds fee on top of existing fees, preserves referral
             Max length: 36 characters. Cannot be modified after order placement.
         level:
           type: number
@@ -13427,7 +13427,7 @@ components:
           nullable: true
           example: null
           description: |
-            Optional tag for the order. Supports plain string (referral code) or `enum:<UPPERCASE_ID>` format.
+            Optional tag for the order. Supports plain string (referral code) or `enum:<enum_id>` format.
         margin_mode:
           type: string
           example: "CROSS"
@@ -13484,7 +13484,7 @@ components:
           type: string
           example: "test_tag"
           description: |
-            Optional tag for the order. Supports plain string (referral code) or `enum:<UPPERCASE_ID>` format.
+            Optional tag for the order. Supports plain string (referral code) or `enum:<enum_id>` format.
         parent_algo_order_id:
           type: number
           example: 0
@@ -18146,7 +18146,7 @@ components:
       properties:
         enum_id:
           type: string
-          description: "Order tag ID. UPPERCASE alphanumeric + underscores, max 31 chars. The API field name remains `enum_id`."
+          description: "Fee config ID. UPPERCASE alphanumeric + underscores, max 31 chars. To apply it to an order, set `order_tag` to `enum:<enum_id>`."
           example: "STRATEGY_DCA"
         name:
           type: string
@@ -18190,7 +18190,7 @@ components:
       properties:
         enum_id:
           type: string
-          description: "Order tag ID. The API field name remains `enum_id`."
+          description: "Fee config ID. To apply it to an order, set `order_tag` to `enum:<enum_id>`."
           example: "STRATEGY_DCA"
         status:
           type: string
@@ -18246,7 +18246,7 @@ components:
               properties:
                 enum_id:
                   type: string
-                  description: "Order tag ID. The API field name remains `enum_id`."
+                  description: "Fee config ID. To apply it to an order, set `order_tag` to `enum:<enum_id>`."
                   example: "STRATEGY_DCA"
                 name:
                   type: string
@@ -18283,7 +18283,7 @@ components:
               properties:
                 enum_id:
                   type: string
-                  description: "Order tag ID. The API field name remains `enum_id`."
+                  description: "Fee config ID. To apply it to an order, set `order_tag` to `enum:<enum_id>`."
                   example: "STRATEGY_DCA"
                 name:
                   type: string
