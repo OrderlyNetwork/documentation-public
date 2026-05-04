@@ -1,0 +1,215 @@
+---
+title: "Tutorial 4: One plugin, multiple interceptor targets"
+description: "Register one plugin that intercepts more than one injector target so the same feature can appear in several UI surfaces."
+---
+
+**Goal:** Register **one plugin** that intercepts **more than one injector target** so the same feature can appear in several UI surfaces (for example a main canvas plus a menu). This tutorial uses **two targets** as the minimal, realistic case; you can extend the same pattern with additional `createInterceptor(...)` entries.
+
+| Step role              | Example target                               | What you inject                                      |
+| ---------------------- | -------------------------------------------- | ---------------------------------------------------- |
+| Feature surface (body) | `TradingView.Desktop`                        | Main widget next to the original desktop layout      |
+| Control surface (menu) | `TradingView.DisplayControl.DesktopMenuList` | A menu row that toggles visibility and stays in sync |
+
+**Tutorial source code:** [OrderlyNetwork/fast-place-order-plugin](https://github.com/OrderlyNetwork/fast-place-order-plugin) — `https://github.com/OrderlyNetwork/fast-place-order-plugin`. Read `src/index.tsx` (`registerFastPlaceOrderPlugin`) alongside the steps below; the repo is the canonical runnable example for this tutorial.
+
+**Prerequisites:** [Tutorial 1](first-plugin) — plugin scaffold and `registerPlugin` basics.
+
+**Scope:** Implementation inside the plugin package only (interceptors, shared state, dedupe, Hooks). Loading the plugin in a host app, provider wiring, and production QA are not covered on this page.
+
+---
+
+## Step 1 — Understand why you need multiple targets
+
+A single interceptor is enough for simple overlays. For product-grade UX you often need **several insertion points** — for example:
+
+1. **Body target** — where the feature lives (panel, popup, extra controls).
+2. **Menu target** — where users discover and switch the feature (display control list, settings, and so on).
+3. **Further targets** — headers, mobile sheets, or secondary menus; same registration, more `createInterceptor` rows.
+
+If every surface reads the **same shared state**, you avoid "menu says ON but the widget is hidden." The reference plugin does that with `useFastPlaceOrderVisibility` shared between the menu interceptor and the widget.
+
+---
+
+## Step 2 — Define the plugin factory and options
+
+1. Import `createInterceptor` and `OrderlySDK` from `@orderly.network/plugin-core`.
+2. Export a register function such as `registerFastPlaceOrderPlugin(options?)` that **returns** `(SDK: OrderlySDK) => { ... }` and, inside that callback, calls `SDK.registerPlugin({ ... })` (the usual plugin factory shape from Tutorial 1).
+3. Normalize options once (for example `const autoShowOnFullscreen = options?.autoShowOnFullscreen ?? true`) so every interceptor sees the same values.
+
+At this point you only have the shell; interceptors come in Step 4.
+
+---
+
+## Step 3 — Call `SDK.registerPlugin` once with a stable `id`
+
+Inside the returned function, call `SDK.registerPlugin({ ... })` **a single time** with:
+
+- `id`, `name`, `version`, `orderlyVersion` — as required by your release process.
+- `interceptors: [ ... ]` — **one** `createInterceptor(...)` per target (this guide covers two; add more entries for additional surfaces).
+- Optional `setup` for non-UI side effects (subscriptions, logging).
+
+**Example (trimmed)** — one factory callback, one `registerPlugin` call, two interceptor slots. Placeholders omit widget/menu logic; Steps 4–6 fill those in.
+
+```tsx
+import {
+  createInterceptor,
+  type OrderlySDK,
+} from "@orderly.network/plugin-core";
+
+export function registerExamplePlugin() {
+  return (SDK: OrderlySDK) => {
+    SDK.registerPlugin({
+      id: "orderly-plugin-example-unique-id",
+      name: "ExamplePlugin",
+      version: "0.1.0",
+      orderlyVersion: ">=3.0.1",
+      interceptors: [
+        createInterceptor(
+          "TradingView.Desktop" as any,
+          (Original, props, _api) => (
+            <>
+              <Original {...props} />
+              {/* Step 4: mount feature UI next to Original */}
+            </>
+          ),
+        ),
+        createInterceptor(
+          "TradingView.DisplayControl.DesktopMenuList" as any,
+          (Original, props) => <Original {...props} />,
+        ),
+      ],
+      setup: (_api) => {
+        // Optional: subscriptions, logging, non-React side effects.
+      },
+    });
+  };
+}
+```
+
+For the display-menu interceptor, extend props with deduped `items={nextItems}` on the same `<Original />` (Steps 5–6).
+
+Many targets still mean **one** plugin registration and **one** shared lifecycle.
+
+---
+
+## Step 4 — Interceptor A: mount the widget on the desktop body
+
+**Target:** `"TradingView.Desktop"` (string must match [runtime injector targets](runtime-injector-targets); paths are case-sensitive).
+
+**Pattern:**
+
+1. Wrap with anything the widget needs globally (the reference uses `LocaleProvider` for i18n).
+2. Render `<Original {...props} />` first so the default trading view stays intact.
+3. Render your widget **after** the original, passing through whatever props the injector supplies for that target (for example `symbol={props.symbol}`) plus your plugin options (`autoShowOnFullscreen`).
+
+Conceptually:
+
+```tsx
+createInterceptor("TradingView.Desktop" as any, (Original, props, _api) => (
+  <LocaleProvider>
+    <Original {...props} />
+    <FastPlaceOrderWidget
+      symbol={props.symbol}
+      autoShowOnFullscreen={autoShowOnFullscreen}
+    />
+  </LocaleProvider>
+)),
+```
+
+**Ordering tip:** List **layout / body** interceptors first in the `interceptors` array, then **menus and chrome**, so the file reads top-down like the user journey.
+
+---
+
+## Step 5 — Interceptor B: inject a menu item on the display control list
+
+**Target:** `'TradingView.DisplayControl.DesktopMenuList'`.
+
+**Pattern:**
+
+1. Read/write shared visibility with the same hook the widget uses (in the reference, `useFastPlaceOrderVisibility(false)` inside the interceptor callback).
+2. Build the next `items` array from `props.items`.
+3. Return `<Original {...props} items={nextItems} />` so you only extend the list, not replace the whole menu implementation.
+
+---
+
+## Step 6 — Dedupe menu items before append
+
+List targets re-render often. If you always push a new object without filtering, you can get **duplicate rows**.
+
+Do this **every** time you build `nextItems`:
+
+1. Choose a stable string `id` for your row (for example `"fastPlaceOrderPopupToggle"`).
+2. Remove any existing item with that `id` from `props.items ?? []`.
+3. Append your `customItem` once.
+
+The reference wraps that in `useMemo` so the array identity stays stable when dependencies (`isWidgetVisible`, `props.items`, setter) do not change:
+
+```tsx
+const nextItems = useMemo(() => {
+  const menuItemId = "fastPlaceOrderPopupToggle";
+  const customItem = {
+    id: menuItemId,
+    label: "Fast Place Order",
+    checked: isWidgetVisible,
+    onCheckedChange: (checked: boolean) => {
+      setIsWidgetVisible(checked);
+    },
+  };
+  const itemsWithoutCustom = (props.items ?? []).filter(
+    (item: { id?: string }) => item?.id !== menuItemId,
+  );
+  return [...itemsWithoutCustom, customItem];
+}, [isWidgetVisible, props.items, setIsWidgetVisible]);
+```
+
+---
+
+## Step 7 — Keep Hook usage valid in interceptors
+
+In this Orderly pattern, the interceptor `component: (Original, props) => ...` runs as a React function component, so **Hooks are allowed** there.
+
+Rules of thumb:
+
+- Call Hooks **unconditionally** and in a **fixed order** on every render.
+- If the interceptor grows large, extract a small inner component and call Hooks there instead — same rules, easier to read.
+
+If you change layering, re-check against your React version and ESLint `react-hooks` rules.
+
+---
+
+## Step 8 — Verify from the plugin project
+
+Stay inside the plugin repo / package:
+
+1. **`pnpm build`** (or your package script) completes with no TypeScript errors.
+2. **`pnpm lint`** passes if your pipeline requires it.
+3. **Code review pass:** `interceptors` array lists every intended target once; menu branch uses stable `id` + filter (Step 6) so duplicates cannot accumulate on re-render.
+4. **Hook audit:** no conditional Hook calls in interceptor callbacks (Step 7).
+
+Manual UI checks (TradingView desktop + display menu) require a running app that already loads this plugin — that is integration and deployment; handle it separately from this tutorial.
+
+---
+
+## Common failure modes
+
+| Symptom                   | Likely cause                          | Fix                                                                                                |
+| ------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Widget shows, no menu row | Wrong menu target string              | Compare with [runtime injector targets](runtime-injector-targets) letter by letter |
+| Menu row does nothing     | Visibility not shared with the widget | One hook/store used by menu and widget (same module as the reference)                              |
+| Duplicate menu rows       | No filter-by-`id` before append       | Step 6 dedupe                                                                                      |
+| Invalid Hook call         | Conditional Hooks or wrong nesting    | Step 7; simplify or extract a child component                                                      |
+
+---
+
+## Skills and tooling
+
+| Skill / doc                                                          | Use when                                          |
+| -------------------------------------------------------------------- | ------------------------------------------------- |
+| `orderly-plugin-write`                                               | Designing interceptors and Hook-safe composition  |
+| [Runtime injector targets](runtime-injector-targets) | Confirming exact target path strings while coding |
+
+---
+
+## Next step
+
+Extract target strings into shared constants and add module augmentation for typed `props` on each target so `createInterceptor(...)` stays accurate as the SDK evolves.
