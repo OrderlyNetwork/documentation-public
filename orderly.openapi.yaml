@@ -4874,7 +4874,7 @@ paths:
 
         Retrieve daily revenue settlement records for the broker ID linked to the authenticated builder admin. Use this endpoint to reconcile settled builder revenue by UTC accounting date.
 
-        Each row represents a non-zero settlement day and breaks revenue into permissionless listing fee share, distributor fee share, and net builder trading fee revenue. `builder_fee_revenue` is net of affiliate commissions, and `total_revenue` equals `permissionless_listing_fee_share` + `distributor_fee_share` + `builder_fee_revenue`.
+        Each row represents a non-zero settlement day and breaks revenue into permissionless listing fee share, distributor fee share, and net fee revenue from the builder's trading platform. `builder_fee_revenue` is the net fee revenue earned from the builder's trading platform: trading fees minus the builder's base fee, after affiliate commission distribution. `total_revenue` equals `permissionless_listing_fee_share` + `distributor_fee_share` + `builder_fee_revenue`.
 
         Access is limited to the current builder admin's own broker ID. If the builder admin account changed, records associated with a previous admin account are not returned. Results are sorted by `date` descending. The `start_date` and `end_date` range must be valid and cannot exceed 180 days.
       tags:
@@ -15653,7 +15653,7 @@ components:
                         example: 0
                       builder_fee_revenue:
                         type: number
-                        description: Net builder trading fee revenue, calculated as gross fees minus affiliate commissions. Maps from backend type `BROKER_FEE`.
+                        description: Net fee revenue from the builder's trading platform, calculated as trading fees minus the builder's base fee, after affiliate commission distribution. Maps from backend type `BROKER_FEE`.
                         example: 66.923175
                       total_revenue:
                         type: number
