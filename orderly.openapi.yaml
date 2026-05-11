@@ -4815,14 +4815,14 @@ paths:
 
   /v1/broker/broker_info:
     get:
-      summary: Get broker info
+      summary: Get builder fee tier information
       deprecated: false
       description: |
         **Limit 10 requests per 60 seconds**
 
         `GET /v1/broker/broker_info`
 
-        Get broker tiered fee daily log information including staking balance, trading volume, and fee rates. Fee rate fields returned by this endpoint are in bps.
+        Get builder's fee tier information including staking balance, trading volume, and fee rates. Fee rate fields returned by this endpoint are in bps.
       tags:
         - private
       parameters:
@@ -4862,6 +4862,112 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GetBrokerInfoResponse"
+
+  /v1/broker/daily_fee_revenue:
+    get:
+      summary: Get builder's daily revenue settlement history
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second**
+
+        `GET /v1/broker/daily_fee_revenue`
+
+        Retrieve daily revenue settlement records for the broker ID linked to the authenticated builder admin. Use this endpoint to reconcile settled builder revenue by UTC accounting date.
+
+        Each row represents a non-zero settlement day and breaks revenue into permissionless listing fee share, distributor fee share, and net fee revenue from the builder's trading platform. `builder_fee_revenue` is the net fee revenue earned from the builder's trading platform: trading fees minus the builder's base fee, after affiliate commission distribution. `total_revenue` equals `permissionless_listing_fee_share` + `distributor_fee_share` + `builder_fee_revenue`.
+
+        Access is limited to the current builder admin's own broker ID. If the builder admin account changed, records associated with a previous admin account are not returned. Results are sorted by `date` descending. The `start_date` and `end_date` range must be valid and cannot exceed 180 days.
+      tags:
+        - private
+      parameters:
+        - name: start_date
+          in: query
+          description: Start date in `YYYY-MM-DD` format. Must be less than or equal to `end_date`.
+          required: true
+          example: "2026-04-01"
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          description: End date in `YYYY-MM-DD` format. The interval from `start_date` to `end_date` must not exceed 180 days.
+          required: true
+          example: "2026-04-30"
+          schema:
+            type: string
+            format: date
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetBuilderDailyFeeRevenueResponse"
+              examples:
+                success:
+                  summary: Builder daily revenue settlement history
+                  value:
+                    success: true
+                    data:
+                      rows:
+                        - date: "2026-04-24"
+                          permissionless_listing_fee_share: 0
+                          distributor_fee_share: 0
+                          builder_fee_revenue: 66.923175
+                          total_revenue: 66.923175
+                        - date: "2026-04-23"
+                          permissionless_listing_fee_share: 0
+                          distributor_fee_share: 0
+                          builder_fee_revenue: 0.44014
+                          total_revenue: 0.44014
+                        - date: "2026-04-21"
+                          permissionless_listing_fee_share: 0
+                          distributor_fee_share: 0
+                          builder_fee_revenue: 75.575953
+                          total_revenue: 75.575953
+                        - date: "2026-04-18"
+                          permissionless_listing_fee_share: 0
+                          distributor_fee_share: 0
+                          builder_fee_revenue: 0.30548
+                          total_revenue: 0.30548
+                    timestamp: 1778224065085
+        "400":
+          description: Invalid date range
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - code
+                  - message
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: -1103
+                  message:
+                    type: string
+                    example: "start_date and end_date can't be blank"
+              examples:
+                missing_dates:
+                  summary: Missing date parameter
+                  value:
+                    success: false
+                    code: -1103
+                    message: "start_date and end_date can't be blank"
+                date_interval_too_large:
+                  summary: Date interval exceeds 180 days
+                  value:
+                    success: false
+                    code: -1103
+                    message: "error date interval greater than 180 days"
 
   /v1/client/statistics/daily:
     get:
@@ -15507,6 +15613,52 @@ components:
                   type: number
                   description: updated_time
                   example: 1702989203989
+
+    GetBuilderDailyFeeRevenueResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  description: Daily revenue records for days with non-zero settlement, sorted by date descending.
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - date
+                      - permissionless_listing_fee_share
+                      - distributor_fee_share
+                      - builder_fee_revenue
+                      - total_revenue
+                    properties:
+                      date:
+                        type: string
+                        format: date
+                        description: Revenue date in UTC, formatted as `YYYY-MM-DD`.
+                        example: "2026-04-24"
+                      permissionless_listing_fee_share:
+                        type: number
+                        description: Builder's share of permissionless listing fees.
+                        example: 0
+                      distributor_fee_share:
+                        type: number
+                        description: Builder's share from distributor relationships.
+                        example: 0
+                      builder_fee_revenue:
+                        type: number
+                        description: Net fee revenue from the builder's trading platform, calculated as trading fees minus the builder's base fee, after affiliate commission distribution.
+                        example: 66.923175
+                      total_revenue:
+                        type: number
+                        description: Sum of `permissionless_listing_fee_share`, `distributor_fee_share`, and `builder_fee_revenue`.
+                        example: 66.923175
 
     GetBrokerDailyResponse:
       allOf:
