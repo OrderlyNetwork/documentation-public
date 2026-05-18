@@ -5,16 +5,16 @@ description: "Learn how builders can enable and manage the Orderly DEX Affiliate
 
 ## 1. Overview
 
-Orderly adds a brand new affiliate programme that allows DEXs and their affiliates to configure the percentage of referral commission share to foster the growth of their trading platform.
+Orderly adds a brand new affiliate programme that allows DEXs and their affiliates to configure referral commission sharing, including the base commission that guarantees earnings from direct referrals.
 
 The core model is a funneled and multilevel referral system:
 
 - Builders work with their direct affiliates to grow their trading platform, with attractive referral commissions for the direct affiliates to build their own multilevel referral networks.
-- Affiliates higher up the hierarchy have the flexibility to set higher commission sharing ratios. This allows affiliates to distribute a portion of their commissions to referees, based on their commission sharing ratio, thus creating a multilevel chain of referrals. 
+- Affiliates higher up the hierarchy can set higher commission sharing ratios and pass a portion of their commissions down to referees, subject to the base commission minimum pass-down rate.
 
 ## 2. Prerequisites
 
-Only DEXs with a **valid builder ID** can enable the affiliate program. This applies to all DEXs built with SDK, API, and Orderly One. For Orderly One DEXs specifically, they must first graduate to obtain a builder ID before they are eligible to enable the affiliate program.
+Only DEXs with a **valid Broker ID** can enable the affiliate program. This applies to all DEXs built with SDK, API, and low-code solution powered by Orderly One. Builders must first graduate to obtain a Broker ID before they are eligible to enable the affiliate program.
 
 ## 3. New vs. legacy affiliate programs
 
@@ -23,8 +23,8 @@ The key differences between the legacy and new affiliate programs are summarized
 | Details                            | Legacy                                                                                                            | New                                                                                                                                                 |
 | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Referral network**               | **Single-level**, only direct referrals                                                                           | **Multilevel** (up to 15 levels), direct and indirect referrals                                                                                    |
-| **Referral commission**            | Affiliates earn commissions from **direct referees only**                                                         | Affiliates earn commissions from both **direct and indirect referees** down the referral chain, with additional 10% bonus from direct referees    |
-| **$L_1$ affiliate's commission rate** | Up to 100%, decided by builder                                                                                    | Up to 90%, decided by builder                                                                                                                      |
+| **Referral commission**            | Affiliates earn commissions from **direct referees only**                                                         | Affiliates earn commissions from both **direct and indirect referees** down the referral chain, with base commission guaranteed for direct referrals |
+| **Commission configuration**       | Single-level commission up to 100%, decided by builder                                                            | Builder configures base commission `B`, then optionally assigns additional multilevel referral commission `M` individually. The top-level total rate is `X_1 = B + M`. |
 | **Referral code creation**         | Created primarily by the builder or qualified affiliates upon meeting the applicable trading volume requirements. | Qualified affiliates can create codes after meeting the required trading volume (where applicable). Affiliates may only create one unique referral code. |
 
 ## 4. Coexistence of legacy affiliate program
@@ -40,7 +40,7 @@ This new affiliate program is a multilevel referral system which supersedes the 
 
 ## 5. Referral commission structure
 
-Builders have the flexibility to determine the referral commission rate allocated to $L_1$ affiliates. These $L_1$ affiliates are the initial referrers who establish a multilevel network and do not report to any referrer above them.
+Builders configure the base commission $B$ for direct referrals. They can optionally assign a custom additional multilevel referral commission $M$ to each $L_1$ affiliate, making that affiliate's top-level total rate $X_1 = B + M$. These $L_1$ affiliates are the initial referrers who establish a multilevel network and do not report to any referrer above them.
 
 ### 5.1 Builder's margin
 
@@ -50,61 +50,79 @@ $$
 \text{(Fee)}_\text{Builder} = \text{(Trading fee)}_N - \text{(Base fee)}_\text{Builder}
 $$
 
-The builder's margin from each trade within the multilevel referral network is determined after allocating a referral commission rate $X_1$ to the $L_1$ affiliates.
+The builder's margin from each trade within the multilevel referral network is determined after reserving base commission $B$ and allocating additional multilevel referral commission $M$ to the $L_1$ affiliate's referral chain.
 
 $$
-\text{(Margin)}_\text{Builder} = \text{(Fee)}_\text{Builder} \times (0.9 - X_1)
-= \big[\text{(Trading fee)}_N - \text{(Base fee)}_\text{Builder}\big] \times (0.9 - X_1)
+\text{(Margin)}_\text{Builder} = \text{(Fee)}_\text{Builder} \times (1 - X_1)
+= \text{(Fee)}_\text{Builder} \times (1 - B - M)
+= \big[\text{(Trading fee)}_N - \text{(Base fee)}_\text{Builder}\big] \times (1 - B - M)
 $$
 
-where $\text{(Base fee)}_\text{Builder}$ depends on the builder fee tier.
+where $B$ is the base commission, $M$ is the additional multilevel referral commission assigned to the $L_1$ affiliate's referral chain, $X_1 = B + M$, and $\text{(Base fee)}_\text{Builder}$ depends on the builder fee tier. Custom $X_1$ cannot be lower than the base commission $B$ and cannot exceed 100% of $\text{(Fee)}_\text{Builder}$.
 
-### 5.2 Affiliate commission
+### 5.2 Base commission
+
+Base commission is the guaranteed commission rate a referrer earns from trades executed by their direct referrals.
+
+Base commission also defines the required minimum pass-down rate. When a referrer sets a total commission rate $X$ for a direct referral, that rate must be at least the base commission $B$. Any rate above $B$ comes from the additional multilevel referral commission $M$ assigned to that referral chain.
+
+Builders configure the base commission rate $B$ to establish the minimum guaranteed earnings from direct referrals. We recommend starting with $B = 10\%$, or another value in the 5% to 10% range, because base commission guarantees referrer earnings from direct referrals and makes referral promotion easier to explain. Builders can then assign a custom $M$ to each strategic affiliate when needed. Since $M$ is additional commission on top of base commission, changing $B$ changes the top-level total commission rate $X_1 = B + M$ unless $M$ is adjusted.
+
+### 5.3 Affiliate commission
 
 $L_1$ affiliates may distribute a portion of their commission to their direct referees ($L_2$). This process can be extended further, as $L_2$ affiliates can further sub-divide their allocation to their direct referees ($L_3$), establishing a multilevel structure. This multilevel referral network can extend up to a total of 15 levels.
+
+Let $B$ be the base commission, $M$ be the additional multilevel referral commission assigned to the $L_1$ affiliate's referral chain, and $X_i$ be the total commission rate at level $i$. The top-level total rate is $X_1 = B + M$. Each downstream total rate must be between $B$ and the upstream total rate, for example $X_2 \in [B, X_1]$.
 
 For every trade executed by a user $(L_N)$ on the DEX, the affiliates within the multilevel referral network can earn the following commission:
 
 | Role                | Affiliate commission rate                    | Affiliate commission                                                                 |
 | ------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------ |
-| **$L_1$ affiliate**  | $(X_1 - X_2)$ where $X_2 \in [0, X_1]$      | $(X_1 - X_2) \times \text{Fee}_\text{Builder}$                                    |
-| **$L_2$ affiliate**  | $(X_2 - X_3)$ where $X_3 \in [0, X_2]$      | $(X_2 - X_3) \times \text{Fee}_\text{Builder}$                                    |
-| **$L_3$ affiliate**  | $(X_3 - X_4)$ where $X_4 \in [0, X_3]$      | $(X_3 - X_4) \times \text{Fee}_\text{Builder}$                                    |
+| **$L_1$ affiliate**  | $X_1 - X_2$ where $X_2 \in [B, X_1]$        | $(X_1 - X_2) \times \text{Fee}_\text{Builder}$                                    |
+| **$L_2$ affiliate**  | $X_2 - X_3$ where $X_3 \in [B, X_2]$        | $(X_2 - X_3) \times \text{Fee}_\text{Builder}$                                    |
+| **$L_3$ affiliate**  | $X_3 - X_4$ where $X_4 \in [B, X_3]$        | $(X_3 - X_4) \times \text{Fee}_\text{Builder}$                                    |
 | **…**               | …                                            | …                                                                                    |
-| **$L_{N-1}$ user (direct referrer)** | $X_{N-1} + 10\%$ | $[X_{N-1} + 10\%] \times \text{Fee}_\text{Builder}$ — Direct referrer earns full rate plus 10% bonus |
+| **$L_{N-1}$ user (direct referrer)** | $X_{N-1}$ where $X_{N-1} \in [B, X_{N-2}]$ | $X_{N-1} \times \text{Fee}_\text{Builder}$ — Direct referrer earns base commission plus any remaining additional multilevel referral commission passed down |
 
-> Note: Direct referrers earn a 10% bonus referral commission rate from trades executed by their direct referees.
+> Note: Direct referrers earn the base commission rate from trades executed by their direct referrals.
 
 #### Example: 3-Level Referral Network
 
 Consider a trade where Builder revenue for a given trade = $100, with the following commission rates:
-- $X_1 = 40\%$ ($L_1$ affiliate rate set by builder)
-- $X_2 = 25\%$ ($L_2$ rate set by $L_1$)
-- $X_3 = 15\%$ ($L_3$ rate set by $L_2$)
+
+- $B = 10\%$ (base commission configured by builder)
+- $M = 40\%$ (additional multilevel referral commission assigned by builder)
+- $X_1 = B + M = 50\%$ ($L_1$ total rate)
+- $X_2 = 35\%$ ($L_2$ total rate set by $L_1$, where $X_2 \in [B, X_1]$)
+- $X_3 = 25\%$ ($L_3$ total rate set by $L_2$, where $X_3 \in [B, X_2]$)
 
 **Commission distribution for $100 Builder revenue:**
 
 | Role | Calculation | Commission |
 |------|-------------|------------|
-| $L_1$ affiliate | $(40\% - 25\%) \times 100$ | **$15** |
-| $L_2$ affiliate | $(25\% - 15\%) \times 100$ | **$10** |
-| $L_3$ affiliate (direct referrer) | $(15\% + 10\%) \times 100$ | **$25** |
+| $L_1$ affiliate | $(50\% - 35\%) \times 100$ | **$15** |
+| $L_2$ affiliate | $(35\% - 25\%) \times 100$ | **$10** |
+| $L_3$ affiliate (direct referrer) | $25\% \times 100$ | **$25** |
 | **Total distributed** | | **$50** |
 
-In this example, when $L_4$ (the trader) executes a trade, $L_3$ earns their full $15\%$ rate plus the $10\%$ bonus, totaling $25. The $L_4$ trader does not earn commission from their own trade.
+In this example, when $L_4$ (the trader) executes a trade, $L_3$ earns $X_3 = 25\%$, which includes the $10\%$ base commission plus $15\%$ of the additional multilevel referral commission passed down the chain. The total distributed rate is $50\% = B + M$. The $L_4$ trader does not earn commission from their own trade.
 
-### 5.3 $L_1$ affiliate commission rate adjustments
+### 5.4 L1 affiliate commission rate adjustments
 
 Admin console: [https://admin.orderly.network/referral](https://admin.orderly.network/referral) 
 
-#### 5.4.1 Default affiliate commission rate
+#### 5.4.1 Base commission
 
-Builders can configure a default $L_1$ commission rate that serves as the default for users claiming referral codes as $L_1$ affiliates. The builders can customize the commission rate of these $L_1$ affiliates, subject to the following rules:
+Builders configure base commission to set the guaranteed earnings rate for direct referrals. This configuration becomes the minimum pass-down rate throughout the multilevel referral network.
 
-- If no referral codes have been claimed, the builder can freely adjust the default commission rate up or down.
-- Once referral codes are claimed, the builder may only increase the default commission rate, applying changes to all direct referees on that rate. This restriction protects existing referrals and prevents unfavourable downstream changes.
+Recommended starting point: set base commission to 10%, or choose a value between 5% and 10% depending on the builder's growth strategy. A higher base commission gives every direct referrer a clearer guaranteed incentive.
+
+Builders can change base commission $B$ at any time, but the 100% total commission cap must still be respected. If increasing $B$ would cause any affected affiliate's total commission rate $X_1 = B + M$ to exceed 100%, the action will be rejected.
 
 #### 5.4.2 Custom affiliate commission rate
 
-Builders may customize a higher affiliate commission rate to overwrite the default rate for any $L_1$ affiliates, but cannot decrease it.
+After setting base commission $B$, builders can optionally assign a custom additional multilevel referral commission $M$ to individual strategic affiliates who work with the builder to grow the user base. The affiliate's total top-level rate is $X_1 = B + M$, and the affiliate can redistribute part of that total rate down the chain subject to the base commission minimum.
 
+- Custom $X_1 = B + M$ cannot be lower than the base commission $B$ and cannot exceed 100%. $M$ must be equal to or greater than 0.
+- If the affiliate has not created referral codes or has no direct referees under the rate, the builder can adjust $M$ up or down within the allowed range.
+- Once referral codes are claimed, the builder may only increase the rate, applying changes to all direct referees on that rate. This restriction protects existing referrals and prevents unfavourable downstream changes.
