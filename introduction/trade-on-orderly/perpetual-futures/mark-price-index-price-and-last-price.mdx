@@ -178,11 +178,20 @@ Mark Price = Clamp(Median Price, Index Price * (1 + Factor * Cap Funding), Index
 cap_funding and floor_funding depend on the perpetual market (cf Funding Rate section)
 ```
 
-| Perp Market | Factor | Max Mark Price Deviation from Index Price |
-| ----------- | ------ | ----------------------------------------- |
-| BTC         | 10     | 3%                                        |
-| ETH         | 8      | 3%                                        |
-| Others      | 7      | 5.25%                                     |
+| Perp Market     | Factor | Max Mark Price Deviation from Index Price |
+| --------------- | ------ | ----------------------------------------- |
+| BTC             | 10     | 3%                                        |
+| ETH             | 8      | 3%                                        |
+| Others (crypto) | 7      | 5.25%                                     |
+
+### RWA symbols
+
+For RWA symbols, the Factor automatically adjusts based on whether the underlying market is open. During OFF_MARKET hours (when the underlying market is closed), the Factor uses a higher value to accommodate the wider mark-to-index basis under reduced liquidity and a frozen Index Price.
+
+| Asset Class     | Symbols                                   | ON_MARKET Factor | OFF_MARKET Factor | ON_MARKET Max Deviation | OFF_MARKET Max Deviation |
+| --------------- | ----------------------------------------- | ---------------- | ----------------- | ----------------------- | ------------------------ |
+| Equity / Energy | SPX500, NAS100, NVDA, TSLA, GOOGL, CL, BZ | 1.5              | 7.5               | 0.3%                    | 1.5%                     |
+| Metals          | XAU, XAG                                  | 2                | 10                | 0.2%                    | 1.0%                     |
 
 ## Last Price
 
