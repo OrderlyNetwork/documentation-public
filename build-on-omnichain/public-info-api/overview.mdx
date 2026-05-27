@@ -15,6 +15,8 @@ The Public Info API is a single POST endpoint that returns market, account, and 
 
 ## Quick start
 
+The examples below hit Mainnet. To run them against Testnet, swap the host for `testnet-api.orderly.org`.
+
 <CodeGroup>
 
 ```bash Market snapshot
@@ -51,16 +53,24 @@ Reach for it when you want to:
 
 The Public Info API is read-only — it does not place orders, move funds, or change account settings.
 
+<Note>
+All address-level data exposed here — positions, open orders, fills, deposits, withdrawals, PnL — is **public by design**. Any caller can query any wallet without permission. Builders should not treat these fields as private when building on top of this API.
+</Note>
+
 ## Endpoint
 
+| Environment | URL |
+| --- | --- |
+| Mainnet | `POST https://api.orderly.org/v1/public/query` |
+| Testnet | `POST https://testnet-api.orderly.org/v1/public/query` |
+
 ```
-POST https://api.orderly.org/v1/public/query
 Content-Type: application/json
 
 { "type": "<query type>", ...params }
 ```
 
-Every request goes to the same URL. The `type` field selects the handler.
+Every request goes to the same path; the `type` field in the JSON body selects the handler.
 
 ## Response envelope
 
@@ -214,7 +224,7 @@ A `Retry-After` HTTP header (in seconds) is included.
 
 ### `rateLimitStatus`
 
-Read your IP's current quota without consuming any of it. Weight: **0**.
+Read your IP's quota state for the rolling one-minute window. Weight: **0** — calling it does not consume any quota, so it is safe to poll on every loop iteration.
 
 **Request:**
 
@@ -239,9 +249,9 @@ Read your IP's current quota without consuming any of it. Weight: **0**.
 
 | Field | Type | Notes |
 | --- | --- | --- |
-| `limit` | int64 | Quota per window |
-| `remaining` | int64 | Remaining weight in the current window |
-| `reset` | int64 | Window reset timestamp (ms epoch) |
+| `limit` | int64 | Total weight available per window (1200 for the default tier) |
+| `remaining` | int64 | Weight still available in the **current** window, after all consumption so far. Weighted calls deduct from this value before the next `rateLimitStatus` reads it |
+| `reset` | int64 | ms epoch when the current window ends. Windows roll forward continuously — `remaining` springs back up to `limit` after `reset` |
 | `tier` | string | Always `"default"` in v1 (reserved for future tiered limits) |
 
 ## Query types

@@ -119,6 +119,9 @@ Source: https://orderly.network/docs/home
       <Card title="Permissionless Listing" icon="chart-network" href="/introduction/trade-on-orderly/permissionless-listing">
         Learn how qualified builders can bring additional perpetual markets live under an isolated-risk model, and what users need to understand before trading them.
       </Card>
+      <Card title="Custom Oracle" icon="tower-broadcast" href="/introduction/trade-on-orderly/custom-oracle">
+        Learn how builders can provide Custom Oracle feeds for permissionlessly listed markets, including private feeds, public feeds, and RWA market sessions.
+      </Card>
     </CardGroup>
   </div>
 
@@ -285,7 +288,7 @@ There are two primary ways to launch on Orderly. Pick the path that matches your
 The low-code path is the faster route to market if you want a branded trading experience with less custom frontend work.
 
 - **Best for:** teams that want to launch quickly with a more packaged setup
-- **Graduation fee:** $100
+- **Graduation fee:** $10
 - **What to do:** create your DEX frontend using the Orderly One portal. You will need to create the frontend DEX with Orderly One in order to complete the builder profile creation and setup.
 
 ### Option B: Custom SDK/API integration
@@ -305,7 +308,9 @@ Start by reaching out through an official Orderly channel so the team can align 
 - [Orderly website](https://orderly.network)
 
 <Note>
-  If you are taking the custom SDK/API integration path, you can graduate yourself to obtain the broker ID without creating a DEX frontend. Reach out to the team for further help and assistance if needed.
+  If you are taking the custom SDK/API integration path, you can graduate yourself to obtain the
+  broker ID without creating a DEX frontend. Reach out to the team for further help and assistance
+  if needed.
 </Note>
 
 This step is where you confirm the launch path, builder profile setup, and the practical sequence for getting to go-live.
@@ -328,7 +333,7 @@ Graduate your builder profile to obtain your broker ID. Graduation must be compl
 
 1. Complete the setup or graduation flow in the [Orderly One portal](https://dex.orderly.network/dex).
 2. If you were referred by a distributor, input the distributor code for binding at profile creation or before/at graduation.
-3. Pay the **$100 graduation fee** in USDC, USDT, or ORDER.
+3. Pay the **$10 graduation fee** in USDC, USDT, or ORDER.
 
 ### For custom SDK/API builders
 
@@ -352,7 +357,9 @@ Once your builder profile is graduated, register the admin account that will man
 2. Connect your wallet and complete the registration flow.
 
 <Warning>
-  When using the broker registration tool, make sure you use the same creator wallet or the designated admin wallet that was used to create the builder profile. Otherwise, the Orderly keys will not map correctly and the admin account setup cannot be completed.
+  When using the broker registration tool, make sure you use the same creator wallet or the
+  designated admin wallet that was used to create the builder profile. Otherwise, the Orderly keys
+  will not map correctly and the admin account setup cannot be completed.
 </Warning>
 
 3. Secure any Orderly keys issued during setup.
@@ -376,13 +383,13 @@ From there, continue with the technical build and launch path:
 
 ## Estimated timeline
 
-| Stage | Estimated time |
-| :--- | :--- |
-| Sign up for a builder profile and choose launch path | Immediate |
-| Builder profile creation and graduation | Almost immediate |
-| Admin registration and final setup | \< 1 hour |
-| Low-code DEX launch | As fast as under 30 minutes (if using quick launch) or \< 1 day (may take longer if custom domain is required) |
-| SDK/API integration | Varies; subject to builder resources and support |
+| Stage                                                | Estimated time                                                                                                 |
+| :--------------------------------------------------- | :------------------------------------------------------------------------------------------------------------- |
+| Sign up for a builder profile and choose launch path | Immediate                                                                                                      |
+| Builder profile creation and graduation              | Almost immediate                                                                                               |
+| Admin registration and final setup                   | \< 1 hour                                                                                                      |
+| Low-code DEX launch                                  | As fast as under 30 minutes (if using quick launch) or \< 1 day (may take longer if custom domain is required) |
+| SDK/API integration                                  | Varies; subject to builder resources and support                                                               |
 
 **Total onboarding time:** Profile setup and admin registration can be completed within an hour. Launch timing depends on your chosen path.
 
@@ -442,7 +449,7 @@ Move directly into the [Integration Checklist](/build-on-omnichain/integration-c
 ### Isolated Margin
 Source: https://orderly.network/docs/introduction/trade-on-orderly/perpetual-futures/isolated-margin
 
-Orderly supports two margin modes for perpetual futures: **Cross Margin** and **Isolated Margin**. Cross Margin is the default and shares your entire account balance across all positions. Isolated Margin lets you allocate a fixed amount of margin to a single position, capping your maximum loss to that amount.
+Orderly supports two margin modes for perpetual futures: **Cross Margin** and **Isolated Margin**. Cross Margin is the default and shares your entire account balance across all positions. Isolated Margin lets you allocate a fixed amount of margin to a single position, capping your maximum loss to that amount. Isolated Margin currently accepts **USDC only** as collateral.
 
 This page explains how Isolated Margin works, how it differs from Cross Margin, and when to use each mode.
 
@@ -494,6 +501,8 @@ If an Isolated position is liquidated, only the margin assigned to that position
 
 For markets that support both modes, traders can choose either Cross Margin or Isolated Margin when placing orders. Permissionlessly listed markets are the exception and should be treated as Isolated Margin only.
 
+**Collateral requirement:** Isolated Margin positions require USDC as collateral. Other assets in your account (such as USDT, ETH, WBTC, or SOL) cannot be used for Isolated Margin. To trade in Isolated mode, deposit USDC or convert existing assets to USDC.
+
 ## Related Pages
 
 - [Margin, Leverage & PnL](/introduction/trade-on-orderly/perpetual-futures/margin-leverage-and-pnl) -- how margin ratios, leverage tiers, and PnL work
@@ -506,7 +515,9 @@ For markets that support both modes, traders can choose either Cross Margin or I
 - [Insurance Fund & ADL](https://orderly.network/docs/introduction/trade-on-orderly/perpetual-futures/insurance-fund-and-adl): Understand how the Orderly Insurance Fund protects against insolvency during liquidations.
 
 - [Supported Markets](https://orderly.network/docs/introduction/trade-on-orderly/supported-markets): See the full list of perpetual futures markets available on Orderly, including contract identifiers.
-- [Permissionless Listing](https://orderly.network/docs/introduction/trade-on-orderly/permissionless-listing): Learn how qualified Builders can list additional perpetual markets on Orderly.
+- [Permissionless Listing](https://orderly.network/docs/introduction/trade-on-orderly/permissionless-listing): Learn how qualified Builders can list additional perpetual markets on Orderly, including markets that use custom oracle sources or RWA trading sessions.
+- [Custom Oracle](https://orderly.network/docs/introduction/trade-on-orderly/custom-oracle): Learn how Builders can provide custom oracle feeds for permissionlessly listed markets on Orderly.
+- [Permissionless Vault](https://orderly.network/docs/introduction/trade-on-orderly/permissionless-vault): Learn how anyone can create and manage a Strategy Vault on Orderly without permission or manual onboarding.
 ### Supported Chains
 Source: https://orderly.network/docs/introduction/trade-on-orderly/supported-chains
 
@@ -710,6 +721,34 @@ Source: https://orderly.network/docs/build-on-omnichain/addresses
 | VaultProxyAdmin        | 0xa2ea0a58b083c492adc91a687fac8b53adb7c0fd |                 |
 | VaultCrossChainManager | 0xa0a07a78c7d31E6f8698F48Fc9219f9a3030f38C |                 |
 | CrossChainRelay        | 0x173b47edbeca665125edc24c509bfe545cda60a9 |                 |
+
+## Mode
+
+| Contract Name          | Mainnet Address                            | Testnet Address |
+| ---------------------- | ------------------------------------------ | --------------- |
+| USDC                   | 0xd988097fb8612cc24eeC14542bC03424c656005f |                 |
+| Vault                  | 0x816f722424B49Cf1275cc86DA9840Fbd5a6167e9 |                 |
+| VaultProxyAdmin        | 0xA2eA0a58b083c492AdC91A687FAc8B53AdB7c0Fd |                 |
+| VaultCrossChainManager | 0xa0a07a78c7d31E6f8698F48Fc9219f9a3030f38C |                 |
+| CrossChainRelay        | 0x173b47edbeca665125edc24c509bfe545cda60a9 |                 |
+
+## BNB Smart Chain
+
+| Contract Name          | Mainnet Address                            | Testnet Address                            |
+| ---------------------- | ------------------------------------------ | ------------------------------------------ |
+| USDC                   | 0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d | 0x31873b5804bABE258d6ea008f55e08DD00b7d51E |
+| USDT                   | 0x55d398326f99059fF775485246999027B3197955 | 0xE8709025f99dd1B8533FB9b78Ca879Ee4ec7E70a |
+| YUSD                   | 0xAB3dBcD9B096C3fF76275038bf58eAC10D22C61f |                                            |
+| USD1                   | 0x8d0d000ee44948fc98c9b98a4fa4921476f08b0d |                                            |
+| Vault                  | 0x816f722424B49Cf1275cc86DA9840Fbd5a6167e9 | 0xaf2036D5143219fa00dDd90e7A2dbF3E36dba050 |
+| VaultProxyAdmin        | 0xA2eA0a58b083c492AdC91A687FAc8B53AdB7c0Fd | 0x53D61a2bBb737985d68809ab85eA59aD29882D99 |
+| VaultCrossChainManager | 0x6Fb848801aCa77E724A8AB22D0006cb317e69492 | 0x8677718760f058A20fA04613d6Bf10aB306616C5 |
+| CrossChainRelay        | 0x461C12FBa639303Da045255dd32eEa7E38AC69b0 | 0x60d918c08cfD9Eeb11b3300e0566189FcB8Df09C |
+
+## Solana
+
+| Contract Name             | Mainnet Address                              | Devnet Address (Arctic)                      |
+| ------------------------- | -------------------------------------------- | -------------------------------... (truncated for brevity)
 
 ### Integration Checklist
 Source: https://orderly.network/docs/build-on-omnichain/integration-checklist
@@ -1667,7 +1706,7 @@ Example:
   "chainId": 80001,
   ... (truncated for brevity)
 
-- [Exclusive Receiver Address](https://orderly.network/docs/build-on-omnichain/user-flows/deposit-by-transfer): Each account gets a unique deposit address — users can fund their perp account by simply transferring USDC, with no wallet connection, gas, or contract interaction required.
+- [Exclusive Receiver Address](https://orderly.network/docs/build-on-omnichain/user-flows/deposit-by-transfer): Each account gets a unique deposit address — users can fund their perp account by simply transferring supported tokens, with no wallet connection, gas, or contract interaction required.
 ### Settle PnL
 Source: https://orderly.network/docs/build-on-omnichain/user-flows/settle-pnl
 
@@ -1913,7 +1952,9 @@ For full details, see [Liquidations](/introduction/trade-on-orderly/perpetual-fu
 - [Order Management](/build-on-omnichain/user-flows/order-management) -- order lifecycle and API reference
 - [Liquidations](/introduction/trade-on-orderly/perpetual-futures/liquidations) -- liquidation process and tiers
 
+- [Permissionless Listing with Custom Oracle](https://orderly.network/docs/build-on-omnichain/user-flows/permissionless-listing-custom-oracle): How qualified Builders can list a market using custom oracle feeds, Bring Your Own Key oracle sources, and RWA market sessions.
 - [Custom Fee Structure](https://orderly.network/docs/build-on-omnichain/user-flows/custom-fees): How builders configure custom maker/taker fee structures for their users on top of Orderly base fees.
+- [Custom Trading Fee Per Order](https://orderly.network/docs/build-on-omnichain/user-flows/order-enum-integration-guide): Integrate order tags to apply custom trading fees to specific order flows.
 - [Delegate Signer](https://orderly.network/docs/build-on-omnichain/user-flows/delegate-signer): How smart contracts trade on Orderly using the delegate signer pattern to bypass EOA-only signing.
 - [Algo Order Sample Requests](https://orderly.network/docs/build-on-omnichain/user-flows/algo-order-samples): Sample API request payloads for creating STOP, TP/SL, Positional TP/SL, and Bracket algo orders.
 ### Internal Transfer
@@ -2239,6 +2280,46 @@ OR... (truncated for brevity)
 
 - [User Flow Walkthrough](https://orderly.network/docs/build-on-omnichain/user-flow-walkthrough): End-to-end walkthrough of Orderly account creation, key management, ordering, and settlement via the API.
 
+### Module Marketplace
+
+- [Introduction](https://orderly.network/docs/build-on-omnichain/module-marketplace/introduction): Discover, install, and publish trading modules built on the Orderly SDK and API.
+
+#### Plugin Developer Handbook
+
+- [Orderly Plugin Developer Handbook](https://orderly.network/docs/build-on-omnichain/module-marketplace/plugin-developer-handbook): This handbook explains how to build, integrate, and publish Orderly SDK plugins using the devkit CLI (@orderly.network/devkit), the Orderly SDK Docs MCP serv...
+- [Getting started](https://orderly.network/docs/build-on-omnichain/module-marketplace/getting-started): Follow this path once per machine or project. Estimated time: 15–20 minutes.
+- [Skills-first workflow (recommended)](https://orderly.network/docs/build-on-omnichain/module-marketplace/skills-first): This is the recommended way to work with the Orderly SDK for plugin authoring, integration, and Marketplace submission, especially when you use an AI coding ...
+
+##### Tutorials
+
+- [Tutorial 1: First plugin from the template](https://orderly.network/docs/build-on-omnichain/module-marketplace/first-plugin): Goal: Scaffold a plugin and make one visible change on a single interceptor target that exists in the SDK.
+- [Tutorial 2: Integrate a plugin into the host app](https://orderly.network/docs/build-on-omnichain/module-marketplace/integrate-host): Goal: Load an existing plugin package through OrderlyAppProvider’s plugins prop.
+- [Tutorial 3: Submit a plugin to the Orderly Marketplace](https://orderly.network/docs/build-on-omnichain/module-marketplace/marketplace-submission): Goal: Authenticate with the devkit, validate a local plugin folder, and submit it for Marketplace review.
+- [Tutorial 4: One plugin, multiple interceptor targets](https://orderly.network/docs/build-on-omnichain/module-marketplace/multi-interceptor-targets): Register one plugin that intercepts more than one injector target so the same feature can appear in several UI surfaces.
+
+##### How-to guides
+
+- [How to choose a plugin type: Widget, Page, or Layout](https://orderly.network/docs/build-on-omnichain/module-marketplace/plugin-types): | Type | Mechanism | Typical integration | | --- | --- | --- | | Page | Ordinary React page using SDK UI + hooks | Host router (React Router, Next.js, etc.)—not via interceptor registry for the page shell | | Layout | Interceptor on Trading.Layout.Desktop +...
+- [How to implement interceptor strategies](https://orderly.network/docs/build-on-omnichain/module-marketplace/interceptor-strategies): Interceptor entries use:
+- [How to wire plugin packages in a host (workspace, path, npm)](https://orderly.network/docs/build-on-omnichain/module-marketplace/host-integration-patterns): Use the pattern that matches your repository layout.
+- [How to write `usagePrompt` and the GitHub README](https://orderly.network/docs/build-on-omnichain/module-marketplace/usage-prompt-and-readme): Guide for how to write `usageprompt` and the github readme
+
+##### Reference
+
+- [CLI reference (`orderly-devkit`)](https://orderly.network/docs/build-on-omnichain/module-marketplace/cli-reference): Package: @orderly.network/devkit. Binary: orderly-devkit.
+- [Interceptor targets: runtime vs CLI template](https://orderly.network/docs/build-on-omnichain/module-marketplace/interceptors): Guide for interceptor targets: runtime vs cli template
+- [Runtime injector targets (handbook reference)](https://orderly.network/docs/build-on-omnichain/module-marketplace/runtime-injector-targets): Interceptor target strings must match the SDK exactly (case-sensitive).
+- [Manifest and Marketplace submit](https://orderly.network/docs/build-on-omnichain/module-marketplace/manifest-and-submit): Aligned with @orderly.network/devkit submit, update, and manifest wiring (see the published package for source filenames).
+- [Orderly SDK Docs MCP (`orderly-sdk-docs`)](https://orderly.network/docs/build-on-omnichain/module-marketplace/mcp-sdk-docs): Runtime npm package: @orderly.network/sdk-docs. MCP server binary: orderly-sdk-docs-mcp (stdio), commonly installed via orderly-devkit mcp install.
+- [Agent skills and upstream documentation alignment](https://orderly.network/docs/build-on-omnichain/module-marketplace/agent-skills-alignment): Orderly publishes agent skills (install via orderly-devkit skills install) for orderly-plugin-create, orderly-plugin-write, orderly-plugin-add, orderly-plugi...
+
+##### Recipes
+
+- [Recipe: Quick start checklist](https://orderly.network/docs/build-on-omnichain/module-marketplace/quickstart-recipe): 1. pnpm add -g @orderly.network/devkit (or pnpm dlx @orderly.network/devkit --help).
+- [Recipe: Marketplace submit checklist](https://orderly.network/docs/build-on-omnichain/module-marketplace/marketplace-submit-recipe): 1. Ensure package.json name and GitHub origin (or .orderly-manifest.json repoUrl) are correct.
+
+
+
 ### API fundamentals
 
 ### Introduction
@@ -2545,6 +2626,898 @@ Source: https://orderly.network/docs/build-on-omnichain/error-codes
 | -1202      | 400         | Cannot find the given `liquidationId`.                                                                                                                                 |
 
 
+### Public Info API
+
+### Public Info API
+Source: https://orderly.network/docs/build-on-omnichain/public-info-api/overview
+
+The Public Info API is a single POST endpoint that returns market, account, and platform data with **no authentication**. It is designed for AI trading agents, quant traders, analytics platforms, copy-trade bots, and whale trackers.
+
+**Highlights:**
+
+- **One endpoint, 24 query types** — switch behavior via the `type` field
+- **Zero auth** — every type, including by-address account queries, is callable from any IP without keys
+- **Address-discoverable** — any wallet can be inspected (positions, orders, fills, PnL)
+- **Raw data** — clients compute their own indicators; all monetary values are decimal strings
+- **Independent rate-limit pool** — does not share quota with the existing REST or WebSocket APIs
+
+## Quick start
+
+The examples below hit Mainnet. To run them against Testnet, swap the host for `testnet-api.orderly.org`.
+
+<CodeGroup>
+
+```bash Market snapshot
+curl -s -XPOST -H "Content-Type: application/json" \
+  https://api.orderly.org/v1/public/query \
+  -d '{"type":"marketSummary"}'
+```
+
+```bash Account state by address
+curl -s -XPOST -H "Content-Type: application/json" \
+  https://api.orderly.org/v1/public/query \
+  -d '{"type":"accountState","address":"0xc33fefd77012cbcf61f63e9c4745cadaadbe12f3"}'
+```
+
+```bash Free quota check
+curl -s -XPOST -H "Content-Type: application/json" \
+  https://api.orderly.org/v1/public/query \
+  -d '{"type":"rateLimitStatus"}'
+```
+
+</CodeGroup>
+
+## When to use the Public Info API
+
+This API is a **new, additive read-only surface**. It runs alongside the existing REST and WebSocket APIs and uses an independent rate-limit pool.
+
+Reach for it when you want to:
+
+- Build a public dashboard, AI agent, or analytics tool without wiring up authentication
+- Look up positions, orders, fills, or PnL for **any address** (whale tracking, copy trading, leaderboards)
+- Prototype against Orderly data quickly, no API keys required
+- Backtest strategies with historical candles, funding rates, or trade history
+- Aggregate cross-account / platform-wide views (e.g. liquidation heatmaps)
+
+The Public Info API is read-only — it does not place orders, move funds, or change account settings.
+
+<Note>
+All address-level data exposed here — positions, open orders, fills, deposits, withdrawals, PnL — is **public by design**. Any caller can query any wallet without permission. Builders should not treat these fields as private when building on top of this API.
+</Note>
+
+## Endpoint
+
+| Environment | URL |
+| --- | --- |
+| Mainnet | `POST https://api.orderly.org/v1/public/query` |
+| Testnet | `POST https://testnet-api.orderly.org/v1/public/query` |
+
+```
+Content-Type: application/json
+
+{ "type": "<query type>", ...params }
+```
+
+Every request goes to the same path; the `type` field in the JSON body selects the handler.
+
+## Response envelope
+
+Success:
+
+```json
+{
+  "success": true,
+  "data": { /* type-specific payload */ },
+  "ts": 1779269143700
+}
+```
+
+Error:
+
+```json
+{
+  "success": false,
+  "code": "INVALID_PARAM",
+  "message": "...",
+  "type": "<echoed type>",
+  "ts": 1779269143700
+}
+```
+
+`ts` is the server's response timestamp in milliseconds (UTC).
+
+## Error codes
+
+| Code | HTTP | Meaning |
+| --- | --- | --- |
+| `UNKNOWN_TYPE` | 400 | `type` field missing or not a registered handler |
+| `MISSING_PARAM` | 400 | Required parameter missing |
+| `INVALID_PARAM` | 400 | Parameter present but wrong type, range, or format |
+| `ADDRESS_NOT_FOUND` | 404 | `address` (optionally with `broker_id` / `account_id`) resolves to zero accounts |
+| `ORDER_NOT_FOUND` | 404 | `orderStatus`: `order_id` not in live or archive tables |
+| `RATE_LIMIT_EXCEEDED` | 429 | Caller exhausted IP quota — see [rate limits](#rate-limits) |
+| `INTERNAL_ERROR` | 500 | Unhandled exception |
+| `SERVICE_UNAVAILABLE` | 503 | A downstream service timed out — usually transient, safe to retry |
+| `POSITION_CALC_TIMEOUT` | 503 | Position-calc service specifically timed out |
+
+A `RATE_LIMIT_EXCEEDED` response additionally carries `"retry_after": <ms epoch>` and a `Retry-After` HTTP header (in seconds).
+
+## Address resolution
+
+Endpoints that take `address` resolve it to one or more accounts via the internal user table. The optional `broker_id` and `account_id` narrow the scope.
+
+| Input | Scope |
+| --- | --- |
+| `address` only | All accounts (`REGULAR` + `SUB`) under the address |
+| `address` + `broker_id` | All accounts within that broker |
+| `address` + `account_id` | One specific account (typically returns a flat object) |
+| `address` + `broker_id` + `account_id` | One account scoped to a broker |
+
+If no accounts match, the response is `ADDRESS_NOT_FOUND` (HTTP 404).
+
+Some endpoints (`accountState`, `feeRate`) change response shape based on whether `account_id` is supplied — see the per-endpoint docs.
+
+## Pagination
+
+Paginated endpoints return `data.next_cursor` (an opaque Base64 string; `null` on the last page). Pass it back as `cursor` to fetch the next page.
+
+```json
+{
+  "data": {
+    "rows": [ /* ... */ ],
+    "next_cursor": "eyJsYXN0X3RzIjoxNzE1MDAwMDAwMDAwfQ"
+  },
+  "ts": 1779269143700
+}
+```
+
+**Treat cursors as opaque** — do not parse them. Cursor contents vary by endpoint and may change between versions.
+
+| Endpoint | Cursor shape |
+| --- | --- |
+| `candles`, `fundingRateHistory` | `{ "last_ts": <ms> }` |
+| `openOrders`, `historicalOrders` | `{ "last_ts": <ms>, "last_id": <order_id> }` |
+| `trades` | `{ "last_id": <txn_id>, "src": <string> }` |
+| `fundingPayments` | `{ "last_id": <funding_detail_id> }` |
+| `liquidations` | `{ "last_id": <record_id> }` |
+| `userDepositsWithdrawals` | `{ "last_id": <transaction_id> }` |
+| `portfolio` | `{ "last_date": <ms> }` |
+| `topAddresses` | `{ "last_value": "<decimal>" }` |
+| `platformPositions` | `{ "last_id": <position_id> }` |
+
+`marketSummary`, `marketTrades`, `fundingComparison`, `orderbook`, and `rateLimitStatus` do not paginate — they return a bounded snapshot in a single response.
+
+## Time conventions
+
+- All timestamps are **milliseconds since Unix epoch (UTC)**
+- Range validation: timestamps must lie in `[0, 253402300799000]` (year 9999); out-of-range throws `INVALID_PARAM`
+- Several endpoints snap default lookbacks to UTC day boundaries — noted per endpoint
+
+## Rate limits
+
+<Warning>
+The Public Info API has **its own rate-limit pool**, separate from the existing REST and WebSocket APIs. Calls to this endpoint do not consume your REST API quota, and vice versa.
+</Warning>
+
+### Weight pool
+
+Quota is tracked per IP, in weight units, on a rolling one-minute window.
+
+| Tier | Weight / min |
+| --- | --- |
+| Default (anonymous IP) | **1200** |
+
+Each query type costs a different amount of weight. Pick lighter types when polling.
+
+### Weight per query type
+
+| Weight | Query types |
+| --- | --- |
+| **0** | `rateLimitStatus` (never consumes quota — safe to poll) |
+| **1** | `feeRate`, `marketSummary`, `marketTrades`, `orderbook` |
+| **2** | `agentContext`, `candles`, `fundingComparison`, `fundingRateHistory`, `liquidations`, `marketDetail`, `positionContext` |
+| **3** | `whaleContext` |
+| **5** | `accounts`, `accountState`, `fundingPayments`, `historicalOrders`, `openOrders`, `orderStatus`, `portfolio`, `trades`, `userDepositsWithdrawals` |
+| **10** | `topAddresses` |
+| **20** | `platformPositions` |
+
+### Response headers
+
+Every response includes:
+
+```
+X-RateLimit-Limit: 1200
+X-RateLimit-Remaining: 1148
+X-RateLimit-Reset: 1779269200000
+X-RateLimit-Weight: 2
+```
+
+`X-RateLimit-Weight` reports how much this single call consumed.
+
+### Over-quota response
+
+HTTP `429` with:
+
+```json
+{
+  "success": false,
+  "code": "RATE_LIMIT_EXCEEDED",
+  "message": "Rate limit exceeded. Retry after 1779269200000",
+  "retry_after": 1779269200000,
+  "ts": 1779269143700
+}
+```
+
+A `Retry-After` HTTP header (in seconds) is included.
+
+### `rateLimitStatus`
+
+Read your IP's quota state for the rolling one-minute window. Weight: **0** — calling it does not consume any quota, so it is safe to poll on every loop iteration.
+
+**Request:**
+
+```json
+{ "type": "rateLimitStatus" }
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "limit": 1200,
+    "remaining": 500,
+    "reset": 1779269200000,
+    "tier": "default"
+  },
+  "ts": 1779269143700
+}
+```
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `limit` | int64 | Total weight available per window (1200 for the default tier) |
+| `remaining` | int64 | Weight still available in the **current** window, after all consumption so far. Weighted calls deduct from this value before the next `rateLimitStatus` reads it |
+| `reset` | int64 | ms epoch when the current window ends. Windows roll forward continuously — `remaining` springs back up to `limit` after `reset` |
+| `tier` | string | Always `"default"` in v1 (reserved for future tiered limits) |
+
+## Query types
+
+- **Market data** — `marketSummary`, `marketDetail`, `orderbook`, `candles`, `marketTrades`, `liquidations`, `fundingRateHistory`, `fundingComparison`
+- **Account data** (require `address`) — `accounts`, `accountState`, `agentContext`, `feeRate`, `fundingPayments`, `historicalOrders`, `openOrders`, `orderStatus`, `portfolio`, `positionContext`, `trades`, `userDepositsWithdrawals`, `whaleContext`
+- **Platform data** — `topAddresses`, `platformPositions`
+
+#### Market data
+
+### candles
+Source: https://orderly.network/docs/build-on-omnichain/public-info-api/market/candles
+
+OHLCV candles for a symbol and interval.
+
+**Weight:** `2`
+
+## Request
+
+```json
+{
+  "type": "candles",
+  "symbol": "PERP_BTC_USDC",
+  "interval": "1h",
+  "start_time": 1716100000000,
+  "end_time": 1716200000000,
+  "limit": 500
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `symbol` | string | Yes | — | Trading pair |
+| `interval` | string | Yes | — | `1m` / `5m` / `15m` / `30m` / `1h` / `4h` / `1d` / `1w` |
+| `start_time` | int64 | No | — | ms epoch; filters `open_time ≥ start_time` |
+| `end_time` | int64 | No | — | ms epoch; filters `open_time ≤ end_time` |
+| `limit` | int | No | 500 | 1..5000 |
+| `cursor` | string | No | — | Opaque cursor — pass through |
+
+## Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "rows": [
+      {
+        "open": "12345.67",
+        "high": "12400.00",
+        "low": "12300.00",
+        "close": "12350.50",
+        "volume": "1234.56",
+        "timestamp": 1716192000000
+      }
+    ],
+    "next_cursor": null
+  },
+  "ts": 1779269143700
+}
+```
+
+### Fields
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `open`, `high`, `low`, `close` | string | Decimal price |
+| `volume` | string | Base-asset volume during the candle |
+| `timestamp` | int64 | Candle open time (ms epoch) |
+
+## Notes
+
+- 60s cache keyed by `(symbol, interval, time-range, cursor)`
+
+- [fundingComparison](https://orderly.network/docs/build-on-omnichain/public-info-api/market/funding-comparison): Cross-exchange funding rate comparison: last value plus 1d / 7d / 30d averages per symbol.
+- [fundingRateHistory](https://orderly.network/docs/build-on-omnichain/public-info-api/market/funding-rate-history): Historical 8-hour funding rate and mark-price snapshots for a symbol.
+- [liquidations](https://orderly.network/docs/build-on-omnichain/public-info-api/market/liquidations): Recent liquidation events with position size, mark price, and account info.
+- [marketDetail](https://orderly.network/docs/build-on-omnichain/public-info-api/market/market-detail): Composite single-symbol bundle: market info, orderbook, recent trades, funding history, and candles in one call.
+### marketSummary
+Source: https://orderly.network/docs/build-on-omnichain/public-info-api/market/market-summary
+
+Multi-symbol summary of mark / index prices, 24h OHLCV, funding rates, and open interest. Two modes:
+
+- **All-symbols fast path** — omit `symbols`; returns every active market from in-memory caches (typically `<50ms`)
+- **Filtered** — supply a `symbols` array; fans out per-symbol in parallel with a 10s overall budget
+
+**Weight:** `1`
+
+## Request
+
+```json
+{
+  "type": "marketSummary",
+  "symbols": ["PERP_BTC_USDC", "PERP_ETH_USDC"]
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `symbols` | string[] | No | `null` | Omit (or send empty) → all active symbols |
+
+## Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "total_24h_volume": "28589767.58005",
+    "total_open_interest": "352893408.89388",
+    "markets": [
+      {
+        "symbol": "PERP_BTC_USDC",
+        "mark_price": "77338.10",
+        "index_price": "77340.5",
+        "24h_open": "76500.00",
+        "24h_close": "77338.10",
+        "24h_high": "77800.00",
+        "24h_low": "76100.00",
+        "24h_volume": "1234.567",
+        "24h_amount": "95000000.0",
+        "open_interest": "12500.0",
+        "last_funding_rate": "0.00000000",
+        "est_funding_rate": "-0.00006461",
+        "next_funding_time": 1779278400000,
+        "bid_price": "77337.5",
+        "ask_price": "77339.2",
+        "max_leverage": "50",
+        "min_notional": "10.00000000",
+        "quote_tick": "0.10000000",
+        "base_tick": "0.00100000"
+      }
+    ]
+  },
+  "ts": 1779269143700
+}
+```
+
+### Fields
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `total_24h_volume` | string | Sum across markets; `null` if no data |
+| `total_open_interest` | string \| null | Sum across markets; `null` only when no symbols have open-interest data available |
+| `markets[]` | array | Lexically ordered for stable rendering |
+| `.mark_price` | string | From mark-price stream |
+| `.index_price` | string | From index-price stream (PERP→SPOT remap applied internally) |
+| `.last_funding_rate` | string | Last settled funding rate |
+| `.est_funding_rate` | string \| null | `null` until the first funding estimate message arrives |
+| `.next_funding_time` | int64 | ms epoch |
+| `.max_leverage`, `.min_notional`, `.quote_tick`, `.base_tick` | string | Symbol metadata |
+
+## Notes
+
+- **Partial results on timeout:** if individual symbol fan-out times out, returned `markets[]` includes only the successful entries
+- **No pagination:** response always returns the full set of requested (or active) symbols
+
+- [marketTrades](https://orderly.network/docs/build-on-omnichain/public-info-api/market/market-trades): Recent taker-side trades for a symbol with address / account / broker enrichment for whale lookup.
+### orderbook
+Source: https://orderly.network/docs/build-on-omnichain/public-info-api/market/orderbook
+
+Snapshot of a symbol's orderbook with mid price and spread.
+
+**Weight:** `1`
+
+## Request
+
+```json
+{
+  "type": "orderbook",
+  "symbol": "PERP_BTC_USDC",
+  "max_level": 100
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `symbol` | string | Yes | — | Must exist in the `symbols` table; unknown → `INVALID_PARAM` |
+| `max_level` | int | No | 100 | 1..1000 (silently clamped) |
+
+## Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "symbol": "PERP_BTC_USDC",
+    "mid_price": "77338.35",
+    "spread": "1.70",
+    "asks": [{ "price": "77339.20", "quantity": "0.45" }],
+    "bids": [{ "price": "77337.50", "quantity": "0.32" }],
+    "ts": 1714900000123
+  },
+  "ts": 1779269143700
+}
+```
+
+### Fields
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `mid_price` | string \| null | `(best_ask + best_bid) / 2`, 8 decimals (`HALF_DOWN`); `null` if either side empty |
+| `spread` | string \| null | `best_ask − best_bid`; `null` if either side empty |
+| `asks[]`, `bids[]` | array | Best-first; trimmed to `max_level` |
+| `ts` (inner) | int64 | Snapshot timestamp from cache (or `now` on cold cache) |
+
+## Notes
+
+- Served from an in-memory snapshot — typically sub-millisecond
+- An empty book returns empty `asks` / `bids` arrays (not an error)
+
+
+#### Account data
+
+### accountState
+Source: https://orderly.network/docs/build-on-omnichain/public-info-api/account/account-state
+
+Account snapshot with collateral, open positions, margin metrics, and PnL.
+
+Response shape depends on the parameters:
+
+- `address` + `account_id` (with or without `broker_id`) → **flat object**, one account
+- `address` (± `broker_id`) → object containing `accounts[]` with one entry per matching account
+
+**Weight:** `5`
+
+## Request
+
+```json
+{
+  "type": "accountState",
+  "address": "0xc33fefd77012cbcf61f63e9c4745cadaadbe12f3",
+  "broker_id": "orderly",
+  "account_id": "0xabc..."
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `address` | string | Yes | — | Wallet address |
+| `broker_id` | string | No | — | Optional broker scope |
+| `account_id` | string | No | — | If supplied → flat response; omitted → `accounts[]` array |
+
+## Response (with `account_id`)
+
+```json
+{
+  "success": true,
+  "data": {
+    "address": "0xc33fefd7...",
+    "broker_id": "orderly",
+    "account_id": "0xabc...",
+    "account_type": "main",
+    "account_value": "50000.5",
+    "total_collateral_value": "45000",
+    "free_collateral": "30000",
+    "margin_ratio": "0.25",
+    "initial_margin_ratio": "0.12",
+    "maintenance_margin_ratio": "0.08",
+    "total_unrealized_pnl": "5000.5",
+    "total_unsettled_pnl": "100.25",
+    "total_pnl_24_h": "250.75",
+    "positions": [
+      {
+        "symbol": "PERP_BTC_USDC",
+        "side": "LONG",
+        "position_qty": "0.5",
+        "notional": "21500",
+        "average_open_price": "43000",
+        "mark_price": "43000",
+        "unrealized_pnl": "0",
+        "unsettled_pnl": "50.5",
+        "pnl_24_h": "100",
+        "imr": "0.05",
+        "mmr": "0.025",
+        "est_liq_price": "38000",
+        "leverage": 10,
+        "margin_mode": "CROSS",
+        "opened_at": 1715000000000,
+        "updated_at": 1715100000000
+      }
+    ]
+  },
+  "ts": 1779269143700
+}
+```
+
+## Response (no `account_id`)
+
+```json
+{
+  "success": true,
+  "data": {
+    "address": "0xc33fefd7...",
+    "accounts": [
+      { /* same shape as the flat object above */ }
+    ]
+  },
+  "ts": 1779269143700
+}
+```
+
+### Account fields
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `account_type` | string | Account category. Observed values include `"main"`, `"sub"`, and `"sp"`; treat the set as open and pass through unknown values |
+| `account_value` | string \| null | `collateral + Σ unsettled_pnl`; `null` if position-calc unreachable |
+| `total_collateral_value` | string | `Σ_token((holding + iso_margin_total + frozen) × price)`; non-USDC priced via spot index price |
+| `free_collateral` | string \| null | `≈ collateral × (1 − margin_ratio)` |
+| `margin_ratio` | string \| null | From position-calc |
+| `initial_margin_ratio` | string \| null | `Σ(notional_i × IMR_i) / Σ notional_i` over CROSS positions only |
+| `maintenance_margin_ratio` | string \| null | Minimum margin ratio required to avoid liquidation |
+| `total_unrealized_pnl`, `total_unsettled_pnl` | string \| null | Both from position-calc |
+| `total_pnl_24_h` | string \| null | Sum across positions |
+
+### Position fields
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `side` | string | `"LONG"` if `position_qty > 0`, `"SHORT"` if `< 0` |
+| `position_qty` | string | Signed |
+| `notional` | string \| null | `|qty| × mark_price` |
+| `average_open_price` | string \| null | `cost_position / |holding|` |
+| `mark_price` | string \| null | Latest mark price for the symbol |
+| `imr`, `mmr` | string \| null | Position-level (from position-calc or symbol metadata) |
+| `est_liq_price` | string \| null | Estimated liquidation price |
+| `leverage` | int \| null | Effective leverage |
+| `margin_mode` | string \| null | `"CROSS"` or `"ISOLATED"` |
+| `opened_at`, `updated_at` | int64 \| null | ms epoch; cached 10s |
+
+## Notes
+
+- Throws `ADDRESS_NOT_FOUND` (404) if no accounts match
+- If the position-calc service is unavailable, all margin / PnL-derived fields are `null` while other fields continue to be served
+- `positions[]` only contains open positions (`holding ≠ 0`)
+
+- [accounts](https://orderly.network/docs/build-on-omnichain/public-info-api/account/accounts): Discover all (broker, account) pairs an address controls. Includes regular and sub accounts.
+### agentContext
+Source: https://orderly.network/docs/build-on-omnichain/public-info-api/account/agent-context
+
+Composite "agent startup" bundle. Fetches the caller's account state, open positions, market summaries for held symbols, and the count of open orders — all in one call with sub-handlers parallelized.
+
+Equivalent to calling `accountState` + `openOrders` + `marketSummary` separately, but cheaper (weight `2` vs `5 + 5 + 1 = 11`).
+
+**Weight:** `2`
+
+## Request
+
+```json
+{
+  "type": "agentContext",
+  "address": "0xc33fefd77012cbcf61f63e9c4745cadaadbe12f3",
+  "broker_id": "orderly",
+  "account_id": "0xabc..."
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `address` | string | Yes | — | Wallet address |
+| `broker_id` | string | No | — | Optional |
+| `account_id` | string | No | — | Optional — see "Primary account" below |
+
+## Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "account": {
+      "broker_id": "orderly",
+      "account_id": "0xabc...",
+      "account_value": "50000.5",
+      "total_collateral_value": "45000",
+      "free_collateral": "30000",
+      "margin_ratio": "0.25",
+      "total_unrealized_pnl": "5000.5",
+      "total_pnl_24_h": "250.75",
+      "open_order_count": 7
+    },
+    "positions": [ /* same shape as accountState.positions[] */ ],
+    "markets": [ /* marketSummary row plus a 24h_change_pct field */ ]
+  },
+  "ts": 1779269143700
+}
+```
+
+### Fields
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `account` | object | Single account snapshot (subset of `accountState`) |
+| `account.open_order_count` | int | Count from `openOrders`; defaults to `0` on sub-handler failure |
+| `positions[]` | array | Open positions (same shape as [`accountState`](/build-on-omnichain/public-info-api/account/account-state)) |
+| `markets[]` | array | One entry per symbol held in `positions[]`; same shape as [`marketSummary`](/build-on-omnichain/public-info-api/market/market-summary) row |
+| `markets[].24h_change_pct` | string | `(close - open) / open × 100` (computed at the bundle layer) |
+
+## Notes
+
+- **Primary account selection** (when `account_id` is omitted): the largest `account_value`, with `account_type == "main"` as the tiebreaker
+- Sub-handlers run in parallel: `accountState ‖ openOrders`, then `marketSummary` once held symbols are known
+- `markets[]` only includes symbols the account actually holds — not the entire universe
+- For the full open orders list, call [`openOrders`](/build-on-omnichain/public-info-api/account/open-orders) separately
+
+- [feeRate](https://orderly.network/docs/build-on-omnichain/public-info-api/account/fee-rate): Fee tier, maker / taker rates, and 30-day rolling volume. Three response shapes based on params.
+- [fundingPayments](https://orderly.network/docs/build-on-omnichain/public-info-api/account/funding-payments): Funding-fee payment history with payment direction and settlement status.
+- [historicalOrders](https://orderly.network/docs/build-on-omnichain/public-info-api/account/historical-orders): Order history filtered by closed status (FILLED / CANCELLED / REJECTED). Auto-queries live and archive tables across the 92-day cutover.
+- [openOrders](https://orderly.network/docs/build-on-omnichain/public-info-api/account/open-orders): Open and partially-filled orders (ordinary + algo) for an address, sorted DESC by created time.
+- [orderStatus](https://orderly.network/docs/build-on-omnichain/public-info-api/account/order-status): Single order lookup by order_id. Searches live and archive tables; cross-references algo metadata.
+- [portfolio](https://orderly.network/docs/build-on-omnichain/public-info-api/account/portfolio): Daily account-value time series with cumulative PnL. UTC-day-aligned snapshots.
+- [positionContext](https://orderly.network/docs/build-on-omnichain/public-info-api/account/position-context): Single-symbol view: position, open orders for that symbol, market snapshot, and account risk summary — in one parallelized call.
+### trades
+Source: https://orderly.network/docs/build-on-omnichain/public-info-api/account/trades
+
+Executed trade fills for an address. The handler transparently combines real-time fills (last 24 hours) with the archive (older than 24 hours); the cursor carries which source the next page is on, so pagination is continuous.
+
+**Weight:** `5`
+
+## Request
+
+```json
+{
+  "type": "trades",
+  "address": "0xc33fefd77012cbcf61f63e9c4745cadaadbe12f3",
+  "symbol": "PERP_ETH_USDC",
+  "start_time": 1714000000000,
+  "end_time": 1715000000000,
+  "limit": 200
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `address` | string | Yes | — | Wallet address |
+| `broker_id` | string | No | — | Optional |
+| `account_id` | string | No | — | Optional |
+| `symbol` | string | No | — | Symbol filter |
+| `start_time` | int64 | No | — | ms epoch |
+| `end_time` | int64 | No | `now` (when `start_time` set) | ms epoch |
+| `limit` | int | No | 100 | 1..1000 (without time range) or 1..2000 (with time range) |
+| `cursor` | string | No | — | Opaque cursor (carries `src`) |
+
+## Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "rows": [
+      {
+        "id": "987654321",
+        "order_id": "123456789",
+        "symbol": "PERP_ETH_USDC",
+        "side": "BUY",
+        "executed_price": "2500.00",
+        "executed_quantity": "0.5",
+        "fee": "0.0005",
+        "fee_asset": "USDC",
+        "is_maker": false,
+        "realized_pnl": "10.50",
+        "executed_timestamp": 1714900000000
+      }
+    ],
+    "next_cursor": "eyJsYXN0X2lkIjo5ODc2NTQzMjEsInNyYyI6Im15c3FsIn0"
+  },
+  "ts": 1779269143700
+}
+```
+
+### Fields
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `id` | string | Transaction ID |
+| `order_id` | string \| null | `null` on orphaned / liquidation fills |
+| `is_maker` | bool | `true` = maker, `false` = taker |
+| `realized_pnl` | string \| null | `null` for fills older than 24 hours (archive does not retain this column) |
+
+## Notes
+
+- **24-hour boundary:** real-time data covers `[max(start_time, now − 24h), end_time]`; archived data covers `[start_time, min(end_time, now − 24h − 1ms)]`
+- Treat the cursor as opaque — always pass it back as-is
+
+- [userDepositsWithdrawals](https://orderly.network/docs/build-on-omnichain/public-info-api/account/user-deposits-withdrawals): Deposit and withdrawal transaction history for an address, paginated DESC by transaction ID.
+- [whaleContext](https://orderly.network/docs/build-on-omnichain/public-info-api/account/whale-context): Whale research bundle: account state, recent trades, and (future) portfolio summary in one call.
+
+#### Platform data
+
+### platformPositions
+Source: https://orderly.network/docs/build-on-omnichain/public-info-api/platform/platform-positions
+
+Platform-wide snapshot of every open position across every account. Each row includes the address, account, notional, leverage, margin mode, and estimated liquidation price — enough to construct liquidation heatmaps and cross-account risk views.
+
+**Weight:** `20` — this is the heaviest endpoint (scans every open position across the platform). Use sparingly.
+
+## Request
+
+```json
+{
+  "type": "platformPositions",
+  "symbol": "PERP_BTC_USDC",
+  "min_notional": "10000",
+  "limit": 500
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `symbol` | string | No | — | Symbol filter |
+| `broker_id` | string | No | — | Broker filter |
+| `min_notional` | decimal | No | `0` | Minimum position notional to include |
+| `limit` | int | No | 500 | 1..5000 |
+| `cursor` | string | No | — | Opaque cursor |
+
+## Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "total_long_notional": "50000",
+    "total_short_notional": "45000",
+    "total_positions": 1234,
+    "rows": [
+      {
+        "address": "0xc33fefd7...",
+        "account_id": "0xabc...",
+        "broker_id": "orderly",
+        "symbol": "PERP_BTC_USDC",
+        "side": "LONG",
+        "position_qty": "10.5",
+        "notional": "420000",
+        "average_open_price": "40000",
+        "mark_price": "42000",
+        "est_liq_price": "38000",
+        "unrealized_pnl": "210",
+        "unsettled_pnl": "210",
+        "leverage": 5,
+        "margin_mode": "CROSS",
+        "opened_at": 1716000000000
+      }
+    ],
+    "next_cursor": null
+  },
+  "ts": 1779269143700
+}
+```
+
+### Fields
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `total_long_notional`, `total_short_notional`, `total_positions` | top-level | Aggregates over the **filtered snapshot** (not just the current page) |
+| `est_liq_price`, `unrealized_pnl`, `unsettled_pnl`, `leverage`, `margin_mode` | mixed \| null | Per-row position-calc; `null` on position-calc failure |
+| `opened_at` | int64 \| null | ms epoch when the position was first opened |
+| `margin_mode` | string \| null | `"CROSS"` or `"ISOLATED"` — clients can filter as needed |
+
+## Notes
+
+- **5s cache**
+- Sort: position ID DESC
+- For building a liquidation heatmap, aggregate `est_liq_price` into price buckets client-side
+
+### topAddresses
+Source: https://orderly.network/docs/build-on-omnichain/public-info-api/platform/top-addresses
+
+Leaderboard of addresses ranked by the chosen `sort_by` metric. Returns multi-window PnL, volume, and win-rate per address. Useful as the discovery step before drilling in with [`whaleContext`](/build-on-omnichain/public-info-api/account/whale-context) or [`accountState`](/build-on-omnichain/public-info-api/account/account-state).
+
+**Weight:** `10`
+
+## Request
+
+```json
+{
+  "type": "topAddresses",
+  "symbol": "PERP_BTC_USDC",
+  "sort_by": "pnl_7d",
+  "limit": 50
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `symbol` | string | No | — | Empty / omitted → scan all symbols |
+| `sort_by` | string | No | `"notional"` | One of `notional`, `volume_24h`, `volume_7d`, `volume_30d`, `pnl_24h`, `pnl_7d`, `pnl_30d`, `trade_count_24h` |
+| `min_notional` | decimal | No | `0` | Minimum total notional to include |
+| `limit` | int | No | 50 | 1..200 |
+| `cursor` | string | No | — | Opaque cursor |
+
+## Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "rows": [
+      {
+        "address": "0xc33fefd7...",
+        "broker_id": "orderly",
+        "total_notional": "123.45",
+        "pnl_24h": "10.5",
+        "pnl_7d": "20.3",
+        "pnl_30d": "50.2",
+        "volume_24h": "1000",
+        "volume_7d": "2000",
+        "volume_30d": "5000",
+        "trade_count_24h": 5,
+        "win_rate_24h": 0.6,
+        "win_rate_7d": 0.55,
+        "win_rate_30d": 0.58,
+        "avg_trade_size": "200",
+        "position_count": 3
+      }
+    ],
+    "next_cursor": null,
+    "last_updated_time": 1779269143700
+  },
+  "ts": 1779269143700
+}
+```
+
+### Fields
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `pnl_24h`, `volume_24h`, `trade_count_24h`, `win_rate_24h` | mixed | Rolling 24h (`now − 24h .. now`) |
+| `pnl_7d`, `pnl_30d`, `volume_7d`, `volume_30d` | string | Calendar windows: today's real-time stats plus the prior `N − 1` days of UTC-day-aligned history |
+| `win_rate_7d`, `win_rate_30d` | double \| null | `null` if the historical data source is unavailable |
+| `avg_trade_size` | string \| null | `volume_24h / trade_count_24h`; `null` when count is `0` |
+| `last_updated_time` | int64 | ms epoch when the cached snapshot was built; constant across all calls within the same cache window |
+
+## Notes
+
+- **30-minute cache** keyed by `(symbol, sort_by, min_notional)`. Per-row PnL and win-rate enrichment for the top 200 users is computed **inside** the cache, so all callers within the window see identical results
+- Compute staleness via `now − last_updated_time` (≤ 30 min by construction)
+- If the historical data source is unavailable, the snapshot is still served — 7d / 30d win-rate fields fall back to `null`
+
+
+
 ### General API
 
 #### Builder info
@@ -2682,6 +3655,7 @@ Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/add-
 - [Get Trade](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-trade): [GET /v1/trade/{trade_id}] Get trade
 - [Get All Trades Of Specific Order](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-all-trades-of-specific-order): [GET /v1/order/{order_id}/trades] Get all trades of specific order
 - [Get All Trades Of Specific Algo Order](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-all-trades-of-specific-algo-order): [GET /v1/algo/order/{order_id}/trades] Get all trades of specific algo order
+- [Get Order Enums](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-order-enums): [GET /v1/public/broker/order_enums] List order tags for a broker
 
 #### Liquidations
 
@@ -2817,11 +3791,15 @@ Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/get-
 - [Get Referral Multi Level Volume Prerequisite](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-multi-level-volume-prerequisite): [GET /v1/referral/multi_level/volume_prerequisite] Get volume prerequisite
 
 
-#### Broker admin
+#### Builder admin
+
+##### Builder info
+
+- [Get Broker Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-broker-info): [GET /v1/broker/broker_info] Get builder fee tier information
+- [Get Builder Daily Fee Revenue](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-builder-daily-fee-revenue): [GET /v1/broker/daily_fee_revenue] Get builder's daily revenue settlement history
 
 ##### User data
 
-- [Get Broker Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-broker-info): [GET /v1/broker/broker_info] Get broker info
 - [Admin Client Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-client-info): [GET /v1/admin/client/info] Get account information
 - [Admin Client Holding](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-client-holding): [GET /v1/admin/client/holding] Get current holding
 - [Admin Internal Transfer History](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-internal-transfer-history): [GET /v1/admin/internal_transfer_history] Get internal transfer history
@@ -2832,6 +3810,9 @@ Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/get-
 - [Admin Positions](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-positions): [GET /v1/admin/positions] Get all positions info
 - [Admin Funding Fee History](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-funding-fee-history): [GET /v1/admin/funding_fee/history] Get funding fee history
 - [Admin Volume User Stats](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-volume-user-stats): [GET /v1/admin/volume/user/stats] Get user volume statistics
+- [Admin Liquidations](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-liquidations): [GET /v1/admin/liquidations] Get liquidated positions (admin)
+- [Admin Algo Orders](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-algo-orders): [GET /v1/admin/algo/orders] Get algo orders (admin)
+- [Admin Trades](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-trades): [GET /v1/admin/trades] Get trades (admin)
 
 ##### Multilevel referral admin
 
@@ -2841,6 +3822,7 @@ Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/get-
 - [Update Referral Multi Level Affiliate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-referral-multi-level-affiliate-rate): [POST /v1/referral/multi_level/admin/update/affiliate] Update L1 affiliate rebate rate
 - [Reset Referral Multi Level Affiliate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/reset-referral-multi-level-affiliate-rate): [POST /v1/referral/multi_level/admin/reset/affiliate] Reset L1 affiliate rebate rate
 - [Get Multilevel Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-multilevel-info): [GET /v1/referral/multi_level/admin/info] Get multilevel info
+- [Get Admin Referee List](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-admin-referee-list): [GET /v1/referral/multi_level/admin/referee_list] Get admin referee list
 - [Get Multilevel Summary Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-multilevel-summary-info): [GET /v1/referral/multi_level/admin/summary] Get multilevel summary info
 - [Create Multilevel Referral Code On Affiliates Behalf](https://orderly.network/docs/build-on-omnichain/restful-api/private/create-multilevel-referral-code-on-affiliates-behalf): [POST /v1/referral/multi_level/admin/create/affiliate] Create multilevel referral code on affiliate's behalf
 
@@ -2851,6 +3833,15 @@ Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/get-
 - [Get Default Builder Fee](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-default-builder-fee): [GET /v1/broker/fee_rate/default] Get default builder fee
 - [Update Default Builder Fee](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-default-builder-fee): [POST /v1/broker/fee_rate/default] Update default builder fee
 - [Get User Fee Rates](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-user-fee-rates): [GET /v1/broker/user_info] Get user fee rates
+
+##### Order tag admin
+
+- [Create Order Enum](https://orderly.network/docs/build-on-omnichain/restful-api/private/create-order-enum): [POST /v1/broker/order_enum] Create order tag
+- [Update Order Enum](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-order-enum): [PUT /v1/broker/order_enum/{enum_id}] Update order tag
+- [Get Order Enums For Broker](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-order-enums-for-broker): [GET /v1/broker/order_enums] List all order tags for a builder
+- [Get Order Enum For Broker](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-order-enum-for-broker): [GET /v1/broker/order_enum/{enum_id}] Get single order tag with stats
+- [Archive Order Enum](https://orderly.network/docs/build-on-omnichain/restful-api/private/archive-order-enum): [POST /v1/broker/order_enum/archive] Archive an order tag
+- [Unarchive Order Enum](https://orderly.network/docs/build-on-omnichain/restful-api/private/unarchive-order-enum): [POST /v1/broker/order_enum/unarchive] Unarchive an order tag
 
 
 
