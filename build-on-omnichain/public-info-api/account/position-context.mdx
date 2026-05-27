@@ -1,0 +1,65 @@
+---
+title: "positionContext"
+description: "Single-symbol view: position, open orders for that symbol, market snapshot, and account risk summary — in one parallelized call."
+---
+
+Composite single-symbol view. Combines the matching position (if any), open orders for that symbol, a market snapshot, and an account-risk summary. All sub-handlers run in parallel.
+
+Equivalent to `accountState` + `openOrders` (symbol-filtered) + `marketSummary`, but cheaper.
+
+**Weight:** `2`
+
+## Request
+
+```json
+{
+  "type": "positionContext",
+  "address": "0xc33fefd77012cbcf61f63e9c4745cadaadbe12f3",
+  "symbol": "PERP_BTC_USDC",
+  "broker_id": "orderly"
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `address` | string | Yes | — | Wallet address |
+| `symbol` | string | Yes | — | Trading pair |
+| `broker_id` | string | No | — | Optional |
+| `account_id` | string | No | — | Optional |
+
+## Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "position": { /* same shape as accountState.positions[] item */ },
+    "open_orders": [ /* openOrders rows, already filtered by symbol */ ],
+    "market": {
+      "mark_price": "70305.1",
+      "index_price": "70298.5",
+      "bid_price": "70304.8",
+      "ask_price": "70305.5",
+      "last_funding_rate": "-0.00005082",
+      "est_funding_rate": "-0.00009308",
+      "next_funding_time": 1779278400000,
+      "24h_volume": "523456789.50",
+      "open_interest": "156789012.30"
+    },
+    "account_summary": {
+      "free_collateral": "85000.00",
+      "margin_ratio": "0.15"
+    }
+  },
+  "ts": 1779269143700
+}
+```
+
+### Fields
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `position` | object \| null | `null` if the account does not hold this symbol |
+| `open_orders[]` | array | Already filtered to `symbol` — no client-side filtering needed |
+| `market` | object \| null | `null` if the symbol is absent from the latest summary |
+| `account_summary` | object \| null | `null` on `ADDRESS_NOT_FOUND` |

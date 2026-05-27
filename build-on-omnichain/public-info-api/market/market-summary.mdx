@@ -1,0 +1,80 @@
+---
+title: "marketSummary"
+description: "Multi-symbol snapshot of prices, funding, 24h volume, and open interest. Fast path when called with no symbols."
+---
+
+Multi-symbol summary of mark / index prices, 24h OHLCV, funding rates, and open interest. Two modes:
+
+- **All-symbols fast path** — omit `symbols`; returns every active market from in-memory caches (typically `<50ms`)
+- **Filtered** — supply a `symbols` array; fans out per-symbol in parallel with a 10s overall budget
+
+**Weight:** `1`
+
+## Request
+
+```json
+{
+  "type": "marketSummary",
+  "symbols": ["PERP_BTC_USDC", "PERP_ETH_USDC"]
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `symbols` | string[] | No | `null` | Omit (or send empty) → all active symbols |
+
+## Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "total_24h_volume": "28589767.58005",
+    "total_open_interest": "352893408.89388",
+    "markets": [
+      {
+        "symbol": "PERP_BTC_USDC",
+        "mark_price": "77338.10",
+        "index_price": "77340.5",
+        "24h_open": "76500.00",
+        "24h_close": "77338.10",
+        "24h_high": "77800.00",
+        "24h_low": "76100.00",
+        "24h_volume": "1234.567",
+        "24h_amount": "95000000.0",
+        "open_interest": "12500.0",
+        "last_funding_rate": "0.00000000",
+        "est_funding_rate": "-0.00006461",
+        "next_funding_time": 1779278400000,
+        "bid_price": "77337.5",
+        "ask_price": "77339.2",
+        "max_leverage": "50",
+        "min_notional": "10.00000000",
+        "quote_tick": "0.10000000",
+        "base_tick": "0.00100000"
+      }
+    ]
+  },
+  "ts": 1779269143700
+}
+```
+
+### Fields
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `total_24h_volume` | string | Sum across markets; `null` if no data |
+| `total_open_interest` | string \| null | Sum across markets; `null` only if every symbol misses the position-monitor cache |
+| `markets[]` | array | Lexically ordered for stable rendering |
+| `.mark_price` | string | From mark-price stream |
+| `.index_price` | string | From index-price stream (PERP→SPOT remap applied internally) |
+| `.last_funding_rate` | string | Last settled funding rate |
+| `.est_funding_rate` | string \| null | `null` until the first funding estimate message arrives |
+| `.next_funding_time` | int64 | ms epoch |
+| `.max_leverage`, `.min_notional`, `.quote_tick`, `.base_tick` | string | Symbol metadata |
+
+## Notes
+
+- **Cold start (~1s after pod restart):** falls back to a Redis scan + `symbols` table; first call after deploy may be slower
+- **Partial results on timeout:** if individual symbol fan-out times out, returned `markets[]` includes only the successful entries
+- **No pagination:** response always returns the full set of requested (or active) symbols

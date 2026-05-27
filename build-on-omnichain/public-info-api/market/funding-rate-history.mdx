@@ -1,0 +1,58 @@
+---
+title: "fundingRateHistory"
+description: "Historical 8-hour funding rate and mark-price snapshots for a symbol."
+---
+
+Historical funding rates for a symbol. Rows are written at 8-hour epoch boundaries (00:00 / 08:00 / 16:00 UTC).
+
+**Weight:** `2`
+
+## Request
+
+```json
+{
+  "type": "fundingRateHistory",
+  "symbol": "PERP_BTC_USDC",
+  "start_time": 1716100000000,
+  "limit": 500
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `symbol` | string | Yes | — | Trading pair |
+| `start_time` | int64 | No | — | ms epoch |
+| `end_time` | int64 | No | — | ms epoch |
+| `limit` | int | No | 500 | 1..5000 |
+| `cursor` | string | No | — | Opaque cursor |
+
+## Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "rows": [
+      {
+        "funding_rate": "0.0001",
+        "mark_price": "45678.90",
+        "funding_rate_timestamp": 1716192000000
+      }
+    ],
+    "next_cursor": null
+  },
+  "ts": 1779269143700
+}
+```
+
+### Fields
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `funding_rate` | string | Per-8h cycle decimal |
+| `mark_price` | string | Mark price snapped to the funding epoch |
+| `funding_rate_timestamp` | int64 | Funding epoch (ms epoch UTC) |
+
+## Notes
+
+- 30s cache

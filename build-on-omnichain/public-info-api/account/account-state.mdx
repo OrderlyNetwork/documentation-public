@@ -1,0 +1,124 @@
+---
+title: "accountState"
+description: "Account snapshot: collateral, open positions, margin metrics, and PnL. Response shape changes based on whether account_id is supplied."
+---
+
+Account snapshot with collateral, open positions, margin metrics, and PnL.
+
+Response shape depends on the parameters:
+
+- `address` + `account_id` (with or without `broker_id`) → **flat object**, one account
+- `address` (± `broker_id`) → object containing `accounts[]` with one entry per matching account
+
+**Weight:** `5`
+
+## Request
+
+```json
+{
+  "type": "accountState",
+  "address": "0xc33fefd77012cbcf61f63e9c4745cadaadbe12f3",
+  "broker_id": "orderly",
+  "account_id": "0xabc..."
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `address` | string | Yes | — | Wallet address |
+| `broker_id` | string | No | — | Optional broker scope |
+| `account_id` | string | No | — | If supplied → flat response; omitted → `accounts[]` array |
+
+## Response (with `account_id`)
+
+```json
+{
+  "success": true,
+  "data": {
+    "address": "0xc33fefd7...",
+    "broker_id": "orderly",
+    "account_id": "0xabc...",
+    "account_type": "main",
+    "account_value": "50000.5",
+    "total_collateral_value": "45000",
+    "free_collateral": "30000",
+    "margin_ratio": "0.25",
+    "initial_margin_ratio": "0.12",
+    "maintenance_margin_ratio": "0.08",
+    "total_unrealized_pnl": "5000.5",
+    "total_unsettled_pnl": "100.25",
+    "total_pnl_24_h": "250.75",
+    "positions": [
+      {
+        "symbol": "PERP_BTC_USDC",
+        "side": "LONG",
+        "position_qty": "0.5",
+        "notional": "21500",
+        "average_open_price": "43000",
+        "mark_price": "43000",
+        "unrealized_pnl": "0",
+        "unsettled_pnl": "50.5",
+        "pnl_24_h": "100",
+        "imr": "0.05",
+        "mmr": "0.025",
+        "est_liq_price": "38000",
+        "leverage": 10,
+        "margin_mode": "CROSS",
+        "opened_at": 1715000000000,
+        "updated_at": 1715100000000
+      }
+    ]
+  },
+  "ts": 1779269143700
+}
+```
+
+## Response (no `account_id`)
+
+```json
+{
+  "success": true,
+  "data": {
+    "address": "0xc33fefd7...",
+    "accounts": [
+      { /* same shape as the flat object above */ }
+    ]
+  },
+  "ts": 1779269143700
+}
+```
+
+### Account fields
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `account_type` | string | `"main"` or `"sub"` |
+| `account_value` | string \| null | `collateral + Σ unsettled_pnl`; `null` if position-calc unreachable |
+| `total_collateral_value` | string | `Σ_token((holding + iso_margin_total + frozen) × price)`; non-USDC priced via spot index price |
+| `free_collateral` | string \| null | `≈ collateral × (1 − margin_ratio)` |
+| `margin_ratio` | string \| null | From position-calc |
+| `initial_margin_ratio` | string \| null | `Σ(notional_i × IMR_i) / Σ notional_i` over CROSS positions only |
+| `maintenance_margin_ratio` | string \| null | From position-calc (`liquidationMarginRatio`) |
+| `total_unrealized_pnl`, `total_unsettled_pnl` | string \| null | Both from position-calc |
+| `total_pnl_24_h` | string \| null | Sum across positions |
+
+### Position fields
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `side` | string | `"LONG"` if `position_qty > 0`, `"SHORT"` if `< 0` |
+| `position_qty` | string | Signed |
+| `notional` | string \| null | `|qty| × mark_price` |
+| `average_open_price` | string \| null | `cost_position / |holding|` |
+| `mark_price` | string \| null | From Redis cache |
+| `imr`, `mmr` | string \| null | Position-level (from position-calc or symbol metadata) |
+| `est_liq_price` | string \| null | Estimated liquidation price |
+| `leverage` | int \| null | Effective leverage |
+| `margin_mode` | string \| null | `"CROSS"` or `"ISOLATED"` |
+| `opened_at`, `updated_at` | int64 \| null | ms epoch; cached 10s |
+
+## Notes
+
+- Throws `ADDRESS_NOT_FOUND` (404) if no accounts match
+- If the position-calc service is unavailable, all margin / PnL-derived fields are `null` while other fields continue to be served
+- `positions[]` only contains open positions (`holding ≠ 0`)

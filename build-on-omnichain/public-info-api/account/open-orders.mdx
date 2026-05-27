@@ -1,0 +1,74 @@
+---
+title: "openOrders"
+description: "Open and partially-filled orders (ordinary + algo) for an address, sorted DESC by created time."
+---
+
+Open and partially-filled orders for an address. Unions ordinary orders (parent_order_id = 0) and algo orders (parent_algo_order_id = 0); merged and sorted in memory.
+
+**Weight:** `5`
+
+## Request
+
+```json
+{
+  "type": "openOrders",
+  "address": "0xc33fefd77012cbcf61f63e9c4745cadaadbe12f3",
+  "symbol": "PERP_ETH_USDC",
+  "limit": 100
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `address` | string | Yes | — | Wallet address |
+| `broker_id` | string | No | — | Optional |
+| `account_id` | string | No | — | Optional |
+| `symbol` | string | No | — | Symbol filter |
+| `limit` | int | No | 100 | 1..500 |
+| `cursor` | string | No | — | Opaque cursor |
+
+## Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "rows": [
+      {
+        "order_id": "123456789",
+        "symbol": "PERP_ETH_USDC",
+        "side": "BUY",
+        "type": "STOP_MARKET",
+        "price": null,
+        "quantity": "1.5",
+        "total_executed_quantity": "0.0",
+        "trigger_price": "2450.00",
+        "trigger_status": "PENDING",
+        "status": "OPEN",
+        "reduce_only": false,
+        "created_time": 1715000000000,
+        "updated_time": 1715001000000
+      }
+    ],
+    "next_cursor": "eyJsYXN0X3RzIjoxNzE1MDAwMDAwMDAwLCJsYXN0X2lkIjoxMjM0NTZ9"
+  },
+  "ts": 1779269143700
+}
+```
+
+### Fields
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `order_id` | string | 64-bit integer encoded as string |
+| `side` | string | `BUY` / `SELL` / `BOTH` |
+| `type` | string | See [`historicalOrders`](/build-on-omnichain/public-info-api/account/historical-orders) for the full enum |
+| `price` | string \| null | `null` for `MARKET` or trigger-without-price algo orders |
+| `trigger_price` | string \| null | Algo orders only |
+| `trigger_status` | string \| null | `PENDING` / `TRIGGERED` / `FAILED`; `null` for ordinary orders or `USELESS` status |
+| `status` | string | Always `"OPEN"` for this endpoint |
+| `reduce_only` | bool \| null | Algo orders only |
+
+## Notes
+
+- Sort: `(created_time DESC, order_id DESC)`; cursor compares `(ts, id)` lexicographically

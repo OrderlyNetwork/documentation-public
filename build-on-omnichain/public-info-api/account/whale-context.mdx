@@ -1,0 +1,56 @@
+---
+title: "whaleContext"
+description: "Whale research bundle: account state, recent trades, and (future) portfolio summary in one call."
+---
+
+Whale research bundle. Combines the address's account state with its most recent trade fills. Useful when chasing addresses surfaced by [`topAddresses`](/build-on-omnichain/public-info-api/platform/top-addresses) or [`platformPositions`](/build-on-omnichain/public-info-api/platform/platform-positions).
+
+**Weight:** `3`
+
+## Request
+
+```json
+{
+  "type": "whaleContext",
+  "address": "0xc33fefd77012cbcf61f63e9c4745cadaadbe12f3",
+  "recent_trades_limit": 20,
+  "portfolio_days": 30
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `address` | string | Yes | — | Wallet address |
+| `broker_id` | string | No | — | Optional |
+| `account_id` | string | No | — | Optional |
+| `recent_trades_limit` | int | No | 20 | Clamped to `[1, 50]` |
+| `portfolio_interval` | string | No | `"1d"` | Only `"1d"` supported in v1 |
+| `portfolio_days` | int | No | 30 | Clamped to `[1, 90]` |
+
+## Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "account": { /* like agentContext.account */ },
+    "positions": [ /* like accountState.positions[] */ ],
+    "recent_trades": [ /* like trades.rows[] */ ]
+  },
+  "ts": 1779269143700
+}
+```
+
+### Fields
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `account` | object \| null | Subset of `accountState`; `null` on `ADDRESS_NOT_FOUND` |
+| `positions[]` | array | Open positions (same shape as [`accountState`](/build-on-omnichain/public-info-api/account/account-state)) |
+| `recent_trades[]` | array | Most recent fills (same shape as [`trades`](/build-on-omnichain/public-info-api/account/trades)); empty array on sub-handler failure |
+
+## Notes
+
+- Sub-handlers (`accountState`, `trades`, `portfolio`) run in parallel
+- Failures degrade gracefully — individual sections may be empty / `null` without failing the whole call
+- **v1 not yet shipped:** the `portfolio_summary` key (with `peak_account_value`, `max_drawdown`, `max_drawdown_duration_hours`, `pnl_7d`, `pnl_30d`, `win_rate_7d`, `win_rate_30d`) is **entirely omitted** from the response — not `null`, not `{}`, the key is absent. Clients should test `"portfolio_summary" in response.data` before reading.

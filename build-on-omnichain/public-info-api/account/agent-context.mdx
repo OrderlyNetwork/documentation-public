@@ -1,0 +1,68 @@
+---
+title: "agentContext"
+description: "Agent startup bundle: account state, open positions, held-symbol market summaries, and open order count in one parallelized call."
+---
+
+Composite "agent startup" bundle. Fetches the caller's account state, open positions, market summaries for held symbols, and the count of open orders — all in one call with sub-handlers parallelized.
+
+Equivalent to calling `accountState` + `openOrders` + `marketSummary` separately, but cheaper (weight `2` vs `5 + 5 + 1 = 11`).
+
+**Weight:** `2`
+
+## Request
+
+```json
+{
+  "type": "agentContext",
+  "address": "0xc33fefd77012cbcf61f63e9c4745cadaadbe12f3",
+  "broker_id": "orderly",
+  "account_id": "0xabc..."
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `address` | string | Yes | — | Wallet address |
+| `broker_id` | string | No | — | Optional |
+| `account_id` | string | No | — | Optional — see "Primary account" below |
+
+## Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "account": {
+      "broker_id": "orderly",
+      "account_id": "0xabc...",
+      "account_value": "50000.5",
+      "total_collateral_value": "45000",
+      "free_collateral": "30000",
+      "margin_ratio": "0.25",
+      "total_unrealized_pnl": "5000.5",
+      "total_pnl_24_h": "250.75",
+      "open_order_count": 7
+    },
+    "positions": [ /* same shape as accountState.positions[] */ ],
+    "markets": [ /* marketSummary row plus a 24h_change_pct field */ ]
+  },
+  "ts": 1779269143700
+}
+```
+
+### Fields
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `account` | object | Single account snapshot (subset of `accountState`) |
+| `account.open_order_count` | int | Count from `openOrders`; defaults to `0` on sub-handler failure |
+| `positions[]` | array | Open positions (same shape as [`accountState`](/build-on-omnichain/public-info-api/account/account-state)) |
+| `markets[]` | array | One entry per symbol held in `positions[]`; same shape as [`marketSummary`](/build-on-omnichain/public-info-api/market/market-summary) row |
+| `markets[].24h_change_pct` | string | `(close - open) / open × 100` (computed at the bundle layer) |
+
+## Notes
+
+- **Primary account selection** (when `account_id` is omitted): the largest `account_value`, with `account_type == "main"` as the tiebreaker
+- Sub-handlers run in parallel: `accountState ‖ openOrders`, then `marketSummary` once held symbols are known
+- `markets[]` only includes symbols the account actually holds — not the entire universe
+- For the full open orders list, call [`openOrders`](/build-on-omnichain/public-info-api/account/open-orders) separately
