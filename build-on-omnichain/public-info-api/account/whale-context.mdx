@@ -51,6 +51,5 @@ Whale research bundle. Combines the address's account state with its most recent
 
 ## Notes
 
-- Sub-handlers (`accountState`, `trades`, `portfolio`) run in parallel
+- Sub-handlers run in parallel
 - Failures degrade gracefully — individual sections may be empty / `null` without failing the whole call
-- **v1 not yet shipped:** the `portfolio_summary` key (with `peak_account_value`, `max_drawdown`, `max_drawdown_duration_hours`, `pnl_7d`, `pnl_30d`, `win_rate_7d`, `win_rate_30d`) is **entirely omitted** from the response — not `null`, not `{}`, the key is absent. Clients should test `"portfolio_summary" in response.data` before reading.

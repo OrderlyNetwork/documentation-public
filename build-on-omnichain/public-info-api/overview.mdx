@@ -99,7 +99,7 @@ Error:
 | `ORDER_NOT_FOUND` | 404 | `orderStatus`: `order_id` not in live or archive tables |
 | `RATE_LIMIT_EXCEEDED` | 429 | Caller exhausted IP quota — see [rate limits](#rate-limits) |
 | `INTERNAL_ERROR` | 500 | Unhandled exception |
-| `SERVICE_UNAVAILABLE` | 503 | Downstream timeout (Dubbo / Trino / Redis) |
+| `SERVICE_UNAVAILABLE` | 503 | A downstream service timed out — usually transient, safe to retry |
 | `POSITION_CALC_TIMEOUT` | 503 | Position-calc service specifically timed out |
 
 A `RATE_LIMIT_EXCEEDED` response additionally carries `"retry_after": <ms epoch>` and a `Retry-After` HTTP header (in seconds).
@@ -139,14 +139,15 @@ Paginated endpoints return `data.next_cursor` (an opaque Base64 string; `null` o
 | --- | --- |
 | `candles`, `fundingRateHistory` | `{ "last_ts": <ms> }` |
 | `openOrders`, `historicalOrders` | `{ "last_ts": <ms>, "last_id": <order_id> }` |
-| `trades` | `{ "last_id": <txn_id>, "src": "mysql" \| "trino" }` |
+| `trades` | `{ "last_id": <txn_id>, "src": <string> }` |
 | `fundingPayments` | `{ "last_id": <funding_detail_id> }` |
-| `marketTrades` | `{ "last_id": <txn_id> }` |
 | `liquidations` | `{ "last_id": <record_id> }` |
 | `userDepositsWithdrawals` | `{ "last_id": <transaction_id> }` |
 | `portfolio` | `{ "last_date": <ms> }` |
 | `topAddresses` | `{ "last_value": "<decimal>" }` |
 | `platformPositions` | `{ "last_id": <position_id> }` |
+
+`marketSummary`, `marketTrades`, `fundingComparison`, `orderbook`, and `rateLimitStatus` do not paginate — they return a bounded snapshot in a single response.
 
 ## Time conventions
 
@@ -243,27 +244,8 @@ Read your IP's current quota without consuming any of it. Weight: **0**.
 | `reset` | int64 | Window reset timestamp (ms epoch) |
 | `tier` | string | Always `"default"` in v1 (reserved for future tiered limits) |
 
-## v1 fields not yet shipped
-
-A few documented fields are reserved for future BE work and are **absent** from current responses. Clients should treat them as optional.
-
-| Endpoint | Not yet shipped |
-| --- | --- |
-| `candles` | `taker_buy_volume`, `trade_count`, `open_interest` |
-| `fundingComparison` | `est_next` (predicted next funding) |
-| `portfolio` | `peak_account_value`, `max_drawdown`, `max_drawdown_duration_hours`, per-row `total_collateral_value`, `total_unrealized_pnl` |
-| `whaleContext` | `portfolio_summary` (entire key omitted from response) |
-
 ## Query types
 
-<CardGroup cols={3}>
-  <Card title="Market data" icon="chart-line" href="/build-on-omnichain/public-info-api/market/market-summary">
-    8 types — prices, orderbook, candles, funding, trades, liquidations. No address required.
-  </Card>
-  <Card title="Account data" icon="user" href="/build-on-omnichain/public-info-api/account/account-state">
-    13 types — accounts, positions, orders, trades, deposits, fees, portfolio, plus three agent bundles. Address required.
-  </Card>
-  <Card title="Platform data" icon="globe" href="/build-on-omnichain/public-info-api/platform/top-addresses">
-    2 types — `topAddresses` leaderboard and `platformPositions` cross-account snapshot.
-  </Card>
-</CardGroup>
+- **Market data** — `marketSummary`, `marketDetail`, `orderbook`, `candles`, `marketTrades`, `liquidations`, `fundingRateHistory`, `fundingComparison`
+- **Account data** (require `address`) — `accounts`, `accountState`, `agentContext`, `feeRate`, `fundingPayments`, `historicalOrders`, `openOrders`, `orderStatus`, `portfolio`, `positionContext`, `trades`, `userDepositsWithdrawals`, `whaleContext`
+- **Platform data** — `topAddresses`, `platformPositions`

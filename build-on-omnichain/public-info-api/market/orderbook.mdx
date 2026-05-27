@@ -1,6 +1,6 @@
 ---
 title: "orderbook"
-description: "Orderbook snapshot with mid price and spread. Single Redis read."
+description: "Orderbook snapshot with mid price and spread."
 ---
 
 Snapshot of a symbol's orderbook with mid price and spread.
@@ -50,5 +50,5 @@ Snapshot of a symbol's orderbook with mid price and spread.
 
 ## Notes
 
-- Single Redis read — sub-millisecond when warm
-- Empty book returns empty arrays (not an error)
+- Served from an in-memory snapshot — typically sub-millisecond
+- An empty book returns empty `asks` / `bids` arrays (not an error)

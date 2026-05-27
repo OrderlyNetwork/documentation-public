@@ -56,15 +56,10 @@ Daily snapshots of account value plus cumulative PnL, UTC-day-aligned.
 | --- | --- | --- |
 | `rows[]` | array | DESC by `timestamp` |
 | `.account_value` | string | Daily collateral snapshot (`holding + frozen + upnl`) |
-| `.cumulative_pnl` | string | `account_value_today − baseline_at_window_start` |
+| `.cumulative_pnl` | string | Account value change since the earliest day in the returned window |
 | `.timestamp` | int64 | UTC-day-aligned ms epoch |
 
 ## Notes
 
-- Primary source is the Trino data warehouse (`user_collateral_snapshot`); falls back to MySQL `daily_user_statics` if Trino returns empty
 - Throws `INVALID_PARAM` for `interval ≠ "1d"` or `limit ∉ [1, 365]`
-- **v1 not yet shipped — clients should treat as optional:**
-  - Per-row: `total_collateral_value`, `total_unrealized_pnl` (BE table does not split collateral / upnl)
-  - Top-level: `peak_account_value`, `max_drawdown`, `max_drawdown_duration_hours` (no canonical user-level peak / drawdown algorithm yet)
-
-For real-time collateral / upnl breakdown, use [`accountState`](/build-on-omnichain/public-info-api/account/account-state).
+- For real-time collateral / unrealized PnL breakdown, use [`accountState`](/build-on-omnichain/public-info-api/account/account-state).

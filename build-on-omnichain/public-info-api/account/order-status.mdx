@@ -3,7 +3,7 @@ title: "orderStatus"
 description: "Single order lookup by order_id. Searches live and archive tables; cross-references algo metadata."
 ---
 
-Single order lookup by `order_id`. Searches live `orders` first, then archive `orders_his`. Cross-references the algo tables to populate `trigger_price` when applicable.
+Single order lookup by `order_id`. Searches both live and archived orders, and populates algo-order fields (`trigger_price` etc.) when applicable.
 
 **Weight:** `5`
 
@@ -19,7 +19,7 @@ Single order lookup by `order_id`. Searches live `orders` first, then archive `o
 
 | Field | Type | Required | Default | Notes |
 | --- | --- | --- | --- | --- |
-| `address` | string | Yes | — | **Required** for shard routing. Without it the query broadcasts across all 128 shards |
+| `address` | string | Yes | — | **Required** — narrows the lookup to one user; omitting it makes the query much slower |
 | `order_id` | int64 | Yes | — | Order identifier; `MISSING_PARAM` if absent |
 | `broker_id` | string | No | — | Optional |
 | `account_id` | string | No | — | Optional |
@@ -58,7 +58,7 @@ Single order lookup by `order_id`. Searches live `orders` first, then archive `o
 | `status` | string | `PENDING_NEW` / `NEW` / `PARTIAL_FILLED` / `FILLED` / `PENDING_CANCEL` / `CANCELLED` / `REJECTED` / `REPLACED` |
 | `average_executed_price` | string \| null | Live: always `null`. Archive: decimal |
 | `total_fee`, `fee_asset` | string \| null | Live: `null`. Archive: decimal / string |
-| `trigger_price` | string \| null | Sourced from `algo_order(_his)` when present |
+| `trigger_price` | string \| null | Present only for algo orders |
 
 ## Notes
 

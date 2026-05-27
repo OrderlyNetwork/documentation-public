@@ -1,9 +1,9 @@
 ---
 title: "trades"
-description: "Trade fills (executed order fills) for an address. Hybrid query — MySQL for last 24h, Trino for archive."
+description: "Trade fills (executed order fills) for an address. Combines a real-time window with an archive window so older history stays queryable."
 ---
 
-Executed trade fills for an address. The handler stitches MySQL (last 24h) and Trino (archive) automatically; the cursor carries the source so pagination flips between backends correctly.
+Executed trade fills for an address. The handler transparently combines real-time fills (last 24 hours) with the archive (older than 24 hours); the cursor carries which source the next page is on, so pagination is continuous.
 
 **Weight:** `5`
 
@@ -65,9 +65,9 @@ Executed trade fills for an address. The handler stitches MySQL (last 24h) and T
 | `id` | string | Transaction ID |
 | `order_id` | string \| null | `null` on orphaned / liquidation fills |
 | `is_maker` | bool | `true` = maker, `false` = taker |
-| `realized_pnl` | string \| null | `null` when sourced from Trino (DW lacks the column) |
+| `realized_pnl` | string \| null | `null` for fills older than 24 hours (archive does not retain this column) |
 
 ## Notes
 
-- **Hybrid window:** MySQL serves `[max(start_time, now − 24h), end_time]`; Trino serves `[start_time, min(end_time, now − 24h − 1ms)]`
-- The cursor's `src` field (`"mysql"` or `"trino"`) keeps pagination continuous across the cutover — clients should always pass it back as-is
+- **24-hour boundary:** real-time data covers `[max(start_time, now − 24h), end_time]`; archived data covers `[start_time, min(end_time, now − 24h − 1ms)]`
+- Treat the cursor as opaque — always pass it back as-is

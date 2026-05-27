@@ -83,5 +83,5 @@ Includes both ordinary and algo orders (algo rows include `trigger_price` / `tri
 
 - **Status mapping:** `FILLED → [3]`, `CANCELLED → [5]`, `REJECTED → [6]`; omitting `status` queries all three
 - **Default window** is UTC-day-snapped `now − 24h` — pass an explicit `start_time` for longer lookbacks
-- **Archive cutoff** is 92 days. Queries crossing it transparently union live `orders` / `algo_order` with archive `orders_his` / `algo_order_his`
+- **Archive cutoff** is 92 days. Queries spanning that boundary transparently combine live and archived orders
 - Sort: `(created_time DESC, order_id DESC)`

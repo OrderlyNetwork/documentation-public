@@ -5,7 +5,7 @@ description: "Platform-wide open-position snapshot across all users. Powers liqu
 
 Platform-wide snapshot of every open position across every account. Each row includes the address, account, notional, leverage, margin mode, and estimated liquidation price — enough to construct liquidation heatmaps and cross-account risk views.
 
-**Weight:** `20` — this is the heaviest endpoint (broadcast scan across 128 shards). Use sparingly.
+**Weight:** `20` — this is the heaviest endpoint (scans every open position across the platform). Use sparingly.
 
 ## Request
 
@@ -66,7 +66,7 @@ Platform-wide snapshot of every open position across every account. Each row inc
 | --- | --- | --- |
 | `total_long_notional`, `total_short_notional`, `total_positions` | top-level | Aggregates over the **filtered snapshot** (not just the current page) |
 | `est_liq_price`, `unrealized_pnl`, `unsettled_pnl`, `leverage`, `margin_mode` | mixed \| null | Per-row position-calc; `null` on position-calc failure |
-| `opened_at` | int64 \| null | Batched `IN`-lookup of `position_history_detail` (avoids N+1) |
+| `opened_at` | int64 \| null | ms epoch when the position was first opened |
 | `margin_mode` | string \| null | `"CROSS"` or `"ISOLATED"` — clients can filter as needed |
 
 ## Notes

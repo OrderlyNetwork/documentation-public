@@ -63,8 +63,8 @@ Leaderboard of addresses ranked by the chosen `sort_by` metric. Returns multi-wi
 | Field | Type | Notes |
 | --- | --- | --- |
 | `pnl_24h`, `volume_24h`, `trade_count_24h`, `win_rate_24h` | mixed | Rolling 24h (`now − 24h .. now`) |
-| `pnl_7d`, `pnl_30d`, `volume_7d`, `volume_30d` | string | Calendar windows: today (MySQL) plus the prior `N − 1` days (Trino), UTC-day-aligned |
-| `win_rate_7d`, `win_rate_30d` | double \| null | Sourced from Trino; `null` if Trino is unavailable |
+| `pnl_7d`, `pnl_30d`, `volume_7d`, `volume_30d` | string | Calendar windows: today's real-time stats plus the prior `N − 1` days of UTC-day-aligned history |
+| `win_rate_7d`, `win_rate_30d` | double \| null | `null` if the historical data source is unavailable |
 | `avg_trade_size` | string \| null | `volume_24h / trade_count_24h`; `null` when count is `0` |
 | `last_updated_time` | int64 | ms epoch when the cached snapshot was built; constant across all calls within the same cache window |
 
@@ -72,4 +72,4 @@ Leaderboard of addresses ranked by the chosen `sort_by` metric. Returns multi-wi
 
 - **30-minute cache** keyed by `(symbol, sort_by, min_notional)`. Per-row PnL and win-rate enrichment for the top 200 users is computed **inside** the cache, so all callers within the window see identical results
 - Compute staleness via `now − last_updated_time` (≤ 30 min by construction)
-- If Trino is unavailable, the snapshot is still served — 7d / 30d win-rate fields fall back to `null`
+- If the historical data source is unavailable, the snapshot is still served — 7d / 30d win-rate fields fall back to `null`
