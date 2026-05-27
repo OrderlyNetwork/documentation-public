@@ -50,7 +50,7 @@ Account discovery — given an address, list every `(broker_id, account_id)` pai
 | `.broker_id` | string | Broker identifier |
 | `.account_id` | string | Account identifier within broker |
 | `.account_type` | string | `"main"` (main account), `"sub"` (sub-account), or `"sp"` (vault strategy provider) |
-| `.account_value` | string \| null | `collateral + Σ unsettled_pnl`; `null` if position-calc is unavailable for that row |
+| `.account_value` | string \| null | Mark-to-market account value: `(holding + iso_margin_total + frozen) + Σ unrealized_pnl` across positions. `null` if position-calc is unavailable for that row |
 
 ## Notes
 

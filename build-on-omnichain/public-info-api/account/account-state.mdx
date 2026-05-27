@@ -93,7 +93,7 @@ Response shape depends on the parameters:
 | Field | Type | Notes |
 | --- | --- | --- |
 | `account_type` | string | `"main"` (main account), `"sub"` (sub-account), or `"sp"` (vault strategy provider) |
-| `account_value` | string \| null | `collateral + Σ unsettled_pnl`; `null` if position-calc unreachable |
+| `account_value` | string \| null | Mark-to-market account value: `total_collateral_value + Σ unrealized_pnl` across positions. `null` if position-calc unreachable |
 | `total_collateral_value` | string | `Σ_token((holding + iso_margin_total + frozen) × price)`; non-USDC priced via spot index price |
 | `free_collateral` | string \| null | `≈ collateral × (1 − margin_ratio)` |
 | `margin_ratio` | string \| null | From position-calc |

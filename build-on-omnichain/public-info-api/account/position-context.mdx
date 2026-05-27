@@ -25,7 +25,7 @@ Equivalent to `accountState` + `openOrders` (symbol-filtered) + `marketSummary`,
 | `address` | string | Yes | — | Wallet address |
 | `symbol` | string | Yes | — | Trading pair |
 | `broker_id` | string | No | — | Optional |
-| `account_id` | string | No | — | Optional |
+| `account_id` | string | No | — | Optional — see "Primary account" below |
 
 ## Response
 
@@ -63,3 +63,8 @@ Equivalent to `accountState` + `openOrders` (symbol-filtered) + `marketSummary`,
 | `open_orders[]` | array | Already filtered to `symbol` — no client-side filtering needed |
 | `market` | object \| null | `null` if the symbol is absent from the latest summary |
 | `account_summary` | object \| null | `null` on `ADDRESS_NOT_FOUND` |
+
+## Notes
+
+- **Primary account selection** (when `account_id` is omitted): the largest `account_value`, with `account_type == "main"` as the tiebreaker
+- Sub-handlers run in parallel
