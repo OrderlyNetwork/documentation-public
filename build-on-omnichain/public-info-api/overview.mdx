@@ -242,7 +242,7 @@ Read your IP's quota state for the rolling one-minute window. Weight: **0** — 
 | `limit` | int64 | Total weight available per window (1200 for the default tier) |
 | `remaining` | int64 | Weight still available in the **current** window, after all consumption so far. Weighted calls deduct from this value before the next `rateLimitStatus` reads it |
 | `reset` | int64 | ms epoch when the current window ends. Windows roll forward continuously — `remaining` springs back up to `limit` after `reset` |
-| `tier` | string | Always `"default"` in v1 (reserved for future tiered limits) |
+| `tier` | string | Quota tier name; `"default"` for anonymous IPs |
 
 ## Query types
 
