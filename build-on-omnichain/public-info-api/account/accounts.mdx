@@ -49,7 +49,7 @@ Account discovery — given an address, list every `(broker_id, account_id)` pai
 | `accounts[]` | array | One entry per account |
 | `.broker_id` | string | Broker identifier |
 | `.account_id` | string | Account identifier within broker |
-| `.account_type` | string | Account category. Observed values include `"main"`, `"sub"`, and `"sp"`; treat the set as open and pass through unknown values |
+| `.account_type` | string | `"main"` (main account), `"sub"` (sub-account), or `"sp"` (vault strategy provider) |
 | `.account_value` | string \| null | `collateral + Σ unsettled_pnl`; `null` if position-calc is unavailable for that row |
 
 ## Notes

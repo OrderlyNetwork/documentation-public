@@ -15,8 +15,6 @@ The Public Info API is a single POST endpoint that returns market, account, and 
 
 ## Quick start
 
-The examples below hit Mainnet. To run them against Testnet, swap the host for `testnet-api.orderly.org`.
-
 <CodeGroup>
 
 ```bash Market snapshot
@@ -53,24 +51,16 @@ Reach for it when you want to:
 
 The Public Info API is read-only — it does not place orders, move funds, or change account settings.
 
-<Note>
-All address-level data exposed here — positions, open orders, fills, deposits, withdrawals, PnL — is **public by design**. Any caller can query any wallet without permission. Builders should not treat these fields as private when building on top of this API.
-</Note>
-
 ## Endpoint
 
-| Environment | URL |
-| --- | --- |
-| Mainnet | `POST https://api.orderly.org/v1/public/query` |
-| Testnet | `POST https://testnet-api.orderly.org/v1/public/query` |
-
 ```
+POST https://api.orderly.org/v1/public/query
 Content-Type: application/json
 
 { "type": "<query type>", ...params }
 ```
 
-Every request goes to the same path; the `type` field in the JSON body selects the handler.
+Every request goes to the same URL. The `type` field selects the handler.
 
 ## Response envelope
 
