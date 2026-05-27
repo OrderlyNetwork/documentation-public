@@ -37,23 +37,19 @@ curl -s -XPOST -H "Content-Type: application/json" \
 
 </CodeGroup>
 
-## When to use this vs the existing APIs
+## When to use the Public Info API
 
-The Public Info API is a **new, additive surface** — it does not replace the existing REST or WebSocket APIs. Both surfaces run side by side and have **independent rate-limit pools**.
+This API is a **new, additive read-only surface**. It runs alongside the existing REST and WebSocket APIs and uses an independent rate-limit pool.
 
-| If you need to… | Use |
-| --- | --- |
-| Build a public dashboard, AI agent, or analytics tool with no user login | **Public Info API** |
-| Look up positions, orders, or PnL for **any address** (whale tracking, copy trading) | **Public Info API** |
-| Read your own account inside a builder app (already authenticated) | Either — REST `User API` if you already have auth wired up, Public Info API if you want zero-auth |
-| Place, edit, or cancel orders | [Trading API](/build-on-omnichain/restful-api/private/create-order) (auth required) |
-| Settle PnL, withdraw, transfer, change leverage / margin mode | [User API](/build-on-omnichain/restful-api/private/update-leverage-setting) (auth required) |
-| Stream real-time prices, orderbook updates, or account events | [WebSocket API](/build-on-omnichain/websocket-api/introduction) |
-| Drive a TradingView chart | [`/v1/tv/*`](/build-on-omnichain/restful-api/public/get-tradingview-history-bars) |
+Reach for it when you want to:
 
-<Note>
-The Public Info API **does not place orders or move funds**. It is read-only by design.
-</Note>
+- Build a public dashboard, AI agent, or analytics tool without wiring up authentication
+- Look up positions, orders, fills, or PnL for **any address** (whale tracking, copy trading, leaderboards)
+- Prototype against Orderly data quickly, no API keys required
+- Backtest strategies with historical candles, funding rates, or trade history
+- Aggregate cross-account / platform-wide views (e.g. liquidation heatmaps)
+
+The Public Info API is read-only — it does not place orders, move funds, or change account settings.
 
 ## Endpoint
 
