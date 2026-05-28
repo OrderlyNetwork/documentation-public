@@ -28,7 +28,23 @@ Platform-wide snapshot of every open position across every account. Each row inc
 
 ## Response
 
-```json
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `total_long_notional`, `total_short_notional`, `total_positions` | top-level | Aggregates over the **filtered snapshot** (not just the current page) |
+| `est_liq_price`, `unrealized_pnl`, `unsettled_pnl`, `leverage`, `margin_mode` | mixed \| null | Per-row position-calc; `null` on position-calc failure |
+| `opened_at` | int64 \| null | ms epoch when the position was first opened |
+| `margin_mode` | string \| null | `"CROSS"` or `"ISOLATED"` — clients can filter as needed |
+
+## Notes
+
+- **5s cache**
+- Sort: position ID DESC
+- For building a liquidation heatmap, aggregate `est_liq_price` into price buckets client-side
+
+<ResponseExample>
+
+```json Response
 {
   "success": true,
   "data": {
@@ -60,17 +76,4 @@ Platform-wide snapshot of every open position across every account. Each row inc
 }
 ```
 
-### Fields
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `total_long_notional`, `total_short_notional`, `total_positions` | top-level | Aggregates over the **filtered snapshot** (not just the current page) |
-| `est_liq_price`, `unrealized_pnl`, `unsettled_pnl`, `leverage`, `margin_mode` | mixed \| null | Per-row position-calc; `null` on position-calc failure |
-| `opened_at` | int64 \| null | ms epoch when the position was first opened |
-| `margin_mode` | string \| null | `"CROSS"` or `"ISOLATED"` — clients can filter as needed |
-
-## Notes
-
-- **5s cache**
-- Sort: position ID DESC
-- For building a liquidation heatmap, aggregate `est_liq_price` into price buckets client-side
+</ResponseExample>

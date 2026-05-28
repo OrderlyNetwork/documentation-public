@@ -37,7 +37,26 @@ Includes both ordinary and algo orders (algo rows include `trigger_price` / `tri
 
 ## Response
 
-```json
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `type` | string | Ordinary (`LIMIT`, `MARKET`, `IOC`, `POST_ONLY`, `FOK`, `LIQUIDATE`, `BID`, `ASK`, `SETTLEMENT`) or algo (`STOP_MARKET`, `STOP_LIMIT`, `TAKE_PROFIT_MARKET`, `TAKE_PROFIT_LIMIT`, `OCO`, `TRAILING_STOP`, `BRACKET`, `POSITIONAL_TP_SL`, `TP_SL`, `STOP_TRIGGER`, `STOP_BRACKET`) |
+| `status` | string | `FILLED` / `CANCELLED` / `REJECTED` |
+| `average_executed_price` | string \| null | `executed_amount / executed_quantity`; `null` if zero fills |
+| `trigger_price`, `trigger_status` | string \| null | Algo rows only |
+| `realized_pnl` | string \| null | `null` on algo rows |
+| `reduce_only` | bool \| null | Algo rows only |
+
+## Notes
+
+- **Status mapping:** `FILLED → [3]`, `CANCELLED → [5]`, `REJECTED → [6]`; omitting `status` queries all three
+- **Default window** is UTC-day-snapped `now − 24h` — pass an explicit `start_time` for longer lookbacks
+- **Archive cutoff** is 92 days. Queries spanning that boundary transparently combine live and archived orders
+- Sort: `(created_time DESC, order_id DESC)`
+
+<ResponseExample>
+
+```json Response
 {
   "success": true,
   "data": {
@@ -68,20 +87,4 @@ Includes both ordinary and algo orders (algo rows include `trigger_price` / `tri
 }
 ```
 
-### Fields
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `type` | string | Ordinary (`LIMIT`, `MARKET`, `IOC`, `POST_ONLY`, `FOK`, `LIQUIDATE`, `BID`, `ASK`, `SETTLEMENT`) or algo (`STOP_MARKET`, `STOP_LIMIT`, `TAKE_PROFIT_MARKET`, `TAKE_PROFIT_LIMIT`, `OCO`, `TRAILING_STOP`, `BRACKET`, `POSITIONAL_TP_SL`, `TP_SL`, `STOP_TRIGGER`, `STOP_BRACKET`) |
-| `status` | string | `FILLED` / `CANCELLED` / `REJECTED` |
-| `average_executed_price` | string \| null | `executed_amount / executed_quantity`; `null` if zero fills |
-| `trigger_price`, `trigger_status` | string \| null | Algo rows only |
-| `realized_pnl` | string \| null | `null` on algo rows |
-| `reduce_only` | bool \| null | Algo rows only |
-
-## Notes
-
-- **Status mapping:** `FILLED → [3]`, `CANCELLED → [5]`, `REJECTED → [6]`; omitting `status` queries all three
-- **Default window** is UTC-day-snapped `now − 24h` — pass an explicit `start_time` for longer lookbacks
-- **Archive cutoff** is 92 days. Queries spanning that boundary transparently combine live and archived orders
-- Sort: `(created_time DESC, order_id DESC)`
+</ResponseExample>

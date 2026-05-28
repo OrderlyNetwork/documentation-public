@@ -26,7 +26,22 @@ Single order lookup by `order_id`. Searches both live and archived orders, and p
 
 ## Response
 
-```json
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `status` | string | `PENDING_NEW` / `NEW` / `PARTIAL_FILLED` / `FILLED` / `PENDING_CANCEL` / `CANCELLED` / `REJECTED` / `REPLACED` |
+| `average_executed_price` | string \| null | Live: always `null`. Archive: decimal |
+| `total_fee`, `fee_asset` | string \| null | Live: `null`. Archive: decimal / string |
+| `trigger_price` | string \| null | Present only for algo orders |
+
+## Notes
+
+- Throws `ORDER_NOT_FOUND` (404) if the order is in neither live nor archive
+- This endpoint does not paginate (single row)
+
+<ResponseExample>
+
+```json Response
 {
   "success": true,
   "data": {
@@ -51,16 +66,4 @@ Single order lookup by `order_id`. Searches both live and archived orders, and p
 }
 ```
 
-### Fields
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `status` | string | `PENDING_NEW` / `NEW` / `PARTIAL_FILLED` / `FILLED` / `PENDING_CANCEL` / `CANCELLED` / `REJECTED` / `REPLACED` |
-| `average_executed_price` | string \| null | Live: always `null`. Archive: decimal |
-| `total_fee`, `fee_asset` | string \| null | Live: `null`. Archive: decimal / string |
-| `trigger_price` | string \| null | Present only for algo orders |
-
-## Notes
-
-- Throws `ORDER_NOT_FOUND` (404) if the order is in neither live nor archive
-- This endpoint does not paginate (single row)
+</ResponseExample>

@@ -24,7 +24,24 @@ Recent **taker-side** market trades for a symbol. Each trade carries the taker's
 
 ## Response
 
-```json
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `side` | string | Taker side — `BUY` or `SELL` |
+| `executed_price`, `executed_quantity` | string | Decimal |
+| `address` | string | Taker's wallet address (full, not truncated) |
+| `account_id` | string | Taker's account |
+| `broker_id` | string | Broker the taker is on |
+| `executed_timestamp` | int64 | ms epoch |
+
+## Notes
+
+- Filters `is_maker = false` so every trade appears exactly once (taker only)
+- Per-row address lookup cached 60s
+
+<ResponseExample>
+
+```json Response
 {
   "success": true,
   "data": {
@@ -46,18 +63,4 @@ Recent **taker-side** market trades for a symbol. Each trade carries the taker's
 }
 ```
 
-### Fields
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `side` | string | Taker side — `BUY` or `SELL` |
-| `executed_price`, `executed_quantity` | string | Decimal |
-| `address` | string | Taker's wallet address (full, not truncated) |
-| `account_id` | string | Taker's account |
-| `broker_id` | string | Broker the taker is on |
-| `executed_timestamp` | int64 | ms epoch |
-
-## Notes
-
-- Filters `is_maker = false` so every trade appears exactly once (taker only)
-- Per-row address lookup cached 60s
+</ResponseExample>

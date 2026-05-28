@@ -24,7 +24,22 @@ Snapshot of a symbol's orderbook with mid price and spread.
 
 ## Response
 
-```json
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `mid_price` | string \| null | `(best_ask + best_bid) / 2`, 8 decimals (`HALF_DOWN`); `null` if either side empty |
+| `spread` | string \| null | `best_ask − best_bid`; `null` if either side empty |
+| `asks[]`, `bids[]` | array | Best-first; trimmed to `max_level` |
+| `ts` (inner) | int64 | Snapshot timestamp from cache (or `now` on cold cache) |
+
+## Notes
+
+- Served from an in-memory snapshot — typically sub-millisecond
+- An empty book returns empty `asks` / `bids` arrays (not an error)
+
+<ResponseExample>
+
+```json Response
 {
   "success": true,
   "data": {
@@ -39,16 +54,4 @@ Snapshot of a symbol's orderbook with mid price and spread.
 }
 ```
 
-### Fields
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `mid_price` | string \| null | `(best_ask + best_bid) / 2`, 8 decimals (`HALF_DOWN`); `null` if either side empty |
-| `spread` | string \| null | `best_ask − best_bid`; `null` if either side empty |
-| `asks[]`, `bids[]` | array | Best-first; trimmed to `max_level` |
-| `ts` (inner) | int64 | Snapshot timestamp from cache (or `now` on cold cache) |
-
-## Notes
-
-- Served from an in-memory snapshot — typically sub-millisecond
-- An empty book returns empty `asks` / `bids` arrays (not an error)
+</ResponseExample>

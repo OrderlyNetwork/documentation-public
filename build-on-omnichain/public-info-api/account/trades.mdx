@@ -33,7 +33,22 @@ Executed trade fills for an address. The handler transparently combines real-tim
 
 ## Response
 
-```json
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `id` | string | Transaction ID |
+| `order_id` | string \| null | `null` on orphaned / liquidation fills |
+| `is_maker` | bool | `true` = maker, `false` = taker |
+| `realized_pnl` | string \| null | `null` for fills older than 24 hours (archive does not retain this column) |
+
+## Notes
+
+- **24-hour boundary:** real-time data covers `[max(start_time, now − 24h), end_time]`; archived data covers `[start_time, min(end_time, now − 24h − 1ms)]`
+- Treat the cursor as opaque — always pass it back as-is
+
+<ResponseExample>
+
+```json Response
 {
   "success": true,
   "data": {
@@ -58,16 +73,4 @@ Executed trade fills for an address. The handler transparently combines real-tim
 }
 ```
 
-### Fields
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `id` | string | Transaction ID |
-| `order_id` | string \| null | `null` on orphaned / liquidation fills |
-| `is_maker` | bool | `true` = maker, `false` = taker |
-| `realized_pnl` | string \| null | `null` for fills older than 24 hours (archive does not retain this column) |
-
-## Notes
-
-- **24-hour boundary:** real-time data covers `[max(start_time, now − 24h), end_time]`; archived data covers `[start_time, min(end_time, now − 24h − 1ms)]`
-- Treat the cursor as opaque — always pass it back as-is
+</ResponseExample>

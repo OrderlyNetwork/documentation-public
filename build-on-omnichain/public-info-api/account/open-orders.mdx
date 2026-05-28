@@ -29,7 +29,25 @@ Open and partially-filled orders for an address. Combines top-level ordinary and
 
 ## Response
 
-```json
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `order_id` | string | 64-bit integer encoded as string |
+| `side` | string | `BUY` / `SELL` / `BOTH` |
+| `type` | string | See [`historicalOrders`](/build-on-omnichain/public-info-api/account/historical-orders) for the full enum |
+| `price` | string \| null | `null` for `MARKET` or trigger-without-price algo orders |
+| `trigger_price` | string \| null | Algo orders only |
+| `trigger_status` | string \| null | `PENDING` / `TRIGGERED` / `FAILED`; `null` for ordinary orders or `USELESS` status |
+| `status` | string | Always `"OPEN"` for this endpoint |
+| `reduce_only` | bool \| null | Algo orders only |
+
+## Notes
+
+- Sort: `(created_time DESC, order_id DESC)`; cursor compares `(ts, id)` lexicographically
+
+<ResponseExample>
+
+```json Response
 {
   "success": true,
   "data": {
@@ -56,19 +74,4 @@ Open and partially-filled orders for an address. Combines top-level ordinary and
 }
 ```
 
-### Fields
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `order_id` | string | 64-bit integer encoded as string |
-| `side` | string | `BUY` / `SELL` / `BOTH` |
-| `type` | string | See [`historicalOrders`](/build-on-omnichain/public-info-api/account/historical-orders) for the full enum |
-| `price` | string \| null | `null` for `MARKET` or trigger-without-price algo orders |
-| `trigger_price` | string \| null | Algo orders only |
-| `trigger_status` | string \| null | `PENDING` / `TRIGGERED` / `FAILED`; `null` for ordinary orders or `USELESS` status |
-| `status` | string | Always `"OPEN"` for this endpoint |
-| `reduce_only` | bool \| null | Algo orders only |
-
-## Notes
-
-- Sort: `(created_time DESC, order_id DESC)`; cursor compares `(ts, id)` lexicographically
+</ResponseExample>

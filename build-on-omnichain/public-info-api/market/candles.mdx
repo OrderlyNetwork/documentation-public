@@ -31,7 +31,20 @@ OHLCV candles for a symbol and interval.
 
 ## Response
 
-```json
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `open`, `high`, `low`, `close` | string | Decimal price |
+| `volume` | string | Base-asset volume during the candle |
+| `timestamp` | int64 | Candle open time (ms epoch) |
+
+## Notes
+
+- 60s cache keyed by `(symbol, interval, time-range, cursor)`
+
+<ResponseExample>
+
+```json Response
 {
   "success": true,
   "data": {
@@ -51,14 +64,4 @@ OHLCV candles for a symbol and interval.
 }
 ```
 
-### Fields
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `open`, `high`, `low`, `close` | string | Decimal price |
-| `volume` | string | Base-asset volume during the candle |
-| `timestamp` | int64 | Candle open time (ms epoch) |
-
-## Notes
-
-- 60s cache keyed by `(symbol, interval, time-range, cursor)`
+</ResponseExample>

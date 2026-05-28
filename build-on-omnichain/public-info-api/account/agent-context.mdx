@@ -28,7 +28,25 @@ Equivalent to calling `accountState` + `openOrders` + `marketSummary` separately
 
 ## Response
 
-```json
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `account` | object | Single account snapshot (subset of `accountState`) |
+| `account.open_order_count` | int | Count from `openOrders`; defaults to `0` on sub-handler failure |
+| `positions[]` | array | Open positions (same shape as [`accountState`](/build-on-omnichain/public-info-api/account/account-state)) |
+| `markets[]` | array | One entry per symbol held in `positions[]`; same shape as [`marketSummary`](/build-on-omnichain/public-info-api/market/market-summary) row |
+| `markets[].24h_change_pct` | string | `(close - open) / open × 100` (computed at the bundle layer) |
+
+## Notes
+
+- **Primary account selection** (when `account_id` is omitted): the largest `account_value`, with `account_type == "main"` as the tiebreaker
+- Sub-handlers run in parallel: `accountState ‖ openOrders`, then `marketSummary` once held symbols are known
+- `markets[]` only includes symbols the account actually holds — not the entire universe
+- For the full open orders list, call [`openOrders`](/build-on-omnichain/public-info-api/account/open-orders) separately
+
+<ResponseExample>
+
+```json Response
 {
   "success": true,
   "data": {
@@ -50,19 +68,4 @@ Equivalent to calling `accountState` + `openOrders` + `marketSummary` separately
 }
 ```
 
-### Fields
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `account` | object | Single account snapshot (subset of `accountState`) |
-| `account.open_order_count` | int | Count from `openOrders`; defaults to `0` on sub-handler failure |
-| `positions[]` | array | Open positions (same shape as [`accountState`](/build-on-omnichain/public-info-api/account/account-state)) |
-| `markets[]` | array | One entry per symbol held in `positions[]`; same shape as [`marketSummary`](/build-on-omnichain/public-info-api/market/market-summary) row |
-| `markets[].24h_change_pct` | string | `(close - open) / open × 100` (computed at the bundle layer) |
-
-## Notes
-
-- **Primary account selection** (when `account_id` is omitted): the largest `account_value`, with `account_type == "main"` as the tiebreaker
-- Sub-handlers run in parallel: `accountState ‖ openOrders`, then `marketSummary` once held symbols are known
-- `markets[]` only includes symbols the account actually holds — not the entire universe
-- For the full open orders list, call [`openOrders`](/build-on-omnichain/public-info-api/account/open-orders) separately
+</ResponseExample>

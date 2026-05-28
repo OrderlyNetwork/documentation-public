@@ -33,7 +33,22 @@ Daily snapshots of account value plus cumulative PnL, UTC-day-aligned.
 
 ## Response
 
-```json
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `rows[]` | array | DESC by `timestamp` |
+| `.account_value` | string | Daily collateral snapshot (`holding + frozen + upnl`) |
+| `.cumulative_pnl` | string | Account value change since the earliest day in the returned window |
+| `.timestamp` | int64 | UTC-day-aligned ms epoch |
+
+## Notes
+
+- Throws `INVALID_PARAM` for `interval ≠ "1d"` or `limit ∉ [1, 365]`
+- For real-time collateral / unrealized PnL breakdown, use [`accountState`](/build-on-omnichain/public-info-api/account/account-state).
+
+<ResponseExample>
+
+```json Response
 {
   "success": true,
   "data": {
@@ -50,16 +65,4 @@ Daily snapshots of account value plus cumulative PnL, UTC-day-aligned.
 }
 ```
 
-### Fields
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `rows[]` | array | DESC by `timestamp` |
-| `.account_value` | string | Daily collateral snapshot (`holding + frozen + upnl`) |
-| `.cumulative_pnl` | string | Account value change since the earliest day in the returned window |
-| `.timestamp` | int64 | UTC-day-aligned ms epoch |
-
-## Notes
-
-- Throws `INVALID_PARAM` for `interval ≠ "1d"` or `limit ∉ [1, 365]`
-- For real-time collateral / unrealized PnL breakdown, use [`accountState`](/build-on-omnichain/public-info-api/account/account-state).
+</ResponseExample>

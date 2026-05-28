@@ -34,7 +34,15 @@ Composite snapshot for a single symbol. The `include` field controls which of th
 
 ## Response
 
-```json
+
+## Notes
+
+- Sub-sections omitted from `include` are absent from the response (key is missing, not `null`)
+- See individual endpoints for field-level details: [`marketSummary`](/build-on-omnichain/public-info-api/market/market-summary), [`marketTrades`](/build-on-omnichain/public-info-api/market/market-trades), [`fundingRateHistory`](/build-on-omnichain/public-info-api/market/funding-rate-history), [`candles`](/build-on-omnichain/public-info-api/market/candles)
+
+<ResponseExample>
+
+```json Response
 {
   "success": true,
   "data": {
@@ -52,7 +60,4 @@ Composite snapshot for a single symbol. The `include` field controls which of th
 }
 ```
 
-## Notes
-
-- Sub-sections omitted from `include` are absent from the response (key is missing, not `null`)
-- See individual endpoints for field-level details: [`marketSummary`](/build-on-omnichain/public-info-api/market/market-summary), [`marketTrades`](/build-on-omnichain/public-info-api/market/market-trades), [`fundingRateHistory`](/build-on-omnichain/public-info-api/market/funding-rate-history), [`candles`](/build-on-omnichain/public-info-api/market/candles)
+</ResponseExample>

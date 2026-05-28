@@ -25,7 +25,22 @@ Recent liquidation events across the platform. Each row carries the liquidated a
 
 ## Response
 
-```json
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `side` | string | `LONG` (liquidated long) or `SHORT` |
+| `position_qty`, `notional` | string | Decimal |
+| `mark_price`, `est_liq_price` | string | Mark price at the moment of liquidation; named for symmetry with live `est_liq_price` |
+| `address`, `account_id`, `broker_id` | string \| null | `null` if user lookup fails |
+| `timestamp` | int64 | ms epoch |
+
+## Notes
+
+- Account fields resolved via internal user lookup (60s cache)
+
+<ResponseExample>
+
+```json Response
 {
   "success": true,
   "data": {
@@ -49,16 +64,4 @@ Recent liquidation events across the platform. Each row carries the liquidated a
 }
 ```
 
-### Fields
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `side` | string | `LONG` (liquidated long) or `SHORT` |
-| `position_qty`, `notional` | string | Decimal |
-| `mark_price`, `est_liq_price` | string | Mark price at the moment of liquidation; named for symmetry with live `est_liq_price` |
-| `address`, `account_id`, `broker_id` | string \| null | `null` if user lookup fails |
-| `timestamp` | int64 | ms epoch |
-
-## Notes
-
-- Account fields resolved via internal user lookup (60s cache)
+</ResponseExample>

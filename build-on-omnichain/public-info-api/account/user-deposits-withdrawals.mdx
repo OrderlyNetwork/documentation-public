@@ -33,7 +33,19 @@ Deposit / withdraw transaction history for an address. Optional filters for dire
 
 ## Response
 
-```json
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `id` | string | Auto-increment transaction ID encoded as string |
+| `side` | string | `"deposit"` or `"withdraw"` |
+| `status` | string | `SUCCESS` / `PENDING` / `FAILED` / … |
+| `chain_id` | string | EVM chain ID of the transaction |
+| `tx_id` | string | On-chain transaction hash |
+| `created_time` | int64 | ms epoch |
+
+<ResponseExample>
+
+```json Response
 {
   "success": true,
   "data": {
@@ -56,13 +68,4 @@ Deposit / withdraw transaction history for an address. Optional filters for dire
 }
 ```
 
-### Fields
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `id` | string | Auto-increment transaction ID encoded as string |
-| `side` | string | `"deposit"` or `"withdraw"` |
-| `status` | string | `SUCCESS` / `PENDING` / `FAILED` / … |
-| `chain_id` | string | EVM chain ID of the transaction |
-| `tx_id` | string | On-chain transaction hash |
-| `created_time` | int64 | ms epoch |
+</ResponseExample>

@@ -29,7 +29,22 @@ Equivalent to `accountState` + `openOrders` (symbol-filtered) + `marketSummary`,
 
 ## Response
 
-```json
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `position` | object \| null | `null` if the account does not hold this symbol |
+| `open_orders[]` | array | Already filtered to `symbol` — no client-side filtering needed |
+| `market` | object \| null | `null` if the symbol is absent from the latest summary |
+| `account_summary` | object \| null | `null` on `ADDRESS_NOT_FOUND` |
+
+## Notes
+
+- **Primary account selection** (when `account_id` is omitted): the largest `account_value`, with `account_type == "main"` as the tiebreaker
+- Sub-handlers run in parallel
+
+<ResponseExample>
+
+```json Response
 {
   "success": true,
   "data": {
@@ -55,16 +70,4 @@ Equivalent to `accountState` + `openOrders` (symbol-filtered) + `marketSummary`,
 }
 ```
 
-### Fields
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `position` | object \| null | `null` if the account does not hold this symbol |
-| `open_orders[]` | array | Already filtered to `symbol` — no client-side filtering needed |
-| `market` | object \| null | `null` if the symbol is absent from the latest summary |
-| `account_summary` | object \| null | `null` on `ADDRESS_NOT_FOUND` |
-
-## Notes
-
-- **Primary account selection** (when `account_id` is omitted): the largest `account_value`, with `account_type == "main"` as the tiebreaker
-- Sub-handlers run in parallel
+</ResponseExample>

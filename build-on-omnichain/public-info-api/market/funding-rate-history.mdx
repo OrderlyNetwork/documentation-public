@@ -28,7 +28,20 @@ Historical funding rates for a symbol. Rows are written at 8-hour epoch boundari
 
 ## Response
 
-```json
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `funding_rate` | string | Per-8h cycle decimal |
+| `mark_price` | string | Mark price snapped to the funding epoch |
+| `funding_rate_timestamp` | int64 | Funding epoch (ms epoch UTC) |
+
+## Notes
+
+- 30s cache
+
+<ResponseExample>
+
+```json Response
 {
   "success": true,
   "data": {
@@ -45,14 +58,4 @@ Historical funding rates for a symbol. Rows are written at 8-hour epoch boundari
 }
 ```
 
-### Fields
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `funding_rate` | string | Per-8h cycle decimal |
-| `mark_price` | string | Mark price snapped to the funding epoch |
-| `funding_rate_timestamp` | int64 | Funding epoch (ms epoch UTC) |
-
-## Notes
-
-- 30s cache
+</ResponseExample>

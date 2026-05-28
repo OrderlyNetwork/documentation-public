@@ -26,19 +26,6 @@ Whale research bundle. Combines the address's account state with its most recent
 
 ## Response
 
-```json
-{
-  "success": true,
-  "data": {
-    "account": { /* like agentContext.account */ },
-    "positions": [ /* like accountState.positions[] */ ],
-    "recent_trades": [ /* like trades.rows[] */ ]
-  },
-  "ts": 1779269143700
-}
-```
-
-### Fields
 
 | Field | Type | Notes |
 | --- | --- | --- |
@@ -50,3 +37,19 @@ Whale research bundle. Combines the address's account state with its most recent
 
 - Sub-handlers run in parallel
 - Failures degrade gracefully — individual sections may be empty / `null` without failing the whole call
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "account": { /* like agentContext.account */ },
+    "positions": [ /* like accountState.positions[] */ ],
+    "recent_trades": [ /* like trades.rows[] */ ]
+  },
+  "ts": 1779269143700
+}
+```
+
+</ResponseExample>

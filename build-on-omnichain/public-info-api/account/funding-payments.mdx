@@ -32,7 +32,24 @@ Funding-fee payment history for an address. Each row shows the funding rate at t
 
 ## Response
 
-```json
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `funding_rate` | string | Per-8h cycle decimal |
+| `funding_fee` | string | Signed: `> 0` → user pays, `< 0` → user receives |
+| `position_qty`, `mark_price` | string | Snapshot at the funding epoch |
+| `funding_rate_timestamp` | int64 | Funding epoch (ms epoch UTC) |
+| `payment_type` | string \| null | `"Pay"` / `"Receive"` / `null` when `funding_fee == 0` |
+| `funding_status` | string | `"Settled"` (≤ latest settled version) or `"Accrued"` (pending; often `funding_fee == 0`). Defaults to `"Settled"` if the settlement table is unavailable |
+| `margin_mode` | string | `"CROSS"` or `"ISOLATED"` |
+
+## Notes
+
+- Default behavior: no time filter — returns the entire history. Use `start_time` to bound the window.
+
+<ResponseExample>
+
+```json Response
 {
   "success": true,
   "data": {
@@ -55,18 +72,4 @@ Funding-fee payment history for an address. Each row shows the funding rate at t
 }
 ```
 
-### Fields
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `funding_rate` | string | Per-8h cycle decimal |
-| `funding_fee` | string | Signed: `> 0` → user pays, `< 0` → user receives |
-| `position_qty`, `mark_price` | string | Snapshot at the funding epoch |
-| `funding_rate_timestamp` | int64 | Funding epoch (ms epoch UTC) |
-| `payment_type` | string \| null | `"Pay"` / `"Receive"` / `null` when `funding_fee == 0` |
-| `funding_status` | string | `"Settled"` (≤ latest settled version) or `"Accrued"` (pending; often `funding_fee == 0`). Defaults to `"Settled"` if the settlement table is unavailable |
-| `margin_mode` | string | `"CROSS"` or `"ISOLATED"` |
-
-## Notes
-
-- Default behavior: no time filter — returns the entire history. Use `start_time` to bound the window.
+</ResponseExample>

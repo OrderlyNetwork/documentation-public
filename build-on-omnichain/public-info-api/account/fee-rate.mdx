@@ -30,9 +30,23 @@ Response shape depends on params:
 | `broker_id` | string | No | — | Triggers `sub_accounts[]` shape |
 | `account_id` | string | No | — | Triggers flat-object shape |
 
-## Response (with `account_id`)
+## Response
 
-```json
+| Field | Type | Notes |
+| --- | --- | --- |
+| `tier` | string \| null | `PUBLIC` / `SILVER` / `GOLD` / `PLATINUM` / `DIAMOND` |
+| `futures_tier` | string \| null | Same value as `tier` |
+| `maker_fee_rate`, `taker_fee_rate` | string \| null | Decimal (`bps / 10000`) |
+| `30d_volume` | string | Sum of executed perp notional over the last 30 days; `"0"` if none |
+
+## Notes
+
+- 60s cache keyed by `(address, broker_id, account_id)`
+- Throws `ADDRESS_NOT_FOUND` (404) if no accounts match
+
+<ResponseExample>
+
+```json With account_id (flat)
 {
   "success": true,
   "data": {
@@ -46,9 +60,7 @@ Response shape depends on params:
 }
 ```
 
-## Response (with `broker_id`, no `account_id`)
-
-```json
+```json With broker_id (sub_accounts)
 {
   "success": true,
   "data": {
@@ -69,9 +81,7 @@ Response shape depends on params:
 }
 ```
 
-## Response (address only)
-
-```json
+```json Address only (accounts)
 {
   "success": true,
   "data": {
@@ -92,16 +102,4 @@ Response shape depends on params:
 }
 ```
 
-### Fields
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `tier` | string \| null | `PUBLIC` / `SILVER` / `GOLD` / `PLATINUM` / `DIAMOND` |
-| `futures_tier` | string \| null | Same value as `tier` |
-| `maker_fee_rate`, `taker_fee_rate` | string \| null | Decimal (`bps / 10000`) |
-| `30d_volume` | string | Sum of executed perp notional over the last 30 days; `"0"` if none |
-
-## Notes
-
-- 60s cache keyed by `(address, broker_id, account_id)`
-- Throws `ADDRESS_NOT_FOUND` (404) if no accounts match
+</ResponseExample>

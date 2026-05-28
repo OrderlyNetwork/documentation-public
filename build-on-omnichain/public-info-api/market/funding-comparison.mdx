@@ -22,7 +22,22 @@ Per-symbol funding rate comparison across major exchanges. Reports the last obse
 
 ## Response
 
-```json
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `next_funding_time` | int64 | ms epoch |
+| `exchanges[].name` | string | Venue identifier (e.g. `binance`, `bybit`, `orderly`) |
+| `exchanges[].last` | string | Last observed funding rate |
+| `exchanges[].1d` / `.7d` / `.30d` | string | Rolling-window averages |
+
+## Notes
+
+- 60s per-symbol cache, bounded at 256 entries
+- No pagination
+
+<ResponseExample>
+
+```json Response
 {
   "success": true,
   "data": {
@@ -53,16 +68,4 @@ Per-symbol funding rate comparison across major exchanges. Reports the last obse
 }
 ```
 
-### Fields
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `next_funding_time` | int64 | ms epoch |
-| `exchanges[].name` | string | Venue identifier (e.g. `binance`, `bybit`, `orderly`) |
-| `exchanges[].last` | string | Last observed funding rate |
-| `exchanges[].1d` / `.7d` / `.30d` | string | Rolling-window averages |
-
-## Notes
-
-- 60s per-symbol cache, bounded at 256 entries
-- No pagination
+</ResponseExample>
