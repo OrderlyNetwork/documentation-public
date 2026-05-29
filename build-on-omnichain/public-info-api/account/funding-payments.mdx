@@ -1,0 +1,75 @@
+---
+title: "Funding payments"
+description: "Funding-fee payment history with payment direction and settlement status."
+---
+
+Funding-fee payment history for an address. Each row shows the funding rate at the epoch, the resulting fee, and whether the fee has been settled.
+
+**Weight:** `5`
+
+## Request
+
+```json
+{
+  "type": "fundingPayments",
+  "address": "0x1234567890abcdef1234567890abcdef12345678",
+  "symbol": "PERP_BTC_USDC",
+  "start_time": 1715000000000,
+  "limit": 100
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `address` | string | Yes | — | Wallet address |
+| `broker_id` | string | No | — | Optional broker scope |
+| `account_id` | string | No | — | Optional |
+| `symbol` | string | No | — | Symbol filter |
+| `start_time` | int64 | No | — | ms epoch |
+| `end_time` | int64 | No | — | ms epoch |
+| `limit` | int | No | 100 | 1..500 |
+| `cursor` | string | No | — | Opaque cursor |
+
+## Response
+
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `funding_rate` | string | Per-8h cycle decimal |
+| `funding_fee` | string | Signed: `> 0` → user pays, `< 0` → user receives |
+| `position_qty`, `mark_price` | string | Snapshot at the funding epoch |
+| `funding_rate_timestamp` | int64 | Funding epoch (ms epoch UTC) |
+| `payment_type` | string \| null | `"Pay"` / `"Receive"` / `null` when `funding_fee == 0` |
+| `funding_status` | string | `"Settled"` (≤ latest settled version) or `"Accrued"` (pending; often `funding_fee == 0`). Defaults to `"Settled"` if the settlement table is unavailable |
+| `margin_mode` | string | `"CROSS"` or `"ISOLATED"` |
+
+## Notes
+
+- Default behavior: no time filter — returns the entire history. Use `start_time` to bound the window.
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "rows": [
+      {
+        "symbol": "PERP_BTC_USDC",
+        "funding_rate": "0.0001",
+        "funding_fee": "10.50",
+        "position_qty": "0.5",
+        "mark_price": "45000.00",
+        "funding_rate_timestamp": 1714900000000,
+        "payment_type": "Pay",
+        "funding_status": "Settled",
+        "margin_mode": "CROSS"
+      }
+    ],
+    "next_cursor": null
+  },
+  "ts": 1779269143700
+}
+```
+
+</ResponseExample>

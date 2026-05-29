@@ -1,0 +1,251 @@
+---
+title: "Public Info API"
+description: "Zero-auth, single-endpoint query API for AI agents, quant traders, and analytics. POST /v1/public/query with a type field — covers market, account, and platform data."
+---
+
+The Public Info API is a single POST endpoint that returns market, account, and platform data with **no authentication**. It is designed for AI trading agents, quant traders, analytics platforms, copy-trade bots, and whale trackers.
+
+**Highlights:**
+
+- **One endpoint, 24 query types** — switch behavior via the `type` field
+- **Zero auth** — every type, including by-address account queries, is callable from any IP without keys
+- **Address-discoverable** — any wallet can be inspected (positions, orders, fills, PnL)
+- **Raw data** — clients compute their own indicators; all monetary values are decimal strings
+- **Independent rate-limit pool** — does not share quota with the existing REST or WebSocket APIs
+
+## Quick start
+
+<CodeGroup>
+
+```bash Market snapshot
+curl -s -XPOST -H "Content-Type: application/json" \
+  https://api.orderly.org/v1/public/query \
+  -d '{"type":"marketSummary"}'
+```
+
+```bash Account state by address
+curl -s -XPOST -H "Content-Type: application/json" \
+  https://api.orderly.org/v1/public/query \
+  -d '{"type":"accountState","address":"0x1234567890abcdef1234567890abcdef12345678"}'
+```
+
+```bash Free quota check
+curl -s -XPOST -H "Content-Type: application/json" \
+  https://api.orderly.org/v1/public/query \
+  -d '{"type":"rateLimitStatus"}'
+```
+
+</CodeGroup>
+
+## When to use the Public Info API
+
+This API is a **new, additive read-only surface**. It runs alongside the existing REST and WebSocket APIs and uses an independent rate-limit pool.
+
+Reach for it when you want to:
+
+- Build a public dashboard, AI agent, or analytics tool without wiring up authentication
+- Look up positions, orders, fills, or PnL for **any address** (whale tracking, copy trading, leaderboards)
+- Prototype against Orderly data quickly, no API keys required
+- Backtest strategies with historical candles, funding rates, or trade history
+- Aggregate cross-account / platform-wide views (e.g. liquidation heatmaps)
+
+The Public Info API is read-only — it does not place orders, move funds, or change account settings.
+
+## Endpoint
+
+```
+POST https://api.orderly.org/v1/public/query
+Content-Type: application/json
+
+{ "type": "<query type>", ...params }
+```
+
+Every request goes to the same URL. The `type` field selects the handler.
+
+## Response envelope
+
+Success:
+
+```json
+{
+  "success": true,
+  "data": { /* type-specific payload */ },
+  "ts": 1779269143700
+}
+```
+
+Error:
+
+```json
+{
+  "success": false,
+  "code": "INVALID_PARAM",
+  "message": "...",
+  "type": "<echoed type>",
+  "ts": 1779269143700
+}
+```
+
+`ts` is the server's response timestamp in milliseconds (UTC).
+
+## Error codes
+
+| Code | HTTP | Meaning |
+| --- | --- | --- |
+| `UNKNOWN_TYPE` | 400 | `type` field missing or not a registered handler |
+| `MISSING_PARAM` | 400 | Required parameter missing |
+| `INVALID_PARAM` | 400 | Parameter present but wrong type, range, or format |
+| `ADDRESS_NOT_FOUND` | 404 | `address` (optionally with `broker_id` / `account_id`) resolves to zero accounts |
+| `ORDER_NOT_FOUND` | 404 | `orderStatus`: `order_id` not in live or archive tables |
+| `RATE_LIMIT_EXCEEDED` | 429 | Caller exhausted IP quota — see [rate limits](#rate-limits) |
+| `INTERNAL_ERROR` | 500 | Unhandled exception |
+| `SERVICE_UNAVAILABLE` | 503 | A downstream service timed out — usually transient, safe to retry |
+| `POSITION_CALC_TIMEOUT` | 503 | Position-calc service specifically timed out |
+
+A `RATE_LIMIT_EXCEEDED` response additionally carries `"retry_after": <ms epoch>` and a `Retry-After` HTTP header (in seconds).
+
+## Address resolution
+
+Endpoints that take `address` resolve it to one or more accounts via the internal user table. The optional `broker_id` and `account_id` narrow the scope.
+
+| Input | Scope |
+| --- | --- |
+| `address` only | All accounts (`REGULAR` + `SUB`) under the address |
+| `address` + `broker_id` | All accounts within that broker |
+| `address` + `account_id` | One specific account (typically returns a flat object) |
+| `address` + `broker_id` + `account_id` | One account scoped to a broker |
+
+If no accounts match, the response is `ADDRESS_NOT_FOUND` (HTTP 404).
+
+Some endpoints (`accountState`, `feeRate`) change response shape based on whether `account_id` is supplied — see the per-endpoint docs.
+
+## Pagination
+
+Paginated endpoints return `data.next_cursor` (an opaque Base64 string; `null` on the last page). Pass it back as `cursor` to fetch the next page.
+
+```json
+{
+  "data": {
+    "rows": [ /* ... */ ],
+    "next_cursor": "eyJsYXN0X3RzIjoxNzE1MDAwMDAwMDAwfQ"
+  },
+  "ts": 1779269143700
+}
+```
+
+**Treat cursors as opaque** — do not parse them. Cursor contents vary by endpoint and may change between versions.
+
+| Endpoint | Cursor shape |
+| --- | --- |
+| `candles`, `fundingRateHistory` | `{ "last_ts": <ms> }` |
+| `openOrders`, `historicalOrders` | `{ "last_ts": <ms>, "last_id": <order_id> }` |
+| `trades` | `{ "last_id": <txn_id>, "src": <string> }` |
+| `fundingPayments` | `{ "last_id": <funding_detail_id> }` |
+| `liquidations` | `{ "last_id": <record_id> }` |
+| `userDepositsWithdrawals` | `{ "last_id": <transaction_id> }` |
+| `portfolio` | `{ "last_date": <ms> }` |
+| `topAddresses` | `{ "last_value": "<decimal>" }` |
+| `platformPositions` | `{ "last_id": <position_id> }` |
+
+`marketSummary`, `marketTrades`, `fundingComparison`, `orderbook`, and `rateLimitStatus` do not paginate — they return a bounded snapshot in a single response.
+
+## Time conventions
+
+- All timestamps are **milliseconds since Unix epoch (UTC)**
+- Range validation: timestamps must lie in `[0, 253402300799000]` (year 9999); out-of-range throws `INVALID_PARAM`
+- Several endpoints snap default lookbacks to UTC day boundaries — noted per endpoint
+
+## Rate limits
+
+<Warning>
+The Public Info API has **its own rate-limit pool**, separate from the existing REST and WebSocket APIs. Calls to this endpoint do not consume your REST API quota, and vice versa.
+</Warning>
+
+### Weight pool
+
+Quota is tracked per IP, in weight units, on a rolling one-minute window.
+
+| Tier | Weight / min |
+| --- | --- |
+| Default (anonymous IP) | **1200** |
+
+Each query type costs a different amount of weight. Pick lighter types when polling.
+
+### Weight per query type
+
+| Weight | Query types |
+| --- | --- |
+| **0** | `rateLimitStatus` (never consumes quota — safe to poll) |
+| **1** | `feeRate`, `marketSummary`, `marketTrades`, `orderbook` |
+| **2** | `agentContext`, `candles`, `fundingComparison`, `fundingRateHistory`, `liquidations`, `marketDetail`, `positionContext` |
+| **3** | `whaleContext` |
+| **5** | `accounts`, `accountState`, `fundingPayments`, `historicalOrders`, `openOrders`, `orderStatus`, `portfolio`, `trades`, `userDepositsWithdrawals` |
+| **10** | `topAddresses` |
+| **20** | `platformPositions` |
+
+### Response headers
+
+Every response includes:
+
+```
+X-RateLimit-Limit: 1200
+X-RateLimit-Remaining: 1148
+X-RateLimit-Reset: 1779269200000
+X-RateLimit-Weight: 2
+```
+
+`X-RateLimit-Weight` reports how much this single call consumed.
+
+### Over-quota response
+
+HTTP `429` with:
+
+```json
+{
+  "success": false,
+  "code": "RATE_LIMIT_EXCEEDED",
+  "message": "Rate limit exceeded. Retry after 1779269200000",
+  "retry_after": 1779269200000,
+  "ts": 1779269143700
+}
+```
+
+A `Retry-After` HTTP header (in seconds) is included.
+
+### `rateLimitStatus`
+
+Read your IP's quota state for the rolling one-minute window. Weight: **0** — calling it does not consume any quota, so it is safe to poll on every loop iteration.
+
+**Request:**
+
+```json
+{ "type": "rateLimitStatus" }
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "limit": 1200,
+    "remaining": 500,
+    "reset": 1779269200000,
+    "tier": "default"
+  },
+  "ts": 1779269143700
+}
+```
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `limit` | int64 | Total weight available per window (1200 for the default tier) |
+| `remaining` | int64 | Weight still available in the **current** window, after all consumption so far. Weighted calls deduct from this value before the next `rateLimitStatus` reads it |
+| `reset` | int64 | ms epoch when the current window ends. Windows roll forward continuously — `remaining` springs back up to `limit` after `reset` |
+| `tier` | string | Quota tier name; `"default"` for anonymous IPs |
+
+## Query types
+
+- **Market data** — `marketSummary`, `marketDetail`, `orderbook`, `candles`, `marketTrades`, `liquidations`, `fundingRateHistory`, `fundingComparison`
+- **Account data** (require `address`) — `accounts`, `accountState`, `agentContext`, `feeRate`, `fundingPayments`, `historicalOrders`, `openOrders`, `orderStatus`, `portfolio`, `positionContext`, `trades`, `userDepositsWithdrawals`, `whaleContext`
+- **Platform data** — `topAddresses`, `platformPositions`

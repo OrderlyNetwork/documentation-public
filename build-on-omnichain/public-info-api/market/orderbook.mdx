@@ -1,0 +1,57 @@
+---
+title: "Orderbook"
+description: "Orderbook snapshot with mid price and spread."
+---
+
+Snapshot of a symbol's orderbook with mid price and spread.
+
+**Weight:** `1`
+
+## Request
+
+```json
+{
+  "type": "orderbook",
+  "symbol": "PERP_BTC_USDC",
+  "max_level": 100
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `symbol` | string | Yes | — | Must exist in the `symbols` table; unknown → `INVALID_PARAM` |
+| `max_level` | int | No | 100 | 1..1000 (silently clamped) |
+
+## Response
+
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `mid_price` | string \| null | `(best_ask + best_bid) / 2`, 8 decimals (`HALF_DOWN`); `null` if either side empty |
+| `spread` | string \| null | `best_ask − best_bid`; `null` if either side empty |
+| `asks[]`, `bids[]` | array | Best-first; trimmed to `max_level` |
+| `ts` (inner) | int64 | Snapshot timestamp from cache (or `now` on cold cache) |
+
+## Notes
+
+- Served from an in-memory snapshot — typically sub-millisecond
+- An empty book returns empty `asks` / `bids` arrays (not an error)
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "symbol": "PERP_BTC_USDC",
+    "mid_price": "77338.35",
+    "spread": "1.70",
+    "asks": [{ "price": "77339.20", "quantity": "0.45" }],
+    "bids": [{ "price": "77337.50", "quantity": "0.32" }],
+    "ts": 1714900000123
+  },
+  "ts": 1779269143700
+}
+```
+
+</ResponseExample>

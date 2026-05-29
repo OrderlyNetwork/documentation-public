@@ -1,0 +1,78 @@
+---
+title: "Top addresses"
+description: "Leaderboard of addresses by notional / volume / PnL / trade count, with multi-window stats."
+---
+
+Leaderboard of addresses ranked by the chosen `sort_by` metric. Returns multi-window PnL, volume, and win-rate per address. Useful as the discovery step before drilling in with [`whaleContext`](/build-on-omnichain/public-info-api/account/whale-context) or [`accountState`](/build-on-omnichain/public-info-api/account/account-state).
+
+**Weight:** `10`
+
+## Request
+
+```json
+{
+  "type": "topAddresses",
+  "symbol": "PERP_BTC_USDC",
+  "sort_by": "pnl_7d",
+  "limit": 50
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `symbol` | string | No | — | Empty / omitted → scan all symbols |
+| `sort_by` | string | No | `"notional"` | One of `notional`, `volume_24h`, `volume_7d`, `volume_30d`, `pnl_24h`, `pnl_7d`, `pnl_30d`, `trade_count_24h` |
+| `min_notional` | decimal | No | `0` | Minimum total notional to include |
+| `limit` | int | No | 50 | 1..200 |
+| `cursor` | string | No | — | Opaque cursor |
+
+## Response
+
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `pnl_24h`, `volume_24h`, `trade_count_24h`, `win_rate_24h` | mixed | Rolling 24h (`now − 24h .. now`) |
+| `pnl_7d`, `pnl_30d`, `volume_7d`, `volume_30d` | string | Calendar windows: today's real-time stats plus the prior `N − 1` days of UTC-day-aligned history |
+| `win_rate_7d`, `win_rate_30d` | double \| null | `null` if the historical data source is unavailable |
+| `avg_trade_size` | string \| null | `volume_24h / trade_count_24h`; `null` when count is `0` |
+| `last_updated_time` | int64 | ms epoch when the cached snapshot was built; constant across all calls within the same cache window |
+
+## Notes
+
+- **30-minute cache** keyed by `(symbol, sort_by, min_notional)`. Per-row PnL and win-rate enrichment for the top 200 users is computed **inside** the cache, so all callers within the window see identical results
+- Compute staleness via `now − last_updated_time` (≤ 30 min by construction)
+- If the historical data source is unavailable, the snapshot is still served — 7d / 30d win-rate fields fall back to `null`
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "rows": [
+      {
+        "address": "0x1234...",
+        "broker_id": "orderly",
+        "total_notional": "123.45",
+        "pnl_24h": "10.5",
+        "pnl_7d": "20.3",
+        "pnl_30d": "50.2",
+        "volume_24h": "1000",
+        "volume_7d": "2000",
+        "volume_30d": "5000",
+        "trade_count_24h": 5,
+        "win_rate_24h": 0.6,
+        "win_rate_7d": 0.55,
+        "win_rate_30d": 0.58,
+        "avg_trade_size": "200",
+        "position_count": 3
+      }
+    ],
+    "next_cursor": null,
+    "last_updated_time": 1779269143700
+  },
+  "ts": 1779269143700
+}
+```
+
+</ResponseExample>

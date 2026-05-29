@@ -1,0 +1,71 @@
+---
+title: "Funding comparison"
+description: "Cross-exchange funding rate comparison: last value plus 1d / 7d / 30d averages per symbol."
+---
+
+Per-symbol funding rate comparison across major exchanges. Reports the last observed funding rate and 1-day / 7-day / 30-day averages for each venue.
+
+**Weight:** `2`
+
+## Request
+
+```json
+{
+  "type": "fundingComparison",
+  "symbol": "PERP_BTC_USDC"
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `symbol` | string | No | `null` | Omit → returns all symbols |
+
+## Response
+
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `next_funding_time` | int64 | ms epoch |
+| `exchanges[].name` | string | Venue identifier (e.g. `binance`, `bybit`, `orderly`) |
+| `exchanges[].last` | string | Last observed funding rate |
+| `exchanges[].1d` / `.7d` / `.30d` | string | Rolling-window averages |
+
+## Notes
+
+- 60s per-symbol cache, bounded at 256 entries
+- No pagination
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "rows": [
+      {
+        "symbol": "PERP_BTC_USDC",
+        "next_funding_time": 1716220800000,
+        "exchanges": [
+          {
+            "name": "binance",
+            "last": "0.00012",
+            "1d": "0.00011",
+            "7d": "0.00010",
+            "30d": "0.00009"
+          },
+          {
+            "name": "orderly",
+            "last": "0.00010",
+            "1d": "0.00009",
+            "7d": "0.00008",
+            "30d": "0.00007"
+          }
+        ]
+      }
+    ]
+  },
+  "ts": 1779269143700
+}
+```
+
+</ResponseExample>

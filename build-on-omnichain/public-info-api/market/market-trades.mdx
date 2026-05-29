@@ -1,0 +1,66 @@
+---
+title: "Market trades"
+description: "Recent taker-side trades for a symbol with address / account / broker enrichment for whale lookup."
+---
+
+Recent **taker-side** market trades for a symbol. Each trade carries the taker's address, account, and broker — useful for whale detection and cross-referencing with `accounts` or `accountState`.
+
+**Weight:** `1`
+
+## Request
+
+```json
+{
+  "type": "marketTrades",
+  "symbol": "PERP_BTC_USDC",
+  "limit": 50
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `symbol` | string | Yes | — | Trading pair |
+| `limit` | int | No | 50 | 1..200 (silently clamped) |
+
+## Response
+
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `side` | string | Taker side — `BUY` or `SELL` |
+| `executed_price`, `executed_quantity` | string | Decimal |
+| `address` | string | Taker's wallet address (full, not truncated) |
+| `account_id` | string | Taker's account |
+| `broker_id` | string | Broker the taker is on |
+| `executed_timestamp` | int64 | ms epoch |
+
+## Notes
+
+- Filters `is_maker = false` so every trade appears exactly once (taker only)
+- Per-row address lookup cached 60s
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "rows": [
+      {
+        "symbol": "PERP_BTC_USDC",
+        "side": "BUY",
+        "executed_price": "77338.10",
+        "executed_quantity": "0.0123",
+        "address": "0x1234...",
+        "account_id": "0xabc...",
+        "broker_id": "orderly",
+        "executed_timestamp": 1714900000000
+      }
+    ],
+    "next_cursor": null
+  },
+  "ts": 1779269143700
+}
+```
+
+</ResponseExample>

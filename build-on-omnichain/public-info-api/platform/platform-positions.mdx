@@ -1,0 +1,79 @@
+---
+title: "Platform positions"
+description: "Platform-wide open-position snapshot across all users. Powers liquidation heatmaps and cross-account risk views."
+---
+
+Platform-wide snapshot of every open position across every account. Each row includes the address, account, notional, leverage, margin mode, and estimated liquidation price — enough to construct liquidation heatmaps and cross-account risk views.
+
+**Weight:** `20` — this is the heaviest endpoint (scans every open position across the platform). Use sparingly.
+
+## Request
+
+```json
+{
+  "type": "platformPositions",
+  "symbol": "PERP_BTC_USDC",
+  "min_notional": "10000",
+  "limit": 500
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `symbol` | string | No | — | Symbol filter |
+| `broker_id` | string | No | — | Broker filter |
+| `min_notional` | decimal | No | `0` | Minimum position notional to include |
+| `limit` | int | No | 500 | 1..5000 |
+| `cursor` | string | No | — | Opaque cursor |
+
+## Response
+
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `total_long_notional`, `total_short_notional`, `total_positions` | top-level | Aggregates over the **filtered snapshot** (not just the current page) |
+| `est_liq_price`, `unrealized_pnl`, `unsettled_pnl`, `leverage`, `margin_mode` | mixed \| null | Per-row position-calc; `null` on position-calc failure |
+| `opened_at` | int64 \| null | ms epoch when the position was first opened |
+| `margin_mode` | string \| null | `"CROSS"` or `"ISOLATED"` — clients can filter as needed |
+
+## Notes
+
+- **5s cache**
+- Sort: position ID DESC
+- For building a liquidation heatmap, aggregate `est_liq_price` into price buckets client-side
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "total_long_notional": "50000",
+    "total_short_notional": "45000",
+    "total_positions": 1234,
+    "rows": [
+      {
+        "address": "0x1234...",
+        "account_id": "0xabc...",
+        "broker_id": "orderly",
+        "symbol": "PERP_BTC_USDC",
+        "side": "LONG",
+        "position_qty": "10.5",
+        "notional": "420000",
+        "average_open_price": "40000",
+        "mark_price": "42000",
+        "est_liq_price": "38000",
+        "unrealized_pnl": "210",
+        "unsettled_pnl": "210",
+        "leverage": 5,
+        "margin_mode": "CROSS",
+        "opened_at": 1716000000000
+      }
+    ],
+    "next_cursor": null
+  },
+  "ts": 1779269143700
+}
+```
+
+</ResponseExample>

@@ -1,0 +1,71 @@
+---
+title: "Deposits and withdrawals"
+description: "Deposit and withdrawal transaction history for an address, paginated DESC by transaction ID."
+---
+
+Deposit / withdraw transaction history for an address. Optional filters for direction, token, and time window.
+
+**Weight:** `5`
+
+## Request
+
+```json
+{
+  "type": "userDepositsWithdrawals",
+  "address": "0x1234567890abcdef1234567890abcdef12345678",
+  "side": "deposit",
+  "token": "USDC",
+  "limit": 100
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `address` | string | Yes | — | Wallet address |
+| `broker_id` | string | No | — | Optional |
+| `account_id` | string | No | — | Optional |
+| `side` | string | No | — | `"deposit"` / `"withdraw"` (case-insensitive); anything else → `INVALID_PARAM` |
+| `token` | string | No | — | Token filter (e.g. `"USDC"`) |
+| `start_time` | int64 | No | — | ms epoch |
+| `end_time` | int64 | No | — | ms epoch |
+| `limit` | int | No | 100 | 1..500 |
+| `cursor` | string | No | — | Opaque cursor |
+
+## Response
+
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `id` | string | Auto-increment transaction ID encoded as string |
+| `side` | string | `"deposit"` or `"withdraw"` |
+| `status` | string | `SUCCESS` / `PENDING` / `FAILED` / … |
+| `chain_id` | string | EVM chain ID of the transaction |
+| `tx_id` | string | On-chain transaction hash |
+| `created_time` | int64 | ms epoch |
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "rows": [
+      {
+        "id": "12345",
+        "token": "USDC",
+        "side": "deposit",
+        "amount": "1000.5",
+        "fee": "0.5",
+        "chain_id": "1",
+        "tx_id": "0xabc...",
+        "status": "SUCCESS",
+        "created_time": 1715000000000
+      }
+    ],
+    "next_cursor": null
+  },
+  "ts": 1779269143700
+}
+```
+
+</ResponseExample>

@@ -1,0 +1,67 @@
+---
+title: "Candles"
+description: "OHLCV kline series for a symbol and interval. Paginated by timestamp."
+---
+
+OHLCV candles for a symbol and interval.
+
+**Weight:** `2`
+
+## Request
+
+```json
+{
+  "type": "candles",
+  "symbol": "PERP_BTC_USDC",
+  "interval": "1h",
+  "start_time": 1716100000000,
+  "end_time": 1716200000000,
+  "limit": 500
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `symbol` | string | Yes | — | Trading pair |
+| `interval` | string | Yes | — | `1m` / `5m` / `15m` / `30m` / `1h` / `4h` / `1d` / `1w` |
+| `start_time` | int64 | No | — | ms epoch; filters `open_time ≥ start_time` |
+| `end_time` | int64 | No | — | ms epoch; filters `open_time ≤ end_time` |
+| `limit` | int | No | 500 | 1..5000 |
+| `cursor` | string | No | — | Opaque cursor — pass through |
+
+## Response
+
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `open`, `high`, `low`, `close` | string | Decimal price |
+| `volume` | string | Base-asset volume during the candle |
+| `timestamp` | int64 | Candle open time (ms epoch) |
+
+## Notes
+
+- 60s cache keyed by `(symbol, interval, time-range, cursor)`
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "rows": [
+      {
+        "open": "12345.67",
+        "high": "12400.00",
+        "low": "12300.00",
+        "close": "12350.50",
+        "volume": "1234.56",
+        "timestamp": 1716192000000
+      }
+    ],
+    "next_cursor": null
+  },
+  "ts": 1779269143700
+}
+```
+
+</ResponseExample>

@@ -1,0 +1,67 @@
+---
+title: "Liquidations"
+description: "Recent liquidation events with position size, mark price, and account info."
+---
+
+Recent liquidation events across the platform. Each row carries the liquidated address, account, and broker.
+
+**Weight:** `2`
+
+## Request
+
+```json
+{
+  "type": "liquidations",
+  "symbol": "PERP_ETH_USDC",
+  "limit": 50
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `symbol` | string | No | `null` | Omit → all symbols |
+| `limit` | int | No | 50 | 1..500 |
+| `cursor` | string | No | — | Opaque cursor |
+
+## Response
+
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `side` | string | `LONG` (liquidated long) or `SHORT` |
+| `position_qty`, `notional` | string | Decimal |
+| `mark_price`, `est_liq_price` | string | Mark price at the moment of liquidation; named for symmetry with live `est_liq_price` |
+| `address`, `account_id`, `broker_id` | string \| null | `null` if user lookup fails |
+| `timestamp` | int64 | ms epoch |
+
+## Notes
+
+- Account fields resolved via internal user lookup (60s cache)
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "rows": [
+      {
+        "symbol": "PERP_ETH_USDC",
+        "side": "LONG",
+        "position_qty": "12.34",
+        "notional": "567890.12",
+        "mark_price": "4567.89",
+        "est_liq_price": "4567.89",
+        "address": "0x1234...",
+        "account_id": "0xabc...",
+        "broker_id": "orderly",
+        "timestamp": 1716192000000
+      }
+    ],
+    "next_cursor": null
+  },
+  "ts": 1779269143700
+}
+```
+
+</ResponseExample>
