@@ -60,6 +60,18 @@ API Base: `https://api.orderly.org/` (Mainnet), `https://testnet-api.orderly.org
 - [Introduction](https://orderly.network/docs/build-on-omnichain/introduction): Orderly API overview covering REST and WebSocket endpoints, authentication, and request conventions.
 - [Error Codes](https://orderly.network/docs/build-on-omnichain/error-codes): Complete list of Orderly API error codes with HTTP status codes and descriptions.
 
+## Public Info API
+
+- [Public Info API](https://orderly.network/docs/build-on-omnichain/public-info-api/overview): Zero-auth, single-endpoint query API for AI agents, quant traders, and analytics. POST /v1/public/query with a type field — covers market, account, and platform data.
+- [marketSummary](https://orderly.network/docs/build-on-omnichain/public-info-api/market/market-summary): Multi-symbol snapshot of prices, funding, 24h volume, and open interest. Fast path when called with no symbols.
+- [orderbook](https://orderly.network/docs/build-on-omnichain/public-info-api/market/orderbook): Orderbook snapshot with mid price and spread.
+- [candles](https://orderly.network/docs/build-on-omnichain/public-info-api/market/candles): OHLCV kline series for a symbol and interval. Paginated by timestamp.
+- [accountState](https://orderly.network/docs/build-on-omnichain/public-info-api/account/account-state): Account snapshot: collateral, open positions, margin metrics, and PnL. Response shape changes based on whether account_id is supplied.
+- [agentContext](https://orderly.network/docs/build-on-omnichain/public-info-api/account/agent-context): Agent startup bundle: account state, open positions, held-symbol market summaries, and open order count in one parallelized call.
+- [trades](https://orderly.network/docs/build-on-omnichain/public-info-api/account/trades): Trade fills (executed order fills) for an address. Combines a real-time window with an archive window so older history stays queryable.
+- [topAddresses](https://orderly.network/docs/build-on-omnichain/public-info-api/platform/top-addresses): Leaderboard of addresses by notional / volume / PnL / trade count, with multi-window stats.
+- [platformPositions](https://orderly.network/docs/build-on-omnichain/public-info-api/platform/platform-positions): Platform-wide open-position snapshot across all users. Powers liquidation heatmaps and cross-account risk views.
+
 ## Chains & Contracts
 
 - [Supported Chains](https://orderly.network/docs/introduction/trade-on-orderly/supported-chains): Explore the list of supported chains on Orderly Network.

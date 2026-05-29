@@ -1,0 +1,69 @@
+---
+title: "Order status"
+description: "Single order lookup by order_id. Searches live and archive tables; cross-references algo metadata."
+---
+
+Single order lookup by `order_id`. Searches both live and archived orders, and populates algo-order fields (`trigger_price` etc.) when applicable.
+
+**Weight:** `5`
+
+## Request
+
+```json
+{
+  "type": "orderStatus",
+  "address": "0x1234567890abcdef1234567890abcdef12345678",
+  "order_id": 123456789
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `address` | string | Yes | — | **Required** — narrows the lookup to one user; omitting it makes the query much slower |
+| `order_id` | int64 | Yes | — | Order identifier; `MISSING_PARAM` if absent |
+| `broker_id` | string | No | — | Optional |
+| `account_id` | string | No | — | Optional |
+
+## Response
+
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `status` | string | `PENDING_NEW` / `NEW` / `PARTIAL_FILLED` / `FILLED` / `PENDING_CANCEL` / `CANCELLED` / `REJECTED` / `REPLACED` |
+| `average_executed_price` | string \| null | Live: always `null`. Archive: decimal |
+| `total_fee`, `fee_asset` | string \| null | Live: `null`. Archive: decimal / string |
+| `trigger_price` | string \| null | Present only for algo orders |
+
+## Notes
+
+- Throws `ORDER_NOT_FOUND` (404) if the order is in neither live nor archive
+- This endpoint does not paginate (single row)
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "order_id": "123456789",
+    "symbol": "PERP_ETH_USDC",
+    "side": "BUY",
+    "type": "LIMIT",
+    "price": "2500.00",
+    "quantity": "1.5",
+    "total_executed_quantity": "1.5",
+    "average_executed_price": "2499.50",
+    "trigger_price": null,
+    "status": "FILLED",
+    "total_fee": "0.002",
+    "fee_asset": "USDC",
+    "realized_pnl": "100.50",
+    "reduce_only": false,
+    "created_time": 1714900000000,
+    "updated_time": 1714901000000
+  },
+  "ts": 1779269143700
+}
+```
+
+</ResponseExample>

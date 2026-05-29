@@ -1,0 +1,76 @@
+---
+title: "Trades"
+description: "Trade fills (executed order fills) for an address. Combines a real-time window with an archive window so older history stays queryable."
+---
+
+Executed trade fills for an address. The handler transparently combines real-time fills (last 24 hours) with the archive (older than 24 hours); the cursor carries which source the next page is on, so pagination is continuous.
+
+**Weight:** `5`
+
+## Request
+
+```json
+{
+  "type": "trades",
+  "address": "0x1234567890abcdef1234567890abcdef12345678",
+  "symbol": "PERP_ETH_USDC",
+  "start_time": 1714000000000,
+  "end_time": 1715000000000,
+  "limit": 200
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `address` | string | Yes | — | Wallet address |
+| `broker_id` | string | No | — | Optional |
+| `account_id` | string | No | — | Optional |
+| `symbol` | string | No | — | Symbol filter |
+| `start_time` | int64 | No | — | ms epoch |
+| `end_time` | int64 | No | `now` (when `start_time` set) | ms epoch |
+| `limit` | int | No | 100 | 1..1000 (without time range) or 1..2000 (with time range) |
+| `cursor` | string | No | — | Opaque cursor (carries `src`) |
+
+## Response
+
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `id` | string | Transaction ID |
+| `order_id` | string \| null | `null` on orphaned / liquidation fills |
+| `is_maker` | bool | `true` = maker, `false` = taker |
+| `realized_pnl` | string \| null | `null` for fills older than 24 hours (archive does not retain this column) |
+
+## Notes
+
+- **24-hour boundary:** real-time data covers `[max(start_time, now − 24h), end_time]`; archived data covers `[start_time, min(end_time, now − 24h − 1ms)]`
+- Treat the cursor as opaque — always pass it back as-is
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "rows": [
+      {
+        "id": "987654321",
+        "order_id": "123456789",
+        "symbol": "PERP_ETH_USDC",
+        "side": "BUY",
+        "executed_price": "2500.00",
+        "executed_quantity": "0.5",
+        "fee": "0.0005",
+        "fee_asset": "USDC",
+        "is_maker": false,
+        "realized_pnl": "10.50",
+        "executed_timestamp": 1714900000000
+      }
+    ],
+    "next_cursor": "eyJsYXN0X2lkIjo5ODc2NTQzMjEsInNyYyI6Im15c3FsIn0"
+  },
+  "ts": 1779269143700
+}
+```
+
+</ResponseExample>

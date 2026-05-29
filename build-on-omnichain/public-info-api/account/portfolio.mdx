@@ -1,0 +1,68 @@
+---
+title: "Portfolio"
+description: "Daily account-value time series with cumulative PnL. UTC-day-aligned snapshots."
+---
+
+Daily snapshots of account value plus cumulative PnL, UTC-day-aligned.
+
+**Weight:** `5`
+
+## Request
+
+```json
+{
+  "type": "portfolio",
+  "address": "0x1234567890abcdef1234567890abcdef12345678",
+  "interval": "1d",
+  "start_time": 1712000000000,
+  "end_time": 1715000000000,
+  "limit": 90
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `address` | string | Yes | — | Wallet address |
+| `broker_id` | string | No | — | Optional |
+| `account_id` | string | No | — | Optional |
+| `interval` | string | No | `"1d"` | Only `"1d"` is supported — anything else throws `INVALID_PARAM` |
+| `start_time` | int64 | No | `end_time − 90d` | ms epoch |
+| `end_time` | int64 | No | `now` | ms epoch |
+| `limit` | int | No | 90 | 1..365 |
+| `cursor` | string | No | — | Opaque cursor |
+
+## Response
+
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `rows[]` | array | DESC by `timestamp` |
+| `.account_value` | string | Daily collateral snapshot (`holding + frozen + upnl`) |
+| `.cumulative_pnl` | string | Account value change since the earliest day in the returned window |
+| `.timestamp` | int64 | UTC-day-aligned ms epoch |
+
+## Notes
+
+- Throws `INVALID_PARAM` for `interval ≠ "1d"` or `limit ∉ [1, 365]`
+- For real-time collateral / unrealized PnL breakdown, use [`accountState`](/build-on-omnichain/public-info-api/account/account-state).
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "rows": [
+      {
+        "account_value": "50000.5",
+        "cumulative_pnl": "2500",
+        "timestamp": 1715000000000
+      }
+    ],
+    "next_cursor": null
+  },
+  "ts": 1779269143700
+}
+```
+
+</ResponseExample>

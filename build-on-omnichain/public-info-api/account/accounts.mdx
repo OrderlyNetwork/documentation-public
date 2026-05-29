@@ -1,0 +1,62 @@
+---
+title: "Accounts"
+description: "Discover all (broker, account) pairs an address controls. Includes regular and sub accounts."
+---
+
+Account discovery — given an address, list every `(broker_id, account_id)` pair the address controls (both `REGULAR` and `SUB`). Useful as the first call before drilling into per-account state.
+
+**Weight:** `5`
+
+## Request
+
+```json
+{
+  "type": "accounts",
+  "address": "0x1234567890abcdef1234567890abcdef12345678"
+}
+```
+
+| Field | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `address` | string | Yes | — | Wallet address; must resolve to at least one account |
+| `broker_id` | string | No | — | Optional broker scope |
+
+## Response
+
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `address` | string | Echo of input |
+| `accounts[]` | array | One entry per account |
+| `.broker_id` | string | Broker identifier |
+| `.account_id` | string | Account identifier within broker |
+| `.account_type` | string | `"main"` (main account), `"sub"` (sub-account), or `"sp"` (vault strategy provider) |
+| `.account_value` | string \| null | Mark-to-market account value: `(holding + iso_margin_total + frozen) + Σ unrealized_pnl` across positions. `null` if position-calc is unavailable for that row |
+
+## Notes
+
+- No pagination
+- Throws `ADDRESS_NOT_FOUND` (404) when zero accounts resolve
+- Per-row position-calc failures degrade `account_value` to `null` rather than failing the whole listing
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "address": "0x1234...",
+    "accounts": [
+      {
+        "broker_id": "orderly",
+        "account_id": "0xabc...",
+        "account_type": "main",
+        "account_value": "5000.25"
+      }
+    ]
+  },
+  "ts": 1779269143700
+}
+```
+
+</ResponseExample>
