@@ -46,7 +46,7 @@ Each skill’s playbook lives in that repo under `skills/<skill-id>/SKILL.md` (p
    orderly-devkit skills install --agent cursor  # target agent when supported
    ```
 
-   For options (`--skill`, custom source, `npx` forwarding), see [CLI: skills install](cli-reference#skills-install).
+   For options (`--skill`, custom source, `npx` forwarding), see [CLI: skills install](/build-on-omnichain/module-marketplace/cli-reference#skills-install).
 
 3. **Orderly SDK Docs MCP** (API truth for `@orderly.network/*` while coding or in chat):
 
@@ -54,7 +54,7 @@ Each skill’s playbook lives in that repo under `skills/<skill-id>/SKILL.md` (p
    orderly-devkit mcp install
    ```
 
-   See [MCP reference](mcp-sdk-docs). Plugin authors should prefer **`orderly_docs_search`** then **`orderly_docs_get_component`** / **`orderly_docs_get_type`**; older notes may reference a non-existent `orderly_docs_get_hook`—see [Agent skills alignment](agent-skills-alignment).
+   See [MCP reference](/build-on-omnichain/module-marketplace/mcp-sdk-docs). Plugin authors should prefer **`orderly_docs_search`** then **`orderly_docs_get_component`** / **`orderly_docs_get_type`**; older notes may reference a non-existent `orderly_docs_get_hook`—see [Agent skills alignment](/build-on-omnichain/module-marketplace/agent-skills-alignment).
 
 ## Recommended end-to-end flow
 
@@ -72,7 +72,7 @@ orderly-plugin-create   →  orderly-plugin-write  →  orderly-plugin-add  → 
 3. **Add** — Add dependency and **`plugins={[registerXxx()]}`** on **`OrderlyAppProvider`**. Skill **orderly-plugin-add** stresses locating the provider first.
 4. **Submit** — **`orderly-devkit login`**, **`submit --dry-run`**, then **`submit`**; polish **`usagePrompt`**. Skill **orderly-plugin-submit** gates destructive steps on user confirmation.
 
-Human tutorials: [T1 First plugin](first-plugin) → [T2 Integrate host](integrate-host) → [T3 Marketplace](marketplace-submission).
+Human tutorials: [T1 First plugin](/build-on-omnichain/module-marketplace/first-plugin) → [T2 Integrate host](/build-on-omnichain/module-marketplace/integrate-host) → [T3 Marketplace](/build-on-omnichain/module-marketplace/marketplace-submission).
 
 ## How the agent is supposed to use this
 
@@ -83,10 +83,10 @@ Human tutorials: [T1 First plugin](first-plugin) → [T2 Integrate host](integra
 
 ## When you are not using an agent
 
-You can still follow this handbook and the CLI alone: read the same four stages above and use [CLI reference](cli-reference); install **`@orderly.network/plugin-core`** from npm for the full GUIDE/TECH. Installing skills is optional but keeps your future AI sessions aligned with Orderly’s intended flows.
+You can still follow this handbook and the CLI alone: read the same four stages above and use [CLI reference](/build-on-omnichain/module-marketplace/cli-reference); install **`@orderly.network/plugin-core`** from npm for the full GUIDE/TECH. Installing skills is optional but keeps your future AI sessions aligned with Orderly’s intended flows.
 
 ## See also
 
-- [Getting started](getting-started) — installs devkit, skills, MCP, first scaffold.
-- [CLI reference: skills](cli-reference#skills-install)
-- [Agent skills alignment](agent-skills-alignment) — MCP tool names vs. legacy skill text.
+- [Getting started](/build-on-omnichain/module-marketplace/getting-started) — installs devkit, skills, MCP, first scaffold.
+- [CLI reference: skills](/build-on-omnichain/module-marketplace/cli-reference#skills-install)
+- [Agent skills alignment](/build-on-omnichain/module-marketplace/agent-skills-alignment) — MCP tool names vs. legacy skill text.

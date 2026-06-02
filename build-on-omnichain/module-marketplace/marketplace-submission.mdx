@@ -5,7 +5,7 @@ description: "Goal: Authenticate with the devkit, validate a local plugin folder
 
 **Goal:** Authenticate with the devkit, validate a local plugin folder, and submit it for Marketplace review.
 
-**Prerequisite:** Plugin repo with valid `package.json` **name**, GitHub **`origin`** remote (HTTPS form preferred), and metadata aligned with [Manifest and submit](manifest-and-submit). Optional: **`orderly-devkit skills install`** — see below.
+**Prerequisite:** Plugin repo with valid `package.json` **name**, GitHub **`origin`** remote (HTTPS form preferred), and metadata aligned with [Manifest and submit](/build-on-omnichain/module-marketplace/manifest-and-submit). Optional: **`orderly-devkit skills install`** — see below.
 
 ## Using agent skills for this tutorial
 
@@ -19,7 +19,7 @@ The **orderly-plugin-submit** skill is for publishing to the Marketplace. It ali
 | **`usagePrompt`** / **`README`** | Skill guides drafting **`usagePrompt`** (install → register snippet → pitfalls); README edits only with user consent. |
 | **`list`**, **`update`**, **`view`** | Same CLI as §4–§5 — **`view`** requires login. |
 
-Full skill–MCP alignment: [Agent skills alignment](agent-skills-alignment); overview: [Skills-first workflow](skills-first).
+Full skill–MCP alignment: [Agent skills alignment](/build-on-omnichain/module-marketplace/agent-skills-alignment); overview: [Skills-first workflow](/build-on-omnichain/module-marketplace/skills-first).
 
 **Example prompts:** “Prepare my plugin folder for Marketplace: dry-run then submit” / “Draft a `usagePrompt` for `@scope/plugin` matching `submit` constraints.” Always confirm **`submit`** in the UI or chat before the agent runs the real command.
 
@@ -40,7 +40,7 @@ From the plugin root:
 orderly-devkit submit --path . --dry-run
 ```
 
-Fix any validation errors (npm name, `repoUrl`, `pluginId`, tags, `usagePrompt` length). See [Manifest and submit](manifest-and-submit).
+Fix any validation errors (npm name, `repoUrl`, `pluginId`, tags, `usagePrompt` length). See [Manifest and submit](/build-on-omnichain/module-marketplace/manifest-and-submit).
 
 ## 3. Submit
 
@@ -56,7 +56,7 @@ orderly-devkit submit -p ./my-plugin --tags UI,Trading --storybook-url https://e
 
 Invalid tags are dropped with a warning; valid tags only are kept.
 
-**Verification:** HTTP **201** response — plugin submitted (often status `under_review`). See status table in [Manifest and submit](manifest-and-submit).
+**Verification:** HTTP **201** response — plugin submitted (often status `under_review`). See status table in [Manifest and submit](/build-on-omnichain/module-marketplace/manifest-and-submit).
 
 ## 4. List and update listings
 
@@ -82,5 +82,5 @@ Requires **`orderly-devkit login`** in the current CLI implementation.
 
 ## Next steps
 
-- Write or refine **`usagePrompt`** for integrators and AI assistants: [Usage prompt and README](usage-prompt-and-readme).
-- Short checklist: [Marketplace submit recipe](marketplace-submit-recipe).
+- Write or refine **`usagePrompt`** for integrators and AI assistants: [Usage prompt and README](/build-on-omnichain/module-marketplace/usage-prompt-and-readme).
+- Short checklist: [Marketplace submit recipe](/build-on-omnichain/module-marketplace/marketplace-submit-recipe).
