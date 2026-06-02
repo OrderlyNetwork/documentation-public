@@ -12,7 +12,7 @@ description: "Register one plugin that intercepts more than one injector target 
 
 **Tutorial source code:** [OrderlyNetwork/fast-place-order-plugin](https://github.com/OrderlyNetwork/fast-place-order-plugin) — `https://github.com/OrderlyNetwork/fast-place-order-plugin`. Read `src/index.tsx` (`registerFastPlaceOrderPlugin`) alongside the steps below; the repo is the canonical runnable example for this tutorial.
 
-**Prerequisites:** [Tutorial 1](first-plugin) — plugin scaffold and `registerPlugin` basics.
+**Prerequisites:** [Tutorial 1](/build-on-omnichain/module-marketplace/first-plugin) — plugin scaffold and `registerPlugin` basics.
 
 **Scope:** Implementation inside the plugin package only (interceptors, shared state, dedupe, Hooks). Loading the plugin in a host app, provider wiring, and production QA are not covered on this page.
 
@@ -94,7 +94,7 @@ Many targets still mean **one** plugin registration and **one** shared lifecycle
 
 ## Step 4 — Interceptor A: mount the widget on the desktop body
 
-**Target:** `"TradingView.Desktop"` (string must match [runtime injector targets](runtime-injector-targets); paths are case-sensitive).
+**Target:** `"TradingView.Desktop"` (string must match [runtime injector targets](/build-on-omnichain/module-marketplace/runtime-injector-targets); paths are case-sensitive).
 
 **Pattern:**
 
@@ -194,7 +194,7 @@ Manual UI checks (TradingView desktop + display menu) require a running app that
 
 | Symptom                   | Likely cause                          | Fix                                                                                                |
 | ------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| Widget shows, no menu row | Wrong menu target string              | Compare with [runtime injector targets](runtime-injector-targets) letter by letter |
+| Widget shows, no menu row | Wrong menu target string              | Compare with [runtime injector targets](/build-on-omnichain/module-marketplace/runtime-injector-targets) letter by letter |
 | Menu row does nothing     | Visibility not shared with the widget | One hook/store used by menu and widget (same module as the reference)                              |
 | Duplicate menu rows       | No filter-by-`id` before append       | Step 6 dedupe                                                                                      |
 | Invalid Hook call         | Conditional Hooks or wrong nesting    | Step 7; simplify or extract a child component                                                      |
@@ -206,7 +206,7 @@ Manual UI checks (TradingView desktop + display menu) require a running app that
 | Skill / doc                                                          | Use when                                          |
 | -------------------------------------------------------------------- | ------------------------------------------------- |
 | `orderly-plugin-write`                                               | Designing interceptors and Hook-safe composition  |
-| [Runtime injector targets](runtime-injector-targets) | Confirming exact target path strings while coding |
+| [Runtime injector targets](/build-on-omnichain/module-marketplace/runtime-injector-targets) | Confirming exact target path strings while coding |
 
 ---
 

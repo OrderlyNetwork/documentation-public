@@ -42,7 +42,7 @@ Requires `--no-interactive` plus `--name` and `--interceptor`. If `--id` or `--t
 | --- | --- |
 | `--name` / `-n` | Plugin display name; normalized to **PascalCase** |
 | `--id` / `-i` | Plugin id; **kebab-style** string, also used for `registerPlugin` / manifest when valid |
-| `--interceptor` | One of CLI `INTERCEPTOR_TARGETS` (subset of SDK—see [Interceptors](interceptors)) |
+| `--interceptor` | One of CLI `INTERCEPTOR_TARGETS` (subset of SDK—see [Interceptors](/build-on-omnichain/module-marketplace/interceptors)) |
 | `--target` / `-t` | Output directory; must be empty or non-existent |
 | `--skip-install` | Skip `npm install` in generated folder |
 | `--no-interactive` | No prompts |
@@ -71,7 +71,7 @@ Register a new plugin from a local directory. Resolves metadata from **`.orderly
 | Option | Description |
 | --- | --- |
 | `--path` / `-p` | Plugin root (default: prompt or `./`) |
-| `--tags` / `-t` | Comma-separated; [valid tags](manifest-and-submit#valid-marketplace-tags) |
+| `--tags` / `-t` | Comma-separated; [valid tags](/build-on-omnichain/module-marketplace/manifest-and-submit#valid-marketplace-tags) |
 | `--storybook-url` | Optional Storybook base URL |
 | `--dry-run` / `-d` | Validate and print payload only |
 
@@ -124,13 +124,13 @@ Installs **Orderly SDK Docs** MCP config for AI clients. Forwards to the same be
 orderly-devkit mcp install --client cursor --scope project --dry-run
 ```
 
-Details: [MCP: install](mcp-sdk-docs#install-subcommand).
+Details: [MCP: install](/build-on-omnichain/module-marketplace/mcp-sdk-docs#install-subcommand).
 
 ## `skills install`
 
 Installs agent skills (default: **orderly-plugin-create**, **orderly-plugin-write**, **orderly-plugin-add**, **orderly-plugin-submit**) via the upstream `skills` CLI.
 
-**Concept:** Prefer **`skills install` + `mcp install`** alongside devkit when building plugins—see [**Skills-first workflow**](skills-first).
+**Concept:** Prefer **`skills install` + `mcp install`** alongside devkit when building plugins—see [**Skills-first workflow**](/build-on-omnichain/module-marketplace/skills-first).
 
 | Option | Description |
 | --- | --- |
