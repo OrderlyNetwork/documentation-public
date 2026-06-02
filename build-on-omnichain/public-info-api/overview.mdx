@@ -244,6 +244,50 @@ Read your IP's quota state for the rolling one-minute window. Weight: **0** — 
 | `reset` | int64 | ms epoch when the current window ends. Windows roll forward continuously — `remaining` springs back up to `limit` after `reset` |
 | `tier` | string | Quota tier name; `"default"` for anonymous IPs |
 
+## Data freshness
+
+Worst-case data freshness per query type / field — the data you receive is at most this old, and usually fresher. Use this to decide how often to poll: there is no benefit to polling faster than a type's freshness window.
+
+<Warning>
+The `X-Data-Freshness` response header records the server response time, not when the data was generated. Use the table below as the freshness reference.
+</Warning>
+
+| Type | Field | Worst-case freshness |
+| --- | --- | --- |
+| `orderbook` | all | < 1s |
+| `marketTrades` | all | < 1s |
+| `openOrders` | all | < 1s |
+| `orderStatus` | all | < 1s |
+| `rateLimitStatus` | all | real-time |
+| `marketSummary` | all | < 5s |
+| `marketDetail` | `orderbook` | < 1s |
+| `marketDetail` | `recent_trades` / `market_info` | < 5s |
+| `marketDetail` | `funding_history` | < 30s |
+| `marketDetail` | `candles` | ~1 min |
+| `accountState` | all | < 5s |
+| `platformPositions` | all | < 5s |
+| `liquidations` | all | < 5s |
+| `agentContext` | account + positions + held markets | < 5s |
+| `positionContext` | position + orders + market | < 5s |
+| `fundingComparison` | all | ~1 min |
+| `fundingRateHistory` | all | < 30s |
+| `feeRate` | all | ~1 min |
+| `accounts` | all | ~1 min |
+| `candles` (latest) | all | ~1 min |
+| `candles` (closed) | all | unchanged |
+| `trades` (last 24h) | all | < 1s |
+| `trades` (> 24h) | all | ~1h |
+| `fundingPayments` | all | < 1s |
+| `userDepositsWithdrawals` | all | < 1s |
+| `historicalOrders` | all | < 1s |
+| `topAddresses` | all | ~30 min (use `last_updated_time` for the actual snapshot age) |
+| `portfolio` | all | ~1 day (daily snapshot; use `accountState` for real-time values) |
+| `whaleContext` | `account` / `positions` / `recent_trades` | < 5s |
+
+For multi-source bundles, fields in one response can have different freshness, so they are listed per field; `agentContext` / `positionContext` reflect their oldest sub-block.
+
+`trades` older than 24 hours are served from the historical archive (refreshed hourly); fills within the last 24 hours are real-time.
+
 ## Query types
 
 - **Market data** — `marketSummary`, `marketDetail`, `orderbook`, `candles`, `marketTrades`, `liquidations`, `fundingRateHistory`, `fundingComparison`
