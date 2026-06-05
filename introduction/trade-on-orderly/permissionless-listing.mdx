@@ -66,7 +66,7 @@ On the trading page, each market is displayed with the symbol and the Builder's 
 New markets don't go straight to full trading. They follow a phased launch:
 
 1. **POST_ONLY** -- The market is live but only accepts limit orders. This gives Market Makers time to build liquidity on both sides of the order book before real trading begins.
-2. **ACTIVE** -- Once bid-side and ask-side ±2% single-side order book depth are each at least \$50,000 and hold for 10 minutes, the market automatically opens for full trading including market orders.
+2. **ACTIVE** -- Once bid-side and ask-side ±2% single-side order book depth are each at least \$25,000 and hold for 10 minutes, the market automatically opens for full trading including market orders.
 
 If conditions deteriorate after launch -- insufficient depth, Insurance Fund running low, funding rate anomalies -- the system can automatically force the market into **REDUCE_ONLY** mode (only position-closing allowed) or initiate delisting entirely. These circuit breakers apply per-market, not platform-wide.
 
@@ -108,7 +108,7 @@ Before launch, a Builder should be ready to:
 - Bind and fund the Insurance Fund account with enough balance for each active listed symbol, including the new symbol being submitted.
 - Select at least one valid Index Price source; two or more are recommended.
 - Configure trading parameters within Orderly's supported constraints.
-- Prepare market-making coverage so bid-side and ask-side ±2% depth can each reach at least \$50,000 for 10 consecutive minutes.
+- Prepare market-making coverage so bid-side and ask-side ±2% depth can each reach at least \$25,000 for 10 consecutive minutes.
 - Bind Telegram alerts so the Builder can respond to IF, liquidity, funding, and source-health warnings after launch.
 
 ## How Community Listed Markets Differ for Traders
