@@ -18,23 +18,22 @@ Platform-wide snapshot of every open position across every account. Each row inc
 }
 ```
 
-| Field | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `symbol` | string | No | — | Symbol filter |
-| `broker_id` | string | No | — | Broker filter |
-| `min_notional` | decimal | No | `0` | Minimum position notional to include |
-| `limit` | int | No | 500 | 1..5000 |
-| `cursor` | string | No | — | Opaque cursor |
+| Field          | Type    | Required | Default | Notes                                |
+| -------------- | ------- | -------- | ------- | ------------------------------------ |
+| `symbol`       | string  | No       | —       | Symbol filter                        |
+| `broker_id`    | string  | No       | —       | Broker filter                        |
+| `min_notional` | decimal | No       | `0`     | Minimum position notional to include |
+| `limit`        | int     | No       | 500     | 1..5000                              |
+| `cursor`       | string  | No       | —       | Opaque cursor                        |
 
 ## Response
 
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `total_long_notional`, `total_short_notional`, `total_positions` | top-level | Aggregates over the **filtered snapshot** (not just the current page) |
-| `est_liq_price`, `unrealized_pnl`, `unsettled_pnl`, `leverage`, `margin_mode` | mixed \| null | Per-row position-calc; `null` on position-calc failure |
-| `opened_at` | int64 \| null | ms epoch when the position was first opened |
-| `margin_mode` | string \| null | `"CROSS"` or `"ISOLATED"` — clients can filter as needed |
+| Field                                                                         | Type           | Notes                                                                 |
+| ----------------------------------------------------------------------------- | -------------- | --------------------------------------------------------------------- |
+| `total_long_notional`, `total_short_notional`, `total_positions`              | top-level      | Aggregates over the **filtered snapshot** (not just the current page) |
+| `est_liq_price`, `unrealized_pnl`, `unsettled_pnl`, `leverage`, `margin_mode` | mixed \| null  | Per-row position-calc; `null` on position-calc failure                |
+| `opened_at`                                                                   | int64 \| null  | ms epoch when the position was first opened                           |
+| `margin_mode`                                                                 | string \| null | `"CROSS"` or `"ISOLATED"` — clients can filter as needed              |
 
 ## Notes
 

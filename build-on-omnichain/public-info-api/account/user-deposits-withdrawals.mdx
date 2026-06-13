@@ -19,29 +19,28 @@ Deposit / withdraw transaction history for an address. Optional filters for dire
 }
 ```
 
-| Field | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `address` | string | Yes | — | Wallet address |
-| `broker_id` | string | No | — | Optional |
-| `account_id` | string | No | — | Optional |
-| `side` | string | No | — | `"deposit"` / `"withdraw"` (case-insensitive); anything else → `INVALID_PARAM` |
-| `token` | string | No | — | Token filter (e.g. `"USDC"`) |
-| `start_time` | int64 | No | — | ms epoch |
-| `end_time` | int64 | No | — | ms epoch |
-| `limit` | int | No | 100 | 1..500 |
-| `cursor` | string | No | — | Opaque cursor |
+| Field        | Type   | Required | Default | Notes                                                                          |
+| ------------ | ------ | -------- | ------- | ------------------------------------------------------------------------------ |
+| `address`    | string | Yes      | —       | Wallet address                                                                 |
+| `broker_id`  | string | No       | —       | Optional                                                                       |
+| `account_id` | string | No       | —       | Optional                                                                       |
+| `side`       | string | No       | —       | `"deposit"` / `"withdraw"` (case-insensitive); anything else → `INVALID_PARAM` |
+| `token`      | string | No       | —       | Token filter (e.g. `"USDC"`)                                                   |
+| `start_time` | int64  | No       | —       | ms epoch                                                                       |
+| `end_time`   | int64  | No       | —       | ms epoch                                                                       |
+| `limit`      | int    | No       | 100     | 1..500                                                                         |
+| `cursor`     | string | No       | —       | Opaque cursor                                                                  |
 
 ## Response
 
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `id` | string | Auto-increment transaction ID encoded as string |
-| `side` | string | `"deposit"` or `"withdraw"` |
-| `status` | string | `SUCCESS` / `PENDING` / `FAILED` / … |
-| `chain_id` | string | EVM chain ID of the transaction |
-| `tx_id` | string | On-chain transaction hash |
-| `created_time` | int64 | ms epoch |
+| Field          | Type   | Notes                                           |
+| -------------- | ------ | ----------------------------------------------- |
+| `id`           | string | Auto-increment transaction ID encoded as string |
+| `side`         | string | `"deposit"` or `"withdraw"`                     |
+| `status`       | string | `SUCCESS` / `PENDING` / `FAILED` / …            |
+| `chain_id`     | string | EVM chain ID of the transaction                 |
+| `tx_id`        | string | On-chain transaction hash                       |
+| `created_time` | int64  | ms epoch                                        |
 
 <ResponseExample>
 

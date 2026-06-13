@@ -5,7 +5,7 @@ description: "Orderly publishes agent skills (install via orderly-devkit skills 
 
 Orderly publishes agent skills (install via `orderly-devkit skills install`) for **`orderly-plugin-create`**, **`orderly-plugin-write`**, **`orderly-plugin-add`**, **`orderly-plugin-submit`** (source repo: **`OrderlyNetwork/orderly-skills`**, per devkit constants).
 
-**Recommended usage:** See [**Skills-first workflow**](/build-on-omnichain/module-marketplace/skills-first) for why skills + MCP + devkit are the preferred stack for Orderly plugin work.
+**Recommended usage:** See [**Skills-first workflow**](/build-on-omnichain/builder-marketplace/skills-first) for why skills + MCP + devkit are the preferred stack for Orderly plugin work.
 
 This handbook is the **in-repo, versioned** companion. If you maintain skills in that external repo, keep the following in sync with shipping CLIs and MCP.
 
@@ -21,7 +21,7 @@ Some older or external skills mention **`orderly_docs_get_hook`**. The `@orderly
 - `orderly_docs_get_component_doc` — markdown examples.
 - `orderly_docs_get_workflow` / `orderly_docs_get_recipe` — curated prose.
 
-See [MCP reference](/build-on-omnichain/module-marketplace/mcp-sdk-docs).
+See [MCP reference](/build-on-omnichain/builder-marketplace/mcp-sdk-docs).
 
 ## `orderly-devkit view` authentication
 
@@ -33,10 +33,10 @@ The shipped **`@orderly.network/devkit`** **`view`** command requires **`orderly
 
 ## Interceptor tables
 
-Skills may ship extended placeholder tables. **Runtime paths** in this handbook: [Runtime injector targets](/build-on-omnichain/module-marketplace/runtime-injector-targets) and [Interceptors](/build-on-omnichain/module-marketplace/interceptors). CLI template subset is listed on the same page.
+Skills may ship extended placeholder tables. **Runtime paths** in this handbook: [Runtime injector targets](/build-on-omnichain/builder-marketplace/runtime-injector-targets) and [Interceptors](/build-on-omnichain/builder-marketplace/interceptors). CLI template subset is listed on the same page.
 
 ## Naming conventions
 
 - **Plugin display name:** PascalCase (template prompts normalize).
-- **Plugin id string:** Same rules as Marketplace / `registerPlugin({ id })` — `/^[a-zA-Z][a-zA-Z0-9-]*$/`.
+- **Plugin id string:** Same rules as Builder Marketplace / `registerPlugin({ id })` — `/^[a-zA-Z][a-zA-Z0-9-]*$/`.
 - **npm `name`:** Must be a valid npm package name; devkit may derive from plugin id when id is already npm-compliant.

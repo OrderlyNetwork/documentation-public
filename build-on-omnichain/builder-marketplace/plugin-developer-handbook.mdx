@@ -1,0 +1,47 @@
+---
+title: "Orderly Plugin Developer Handbook"
+description: "This handbook explains how to build, integrate, and publish Orderly SDK plugins using the devkit CLI (@orderly.network/devkit), the Orderly SDK Docs MCP serv..."
+---
+
+This handbook explains how to build, integrate, and publish **Orderly SDK plugins** using the devkit CLI (`@orderly.network/devkit`), the **Orderly SDK Docs** MCP server (`@orderly.network/sdk-docs`), and **Orderly plugin agent skills** (catalog: **`OrderlyNetwork/orderly-skills`**) for scaffolding and guided workflows.
+
+## Start here: skills-first (recommended)
+
+**If you use an AI agent (Cursor, Claude Code, Codex, etc.), read this first:** [**Skills-first workflow**](/build-on-omnichain/builder-marketplace/skills-first) — why installing **devkit + plugin skills + MCP** together is the preferred way to use the Orderly SDK for plugins, what the four default skills do, and how they map to create → write → add → submit.
+
+## Who this is for
+
+- Developers adding UI or layout behavior to an Orderly-powered DEX host.
+- Teams submitting plugins to the Orderly Builder Marketplace.
+- **Developers and agents** who want repeatable, Orderly-endorsed flows (skills) plus accurate API lookup (MCP).
+
+## Documentation map (Diátaxis)
+
+| Section                                                                                      | Purpose                                                                                                                                   |
+| -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| [**Skills-first workflow**](/build-on-omnichain/builder-marketplace/skills-first)            | **Recommended:** agent skills + devkit + MCP; lifecycle and install commands.                                                             |
+| [Getting started](/build-on-omnichain/builder-marketplace/getting-started)                   | Install tools, scaffold a plugin, skills and MCP (15–20 minutes).                                                                         |
+| [Tutorials](/build-on-omnichain/builder-marketplace/first-plugin)                            | Step-by-step: first plugin, host integration, Marketplace, and multi-target interceptor pattern — each includes **skills ↔ CLI** mapping. |
+| [How-to guides](/build-on-omnichain/builder-marketplace/plugin-types)                        | Task-focused: plugin types, interceptors, `usagePrompt`, host wiring.                                                                     |
+| [Reference](/build-on-omnichain/builder-marketplace/cli-reference)                           | CLI commands, manifest, MCP tools, interceptors vs template flags.                                                                        |
+| [Runtime injector targets](/build-on-omnichain/builder-marketplace/runtime-injector-targets) | Full path table + devkit template subset (self-contained here).                                                                           |
+| [Recipes](/build-on-omnichain/builder-marketplace/quickstart-recipe)                         | Short, single-purpose pages.                                                                                                              |
+
+## Deeper SDK docs (npm packages — not stored in this folder)
+
+Full **`registerPlugin`**, **`injectable`**, and TECH detail ship inside **`@orderly.network/plugin-core`** on npm (GUIDE, TECH). Layout customization docs ship with **`@orderly.network/layout-core`** on npm.
+
+Interceptor **path strings** summarized in-handbook:
+
+- **[Runtime injector targets](/build-on-omnichain/builder-marketplace/runtime-injector-targets)** — runtime paths vs **`orderly-devkit create plugin`** subset.
+
+## Published CLIs used in this handbook
+
+| npm package                     | Role                                                                       |
+| ------------------------------- | -------------------------------------------------------------------------- |
+| **`@orderly.network/devkit`**   | Bin **`orderly-devkit`** (create, login, submit, MCP/skills install).      |
+| **`@orderly.network/sdk-docs`** | **`orderly-sdk-docs-mcp`** MCP server plus bundled doc indexes for agents. |
+
+## MCP workflow slugs
+
+`orderly_docs_get_workflow` may expose short stubs (for example **`plugin-create`**, **`plugin-integration`**). Their detailed steps overlap this handbook — start from [**skills-first**](/build-on-omnichain/builder-marketplace/skills-first) and the tutorials below.

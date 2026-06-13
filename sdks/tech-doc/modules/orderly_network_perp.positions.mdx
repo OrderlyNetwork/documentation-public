@@ -42,19 +42,19 @@
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
-| `MMR` | `number` |
-| `markPrice` | `number` |
-| `positionQty` | `number` |
-| `positions` | `Pick`\<[`PositionExt`](/sdks/tech-doc/interfaces/orderly_network_types.API.PositionExt), ``"position_qty"`` \| ``"mark_price"`` \| ``"mmr"``\>[] |
-| `totalCollateral` | `number` |
+| Name              | Type                                                                                                                                        |
+| :---------------- | :------------------------------------------------------------------------------------------------------------------------------------------ |
+| `MMR`             | `number`                                                                                                                                    |
+| `markPrice`       | `number`                                                                                                                                    |
+| `positionQty`     | `number`                                                                                                                                    |
+| `positions`       | `Pick`\<[`PositionExt`](/sdks/tech-doc/interfaces/orderly_network_types.API.PositionExt), `"position_qty"` \| `"mark_price"` \| `"mmr"`\>[] |
+| `totalCollateral` | `number`                                                                                                                                    |
 
 #### Defined in
 
 [positions.ts:89](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/positions.ts#L89)
 
-___
+---
 
 ### MMInputs
 
@@ -62,17 +62,17 @@ ___
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
-| `MMR` | `number` |
-| `markPrice` | `number` |
+| Name          | Type     |
+| :------------ | :------- |
+| `MMR`         | `number` |
+| `markPrice`   | `number` |
 | `positionQty` | `number` |
 
 #### Defined in
 
 [positions.ts:130](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/positions.ts#L130)
 
-___
+---
 
 ### MMRInputs
 
@@ -80,19 +80,19 @@ ___
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
-| `IMRFactor` | `number` |
+| Name               | Type     |
+| :----------------- | :------- |
+| `IMRFactor`        | `number` |
 | `IMR_factor_power` | `number` |
-| `baseIMR` | `number` |
-| `baseMMR` | `number` |
+| `baseIMR`          | `number` |
+| `baseMMR`          | `number` |
 | `positionNotional` | `number` |
 
 #### Defined in
 
 [positions.ts:213](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/positions.ts#L213)
 
-___
+---
 
 ### TotalUnsettlementPnLInputs
 
@@ -100,16 +100,16 @@ ___
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
-| `positions` | [`Position`](/sdks/tech-doc/interfaces/orderly_network_types.API.Position) & \{ `sum_unitary_funding`: `number`  }[] |
-| `sumUnitaryFunding` | `number` |
+| Name                | Type                                                                                                                |
+| :------------------ | :------------------------------------------------------------------------------------------------------------------ |
+| `positions`         | [`Position`](/sdks/tech-doc/interfaces/orderly_network_types.API.Position) & \{ `sum_unitary_funding`: `number` }[] |
+| `sumUnitaryFunding` | `number`                                                                                                            |
 
 #### Defined in
 
 [positions.ts:178](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/positions.ts#L178)
 
-___
+---
 
 ### UnrealPnLInputs
 
@@ -117,17 +117,17 @@ ___
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
+| Name        | Type     |
+| :---------- | :------- |
 | `markPrice` | `number` |
 | `openPrice` | `number` |
-| `qty` | `number` |
+| `qty`       | `number` |
 
 #### Defined in
 
 [positions.ts:26](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/positions.ts#L26)
 
-___
+---
 
 ### UnrealPnLROIInputs
 
@@ -135,18 +135,18 @@ ___
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
-| `IMR` | `number` |
-| `openPrice` | `number` |
-| `positionQty` | `number` |
+| Name            | Type     |
+| :-------------- | :------- |
+| `IMR`           | `number` |
+| `openPrice`     | `number` |
+| `positionQty`   | `number` |
 | `unrealizedPnL` | `number` |
 
 #### Defined in
 
 [positions.ts:43](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/positions.ts#L43)
 
-___
+---
 
 ### UnsettlementPnLInputs
 
@@ -154,13 +154,13 @@ ___
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
-| `costPosition` | `number` |
+| Name                    | Type     |
+| :---------------------- | :------- |
+| `costPosition`          | `number` |
 | `lastSumUnitaryFunding` | `number` |
-| `markPrice` | `number` |
-| `positionQty` | `number` |
-| `sumUnitaryFunding` | `number` |
+| `markPrice`             | `number` |
+| `positionQty`           | `number` |
+| `sumUnitaryFunding`     | `number` |
 
 #### Defined in
 
@@ -176,8 +176,8 @@ Calculates the maintenance margin requirement (MMR) of a position.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
+| Name     | Type                                                                           | Description                         |
+| :------- | :----------------------------------------------------------------------------- | :---------------------------------- |
 | `inputs` | [`MMRInputs`](/sdks/tech-doc/modules/orderly_network_perp.positions#mmrinputs) | The inputs for calculating the MMR. |
 
 #### Returns
@@ -190,7 +190,7 @@ The MMR of the position.
 
 [positions.ts:226](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/positions.ts#L226)
 
-___
+---
 
 ### estOffsetForTP
 
@@ -200,11 +200,11 @@ Calculates the estimated offset for take profit.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `inputs` | `Object` |
+| Name                | Type     |
+| :------------------ | :------- |
+| `inputs`            | `Object` |
 | `inputs.entryPrice` | `number` |
-| `inputs.price` | `number` |
+| `inputs.price`      | `number` |
 
 #### Returns
 
@@ -214,7 +214,7 @@ Calculates the estimated offset for take profit.
 
 [positions.ts:276](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/positions.ts#L276)
 
-___
+---
 
 ### estPnLForSL
 
@@ -224,10 +224,10 @@ Calculates the PnL for stop loss.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `inputs` | `Object` |
-| `inputs.entryPrice` | `number` |
+| Name                 | Type     |
+| :------------------- | :------- |
+| `inputs`             | `Object` |
+| `inputs.entryPrice`  | `number` |
 | `inputs.positionQty` | `number` |
 
 #### Returns
@@ -238,7 +238,7 @@ Calculates the PnL for stop loss.
 
 [positions.ts:296](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/positions.ts#L296)
 
-___
+---
 
 ### estPnLForTP
 
@@ -248,12 +248,12 @@ Calculates the profit or loss for take profit.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `inputs` | `Object` |
-| `inputs.entryPrice` | `number` |
+| Name                 | Type     |
+| :------------------- | :------- |
+| `inputs`             | `Object` |
+| `inputs.entryPrice`  | `number` |
 | `inputs.positionQty` | `number` |
-| `inputs.price` | `number` |
+| `inputs.price`       | `number` |
 
 #### Returns
 
@@ -265,7 +265,7 @@ The profit or loss for take profit.
 
 [positions.ts:249](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/positions.ts#L249)
 
-___
+---
 
 ### estPriceForTP
 
@@ -275,11 +275,11 @@ Calculates the estimated price for take profit.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `inputs` | `Object` |
-| `inputs.entryPrice` | `number` |
-| `inputs.pnl` | `number` |
+| Name                 | Type     |
+| :------------------- | :------- |
+| `inputs`             | `Object` |
+| `inputs.entryPrice`  | `number` |
+| `inputs.pnl`         | `number` |
 | `inputs.positionQty` | `number` |
 
 #### Returns
@@ -290,7 +290,7 @@ Calculates the estimated price for take profit.
 
 [positions.ts:262](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/positions.ts#L262)
 
-___
+---
 
 ### estPriceFromOffsetForTP
 
@@ -300,11 +300,11 @@ Calculates the estimated price from offset for take profit.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `inputs` | `Object` |
+| Name                | Type     |
+| :------------------ | :------- |
+| `inputs`            | `Object` |
 | `inputs.entryPrice` | `number` |
-| `inputs.offset` | `number` |
+| `inputs.offset`     | `number` |
 
 #### Returns
 
@@ -314,23 +314,23 @@ Calculates the estimated price from offset for take profit.
 
 [positions.ts:286](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/positions.ts#L286)
 
-___
+---
 
 ### liqPrice
 
-▸ **liqPrice**(`inputs`): `number` \| ``null``
+▸ **liqPrice**(`inputs`): `number` \| `null`
 
 Calculates the liquidation price of a single position.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
+| Name     | Type                                                                                     | Description                                       |
+| :------- | :--------------------------------------------------------------------------------------- | :------------------------------------------------ |
 | `inputs` | [`LiqPriceInputs`](/sdks/tech-doc/modules/orderly_network_perp.positions#liqpriceinputs) | The inputs for calculating the liquidation price. |
 
 #### Returns
 
-`number` \| ``null``
+`number` \| `null`
 
 The liquidation price of the position.
 
@@ -338,7 +338,7 @@ The liquidation price of the position.
 
 [positions.ts:102](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/positions.ts#L102)
 
-___
+---
 
 ### maintenanceMargin
 
@@ -348,8 +348,8 @@ Calculates the maintenance margin of a position.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
+| Name     | Type                                                                         | Description                                        |
+| :------- | :--------------------------------------------------------------------------- | :------------------------------------------------- |
 | `inputs` | [`MMInputs`](/sdks/tech-doc/modules/orderly_network_perp.positions#mminputs) | The inputs for calculating the maintenance margin. |
 
 #### Returns
@@ -362,7 +362,7 @@ The maintenance margin of the position.
 
 [positions.ts:141](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/positions.ts#L141)
 
-___
+---
 
 ### notional
 
@@ -372,10 +372,10 @@ Calculates the notional value of a single position.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `qty` | `number` | The quantity of the position. |
-| `mark_price` | `number` | The price of the position. |
+| Name         | Type     | Description                   |
+| :----------- | :------- | :---------------------------- |
+| `qty`        | `number` | The quantity of the position. |
+| `mark_price` | `number` | The price of the position.    |
 
 #### Returns
 
@@ -387,7 +387,7 @@ The notional value of the position.
 
 [positions.ts:11](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/positions.ts#L11)
 
-___
+---
 
 ### totalNotional
 
@@ -397,8 +397,8 @@ Calculates the total notional value of all positions.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
+| Name        | Type                                                                         | Description             |
+| :---------- | :--------------------------------------------------------------------------- | :---------------------- |
 | `positions` | [`Position`](/sdks/tech-doc/interfaces/orderly_network_types.API.Position)[] | The array of positions. |
 
 #### Returns
@@ -411,7 +411,7 @@ The total notional value of all positions.
 
 [positions.ts:20](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/positions.ts#L20)
 
-___
+---
 
 ### totalUnrealizedPnL
 
@@ -421,8 +421,8 @@ Calculates the total unrealized profit or loss of all positions.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
+| Name        | Type                                                                         | Description             |
+| :---------- | :--------------------------------------------------------------------------- | :---------------------- |
 | `positions` | [`Position`](/sdks/tech-doc/interfaces/orderly_network_types.API.Position)[] | The array of positions. |
 
 #### Returns
@@ -435,7 +435,7 @@ The total unrealized profit or loss of all positions.
 
 [positions.ts:76](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/positions.ts#L76)
 
-___
+---
 
 ### totalUnsettlementPnL
 
@@ -445,9 +445,9 @@ Calculates the total unrealized profit or loss of all positions.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `positions` | [`Position`](/sdks/tech-doc/interfaces/orderly_network_types.API.Position) & \{ `sum_unitary_funding`: `number`  }[] | The array of positions. |
+| Name        | Type                                                                                                                | Description             |
+| :---------- | :------------------------------------------------------------------------------------------------------------------ | :---------------------- |
+| `positions` | [`Position`](/sdks/tech-doc/interfaces/orderly_network_types.API.Position) & \{ `sum_unitary_funding`: `number` }[] | The array of positions. |
 
 #### Returns
 
@@ -459,7 +459,7 @@ The total unrealized profit or loss of all positions.
 
 [positions.ts:190](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/positions.ts#L190)
 
-___
+---
 
 ### unrealizedPnL
 
@@ -469,8 +469,8 @@ Calculates the unrealized profit or loss of a single position.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
+| Name     | Type                                                                                       | Description                                               |
+| :------- | :----------------------------------------------------------------------------------------- | :-------------------------------------------------------- |
 | `inputs` | [`UnrealPnLInputs`](/sdks/tech-doc/modules/orderly_network_perp.positions#unrealpnlinputs) | The inputs for calculating the unrealized profit or loss. |
 
 #### Returns
@@ -483,7 +483,7 @@ The unrealized profit or loss of the position.
 
 [positions.ts:37](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/positions.ts#L37)
 
-___
+---
 
 ### unrealizedPnLROI
 
@@ -493,8 +493,8 @@ Calculates the return on investment (ROI) of a single position's unrealized prof
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
+| Name     | Type                                                                                             | Description                         |
+| :------- | :----------------------------------------------------------------------------------------------- | :---------------------------------- |
 | `inputs` | [`UnrealPnLROIInputs`](/sdks/tech-doc/modules/orderly_network_perp.positions#unrealpnlroiinputs) | The inputs for calculating the ROI. |
 
 #### Returns
@@ -507,7 +507,7 @@ The ROI of the position's unrealized profit or loss.
 
 [positions.ts:55](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/positions.ts#L55)
 
-___
+---
 
 ### unsettlementPnL
 
@@ -517,8 +517,8 @@ Calculates the unrealized profit or loss of each position.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
+| Name     | Type                                                                                                   | Description                                               |
+| :------- | :----------------------------------------------------------------------------------------------------- | :-------------------------------------------------------- |
 | `inputs` | [`UnsettlementPnLInputs`](/sdks/tech-doc/modules/orderly_network_perp.positions#unsettlementpnlinputs) | The inputs for calculating the unrealized profit or loss. |
 
 #### Returns

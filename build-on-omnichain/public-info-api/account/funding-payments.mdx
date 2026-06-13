@@ -19,29 +19,28 @@ Funding-fee payment history for an address. Each row shows the funding rate at t
 }
 ```
 
-| Field | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `address` | string | Yes | — | Wallet address |
-| `broker_id` | string | No | — | Optional broker scope |
-| `account_id` | string | No | — | Optional |
-| `symbol` | string | No | — | Symbol filter |
-| `start_time` | int64 | No | — | ms epoch |
-| `end_time` | int64 | No | — | ms epoch |
-| `limit` | int | No | 100 | 1..500 |
-| `cursor` | string | No | — | Opaque cursor |
+| Field        | Type   | Required | Default | Notes                 |
+| ------------ | ------ | -------- | ------- | --------------------- |
+| `address`    | string | Yes      | —       | Wallet address        |
+| `broker_id`  | string | No       | —       | Optional broker scope |
+| `account_id` | string | No       | —       | Optional              |
+| `symbol`     | string | No       | —       | Symbol filter         |
+| `start_time` | int64  | No       | —       | ms epoch              |
+| `end_time`   | int64  | No       | —       | ms epoch              |
+| `limit`      | int    | No       | 100     | 1..500                |
+| `cursor`     | string | No       | —       | Opaque cursor         |
 
 ## Response
 
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `funding_rate` | string | Per-8h cycle decimal |
-| `funding_fee` | string | Signed: `> 0` → user pays, `< 0` → user receives |
-| `position_qty`, `mark_price` | string | Snapshot at the funding epoch |
-| `funding_rate_timestamp` | int64 | Funding epoch (ms epoch UTC) |
-| `payment_type` | string \| null | `"Pay"` / `"Receive"` / `null` when `funding_fee == 0` |
-| `funding_status` | string | `"Settled"` (≤ latest settled version) or `"Accrued"` (pending; often `funding_fee == 0`). Defaults to `"Settled"` if the settlement table is unavailable |
-| `margin_mode` | string | `"CROSS"` or `"ISOLATED"` |
+| Field                        | Type           | Notes                                                                                                                                                     |
+| ---------------------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `funding_rate`               | string         | Per-8h cycle decimal                                                                                                                                      |
+| `funding_fee`                | string         | Signed: `> 0` → user pays, `< 0` → user receives                                                                                                          |
+| `position_qty`, `mark_price` | string         | Snapshot at the funding epoch                                                                                                                             |
+| `funding_rate_timestamp`     | int64          | Funding epoch (ms epoch UTC)                                                                                                                              |
+| `payment_type`               | string \| null | `"Pay"` / `"Receive"` / `null` when `funding_fee == 0`                                                                                                    |
+| `funding_status`             | string         | `"Settled"` (≤ latest settled version) or `"Accrued"` (pending; often `funding_fee == 0`). Defaults to `"Settled"` if the settlement table is unavailable |
+| `margin_mode`                | string         | `"CROSS"` or `"ISOLATED"`                                                                                                                                 |
 
 ## Notes
 

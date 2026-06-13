@@ -8,16 +8,20 @@ description: "Understand the fee structure for traders and the Builder Staking p
 Trading fees are the costs you pay when you buy, sell, or trade on an exchange. On Orderly, fees are measured in **basis points (1 bps = 0.01%)** of your trade's total value.
 
 Orderly Network uses a two-layer fee structure:
+
 1.  **Base fees:** The cost the **Builder** (the DEX) pays to Orderly Network.
 2.  **User fees:** The fee the **Trader** pays to the Builder.
 
 ### The dual-layer example
+
 Here's how the two layers work together in practice:
-*   **Orderly base taker fee:** 3 bps (0.03%)
-*   **Builder custom fee:** 5 bps (0.05%)
-*   **Result:** The **Trader pays 5 bps**. Orderly retains **3 bps**, and the **Builder keeps 2 bps** as profit.
+
+- **Orderly base taker fee:** 3 bps (0.03%)
+- **Builder custom fee:** 5 bps (0.05%)
+- **Result:** The **Trader pays 5 bps**. Orderly retains **3 bps**, and the **Builder keeps 2 bps** as profit.
 
 ### Fee types
+
 **Maker fees:** Charged when your order adds liquidity to the order book -- for example, a limit order that doesn't fill right away. Maker fees can be **negative** (rebates) for higher tiers, meaning you **receive** a rebate when your order adds liquidity.
 
 **Taker fees:** Charged when your order removes liquidity by filling immediately -- for example, a market order.
@@ -31,24 +35,25 @@ as **Maker** and charged the maker fee.
 **Liquidation fees:** If your position gets liquidated, a liquidation fee is applied. See the [liquidation fee](https://orderly.network) docs for details.
 
 <Note>
-Perpetual futures trading fees are charged after every trade in USDC and are **factored into the position's average entry price**.
+  Perpetual futures trading fees are charged after every trade in USDC and are **factored into the
+  position's average entry price**.
 </Note>
 
 # How fees work for Traders
 
 As a Trader, you pay a single fee per trade that's set by the Builder (the DEX you're using).
 
-*   **Total fee paid:** You see one transparent fee per trade. This fee typically includes Orderly's base fee plus the Builder's margin.
-*   **How it's charged:** Fees are automatically deducted from your USDC balance when your trade executes.
-*   **Maker vs Taker:** Whether you pay the maker or taker rate depends on how your order is filled. If your order sits in the book and waits, you're a **Maker**. If it fills immediately, you're a **Taker**.
+- **Total fee paid:** You see one transparent fee per trade. This fee typically includes Orderly's base fee plus the Builder's margin.
+- **How it's charged:** Fees are automatically deducted from your USDC balance when your trade executes.
+- **Maker vs Taker:** Whether you pay the maker or taker rate depends on how your order is filled. If your order sits in the book and waits, you're a **Maker**. If it fills immediately, you're a **Taker**.
 
 # How fees work for Builders
 
 Orderly gives Builders full control over their pricing. You set your own trading fees while tapping into Orderly's shared liquidity.
 
-*   **Set your own fees:** You decide what to charge your users. The only rule: your fee must be at least as high as Orderly's **base fee**.
-*   **Keep the difference:** You retain **100% of the margin** between what you charge users and what Orderly charges you. You have full ownership to decide how to redistribute this margin — for example, using a portion to fund referral programs to help with platform growth, offering user rebates, or creating other incentive structures.
-*   **Base fee tiers:** The base fee Orderly charges you depends on your tier in the Builder Staking programme.
+- **Set your own fees:** You decide what to charge your users. The only rule: your fee must be at least as high as Orderly's **base fee**.
+- **Keep the difference:** You retain **100% of the margin** between what you charge users and what Orderly charges you. You have full ownership to decide how to redistribute this margin — for example, using a portion to fund referral programs to help with platform growth, offering user rebates, or creating other incentive structures.
+- **Base fee tiers:** The base fee Orderly charges you depends on your tier in the Builder Staking programme.
 
 ### Builder Staking programme
 
@@ -62,8 +67,6 @@ Builders can get lower base fees and better support by hitting monthly volume ta
   <Tab title="Public">
     **Requirements:** No volume or staking requirement.
 
-
-
     | Fee type | Rate (bps) |
     |---|---|
     | Crypto base taker fee | 3.00 |
@@ -74,12 +77,11 @@ Builders can get lower base fees and better support by hitting monthly volume ta
     **Marketing benefits:** None
 
     **Product & support:** SDK access & docs
+
   </Tab>
 
   <Tab title="Silver">
     **Requirements:** ≥ \$30M monthly aggregate volume **or** stake 100K \$ORDER
-
-
 
     | Fee type | Rate (bps) |
     |---|---|
@@ -94,12 +96,11 @@ Builders can get lower base fees and better support by hitting monthly volume ta
     **Product & support:**
     - All Public benefits
     - Telegram support group
+
   </Tab>
 
   <Tab title="Gold">
     **Requirements:** ≥ \$90M monthly aggregate volume **or** stake 250K \$ORDER
-
-
 
     | Fee type | Rate (bps) |
     |---|---|
@@ -117,12 +118,11 @@ Builders can get lower base fees and better support by hitting monthly volume ta
     - All Silver benefits
     - **Referral privilege:** Can **sponsor referred Builders to receive Silver-tier pricing** (subject to requirements).
     - 24/7 tech support with SLAs
+
   </Tab>
 
   <Tab title="Platinum">
     **Requirements:** ≥ \$1B monthly aggregate volume **or** stake 2M \$ORDER
-
-
 
     | Fee type | Rate (bps) |
     |---|---|
@@ -141,12 +141,11 @@ Builders can get lower base fees and better support by hitting monthly volume ta
     - **Referral privilege:** Can **sponsor referred Builders to receive Silver or Gold-tier pricing** (subject to requirements).
     - Dedicated account manager
     - Product beta access
+
   </Tab>
 
   <Tab title="Diamond">
     **Requirements:** ≥ \$10B monthly aggregate volume **or** stake 7M \$ORDER
-
-
 
     | Fee type | Rate (bps) |
     |---|---|
@@ -164,6 +163,7 @@ Builders can get lower base fees and better support by hitting monthly volume ta
     - All Platinum benefits
     - **Referral privilege:** Can **sponsor referred Builders to receive Silver, Gold, or Platinum-tier pricing** (subject to requirements).
     - Dedicated support team and product advisory board seat
+
   </Tab>
 </Tabs>
 

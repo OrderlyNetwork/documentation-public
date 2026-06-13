@@ -17,20 +17,19 @@ Snapshot of a symbol's orderbook with mid price and spread.
 }
 ```
 
-| Field | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `symbol` | string | Yes | — | Must exist in the `symbols` table; unknown → `INVALID_PARAM` |
-| `max_level` | int | No | 100 | 1..1000 (silently clamped) |
+| Field       | Type   | Required | Default | Notes                                                        |
+| ----------- | ------ | -------- | ------- | ------------------------------------------------------------ |
+| `symbol`    | string | Yes      | —       | Must exist in the `symbols` table; unknown → `INVALID_PARAM` |
+| `max_level` | int    | No       | 100     | 1..1000 (silently clamped)                                   |
 
 ## Response
 
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `mid_price` | string \| null | `(best_ask + best_bid) / 2`, 8 decimals (`HALF_DOWN`); `null` if either side empty |
-| `spread` | string \| null | `best_ask − best_bid`; `null` if either side empty |
-| `asks[]`, `bids[]` | array | Best-first; trimmed to `max_level` |
-| `ts` (inner) | int64 | Snapshot timestamp from cache (or `now` on cold cache) |
+| Field              | Type           | Notes                                                                              |
+| ------------------ | -------------- | ---------------------------------------------------------------------------------- |
+| `mid_price`        | string \| null | `(best_ask + best_bid) / 2`, 8 decimals (`HALF_DOWN`); `null` if either side empty |
+| `spread`           | string \| null | `best_ask − best_bid`; `null` if either side empty                                 |
+| `asks[]`, `bids[]` | array          | Best-first; trimmed to `max_level`                                                 |
+| `ts` (inner)       | int64          | Snapshot timestamp from cache (or `now` on cold cache)                             |
 
 ## Notes
 

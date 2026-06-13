@@ -13,10 +13,10 @@ Previously, launching a Strategy Vault required manual coordination across multi
 
 Permissionless Vault is not a standalone feature -- it is a core component of Orderly Network's permissionless infrastructure, alongside [Permissionless Listing](/introduction/trade-on-orderly/permissionless-listing).
 
-| | What it does | Who uses it |
-| :--- | :--- | :--- |
-| **Permissionless Listing (PML)** | Lets qualified Builders list new perpetual markets without Orderly approval | Builders / Brokers |
-| **Permissionless Vault (PMV)** | Lets anyone create and operate a Strategy Vault without manual onboarding | Strategy Providers / Fund Managers |
+|                                  | What it does                                                                | Who uses it                        |
+| :------------------------------- | :-------------------------------------------------------------------------- | :--------------------------------- |
+| **Permissionless Listing (PML)** | Lets qualified Builders list new perpetual markets without Orderly approval | Builders / Brokers                 |
+| **Permissionless Vault (PMV)**   | Lets anyone create and operate a Strategy Vault without manual onboarding   | Strategy Providers / Fund Managers |
 
 **How they work together:**
 
@@ -28,13 +28,13 @@ Together, PML and PMV form the foundation of Orderly's vision for a fully permis
 
 ## Standard Vault vs. Permissionless Vault
 
-| Feature | Standard Vault (Current) | Permissionless Vault |
-| :--- | :--- | :--- |
-| **Who creates it** | Orderly team (manual onboarding) | Any EOA wallet holder |
-| **Setup time** | 2–5 business days | < 30 minutes |
-| **Manual steps** | 29 steps, 5+ people | 1 transaction, 0 people |
-| **Multi-sig required** | Yes (4–24h bottleneck) | No |
-| **Database configuration** | 20+ manual SQL operations | Fully automated |
+| Feature                    | Standard Vault (Current)         | Permissionless Vault    |
+| :------------------------- | :------------------------------- | :---------------------- |
+| **Who creates it**         | Orderly team (manual onboarding) | Any EOA wallet holder   |
+| **Setup time**             | 2–5 business days                | < 30 minutes            |
+| **Manual steps**           | 29 steps, 5+ people              | 1 transaction, 0 people |
+| **Multi-sig required**     | Yes (4–24h bottleneck)           | No                      |
+| **Database configuration** | 20+ manual SQL operations        | Fully automated         |
 
 ## How It Works
 
@@ -50,16 +50,16 @@ Permissionless Vault leverages deterministic contract deployment (CREATE3), cros
 
 ### What the creator provides
 
-| Parameter | Notes |
-| :--- | :--- |
-| **Vault Name** | Max 50 characters. Alphanumeric, spaces, hyphens, underscores, dots. Immutable after creation. |
-| **Description** | Max 500 characters. Markdown supported. Modifiable after creation. |
-| **Deployment Chain** | Single chain for initial deployment (Arbitrum, Base, Optimism, or Sei). More chains can be added later. |
-| **Broker** | Selected from available brokers (searchable dropdown). |
-| **SP Address** | The strategy provider's wallet address. Immutable after creation. |
-| **SP Name** | Max 50 characters. Immutable after creation. |
-| **Performance Fee Rate** | Integer 0–50 (representing 0%–50%). Immutable after creation. |
-| **1st Period Start** | Must be a round hour and at least 24 hours in the future, or left unset (0). Modifiable after creation (with restrictions). |
+| Parameter                | Notes                                                                                                                       |
+| :----------------------- | :-------------------------------------------------------------------------------------------------------------------------- |
+| **Vault Name**           | Max 50 characters. Alphanumeric, spaces, hyphens, underscores, dots. Immutable after creation.                              |
+| **Description**          | Max 500 characters. Markdown supported. Modifiable after creation.                                                          |
+| **Deployment Chain**     | Single chain for initial deployment (Arbitrum, Base, Optimism, or Sei). More chains can be added later.                     |
+| **Broker**               | Selected from available brokers (searchable dropdown).                                                                      |
+| **SP Address**           | The strategy provider's wallet address. Immutable after creation.                                                           |
+| **SP Name**              | Max 50 characters. Immutable after creation.                                                                                |
+| **Performance Fee Rate** | Integer 0–50 (representing 0%–50%). Immutable after creation.                                                               |
+| **1st Period Start**     | Must be a round hour and at least 24 hours in the future, or left unset (0). Modifiable after creation (with restrictions). |
 
 Parameters marked **immutable** cannot be changed after vault creation. If a change is absolutely necessary, the creator must contact Orderly support.
 
@@ -76,10 +76,10 @@ The full provisioning pipeline (contract deployed → ledger registered → CeFi
 
 Creating a Permissionless Vault (or adding a new chain) requires the creator to pay the following fees in a single transaction:
 
-| Fee | Source | Description |
-| :--- | :--- | :--- |
-| **Gas Fee** | Network (RPC estimate) | Standard blockchain gas for deploying the vault contract and executing on-chain operations. Varies with network congestion. |
-| **Cross-Chain Fee** | `quoteFee()` on factory contract | LayerZero V2 messaging fee for syncing vault configuration to the Orderly Chain ledger. Any excess is refunded to the creator. |
+| Fee                         | Source                                              | Description                                                                                                                                                                                                                                                 |
+| :-------------------------- | :-------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Gas Fee**                 | Network (RPC estimate)                              | Standard blockchain gas for deploying the vault contract and executing on-chain operations. Varies with network congestion.                                                                                                                                 |
+| **Cross-Chain Fee**         | `quoteFee()` on factory contract                    | LayerZero V2 messaging fee for syncing vault configuration to the Orderly Chain ledger. Any excess is refunded to the creator.                                                                                                                              |
 | **Vault Operation Reserve** | `assetsTransferCrossChainFee()` on factory contract | Native token (ETH) deposited into the vault contract to cover future cross-chain transfer operations (moving user funds from Vault to DEX). Currently fixed at **0.1 ETH** per chain. This deposit is **non-refundable** and remains in the vault contract. |
 
 > **Important:** The Vault Operation Reserve is essential for vault operations. If the vault's ETH balance is depleted, cross-chain fund transfers will fail and new LP deposits cannot enter the DEX for trading. The creator is responsible for maintaining sufficient ETH balance in the vault.
@@ -90,13 +90,13 @@ Creating a Permissionless Vault (or adding a new chain) requires the creator to 
 
 The following operational parameters are set by the system and **cannot be modified** by the vault creator. They apply uniformly to all Permissionless Vaults:
 
-| Parameter | Value | Notes |
-| :--- | :--- | :--- |
-| **Minimum Deposit Amount (LP)** | 300 USDC | Minimum amount an LP must deposit into the vault. |
-| **Minimum Withdrawal Amount** | 10 USDC | Minimum amount for LP withdrawal requests. |
-| **Period Duration** | 3 days (4,320 minutes) | The vault operates in fixed periods for settlement. |
-| **Deposit Lock-up Duration** | 7 days (10,080 minutes) | Deposits are locked starting from the beginning of the vault period in which the deposit is processed. |
-| **Reserve Margin (SP)** | 50,000 USDC | Minimum margin the Strategy Provider must maintain. |
+| Parameter                       | Value                   | Notes                                                                                                  |
+| :------------------------------ | :---------------------- | :----------------------------------------------------------------------------------------------------- |
+| **Minimum Deposit Amount (LP)** | 300 USDC                | Minimum amount an LP must deposit into the vault.                                                      |
+| **Minimum Withdrawal Amount**   | 10 USDC                 | Minimum amount for LP withdrawal requests.                                                             |
+| **Period Duration**             | 3 days (4,320 minutes)  | The vault operates in fixed periods for settlement.                                                    |
+| **Deposit Lock-up Duration**    | 7 days (10,080 minutes) | Deposits are locked starting from the beginning of the vault period in which the deposit is processed. |
+| **Reserve Margin (SP)**         | 50,000 USDC             | Minimum margin the Strategy Provider must maintain.                                                    |
 
 > These parameters may become configurable in future versions. See [What's Next](#whats-next) for planned expansions.
 
@@ -106,9 +106,9 @@ The following operational parameters are set by the system and **cannot be modif
 
 After creation, the vault creator can update two settings:
 
-| Setting | Restrictions |
-| :--- | :--- |
-| **Description** | No restrictions. Can be changed at any time. |
+| Setting              | Restrictions                                                                                                                                                                                                                                 |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Description**      | No restrictions. Can be changed at any time.                                                                                                                                                                                                 |
 | **1st Period Start** | Can only be changed if the current time is more than 6 hours before the existing start time. New value must be a round hour and at least 24 hours in the future. Cannot be set back to unset (0) once set -- use a far-future time to delay. |
 
 Each modification requires a separate on-chain transaction. The change propagates through the indexer to the backend, and the frontend polls the vault info API until the updated value appears.
@@ -138,12 +138,12 @@ The vault remains usable on its deployment chain (deposits and withdrawals work)
 
 Permissionless Vaults work like standard Strategy Vaults in most ways -- same deposit/withdrawal flow, same settlement mechanics, same period structure. Key differences:
 
-| | Standard Vaults | Permissionless Vaults |
-| :--- | :--- | :--- |
-| **Who operates it** | Orderly-vetted Strategy Providers | Any creator with an EOA wallet |
-| **Onboarding review** | Reviewed by Orderly team | No review -- fully permissionless |
-| **Strategy transparency** | Varies by vault | Varies by vault |
-| **Risk** | Orderly performs due diligence on SP | LP must independently evaluate the creator and strategy |
+|                           | Standard Vaults                      | Permissionless Vaults                                   |
+| :------------------------ | :----------------------------------- | :------------------------------------------------------ |
+| **Who operates it**       | Orderly-vetted Strategy Providers    | Any creator with an EOA wallet                          |
+| **Onboarding review**     | Reviewed by Orderly team             | No review -- fully permissionless                       |
+| **Strategy transparency** | Varies by vault                      | Varies by vault                                         |
+| **Risk**                  | Orderly performs due diligence on SP | LP must independently evaluate the creator and strategy |
 
 ### What this means in practice
 

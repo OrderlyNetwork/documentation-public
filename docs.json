@@ -169,51 +169,46 @@
                 ]
               },
               {
-                "group": "Module Marketplace",
+                "group": "Builder Marketplace",
                 "pages": [
-                  "build-on-omnichain/module-marketplace/introduction",
+                  "build-on-omnichain/builder-marketplace/introduction",
+                  "build-on-omnichain/builder-marketplace/plugin-developer-handbook",
+                  "build-on-omnichain/builder-marketplace/getting-started",
+                  "build-on-omnichain/builder-marketplace/skills-first",
                   {
-                    "group": "Plugin Developer Handbook",
+                    "group": "Tutorials",
                     "pages": [
-                      "build-on-omnichain/module-marketplace/plugin-developer-handbook",
-                      "build-on-omnichain/module-marketplace/getting-started",
-                      "build-on-omnichain/module-marketplace/skills-first",
-                      {
-                        "group": "Tutorials",
-                        "pages": [
-                          "build-on-omnichain/module-marketplace/first-plugin",
-                          "build-on-omnichain/module-marketplace/integrate-host",
-                          "build-on-omnichain/module-marketplace/marketplace-submission",
-                          "build-on-omnichain/module-marketplace/multi-interceptor-targets"
-                        ]
-                      },
-                      {
-                        "group": "How-to guides",
-                        "pages": [
-                          "build-on-omnichain/module-marketplace/plugin-types",
-                          "build-on-omnichain/module-marketplace/interceptor-strategies",
-                          "build-on-omnichain/module-marketplace/host-integration-patterns",
-                          "build-on-omnichain/module-marketplace/usage-prompt-and-readme"
-                        ]
-                      },
-                      {
-                        "group": "Reference",
-                        "pages": [
-                          "build-on-omnichain/module-marketplace/cli-reference",
-                          "build-on-omnichain/module-marketplace/interceptors",
-                          "build-on-omnichain/module-marketplace/runtime-injector-targets",
-                          "build-on-omnichain/module-marketplace/manifest-and-submit",
-                          "build-on-omnichain/module-marketplace/mcp-sdk-docs",
-                          "build-on-omnichain/module-marketplace/agent-skills-alignment"
-                        ]
-                      },
-                      {
-                        "group": "Recipes",
-                        "pages": [
-                          "build-on-omnichain/module-marketplace/quickstart-recipe",
-                          "build-on-omnichain/module-marketplace/marketplace-submit-recipe"
-                        ]
-                      }
+                      "build-on-omnichain/builder-marketplace/first-plugin",
+                      "build-on-omnichain/builder-marketplace/integrate-host",
+                      "build-on-omnichain/builder-marketplace/marketplace-submission",
+                      "build-on-omnichain/builder-marketplace/multi-interceptor-targets"
+                    ]
+                  },
+                  {
+                    "group": "How-to guides",
+                    "pages": [
+                      "build-on-omnichain/builder-marketplace/plugin-types",
+                      "build-on-omnichain/builder-marketplace/interceptor-strategies",
+                      "build-on-omnichain/builder-marketplace/host-integration-patterns",
+                      "build-on-omnichain/builder-marketplace/usage-prompt-and-readme"
+                    ]
+                  },
+                  {
+                    "group": "Reference",
+                    "pages": [
+                      "build-on-omnichain/builder-marketplace/cli-reference",
+                      "build-on-omnichain/builder-marketplace/interceptors",
+                      "build-on-omnichain/builder-marketplace/runtime-injector-targets",
+                      "build-on-omnichain/builder-marketplace/manifest-and-submit",
+                      "build-on-omnichain/builder-marketplace/mcp-sdk-docs",
+                      "build-on-omnichain/builder-marketplace/agent-skills-alignment"
+                    ]
+                  },
+                  {
+                    "group": "Recipes",
+                    "pages": [
+                      "build-on-omnichain/builder-marketplace/quickstart-recipe",
+                      "build-on-omnichain/builder-marketplace/marketplace-submit-recipe"
                     ]
                   }
                 ]
@@ -1315,6 +1310,10 @@
   },
   "redirects": [
     {
+      "source": "/build-on-omnichain/module-marketplace/:slug*",
+      "destination": "/build-on-omnichain/builder-marketplace/:slug*"
+    },
+    {
       "source": "/introduction/getting-started/broker-onboarding",
       "destination": "/introduction/getting-started/builder-onboarding"
     },
@@ -1376,7 +1375,7 @@
     },
     {
       "source": "/build-on-omnichain/evm-api/restful-api/private/add-sp-orderly-key",
-      "destination": "/build-on-omnichain/restful-api/private/add-sp-orderly-key"
+      "destination": "/strategy-vault/strategy-provider/private/add-sp-orderly-key"
     },
     {
       "source": "/build-on-omnichain/evm-api/restful-api/private/add-sub-account",
@@ -1776,7 +1775,7 @@
     },
     {
       "source": "/build-on-omnichain/evm-api/restful-api/private/request-sp-pnl-settlement",
-      "destination": "/build-on-omnichain/restful-api/private/request-sp-pnl-settlement"
+      "destination": "/strategy-vault/strategy-provider/private/request-sp-pnl-settlement"
     },
     {
       "source": "/build-on-omnichain/evm-api/restful-api/private/reset-orderly-key-ip-restriction",
@@ -1812,7 +1811,7 @@
     },
     {
       "source": "/build-on-omnichain/evm-api/restful-api/private/trigger-manual-period-delivery",
-      "destination": "/build-on-omnichain/restful-api/private/trigger-manual-period-delivery"
+      "destination": "/strategy-vault/strategy-provider/private/trigger-manual-period-delivery"
     },
     {
       "source": "/build-on-omnichain/evm-api/restful-api/private/update-default-builder-fee",
@@ -1936,11 +1935,11 @@
     },
     {
       "source": "/build-on-omnichain/evm-api/restful-api/public/get-fund-inflow-allocation",
-      "destination": "/build-on-omnichain/restful-api/public/get-fund-inflow-allocation"
+      "destination": "/strategy-vault/strategy-fund/public/get-fund-inflow-allocation"
     },
     {
       "source": "/build-on-omnichain/evm-api/restful-api/public/get-fund-outflow-allocation",
-      "destination": "/build-on-omnichain/restful-api/public/get-fund-outflow-allocation"
+      "destination": "/strategy-vault/strategy-fund/public/get-fund-outflow-allocation"
     },
     {
       "source": "/build-on-omnichain/evm-api/restful-api/public/get-funding-rate-for-all-markets",
@@ -1968,7 +1967,7 @@
     },
     {
       "source": "/build-on-omnichain/evm-api/restful-api/public/get-internal-transfer-history",
-      "destination": "/build-on-omnichain/restful-api/public/get-internal-transfer-history"
+      "destination": "/strategy-vault/strategy-fund/public/get-internal-transfer-history"
     },
     {
       "source": "/build-on-omnichain/evm-api/restful-api/public/get-ip-info",
@@ -1988,7 +1987,7 @@
     },
     {
       "source": "/build-on-omnichain/evm-api/restful-api/public/get-liquidation-fees-sharing-history",
-      "destination": "/build-on-omnichain/restful-api/public/get-liquidation-fees-sharing-history"
+      "destination": "/strategy-vault/strategy-fund/public/get-liquidation-fees-sharing-history"
     },
     {
       "source": "/build-on-omnichain/evm-api/restful-api/public/get-list-of-campaigns",
@@ -2040,7 +2039,7 @@
     },
     {
       "source": "/build-on-omnichain/evm-api/restful-api/public/get-orderly-protocol-revenue-sharing-history",
-      "destination": "/build-on-omnichain/restful-api/public/get-orderly-protocol-revenue-sharing-history"
+      "destination": "/strategy-vault/strategy-fund/public/get-orderly-protocol-revenue-sharing-history"
     },
     {
       "source": "/build-on-omnichain/evm-api/restful-api/public/get-parameters-of-each-epoch",

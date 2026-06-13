@@ -16,19 +16,18 @@ Per-symbol funding rate comparison across major exchanges. Reports the last obse
 }
 ```
 
-| Field | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `symbol` | string | No | `null` | Omit → returns all symbols |
+| Field    | Type   | Required | Default | Notes                      |
+| -------- | ------ | -------- | ------- | -------------------------- |
+| `symbol` | string | No       | `null`  | Omit → returns all symbols |
 
 ## Response
 
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `next_funding_time` | int64 | ms epoch |
-| `exchanges[].name` | string | Venue identifier (e.g. `binance`, `bybit`, `orderly`) |
-| `exchanges[].last` | string | Last observed funding rate |
-| `exchanges[].1d` / `.7d` / `.30d` | string | Rolling-window averages |
+| Field                             | Type   | Notes                                                 |
+| --------------------------------- | ------ | ----------------------------------------------------- |
+| `next_funding_time`               | int64  | ms epoch                                              |
+| `exchanges[].name`                | string | Venue identifier (e.g. `binance`, `bybit`, `orderly`) |
+| `exchanges[].last`                | string | Last observed funding rate                            |
+| `exchanges[].1d` / `.7d` / `.30d` | string | Rolling-window averages                               |
 
 ## Notes
 

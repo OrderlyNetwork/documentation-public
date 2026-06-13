@@ -68,7 +68,7 @@ where:
 | brokerId          | string    | Y        | Builder ID                                                                                               |
 | chainId           | int       | Y        | Chain ID of registering chain (within those supported by the Network)                                    |
 | timestamp         | timestamp | Y        | Timestamp in UNIX milliseconds                                                                           |
-| registrationNonce | string    | Y        | Valid nonce from [Get registration nonce](/build-on-omnichain/restful-api/public/get-registration-nonce)  |
+| registrationNonce | string    | Y        | Valid nonce from [Get registration nonce](/build-on-omnichain/restful-api/public/get-registration-nonce) |
 
 ### Add Access Key
 
@@ -89,14 +89,14 @@ To add a new access key on Orderly:
 
 where:
 
-| Name       | Type      | Required | Description                                                                                       |
-| ---------- | --------- | -------- | ------------------------------------------------------------------------------------------------- |
-| brokerId   | string    | Y        | Builder ID                                                                                        |
-| chainId    | int       | Y        | Chain ID of registering chain (within those supported by the Network)                             |
-| orderlyKey | string    | Y        | ed25519 public key                                                                                |
-| scope      | string    | Y        | Valid scopes are `read`, `trading`; multiple scopes can be sent, comma separated                  |
-| timestamp  | timestamp | Y        | Timestamp in UNIX milliseconds                                                                    |
-| expiration | timestamp | Y        | Expiration time of the key in UNIX milliseconds. Maximum allowed expiration is 365 days from add  |
+| Name       | Type      | Required | Description                                                                                      |
+| ---------- | --------- | -------- | ------------------------------------------------------------------------------------------------ |
+| brokerId   | string    | Y        | Builder ID                                                                                       |
+| chainId    | int       | Y        | Chain ID of registering chain (within those supported by the Network)                            |
+| orderlyKey | string    | Y        | ed25519 public key                                                                               |
+| scope      | string    | Y        | Valid scopes are `read`, `trading`; multiple scopes can be sent, comma separated                 |
+| timestamp  | timestamp | Y        | Timestamp in UNIX milliseconds                                                                   |
+| expiration | timestamp | Y        | Expiration time of the key in UNIX milliseconds. Maximum allowed expiration is 365 days from add |
 
 3. Send all the necessary information via the [Add Orderly Key](/build-on-omnichain/restful-api/public/add-orderly-key) API
 
@@ -113,12 +113,12 @@ To create a deposit request:
 1. Approve spending of the token by the smart contract
 2. Call the deposit function of the smart contract with the following structured data:
 
-| Name        | Type  | Required | Description                                           |
-| ----------- | ----- | -------- | ----------------------------------------------------- |
-| accountId   | bytes | Y        | The account ID of the user in bytes                   |
+| Name        | Type  | Required | Description                                             |
+| ----------- | ----- | -------- | ------------------------------------------------------- |
+| accountId   | bytes | Y        | The account ID of the user in bytes                     |
 | brokerHash  | bytes | Y        | The keccak256 hash of the builder ID (e.g. "woofi_dex") |
-| tokenHash   | bytes | Y        | The keccak256 hash of the token string (e.g. "USDC")  |
-| tokenAmount | int   | Y        | Amount of tokens to be deposited                      |
+| tokenHash   | bytes | Y        | The keccak256 hash of the token string (e.g. "USDC")    |
+| tokenAmount | int   | Y        | Amount of tokens to be deposited                        |
 
 Note that deposits will take some time to reflect depending on the origin chain, to allow for finalization of the cross-chain transaction. Once the deposit is credited, the balance will update and the transaction can be seen on the Get asset history API.
 
@@ -145,15 +145,15 @@ To withdraw tokens from Orderly:
 
 where:
 
-| Name          | Type      | Required | Description                                                                                                 |
-| ------------- | --------- | -------- | ----------------------------------------------------------------------------------------------------------- |
-| brokerId      | string    | Y        | Builder ID                                                                                                  |
-| chainId       | int       | Y        | Chain ID of withdrawing chain (within those supported by the Network)                                       |
-| receiver      | string    | Y        | Address of the receiver, which should be equal to the address of the account                                |
-| token         | string    | Y        | The string representation of the token being withdrawn (e.g. "USDC")                                       |
-| amount        | string    | Y        | Amount of tokens to be withdrawn                                                                            |
+| Name          | Type      | Required | Description                                                                                                      |
+| ------------- | --------- | -------- | ---------------------------------------------------------------------------------------------------------------- |
+| brokerId      | string    | Y        | Builder ID                                                                                                       |
+| chainId       | int       | Y        | Chain ID of withdrawing chain (within those supported by the Network)                                            |
+| receiver      | string    | Y        | Address of the receiver, which should be equal to the address of the account                                     |
+| token         | string    | Y        | The string representation of the token being withdrawn (e.g. "USDC")                                             |
+| amount        | string    | Y        | Amount of tokens to be withdrawn                                                                                 |
 | withdrawNonce | int       | Y        | Valid withdrawal nonce from [Get withdrawal nonce](/build-on-omnichain/restful-api/private/get-withdrawal-nonce) |
-| timestamp     | timestamp | Y        | Current timestamp in UNIX milliseconds                                                                      |
+| timestamp     | timestamp | Y        | Current timestamp in UNIX milliseconds                                                                           |
 
 5. Call the request to withdraw API to complete the withdrawal request
 
@@ -175,11 +175,11 @@ Any realized and unrealized PnL accrued from open or closed positions needs to b
 
 where:
 
-| Name        | Type      | Required | Description                                                                                                |
-| ----------- | --------- | -------- | ---------------------------------------------------------------------------------------------------------- |
-| brokerId    | string    | Y        | Builder ID                                                                                                 |
-| chainId     | int       | Y        | Chain ID of registering chain (within those supported by the Network)                                      |
+| Name        | Type      | Required | Description                                                                                                      |
+| ----------- | --------- | -------- | ---------------------------------------------------------------------------------------------------------------- |
+| brokerId    | string    | Y        | Builder ID                                                                                                       |
+| chainId     | int       | Y        | Chain ID of registering chain (within those supported by the Network)                                            |
 | settleNonce | int       | Y        | Valid settlement nonce from [Get Settle PnL nonce](/build-on-omnichain/restful-api/private/get-settle-pnl-nonce) |
-| timestamp   | timestamp | Y        | Current timestamp in UNIX milliseconds                                                                     |
+| timestamp   | timestamp | Y        | Current timestamp in UNIX milliseconds                                                                           |
 
 3. Call the Settle PnL API to complete the request

@@ -22,18 +22,17 @@ Composite snapshot for a single symbol. The `include` field controls which of th
 }
 ```
 
-| Field | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `symbol` | string | Yes | — | Trading pair |
-| `include` | string[] | No | all 5 | Subset of `["market_info","orderbook","recent_trades","funding_history","candles"]`; empty list = all |
-| `orderbook_levels` | int | No | 20 | 1..100 (clamped) |
-| `recent_trades_limit` | int | No | 20 | 1..100 |
-| `funding_history_limit` | int | No | 8 | 1..100 |
-| `candles_interval` | string | No | `"1h"` | Same interval set as [`candles`](/build-on-omnichain/public-info-api/market/candles) |
-| `candles_limit` | int | No | 24 | 1..500 |
+| Field                   | Type     | Required | Default | Notes                                                                                                 |
+| ----------------------- | -------- | -------- | ------- | ----------------------------------------------------------------------------------------------------- |
+| `symbol`                | string   | Yes      | —       | Trading pair                                                                                          |
+| `include`               | string[] | No       | all 5   | Subset of `["market_info","orderbook","recent_trades","funding_history","candles"]`; empty list = all |
+| `orderbook_levels`      | int      | No       | 20      | 1..100 (clamped)                                                                                      |
+| `recent_trades_limit`   | int      | No       | 20      | 1..100                                                                                                |
+| `funding_history_limit` | int      | No       | 8       | 1..100                                                                                                |
+| `candles_interval`      | string   | No       | `"1h"`  | Same interval set as [`candles`](/build-on-omnichain/public-info-api/market/candles)                  |
+| `candles_limit`         | int      | No       | 24      | 1..500                                                                                                |
 
 ## Response
-
 
 ## Notes
 
@@ -47,14 +46,22 @@ Composite snapshot for a single symbol. The `include` field controls which of th
   "success": true,
   "data": {
     "symbol": "PERP_BTC_USDC",
-    "market_info": { /* same shape as marketSummary.markets[] row */ },
+    "market_info": {
+      /* same shape as marketSummary.markets[] row */
+    },
     "orderbook": {
       "asks": [{ "price": "77339.20", "quantity": "0.45" }],
       "bids": [{ "price": "77337.50", "quantity": "0.32" }]
     },
-    "recent_trades": [ /* same shape as marketTrades rows */ ],
-    "funding_history": [ /* same shape as fundingRateHistory rows */ ],
-    "candles": [ /* same shape as candles rows */ ]
+    "recent_trades": [
+      /* same shape as marketTrades rows */
+    ],
+    "funding_history": [
+      /* same shape as fundingRateHistory rows */
+    ],
+    "candles": [
+      /* same shape as candles rows */
+    ]
   },
   "ts": 1779269143700
 }

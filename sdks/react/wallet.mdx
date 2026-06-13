@@ -27,14 +27,13 @@ import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 
 const App: FC<{ children: ReactNode }> = (props) => {
   return (
-    <WalletConnectorProvider solanaInitial={{network : WalletAdapterNetwork.Mainnet}}>
+    <WalletConnectorProvider solanaInitial={{ network: WalletAdapterNetwork.Mainnet }}>
       <OrderlyAppProvider
         brokerId="orderly"
         brokerName="Orderly"
         networkId="testnet"
         appIcons={"/logo.svg"} // Path to your app icons
       >
-
         {props.children}
       </OrderlyAppProvider>
     </WalletConnectorProvider>
@@ -59,7 +58,7 @@ The Privy wallet connector consists of three parts:
 - `termsOfUse` (**optional**) - URL for Terms of Use; if not provided, terms section won't be shown.
 
 ```ts
-interface WalletConnectorPrivyProps{
+interface WalletConnectorPrivyProps {
   network: Network;
   customChains?: Chains;
   termsOfUse?: string;
@@ -94,9 +93,9 @@ import WalletConnectorPrivyProvider from "@orderly.network/wallet-connector-priv
       appearance: {
         theme: "dark",
         accentColor: "#181C23",
-        logo: "/orderly-logo.svg",
-      },
-    },
+        logo: "/orderly-logo.svg"
+      }
+    }
   }}
   wagmiConfig={{
     connectors: [
@@ -109,10 +108,10 @@ import WalletConnectorPrivyProvider from "@orderly.network/wallet-connector-priv
           name: "Orderly Network",
           description: "Orderly Network",
           url: "https://orderly.network",
-          icons: ["https://oss.orderly.network/static/sdk/chains.png"],
-        },
-      }),
-    ],
+          icons: ["https://oss.orderly.network/static/sdk/chains.png"]
+        }
+      })
+    ]
   }}
   solanaConfig={{
     mainnetRpc: "",
@@ -120,14 +119,12 @@ import WalletConnectorPrivyProvider from "@orderly.network/wallet-connector-priv
     wallets: wallets,
     onError: (error: WalletError, adapter?: Adapter) => {
       console.log("-- error", error, adapter);
-    },
+    }
   }}
   abstractConfig={{}}
 >
-  <OrderlyAppProvider>
-    {props.children}
-  </OrderlyAppProvider>
-</WalletConnectorPrivyProvider>
+  <OrderlyAppProvider>{props.children}</OrderlyAppProvider>
+</WalletConnectorPrivyProvider>;
 ```
 
 ---
@@ -143,11 +140,13 @@ import { WalletConnectorContext } from "@orderly.network/hooks";
 export const WalletConnector = ({ children }: PropsWithChildren) => {
   return (
     <WalletConnectorContext.Provider
-      value={{
-        /*
-         * implement all properties defined in WalletConnectorContextState
-         */
-      }}
+      value={
+        {
+          /*
+           * implement all properties defined in WalletConnectorContextState
+           */
+        }
+      }
     >
       {children}
     </WalletConnectorContext.Provider>

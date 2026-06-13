@@ -25,6 +25,7 @@ A `STOP` order is triggered when the `trigger_price` is reached, creating a new 
 For each `TP_SL` order placed, three algo orders are created in the Orderly system.
 
 **Rules:**
+
 - To edit a `TP_SL` order, send the edit request on the `root_algo_order` and pass both `root_algo_order` and `child_orders` as parameters. You may pass only one `child_order` for editing. If editing `quantity`, both `child_orders` must be passed with identical `quantity`.
 - Maximum 10 untriggered `TP_SL` orders per user.
 - Maximum 1 untriggered `POSITIONAL_TP_SL` order per user.
@@ -126,20 +127,22 @@ For each `TP_SL` order placed, three algo orders are created in the Orderly syst
 
 A `BRACKET` order tracks a regular order and automatically closes its position with a `TP_SL` or `POSITIONAL_TP_SL` order.
 
-| Term | Description |
-| --- | --- |
-| `leg_1` | The `BRACKET` order and its triggered regular order |
+| Term    | Description                                                              |
+| ------- | ------------------------------------------------------------------------ |
+| `leg_1` | The `BRACKET` order and its triggered regular order                      |
 | `leg_2` | The `POSITIONAL_TP_SL` or `TP_SL` order and their triggered child orders |
 
 **Quantity behavior:**
+
 - `BRACKET` + `TP_SL`: The `TP_SL` quantity is determined by the `executed_quantity` of `leg_1`.
 - `BRACKET` + `POSITIONAL_TP_SL`: The `POSITIONAL_TP_SL` quantity is determined by the user's position at the time of triggering.
 
 <Note>
-  For `BRACKET` + `POSITIONAL_TP_SL`:
-  - When `leg_2`'s `POSITIONAL_TP_SL` is triggered, any previously active `POSITIONAL_TP_SL` orders will be canceled.
-  - If a triggered `POSITIONAL_TP_SL` order already exists, `leg_2` will be canceled instead -- ensuring only one active `POSITIONAL_TP_SL` order at a time.
-  - When any regular order in `leg_1` is executed, `leg_1` and `leg_2` are decoupled, and `leg_2` becomes an independent `POSITIONAL_TP_SL` order.
+  For `BRACKET` + `POSITIONAL_TP_SL`: - When `leg_2`'s `POSITIONAL_TP_SL` is triggered, any
+  previously active `POSITIONAL_TP_SL` orders will be canceled. - If a triggered `POSITIONAL_TP_SL`
+  order already exists, `leg_2` will be canceled instead -- ensuring only one active
+  `POSITIONAL_TP_SL` order at a time. - When any regular order in `leg_1` is executed, `leg_1` and
+  `leg_2` are decoupled, and `leg_2` becomes an independent `POSITIONAL_TP_SL` order.
 </Note>
 
 ### BRACKET + POSITIONAL_TP_SL

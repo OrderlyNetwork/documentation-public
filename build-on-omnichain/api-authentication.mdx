@@ -52,6 +52,7 @@ Orderly uses the [`ed25519` elliptic curve standard](https://ed25519.cr.yp.to/) 
     | `orderly-key` | Your Orderly public key |
     | `orderly-signature` | ed25519 signature (base64url) |
     | `orderly-timestamp` | Request timestamp (ms) |
+
   </Step>
 </Steps>
 
@@ -64,20 +65,20 @@ Orderly uses the [`ed25519` elliptic curve standard](https://ed25519.cr.yp.to/) 
 This is a concise, single-file TypeScript example that demonstrates how to sign and send a request to the Orderly API using the `@noble/ed25519` library.
 
 ```ts
-import { signAsync, getPublicKeyAsync } from '@noble/ed25519';
-import bs58 from 'bs58';
+import { signAsync, getPublicKeyAsync } from "@noble/ed25519";
+import bs58 from "bs58";
 
 async function main() {
-  const orderlyAccountId = 'YOUR_ACCOUNT_ID';
-  const orderlySecret = 'YOUR_ORDERLY_SECRET'; // base58 encoded
-  const baseUrl = 'https://testnet-api.orderly.org';
+  const orderlyAccountId = "YOUR_ACCOUNT_ID";
+  const orderlySecret = "YOUR_ORDERLY_SECRET"; // base58 encoded
+  const baseUrl = "https://testnet-api.orderly.org";
   const url = new URL(`${baseUrl}/v1/order`);
-  const method = 'POST';
+  const method = "POST";
   const body = JSON.stringify({
-    symbol: 'PERP_ETH_USDC',
-    order_type: 'MARKET',
+    symbol: "PERP_ETH_USDC",
+    order_type: "MARKET",
     order_quantity: 0.01,
-    side: 'BUY'
+    side: "BUY"
   });
   const timestamp = Date.now();
 
@@ -89,12 +90,12 @@ async function main() {
     method,
     body,
     headers: {
-      'Content-Type': 'application/json',
-      'orderly-account-id': orderlyAccountId,
-      'orderly-key': `ed25519:${bs58.encode(await getPublicKeyAsync(privateKey))}`,
-      'orderly-timestamp': String(timestamp),
-      'orderly-signature': Buffer.from(signature).toString('base64url'),
-    },
+      "Content-Type": "application/json",
+      "orderly-account-id": orderlyAccountId,
+      "orderly-key": `ed25519:${bs58.encode(await getPublicKeyAsync(privateKey))}`,
+      "orderly-timestamp": String(timestamp),
+      "orderly-signature": Buffer.from(signature).toString("base64url")
+    }
   });
 
   const data = await response.json();
@@ -151,7 +152,8 @@ String orderlyAccountId = "<orderly-account-id>";
 
 }
 }
-```
+
+````
 
 ```Java Signer.java
 import java.io.UnsupportedEncodingException;
@@ -248,7 +250,7 @@ public class Signer {
             .build();
    }
 }
-```
+````
 
     </CodeGroup>
 
@@ -275,20 +277,21 @@ session = Session()
 signer = Signer(orderly_account_id, orderly_key)
 
 req = signer.sign_request(
-    Request(
-        "POST",
-        "%s/v1/order" % base_url,
-        json={
-            "symbol": "PERP_ETH_USDC",
-            "order_type": "MARKET",
-            "order_quantity": 0.01,
-            "side": "BUY",
-        },
-    )
+Request(
+"POST",
+"%s/v1/order" % base_url,
+json={
+"symbol": "PERP_ETH_USDC",
+"order_type": "MARKET",
+"order_quantity": 0.01,
+"side": "BUY",
+},
+)
 )
 res = session.send(req)
 response = json.loads(res.text)
-```
+
+````
 
 ```py signer.py
 from base58 import b58encode
@@ -344,7 +347,7 @@ class Signer(object):
 
 def encode_key(key: bytes):
     return "ed25519:%s" % b58encode(key).decode("utf-8")
-```
+````
 
     </CodeGroup>
 
@@ -364,26 +367,27 @@ if (!globalThis.crypto) globalThis.crypto = webcrypto as any;
 config();
 
 async function main() {
-  const baseUrl = 'https://testnet-api.orderly.org';
-  const orderlyAccountId = '<orderly-account-id>';
+const baseUrl = 'https://testnet-api.orderly.org';
+const orderlyAccountId = '<orderly-account-id>';
 
-  const orderlyKey = bs58.decode(process.env.ORDERLY_SECRET!);
+const orderlyKey = bs58.decode(process.env.ORDERLY_SECRET!);
 
-  const res = await signAndSendRequest(orderlyAccountId, orderlyKey, `${baseUrl}/v1/order`, {
-    method: 'POST',
-    body: JSON.stringify({
-      symbol: 'PERP_ETH_USDC',
-      order_type: 'MARKET',
-      order_quantity: 0.01,
-      side: 'BUY'
-    })
-  });
-  const response = await res.json();
-  console.log(response);
+const res = await signAndSendRequest(orderlyAccountId, orderlyKey, `${baseUrl}/v1/order`, {
+method: 'POST',
+body: JSON.stringify({
+symbol: 'PERP_ETH_USDC',
+order_type: 'MARKET',
+order_quantity: 0.01,
+side: 'BUY'
+})
+});
+const response = await res.json();
+console.log(response);
 }
 
 main();
-```
+
+````
 
 ```ts signer.ts
 import { getPublicKeyAsync, signAsync } from '@noble/ed25519';
@@ -420,7 +424,7 @@ export async function signAndSendRequest(
     ...(init ?? {})
   });
 }
-```
+````
 
     </CodeGroup>
 

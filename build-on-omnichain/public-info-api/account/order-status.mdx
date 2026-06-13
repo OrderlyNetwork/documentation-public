@@ -17,22 +17,21 @@ Single order lookup by `order_id`. Searches both live and archived orders, and p
 }
 ```
 
-| Field | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `address` | string | Yes | — | **Required** — narrows the lookup to one user; omitting it makes the query much slower |
-| `order_id` | int64 | Yes | — | Order identifier; `MISSING_PARAM` if absent |
-| `broker_id` | string | No | — | Optional |
-| `account_id` | string | No | — | Optional |
+| Field        | Type   | Required | Default | Notes                                                                                  |
+| ------------ | ------ | -------- | ------- | -------------------------------------------------------------------------------------- |
+| `address`    | string | Yes      | —       | **Required** — narrows the lookup to one user; omitting it makes the query much slower |
+| `order_id`   | int64  | Yes      | —       | Order identifier; `MISSING_PARAM` if absent                                            |
+| `broker_id`  | string | No       | —       | Optional                                                                               |
+| `account_id` | string | No       | —       | Optional                                                                               |
 
 ## Response
 
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `status` | string | `PENDING_NEW` / `NEW` / `PARTIAL_FILLED` / `FILLED` / `PENDING_CANCEL` / `CANCELLED` / `REJECTED` / `REPLACED` |
-| `average_executed_price` | string \| null | Live: always `null`. Archive: decimal |
-| `total_fee`, `fee_asset` | string \| null | Live: `null`. Archive: decimal / string |
-| `trigger_price` | string \| null | Present only for algo orders |
+| Field                    | Type           | Notes                                                                                                          |
+| ------------------------ | -------------- | -------------------------------------------------------------------------------------------------------------- |
+| `status`                 | string         | `PENDING_NEW` / `NEW` / `PARTIAL_FILLED` / `FILLED` / `PENDING_CANCEL` / `CANCELLED` / `REJECTED` / `REPLACED` |
+| `average_executed_price` | string \| null | Live: always `null`. Archive: decimal                                                                          |
+| `total_fee`, `fee_asset` | string \| null | Live: `null`. Archive: decimal / string                                                                        |
+| `trigger_price`          | string \| null | Present only for algo orders                                                                                   |
 
 ## Notes
 

@@ -35,16 +35,18 @@ You can also query the current leverage:
 **API:** [GET `/v1/client/leverage`](/build-on-omnichain/restful-api/private/get-leverage-setting) with query params `symbol=PERP_ETH_USDC&margin_mode=ISOLATED`
 
 <Note>
-  The leverage you set in Isolated mode determines how much margin is allocated from your available balance when opening a position. Higher leverage = less margin allocated = tighter liquidation price.
+  The leverage you set in Isolated mode determines how much margin is allocated from your available
+  balance when opening a position. Higher leverage = less margin allocated = tighter liquidation
+  price.
 </Note>
 
 ### Batch Leverage Updates
 
 When using [POST `/v1/client/leverages`](/build-on-omnichain/restful-api/private/update-leverage-setting) without a `symbol` parameter, the behavior differs by mode:
 
-| Mode | Behavior |
-| --- | --- |
-| **Cross** | All cross-margin symbols update atomically -- all succeed or none do |
+| Mode         | Behavior                                                                                                    |
+| ------------ | ----------------------------------------------------------------------------------------------------------- |
+| **Cross**    | All cross-margin symbols update atomically -- all succeed or none do                                        |
 | **Isolated** | Only applies to symbols with no active isolated positions or pending orders; eligible symbols always update |
 
 ## Step 2: Place an Order
@@ -94,9 +96,9 @@ After opening an Isolated position, you can add or reduce the margin allocated t
 }
 ```
 
-| Type | Effect |
-| --- | --- |
-| `ADD` | Transfers margin from available balance to the isolated position |
+| Type     | Effect                                                                |
+| -------- | --------------------------------------------------------------------- |
+| `ADD`    | Transfers margin from available balance to the isolated position      |
 | `REDUCE` | Transfers margin from the isolated position back to available balance |
 
 ## Step 4: Monitor Position
@@ -107,16 +109,16 @@ Query the position with the `margin_mode` parameter to get isolated-specific dat
 
 Key fields in the response:
 
-| Field | Description |
-| --- | --- |
-| `margin` | Amount of margin allocated to this isolated position |
-| `margin_mode` | `ISOLATED` |
-| `leverage` | Current leverage for this position |
-| `est_liq_price` | Estimated liquidation price |
-| `position_qty` | Position size |
-| `unsettled_pnl` | Current unsettled PnL |
-| `imr` | Initial margin ratio |
-| `mmr` | Maintenance margin ratio |
+| Field           | Description                                          |
+| --------------- | ---------------------------------------------------- |
+| `margin`        | Amount of margin allocated to this isolated position |
+| `margin_mode`   | `ISOLATED`                                           |
+| `leverage`      | Current leverage for this position                   |
+| `est_liq_price` | Estimated liquidation price                          |
+| `position_qty`  | Position size                                        |
+| `unsettled_pnl` | Current unsettled PnL                                |
+| `imr`           | Initial margin ratio                                 |
+| `mmr`           | Maintenance margin ratio                             |
 
 ### WebSocket Updates
 
@@ -126,10 +128,10 @@ Subscribe to the private `position` topic to receive real-time updates for posit
 
 The [GET `/v1/client/aggregate/holding`](/build-on-omnichain/restful-api/private/get-aggregate-holding) endpoint includes two isolated-margin-specific fields:
 
-| Field | Description |
-| --- | --- |
-| `isolated_margin` | Total margin currently allocated to all isolated positions |
-| `isolated_order_frozen` | Margin frozen in pending isolated orders |
+| Field                   | Description                                                |
+| ----------------------- | ---------------------------------------------------------- |
+| `isolated_margin`       | Total margin currently allocated to all isolated positions |
+| `isolated_order_frozen` | Margin frozen in pending isolated orders                   |
 
 ## Liquidation Behavior
 

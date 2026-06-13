@@ -9,12 +9,12 @@ This page explains how Isolated Margin works, how it differs from Cross Margin, 
 
 ## Cross Margin vs. Isolated Margin
 
-| | Cross Margin | Isolated Margin |
-| --- | --- | --- |
-| **Margin pool** | All positions share the account's available balance | Each position has its own dedicated margin |
-| **Risk scope** | A loss on one position reduces margin available to all others | Losses are capped at the margin assigned to that position |
-| **Liquidation impact** | Can trigger account-wide liquidation | Only the single isolated position is liquidated |
-| **Profit offset** | Profitable positions automatically offset losing ones | No offset between positions |
+|                        | Cross Margin                                                  | Isolated Margin                                           |
+| ---------------------- | ------------------------------------------------------------- | --------------------------------------------------------- |
+| **Margin pool**        | All positions share the account's available balance           | Each position has its own dedicated margin                |
+| **Risk scope**         | A loss on one position reduces margin available to all others | Losses are capped at the margin assigned to that position |
+| **Liquidation impact** | Can trigger account-wide liquidation                          | Only the single isolated position is liquidated           |
+| **Profit offset**      | Profitable positions automatically offset losing ones         | No offset between positions                               |
 
 In short, Cross Margin is more capital-efficient because your collateral backs everything at once. Isolated Margin gives you tighter control over how much you can lose on any single trade.
 
@@ -44,12 +44,12 @@ If an Isolated position is liquidated, only the margin assigned to that position
 
 ## When to Use Isolated Margin
 
-| Scenario | Why Isolated Margin helps |
-| --- | --- |
-| High-leverage speculation | Cap your maximum loss without putting your core positions at risk |
-| Multi-strategy trading | Run different strategies on different pairs with no risk bleed-through |
-| Experimental trades | Test a thesis on a volatile asset without exposing your whole account |
-| Defined-risk setups | Know exactly how much you can lose before you enter the trade |
+| Scenario                  | Why Isolated Margin helps                                              |
+| ------------------------- | ---------------------------------------------------------------------- |
+| High-leverage speculation | Cap your maximum loss without putting your core positions at risk      |
+| Multi-strategy trading    | Run different strategies on different pairs with no risk bleed-through |
+| Experimental trades       | Test a thesis on a volatile asset without exposing your whole account  |
+| Defined-risk setups       | Know exactly how much you can lose before you enter the trade          |
 
 ## Margin Mode Availability
 

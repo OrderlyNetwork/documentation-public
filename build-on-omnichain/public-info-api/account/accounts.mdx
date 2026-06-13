@@ -16,21 +16,20 @@ Account discovery — given an address, list every `(broker_id, account_id)` pai
 }
 ```
 
-| Field | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `address` | string | Yes | — | Wallet address; must resolve to at least one account |
-| `broker_id` | string | No | — | Optional broker scope |
+| Field       | Type   | Required | Default | Notes                                                |
+| ----------- | ------ | -------- | ------- | ---------------------------------------------------- |
+| `address`   | string | Yes      | —       | Wallet address; must resolve to at least one account |
+| `broker_id` | string | No       | —       | Optional broker scope                                |
 
 ## Response
 
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `address` | string | Echo of input |
-| `accounts[]` | array | One entry per account |
-| `.broker_id` | string | Broker identifier |
-| `.account_id` | string | Account identifier within broker |
-| `.account_type` | string | `"main"` (main account), `"sub"` (sub-account), or `"sp"` (vault strategy provider) |
+| Field            | Type           | Notes                                                                                                                                                          |
+| ---------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `address`        | string         | Echo of input                                                                                                                                                  |
+| `accounts[]`     | array          | One entry per account                                                                                                                                          |
+| `.broker_id`     | string         | Broker identifier                                                                                                                                              |
+| `.account_id`    | string         | Account identifier within broker                                                                                                                               |
+| `.account_type`  | string         | `"main"` (main account), `"sub"` (sub-account), or `"sp"` (vault strategy provider)                                                                            |
 | `.account_value` | string \| null | Mark-to-market account value: `(holding + iso_margin_total + frozen) + Σ unrealized_pnl` across positions. `null` if position-calc is unavailable for that row |
 
 ## Notes

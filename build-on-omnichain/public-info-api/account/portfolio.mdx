@@ -20,26 +20,25 @@ Daily snapshots of account value plus cumulative PnL, UTC-day-aligned.
 }
 ```
 
-| Field | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `address` | string | Yes | — | Wallet address |
-| `broker_id` | string | No | — | Optional |
-| `account_id` | string | No | — | Optional |
-| `interval` | string | No | `"1d"` | Only `"1d"` is supported — anything else throws `INVALID_PARAM` |
-| `start_time` | int64 | No | `end_time − 90d` | ms epoch |
-| `end_time` | int64 | No | `now` | ms epoch |
-| `limit` | int | No | 90 | 1..365 |
-| `cursor` | string | No | — | Opaque cursor |
+| Field        | Type   | Required | Default          | Notes                                                           |
+| ------------ | ------ | -------- | ---------------- | --------------------------------------------------------------- |
+| `address`    | string | Yes      | —                | Wallet address                                                  |
+| `broker_id`  | string | No       | —                | Optional                                                        |
+| `account_id` | string | No       | —                | Optional                                                        |
+| `interval`   | string | No       | `"1d"`           | Only `"1d"` is supported — anything else throws `INVALID_PARAM` |
+| `start_time` | int64  | No       | `end_time − 90d` | ms epoch                                                        |
+| `end_time`   | int64  | No       | `now`            | ms epoch                                                        |
+| `limit`      | int    | No       | 90               | 1..365                                                          |
+| `cursor`     | string | No       | —                | Opaque cursor                                                   |
 
 ## Response
 
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `rows[]` | array | DESC by `timestamp` |
-| `.account_value` | string | Daily collateral snapshot (`holding + frozen + upnl`) |
+| Field             | Type   | Notes                                                              |
+| ----------------- | ------ | ------------------------------------------------------------------ |
+| `rows[]`          | array  | DESC by `timestamp`                                                |
+| `.account_value`  | string | Daily collateral snapshot (`holding + frozen + upnl`)              |
 | `.cumulative_pnl` | string | Account value change since the earliest day in the returned window |
-| `.timestamp` | int64 | UTC-day-aligned ms epoch |
+| `.timestamp`      | int64  | UTC-day-aligned ms epoch                                           |
 
 ## Notes
 

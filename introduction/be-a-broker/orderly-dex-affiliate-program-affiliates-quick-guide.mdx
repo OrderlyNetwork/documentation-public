@@ -14,7 +14,7 @@ The core model is a funneled and multilevel referral system:
 
 ## 2. Prerequisites
 
-Any users can participate as affiliates, provided that the DEX activates the new affiliate program. 
+Any users can participate as affiliates, provided that the DEX activates the new affiliate program.
 
 In some cases, a trading volume requirement may be necessary. If a volume prerequisite is set, users must meet it to qualify as an affiliate and begin building their referral network. Since the required volume may vary between DEXs, users should confirm the specific prerequisites directly with the DEX they wish to join.
 
@@ -22,16 +22,16 @@ In some cases, a trading volume requirement may be necessary. If a volume prereq
 
 The key differences between the legacy and new affiliate programs are summarized below:
 
-| Details                            | Legacy                                                                                                            | New                                                                                                                                                 |
-| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Referral network**               | **Single-level**, only direct referrals                                                                           | **Multilevel** (up to 15 levels), direct and indirect referrals                                                                                    |
-| **Referral commission**            | Affiliates earn commissions from **direct referees only**                                                         | Affiliates earn commissions from both **direct and indirect referees** down the referral chain, with base commission guaranteed for direct referrals |
-| **Commission configuration**       | Single-level commission up to 100%, decided by builder                                                            | Builder configures base commission `B`, then optionally assigns additional multilevel referral commission `M` individually. The top-level total rate is `X_1 = B + M`. |
-| **Referral code creation**         | Created primarily by the builder or qualified affiliates upon meeting the applicable trading volume requirements. | Qualified affiliates can create codes after meeting the required trading volume (where applicable). Affiliates may only create one unique referral code. |
+| Details                      | Legacy                                                                                                            | New                                                                                                                                                                    |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Referral network**         | **Single-level**, only direct referrals                                                                           | **Multilevel** (up to 15 levels), direct and indirect referrals                                                                                                        |
+| **Referral commission**      | Affiliates earn commissions from **direct referees only**                                                         | Affiliates earn commissions from both **direct and indirect referees** down the referral chain, with base commission guaranteed for direct referrals                   |
+| **Commission configuration** | Single-level commission up to 100%, decided by builder                                                            | Builder configures base commission `B`, then optionally assigns additional multilevel referral commission `M` individually. The top-level total rate is `X_1 = B + M`. |
+| **Referral code creation**   | Created primarily by the builder or qualified affiliates upon meeting the applicable trading volume requirements. | Qualified affiliates can create codes after meeting the required trading volume (where applicable). Affiliates may only create one unique referral code.               |
 
 ## 4. Coexistence of legacy affiliate program
 
-This new affiliate program is a multilevel referral system which supersedes the legacy affiliate program. DEXs who have enabled the legacy affiliate program could choose to keep the legacy system or upgrade to the new one. 
+This new affiliate program is a multilevel referral system which supersedes the legacy affiliate program. DEXs who have enabled the legacy affiliate program could choose to keep the legacy system or upgrade to the new one.
 
 If you are already an existing affiliate, please check with your respective DEX directly for details regarding the activation of the new program. Once activated by the DEX, you will be able to generate a new referral code under this system. Please note that all existing legacy referral codes will remain active, and you will continue to earn commission from them.
 
@@ -46,10 +46,10 @@ DEXs configure the base commission $B$ for direct referrals. They can optionally
 Affiliates receive their referral commissions from the builder fees shared by DEXs. This commission is paid out for every trade executed on the DEX.
 
 $$
-\text{(Fee)}_\text{Builder} = \text{(Trading fee)}_N - \text{(Base fee)}_\text{Builder}
+\text{Fee}_\text{Builder} = \text{TradingFee}_N - \text{BaseFee}_\text{Builder}
 $$
 
-where $\text{(Base fee)}_\text{Builder}$ depends on the builder fee tier of the DEX.
+where $\text{BaseFee}_\text{Builder}$ depends on the builder fee tier of the DEX.
 
 $L_1$ affiliates may distribute a portion of their commission to their direct referees ($L_2$). This process can be extended further, as $L_2$ affiliates can further sub-divide their allocation to their direct referees ($L_3$), establishing a multilevel structure. This multilevel referral network can extend up to a total of 15 levels.
 
@@ -61,12 +61,12 @@ DEXs may assign different additional multilevel referral commission values $M$ t
 
 For every trade executed by a user $(L_N)$ on the DEX, the affiliates within the multilevel referral network can earn the following commission:
 
-| Role                | Affiliate commission rate                    | Affiliate commission                                                                 |
-| ------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------ |
-| **$L_1$ affiliate**  | $X_1 - X_2$ where $X_2 \in [B, X_1]$        | $(X_1 - X_2) \times \text{Fee}_\text{Builder}$                                    |
-| **$L_2$ affiliate**  | $X_2 - X_3$ where $X_3 \in [B, X_2]$        | $(X_2 - X_3) \times \text{Fee}_\text{Builder}$                                    |
-| **$L_3$ affiliate**  | $X_3 - X_4$ where $X_4 \in [B, X_3]$        | $(X_3 - X_4) \times \text{Fee}_\text{Builder}$                                    |
-| **…**               | …                                            | …                                                                                    |
+| Role                                 | Affiliate commission rate                  | Affiliate commission                                                                                                                                        |
+| ------------------------------------ | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **$L_1$ affiliate**                  | $X_1 - X_2$ where $X_2 \in [B, X_1]$       | $(X_1 - X_2) \times \text{Fee}_\text{Builder}$                                                                                                              |
+| **$L_2$ affiliate**                  | $X_2 - X_3$ where $X_3 \in [B, X_2]$       | $(X_2 - X_3) \times \text{Fee}_\text{Builder}$                                                                                                              |
+| **$L_3$ affiliate**                  | $X_3 - X_4$ where $X_4 \in [B, X_3]$       | $(X_3 - X_4) \times \text{Fee}_\text{Builder}$                                                                                                              |
+| **…**                                | …                                          | …                                                                                                                                                           |
 | **$L_{N-1}$ user (direct referrer)** | $X_{N-1}$ where $X_{N-1} \in [B, X_{N-2}]$ | $X_{N-1} \times \text{Fee}_\text{Builder}$ — Direct referrer earns base commission plus any remaining additional multilevel referral commission passed down |
 
 > Note: Direct referrers earn the base commission rate from trades executed by their direct referrals.
@@ -83,12 +83,12 @@ Consider a trade where Builder revenue for a given trade = $100, with the follow
 
 **Commission distribution for $100 Builder revenue:**
 
-| Role | Calculation | Commission |
-|------|-------------|------------|
-| $L_1$ affiliate | $(50\% - 35\%) \times 100$ | **$15** |
-| $L_2$ affiliate | $(35\% - 25\%) \times 100$ | **$10** |
-| $L_3$ affiliate (direct referrer) | $25\% \times 100$ | **$25** |
-| **Total distributed** | | **$50** |
+| Role                              | Calculation                | Commission |
+| --------------------------------- | -------------------------- | ---------- |
+| $L_1$ affiliate                   | $(50\% - 35\%) \times 100$ | **$15**    |
+| $L_2$ affiliate                   | $(35\% - 25\%) \times 100$ | **$10**    |
+| $L_3$ affiliate (direct referrer) | $25\% \times 100$          | **$25**    |
+| **Total distributed**             |                            | **$50**    |
 
 In this example, when $L_4$ (the trader) executes a trade, $L_3$ earns $X_3 = 25\%$, which includes the $10\%$ base commission plus $15\%$ of the additional multilevel referral commission passed down the chain. The total distributed rate is $50\% = B + M$. The $L_4$ trader does not earn commission from their own trade.
 

@@ -186,15 +186,17 @@ You can find a full example using the Components SDK in [this Github repository]
 - onChainChanged:
 
 ```tsx
-//v 1
-onChainChanged?: (chainId: number, isTestnet: boolean) => void;
+interface OrderlyAppProviderProps {
+  // v1
+  onChainChanged?: (chainId: number, isTestnet: boolean) => void;
 
-// v2
-// The second parameter has changed from a boolean to an object
-onChainChanged?: (
-    chainId: number,
-    state: { isTestnet: boolean; isWalletConnected: boolean }
-) => void;
+  // v2
+  // The second parameter has changed from a boolean to an object
+  onChainChanged?: (
+      chainId: number,
+      state: { isTestnet: boolean; isWalletConnected: boolean }
+  ) => void;
+}
 ```
 
 - Removed Properties:

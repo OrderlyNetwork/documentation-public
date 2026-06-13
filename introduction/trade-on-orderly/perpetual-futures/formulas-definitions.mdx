@@ -43,10 +43,7 @@ Here are two examples to show the difference between free collateral and withdra
 
 **Example 2 (unrealized profit):** Your `total_balance` = 100 USDC, unsettled PnL = +40 USDC, so total_collateral is 140 USDC. But for withdrawal purposes, only 100 USDC counts. With 20 USDC of maintenance margin, `free_collateral` = 140 - 20 = 120 USDC, but `withdrawable_balance` = 100 - 20 = 80 USDC.
 
-<Note>
-Withdrawable balance/collateral does not equal to total or free collateral.
-</Note>
-
+<Note>Withdrawable balance/collateral does not equal to total or free collateral.</Note>
 
 ### Initial Margin Ratio
 
@@ -78,8 +75,6 @@ These formulas let you calculate how much you are making or losing on your open 
 
 **Unrealized PnL** = `position_qty * (mark_price - avg_open)`
 
-
-
 **Liquidation Price** is the price at which your account would fall below the maintenance margin and get liquidated. Knowing this number helps you manage risk.
 
 ```
@@ -88,31 +83,26 @@ Qi = position_qty
 liquidation_price  = max[( Mark Price + ( total_collateral_value - total_notional * MMR ) / ( |Qi| * MMRi - Qi )), 0]
 ```
 
-
-
 **Notional** is the total USDC value of a single position. It is simply the mark price multiplied by the number of contracts you hold.
 
 **Notional** = `position_notional_i = abs(mark_price_i * position_qty_i)`
-
-
 
 **Fut Notional or Total Notional** is the sum of the notional values across all your positions.
 
 **Fut Notional or Total Notional** = `sum (abs (position_notional_i))`
 
-
 ## API Data Mapping
 
 To implement these formulas, you can retrieve the base values from the following API endpoints:
 
-| Formula Variable | API Endpoint | JSON Field |
-| :--- | :--- | :--- |
-| `total_balance` | `GET /v1/client/info` | `wallet_balance` |
-| `upnl` | `GET /v1/positions` | `unrealized_pnl` |
-| `position_notional_i` | `GET /v1/positions` | `notional` |
-| `mark_price_i` | `GET /v1/public/market_info` | `mark_price` |
-| `IMR_i` | `GET /v1/public/config` | `base_imr` (adjusted by factor) |
-| `MMR_i` | `GET /v1/public/config` | `base_mmr` (adjusted by factor) |
+| Formula Variable      | API Endpoint                 | JSON Field                      |
+| :-------------------- | :--------------------------- | :------------------------------ |
+| `total_balance`       | `GET /v1/client/info`        | `wallet_balance`                |
+| `upnl`                | `GET /v1/positions`          | `unrealized_pnl`                |
+| `position_notional_i` | `GET /v1/positions`          | `notional`                      |
+| `mark_price_i`        | `GET /v1/public/market_info` | `mark_price`                    |
+| `IMR_i`               | `GET /v1/public/config`      | `base_imr` (adjusted by factor) |
+| `MMR_i`               | `GET /v1/public/config`      | `base_mmr` (adjusted by factor) |
 
 ---
 
@@ -134,8 +124,17 @@ function calculateAccountHealth(accountInfo, positions, marketConfig) {
 
   for (const pos of positions) {
     const notional = Math.abs(pos.qty * pos.markPrice);
-    const imr = calculateDynamicRatio(pos.baseImr, pos.imrFactor, notional, accountInfo.maxLeverage);
-    const mmr = calculateDynamicRatio(pos.baseMmr, (pos.baseMmr / pos.baseImr) * pos.imrFactor, notional);
+    const imr = calculateDynamicRatio(
+      pos.baseImr,
+      pos.imrFactor,
+      notional,
+      accountInfo.maxLeverage
+    );
+    const mmr = calculateDynamicRatio(
+      pos.baseMmr,
+      (pos.baseMmr / pos.baseImr) * pos.imrFactor,
+      notional
+    );
 
     totalNotional += notional;
     totalInitialMargin += notional * imr;
@@ -144,13 +143,20 @@ function calculateAccountHealth(accountInfo, positions, marketConfig) {
   }
 
   const totalCollateral = accountInfo.walletBalance + totalUpnl;
-  const currentMarginRatio = totalNotional > 0 ? (totalCollateral / totalNotional) : Infinity;
+  const currentMarginRatio = totalNotional > 0 ? totalCollateral / totalNotional : Infinity;
 
   return {
-    isLiquidatable: currentMarginRatio < (totalMaintenanceMargin / totalNotional),
+    isLiquidatable: currentMarginRatio < totalMaintenanceMargin / totalNotional,
     canOpenNewPosition: totalCollateral > totalInitialMargin,
-    withdrawable: Math.max(0, accountInfo.walletBalance - totalInitialMargin - Math.max(0, totalUpnl)),
-    liquidationPrice: calculateLiquidationPrice(totalCollateral, totalNotional, totalMaintenanceMargin)
+    withdrawable: Math.max(
+      0,
+      accountInfo.walletBalance - totalInitialMargin - Math.max(0, totalUpnl)
+    ),
+    liquidationPrice: calculateLiquidationPrice(
+      totalCollateral,
+      totalNotional,
+      totalMaintenanceMargin
+    )
   };
 }
 

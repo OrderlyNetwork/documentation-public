@@ -103,11 +103,11 @@ const registrationNonce = nonceJson.data.registration_nonce as string;
 
 where:
 
-| **Name**          | **Type**  | **Required** | **Description**                                                                                            |
-| ----------------- | --------- | ------------ | ---------------------------------------------------------------------------------------------------------- |
-| brokerId          | string    | Y            | Builder ID                                                                                                  |
-| chainId           | int       | Y            | Chain ID of registering chain (within those that are supported by the Network)                             |
-| timestamp         | timestamp | Y            | timestamp in UNIX milliseconds                                                                             |
+| **Name**          | **Type**  | **Required** | **Description**                                                                                          |
+| ----------------- | --------- | ------------ | -------------------------------------------------------------------------------------------------------- |
+| brokerId          | string    | Y            | Builder ID                                                                                               |
+| chainId           | int       | Y            | Chain ID of registering chain (within those that are supported by the Network)                           |
+| timestamp         | timestamp | Y            | timestamp in UNIX milliseconds                                                                           |
 | registrationNonce | string    | Y            | Valid nonce from Get [Registration Nonce](/build-on-omnichain/restful-api/public/get-registration-nonce) |
 
     <Accordion title="Example code">
@@ -446,7 +446,7 @@ return Numeric.toHexString(retval);
 }
 }
 
-```
+````
 
 ```py Python
 from datetime import datetime
@@ -520,7 +520,7 @@ response = json.loads(res.text)
 
 orderly_account_id = response["data"]["account_id"]
 print("orderly_account_id:", orderly_account_id)
-```
+````
 
 ```ts TypeScript
 import { config } from "dotenv";

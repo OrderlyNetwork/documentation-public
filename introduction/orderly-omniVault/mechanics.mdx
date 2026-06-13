@@ -20,6 +20,7 @@ The lifecycle of Orderly OmniVault is summarised as follows:
 Refer below to learn more about the key concepts of Orderly OmniVault:
 
 ## Shares
+
 Shares are used to track the portion of Orderly OmniVault asset ownership of a LP. Each LP's shareholding is traceable both on-chain and off-chain. Shares<a href="#ref11"><sup>1 </sup></a> &nbsp;are non-tokenized, meaning they are neither tradable nor transferrable.
 
 Share price is calculated as:
@@ -32,7 +33,7 @@ For deposits, new shares are calculated as:
 
 For withdrawals, claimable amounts are calculated as:
 
-- Claimable Amount (in USDC) = LP Withdrawal Shares * Share Price
+- Claimable Amount (in USDC) = LP Withdrawal Shares \* Share Price
 
 ## Vault Period
 
@@ -44,15 +45,16 @@ Each Vault Period lasts for 3 hours and runs consecutively:
 
 Example:
 
-| Vault Period | User Activities |
-|--------------|-----------------|
-| 8am-11am     | LP 1 perform a 50,000 USDC deposit at 9am <p/> - transaction status: pending <p/> LP 2 perform a 2,000 shares withdrawal requests at 10am <p/> - transaction status: requested <p/> Both transactions will be assigned and processed in the next vault period at 11am |
-| 11am-2pm     | Using the settlement of share price at 11am, assuming \$1.25 <p/> - LP 1 will receive 40,000 shares (50,000 USDC / \$1.25) for his 50k USDC deposit <p/> - LP 2 will be able to claim 2,500 USDC (2000 * \$1.25) for his 2,000 shares withdrawal request at the end of this vault period |
+| Vault Period | User Activities                                                                                                                                                                                                                                                                           |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 8am-11am     | LP 1 perform a 50,000 USDC deposit at 9am <p/> - transaction status: pending <p/> LP 2 perform a 2,000 shares withdrawal requests at 10am <p/> - transaction status: requested <p/> Both transactions will be assigned and processed in the next vault period at 11am                     |
+| 11am-2pm     | Using the settlement of share price at 11am, assuming \$1.25 <p/> - LP 1 will receive 40,000 shares (50,000 USDC / \$1.25) for his 50k USDC deposit <p/> - LP 2 will be able to claim 2,500 USDC (2000 \* \$1.25) for his 2,000 shares withdrawal request at the end of this vault period |
 
 ## Omnichain Capability
+
 Orderly OmniVault is omnichain-enabled that allows LP to deposit USDC into the vault from any supported network while interacting with a single unified strategy vault. This differentiates Orderly OmniVault from typical strategy vaults that either support a single blockchain network or manage each supported network separately.<a href="#ref13"><sup>3 </sup></a>
 
-Orderly OmniVault support blockchain networks:
+Orderly OmniVault supports blockchain networks:
 
 1. Arbitrum
 
@@ -60,7 +62,9 @@ Orderly OmniVault support blockchain networks:
 
 3. Optimism
 
-Like the user experience for staking \$ORDER, OmniVault offers omnichain flexibility-users can deposit USDC from chain A (e.g. Optimism) and withdraw+claim USDC on chain B (e.g. Base)
+4. Sei
+
+Like the user experience for staking \$ORDER, OmniVault offers omnichain flexibility—users can deposit USDC from chain A (e.g. Optimism) and withdraw+claim USDC on chain B (e.g. Base)
 
 ## OmniVault Yields & Strategies
 
@@ -84,10 +88,26 @@ APY is calculated using a daily time-weighted rate of return (TWRR) approach acr
 
 ---
 
-<a id="ref11"><sup>1 </sup></a>  Shares represent a record of vault participation and do not constitute securities, debt instruments, or any legal ownership in Orderly or its affiliates.
+<a id="ref11">
+  <sup>1 </sup>
+</a>
+Shares represent a record of vault participation and do not constitute securities, debt instruments,
+or any legal ownership in Orderly or its affiliates.
 
-<a id="ref12"><sup>2 </sup></a>  Orderly is not responsible for any slippage, pricing discrepancies, or timing mismatch between user-submitted requests and vault period settlements.
+<a id="ref12">
+  <sup>2 </sup>
+</a>
+Orderly is not responsible for any slippage, pricing discrepancies, or timing mismatch between
+user-submitted requests and vault period settlements.
 
-<a id="ref13"><sup>3 </sup></a>  Omnichain functionality relies on third-party bridging protocols and may be subject to latency, errors, or cross-chain risks beyond Orderly's control.
+<a id="ref13">
+  <sup>3 </sup>
+</a>
+Omnichain functionality relies on third-party bridging protocols and may be subject to latency,
+errors, or cross-chain risks beyond Orderly's control.
 
-<a id="ref14"><sup>4 </sup></a>  Liquidation strategies involve inherent risks, including volatility, market reversals, or imperfect pricing execution, which may negatively impact vault performance.
+<a id="ref14">
+  <sup>4 </sup>
+</a>
+Liquidation strategies involve inherent risks, including volatility, market reversals, or imperfect
+pricing execution, which may negatively impact vault performance.

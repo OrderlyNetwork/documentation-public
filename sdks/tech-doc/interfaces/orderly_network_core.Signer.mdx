@@ -11,14 +11,14 @@ Singer interface
 ```ts
 const signer = new BaseSigner(keyStore);
 const payload = await signer.sign({
- url: "https://api.orderly.io/get_account?address=0x1234567890&brokerId=orderly",
+  url: "https://api.orderly.io/get_account?address=0x1234567890&brokerId=orderly",
   method: "GET",
   data: {
     address: "0x1234567890",
-    brokerId: "orderly",
-   },
- });
- ```
+    brokerId: "orderly"
+  }
+});
+```
 
 ## Implemented by
 
@@ -44,10 +44,10 @@ const payload = await signer.sign({
 
 ##### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `data` | [`MessageFactor`](/sdks/tech-doc/modules/orderly_network_core#messagefactor) |
-| `timestamp?` | `number` |
+| Name         | Type                                                                         |
+| :----------- | :--------------------------------------------------------------------------- |
+| `data`       | [`MessageFactor`](/sdks/tech-doc/modules/orderly_network_core#messagefactor) |
+| `timestamp?` | `number`                                                                     |
 
 ##### Returns
 
@@ -57,25 +57,25 @@ const payload = await signer.sign({
 
 [packages/core/src/signer.ts:38](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/signer.ts#L38)
 
-___
+---
 
 ### signText
 
-• **signText**: (`text`: `string`) => `Promise`\<\{ `publicKey`: `string` ; `signature`: `string`  }\>
+• **signText**: (`text`: `string`) => `Promise`\<\{ `publicKey`: `string` ; `signature`: `string` }\>
 
 #### Type declaration
 
-▸ (`text`): `Promise`\<\{ `publicKey`: `string` ; `signature`: `string`  }\>
+▸ (`text`): `Promise`\<\{ `publicKey`: `string` ; `signature`: `string` }\>
 
 ##### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name   | Type     |
+| :----- | :------- |
 | `text` | `string` |
 
 ##### Returns
 
-`Promise`\<\{ `publicKey`: `string` ; `signature`: `string`  }\>
+`Promise`\<\{ `publicKey`: `string` ; `signature`: `string` }\>
 
 #### Defined in
 

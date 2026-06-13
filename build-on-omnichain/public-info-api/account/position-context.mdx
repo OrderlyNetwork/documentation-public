@@ -20,22 +20,21 @@ Equivalent to `accountState` + `openOrders` (symbol-filtered) + `marketSummary`,
 }
 ```
 
-| Field | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `address` | string | Yes | — | Wallet address |
-| `symbol` | string | Yes | — | Trading pair |
-| `broker_id` | string | No | — | Optional |
-| `account_id` | string | No | — | Optional — see "Primary account" below |
+| Field        | Type   | Required | Default | Notes                                  |
+| ------------ | ------ | -------- | ------- | -------------------------------------- |
+| `address`    | string | Yes      | —       | Wallet address                         |
+| `symbol`     | string | Yes      | —       | Trading pair                           |
+| `broker_id`  | string | No       | —       | Optional                               |
+| `account_id` | string | No       | —       | Optional — see "Primary account" below |
 
 ## Response
 
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `position` | object \| null | `null` if the account does not hold this symbol |
-| `open_orders[]` | array | Already filtered to `symbol` — no client-side filtering needed |
-| `market` | object \| null | `null` if the symbol is absent from the latest summary |
-| `account_summary` | object \| null | `null` on `ADDRESS_NOT_FOUND` |
+| Field             | Type           | Notes                                                          |
+| ----------------- | -------------- | -------------------------------------------------------------- |
+| `position`        | object \| null | `null` if the account does not hold this symbol                |
+| `open_orders[]`   | array          | Already filtered to `symbol` — no client-side filtering needed |
+| `market`          | object \| null | `null` if the symbol is absent from the latest summary         |
+| `account_summary` | object \| null | `null` on `ADDRESS_NOT_FOUND`                                  |
 
 ## Notes
 
@@ -48,8 +47,12 @@ Equivalent to `accountState` + `openOrders` (symbol-filtered) + `marketSummary`,
 {
   "success": true,
   "data": {
-    "position": { /* same shape as accountState.positions[] item */ },
-    "open_orders": [ /* openOrders rows, already filtered by symbol */ ],
+    "position": {
+      /* same shape as accountState.positions[] item */
+    },
+    "open_orders": [
+      /* openOrders rows, already filtered by symbol */
+    ],
     "market": {
       "mark_price": "70305.1",
       "index_price": "70298.5",

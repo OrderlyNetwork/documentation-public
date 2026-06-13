@@ -12,7 +12,7 @@ description: "Register one plugin that intercepts more than one injector target 
 
 **Tutorial source code:** [OrderlyNetwork/fast-place-order-plugin](https://github.com/OrderlyNetwork/fast-place-order-plugin) — `https://github.com/OrderlyNetwork/fast-place-order-plugin`. Read `src/index.tsx` (`registerFastPlaceOrderPlugin`) alongside the steps below; the repo is the canonical runnable example for this tutorial.
 
-**Prerequisites:** [Tutorial 1](/build-on-omnichain/module-marketplace/first-plugin) — plugin scaffold and `registerPlugin` basics.
+**Prerequisites:** [Tutorial 1](/build-on-omnichain/builder-marketplace/first-plugin) — plugin scaffold and `registerPlugin` basics.
 
 **Scope:** Implementation inside the plugin package only (interceptors, shared state, dedupe, Hooks). Loading the plugin in a host app, provider wiring, and production QA are not covered on this page.
 
@@ -51,10 +51,7 @@ Inside the returned function, call `SDK.registerPlugin({ ... })` **a single time
 **Example (trimmed)** — one factory callback, one `registerPlugin` call, two interceptor slots. Placeholders omit widget/menu logic; Steps 4–6 fill those in.
 
 ```tsx
-import {
-  createInterceptor,
-  type OrderlySDK,
-} from "@orderly.network/plugin-core";
+import { createInterceptor, type OrderlySDK } from "@orderly.network/plugin-core";
 
 export function registerExamplePlugin() {
   return (SDK: OrderlySDK) => {
@@ -64,23 +61,20 @@ export function registerExamplePlugin() {
       version: "0.1.0",
       orderlyVersion: ">=3.0.1",
       interceptors: [
-        createInterceptor(
-          "TradingView.Desktop" as any,
-          (Original, props, _api) => (
-            <>
-              <Original {...props} />
-              {/* Step 4: mount feature UI next to Original */}
-            </>
-          ),
-        ),
+        createInterceptor("TradingView.Desktop" as any, (Original, props, _api) => (
+          <>
+            <Original {...props} />
+            {/* Step 4: mount feature UI next to Original */}
+          </>
+        )),
         createInterceptor(
           "TradingView.DisplayControl.DesktopMenuList" as any,
-          (Original, props) => <Original {...props} />,
-        ),
+          (Original, props) => <Original {...props} />
+        )
       ],
       setup: (_api) => {
         // Optional: subscriptions, logging, non-React side effects.
-      },
+      }
     });
   };
 }
@@ -94,7 +88,7 @@ Many targets still mean **one** plugin registration and **one** shared lifecycle
 
 ## Step 4 — Interceptor A: mount the widget on the desktop body
 
-**Target:** `"TradingView.Desktop"` (string must match [runtime injector targets](/build-on-omnichain/module-marketplace/runtime-injector-targets); paths are case-sensitive).
+**Target:** `"TradingView.Desktop"` (string must match [runtime injector targets](/build-on-omnichain/builder-marketplace/runtime-injector-targets); paths are case-sensitive).
 
 **Pattern:**
 
@@ -105,7 +99,7 @@ Many targets still mean **one** plugin registration and **one** shared lifecycle
 Conceptually:
 
 ```tsx
-createInterceptor("TradingView.Desktop" as any, (Original, props, _api) => (
+const interceptor = createInterceptor("TradingView.Desktop" as any, (Original, props, _api) => (
   <LocaleProvider>
     <Original {...props} />
     <FastPlaceOrderWidget
@@ -113,7 +107,7 @@ createInterceptor("TradingView.Desktop" as any, (Original, props, _api) => (
       autoShowOnFullscreen={autoShowOnFullscreen}
     />
   </LocaleProvider>
-)),
+));
 ```
 
 **Ordering tip:** List **layout / body** interceptors first in the `interceptors` array, then **menus and chrome**, so the file reads top-down like the user journey.
@@ -153,10 +147,10 @@ const nextItems = useMemo(() => {
     checked: isWidgetVisible,
     onCheckedChange: (checked: boolean) => {
       setIsWidgetVisible(checked);
-    },
+    }
   };
   const itemsWithoutCustom = (props.items ?? []).filter(
-    (item: { id?: string }) => item?.id !== menuItemId,
+    (item: { id?: string }) => item?.id !== menuItemId
   );
   return [...itemsWithoutCustom, customItem];
 }, [isWidgetVisible, props.items, setIsWidgetVisible]);
@@ -192,21 +186,21 @@ Manual UI checks (TradingView desktop + display menu) require a running app that
 
 ## Common failure modes
 
-| Symptom                   | Likely cause                          | Fix                                                                                                |
-| ------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| Widget shows, no menu row | Wrong menu target string              | Compare with [runtime injector targets](/build-on-omnichain/module-marketplace/runtime-injector-targets) letter by letter |
-| Menu row does nothing     | Visibility not shared with the widget | One hook/store used by menu and widget (same module as the reference)                              |
-| Duplicate menu rows       | No filter-by-`id` before append       | Step 6 dedupe                                                                                      |
-| Invalid Hook call         | Conditional Hooks or wrong nesting    | Step 7; simplify or extract a child component                                                      |
+| Symptom                   | Likely cause                          | Fix                                                                                                                        |
+| ------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Widget shows, no menu row | Wrong menu target string              | Compare with [runtime injector targets](/build-on-omnichain/builder-marketplace/runtime-injector-targets) letter by letter |
+| Menu row does nothing     | Visibility not shared with the widget | One hook/store used by menu and widget (same plugin as the reference)                                                      |
+| Duplicate menu rows       | No filter-by-`id` before append       | Step 6 dedupe                                                                                                              |
+| Invalid Hook call         | Conditional Hooks or wrong nesting    | Step 7; simplify or extract a child component                                                                              |
 
 ---
 
 ## Skills and tooling
 
-| Skill / doc                                                          | Use when                                          |
-| -------------------------------------------------------------------- | ------------------------------------------------- |
-| `orderly-plugin-write`                                               | Designing interceptors and Hook-safe composition  |
-| [Runtime injector targets](/build-on-omnichain/module-marketplace/runtime-injector-targets) | Confirming exact target path strings while coding |
+| Skill / doc                                                                                  | Use when                                          |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| `orderly-plugin-write`                                                                       | Designing interceptors and Hook-safe composition  |
+| [Runtime injector targets](/build-on-omnichain/builder-marketplace/runtime-injector-targets) | Confirming exact target path strings while coding |
 
 ---
 

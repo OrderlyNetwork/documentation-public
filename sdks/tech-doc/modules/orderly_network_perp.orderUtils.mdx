@@ -28,20 +28,20 @@
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
-| `newOrder` | \{ `price`: `number` ; `qty`: `number` ; `symbol`: `string`  } |
-| `newOrder.price` | `number` |
-| `newOrder.qty` | `number` |
-| `newOrder.symbol` | `string` |
-| `positions` | `Pick`\<[`PositionExt`](/sdks/tech-doc/interfaces/orderly_network_types.API.PositionExt), ``"position_qty"`` \| ``"mark_price"`` \| ``"symbol"``\>[] |
-| `totalCollateral` | `number` |
+| Name              | Type                                                                                                                                           |
+| :---------------- | :--------------------------------------------------------------------------------------------------------------------------------------------- |
+| `newOrder`        | \{ `price`: `number` ; `qty`: `number` ; `symbol`: `string` }                                                                                  |
+| `newOrder.price`  | `number`                                                                                                                                       |
+| `newOrder.qty`    | `number`                                                                                                                                       |
+| `newOrder.symbol` | `string`                                                                                                                                       |
+| `positions`       | `Pick`\<[`PositionExt`](/sdks/tech-doc/interfaces/orderly_network_types.API.PositionExt), `"position_qty"` \| `"mark_price"` \| `"symbol"`\>[] |
+| `totalCollateral` | `number`                                                                                                                                       |
 
 #### Defined in
 
 [order.ts:157](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/order.ts#L157)
 
-___
+---
 
 ### EstimatedLiquidationPriceInputs
 
@@ -49,19 +49,19 @@ ___
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
-| `IMR_Factor` | `number` |
-| `baseIMR` | `number` |
-| `baseMMR` | `number` |
-| `markPrice` | `number` |
-| `newOrder` | \{ `price`: `number` ; `qty`: `number` ; `symbol`: `string`  } |
-| `newOrder.price` | `number` |
-| `newOrder.qty` | `number` |
-| `newOrder.symbol` | `string` |
-| `orderFee` | `number` |
-| `positions` | `Pick`\<[`PositionExt`](/sdks/tech-doc/interfaces/orderly_network_types.API.PositionExt), ``"position_qty"`` \| ``"mark_price"`` \| ``"symbol"`` \| ``"mmr"``\>[] |
-| `totalCollateral` | `number` |
+| Name              | Type                                                                                                                                                      |
+| :---------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `IMR_Factor`      | `number`                                                                                                                                                  |
+| `baseIMR`         | `number`                                                                                                                                                  |
+| `baseMMR`         | `number`                                                                                                                                                  |
+| `markPrice`       | `number`                                                                                                                                                  |
+| `newOrder`        | \{ `price`: `number` ; `qty`: `number` ; `symbol`: `string` }                                                                                             |
+| `newOrder.price`  | `number`                                                                                                                                                  |
+| `newOrder.qty`    | `number`                                                                                                                                                  |
+| `newOrder.symbol` | `string`                                                                                                                                                  |
+| `orderFee`        | `number`                                                                                                                                                  |
+| `positions`       | `Pick`\<[`PositionExt`](/sdks/tech-doc/interfaces/orderly_network_types.API.PositionExt), `"position_qty"` \| `"mark_price"` \| `"symbol"` \| `"mmr"`\>[] |
+| `totalCollateral` | `number`                                                                                                                                                  |
 
 #### Defined in
 
@@ -71,19 +71,19 @@ ___
 
 ### estLeverage
 
-▸ **estLeverage**(`inputs`): `number` \| ``null``
+▸ **estLeverage**(`inputs`): `number` \| `null`
 
 Estimated leverage
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
+| Name     | Type                                                                                                        | Description            |
+| :------- | :---------------------------------------------------------------------------------------------------------- | :--------------------- |
 | `inputs` | [`EstimatedLeverageInputs`](/sdks/tech-doc/modules/orderly_network_perp.orderUtils#estimatedleverageinputs) | EstimtedLeverageInputs |
 
 #### Returns
 
-`number` \| ``null``
+`number` \| `null`
 
 number
 
@@ -91,7 +91,7 @@ number
 
 [order.ts:175](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/order.ts#L175)
 
-___
+---
 
 ### estLiqPrice
 
@@ -101,8 +101,8 @@ Estimated liquidation price
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name     | Type                                                                                                                        |
+| :------- | :-------------------------------------------------------------------------------------------------------------------------- |
 | `inputs` | [`EstimatedLiquidationPriceInputs`](/sdks/tech-doc/modules/orderly_network_perp.orderUtils#estimatedliquidationpriceinputs) |
 
 #### Returns
@@ -113,7 +113,7 @@ Estimated liquidation price
 
 [order.ts:74](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/order.ts#L74)
 
-___
+---
 
 ### maxPrice
 
@@ -123,10 +123,10 @@ Maximum price when placing an order
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name        | Type     |
+| :---------- | :------- |
 | `markprice` | `number` |
-| `range` | `number` |
+| `range`     | `number` |
 
 #### Returns
 
@@ -136,7 +136,7 @@ Maximum price when placing an order
 
 [order.ts:8](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/order.ts#L8)
 
-___
+---
 
 ### minPrice
 
@@ -146,10 +146,10 @@ Minimum price when placing an order
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name        | Type     |
+| :---------- | :------- |
 | `markprice` | `number` |
-| `range` | `number` |
+| `range`     | `number` |
 
 #### Returns
 
@@ -159,7 +159,7 @@ Minimum price when placing an order
 
 [order.ts:15](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/order.ts#L15)
 
-___
+---
 
 ### orderFee
 
@@ -169,12 +169,12 @@ Calculate the order fee
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `inputs` | `Object` | - |
-| `inputs.futuresTakeFeeRate` | `number` | - |
-| `inputs.price` | `number` | - |
-| `inputs.qty` | `number` | Order quantity |
+| Name                        | Type     | Description    |
+| :-------------------------- | :------- | :------------- |
+| `inputs`                    | `Object` | -              |
+| `inputs.futuresTakeFeeRate` | `number` | -              |
+| `inputs.price`              | `number` | -              |
+| `inputs.qty`                | `number` | Order quantity |
 
 #### Returns
 
@@ -184,7 +184,7 @@ Calculate the order fee
 
 [order.ts:37](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/perp/src/order.ts#L37)
 
-___
+---
 
 ### scropePrice
 
@@ -194,11 +194,11 @@ Scrope price when placing an order
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `price` | `number` |
-| `scrope` | `number` |
-| `side` | ``"BUY"`` \| ``"SELL"`` |
+| Name     | Type                |
+| :------- | :------------------ |
+| `price`  | `number`            |
+| `scrope` | `number`            |
+| `side`   | `"BUY"` \| `"SELL"` |
 
 #### Returns
 
