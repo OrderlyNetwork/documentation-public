@@ -1,29 +1,25 @@
 ---
 title: "Introduction"
-description: "Discover, install, and publish trading plugins built on the Orderly SDK and API."
+description: "The Builders Marketplace: install, build, and publish modules and apps on Orderly."
 ---
 
-The Orderly Builder Marketplace lets DEX builders install ready-made trading features, build custom plugins, and publish them for other builders to use. Plugins are built on top of the [Orderly SDK](/sdks/overview) and the Orderly REST/WebSocket API.
+The Orderly Builders Marketplace is the home for everything built on Orderly — features other builders can drop into their DEX, and (soon) standalone apps and services. It lists two kinds of things:
+
+- **DEX Modules** — features that plug into a DEX through the Orderly SDK: a frontend **plugin**, optionally backed by its own service (maintained by you or a third party). This handbook is about building and shipping these.
+- **Apps** — standalone apps, services, and tools that live beyond the frontend plugin system. _Coming soon_ — see [List an app](#list-an-app-coming-soon).
+
+Browse the live catalog at [marketplace.orderly.network](https://marketplace.orderly.network).
 
 <Note>
-  **Terminology:** A **module** is the complete feature you ship. It includes a **plugin** (the
-  frontend UI that plugs into your DEX) and optionally a builder-hosted backend service for
-  persistent logic.
+  **Terminology:** A **module** is the complete feature you ship — a **plugin** (the frontend UI
+  that plugs into your DEX via the Orderly SDK) plus an optional backend service for persistent
+  logic. "Plugin" is the developer-level term for the frontend code; "module" is how the feature
+  is listed in the marketplace.
 </Note>
 
-## Live Plugins
+## Install a module
 
-Browse existing plugins for inspiration or install them directly into your DEX. Builders and AI agents can also explore plugins through [`orderly-devkit`](#plugin-developer-toolchain). Please test thoroughly in your own environment before deploying to production.
-
-| Plugin            | Description                                                                                  | Builder | npm                                         | Demo                                                                                                                                | Source                                                               |
-| ----------------- | -------------------------------------------------------------------------------------------- | ------- | ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Onramper          | Fiat-to-crypto on-ramp — adds a Buy Crypto tab to the Transfer dialog (Deposit → Buy Crypto) | Orderly | `@orderly.network/onramper-plugin`          | [demo](https://demo.orderly.network/)                                                                                               | [GitHub](https://github.com/Orderly-Leo/onramper-plugin)             |
-| Fast Place Order  | Draggable quick-order widget for one-click market buy/sell                                   | Orderly | `@orderly.network/fast-place-order-plugin`  | [demo](https://github-dev.orderly.network/fast-place-order-plugin/iframe.html?id=fast-place-order--default&viewMode=story)          | [GitHub](https://github.com/OrderlyNetwork/fast-place-order-plugin)  |
-| OrderBook Shimmer | Desktop orderbook shimmer/flash effect                                                       | Orderly | `@orderly.network/orderbook-shimmer-plugin` | [demo](https://github-dev.orderly.network/orderbook-shimmer-plugin/iframe.html?id=orderbook-shimmer-plugin--default&viewMode=story) | [GitHub](https://github.com/OrderlyNetwork/orderbook-shimmer-plugin) |
-
-## Install a Plugin
-
-Install the npm package and register it in your `OrderlyAppProvider`:
+Browse modules at [marketplace.orderly.network](https://marketplace.orderly.network) (AI agents can discover them via the marketplace API `GET /api/plugins?search=...` or the `/llm.txt` catalog), then install the npm package and register it in your `OrderlyAppProvider`:
 
 ```bash
 npm install @orderly.network/onramper-plugin
@@ -42,52 +38,38 @@ import { registerOnramperPlugin } from "@orderly.network/onramper-plugin";
 </OrderlyAppProvider>;
 ```
 
-Each plugin's source repo includes specific configuration options. For more integration patterns, see the [integration guide](/build-on-omnichain/builder-marketplace/integrate-host).
+Each module's source repo documents its specific configuration. For more integration patterns, see the [integration guide](/build-on-omnichain/builder-marketplace/integrate-host). Please test thoroughly in your own environment before deploying to production.
 
-## Build Your Own
+## Develop a module
 
 <Note>The plugin system requires **Orderly SDK v3.0.0 or above**.</Note>
 
-### What you can build
+Modules range from simple UI enhancements to full-stack trading strategies. The SDK plugin system handles the frontend; the Orderly REST and WebSocket API handles the trading infrastructure. Builders decide how to combine them.
 
-Plugins can range from simple UI enhancements to full-stack trading strategies. The SDK plugin system handles the frontend; the Orderly REST and WebSocket API handles the trading infrastructure. Builders decide how to combine them.
+- **Frontend-only modules** run entirely client-side: SDK hooks, direct Orderly REST/WebSocket API calls (the SDK provides the authenticated context), or embedded third-party services. For example: UI/styling enhancements, analytics dashboards, market screeners, social PnL sharing, custom deposit/withdraw UI.
+- **Modules with your own backend** add a builder-hosted service for persistent logic that outlives a browser session (strategy execution, scheduled orders, cross-user features), talking directly to the Orderly API. For example: TWAP, Grid Bot, DCA, Copy Trading, alert systems.
 
-**Frontend-only plugins** — everything runs client-side in the browser, no builder-hosted server needed. Your plugin can use SDK hooks, call the Orderly REST and WebSocket API directly (the SDK provides the authenticated context), or embed third-party services. Build using the SDK's plugin system to ensure your plugin stays compatible across SDK upgrades and is shareable with other builders. See the [Plugin Developer Handbook](/build-on-omnichain/builder-marketplace/plugin-developer-handbook) for the full development guide. For example:
+The full development guide is the **[Plugin Developer Handbook](/build-on-omnichain/builder-marketplace/plugin-developer-handbook)**. If you use an AI coding agent (Cursor, Claude Code, Codex), start with the [skills-first workflow](/build-on-omnichain/builder-marketplace/skills-first).
 
-- Custom UI and styling enhancements
-- Analytics dashboard, market screener, leaderboard
-- Social PnL sharing, notification widgets
-- Custom deposit/withdraw UI, portfolio visualization
-- Third-party service integrations
+| Tool                | What it does                                                | Install                               |
+| ------------------- | ---------------------------------------------------------- | ------------------------------------- |
+| orderly-devkit CLI  | Scaffold, build, and submit modules                        | `pnpm add -g @orderly.network/devkit` |
+| Plugin agent skills | Guided AI-agent workflows (create → write → integrate → submit) | `orderly-devkit skills install`       |
+| SDK Docs MCP        | Query Orderly SDK docs from your agent                     | `orderly-devkit mcp install`          |
 
-**Plugins with your own backend** — a frontend plugin provides the user-facing UI, while your backend service handles persistent logic that outlives a browser session (e.g. strategy execution, scheduled orders, cross-user features) by talking directly to the Orderly REST and WebSocket API. For example:
+## Submit a module
 
-- TWAP, Grid Bot, DCA
-- Copy Trading, Portfolio Rebalancer
-- Alert / notification system
+Once your module is published to npm, you can list it on the Builders Marketplace. **Submission is permissionless**, with a **security review** before it goes live. Submit any of these ways:
 
-### Plugin developer toolchain
+- **Web** — sign in with GitHub at [marketplace.orderly.network](https://marketplace.orderly.network) and fill in the form.
+- **CLI / AI agent** — `orderly-devkit submit`, or run the `/orderly-plugin-submit` agent skill.
 
-The following tools are for building the frontend plugin portion of your module. If you use an AI coding agent (Cursor, Claude Code, Codex, etc.), install the plugin skills and MCP server alongside the CLI for guided workflows.
+See the [Marketplace submission tutorial](/build-on-omnichain/builder-marketplace/marketplace-submission) for the full flow. Why list your module:
 
-| Tool                | What it does                                                                | Install                               |
-| ------------------- | --------------------------------------------------------------------------- | ------------------------------------- |
-| orderly-devkit CLI  | Scaffold, build, and submit plugins                                         | `pnpm add -g @orderly.network/devkit` |
-| Plugin agent skills | Guided workflows for AI coding agents (create → write → integrate → submit) | `orderly-devkit skills install`       |
-| SDK Docs MCP        | Query Orderly SDK docs from your agent                                      | `orderly-devkit mcp install`          |
+- **Distribution** — listed modules appear across Orderly-powered UIs, giving your work instant reach.
+- **Discoverability** — builders and AI agents find and install modules through the marketplace web UI, its API, and the `/llm.txt` catalog.
+- **Monetization** — modules that provide a service can run their own business model (transaction fees, subscriptions, or profit sharing through the module's backend).
 
-For the full development guide, see the [Plugin Developer Handbook](/build-on-omnichain/builder-marketplace/plugin-developer-handbook). If you use an AI coding agent, start with the [skills-first workflow](/build-on-omnichain/builder-marketplace/skills-first).
+## List an app (coming soon)
 
-### Connect your backend (if needed)
-
-If your plugin needs persistent logic beyond the browser session, you can run your own backend service. How you design it is up to you — your backend can call the Orderly REST and WebSocket API, run its own logic, or both. See the API reference in the sidebar for details.
-
-### List on the Builder Marketplace
-
-Once your plugin is published to npm, you can submit it for listing on the Builder Marketplace. Follow the [Marketplace submission tutorial](/build-on-omnichain/builder-marketplace/marketplace-submission) to get started.
-
-Why list your plugin:
-
-- **Distribution** — listed plugins appear across Orderly-powered UIs, giving your plugin instant reach
-- **Discoverability** — builders and AI agents can explore and install plugins through `orderly-devkit`, making your work easy to find and adopt
-- **Monetization** — plugins that provide a service can monetize through their own business model (e.g. transaction fees, subscriptions, or profit sharing through the plugin's backend)
+**Apps** are the next listing type: standalone apps, services, and tools that aren't frontend plugins (e.g. backend services, bots, or builder-to-builder mechanisms). App listing is a business-wise cooperation with Orderly rather than a self-serve flow. If you have an app, service, or tool you'd like to list, **contact the Orderly team** to discuss the details.

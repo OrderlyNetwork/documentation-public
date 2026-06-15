@@ -14,9 +14,9 @@ The **orderly-plugin-add** skill matches “integrate / install / register an Or
 1. **Find `OrderlyAppProvider`** (`grep`, or search the repo) — the skill treats this as the non-negotiable first step.
 2. **Resolve the package** — workspace **`workspace:*`**, **`file:`**, or **npm**, then **`pnpm install`**.
 3. **Import **`registerXxxPlugin`** and add **`plugins={[…]}`\*\* on the provider.
-4. Optionally **`orderly-devkit view <plugin-id>`** (after **`orderly-devkit login`**) to read **`usagePrompt`** / package name for Builder Marketplace plugins — same as the **Import** and **Marketplace metadata** sections below.
+4. Optionally **`orderly-devkit view <plugin-id>`** (after **`orderly-devkit login`**) to read **`usagePrompt`** / package name for Builders Marketplace plugins — same as the **Import** and **Marketplace metadata** sections below.
 
-**Example prompts:** “Wire `@scope/my-local-plugin` into this host’s `OrderlyAppProvider`” / “Install the Builder Marketplace plugin `<id>` and follow usagePrompt.” The skill should mirror this tutorial and refuse to guess **`plugins`** wiring.
+**Example prompts:** “Wire `@scope/my-local-plugin` into this host’s `OrderlyAppProvider`” / “Install the Builders Marketplace plugin `<id>` and follow usagePrompt.” The skill should mirror this tutorial and refuse to guess **`plugins`** wiring.
 
 ## 1. Find `OrderlyAppProvider`
 
@@ -50,9 +50,9 @@ import registerMyPlugin from "@orderly.network/your-plugin";
 
 Use the export path from the plugin’s `package.json` / README / Marketplace metadata.
 
-### Builder Marketplace metadata
+### Builders Marketplace metadata
 
-If the plugin is listed on the Builder Marketplace, you can inspect metadata with the devkit after logging in:
+If the plugin is listed on the Builders Marketplace, you can inspect metadata with the devkit after logging in:
 
 ```bash
 orderly-devkit login
