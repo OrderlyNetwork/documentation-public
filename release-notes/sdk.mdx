@@ -6,6 +6,63 @@ icon: "layer-group"
 
 import { Chip } from "/snippets/chip.mdx";
 
+## June 11, 2026 - v3.1.1
+
+<div style={{ display: "table", width: "100%" }}>
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="new" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Features & Improvements**
+      - **Pre-TGE Market Support** — The SDK now supports pre-TGE market listings, enabling trading on perpetual markets ahead of a token's generation event
+      - **Commission Rate Adjustment Limits Removed** — Brokers can now lower their commission rate without the previous downward adjustment cap
+    </div>
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="bug" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Fixes**
+      - Fixed an error that caused asset convert quote estimates to fail
+    </div>
+  </div>
+</div>
+
+
+## May 27, 2026 - v3.1.0
+
+<div style={{ display: "table", width: "100%" }}>
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="new" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Features & Improvements**
+      - **RTL Language Support** — The SDK now supports right-to-left languages, including Arabic, Persian, and Hebrew. Layouts, typography, and components mirror correctly for RTL locales
+      - **ISO Max-Out Order Fix** — Maxing out an isolated margin market order with the slider at 100% is no longer rejected with "margin will be insufficient after". The SDK now reserves a taker fee buffer that matches the backend's frozen-margin formula, aligning isolated margin with cross margin. Verified across fee tiers and isolated margin flip orders
+    </div>
+  </div>
+</div>
+
+
 ## May 20, 2026 - v3.0.4
 
 <div style={{ display: "table", width: "100%" }}>
