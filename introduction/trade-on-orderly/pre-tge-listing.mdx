@@ -74,4 +74,6 @@ The market then behaves as a regular Community Listed market: the Pre-launch tag
 
 ## Trader experience
 
-Pre-TGE markets appear under a **Pre-launch** tab in the market list and show an extended risk disclosure before the first trade, noting that the token has not yet launched and that funding fee is not charged. During the pre-TGE phase, leverage is capped at 5x and no funding fee is collected.
+Two behaviors hold on every frontend because they are enforced at the protocol level: during the pre-TGE phase, leverage is capped at 5x and no funding fee is collected.
+
+How a pre-TGE market is *surfaced* depends on the frontend. Orderly's own front-ends -- the Orderly SDK trading UI and Orderly One -- show pre-TGE markets under a **Pre-launch** tab and display an extended risk disclosure before the first trade, noting that the token has not launched yet and that funding fee is not charged. Each market exposes an `is_pretge` flag through the public market info API, so a Builder running a custom frontend can read it and surface pre-TGE markets the same way.
