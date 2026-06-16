@@ -15,12 +15,12 @@ The product model is simple: **Orderly provides the market infrastructure and au
 
 There are two ways to list markets on Orderly. While the standard model is built for platform-wide stability, Permissionless Listing is built for Builder-level autonomy.
 
-| Feature | Standard Listing | Permissionless Listing |
-| :--- | :--- | :--- |
-| **Who manages it** | Orderly | Individual Builder |
-| **Insurance Fund** | Shared across the platform | Dedicated per Builder |
+| Feature             | Standard Listing                | Permissionless Listing                 |
+| :------------------ | :------------------------------ | :------------------------------------- |
+| **Who manages it**  | Orderly                         | Individual Builder                     |
+| **Insurance Fund**  | Shared across the platform      | Dedicated per Builder                  |
 | **Listing Process** | Evaluated & approved by Orderly | Self-serve after eligibility and setup |
-| **Risk Parameters** | Standardized & conservative | Customizable by Builder |
+| **Risk Parameters** | Standardized & conservative     | Customizable by Builder                |
 
 Standard listing is well-suited for established assets. But for long-tail assets or markets that a specific Builder's user base demands, Permissionless Listing provides a faster, more flexible path.
 
@@ -30,13 +30,13 @@ For Builders, this creates a practical way to launch markets faster, serve commu
 
 Permissionless Listing is not an unrestricted listing lane. It is a self-service listing model with clear ownership, isolated risk, automated checks, and trader-facing disclosure.
 
-| Design choice | What users should understand |
-| --- | --- |
-| **Builder-owned market** | The Builder chooses the market, price sources, trading parameters, launch time, and liquidity setup within Orderly's supported rules. |
-| **Orderly infrastructure** | Orderly still provides matching, liquidation, settlement, parameter constraints, status transitions, and monitoring rails. |
-| **Isolated risk** | Each Builder uses a dedicated Insurance Fund, isolated-margin trading, separate order books, and market-scoped ADL. A Community Listed market should not be able to consume another Builder's Insurance Fund or Orderly's platform Insurance Fund. |
-| **Automated lifecycle** | Markets move through `POST_ONLY`, `ACTIVE`, `REDUCE_ONLY`, `DELISTING`, and `DELISTED` based on launch timing, liquidity depth, Insurance Fund health, and other risk checks. |
-| **Trader transparency** | Community Listed markets are labeled separately when shown, identify the operating Builder, require isolated margin, and show a risk disclosure before first trade. |
+| Design choice              | What users should understand                                                                                                                                                                                                                       |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Builder-owned market**   | The Builder chooses the market, price sources, trading parameters, launch time, and liquidity setup within Orderly's supported rules.                                                                                                              |
+| **Orderly infrastructure** | Orderly still provides matching, liquidation, settlement, parameter constraints, status transitions, and monitoring rails.                                                                                                                         |
+| **Isolated risk**          | Each Builder uses a dedicated Insurance Fund, isolated-margin trading, separate order books, and market-scoped ADL. A Community Listed market should not be able to consume another Builder's Insurance Fund or Orderly's platform Insurance Fund. |
+| **Automated lifecycle**    | Markets move through `POST_ONLY`, `ACTIVE`, `REDUCE_ONLY`, `DELISTING`, and `DELISTED` based on launch timing, liquidity depth, Insurance Fund health, and other risk checks.                                                                      |
+| **Trader transparency**    | Community Listed markets are labeled separately when shown, identify the operating Builder, require isolated margin, and show a risk disclosure before first trade.                                                                                |
 
 This design lets Builders move faster, while making the responsibility boundary visible: Orderly does not endorse every Community Listed market, and Builders must keep their own market healthy.
 
@@ -48,7 +48,7 @@ Permissionless Listing decouples the risk of new markets from the rest of the pl
 
 Each Builder that lists a market must set up and manage their own accounts:
 
-- **Insurance Fund (IF) account** -- A dedicated sub-account that covers liquidation losses for all of the Builder's listed markets. The ongoing minimum balance is **\$50,000 per active symbol** (e.g., 3 active markets = \$150,000 minimum). To submit another listing, the IF must also have enough balance for the next symbol. If the IF drops too low, the system will automatically restrict trading or trigger delisting.
+- **Insurance Fund (IF) account** -- A dedicated sub-account that covers liquidation losses for all of the Builder's listed markets. The ongoing minimum balance is **\$25,000 per active symbol** (e.g., 3 active markets = \$75,000 minimum). Active symbols include symbols in `NEW`, `PENDING`, `POST_ONLY`, `ACTIVE`, or `REDUCE_ONLY` status. To submit another listing, the IF must also have enough balance for the next symbol. If the IF account balance drops too low, the system will automatically restrict trading or trigger delisting.
 - **Market Maker (MM) accounts** -- Optional sub-accounts for market-making. Builders can bind one or more MM accounts to their listed symbols to provide liquidity.
 
 The IF is completely separate from Orderly's platform IF and from any other Builder's IF. If a liquidation loss occurs, it draws only from that Builder's IF. If the IF is fully depleted, auto-deleveraging (ADL) is scoped to that specific market only. The risk controls are designed to keep losses scoped to that Builder's market rather than the broader platform.
@@ -117,14 +117,14 @@ When shown on a frontend, permissionlessly listed markets appear as **"Community
 
 Availability may vary by frontend. Builder-operated frontends can choose whether to show Community Listed markets, show all of them, or show only selected Builders' markets. Existing positions, orders, and trade history remain accessible even if a market is not shown in the market picker.
 
-| | Standard Orderly markets | Community Listed markets |
-| --- | --- | --- |
-| **Who operates it** | Orderly | Individual Builder |
-| **Insurance Fund** | Shared platform IF, managed by Orderly | Dedicated per-Builder IF, funded by the Builder |
-| **Margin mode** | Cross Margin and Isolated Margin | **Isolated Margin only** |
-| **What happens if IF is depleted** | Platform backstop | ADL applied only to positions in that market |
-| **Liquidity** | Platform-coordinated | Depends entirely on the Builder's market-making |
-| **Risk controls** | Platform-wide standards | Market-specific, can be restricted independently |
+|                                    | Standard Orderly markets               | Community Listed markets                         |
+| ---------------------------------- | -------------------------------------- | ------------------------------------------------ |
+| **Who operates it**                | Orderly                                | Individual Builder                               |
+| **Insurance Fund**                 | Shared platform IF, managed by Orderly | Dedicated per-Builder IF, funded by the Builder  |
+| **Margin mode**                    | Cross Margin and Isolated Margin       | **Isolated Margin only**                         |
+| **What happens if IF is depleted** | Platform backstop                      | ADL applied only to positions in that market     |
+| **Liquidity**                      | Platform-coordinated                   | Depends entirely on the Builder's market-making  |
+| **Risk controls**                  | Platform-wide standards                | Market-specific, can be restricted independently |
 
 ### What this means in practice
 

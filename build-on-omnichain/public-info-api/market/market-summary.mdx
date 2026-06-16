@@ -19,23 +19,23 @@ Multi-symbol summary of mark / index prices, 24h OHLCV, funding rates, and open 
 }
 ```
 
-| Field | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `symbols` | string[] | No | `null` | Omit (or send empty) → all active symbols |
+| Field     | Type     | Required | Default | Notes                                     |
+| --------- | -------- | -------- | ------- | ----------------------------------------- |
+| `symbols` | string[] | No       | `null`  | Omit (or send empty) → all active symbols |
 
 ## Response
 
-| Field | Type | Notes |
-| --- | --- | --- |
-| `total_24h_volume` | string | Sum across markets; `null` if no data |
-| `total_open_interest` | string \| null | Sum across markets; `null` only when no symbols have open-interest data available |
-| `markets[]` | array | Lexically ordered for stable rendering |
-| `.mark_price` | string | From mark-price stream |
-| `.index_price` | string | From index-price stream (PERP→SPOT remap applied internally) |
-| `.last_funding_rate` | string | Last settled funding rate |
-| `.est_funding_rate` | string \| null | `null` until the first funding estimate message arrives |
-| `.next_funding_time` | int64 | ms epoch |
-| `.max_leverage`, `.min_notional`, `.quote_tick`, `.base_tick` | string | Symbol metadata |
+| Field                                                         | Type           | Notes                                                                             |
+| ------------------------------------------------------------- | -------------- | --------------------------------------------------------------------------------- |
+| `total_24h_volume`                                            | string         | Sum across markets; `null` if no data                                             |
+| `total_open_interest`                                         | string \| null | Sum across markets; `null` only when no symbols have open-interest data available |
+| `markets[]`                                                   | array          | Lexically ordered for stable rendering                                            |
+| `.mark_price`                                                 | string         | From mark-price stream                                                            |
+| `.index_price`                                                | string         | From index-price stream (PERP→SPOT remap applied internally)                      |
+| `.last_funding_rate`                                          | string         | Last settled funding rate                                                         |
+| `.est_funding_rate`                                           | string \| null | `null` until the first funding estimate message arrives                           |
+| `.next_funding_time`                                          | int64          | ms epoch                                                                          |
+| `.max_leverage`, `.min_notional`, `.quote_tick`, `.base_tick` | string         | Symbol metadata                                                                   |
 
 ## Notes
 

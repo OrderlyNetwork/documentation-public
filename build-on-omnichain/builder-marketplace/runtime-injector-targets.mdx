@@ -1,0 +1,43 @@
+---
+title: "Runtime injector targets (handbook reference)"
+description: "Interceptor target strings must match the SDK exactly (case-sensitive)."
+---
+
+Interceptor `target` strings must match the SDK **exactly** (**case-sensitive**).
+
+This page is maintained for the **`docs/plugins`** handbook only. The same table ships with **`@orderly.network/plugin-core`** on npm alongside deeper architecture guides.
+
+## Injectable paths (runtime)
+
+| Target path                         | Description                             |
+| ----------------------------------- | --------------------------------------- |
+| `Layout.MainMenus`                  | Main navigation menu area               |
+| `Account.AccountMenu`               | Desktop account menu                    |
+| `Account.MobileAccountMenu`         | Mobile account menu                     |
+| `OrderBook.Desktop.Bids`            | Desktop order book bids column          |
+| `OrderBook.Desktop.Asks`            | Desktop order book asks column          |
+| `Trading.Layout.Desktop`            | Desktop trading page layout container   |
+| `Trading.Page`                      | Trading page root                       |
+| `OrderEntry`                        | Order entry root                        |
+| `Trading.OrderEntry.TypeTabs`       | Order entry type tabs area              |
+| `Trading.OrderEntry.BuySellSwitch`  | Order entry buy/sell switch area        |
+| `Trading.OrderEntry.Available`      | Order entry available balance row       |
+| `Trading.OrderEntry.QuantitySlider` | Order entry quantity slider area        |
+| `Trading.OrderEntry.SubmitSection`  | Order entry submit + asset info section |
+| `TradingView.Desktop`               | Desktop TradingView chart               |
+| `Trading.SymbolInfoBar.Desktop`     | Desktop symbol info bar                 |
+| `Table.EmptyDataIdentifier`         | Table empty state                       |
+| `Deposit.DepositForm`               | Deposit form                            |
+| `Transfer.DepositAndWithdraw`       | Deposit & withdraw tab container        |
+
+## `create plugin --interceptor` subset
+
+**`orderly-devkit create plugin`** only lists a subset of targets for scaffolding prompts. Typical values include:
+
+`Trading.Layout.Desktop`, `Trading.Layout.Mobile`, `Trading.OrderEntry.TypeTabs`, `Trading.OrderEntry.BuySellSwitch`, `Trading.OrderEntry.Available`, `Trading.OrderEntry.QuantitySlider`, `Trading.OrderEntry.SubmitSection`, `OrderBook.Desktop.Asks`, `OrderBook.Desktop.Bids`, `Deposit.DepositForm`, `Deposit.WithdrawForm`, `Account.AccountMenu`, `Layout.MainMenus`, `Table.EmptyDataIdentifier`
+
+If your desired path appears in the **Injectable paths** table above but not in this list, generate the project with any listed option, then edit the plugin code to use the real **`target`** string.
+
+## Discovering paths in development
+
+Use **Developer / Inspector** tooling in dev mode to list paths registered by your installed SDK version.

@@ -5,34 +5,32 @@ description: "Subscribe to index price updates for a single symbol via WebSocket
 
 Push interval: 1s
 
-
 For index price, use SPOT symbol such as `SPOT_ETH_USDC` instead of `PERP_ETH_USDC`
-
 
 ```json
 {
-    "id": "clientID7",
-    "topic": "SPOT_ETH_USDC@indexprice",
-    "event": "subscribe"
+  "id": "clientID7",
+  "topic": "SPOT_ETH_USDC@indexprice",
+  "event": "subscribe"
 }
 ```
 
 **Parameters**
 
-| Name   | Type   | Required | Description                               |
-| ------ | ------ | -------- | ----------------------------------------- |
-| id     | string | Y        | id generate by client                     |
-| event  | string | Y        | `subscribe`/`unsubscribe`                 |
-| topic  | string | N        | `{symbol}@indexprice`                   |
+| Name  | Type   | Required | Description               |
+| ----- | ------ | -------- | ------------------------- |
+| id    | string | Y        | id generate by client     |
+| event | string | Y        | `subscribe`/`unsubscribe` |
+| topic | string | N        | `{symbol}@indexprice`     |
 
 <RequestExample>
 
 ```json Response
 {
-   "id":"clientID7",
-   "event":"subscribe",
-   "success":true,
-   "ts":1682241351985
+  "id": "clientID7",
+  "event": "subscribe",
+  "success": true,
+  "ts": 1682241351985
 }
 ```
 
@@ -42,12 +40,12 @@ For index price, use SPOT symbol such as `SPOT_ETH_USDC` instead of `PERP_ETH_US
 
 ```json Subscribed Message
 {
-   "topic":"SPOT_ETH_USDC@indexprice",
-   "ts":1682241354000,
-   "data":{
-      "symbol":"SPOT_ETH_USDC",
-      "price":1873.36
-   }
+  "topic": "SPOT_ETH_USDC@indexprice",
+  "ts": 1682241354000,
+  "data": {
+    "symbol": "SPOT_ETH_USDC",
+    "price": 1873.36
+  }
 }
 ```
 

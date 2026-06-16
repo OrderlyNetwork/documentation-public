@@ -17,21 +17,20 @@ Whale research bundle. Combines the address's account state with its most recent
 }
 ```
 
-| Field | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `address` | string | Yes | — | Wallet address |
-| `broker_id` | string | No | — | Optional |
-| `account_id` | string | No | — | Optional |
-| `recent_trades_limit` | int | No | 20 | Clamped to `[1, 50]` |
+| Field                 | Type   | Required | Default | Notes                |
+| --------------------- | ------ | -------- | ------- | -------------------- |
+| `address`             | string | Yes      | —       | Wallet address       |
+| `broker_id`           | string | No       | —       | Optional             |
+| `account_id`          | string | No       | —       | Optional             |
+| `recent_trades_limit` | int    | No       | 20      | Clamped to `[1, 50]` |
 
 ## Response
 
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `account` | object \| null | Subset of `accountState`; `null` on `ADDRESS_NOT_FOUND` |
-| `positions[]` | array | Open positions (same shape as [`accountState`](/build-on-omnichain/public-info-api/account/account-state)) |
-| `recent_trades[]` | array | Most recent fills (same shape as [`trades`](/build-on-omnichain/public-info-api/account/trades)); empty array on sub-handler failure |
+| Field             | Type           | Notes                                                                                                                                |
+| ----------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `account`         | object \| null | Subset of `accountState`; `null` on `ADDRESS_NOT_FOUND`                                                                              |
+| `positions[]`     | array          | Open positions (same shape as [`accountState`](/build-on-omnichain/public-info-api/account/account-state))                           |
+| `recent_trades[]` | array          | Most recent fills (same shape as [`trades`](/build-on-omnichain/public-info-api/account/trades)); empty array on sub-handler failure |
 
 ## Notes
 
@@ -44,9 +43,15 @@ Whale research bundle. Combines the address's account state with its most recent
 {
   "success": true,
   "data": {
-    "account": { /* like agentContext.account */ },
-    "positions": [ /* like accountState.positions[] */ ],
-    "recent_trades": [ /* like trades.rows[] */ ]
+    "account": {
+      /* like agentContext.account */
+    },
+    "positions": [
+      /* like accountState.positions[] */
+    ],
+    "recent_trades": [
+      /* like trades.rows[] */
+    ]
   },
   "ts": 1779269143700
 }

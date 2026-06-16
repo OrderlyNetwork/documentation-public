@@ -11,13 +11,13 @@ There are two types of limits: **Price Range** (how far above/below the Mark Pri
 
 The Price Range prevents orders from being placed or filled at prices that are too far above or below the current Mark Price. Think of it as a ceiling and floor around the Mark Price.
 
-* Buy limit orders must be priced at or below Mark Price \* (1 + Price Range)
+- Buy limit orders must be priced at or below Mark Price \* (1 + Price Range)
 
-* Sell limit orders must be priced at or above Mark Price \* (1 - Price Range)
+- Sell limit orders must be priced at or above Mark Price \* (1 - Price Range)
 
-* Price Range = 3% for all markets
+- Price Range = 3% for all markets
 
-For example, if the Mark Price of BTC-PERP is 60,000 USDC, a buy limit order cannot be priced higher than 61,800 USDC (60,000 * 1.03), and a sell limit order cannot be priced lower than 58,200 USDC (60,000 * 0.97).
+For example, if the Mark Price of BTC-PERP is 60,000 USDC, a buy limit order cannot be priced higher than 61,800 USDC (60,000 _ 1.03), and a sell limit order cannot be priced lower than 58,200 USDC (60,000 _ 0.97).
 
 **What happens during high volatility:** If you place a market order and the price moves quickly, your order may only be partially filled up to the price range limit. Any portion beyond the limit will not be filled.
 
@@ -29,10 +29,10 @@ In the event of extreme price movements, Orderly reserves the right to change th
 
 The Price Scope is the opposite of the Price Range. While the Price Range stops you from placing orders too close to or beyond the Mark Price in the wrong direction, the Price Scope stops you from placing orders too far away from the Mark Price.
 
-* Buy limit orders cannot be priced lower than Mark Price \* (1 - Price Scope)
+- Buy limit orders cannot be priced lower than Mark Price \* (1 - Price Scope)
 
-* Sell limit orders cannot be priced higher than Mark Price \* (1 + Price Scope)
+- Sell limit orders cannot be priced higher than Mark Price \* (1 + Price Scope)
 
-* Price Scope = 40% for all markets
+- Price Scope = 40% for all markets
 
-Using the same example, if the Mark Price of BTC-PERP is 60,000 USDC, a buy limit order cannot be priced lower than 36,000 USDC (60,000 * 0.60), and a sell limit order cannot be priced higher than 84,000 USDC (60,000 * 1.40).
+Using the same example, if the Mark Price of BTC-PERP is 60,000 USDC, a buy limit order cannot be priced lower than 36,000 USDC (60,000 _ 0.60), and a sell limit order cannot be priced higher than 84,000 USDC (60,000 _ 1.40).

@@ -7,11 +7,11 @@ description: "Authenticate wallets and manage Orderly Keys for secure API access
 
 Orderly relies on the [EIP-712](https://eips.ethereum.org/EIPS/eip-712) standard to authenticate wallets and accounts for critical actions, such as:
 
-* Account creation
+- Account creation
 
-* Orderly Key addition
+- Orderly Key addition
 
-* Withdrawal requests
+- Withdrawal requests
 
 For these actions, wallet owners will need to sign specific messages from their wallet and pass the signature through the REST APIs to complete the action. The following sections describe the steps needed to complete these actions.
 
@@ -26,7 +26,7 @@ Note that `chainId` will be the id of the chain connected, which must be support
 
 The `Registration` and `AddOrderlyKey` types are entirely processed off-chain, which is why the `verifyingContract` is set to `0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC`.
 
-```json
+```json5
 {
     "name": "Orderly",
     "version": "1",
@@ -39,7 +39,7 @@ The `Registration` and `AddOrderlyKey` types are entirely processed off-chain, w
 
 Any other type uses the on-chain domain. The address for the Ledger contract on the Orderly L2 chain can be looked up [here](/build-on-omnichain/addresses).
 
-```json
+```json5
 {
     "name": "Orderly",
     "version": "1",
@@ -52,7 +52,7 @@ Any other type uses the on-chain domain. The address for the Ledger contract on 
 
 The message types are required for the EIP-712 algorithm to do a proper signing. Here is a list of all message types as JSON:
 
-```js
+```json5
 {
     "EIP712Domain": [
         { "name": "name", "type": "string" },
@@ -131,7 +131,7 @@ The message types are required for the EIP-712 algorithm to do a proper signing.
 Orderly uses the `ed25519` elliptic curve standard for Orderly keys. Users can generate Orderly keys using any public `ed25519` libraries and then be added to any account through the REST API.
 An Orderly Key is necessary to perform [API authentication](/build-on-omnichain/api-authentication).
 
-Orderly keys can have different scopes. A `read` scope can access all private read-only APIs, and a `trading` scope can, in addition, access all order APIs (create order, batch create order, edit order, cancel order, cancel order by client\_order\_id, cancel orders in bulk, batch cancel orders, batch cancel orders by client\_order\_id).
+Orderly keys can have different scopes. A `read` scope can access all private read-only APIs, and a `trading` scope can, in addition, access all order APIs (create order, batch create order, edit order, cancel order, cancel order by client_order_id, cancel orders in bulk, batch cancel orders, batch cancel orders by client_order_id).
 
 Orderly keys also have expirations for security reasons. The maximum allowed expiration of an Orderly Key is 365 days.
 
@@ -146,25 +146,26 @@ To add a new Orderly Key:
 
 ```json
 {
-    "brokerId": "woofi_dex",
-    "chainId": 80001,
-    "orderlyKey": "ed25519:HqN9uKJioHjAJZbadgQRGzq2e7huKg6foCyNY43hWbCk",
-    "scope": "trading",
-    "timestamp": 1685973094398,
-    "expiration": 1686081094398
+  "brokerId": "woofi_dex",
+  "chainId": 80001,
+  "orderlyKey": "ed25519:HqN9uKJioHjAJZbadgQRGzq2e7huKg6foCyNY43hWbCk",
+  "scope": "trading",
+  "timestamp": 1685973094398,
+  "expiration": 1686081094398
 }
 ```
 
 where:
 
-| **Name**   | **Type**  | **Required** | **Description**                                                                               |
-| ---------- | --------- | ------------ |-----------------------------------------------------------------------------------------------|
-| brokerId   | string    | Y            | Builder ID, the valid list can be found \[here\]                                              |
-| chainId    | int       | Y            | Chain ID of registering chain (within those that are supported by the Network)                |
-| orderlyKey | string    | Y            | ed25519 public key                                                                            |
-| scope      | string    | Y            | valid scopes are `read`, `trading` and `asset`. Multiple scopes can be sent, comma separated  |
-| timestamp  | timestamp | Y            | timestamp in UNIX milliseconds                                                                |
+| **Name**   | **Type**  | **Required** | **Description**                                                                                  |
+| ---------- | --------- | ------------ | ------------------------------------------------------------------------------------------------ |
+| brokerId   | string    | Y            | Builder ID, the valid list can be found \[here\]                                                 |
+| chainId    | int       | Y            | Chain ID of registering chain (within those that are supported by the Network)                   |
+| orderlyKey | string    | Y            | ed25519 public key                                                                               |
+| scope      | string    | Y            | valid scopes are `read`, `trading` and `asset`. Multiple scopes can be sent, comma separated     |
+| timestamp  | timestamp | Y            | timestamp in UNIX milliseconds                                                                   |
 | expiration | timestamp | Y            | Expiration time of the key in UNIX milliseconds. Maximum allowed expiration is 365 days from add |
+
   </Step>
   <Step title="Add Orderly Key">
      Send all the necessary information via [Add Orderly Key API](/build-on-omnichain/restful-api/public/add-orderly-key).
@@ -193,36 +194,36 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class OrderlyKeyExample {
-   public static JSONObject MESSAGE_TYPES = new JSONObject("""
-         {
-            "EIP712Domain": [
-               {"name": "name", "type": "string"},
-               {"name": "version", "type": "string"},
-               {"name": "chainId", "type": "uint256"},
-               {"name": "verifyingContract", "type": "address"},
-            ],
-            "AddOrderlyKey": [
-               {"name": "brokerId", "type": "string"},
-               {"name": "chainId", "type": "uint256"},
-               {"name": "orderlyKey", "type": "string"},
-               {"name": "scope", "type": "string"},
-               {"name": "timestamp", "type": "uint64"},
-               {"name": "expiration", "type": "uint64"},
-            ],
-         }""");
+public static JSONObject MESSAGE_TYPES = new JSONObject("""
+{
+"EIP712Domain": [
+{"name": "name", "type": "string"},
+{"name": "version", "type": "string"},
+{"name": "chainId", "type": "uint256"},
+{"name": "verifyingContract", "type": "address"},
+],
+"AddOrderlyKey": [
+{"name": "brokerId", "type": "string"},
+{"name": "chainId", "type": "uint256"},
+{"name": "orderlyKey", "type": "string"},
+{"name": "scope", "type": "string"},
+{"name": "timestamp", "type": "uint64"},
+{"name": "expiration", "type": "uint64"},
+],
+}""");
 
-   public static JSONObject OFF_CHAIN_DOMAIN = new JSONObject("""
-         {
-            "name": "Orderly",
-            "version": "1",
-            "chainId": 421614,
-            "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
-         }""");
+public static JSONObject OFF_CHAIN_DOMAIN = new JSONObject("""
+{
+"name": "Orderly",
+"version": "1",
+"chainId": 421614,
+"verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
+}""");
 
-   public static void main(String[] args) throws Exception {
-      String baseUrl = "https://testnet-api.orderly.org";
-      String brokerId = "woofi_dex";
-      int chainId = 421614;
+public static void main(String[] args) throws Exception {
+String baseUrl = "https://testnet-api.orderly.org";
+String brokerId = "woofi_dex";
+int chainId = 421614;
 
       Dotenv dotenv = Dotenv.load();
       String pk = dotenv.get("PRIVATE_KEY");
@@ -264,17 +265,19 @@ public class OrderlyKeyExample {
          addKeyRes = response.body().string();
       }
       System.out.println("orderly_key response: " + addKeyRes);
-   }
 
-   public static String signatureToHashString(Sign.SignatureData signature) {
-      byte[] retval = new byte[65];
-      System.arraycopy(signature.getR(), 0, retval, 0, 32);
-      System.arraycopy(signature.getS(), 0, retval, 32, 32);
-      System.arraycopy(signature.getV(), 0, retval, 64, 1);
-      return Numeric.toHexString(retval);
-   }
 }
-```
+
+public static String signatureToHashString(Sign.SignatureData signature) {
+byte[] retval = new byte[65];
+System.arraycopy(signature.getR(), 0, retval, 0, 32);
+System.arraycopy(signature.getS(), 0, retval, 32, 32);
+System.arraycopy(signature.getV(), 0, retval, 64, 1);
+return Numeric.toHexString(retval);
+}
+}
+
+````
 
 ```py Python
 from datetime import datetime
@@ -353,13 +356,13 @@ res = requests.post(
 )
 response = json.loads(res.text)
 print("add_access_key:", response)
-```
+````
 
 ```ts TypeScript
-import { getPublicKeyAsync, utils } from '@noble/ed25519';
-import { config } from 'dotenv';
-import { encodeBase58, ethers } from 'ethers';
-import { webcrypto } from 'node:crypto';
+import { getPublicKeyAsync, utils } from "@noble/ed25519";
+import { config } from "dotenv";
+import { encodeBase58, ethers } from "ethers";
+import { webcrypto } from "node:crypto";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -367,30 +370,30 @@ if (!globalThis.crypto) globalThis.crypto = webcrypto;
 
 const MESSAGE_TYPES = {
   EIP712Domain: [
-    { name: 'name', type: 'string' },
-    { name: 'version', type: 'string' },
-    { name: 'chainId', type: 'uint256' },
-    { name: 'verifyingContract', type: 'address' }
+    { name: "name", type: "string" },
+    { name: "version", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "verifyingContract", type: "address" }
   ],
   AddOrderlyKey: [
-    { name: 'brokerId', type: 'string' },
-    { name: 'chainId', type: 'uint256' },
-    { name: 'orderlyKey', type: 'string' },
-    { name: 'scope', type: 'string' },
-    { name: 'timestamp', type: 'uint64' },
-    { name: 'expiration', type: 'uint64' }
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "orderlyKey", type: "string" },
+    { name: "scope", type: "string" },
+    { name: "timestamp", type: "uint64" },
+    { name: "expiration", type: "uint64" }
   ]
 };
 
 const OFF_CHAIN_DOMAIN = {
-  name: 'Orderly',
-  version: '1',
+  name: "Orderly",
+  version: "1",
   chainId: 421614,
-  verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
+  verifyingContract: "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"
 };
 
-const BASE_URL = 'https://testnet-api.orderly.org';
-const BROKER_ID = 'woofi_dex';
+const BASE_URL = "https://testnet-api.orderly.org";
+const BROKER_ID = "woofi_dex";
 const CHAIN_ID = 421614;
 
 config();
@@ -405,7 +408,7 @@ async function createOrderlyKey(): Promise<void> {
     brokerId: BROKER_ID,
     chainId: CHAIN_ID,
     orderlyKey,
-    scope: 'read,trading',
+    scope: "read,trading",
     timestamp,
     expiration: timestamp + 1_000 * 60 * 60 * 24 * 365 // 1 year
   };
@@ -419,9 +422,9 @@ async function createOrderlyKey(): Promise<void> {
   );
 
   const keyRes = await fetch(`${BASE_URL}/v1/orderly_key`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json"
     },
     body: JSON.stringify({
       message: addKeyMessage,
@@ -430,9 +433,10 @@ async function createOrderlyKey(): Promise<void> {
     })
   });
   const keyJson = await keyRes.json();
-  console.log('addAccessKey', keyJson);
+  console.log("addAccessKey", keyJson);
 }
 
 createOrderlyKey();
 ```
+
 </CodeGroup>

@@ -11,14 +11,14 @@ Singer interface
 ```ts
 const signer = new BaseSigner(keyStore);
 const payload = await signer.sign({
- url: "https://api.orderly.io/get_account?address=0x1234567890&brokerId=orderly",
+  url: "https://api.orderly.io/get_account?address=0x1234567890&brokerId=orderly",
   method: "GET",
   data: {
     address: "0x1234567890",
-    brokerId: "orderly",
-   },
- });
- ```
+    brokerId: "orderly"
+  }
+});
+```
 
 ## Implements
 
@@ -47,8 +47,8 @@ const payload = await signer.sign({
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name       | Type                                                                                |
+| :--------- | :---------------------------------------------------------------------------------- |
 | `keyStore` | [`OrderlyKeyStore`](/sdks/tech-doc/interfaces/orderly_network_core.OrderlyKeyStore) |
 
 #### Defined in
@@ -73,10 +73,10 @@ const payload = await signer.sign({
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `message` | [`MessageFactor`](/sdks/tech-doc/modules/orderly_network_core#messagefactor) |
-| `timestamp` | `number` |
+| Name        | Type                                                                         |
+| :---------- | :--------------------------------------------------------------------------- |
+| `message`   | [`MessageFactor`](/sdks/tech-doc/modules/orderly_network_core#messagefactor) |
+| `timestamp` | `number`                                                                     |
 
 #### Returns
 
@@ -90,21 +90,21 @@ const payload = await signer.sign({
 
 [packages/core/src/signer.ts:45](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/core/src/signer.ts#L45)
 
-___
+---
 
 ### signText
 
-▸ **signText**(`text`): `Promise`\<\{ `publicKey`: `string` ; `signature`: `string`  }\>
+▸ **signText**(`text`): `Promise`\<\{ `publicKey`: `string` ; `signature`: `string` }\>
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name   | Type     |
+| :----- | :------- |
 | `text` | `string` |
 
 #### Returns
 
-`Promise`\<\{ `publicKey`: `string` ; `signature`: `string`  }\>
+`Promise`\<\{ `publicKey`: `string` ; `signature`: `string` }\>
 
 #### Implementation of
 

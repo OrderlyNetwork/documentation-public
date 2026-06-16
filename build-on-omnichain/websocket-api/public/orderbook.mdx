@@ -1,27 +1,26 @@
 ---
 title: "Orderbook"
 description: "Subscribe to full depth-100 orderbook snapshots for a symbol via WebSocket, pushed every second."
-
 ---
 
 `{symbol}@orderbook` depth 100 push every 1s
 
 ```json
 {
-    "id": "clientID2",
-    "topic": "PERP_WOO_USDC@orderbook",
-    "event": "subscribe"
+  "id": "clientID2",
+  "topic": "PERP_WOO_USDC@orderbook",
+  "event": "subscribe"
 }
 ```
 
 **Parameters**
 
 | Name          | Type   | Required | Description           |
-|---------------|--------|----------|-----------------------|
+| ------------- | ------ | -------- | --------------------- |
 | id            | string | Y        | id generate by client |
 | event         | string | Y        | subscribe/unsubscribe |
-| topic         | string | Y        | `{symbol}@orderbook`    |
-| params.symbol | string | Y        | `{symbol}`              |
+| topic         | string | Y        | `{symbol}@orderbook`  |
+| params.symbol | string | Y        | `{symbol}`            |
 
 <RequestExample>
 ```json

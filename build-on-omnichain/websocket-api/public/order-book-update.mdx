@@ -5,30 +5,30 @@ description: "Subscribe to incremental orderbook updates for a symbol via WebSoc
 
 `{symbol}@orderbookupdate` updated orderbook push every 200ms
 
-```json 
+```json
 {
-    "id": "clientID2",
-    "topic": "PERP_NEAR_USDC@orderbookupdate",
-    "event": "subscribe"
+  "id": "clientID2",
+  "topic": "PERP_NEAR_USDC@orderbookupdate",
+  "event": "subscribe"
 }
 ```
 
 **Parameters**
 
-| Name   | Type   | Required | Description                                           |
-| ------ | ------ | -------- | ----------------------------------------------------- |
-| id     | string | Y        | id generate by client                                 |
-| event  | string | Y        | `subscribe`/`unsubscribe`                             |
-| topic  | string | Y        | `{symbol}@orderbookupdate`                            |
+| Name  | Type   | Required | Description                |
+| ----- | ------ | -------- | -------------------------- |
+| id    | string | Y        | id generate by client      |
+| event | string | Y        | `subscribe`/`unsubscribe`  |
+| topic | string | Y        | `{symbol}@orderbookupdate` |
 
 <RequestExample>
 
 ```json Response
 {
-    "id": "clientID2",
-    "event": "subscribe",
-    "success": true,
-    "ts": 1609924478533
+  "id": "clientID2",
+  "event": "subscribe",
+  "success": true,
+  "ts": 1609924478533
 }
 ```
 

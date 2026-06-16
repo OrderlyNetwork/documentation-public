@@ -23,29 +23,28 @@ Includes both ordinary and algo orders (algo rows include `trigger_price` / `tri
 }
 ```
 
-| Field | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `address` | string | Yes | — | Wallet address |
-| `broker_id` | string | No | — | Optional |
-| `account_id` | string | No | — | Optional |
-| `symbol` | string | No | — | Symbol filter |
-| `status` | string | No | all three | `FILLED` / `CANCELLED` (alias `CANCELED`) / `REJECTED`, case-insensitive |
-| `start_time` | int64 | No | `now (UTC day snap) − 24h` | ms epoch |
-| `end_time` | int64 | No | `now` | ms epoch |
-| `limit` | int | No | 100 | 1..500 |
-| `cursor` | string | No | — | Opaque cursor |
+| Field        | Type   | Required | Default                    | Notes                                                                    |
+| ------------ | ------ | -------- | -------------------------- | ------------------------------------------------------------------------ |
+| `address`    | string | Yes      | —                          | Wallet address                                                           |
+| `broker_id`  | string | No       | —                          | Optional                                                                 |
+| `account_id` | string | No       | —                          | Optional                                                                 |
+| `symbol`     | string | No       | —                          | Symbol filter                                                            |
+| `status`     | string | No       | all three                  | `FILLED` / `CANCELLED` (alias `CANCELED`) / `REJECTED`, case-insensitive |
+| `start_time` | int64  | No       | `now (UTC day snap) − 24h` | ms epoch                                                                 |
+| `end_time`   | int64  | No       | `now`                      | ms epoch                                                                 |
+| `limit`      | int    | No       | 100                        | 1..500                                                                   |
+| `cursor`     | string | No       | —                          | Opaque cursor                                                            |
 
 ## Response
 
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `type` | string | Ordinary (`LIMIT`, `MARKET`, `IOC`, `POST_ONLY`, `FOK`, `LIQUIDATE`, `BID`, `ASK`, `SETTLEMENT`) or algo (`STOP_MARKET`, `STOP_LIMIT`, `TAKE_PROFIT_MARKET`, `TAKE_PROFIT_LIMIT`, `OCO`, `TRAILING_STOP`, `BRACKET`, `POSITIONAL_TP_SL`, `TP_SL`, `STOP_TRIGGER`, `STOP_BRACKET`) |
-| `status` | string | `FILLED` / `CANCELLED` / `REJECTED` |
-| `average_executed_price` | string \| null | `executed_amount / executed_quantity`; `null` if zero fills |
-| `trigger_price`, `trigger_status` | string \| null | Algo rows only |
-| `realized_pnl` | string \| null | `null` on algo rows |
-| `reduce_only` | bool \| null | Algo rows only |
+| Field                             | Type           | Notes                                                                                                                                                                                                                                                                             |
+| --------------------------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`                            | string         | Ordinary (`LIMIT`, `MARKET`, `IOC`, `POST_ONLY`, `FOK`, `LIQUIDATE`, `BID`, `ASK`, `SETTLEMENT`) or algo (`STOP_MARKET`, `STOP_LIMIT`, `TAKE_PROFIT_MARKET`, `TAKE_PROFIT_LIMIT`, `OCO`, `TRAILING_STOP`, `BRACKET`, `POSITIONAL_TP_SL`, `TP_SL`, `STOP_TRIGGER`, `STOP_BRACKET`) |
+| `status`                          | string         | `FILLED` / `CANCELLED` / `REJECTED`                                                                                                                                                                                                                                               |
+| `average_executed_price`          | string \| null | `executed_amount / executed_quantity`; `null` if zero fills                                                                                                                                                                                                                       |
+| `trigger_price`, `trigger_status` | string \| null | Algo rows only                                                                                                                                                                                                                                                                    |
+| `realized_pnl`                    | string \| null | `null` on algo rows                                                                                                                                                                                                                                                               |
+| `reduce_only`                     | bool \| null   | Algo rows only                                                                                                                                                                                                                                                                    |
 
 ## Notes
 

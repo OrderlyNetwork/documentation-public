@@ -18,28 +18,27 @@ Open and partially-filled orders for an address. Combines top-level ordinary and
 }
 ```
 
-| Field | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `address` | string | Yes | — | Wallet address |
-| `broker_id` | string | No | — | Optional |
-| `account_id` | string | No | — | Optional |
-| `symbol` | string | No | — | Symbol filter |
-| `limit` | int | No | 100 | 1..500 |
-| `cursor` | string | No | — | Opaque cursor |
+| Field        | Type   | Required | Default | Notes          |
+| ------------ | ------ | -------- | ------- | -------------- |
+| `address`    | string | Yes      | —       | Wallet address |
+| `broker_id`  | string | No       | —       | Optional       |
+| `account_id` | string | No       | —       | Optional       |
+| `symbol`     | string | No       | —       | Symbol filter  |
+| `limit`      | int    | No       | 100     | 1..500         |
+| `cursor`     | string | No       | —       | Opaque cursor  |
 
 ## Response
 
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `order_id` | string | 64-bit integer encoded as string |
-| `side` | string | `BUY` / `SELL` / `BOTH` |
-| `type` | string | See [`historicalOrders`](/build-on-omnichain/public-info-api/account/historical-orders) for the full enum |
-| `price` | string \| null | `null` for `MARKET` or trigger-without-price algo orders |
-| `trigger_price` | string \| null | Algo orders only |
-| `trigger_status` | string \| null | `PENDING` / `TRIGGERED` / `FAILED`; `null` for ordinary orders or `USELESS` status |
-| `status` | string | Always `"OPEN"` for this endpoint |
-| `reduce_only` | bool \| null | Algo orders only |
+| Field            | Type           | Notes                                                                                                     |
+| ---------------- | -------------- | --------------------------------------------------------------------------------------------------------- |
+| `order_id`       | string         | 64-bit integer encoded as string                                                                          |
+| `side`           | string         | `BUY` / `SELL` / `BOTH`                                                                                   |
+| `type`           | string         | See [`historicalOrders`](/build-on-omnichain/public-info-api/account/historical-orders) for the full enum |
+| `price`          | string \| null | `null` for `MARKET` or trigger-without-price algo orders                                                  |
+| `trigger_price`  | string \| null | Algo orders only                                                                                          |
+| `trigger_status` | string \| null | `PENDING` / `TRIGGERED` / `FAILED`; `null` for ordinary orders or `USELESS` status                        |
+| `status`         | string         | Always `"OPEN"` for this endpoint                                                                         |
+| `reduce_only`    | bool \| null   | Algo orders only                                                                                          |
 
 ## Notes
 

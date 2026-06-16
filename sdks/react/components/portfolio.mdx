@@ -8,6 +8,7 @@ If you are using the layout components from @orderly.network/portfolio directly 
 ## Component Import Paths
 
 ### HistoryPage Component
+
 ```typescript
 import { HistoryModule } from "@orderly.network/portfolio";
 
@@ -16,6 +17,7 @@ const { HistoryPage, HistoryWidget } = HistoryModule;
 ```
 
 ### SettingPage Component
+
 ```typescript
 import { SettingModule } from "@orderly.network/portfolio";
 
@@ -38,6 +40,7 @@ const SETTING_PATH = "/portfolio/setting";
 ## Complete Route Configuration Examples
 
 ### React Router Configuration Example
+
 ```typescript
 import { Routes, Route } from "react-router-dom";
 import { HistoryModule, SettingModule } from "@orderly.network/portfolio";
@@ -52,7 +55,7 @@ function App() {
       <Route path="/portfolio" element={<PortfolioOverview />} />
       <Route path="/portfolio/positions" element={<PositionsPage />} />
       <Route path="/portfolio/orders" element={<OrdersPage />} />
-      
+
       {/* New mobile page routes */}
       <Route path="/portfolio/history" element={<HistoryPage />} />
       <Route path="/portfolio/setting" element={<SettingPage />} />
@@ -62,6 +65,7 @@ function App() {
 ```
 
 ### Next.js App Router Configuration Example
+
 ```typescript
 // app/portfolio/history/page.tsx
 import { HistoryModule } from "@orderly.network/portfolio";
@@ -85,6 +89,7 @@ export default function SettingPageRoute() {
 ```
 
 ### Next.js Pages Router Configuration Example
+
 ```typescript
 // pages/portfolio/history.tsx
 import { HistoryModule } from "@orderly.network/portfolio";
@@ -133,11 +138,13 @@ function PortfolioLayout({ children }) {
 ## Feature Description
 
 ### HistoryPage
+
 - **Function**: Display user's trading history records
 - **Includes**: Deposit/withdrawal history, funding fee history, distribution history
 - **Mobile Optimization**: Automatically adapts to mobile interface, provides touch-friendly interactive experience
 
-### SettingPage  
+### SettingPage
+
 - **Function**: User settings page
 - **Includes**: Account settings, preference settings, etc.
 - **Mobile Optimization**: Responsive design, supports mobile operations

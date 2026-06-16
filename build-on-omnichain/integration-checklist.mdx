@@ -29,7 +29,9 @@ Implement the flows that every trading integration needs.
 - **Market and symbol data:** Integrate market metadata, prices, orderbook data, and trade updates from the [WebSocket API](/build-on-omnichain/websocket-api/introduction) and relevant REST endpoints such as [available symbols](/build-on-omnichain/restful-api/public/get-available-symbols).
 
 <Note>
-  **Reduce-Only Orders:** Use the `reduce-only` flag for orders intended to close or reduce a position. This helps avoid cases where a closing order could otherwise increase Initial Margin Requirements (IMR) and fail because the account does not have enough margin.
+  **Reduce-Only Orders:** Use the `reduce-only` flag for orders intended to close or reduce a
+  position. This helps avoid cases where a closing order could otherwise increase Initial Margin
+  Requirements (IMR) and fail because the account does not have enough margin.
 </Note>
 
 ## Phase 3: Advanced Features & Optimization
@@ -50,5 +52,6 @@ Verify the integration end to end before going live.
 - **Review support and launch readiness:** Make sure your team has clear ownership for user support, incident communication, and launch coordination with Orderly.
 
 <Warning>
-  During system maintenance, market data and user positions will be unavailable. Open positions remain open and can still be liquidated if market conditions change after trading resumes.
+  During system maintenance, market data and user positions will be unavailable. Open positions
+  remain open and can still be liquidated if market conditions change after trading resumes.
 </Warning>

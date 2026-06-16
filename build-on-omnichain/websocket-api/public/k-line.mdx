@@ -13,28 +13,28 @@ Push interval: 1s
 
 ```json
 {
-    "id": "clientID6",
-    "topic": "PERP_NEAR_USDC@kline_1m",
-    "event": "subscribe"
+  "id": "clientID6",
+  "topic": "PERP_NEAR_USDC@kline_1m",
+  "event": "subscribe"
 }
 ```
 
 **Parameters**
 
-| Name   | Type   | Required | Description                               |
-| ------ | ------ | -------- | ----------------------------------------- |
-| id     | string | Y        | id generate by client                     |
-| event  | string | Y        | `subscribe`/`unsubscribe`                 |
-| topic  | string | N        | `{symbol}@kline_{time}`                   |
+| Name  | Type   | Required | Description               |
+| ----- | ------ | -------- | ------------------------- |
+| id    | string | Y        | id generate by client     |
+| event | string | Y        | `subscribe`/`unsubscribe` |
+| topic | string | N        | `{symbol}@kline_{time}`   |
 
 <RequestExample>
 
 ```json Response
 {
-    "id": "clientID6",
-    "event": "subscribe",
-    "success": true,
-    "ts": 1609924478533
+  "id": "clientID6",
+  "event": "subscribe",
+  "success": true,
+  "ts": 1609924478533
 }
 ```
 
@@ -44,20 +44,20 @@ Push interval: 1s
 
 ```json Subscribed Message
 {
-    "topic":"PERP_NEAR_USDC@kline_1m",
-    "ts":1618822432146,
-    "data":{
-        "symbol":"PERP_NEAR_USDC",
-        "type":"1m",
-        "open":15.97,
-        "close":14.76,
-        "high":16.97,
-        "low":14.06,
-        "volume":44.00947568,
-        "amount":2504584.9,
-        "startTime":1618822380000,
-        "endTime":1618822440000
-    }
+  "topic": "PERP_NEAR_USDC@kline_1m",
+  "ts": 1618822432146,
+  "data": {
+    "symbol": "PERP_NEAR_USDC",
+    "type": "1m",
+    "open": 15.97,
+    "close": 14.76,
+    "high": 16.97,
+    "low": 14.06,
+    "volume": 44.00947568,
+    "amount": 2504584.9,
+    "startTime": 1618822380000,
+    "endTime": 1618822440000
+  }
 }
 ```
 

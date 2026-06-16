@@ -15,9 +15,10 @@ const eventEmitter = useEventEmitter();
 const [state, setState] = useState();
 
 useEffect(() => {
-  eventEmitter.emit("state:update", state);
+eventEmitter.emit("state:update", state);
 }, [state]);
-```
+
+````
 
 ```tsx Receiver.tsx
 const eventEmitter = useEventEmitter();
@@ -25,5 +26,6 @@ const eventEmitter = useEventEmitter();
 eventEmitter.on("state:update", (state) => {
   // do something
 });
-```
+````
+
 </CodeGroup>

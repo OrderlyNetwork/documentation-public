@@ -17,22 +17,21 @@ Recent **taker-side** market trades for a symbol. Each trade carries the taker's
 }
 ```
 
-| Field | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `symbol` | string | Yes | — | Trading pair |
-| `limit` | int | No | 50 | 1..200 (silently clamped) |
+| Field    | Type   | Required | Default | Notes                     |
+| -------- | ------ | -------- | ------- | ------------------------- |
+| `symbol` | string | Yes      | —       | Trading pair              |
+| `limit`  | int    | No       | 50      | 1..200 (silently clamped) |
 
 ## Response
 
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `side` | string | Taker side — `BUY` or `SELL` |
-| `executed_price`, `executed_quantity` | string | Decimal |
-| `address` | string | Taker's wallet address (full, not truncated) |
-| `account_id` | string | Taker's account |
-| `broker_id` | string | Broker the taker is on |
-| `executed_timestamp` | int64 | ms epoch |
+| Field                                 | Type   | Notes                                        |
+| ------------------------------------- | ------ | -------------------------------------------- |
+| `side`                                | string | Taker side — `BUY` or `SELL`                 |
+| `executed_price`, `executed_quantity` | string | Decimal                                      |
+| `address`                             | string | Taker's wallet address (full, not truncated) |
+| `account_id`                          | string | Taker's account                              |
+| `broker_id`                           | string | Broker the taker is on                       |
+| `executed_timestamp`                  | int64  | ms epoch                                     |
 
 ## Notes
 

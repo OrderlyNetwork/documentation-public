@@ -23,40 +23,40 @@ Response shape depends on the parameters:
 }
 ```
 
-| Field | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `address` | string | Yes | — | Wallet address |
-| `broker_id` | string | No | — | Optional broker scope |
-| `account_id` | string | No | — | If supplied → flat response; omitted → `accounts[]` array |
+| Field        | Type   | Required | Default | Notes                                                     |
+| ------------ | ------ | -------- | ------- | --------------------------------------------------------- |
+| `address`    | string | Yes      | —       | Wallet address                                            |
+| `broker_id`  | string | No       | —       | Optional broker scope                                     |
+| `account_id` | string | No       | —       | If supplied → flat response; omitted → `accounts[]` array |
 
 ## Account fields
 
-| Field | Type | Notes |
-| --- | --- | --- |
-| `account_type` | string | `"main"` (main account), `"sub"` (sub-account), or `"sp"` (vault strategy provider) |
-| `account_value` | string \| null | Mark-to-market account value: `total_collateral_value + Σ unrealized_pnl` across positions. `null` if position-calc unreachable |
-| `total_collateral_value` | string | `Σ_token((holding + iso_margin_total + frozen) × price)`; non-USDC priced via spot index price |
-| `free_collateral` | string \| null | `≈ collateral × (1 − margin_ratio)` |
-| `margin_ratio` | string \| null | From position-calc |
-| `initial_margin_ratio` | string \| null | `Σ(notional_i × IMR_i) / Σ notional_i` over CROSS positions only |
-| `maintenance_margin_ratio` | string \| null | Minimum margin ratio required to avoid liquidation |
-| `total_unrealized_pnl`, `total_unsettled_pnl` | string \| null | Both from position-calc |
-| `total_pnl_24_h` | string \| null | Sum across positions |
+| Field                                         | Type           | Notes                                                                                                                           |
+| --------------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `account_type`                                | string         | `"main"` (main account), `"sub"` (sub-account), or `"sp"` (vault strategy provider)                                             |
+| `account_value`                               | string \| null | Mark-to-market account value: `total_collateral_value + Σ unrealized_pnl` across positions. `null` if position-calc unreachable |
+| `total_collateral_value`                      | string         | `Σ_token((holding + iso_margin_total + frozen) × price)`; non-USDC priced via spot index price                                  |
+| `free_collateral`                             | string \| null | `≈ collateral × (1 − margin_ratio)`                                                                                             |
+| `margin_ratio`                                | string \| null | From position-calc                                                                                                              |
+| `initial_margin_ratio`                        | string \| null | `Σ(notional_i × IMR_i) / Σ notional_i` over CROSS positions only                                                                |
+| `maintenance_margin_ratio`                    | string \| null | Minimum margin ratio required to avoid liquidation                                                                              |
+| `total_unrealized_pnl`, `total_unsettled_pnl` | string \| null | Both from position-calc                                                                                                         |
+| `total_pnl_24_h`                              | string \| null | Sum across positions                                                                                                            |
 
 ## Position fields
 
-| Field | Type | Notes |
-| --- | --- | --- |
-| `side` | string | `"LONG"` if `position_qty > 0`, `"SHORT"` if `< 0` |
-| `position_qty` | string | Signed |
-| `notional` | string \| null | `|qty| × mark_price` |
-| `average_open_price` | string \| null | `cost_position / |holding|` |
-| `mark_price` | string \| null | Latest mark price for the symbol |
-| `imr`, `mmr` | string \| null | Position-level (from position-calc or symbol metadata) |
-| `est_liq_price` | string \| null | Estimated liquidation price |
-| `leverage` | int \| null | Effective leverage |
-| `margin_mode` | string \| null | `"CROSS"` or `"ISOLATED"` |
-| `opened_at`, `updated_at` | int64 \| null | ms epoch; cached 10s |
+| Field                     | Type           | Notes                                                  |
+| ------------------------- | -------------- | ------------------------------------------------------ | ------- | ------------- |
+| `side`                    | string         | `"LONG"` if `position_qty > 0`, `"SHORT"` if `< 0`     |
+| `position_qty`            | string         | Signed                                                 |
+| `notional`                | string \| null | `                                                      | qty     | × mark_price` |
+| `average_open_price`      | string \| null | `cost_position /                                       | holding | `             |
+| `mark_price`              | string \| null | Latest mark price for the symbol                       |
+| `imr`, `mmr`              | string \| null | Position-level (from position-calc or symbol metadata) |
+| `est_liq_price`           | string \| null | Estimated liquidation price                            |
+| `leverage`                | int \| null    | Effective leverage                                     |
+| `margin_mode`             | string \| null | `"CROSS"` or `"ISOLATED"`                              |
+| `opened_at`, `updated_at` | int64 \| null  | ms epoch; cached 10s                                   |
 
 ## Notes
 
@@ -114,7 +114,9 @@ Response shape depends on the parameters:
   "data": {
     "address": "0x1234...",
     "accounts": [
-      { /* same shape as the flat object above */ }
+      {
+        /* same shape as the flat object above */
+      }
     ]
   },
   "ts": 1779269143700

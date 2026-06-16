@@ -8,18 +8,20 @@ This flow is for qualified Builders who want to list a permissionless perpetual 
 Use this page together with the [Permissionless Listing overview](/introduction/trade-on-orderly/permissionless-listing). The overview explains Builder responsibility, Insurance Fund requirements, Isolated Margin behavior, and trader-facing risk disclosures. This page focuses on the integration flow and API sequence.
 
 <Note>
-  RWA support currently covers US market sessions only: regular US stock hours, extended US stock hours, and US futures hours. Support for Hong Kong (HK), China (CN), and Korea (KR) market sessions is planned to be added gradually.
+  RWA support currently covers US market sessions only: regular US stock hours, extended US stock
+  hours, and US futures hours. Support for Hong Kong (HK), China (CN), and Korea (KR) market
+  sessions is planned to be added gradually.
 </Note>
 
 ## Source types
 
 When configuring a permissionlessly listed market, Builders can select from multiple Index Price source types:
 
-| Source type | Description |
-| --- | --- |
-| CEX | Centralized exchange price feeds supported by Orderly. |
-| Platform oracle | Orderly-supported oracle sources such as Pyth and Stork. |
-| Builder Oracle | A custom oracle feed pushed by a Builder to Orderly. |
+| Source type                      | Description                                                                                                        |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| CEX                              | Centralized exchange price feeds supported by Orderly.                                                             |
+| Platform oracle                  | Orderly-supported oracle sources such as Pyth and Stork.                                                           |
+| Builder Oracle                   | A custom oracle feed pushed by a Builder to Orderly.                                                               |
 | Bring Your Own Key (BYOK) Oracle | A Builder-owned oracle connection using the Builder's own provider credentials, such as Pyth or Stork credentials. |
 
 Selected sources are submitted with weights. The weights must be positive integers and sum to `100`.
@@ -41,6 +43,7 @@ Selected sources are submitted with weights. The weights must be positive intege
 ```
 
     A new feed is active and private by default. Keep the feed private while testing. Change `visibility` to `public` only if you want other Builders to be able to select it.
+
   </Step>
 
   <Step title="Push custom oracle prices">
@@ -62,6 +65,7 @@ Selected sources are submitted with weights. The weights must be positive intege
     The feed uses `data.base_ccy` to match the registered feed. Builders should publish at least once per second while the market session is open.
 
     See [Full example](#full-example) for a complete client pattern with signing, application-level ping/pong handling, and price publishing.
+
   </Step>
 
   <Step title="Check listing context">
@@ -74,6 +78,7 @@ Selected sources are submitted with weights. The weights must be positive intege
 ```
 
     The response provides listing parameters and indicates whether the symbol is an RWA symbol. If `is_rwa` is `true`, the listing must include a valid `market_session` in the final submit request.
+
   </Step>
 
   <Step title="Fetch available price sources">
@@ -86,6 +91,7 @@ GET /v1/broker/listing/builder_sources?base_ccy=AAPL
 ```
 
     This returns active public feeds, plus the Builder's own private feeds. Other Builders cannot see or select your private feeds.
+
   </Step>
 
   <Step title="Select an RWA market session if needed">
@@ -96,6 +102,7 @@ GET /v1/public/rwa/market_sessions
 ```
 
     Current RWA listing sessions are US-only, including `US_STOCK`, `US_STOCK_EXT`, and `US_FUTURES`. The response includes the session name, timezone, trading hours, and holiday and early-close calendar.
+
   </Step>
 
   <Step title="Submit the listing">
@@ -123,6 +130,7 @@ GET /v1/public/rwa/market_sessions
 ```
 
     For non-RWA symbols, omit `market_session`. For RWA symbols, `market_session` is required and must match a supported market session.
+
   </Step>
 
   <Step title="Monitor the listed market">
@@ -152,7 +160,8 @@ RWA markets are controlled by Orderly's supported RWA list. Builders cannot turn
 The following example separates the reusable WebSocket client from your provider logic. The SDK file signs the connection, keeps the WebSocket alive, handles reconnects, and publishes `indexpricefeed` messages. The provider file only decides which price to publish.
 
 <Warning>
-  Never hardcode production keys or secrets in source code. Load `ORDERLY_ACCOUNT_ID`, `ORDERLY_KEY`, and `ORDERLY_SECRET` from a secure secret manager or environment variables.
+  Never hardcode production keys or secrets in source code. Load `ORDERLY_ACCOUNT_ID`,
+  `ORDERLY_KEY`, and `ORDERLY_SECRET` from a secure secret manager or environment variables.
 </Warning>
 
 `ORDERLY_KEY` is your Orderly public key and may include the `ed25519:` prefix. `ORDERLY_SECRET` should be the base58-encoded raw Ed25519 private key without the `ed25519:` prefix.
@@ -170,7 +179,8 @@ export ORDERLY_SECRET="..."
 export BASE_CCY="AAPL"
 
 python provider_ws_example.py
-```
+
+````
 
 ```py orderly_oracle_sdk.py
 import asyncio
@@ -305,7 +315,7 @@ class OracleProviderClient:
 
     async def __aexit__(self, *exc):
         await self.stop()
-```
+````
 
 ```py provider_ws_example.py
 import asyncio
@@ -342,4 +352,5 @@ async def run():
 
 asyncio.run(run())
 ```
+
 </CodeGroup>

@@ -8,12 +8,14 @@ Allows you to subscribe to public topics.
 - [Tech docs](/sdks/tech-doc/modules/orderly_network_hooks#usews)
 
 ```tsx
-subscribe(
-  topic: string | { [key:string]:any },
-  callback: WSMessageHandler | Omit<WSMessageHandler, "onUnsubscribe">,
-  once?: boolean,
-  id?: string
-): unsubscribe | undefined
+interface WS {
+  subscribe(
+    topic: string | { [key: string]: any },
+    callback: WSMessageHandler | Omit<WSMessageHandler, "onUnsubscribe">,
+    once?: boolean,
+    id?: string
+  ): unsubscribe | undefined;
+}
 ```
 
 Subscribing to the `trade` topic:

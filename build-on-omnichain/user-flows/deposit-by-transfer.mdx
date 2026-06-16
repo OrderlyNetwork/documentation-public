@@ -23,21 +23,23 @@ User sends tokens ──► Receiver Address ──► Orderly detects transfer
 
 Supported chains and tokens are returned dynamically by the [`GET /v1/public/token`](/build-on-omnichain/restful-api/public/get-supported-collateral-info) endpoint. Check the `chain_details` for each token — entries where `exclusive_deposit_supported` is `true` are eligible for deposit via transfer.
 
-| Chain | Chain ID | Supported Tokens | Minimum Deposit |
-| ----- | -------- | ---------------- | --------------- |
-| Arbitrum | `42161` | USDC, USDT | 5 |
-| BNB Chain | `56` | USDC, USDT | 5 |
+| Chain     | Chain ID | Supported Tokens | Minimum Deposit |
+| --------- | -------- | ---------------- | --------------- |
+| Arbitrum  | `42161`  | USDC, USDT       | 5               |
+| BNB Chain | `56`     | USDC, USDT       | 5               |
 
 <Warning>
-  Only the chain + token combinations listed above are supported. Sending unsupported tokens or transferring on unsupported chains will result in **permanent loss of funds** with no recovery path.
+  Only the chain + token combinations listed above are supported. Sending unsupported tokens or
+  transferring on unsupported chains will result in **permanent loss of funds** with no recovery
+  path.
 </Warning>
 
 ## Smart Contract Addresses
 
-| Chain | DepositFactory | DepositBeaconImpl |
-| ----- | -------------- | ----------------- |
+| Chain              | DepositFactory                               | DepositBeaconImpl                            |
+| ------------------ | -------------------------------------------- | -------------------------------------------- |
 | Arbitrum (`42161`) | `0x8dCBDFF1758d9Bd77b37ff78982912C35FDc2F21` | `0x43001EF2e62Ac260FA78D5a0Af8787261e4D82F9` |
-| BNB Chain (`56`) | `0x8dCBDFF1758d9Bd77b37ff78982912C35FDc2F21` | `0xDE5C8345DD0Ce07eb0c7A210F307Ae6DB61584cb` |
+| BNB Chain (`56`)   | `0x8dCBDFF1758d9Bd77b37ff78982912C35FDc2F21` | `0xDE5C8345DD0Ce07eb0c7A210F307Ae6DB61584cb` |
 
 The **DepositFactory** acts as a beacon that stores the current implementation address. Each user's receiver address is a lightweight **DepositProxy** that delegates to the **DepositBeaconImpl** for deposit logic. Proxies are deployed on-demand during the first deposit.
 
@@ -52,6 +54,7 @@ The **DepositFactory** acts as a beacon that stores the current implementation a
     <Note>
       This is a private endpoint — all receiver address APIs require standard [Orderly authentication headers](/build-on-omnichain/api-authentication).
     </Note>
+
   </Step>
 
   <Step title="User transfers tokens to the receiver address">
@@ -65,6 +68,7 @@ The **DepositFactory** acts as a beacon that stores the current implementation a
     <Warning>
       The transfer amount **must meet or exceed** the `minimum_deposit` value returned by [Get Receiver Address](/build-on-omnichain/restful-api/private/get-receiver-address). Transfers below this threshold are treated as dust — they will **not** be deposited, refunded, or recoverable.
     </Warning>
+
   </Step>
 
   <Step title="Poll for transfer status">
@@ -81,6 +85,7 @@ The **DepositFactory** acts as a beacon that stores the current implementation a
     <Note>
       Only transfers with `amount >= minimum_deposit` are returned.
     </Note>
+
   </Step>
 
   <Step title="Verify the deposit">
@@ -92,39 +97,45 @@ The **DepositFactory** acts as a beacon that stores the current implementation a
 
 Not all accounts can use this feature:
 
-| Requirement | Detail |
-| ----------- | ------ |
+| Requirement  | Detail                                                                 |
+| ------------ | ---------------------------------------------------------------------- |
 | Account type | Must be a **regular** account (not sub-accounts or Strategy Providers) |
-| Chain type | Must be an **EVM** account (Solana accounts are not supported) |
+| Chain type   | Must be an **EVM** account (Solana accounts are not supported)         |
 
 **Error codes from `GET /v1/client/asset/receiver_address`:**
 
-| Code | Meaning |
-| ---- | ------- |
-| 82 | Chain ID does not exist |
-| 83 | Chain ID not supported for this feature |
-| 84 | Account type not eligible |
-| 86 | Solana accounts not supported |
+| Code | Meaning                                 |
+| ---- | --------------------------------------- |
+| 82   | Chain ID does not exist                 |
+| 83   | Chain ID not supported for this feature |
+| 84   | Account type not eligible               |
+| 86   | Solana accounts not supported           |
 
 ## Limitations & Edge Cases
 
 <AccordionGroup>
   <Accordion title="What happens if I send less than the minimum deposit?">
-    Transfers below the minimum deposit threshold are treated as dust and will **not** be deposited or refunded. The funds remain in the receiver contract with no recovery mechanism.
+    Transfers below the minimum deposit threshold are treated as dust and will **not** be deposited
+    or refunded. The funds remain in the receiver contract with no recovery mechanism.
   </Accordion>
   <Accordion title="What if I send the wrong token or use the wrong chain?">
-    Only supported chain + token combinations are accepted. Sending any other token or transferring on an unsupported chain will result in **permanent loss** — there is no recovery path. Check `GET /v1/public/token` for currently supported combinations.
+    Only supported chain + token combinations are accepted. Sending any other token or transferring
+    on an unsupported chain will result in **permanent loss** — there is no recovery path. Check
+    `GET /v1/public/token` for currently supported combinations.
   </Accordion>
   <Accordion title="Can I send multiple transfers at once?">
-    Yes. Each transfer is tracked and processed independently as a separate deposit record (1:1 mapping).
+    Yes. Each transfer is tracked and processed independently as a separate deposit record (1:1
+    mapping).
   </Accordion>
   <Accordion title="How long does the deposit take?">
-    Most deposits complete within 1–2 minutes. If a deposit remains in `PENDING` for more than 15 minutes, contact support.
+    Most deposits complete within 1–2 minutes. If a deposit remains in `PENDING` for more than 15
+    minutes, contact support.
   </Accordion>
   <Accordion title="Are there any fees?">
     No additional fees are charged for deposits via transfer. The platform absorbs the gas cost.
   </Accordion>
   <Accordion title="Does the receiver address ever change?">
-    No. The receiver address is deterministic (derived via CREATE2) and remains the same for the lifetime of the account.
+    No. The receiver address is deterministic (derived via CREATE2) and remains the same for the
+    lifetime of the account.
   </Accordion>
 </AccordionGroup>

@@ -63,19 +63,34 @@ API Base: `https://api.orderly.org/` (Mainnet), `https://testnet-api.orderly.org
 ## Public Info API
 
 - [Public Info API](https://orderly.network/docs/build-on-omnichain/public-info-api/overview): Zero-auth, single-endpoint query API for AI agents, quant traders, and analytics. POST /v1/public/query with a type field — covers market, account, and platform data.
-- [marketSummary](https://orderly.network/docs/build-on-omnichain/public-info-api/market/market-summary): Multi-symbol snapshot of prices, funding, 24h volume, and open interest. Fast path when called with no symbols.
-- [orderbook](https://orderly.network/docs/build-on-omnichain/public-info-api/market/orderbook): Orderbook snapshot with mid price and spread.
-- [candles](https://orderly.network/docs/build-on-omnichain/public-info-api/market/candles): OHLCV kline series for a symbol and interval. Paginated by timestamp.
-- [accountState](https://orderly.network/docs/build-on-omnichain/public-info-api/account/account-state): Account snapshot: collateral, open positions, margin metrics, and PnL. Response shape changes based on whether account_id is supplied.
-- [agentContext](https://orderly.network/docs/build-on-omnichain/public-info-api/account/agent-context): Agent startup bundle: account state, open positions, held-symbol market summaries, and open order count in one parallelized call.
-- [trades](https://orderly.network/docs/build-on-omnichain/public-info-api/account/trades): Trade fills (executed order fills) for an address. Combines a real-time window with an archive window so older history stays queryable.
-- [topAddresses](https://orderly.network/docs/build-on-omnichain/public-info-api/platform/top-addresses): Leaderboard of addresses by notional / volume / PnL / trade count, with multi-window stats.
-- [platformPositions](https://orderly.network/docs/build-on-omnichain/public-info-api/platform/platform-positions): Platform-wide open-position snapshot across all users. Powers liquidation heatmaps and cross-account risk views.
+- [Market summary](https://orderly.network/docs/build-on-omnichain/public-info-api/market/market-summary): Multi-symbol snapshot of prices, funding, 24h volume, and open interest. Fast path when called with no symbols.
+- [Orderbook](https://orderly.network/docs/build-on-omnichain/public-info-api/market/orderbook): Orderbook snapshot with mid price and spread.
+- [Candles](https://orderly.network/docs/build-on-omnichain/public-info-api/market/candles): OHLCV kline series for a symbol and interval. Paginated by timestamp.
+- [Account state](https://orderly.network/docs/build-on-omnichain/public-info-api/account/account-state): Account snapshot: collateral, open positions, margin metrics, and PnL. Response shape changes based on whether account_id is supplied.
+- [Agent context](https://orderly.network/docs/build-on-omnichain/public-info-api/account/agent-context): Agent startup bundle: account state, open positions, held-symbol market summaries, and open order count in one parallelized call.
+- [Trades](https://orderly.network/docs/build-on-omnichain/public-info-api/account/trades): Trade fills (executed order fills) for an address. Combines a real-time window with an archive window so older history stays queryable.
+- [Top addresses](https://orderly.network/docs/build-on-omnichain/public-info-api/platform/top-addresses): Leaderboard of addresses by notional / volume / PnL / trade count, with multi-window stats.
+- [Platform positions](https://orderly.network/docs/build-on-omnichain/public-info-api/platform/platform-positions): Platform-wide open-position snapshot across all users. Powers liquidation heatmaps and cross-account risk views.
 
 ## Chains & Contracts
 
 - [Supported Chains](https://orderly.network/docs/introduction/trade-on-orderly/supported-chains): Explore the list of supported chains on Orderly Network.
 - [Smart Contract Addresses](https://orderly.network/docs/build-on-omnichain/addresses): Smart contract addresses for Orderly vault, USDC, and Verifier on each supported chain (mainnet and testnet).
+
+## Builder Marketplace & Plugins
+
+- [Introduction](https://orderly.network/docs/build-on-omnichain/builder-marketplace/introduction): Discover, install, and publish trading plugins built on the Orderly SDK and API.
+- [Getting started](https://orderly.network/docs/build-on-omnichain/builder-marketplace/getting-started): Follow this path once per machine or project. Estimated time: 15–20 minutes.
+- [Orderly Plugin Developer Handbook](https://orderly.network/docs/build-on-omnichain/builder-marketplace/plugin-developer-handbook): This handbook explains how to build, integrate, and publish Orderly SDK plugins using the devkit CLI (@orderly.network/devkit), the Orderly SDK Docs MCP serv...
+- [Skills-first workflow (recommended)](https://orderly.network/docs/build-on-omnichain/builder-marketplace/skills-first): This is the recommended way to work with the Orderly SDK for plugin authoring, integration, and Marketplace submission, especially when you use an AI coding ...
+- [Tutorial 1: First plugin from the template](https://orderly.network/docs/build-on-omnichain/builder-marketplace/first-plugin): Goal: Scaffold a plugin and make one visible change on a single interceptor target that exists in the SDK.
+- [Tutorial 2: Integrate a plugin into the host app](https://orderly.network/docs/build-on-omnichain/builder-marketplace/integrate-host): Goal: Load an existing plugin package through OrderlyAppProvider’s plugins prop.
+- [Tutorial 3: Submit a plugin to the Orderly Builder Marketplace](https://orderly.network/docs/build-on-omnichain/builder-marketplace/marketplace-submission): Goal: Authenticate with the devkit, validate a local plugin folder, and submit it for Marketplace review.
+- [Tutorial 4: One plugin, multiple interceptor targets](https://orderly.network/docs/build-on-omnichain/builder-marketplace/multi-interceptor-targets): Register one plugin that intercepts more than one injector target so the same feature can appear in several UI surfaces.
+- [CLI reference (`orderly-devkit`)](https://orderly.network/docs/build-on-omnichain/builder-marketplace/cli-reference): Package: @orderly.network/devkit. Binary: orderly-devkit.
+- [Interceptor targets: runtime vs CLI template](https://orderly.network/docs/build-on-omnichain/builder-marketplace/interceptors): Guide for interceptor targets: runtime vs cli template
+- [Runtime injector targets (handbook reference)](https://orderly.network/docs/build-on-omnichain/builder-marketplace/runtime-injector-targets): Interceptor target strings must match the SDK exactly (case-sensitive).
+- [Manifest and Builder Marketplace submit](https://orderly.network/docs/build-on-omnichain/builder-marketplace/manifest-and-submit): Aligned with @orderly.network/devkit submit, update, and manifest wiring (see the published package for source filenames).
 
 ## Troubleshooting
 

@@ -20,25 +20,24 @@ Executed trade fills for an address. The handler transparently combines real-tim
 }
 ```
 
-| Field | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `address` | string | Yes | — | Wallet address |
-| `broker_id` | string | No | — | Optional |
-| `account_id` | string | No | — | Optional |
-| `symbol` | string | No | — | Symbol filter |
-| `start_time` | int64 | No | — | ms epoch |
-| `end_time` | int64 | No | `now` (when `start_time` set) | ms epoch |
-| `limit` | int | No | 100 | 1..1000 (without time range) or 1..2000 (with time range) |
-| `cursor` | string | No | — | Opaque cursor (carries `src`) |
+| Field        | Type   | Required | Default                       | Notes                                                     |
+| ------------ | ------ | -------- | ----------------------------- | --------------------------------------------------------- |
+| `address`    | string | Yes      | —                             | Wallet address                                            |
+| `broker_id`  | string | No       | —                             | Optional                                                  |
+| `account_id` | string | No       | —                             | Optional                                                  |
+| `symbol`     | string | No       | —                             | Symbol filter                                             |
+| `start_time` | int64  | No       | —                             | ms epoch                                                  |
+| `end_time`   | int64  | No       | `now` (when `start_time` set) | ms epoch                                                  |
+| `limit`      | int    | No       | 100                           | 1..1000 (without time range) or 1..2000 (with time range) |
+| `cursor`     | string | No       | —                             | Opaque cursor (carries `src`)                             |
 
 ## Response
 
-
-| Field | Type | Notes |
-| --- | --- | --- |
-| `id` | string | Transaction ID |
-| `order_id` | string \| null | `null` on orphaned / liquidation fills |
-| `is_maker` | bool | `true` = maker, `false` = taker |
+| Field          | Type           | Notes                                                                      |
+| -------------- | -------------- | -------------------------------------------------------------------------- |
+| `id`           | string         | Transaction ID                                                             |
+| `order_id`     | string \| null | `null` on orphaned / liquidation fills                                     |
+| `is_maker`     | bool           | `true` = maker, `false` = taker                                            |
 | `realized_pnl` | string \| null | `null` for fills older than 24 hours (archive does not retain this column) |
 
 ## Notes

@@ -33,10 +33,10 @@ Re-exports [cleanStringStyle](/sdks/tech-doc/modules/orderly_network_hooks#clean
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name     | Type                                                                           |
+| :------- | :----------------------------------------------------------------------------- |
 | `orders` | [`AlgoOrder`](/sdks/tech-doc/interfaces/orderly_network_types.API.AlgoOrder)[] |
-| `symbol` | `string` |
+| `symbol` | `string`                                                                       |
 
 #### Returns
 
@@ -46,7 +46,7 @@ Re-exports [cleanStringStyle](/sdks/tech-doc/modules/orderly_network_hooks#clean
 
 [packages/hooks/src/orderly/usePositionStream/utils.ts:53](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/hooks/src/orderly/usePositionStream/utils.ts#L53)
 
-___
+---
 
 ### findTPSLFromOrder
 
@@ -54,16 +54,16 @@ ___
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name    | Type                                                                         |
+| :------ | :--------------------------------------------------------------------------- |
 | `order` | [`AlgoOrder`](/sdks/tech-doc/interfaces/orderly_network_types.API.AlgoOrder) |
 
 #### Returns
 
 `Object`
 
-| Name | Type |
-| :------ | :------ |
+| Name                | Type     |
+| :------------------ | :------- |
 | `sl_trigger_price?` | `number` |
 | `tp_trigger_price?` | `number` |
 
@@ -71,28 +71,28 @@ ___
 
 [packages/hooks/src/orderly/usePositionStream/utils.ts:21](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/hooks/src/orderly/usePositionStream/utils.ts#L21)
 
-___
+---
 
 ### findTPSLFromOrders
 
-▸ **findTPSLFromOrders**(`orders`, `symbol`): `undefined` \| `Partial`\<`Omit`\<[`BaseAlgoOrderEntity`](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity)\<[`STOP`](/sdks/tech-doc/enums/orderly_network_types.AlgoOrderRootType#stop)\>, ``"order_type"`` \| ``"child_orders"``\>\>
+▸ **findTPSLFromOrders**(`orders`, `symbol`): `undefined` \| `Partial`\<`Omit`\<[`BaseAlgoOrderEntity`](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity)\<[`STOP`](/sdks/tech-doc/enums/orderly_network_types.AlgoOrderRootType#stop)\>, `"order_type"` \| `"child_orders"`\>\>
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name     | Type                                                                           |
+| :------- | :----------------------------------------------------------------------------- |
 | `orders` | [`AlgoOrder`](/sdks/tech-doc/interfaces/orderly_network_types.API.AlgoOrder)[] |
-| `symbol` | `string` |
+| `symbol` | `string`                                                                       |
 
 #### Returns
 
-`undefined` \| `Partial`\<`Omit`\<[`BaseAlgoOrderEntity`](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity)\<[`STOP`](/sdks/tech-doc/enums/orderly_network_types.AlgoOrderRootType#stop)\>, ``"order_type"`` \| ``"child_orders"``\>\>
+`undefined` \| `Partial`\<`Omit`\<[`BaseAlgoOrderEntity`](/sdks/tech-doc/interfaces/orderly_network_types.BaseAlgoOrderEntity)\<[`STOP`](/sdks/tech-doc/enums/orderly_network_types.AlgoOrderRootType#stop)\>, `"order_type"` \| `"child_orders"`\>\>
 
 #### Defined in
 
 [packages/hooks/src/orderly/usePositionStream/utils.ts:9](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/hooks/src/orderly/usePositionStream/utils.ts#L9)
 
-___
+---
 
 ### formatNumber
 
@@ -100,10 +100,10 @@ ___
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name   | Type                 |
+| :----- | :------------------- |
 | `qty?` | `string` \| `number` |
-| `dp?` | `string` \| `number` |
+| `dp?`  | `string` \| `number` |
 
 #### Returns
 
@@ -113,7 +113,7 @@ ___
 
 [packages/hooks/src/utils/orderEntryHelper.ts:311](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/hooks/src/utils/orderEntryHelper.ts#L311)
 
-___
+---
 
 ### getPositionBySymbol
 
@@ -121,8 +121,8 @@ ___
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name     | Type     |
+| :------- | :------- |
 | `symbol` | `string` |
 
 #### Returns
@@ -133,7 +133,7 @@ ___
 
 [packages/hooks/src/utils/swr.ts:295](https://github.com/OrderlyNetwork/js-sdk/blob/ba995f2/packages/hooks/src/utils/swr.ts#L295)
 
-___
+---
 
 ### priceToPnl
 
@@ -143,16 +143,16 @@ TP/SL price -> pnl
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `inputs` | `Object` |
-| `inputs.entryPrice` | `number` |
-| `inputs.orderSide` | [`OrderSide`](/sdks/tech-doc/enums/orderly_network_types.OrderSide) |
-| `inputs.orderType` | [`AlgoOrderType`](/sdks/tech-doc/enums/orderly_network_types.AlgoOrderType) |
-| `inputs.price` | `number` |
-| `inputs.qty` | `number` |
-| `options` | `Object` |
-| `options.symbol?` | [`SymbolExt`](/sdks/tech-doc/interfaces/orderly_network_types.API.SymbolExt) |
+| Name                | Type                                                                         |
+| :------------------ | :--------------------------------------------------------------------------- |
+| `inputs`            | `Object`                                                                     |
+| `inputs.entryPrice` | `number`                                                                     |
+| `inputs.orderSide`  | [`OrderSide`](/sdks/tech-doc/enums/orderly_network_types.OrderSide)          |
+| `inputs.orderType`  | [`AlgoOrderType`](/sdks/tech-doc/enums/orderly_network_types.AlgoOrderType)  |
+| `inputs.price`      | `number`                                                                     |
+| `inputs.qty`        | `number`                                                                     |
+| `options`           | `Object`                                                                     |
+| `options.symbol?`   | [`SymbolExt`](/sdks/tech-doc/interfaces/orderly_network_types.API.SymbolExt) |
 
 #### Returns
 

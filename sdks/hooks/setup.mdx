@@ -49,15 +49,15 @@ import type { FC, PropsWithChildren } from "react";
 import { OrderlyConfigProvider } from "@orderly.network/hooks";
 import type { ConfigStore, OrderlyKeyStore } from "@orderly.network/core";
 
-const myConfigStore: ConfigStore = new <Your ConfigStore class>;
-const myKeyStore: OrderlyKeyStore = new <Your OrderlyKeyStore class>;
+const myConfigStore: ConfigStore = new YourConfigStore();
+const myKeyStore: OrderlyKeyStore = new YourKeyStore();
 
 export const App: FC<PropsWithChildren> = ({ children }) => {
-const brokerId = "<your id>";
-return (
-  <OrderlyConfigProvider configStore={myConfigStore} keyStore={myKeyStore} networkId="mainnet">
-    <children />
-  </OrderlyProvider>
+  const brokerId = "<your id>";
+  return (
+    <OrderlyConfigProvider configStore={myConfigStore} keyStore={myKeyStore} networkId="mainnet">
+      {children}
+    </OrderlyConfigProvider>
   );
 };
 ```

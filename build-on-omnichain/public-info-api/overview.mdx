@@ -69,7 +69,9 @@ Success:
 ```json
 {
   "success": true,
-  "data": { /* type-specific payload */ },
+  "data": {
+    /* type-specific payload */
+  },
   "ts": 1779269143700
 }
 ```
@@ -90,17 +92,17 @@ Error:
 
 ## Error codes
 
-| Code | HTTP | Meaning |
-| --- | --- | --- |
-| `UNKNOWN_TYPE` | 400 | `type` field missing or not a registered handler |
-| `MISSING_PARAM` | 400 | Required parameter missing |
-| `INVALID_PARAM` | 400 | Parameter present but wrong type, range, or format |
-| `ADDRESS_NOT_FOUND` | 404 | `address` (optionally with `broker_id` / `account_id`) resolves to zero accounts |
-| `ORDER_NOT_FOUND` | 404 | `orderStatus`: `order_id` not in live or archive tables |
-| `RATE_LIMIT_EXCEEDED` | 429 | Caller exhausted IP quota — see [rate limits](#rate-limits) |
-| `INTERNAL_ERROR` | 500 | Unhandled exception |
-| `SERVICE_UNAVAILABLE` | 503 | A downstream service timed out — usually transient, safe to retry |
-| `POSITION_CALC_TIMEOUT` | 503 | Position-calc service specifically timed out |
+| Code                    | HTTP | Meaning                                                                          |
+| ----------------------- | ---- | -------------------------------------------------------------------------------- |
+| `UNKNOWN_TYPE`          | 400  | `type` field missing or not a registered handler                                 |
+| `MISSING_PARAM`         | 400  | Required parameter missing                                                       |
+| `INVALID_PARAM`         | 400  | Parameter present but wrong type, range, or format                               |
+| `ADDRESS_NOT_FOUND`     | 404  | `address` (optionally with `broker_id` / `account_id`) resolves to zero accounts |
+| `ORDER_NOT_FOUND`       | 404  | `orderStatus`: `order_id` not in live or archive tables                          |
+| `RATE_LIMIT_EXCEEDED`   | 429  | Caller exhausted IP quota — see [rate limits](#rate-limits)                      |
+| `INTERNAL_ERROR`        | 500  | Unhandled exception                                                              |
+| `SERVICE_UNAVAILABLE`   | 503  | A downstream service timed out — usually transient, safe to retry                |
+| `POSITION_CALC_TIMEOUT` | 503  | Position-calc service specifically timed out                                     |
 
 A `RATE_LIMIT_EXCEEDED` response additionally carries `"retry_after": <ms epoch>` and a `Retry-After` HTTP header (in seconds).
 
@@ -108,12 +110,12 @@ A `RATE_LIMIT_EXCEEDED` response additionally carries `"retry_after": <ms epoch>
 
 Endpoints that take `address` resolve it to one or more accounts via the internal user table. The optional `broker_id` and `account_id` narrow the scope.
 
-| Input | Scope |
-| --- | --- |
-| `address` only | All accounts (`REGULAR` + `SUB`) under the address |
-| `address` + `broker_id` | All accounts within that broker |
-| `address` + `account_id` | One specific account (typically returns a flat object) |
-| `address` + `broker_id` + `account_id` | One account scoped to a broker |
+| Input                                  | Scope                                                  |
+| -------------------------------------- | ------------------------------------------------------ |
+| `address` only                         | All accounts (`REGULAR` + `SUB`) under the address     |
+| `address` + `broker_id`                | All accounts within that broker                        |
+| `address` + `account_id`               | One specific account (typically returns a flat object) |
+| `address` + `broker_id` + `account_id` | One account scoped to a broker                         |
 
 If no accounts match, the response is `ADDRESS_NOT_FOUND` (HTTP 404).
 
@@ -126,7 +128,9 @@ Paginated endpoints return `data.next_cursor` (an opaque Base64 string; `null` o
 ```json
 {
   "data": {
-    "rows": [ /* ... */ ],
+    "rows": [
+      /* ... */
+    ],
     "next_cursor": "eyJsYXN0X3RzIjoxNzE1MDAwMDAwMDAwfQ"
   },
   "ts": 1779269143700
@@ -135,17 +139,17 @@ Paginated endpoints return `data.next_cursor` (an opaque Base64 string; `null` o
 
 **Treat cursors as opaque** — do not parse them. Cursor contents vary by endpoint and may change between versions.
 
-| Endpoint | Cursor shape |
-| --- | --- |
-| `candles`, `fundingRateHistory` | `{ "last_ts": <ms> }` |
+| Endpoint                         | Cursor shape                                 |
+| -------------------------------- | -------------------------------------------- |
+| `candles`, `fundingRateHistory`  | `{ "last_ts": <ms> }`                        |
 | `openOrders`, `historicalOrders` | `{ "last_ts": <ms>, "last_id": <order_id> }` |
-| `trades` | `{ "last_id": <txn_id>, "src": <string> }` |
-| `fundingPayments` | `{ "last_id": <funding_detail_id> }` |
-| `liquidations` | `{ "last_id": <record_id> }` |
-| `userDepositsWithdrawals` | `{ "last_id": <transaction_id> }` |
-| `portfolio` | `{ "last_date": <ms> }` |
-| `topAddresses` | `{ "last_value": "<decimal>" }` |
-| `platformPositions` | `{ "last_id": <position_id> }` |
+| `trades`                         | `{ "last_id": <txn_id>, "src": <string> }`   |
+| `fundingPayments`                | `{ "last_id": <funding_detail_id> }`         |
+| `liquidations`                   | `{ "last_id": <record_id> }`                 |
+| `userDepositsWithdrawals`        | `{ "last_id": <transaction_id> }`            |
+| `portfolio`                      | `{ "last_date": <ms> }`                      |
+| `topAddresses`                   | `{ "last_value": "<decimal>" }`              |
+| `platformPositions`              | `{ "last_id": <position_id> }`               |
 
 `marketSummary`, `marketTrades`, `fundingComparison`, `orderbook`, and `rateLimitStatus` do not paginate — they return a bounded snapshot in a single response.
 
@@ -158,30 +162,31 @@ Paginated endpoints return `data.next_cursor` (an opaque Base64 string; `null` o
 ## Rate limits
 
 <Warning>
-The Public Info API has **its own rate-limit pool**, separate from the existing REST and WebSocket APIs. Calls to this endpoint do not consume your REST API quota, and vice versa.
+  The Public Info API has **its own rate-limit pool**, separate from the existing REST and WebSocket
+  APIs. Calls to this endpoint do not consume your REST API quota, and vice versa.
 </Warning>
 
 ### Weight pool
 
 Quota is tracked per IP, in weight units, on a rolling one-minute window.
 
-| Tier | Weight / min |
-| --- | --- |
-| Default (anonymous IP) | **1200** |
+| Tier                   | Weight / min |
+| ---------------------- | ------------ |
+| Default (anonymous IP) | **1200**     |
 
 Each query type costs a different amount of weight. Pick lighter types when polling.
 
 ### Weight per query type
 
-| Weight | Query types |
-| --- | --- |
-| **0** | `rateLimitStatus` (never consumes quota — safe to poll) |
-| **1** | `feeRate`, `marketSummary`, `marketTrades`, `orderbook` |
-| **2** | `agentContext`, `candles`, `fundingComparison`, `fundingRateHistory`, `liquidations`, `marketDetail`, `positionContext` |
-| **3** | `whaleContext` |
-| **5** | `accounts`, `accountState`, `fundingPayments`, `historicalOrders`, `openOrders`, `orderStatus`, `portfolio`, `trades`, `userDepositsWithdrawals` |
-| **10** | `topAddresses` |
-| **20** | `platformPositions` |
+| Weight | Query types                                                                                                                                      |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **0**  | `rateLimitStatus` (never consumes quota — safe to poll)                                                                                          |
+| **1**  | `feeRate`, `marketSummary`, `marketTrades`, `orderbook`                                                                                          |
+| **2**  | `agentContext`, `candles`, `fundingComparison`, `fundingRateHistory`, `liquidations`, `marketDetail`, `positionContext`                          |
+| **3**  | `whaleContext`                                                                                                                                   |
+| **5**  | `accounts`, `accountState`, `fundingPayments`, `historicalOrders`, `openOrders`, `orderStatus`, `portfolio`, `trades`, `userDepositsWithdrawals` |
+| **10** | `topAddresses`                                                                                                                                   |
+| **20** | `platformPositions`                                                                                                                              |
 
 ### Response headers
 
@@ -237,52 +242,53 @@ Read your IP's quota state for the rolling one-minute window. Weight: **0** — 
 }
 ```
 
-| Field | Type | Notes |
-| --- | --- | --- |
-| `limit` | int64 | Total weight available per window (1200 for the default tier) |
-| `remaining` | int64 | Weight still available in the **current** window, after all consumption so far. Weighted calls deduct from this value before the next `rateLimitStatus` reads it |
-| `reset` | int64 | ms epoch when the current window ends. Windows roll forward continuously — `remaining` springs back up to `limit` after `reset` |
-| `tier` | string | Quota tier name; `"default"` for anonymous IPs |
+| Field       | Type   | Notes                                                                                                                                                            |
+| ----------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `limit`     | int64  | Total weight available per window (1200 for the default tier)                                                                                                    |
+| `remaining` | int64  | Weight still available in the **current** window, after all consumption so far. Weighted calls deduct from this value before the next `rateLimitStatus` reads it |
+| `reset`     | int64  | ms epoch when the current window ends. Windows roll forward continuously — `remaining` springs back up to `limit` after `reset`                                  |
+| `tier`      | string | Quota tier name; `"default"` for anonymous IPs                                                                                                                   |
 
 ## Data freshness
 
 Worst-case data freshness per query type / field — the data you receive is at most this old, and usually fresher. Use this to decide how often to poll: there is no benefit to polling faster than a type's freshness window.
 
 <Warning>
-The `X-Data-Freshness` response header records the server response time, not when the data was generated. Use the table below as the freshness reference.
+  The `X-Data-Freshness` response header records the server response time, not when the data was
+  generated. Use the table below as the freshness reference.
 </Warning>
 
-| Type | Field | Worst-case freshness |
-| --- | --- | --- |
-| `orderbook` | all | < 1s |
-| `marketTrades` | all | < 1s |
-| `openOrders` | all | < 1s |
-| `orderStatus` | all | < 1s |
-| `rateLimitStatus` | all | real-time |
-| `marketSummary` | all | < 5s |
-| `marketDetail` | `orderbook` | < 1s |
-| `marketDetail` | `recent_trades` / `market_info` | < 5s |
-| `marketDetail` | `funding_history` | < 30s |
-| `marketDetail` | `candles` | ~1 min |
-| `accountState` | all | < 5s |
-| `platformPositions` | all | < 5s |
-| `liquidations` | all | < 5s |
-| `agentContext` | account + positions + held markets | < 5s |
-| `positionContext` | position + orders + market | < 5s |
-| `fundingComparison` | all | ~1 min |
-| `fundingRateHistory` | all | < 30s |
-| `feeRate` | all | ~1 min |
-| `accounts` | all | ~1 min |
-| `candles` (latest) | all | ~1 min |
-| `candles` (closed) | all | unchanged |
-| `trades` (last 24h) | all | < 1s |
-| `trades` (> 24h) | all | ~1h |
-| `fundingPayments` | all | < 1s |
-| `userDepositsWithdrawals` | all | < 1s |
-| `historicalOrders` | all | < 1s |
-| `topAddresses` | all | ~30 min (use `last_updated_time` for the actual snapshot age) |
-| `portfolio` | all | ~1 day (daily snapshot; use `accountState` for real-time values) |
-| `whaleContext` | `account` / `positions` / `recent_trades` | < 5s |
+| Type                      | Field                                     | Worst-case freshness                                             |
+| ------------------------- | ----------------------------------------- | ---------------------------------------------------------------- |
+| `orderbook`               | all                                       | < 1s                                                             |
+| `marketTrades`            | all                                       | < 1s                                                             |
+| `openOrders`              | all                                       | < 1s                                                             |
+| `orderStatus`             | all                                       | < 1s                                                             |
+| `rateLimitStatus`         | all                                       | real-time                                                        |
+| `marketSummary`           | all                                       | < 5s                                                             |
+| `marketDetail`            | `orderbook`                               | < 1s                                                             |
+| `marketDetail`            | `recent_trades` / `market_info`           | < 5s                                                             |
+| `marketDetail`            | `funding_history`                         | < 30s                                                            |
+| `marketDetail`            | `candles`                                 | ~1 min                                                           |
+| `accountState`            | all                                       | < 5s                                                             |
+| `platformPositions`       | all                                       | < 5s                                                             |
+| `liquidations`            | all                                       | < 5s                                                             |
+| `agentContext`            | account + positions + held markets        | < 5s                                                             |
+| `positionContext`         | position + orders + market                | < 5s                                                             |
+| `fundingComparison`       | all                                       | ~1 min                                                           |
+| `fundingRateHistory`      | all                                       | < 30s                                                            |
+| `feeRate`                 | all                                       | ~1 min                                                           |
+| `accounts`                | all                                       | ~1 min                                                           |
+| `candles` (latest)        | all                                       | ~1 min                                                           |
+| `candles` (closed)        | all                                       | unchanged                                                        |
+| `trades` (last 24h)       | all                                       | < 1s                                                             |
+| `trades` (> 24h)          | all                                       | ~1h                                                              |
+| `fundingPayments`         | all                                       | < 1s                                                             |
+| `userDepositsWithdrawals` | all                                       | < 1s                                                             |
+| `historicalOrders`        | all                                       | < 1s                                                             |
+| `topAddresses`            | all                                       | ~30 min (use `last_updated_time` for the actual snapshot age)    |
+| `portfolio`               | all                                       | ~1 day (daily snapshot; use `accountState` for real-time values) |
+| `whaleContext`            | `account` / `positions` / `recent_trades` | < 5s                                                             |
 
 For multi-source bundles, fields in one response can have different freshness, so they are listed per field; `agentContext` / `positionContext` reflect their oldest sub-block.
 

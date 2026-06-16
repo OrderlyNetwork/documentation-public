@@ -23,11 +23,11 @@ description: "Full-featured TradingPage component with orderbook, chart, order f
 ## Preview
 
 <iframe
-  class="preview"
+  className="preview"
   src="https://storybook.orderly.network/iframe.html?globals=theme%3Acustom&id=package-trading-tradingpage--page&viewMode=story"
   title="Trading Page"
-  frameborder="0"
-  allowfullscreen
+  frameBorder="0"
+  allowFullScreen
 ></iframe>
 
 ## Usage
@@ -44,10 +44,9 @@ import { TradingPage, OrderlyAppProvider } from "@orderly.network/react";
 import { ConnectorProvider } from "@orderly.network/web3-onboard";
 
 export default function Trading() {
+  // A component that provides wallet connectivity,
+  // but you can also use any wallet connection component that you customize
   return (
-   {/* A component that provides wallet connectivity,
-   but you can also use any wallet connection component that you customize
-   */}
     <ConnectorProvider
       apiKey="<Your web3-onboard's api key>"
       options={`metadata`}
@@ -143,7 +142,6 @@ export default function Trading() {
         library_path: "/assets/chart/charting_library/",
         customCssUrl: "/assets/chart/custom.css", // optional
       }}
-      {/** other config  */}
     />
   );
 }

@@ -19,6 +19,7 @@ VALOR represents your share of future protocol revenues. The system rewards long
 VALOR is the only way to claim a share of the protocol treasury. The only way to earn VALOR is to stake \$ORDER or esORDER.
 
 Key parameters:
+
 - **Hard cap:** 1 billion VALOR
 - **Emission:** 100% linearly emitted to stakers over 200 epochs (5M VALOR per epoch)
 - **Non-transferable:** VALOR is a measure of staking position, not a tradable token
@@ -26,24 +27,27 @@ Key parameters:
 
 Your treasury share is calculated as:
 
-$$ TreasuryShare_{staker} = \frac{AvailableValorBalance_{staker}}{ValorCirculatingSupply} \times TotalProtocolTreasuryValue $$
+$$ TreasuryShare*{staker} = \frac{AvailableValorBalance*{staker}}{ValorCirculatingSupply} \times TotalProtocolTreasuryValue $$
 
-Where: *VALOR circulating supply = Total VALOR emitted to date − VALOR burned from redemption*
+Where: _VALOR circulating supply = Total VALOR emitted to date − VALOR burned from redemption_
 
 ## Example
 
 Alice and Bob each hold 1% of total staked \$ORDER from day one, so they each own 1% of circulating VALOR.
 
 **End of epoch X:**
+
 - Circulating VALOR: 16M | Treasury: \$500,000
 - Alice's share: \$5,000 | Bob's share: \$5,000
 
 **Bob redeems 60,000 VALOR:**
+
 - Bob receives \$1,875 from the treasury
 - Treasury drops to \$498,125
 - Bob's VALOR: 100,000 | Alice's VALOR: 160,000
 
 **End of epoch X+1** (after \$250,000 new revenue added):
+
 - Circulating VALOR: 20.94M | Treasury: \$748,125
 - Both earn 50,000 new VALOR from staking
 - Bob's VALOR: 150,000 → share: \$5,359
@@ -58,6 +62,4 @@ Alice and Bob each hold 1% of total staked \$ORDER from day one, so they each ow
 - Holding VALOR longer means you benefit from future treasury growth. Redeeming early realizes past gains but forfeits future upside.
 - As Orderly grows and trading volume increases, more revenue flows into the treasury each epoch.
 
-<Note>
-Staking is not allowed for locked team tokens or investor tokens.
-</Note>
+<Note>Staking is not allowed for locked team tokens or investor tokens.</Note>

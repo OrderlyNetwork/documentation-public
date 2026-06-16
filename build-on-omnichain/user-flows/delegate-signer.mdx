@@ -6,7 +6,8 @@ description: "How smart contracts trade on Orderly using the delegate signer pat
 ## Smart Contract Trading
 
 <Note>
-  The Delegate Signer feature is currently only available on EVM chains. Solana programs have a different architecture and do not require this pattern.
+  The Delegate Signer feature is currently only available on EVM chains. Solana programs have a
+  different architecture and do not require this pattern.
 </Note>
 
 On EVM chains, there is a distinction between Externally Owned Accounts (EOAs) and Smart Contract accounts. An EOA cannot have code deployed to it, and a Smart Contract account cannot have a private key that is owned by a user.
@@ -18,9 +19,10 @@ Delegate Signer allows Smart Contracts to assign an EOA to sign on behalf of the
 ### Limitations
 
 <Warning>
-  - There can only be **one EOA** per Smart Contract account. If a new Delegate Signer is announced, the old one will be deleted.
-  - Smart Contract accounts are **single-chain** -- they can only deposit/withdraw from the chain where the Delegate Signer call was made.
-  - A Smart Contract account will always need an EOA to withdraw funds.
+  - There can only be **one EOA** per Smart Contract account. If a new Delegate Signer is announced,
+  the old one will be deleted. - Smart Contract accounts are **single-chain** -- they can only
+  deposit/withdraw from the chain where the Delegate Signer call was made. - A Smart Contract
+  account will always need an EOA to withdraw funds.
 </Warning>
 
 ### Implementation
