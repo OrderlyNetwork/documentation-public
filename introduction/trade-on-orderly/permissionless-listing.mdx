@@ -48,7 +48,7 @@ Permissionless Listing decouples the risk of new markets from the rest of the pl
 
 Each Builder that lists a market must set up and manage their own accounts:
 
-- **Insurance Fund (IF) account** -- A dedicated sub-account that covers liquidation losses for all of the Builder's listed markets. The ongoing minimum balance is **\$50,000 per active symbol** (e.g., 3 active markets = \$150,000 minimum). To submit another listing, the IF must also have enough balance for the next symbol. If the IF drops too low, the system will automatically restrict trading or trigger delisting.
+- **Insurance Fund (IF) account** -- A dedicated sub-account that covers liquidation losses for all of the Builder's listed markets. The ongoing minimum balance is **\$25,000 per active symbol** (e.g., 3 active markets = \$75,000 minimum). Active symbols include symbols in `NEW`, `PENDING`, `POST_ONLY`, `ACTIVE`, or `REDUCE_ONLY` status. To submit another listing, the IF must also have enough balance for the next symbol. If the IF account balance drops too low, the system will automatically restrict trading or trigger delisting.
 - **Market Maker (MM) accounts** -- Optional sub-accounts for market-making. Builders can bind one or more MM accounts to their listed symbols to provide liquidity.
 
 The IF is completely separate from Orderly's platform IF and from any other Builder's IF. If a liquidation loss occurs, it draws only from that Builder's IF. If the IF is fully depleted, auto-deleveraging (ADL) is scoped to that specific market only. The risk controls are designed to keep losses scoped to that Builder's market rather than the broader platform.
