@@ -1,0 +1,79 @@
+---
+title: "Pre-TGE Listing"
+description: "Learn how Builders can list a perpetual market on a token before its TGE, using a synthetic Pre-TGE Oracle price and tightened risk caps."
+---
+
+Pre-TGE Listing extends [Permissionless Listing](/introduction/trade-on-orderly/permissionless-listing) to tokens that have not launched yet -- no spot market, no external venue, and no price feed to aggregate. The standard flow requires at least one CEX or oracle source, which a pre-launch token cannot provide. Pre-TGE Listing opens a separate entry path with a synthetic price source and tightened risk caps, so a Builder can open price discovery before the token's formal TGE.
+
+> Disclaimer: A Pre-TGE market is created and operated by a Builder, not by Orderly. Pre-launch tokens carry elevated risk; Orderly does not vet, operate, or backstop these markets.
+
+## When to use it
+
+Use Pre-TGE Listing when the token your community wants to trade has no tradeable reference price yet. Once the token reaches TGE and external venues begin quoting it, the Builder transitions the market to a regular Community Listed market (see [After TGE](#after-tge) below).
+
+## How it works
+
+Pre-TGE Listing reuses the Permissionless Listing pipeline, with three additions: a dedicated entry path, a synthetic price source, and tightened risk caps.
+
+### Creating the listing
+
+In the listing wizard, the Builder selects **Pre-TGE Token** on the "What are you listing?" step, alongside Crypto and RWA. Before this, the Builder aligns with Orderly offline on the token ticker and a reference initial price (from FDV, OTC quotes, or a comparable launch). Orderly then sets up the Pre-TGE Oracle for that token, which the Builder selects as the market's price source.
+
+### Pre-TGE Oracle price
+
+Because there is no external market, Orderly synthesizes an Index Price from the market's own order book in three stages:
+
+1. **Sample every minute.** Take the order book midpoint, `price_signal = (best_bid + best_ask) / 2`. If either side is empty that minute, carry the previous valid sample forward.
+2. **Smooth with an EMA.** Apply a 24-hour exponential moving average (half-life ~8 hours) so recent samples weigh more.
+3. **Clamp within an anchor band.** Bound the smoothed value to `[initial_price / 4, initial_price × 4]`. This guardrail prevents extreme drift. (The 4× band-width is set by Orderly Risk and can be adjusted on request.)
+
+Before the market goes live, the rolling window is pre-filled with the initial price; real order book samples replace it minute by minute once trading starts.
+
+### Initial price and trading precision
+
+The initial price is both the market's starting reference and what Orderly uses to derive trading precision: the smallest price move (price tick) and the order size. The value the Builder provides directly shapes how the market trades, so provide the token's realistic expected price to about 4 significant figures.
+
+**Supported range: \$0.1 to \$1000.** Price maps to precision as follows:
+
+| Expected price  | Provide as                | Price tick | Order size |
+| --------------- | ------------------------- | ---------- | ---------- |
+| \$100 to \$1000 | 1 decimal, e.g. `234.1`   | 0.1        | fractional |
+| \$10 to \$100   | 2 decimals, e.g. `23.41`  | 0.01       | fractional |
+| \$1 to \$10     | 3 decimals, e.g. `2.341`  | 0.001      | fractional |
+| \$0.1 to \$1    | 4 decimals, e.g. `0.2341` | 0.0001     | fractional |
+
+- More decimals give a finer price tick, which is the tightest spread a market maker can quote. The 4-significant-figure format keeps the tick near 0.1% of price.
+- Round whole numbers (`1`, `100`) are accepted but give a coarser tick, and a few low round values (notably exactly `\$1`) restrict orders to whole tokens. Prefer the decimal format above.
+- For tokens priced below \$0.1, list a scaled unit: name the ticker with a scale prefix (e.g. `1000XYZ`, where 1 unit = 1,000 tokens) and provide the scaled price.
+- The initial price and all derived precision are locked once the listing goes live.
+
+### Tightened risk caps
+
+Pre-TGE markets apply tighter caps automatically, because the token has no formal launch and liquidity has not formed:
+
+| Item                  | Pre-TGE market  |
+| --------------------- | --------------- |
+| Max Leverage          | 5x              |
+| Global Max OI         | \$50K to \$500K |
+| Max Notional per User | \$5K to \$50K   |
+| Funding Fee           | Not charged     |
+
+Funding rate is still calculated and displayed so traders can read market supply and demand, but the settled amount is zero throughout the pre-TGE phase.
+
+## After TGE
+
+When the token launches and external venues start quoting it, the Builder transitions the market to a regular Community Listed market via Edit Listing:
+
+1. Add external sources (CEX / oracle / BYOK) and adjust weights.
+2. Click **End Pre-TGE Phase** at the bottom of Step 2 and type the symbol name to confirm.
+3. Submit.
+
+The market then behaves as a regular Community Listed market: the Pre-launch tag is removed, risk caps are lifted, and funding fee collection resumes from the next settlement event. Open positions and orders are preserved -- no relisting is required.
+
+**This transition is one-way and irreversible.** Once a market ends its pre-TGE phase, it cannot return to Pre-TGE.
+
+## Trader experience
+
+Two behaviors hold on every frontend because they are enforced at the protocol level: during the pre-TGE phase, leverage is capped at 5x and no funding fee is collected.
+
+How a pre-TGE market is *surfaced* depends on the frontend. Orderly's own front-ends -- the Orderly SDK trading UI and Orderly One -- show pre-TGE markets under a **Pre-launch** tab and display an extended risk disclosure before the first trade, noting that the token has not launched yet and that funding fee is not charged. Each market exposes an `is_pretge` flag through the public market info API, so a Builder running a custom frontend can read it and surface pre-TGE markets the same way.
