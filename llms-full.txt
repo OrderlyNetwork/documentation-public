@@ -98,6 +98,9 @@ Source: https://orderly.network/docs/home
       <Card title="SDK Overview" icon="wrench" href="/sdks/overview">
         Choose between React components, hooks, core utilities, or lower-level programmatic access.
       </Card>
+      <Card title="Builder Marketplace" icon="shop" href="/build-on-omnichain/builder-marketplace/introduction">
+        Extend the React components SDK, build customizable plugins, and distribute your UI features.
+      </Card>
     </CardGroup>
 
   </div>
@@ -136,7 +139,7 @@ Source: https://orderly.network/docs/home
 <div
       
     >
-      Explore vault products
+      Explore strategy vaults
     </div>
     <p
       
@@ -522,8 +525,103 @@ For markets that support both modes, traders can choose either Cross Margin or I
 
 - [Supported Markets](https://orderly.network/docs/introduction/trade-on-orderly/supported-markets): See the full list of perpetual futures markets available on Orderly, including contract identifiers.
 - [Permissionless Listing](https://orderly.network/docs/introduction/trade-on-orderly/permissionless-listing): Learn how qualified Builders can list additional perpetual markets on Orderly, including markets that use custom oracle sources or RWA trading sessions.
+- [Pre-TGE Listing](https://orderly.network/docs/introduction/trade-on-orderly/pre-tge-listing): Learn how Builders can list a perpetual market on a token before its TGE, using a synthetic Pre-TGE Oracle price and tightened risk caps.
 - [Custom Oracle](https://orderly.network/docs/introduction/trade-on-orderly/custom-oracle): Learn how Builders can provide custom oracle feeds for permissionlessly listed markets on Orderly.
-- [Permissionless Vault](https://orderly.network/docs/introduction/trade-on-orderly/permissionless-vault): Learn how anyone can create and manage a Strategy Vault on Orderly without permission or manual onboarding.
+### Permissionless Vault
+Source: https://orderly.network/docs/introduction/trade-on-orderly/permissionless-vault
+
+**Permissionless Vault lets any EOA wallet deploy a fully functional Strategy Vault in a single transaction** -- no applications, no approvals, no waiting. Backend automation handles cross-chain registration, account provisioning, and all configuration. Time to live: **under 30 minutes, zero manual intervention**.
+
+> [!NOTE]
+> **Strategy Vault** is Orderly Network's core technical product and underlying infrastructure, providing smart contracts and CeFi clearing capabilities. Official protocol-level vaults built on this infrastructure are branded as **OmniVault**. Permissionless Vault (PMV) allows external creators to deploy their own instances leveraging this same Strategy Vault technical infrastructure.
+
+Previously, launching a Strategy Vault required manual coordination across multiple teams -- contract deployment, multi-sig proposals, database configuration, and custodial setup. That process took 2–5 business days and involved 5+ people across 29 manual steps. Permissionless Vault removes all of that.
+
+> Disclaimer: A permissionlessly created vault is deployed and operated by its creator, not by Orderly. Orderly does not vet, operate, or backstop these vaults. Users should assess the vault's strategy, track record, and risk profile before depositing.
+
+## Part of the Orderly Permissionless Ecosystem
+
+Permissionless Vault is not a standalone feature -- it is a core component of Orderly Network's permissionless infrastructure, alongside [Permissionless Listing](/introduction/trade-on-orderly/permissionless-listing).
+
+|                                  | What it does                                                                | Who uses it                        |
+| :------------------------------- | :-------------------------------------------------------------------------- | :--------------------------------- |
+| **Permissionless Listing (PML)** | Lets qualified Builders list new perpetual markets without Orderly approval | Builders / Brokers                 |
+| **Permissionless Vault (PMV)**   | Lets anyone create and operate a Strategy Vault without manual onboarding   | Strategy Providers / Fund Managers |
+
+**How they work together:**
+
+- **PMV provides liquidity infrastructure for PML.** Vaults created through PMV are managed by Strategy Providers (SPs). An SP can choose to connect with a specific Broker through an opt-in mechanism, providing liquidity support for that Broker's markets -- including permissionlessly listed ones.
+- **Participation is voluntary.** Whether an SP connects with a Broker is entirely the SP's decision. There is no forced assignment or automatic linking.
+- **Each works independently.** PMV and PML operate on their own. A Permissionless Vault can function purely as an investment fund without any Broker association, and a permissionlessly listed market does not require a Permissionless Vault.
+
+Together, PML and PMV form the foundation of Orderly's vision for a fully permissionless trading ecosystem -- where both market creation and liquidity provisioning can happen without centralized gatekeeping.
+
+## Standard Vault vs. Permissionless Vault
+
+| Feature                    | Standard Vault (Current)         | Permissionless Vault    |
+| :------------------------- | :------------------------------- | :---------------------- |
+| **Who creates it**         | Orderly team (manual onboarding) | Any EOA wallet holder   |
+| **Setup time**             | 2–5 business days                | < 30 minutes            |
+| **Manual steps**           | 29 steps, 5+ people              | 1 transaction, 0 people |
+| **Multi-sig required**     | Yes (4–24h bottleneck)           | No                      |
+| **Database configuration** | 20+ manual SQL operations        | Fully automated         |
+
+## How It Works
+
+Permissionless Vault leverages deterministic contract deployment (CREATE3), cross-chain messaging (LayerZero V2), and automated backend provisioning to turn vault creation into a single on-chain action.
+
+### Creating a vault
+
+1. **Configure** -- The creator selects vault parameters through the frontend: vault name, description, broker, strategy provider (SP) address, SP name, performance fee rate, deployment chain, and first period start time.
+2. **Deploy** -- The creator signs a single `createPermissionlessVault()` transaction on their chosen chain. The factory contract deploys the vault using CREATE3 (deterministic address), registers it with the cross-chain manager, and sends a configuration message to the Orderly Chain via LayerZero V2.
+3. **Register** -- The Orderly Chain ledger receives the cross-chain message and automatically configures the vault: broker assignment, fee rates, and strategy provider authorization. This typically completes within 1–5 minutes.
+4. **Provision** -- The indexer captures on-chain events and syncs vault data to the CeFi backend, which auto-provisions all necessary accounts and configurations (replacing the 20+ manual SQL operations from the old flow).
+5. **Live** -- The vault appears in the vault listing and is ready for LP deposits.
+
+### What the creator provides
+
+| Parameter                | Notes                                                                                                                       |
+| :----------------------- | :-------------------------------------------------------------------------------------------------------------------------- |
+| **Vault Name**           | Max 50 characters. Alphanumeric, spaces, hyphens, underscores, dots. Immutable after creation.                              |
+| **Description**          | Max 500 characters. Markdown supported. Modifiable after creation.                                                          |
+| **Deployment Chain**     | Single chain for initial deployment (Arbitrum, Base, Optimism, or Sei). More chains can be added later.                     |
+| **Broker**               | Selected from available brokers (searchable dropdown).                                                                      |
+| **SP Address**           | The strategy provider's wallet address. Immutable after creation.                                                           |
+| **SP Name**              | Max 50 characters. Immutable after creation.                                                                                |
+| **Performance Fee Rate** | Integer 0–50 (representing 0%–50%). Immutable after creation.                                                               |
+| **1st Period Start**     | Must be a round hour and at least 24 hours in the future, or left unset (0). Modifiable after creation (with restrictions). |
+
+Parameters marked **immutable** cannot be changed after vault creation. If a change is absolutely necessary, the creator must contact Orderly support.
+
+### Deployment status
+
+After submitting the creation transaction, the frontend shows a simplified two-state model:
+
+- **Pending** -- Transaction submitted; the vault is being provisioned across the pipeline.
+- **Complete** -- The vault is fully operational and queryable via the vault info API.
+
+The full provisioning pipeline (contract deployed → ledger registered → CeFi provisioned → complete) typically finishes within 30 minutes. If any stage stalls, the system triggers automated alerts for investigation.
+
+## Fees & Costs
+
+Creating a Permissionless Vault (or adding a new chain) requires the creator to pay the following fees in a single transaction:
+
+| Fee                         | Source                                              | Description                                                                                                                                                                                                                                                 |
+| :-------------------------- | :-------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Gas Fee**                 | Network (RPC estimate)                              | Standard blockchain gas for deploying the vault contract and executing on-chain operations. Varies with network congestion.                                                                                                                                 |
+| **Cross-Chain Fee**         | `quoteFee()` on factory contract                    | LayerZero V2 messaging fee for syncing vault configuration to the Orderly Chain ledger. Any excess is refunded to the creator.                                                                                                                              |
+| **Vault Operation Reserve** | `assetsTransferCrossChainFee()` on factory contract | Native token (ETH) deposited into the vault contract to cover future cross-chain transfer operations (moving user funds from Vault to DEX). Currently fixed at **0.1 ETH** per chain. This deposit is **non-refundable** and remains in the vault contract. |
+
+> **Important:** The Vault Operation Reserve is essential for vault operations. If the vault's ETH balance is depleted, cross-chain fund transfers will fail and new LP deposits cannot enter the DEX for trading. The creator is responsible for maintaining sufficient ETH balance in the vault.
+
+> None of these fees are collected by Orderly Network. They are paid to the blockchain network and cross-chain infrastructure providers.
+
+## System Parameters (Non-Configurable)
+
+The following operational parameters are set by the system and **cannot be modified** by the vault creator. They apply uniformly to all Permissionless Vaults:
+
+| Parameter                       | Value                   | Notes                            ... (truncated for brevity)
+
 ### Supported Chains
 Source: https://orderly.network/docs/introduction/trade-on-orderly/supported-chains
 
@@ -1193,75 +1291,75 @@ The message types are required for the EIP-712 algorithm to do a proper signing.
 
 ```json5
 {
-    "EIP712Domain": [
-        { "name": "name", "type": "string" },
-        { "name": "version", "type": "string" },
-        { "name": "chainId", "type": "uint256" },
-        { "name": "verifyingContract", "type": "address" },
-    ],
-    "Registration": [
-        { "name": "brokerId", "type": "string" },
-        { "name": "chainId", "type": "uint256" },
-        { "name": "timestamp", "type": "uint64" },
-        { "name": "registrationNonce", "type": "uint256" },
-    ],
-    "AddOrderlyKey": [
-        { "name": "brokerId", "type": "string" },
-        { "name": "chainId", "type": "uint256" },
-        { "name": "orderlyKey", "type": "string" },
-        { "name": "scope", "type": "string" },
-        { "name": "timestamp", "type": "uint64" },
-        { "name": "expiration", "type": "uint64" },
-    ],
-    "Withdraw": [
-        { "name": "brokerId", "type": "string" },
-        { "name": "chainId", "type": "uint256" },
-        { "name": "receiver", "type": "address" },
-        { "name": "token", "type": "string" },
-        { "name": "amount", "type": "uint256" },
-        { "name": "withdrawNonce", "type": "uint64" },
-        { "name": "timestamp", "type": "uint64" },
-    ],
-    "SettlePnl": [
-        { "name": "brokerId", "type": "string" },
-        { "name": "chainId", "type": "uint256" },
-        { "name": "settleNonce", "type": "uint64" },
-        { "name": "timestamp", "type": "uint64" },
-    ],
-    "DelegateSigner": [
-        { "name": "delegateContract", "type": "address" },
-        { "name": "brokerId", "type": "string" },
-        { "name": "chainId", "type": "uint256" },
-        { "name": "timestamp", "type": "uint64" },
-        { "name": "registrationNonce", "type": "uint256" },
-        { "name": "txHash", "type": "bytes32" },
-    ],
-    "DelegateAddOrderlyKey": [
-        { "name": "delegateContract", "type": "address" },
-        { "name": "brokerId", "type": "string" },
-        { "name": "chainId", "type": "uint256" },
-        { "name": "orderlyKey", "type": "string" },
-        { "name": "scope", "type": "string" },
-        { "name": "timestamp", "type": "uint64" },
-        { "name": "expiration", "type": "uint64" },
-    ],
-    "DelegateWithdraw": [
-        { "name": "delegateContract", "type": "address" },
-        { "name": "brokerId", "type": "string" },
-        { "name": "chainId", "type": "uint256" },
-        { "name": "receiver", "type": "address" },
-        { "name": "token", "type": "string" },
-        { "name": "amount", "type": "uint256" },
-        { "name": "withdrawNonce", "type": "uint64" },
-        { "name": "timestamp", "type": "uint64" },
-    ],
-    "DelegateSettlePnl": [
-        { "name": "delegateContract", "type": "address" },
-        { "name": "brokerId", "type": "string" },
-        { "name": "chainId", "type": "uint256" },
-        { "name": "settleNonce", "type": "uint64" },
-        { "name": "timestamp", "type": "uint64" },
-    ],
+  EIP712Domain: [
+    { name: "name", type: "string" },
+    { name: "version", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "verifyingContract", type: "address" }
+  ],
+  Registration: [
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "timestamp", type: "uint64" },
+    { name: "registrationNonce", type: "uint256" }
+  ],
+  AddOrderlyKey: [
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "orderlyKey", type: "string" },
+    { name: "scope", type: "string" },
+    { name: "timestamp", type: "uint64" },
+    { name: "expiration", type: "uint64" }
+  ],
+  Withdraw: [
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "receiver", type: "address" },
+    { name: "token", type: "string" },
+    { name: "amount", type: "uint256" },
+    { name: "withdrawNonce", type: "uint64" },
+    { name: "timestamp", type: "uint64" }
+  ],
+  SettlePnl: [
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "settleNonce", type: "uint64" },
+    { name: "timestamp", type: "uint64" }
+  ],
+  DelegateSigner: [
+    { name: "delegateContract", type: "address" },
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "timestamp", type: "uint64" },
+    { name: "registrationNonce", type: "uint256" },
+    { name: "txHash", type: "bytes32" }
+  ],
+  DelegateAddOrderlyKey: [
+    { name: "delegateContract", type: "address" },
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "orderlyKey", type: "string" },
+    { name: "scope", type: "string" },
+    { name: "timestamp", type: "uint64" },
+    { name: "expiration", type: "uint64" }
+  ],
+  DelegateWithdraw: [
+    { name: "delegateContract", type: "address" },
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "receiver", type: "address" },
+    { name: "token", type: "string" },
+    { name: "amount", type: "uint256" },
+    { name: "withdrawNonce", type: "uint64" },
+    { name: "timestamp", type: "uint64" }
+  ],
+  DelegateSettlePnl: [
+    { name: "delegateContract", type: "address" },
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "settleNonce", type: "uint64" },
+    { name: "timestamp", type: "uint64" }
+  ]
 }
 ```
 
@@ -2300,32 +2398,28 @@ CHAIN_I... (truncated for brevity)
 
 - [User Flow Walkthrough](https://orderly.network/docs/build-on-omnichain/user-flow-walkthrough): End-to-end walkthrough of Orderly account creation, key management, ordering, and settlement via the API.
 
-### Builder Marketplace
+### Builders Marketplace
 
 ### Introduction
 Source: https://orderly.network/docs/build-on-omnichain/builder-marketplace/introduction
 
-The Orderly Builder Marketplace lets DEX builders install ready-made trading features, build custom plugins, and publish them for other builders to use. Plugins are built on top of the [Orderly SDK](/sdks/overview) and the Orderly REST/WebSocket API.
+The Orderly Builders Marketplace is the home for everything built on Orderly — features other builders can drop into their DEX, and (soon) standalone apps and services. It lists two kinds of things:
+
+- **DEX Modules** — features that plug into a DEX through the Orderly SDK: a frontend **plugin**, optionally backed by its own service (maintained by you or a third party). This handbook is about building and shipping these.
+- **Apps** — standalone apps, services, and tools that live beyond the frontend plugin system. _Coming soon_ — see [List an app](#list-an-app-coming-soon).
+
+Browse the live catalog at [marketplace.orderly.network](https://marketplace.orderly.network).
 
 <Note>
-  **Terminology:** A **module** is the complete feature you ship. It includes a **plugin** (the
-  frontend UI that plugs into your DEX) and optionally a builder-hosted backend service for
-  persistent logic.
+  **Terminology:** A **module** is the complete feature you ship — a **plugin** (the frontend UI
+  that plugs into your DEX via the Orderly SDK) plus an optional backend service for persistent
+  logic. "Plugin" is the developer-level term for the frontend code; "module" is how the feature is
+  listed in the marketplace.
 </Note>
 
-## Live Plugins
+## Install a module
 
-Browse existing plugins for inspiration or install them directly into your DEX. Builders and AI agents can also explore plugins through [`orderly-devkit`](#plugin-developer-toolchain). Please test thoroughly in your own environment before deploying to production.
-
-| Plugin            | Description                                                                                  | Builder | npm                                         | Demo                                                                                                                                | Source                                                               |
-| ----------------- | -------------------------------------------------------------------------------------------- | ------- | ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Onramper          | Fiat-to-crypto on-ramp — adds a Buy Crypto tab to the Transfer dialog (Deposit → Buy Crypto) | Orderly | `@orderly.network/onramper-plugin`          | [demo](https://demo.orderly.network/)                                                                                               | [GitHub](https://github.com/Orderly-Leo/onramper-plugin)             |
-| Fast Place Order  | Draggable quick-order widget for one-click market buy/sell                                   | Orderly | `@orderly.network/fast-place-order-plugin`  | [demo](https://github-dev.orderly.network/fast-place-order-plugin/iframe.html?id=fast-place-order--default&viewMode=story)          | [GitHub](https://github.com/OrderlyNetwork/fast-place-order-plugin)  |
-| OrderBook Shimmer | Desktop orderbook shimmer/flash effect                                                       | Orderly | `@orderly.network/orderbook-shimmer-plugin` | [demo](https://github-dev.orderly.network/orderbook-shimmer-plugin/iframe.html?id=orderbook-shimmer-plugin--default&viewMode=story) | [GitHub](https://github.com/OrderlyNetwork/orderbook-shimmer-plugin) |
-
-## Install a Plugin
-
-Install the npm package and register it in your `OrderlyAppProvider`:
+Browse modules at [marketplace.orderly.network](https://marketplace.orderly.network) (AI agents can discover them via the marketplace API `GET /api/plugins?search=...` or the `/llm.txt` catalog), then install the npm package and register it in your `OrderlyAppProvider`:
 
 ```bash
 npm install @orderly.network/onramper-plugin
@@ -2344,55 +2438,43 @@ npm install @orderly.network/onramper-plugin
 </OrderlyAppProvider>;
 ```
 
-Each plugin's source repo includes specific configuration options. For more integration patterns, see the [integration guide](/build-on-omnichain/builder-marketplace/integrate-host).
+Each module's source repo documents its specific configuration. For more integration patterns, see the [integration guide](/build-on-omnichain/builder-marketplace/integrate-host). Please test thoroughly in your own environment before deploying to production.
 
-## Build Your Own
+## Develop a module
 
 <Note>The plugin system requires **Orderly SDK v3.0.0 or above**.</Note>
 
-### What you can build
+Modules range from simple UI enhancements to full-stack trading strategies. The SDK plugin system handles the frontend; the Orderly REST and WebSocket API handles the trading infrastructure. Builders decide how to combine them.
 
-Plugins can range from simple UI enhancements to full-stack trading strategies. The SDK plugin system handles the frontend; the Orderly REST and WebSocket API handles the trading infrastructure. Builders decide how to combine them.
+- **Frontend-only modules** run entirely client-side: SDK hooks, direct Orderly REST/WebSocket API calls (the SDK provides the authenticated context), or embedded third-party services. For example: UI/styling enhancements, analytics dashboards, market screeners, social PnL sharing, custom deposit/withdraw UI.
+- **Modules with your own backend** add a builder-hosted service for persistent logic that outlives a browser session (strategy execution, scheduled orders, cross-user features), talking directly to the Orderly API. For example: TWAP, Grid Bot, DCA, Copy Trading, alert systems.
 
-**Frontend-only plugins** — everything runs client-side in the browser, no builder-hosted server needed. Your plugin can use SDK hooks, call the Orderly REST and WebSocket API directly (the SDK provides the authenticated context), or embed third-party services. Build using the SDK's plugin system to ensure your plugin stays compatible across SDK upgrades and is shareable with other builders. See the [Plugin Developer Handbook](/build-on-omnichain/builder-marketplace/plugin-developer-handbook) for the full development guide. For example:
+The full development guide is the **[Plugin Developer Handbook](/build-on-omnichain/builder-marketplace/plugin-developer-handbook)**. If you use an AI coding agent (Cursor, Claude Code, Codex), start with the [skills-first workflow](/build-on-omnichain/builder-marketplace/skills-first).
 
-- Custom UI and styling enhancements
-- Analytics dashboard, market screener, leaderboard
-- Social PnL sharing, notification widgets
-- Custom deposit/withdraw UI, portfolio visualization
-- Third-party service integrations
+| Tool                | What it does                                                    | Install                               |
+| ------------------- | --------------------------------------------------------------- | ------------------------------------- |
+| orderly-devkit CLI  | Scaffold, build, and submit modules                             | `pnpm add -g @orderly.network/devkit` |
+| Plugin agent skills | Guided AI-agent workflows (create → write → integrate → submit) | `orderly-devkit skills install`       |
+| SDK Docs MCP        | Query Orderly SDK docs from your agent                          | `orderly-devkit mcp install`          |
 
-**Plugins with your own backend** — a frontend plugin provides the user-facing UI, while your backend service handles persistent logic that outlives a browser session (e.g. strategy execution, scheduled orders, cross-user features) by talking directly to the Orderly REST and WebSocket API. For example:
+## Submit a module
 
-- TWAP, Grid Bot, DCA
-- Copy Trading, Portfolio Rebalancer
-- Alert / notification system
+Once your module is published to npm, you can list it on the Builders Marketplace. **Submission is permissionless**, with a **security review** before it goes live. Submit any of these ways:
 
-### Plugin developer toolchain
+- **Web** — sign in with GitHub at [marketplace.orderly.network](https://marketplace.orderly.network) and fill in the form.
+- **CLI / AI agent** — `orderly-devkit submit`, or run the `/orderly-plugin-submit` agent skill.
 
-The following tools are for building the frontend plugin portion of your module. If you use an AI coding agent (Cursor, Claude Code, Codex, etc.), install the plugin skills and MCP server alongside the CLI for guided workflows.
+See the [Marketplace submission tutorial](/build-on-omnichain/builder-marketplace/marketplace-submission) for the full flow. Why list your module:
 
-| Tool                | What it does                                                                | Install                               |
-| ------------------- | --------------------------------------------------------------------------- | ------------------------------------- |
-| orderly-devkit CLI  | Scaffold, build, and submit plugins                                         | `pnpm add -g @orderly.network/devkit` |
-| Plugin agent skills | Guided workflows for AI coding agents (create → write → integrate → submit) | `orderly-devkit skills install`       |
-| SDK Docs MCP        | Query Orderly SDK docs from your agent                                      | `orderly-devkit mcp install`          |
+- **Distribution** — listed modules appear across Orderly-powered UIs, giving your work instant reach.
+- **Discoverability** — builders and AI agents find and install modules through the marketplace web UI, its API, and the `/llm.txt` catalog.
+- **Monetization** — modules that provide a service can run their own business model (transaction fees, subscriptions, or profit sharing through the module's backend).
 
-For the full development guide, see the [Plugin Developer Handbook](/build-on-omnichain/builder-marketplace/plugin-developer-handbook). If you use an AI coding agent, start with the [skills-first workflow](/build-on-omnichain/builder-marketplace/skills-first).
+## List an app (coming soon)
 
-### Connect your backend (if needed)
+**Apps** are the next listing type: standalone apps, services, and tools that aren't frontend plugins (e.g. backend services, bots, or builder-to-builder mechanisms). App listing is a business-wise cooperation with Orderly rather than a self-serve flow. If you have an app, service, or tool you'd like to list, **contact the Orderly team** to discuss the details.
 
-If your plugin needs persistent logic beyond the browser session, you can run your own backend service. How you design it is up to you — your backend can call the Orderly REST and WebSocket API, run its own logic, or both. See the API reference in the sidebar for details.
-
-### List on the Builder Marketplace
-
-Once your plugin is published to npm, you can submit it for listing on the Builder Marketplace. Follow the [Marketplace submission tutorial](/build-on-omnichain/builder-marketplace/marketplace-submission) to get started.
-
-Why list your plugin:
-
-- **Distribution** — listed plugins appear across Orderly-powered UIs, giving your plugin instant reach
-- **Discoverability** — builders and AI agents can explore and install plugins through `orderly-devkit`, making your work easy to find and adopt
-- **Monetization** — plugins that provide a service can monetize through their own business model (e.g. transaction fees, subscriptions, or profit sharing through the plugin's backend)
+#### Plugin Developer Handbook
 
 ### Orderly Plugin Developer Handbook
 Source: https://orderly.network/docs/build-on-omnichain/builder-marketplace/plugin-developer-handbook
@@ -2406,7 +2488,7 @@ This handbook explains how to build, integrate, and publish **Orderly SDK plugin
 ## Who this is for
 
 - Developers adding UI or layout behavior to an Orderly-powered DEX host.
-- Teams submitting plugins to the Orderly Builder Marketplace.
+- Teams submitting plugins to the Orderly Builders Marketplace.
 - **Developers and agents** who want repeatable, Orderly-endorsed flows (skills) plus accurate API lookup (MCP).
 
 ## Documentation map (Diátaxis)
@@ -2640,11 +2722,11 @@ You can still follow this handbook and the CLI alone: read the same four stages 
 - [CLI reference: skills](/build-on-omnichain/builder-marketplace/cli-reference#skills-install)
 - [Agent skills alignment](/build-on-omnichain/builder-marketplace/agent-skills-alignment) — MCP tool names vs. legacy skill text.
 
-#### Tutorials
+##### Tutorials
 
 - [Tutorial 1: First plugin from the template](https://orderly.network/docs/build-on-omnichain/builder-marketplace/first-plugin): Goal: Scaffold a plugin and make one visible change on a single interceptor target that exists in the SDK.
 - [Tutorial 2: Integrate a plugin into the host app](https://orderly.network/docs/build-on-omnichain/builder-marketplace/integrate-host): Goal: Load an existing plugin package through OrderlyAppProvider’s plugins prop.
-### Tutorial 3: Submit a plugin to the Orderly Builder Marketplace
+### Tutorial 3: Submit a plugin to the Orderly Builders Marketplace
 Source: https://orderly.network/docs/build-on-omnichain/builder-marketplace/marketplace-submission
 
 **Goal:** Authenticate with the devkit, validate a local plugin folder, and submit it for Marketplace review.
@@ -2731,14 +2813,14 @@ Requires **`orderly-devkit login`** in the current CLI implementation.
 
 - [Tutorial 4: One plugin, multiple interceptor targets](https://orderly.network/docs/build-on-omnichain/builder-marketplace/multi-interceptor-targets): Register one plugin that intercepts more than one injector target so the same feature can appear in several UI surfaces.
 
-#### How-to guides
+##### How-to guides
 
 - [How to choose a plugin type: Widget, Page, or Layout](https://orderly.network/docs/build-on-omnichain/builder-marketplace/plugin-types): | Type | Mechanism | Typical integration | | ---------- | --------------------------------------------------------- | ----------------------------------------------------------------------------------------- | | Page | Ordinary React page using SDK UI + hoo...
 - [How to implement interceptor strategies](https://orderly.network/docs/build-on-omnichain/builder-marketplace/interceptor-strategies): Interceptor entries use:
 - [How to wire plugin packages in a host (workspace, path, npm)](https://orderly.network/docs/build-on-omnichain/builder-marketplace/host-integration-patterns): Use the pattern that matches your repository layout.
 - [How to write `usagePrompt` and the GitHub README](https://orderly.network/docs/build-on-omnichain/builder-marketplace/usage-prompt-and-readme): Guide for how to write `usageprompt` and the github readme
 
-#### Reference
+##### Reference
 
 ### CLI reference (`orderly-devkit`)
 Source: https://orderly.network/docs/build-on-omnichain/builder-marketplace/cli-reference
@@ -2812,12 +2894,12 @@ orderly-devkit create module --name my-module
 
 Register a new plugin from a local directory. Resolves metadata from **`.orderly-manifest.json`** and/or **`package.json`**; can pick up `repoUrl` from `git remote origin` when missing.
 
-| Option             | Description                                                                                                               |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| `--path` / `-p`    | Plugin root (default: prompt or `./`)                                                                                     |
-| `--tags` / `-t`    | Comma-separated; [valid tags](/build-on-omnichain/builder-marketplace/manifest-and-submit#valid-builder-marketplace-tags) |
-| `--storybook-url`  | Optional Storybook base URL                                                                                               |
-| `--dry-run` / `-d` | Validate and print payload only                                                                                           |
+| Option             | Description                                                                                                                |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| `--path` / `-p`    | Plugin root (default: prompt or `./`)                                                                                      |
+| `--tags` / `-t`    | Comma-separated; [valid tags](/build-on-omnichain/builder-marketplace/manifest-and-submit#valid-builders-marketplace-tags) |
+| `--storybook-url`  | Optional Storybook base URL                                                                                                |
+| `--dry-run` / `-d` | Validate and print payload only                                                                                            |
 
 ```bash
 orderly-devkit submit --path ./my-plugin --dry-run
@@ -2918,7 +3000,7 @@ The CLI exposes a **fixed subset** for scaffolding prompts only—see the **crea
 Use **Developer / Inspector** tooling in dev mode to enumerate paths registered by your SDK version. Deeper architecture for **`injectable` / `useInjectedComponent`** ships in **`@orderly.network/plugin-core`** on npm (GUIDE / TECH).
 
 - [Runtime injector targets (handbook reference)](https://orderly.network/docs/build-on-omnichain/builder-marketplace/runtime-injector-targets): Interceptor target strings must match the SDK exactly (case-sensitive).
-### Manifest and Builder Marketplace submit
+### Manifest and Builders Marketplace submit
 Source: https://orderly.network/docs/build-on-omnichain/builder-marketplace/manifest-and-submit
 
 Aligned with **`@orderly.network/devkit`** **`submit`**, **`update`**, and manifest wiring (see the published package for source filenames).
@@ -2958,7 +3040,7 @@ Typical fields (see `generateManifest` / your project’s template):
 
 Keep `pluginId` synchronized with `SDK.registerPlugin({ id: "..." })`.
 
-## Valid Builder Marketplace tags
+## Valid Builders Marketplace tags
 
 Maximum **5** tags. Allowed values:
 
@@ -2977,17 +3059,18 @@ Maximum **5** tags. Allowed values:
 
 ## `view` and `list`
 
-Both use authenticated requests in the devkit. Treat Builder Marketplace responses as the source of truth for listing metadata after submit.
+Both use authenticated requests in the devkit. Treat Builders Marketplace responses as the source of truth for listing metadata after submit.
 
 See also: [CLI reference](/build-on-omnichain/builder-marketplace/cli-reference).
 
 - [Orderly SDK Docs MCP (`orderly-sdk-docs`)](https://orderly.network/docs/build-on-omnichain/builder-marketplace/mcp-sdk-docs): Runtime npm package: @orderly.network/sdk-docs. MCP server binary: orderly-sdk-docs-mcp (stdio), commonly installed via orderly-devkit mcp install.
 - [Agent skills and upstream documentation alignment](https://orderly.network/docs/build-on-omnichain/builder-marketplace/agent-skills-alignment): Orderly publishes agent skills (install via orderly-devkit skills install) for orderly-plugin-create, orderly-plugin-write, orderly-plugin-add, orderly-plugi...
 
-#### Recipes
+##### Recipes
 
 - [Recipe: Quick start checklist](https://orderly.network/docs/build-on-omnichain/builder-marketplace/quickstart-recipe): 1. pnpm add -g @orderly.network/devkit (or pnpm dlx @orderly.network/devkit --help).
 - [Recipe: Marketplace submit checklist](https://orderly.network/docs/build-on-omnichain/builder-marketplace/marketplace-submit-recipe): 1. Ensure package.json name and GitHub origin (or .orderly-manifest.json repoUrl) are correct.
+
 
 
 ### API fundamentals
@@ -5395,7 +5478,43 @@ const brokerId = "<your id>";
 
 ### Overview & FAQ
 
-- [Overview](https://orderly.network/docs/introduction/orderly-omniVault/overview): Explore Orderly OmniVault, an omnichain strategy vault for earning yield through market-maker strategies.
+### Overview
+Source: https://orderly.network/docs/introduction/orderly-omniVault/overview
+
+Orderly OmniVault is the official protocol-level vault (Protocol Vault) built on top of Orderly Network's underlying **Strategy Vault** technical infrastructure. While Strategy Vault serves as our core technical product and infrastructure (providing underlying smart contracts and CeFi clearing capabilities), OmniVault is the flagship protocol vault designed to leverage this infrastructure to amplify liquidity and enhance the on-chain trading experience across tradable markets within the Orderly ecosystem, creating new yield-earning opportunities for our stakeholders.
+
+As part of the initiative, Orderly is collaborating with industry-leading market makers (our trusted partners) as **Strategy Providers (SP)**, starting with Vovega Research.<a href="#ref1"><sup>1 </sup></a> &nbsp;We leverage their extensive expertise to execute efficient market-making strategies through the utilization & management of the OmniVault assets. Users can conveniently deposit USDC into the Orderly OmniVault from any of the supported blockchain networks and become protocol liquidity providers, granting them a proportional share of OmniVault's PnL. This enables them to earn attractive passive yields generated by professional market-marking strategies.<a href="#ref2"><sup>2</sup></a> &nbsp;Orderly OmniVault opens up profit opportunities previously inaccessible to retail users.
+
+## Security
+
+Orderly has completed two independent audits on our strategy vault smart contracts to ensure the highest security level of asset security for users. Audit reports are publicly available on our [GitHub](https://github.com/OrderlyNetwork/Audits).
+
+Users should carefully assess their risk tolerance and the vault's risk profile before depositing. It's important to note that every strategy vault carries its own risks.
+
+## OmniVault Smart Contract Addresses
+
+0x70fe7d65ac7c1a1732f64d2e6fc0e33622d0c991
+
+1. [Arbitrum](https://arbiscan.io/address/0x70fe7d65ac7c1a1732f64d2e6fc0e33622d0c991)
+2. [Base](https://basescan.org/address/0x70fe7d65ac7c1a1732f64d2e6fc0e33622d0c991)
+3. [Optimism](https://optimistic.etherscan.io/address/0x70fe7d65ac7c1a1732f64d2e6fc0e33622d0c991)
+4. [Sei](https://seitrace.com/address/0x70Fe7d65Ac7c1a1732f64d2E6fC0E33622D0C991)
+
+---
+
+<a id="ref1">
+  <sup>1 </sup>
+</a>
+Strategy Providers are independent third parties and operate at arm's length from Orderly. While we
+work with reputable firms, Orderly does not guarantee their performance or assume liability for
+their actions.
+
+<a id="ref2">
+  <sup>2 </sup>
+</a>
+All yields are subject to market risks and may fluctuate. Past performance is not indicative of
+future results, and returns are not guaranteed.
+
 - [Mechanics](https://orderly.network/docs/introduction/orderly-omniVault/mechanics): Understand how OmniVault shares, deposits, withdrawals, and PnL distribution work.
 - [Liquidity Provider](https://orderly.network/docs/introduction/orderly-omniVault/liquidity-provider): Learn how to deposit into and withdraw from Orderly OmniVault as a liquidity provider.
 - [FAQ](https://orderly.network/docs/introduction/orderly-omniVault/faq): Find answers to frequently asked questions about Orderly OmniVault, covering fees, risks, and transactions.

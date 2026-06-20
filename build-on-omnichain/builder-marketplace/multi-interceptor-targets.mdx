@@ -102,10 +102,7 @@ Conceptually:
 const interceptor = createInterceptor("TradingView.Desktop" as any, (Original, props, _api) => (
   <LocaleProvider>
     <Original {...props} />
-    <FastPlaceOrderWidget
-      symbol={props.symbol}
-      autoShowOnFullscreen={autoShowOnFullscreen}
-    />
+    <FastPlaceOrderWidget symbol={props.symbol} autoShowOnFullscreen={autoShowOnFullscreen} />
   </LocaleProvider>
 ));
 ```

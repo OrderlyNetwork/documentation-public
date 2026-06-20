@@ -20,11 +20,11 @@ Only DEXs with a **valid Broker ID** can enable the affiliate program. This appl
 
 The key differences between the legacy and new affiliate programs are summarized below:
 
-| Details                      | Legacy                                                                                                            | New                                                                                                                                                 |
-| ---------------------------- | ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Referral network**         | **Single-level**, only direct referrals                                                                           | **Multilevel** (up to 15 levels), direct and indirect referrals                                                                                    |
-| **Referral commission**      | Affiliates earn commissions from **direct referees only**                                                         | Affiliates earn commissions from both **direct and indirect referees** down the referral chain, with base commission guaranteed for direct referrals |
-| **Commission configuration** | Single-level commission up to 100%, decided by builder                                                            | Builder configures base commission `B`, then optionally assigns bonus commission `M` individually. The top-level total rate is `X_1 = B + M`.       |
+| Details                      | Legacy                                                                                                            | New                                                                                                                                                      |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Referral network**         | **Single-level**, only direct referrals                                                                           | **Multilevel** (up to 15 levels), direct and indirect referrals                                                                                          |
+| **Referral commission**      | Affiliates earn commissions from **direct referees only**                                                         | Affiliates earn commissions from both **direct and indirect referees** down the referral chain, with base commission guaranteed for direct referrals     |
+| **Commission configuration** | Single-level commission up to 100%, decided by builder                                                            | Builder configures base commission `B`, then optionally assigns bonus commission `M` individually. The top-level total rate is `X_1 = B + M`.            |
 | **Referral code creation**   | Created primarily by the builder or qualified affiliates upon meeting the applicable trading volume requirements. | Qualified affiliates can create codes after meeting the required trading volume (where applicable). Affiliates may only create one unique referral code. |
 
 ## 4. Coexistence of legacy affiliate program
@@ -81,12 +81,12 @@ Affiliates can earn two types of commission:
 
 For every trade executed by a user $(L_N)$ on the DEX, the table below shows indirect commission for upstream affiliates and direct commission for the trader's direct referrer:
 
-| Role                                 | Affiliate commission rate                  | Affiliate commission                                                                                          |
-| ------------------------------------ | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
-| **$L_1$ affiliate**                  | $X_1 - X_2$ where $X_2 \in [B, X_1]$       | $(X_1 - X_2) \times \text{Fee}_\text{Builder}$                                                              |
-| **$L_2$ affiliate**                  | $X_2 - X_3$ where $X_3 \in [B, X_2]$       | $(X_2 - X_3) \times \text{Fee}_\text{Builder}$                                                              |
-| **$L_3$ affiliate**                  | $X_3 - X_4$ where $X_4 \in [B, X_3]$       | $(X_3 - X_4) \times \text{Fee}_\text{Builder}$                                                              |
-| **…**                                | …                                          | …                                                                                                             |
+| Role                                 | Affiliate commission rate                  | Affiliate commission                                                                                                               |
+| ------------------------------------ | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| **$L_1$ affiliate**                  | $X_1 - X_2$ where $X_2 \in [B, X_1]$       | $(X_1 - X_2) \times \text{Fee}_\text{Builder}$                                                                                     |
+| **$L_2$ affiliate**                  | $X_2 - X_3$ where $X_3 \in [B, X_2]$       | $(X_2 - X_3) \times \text{Fee}_\text{Builder}$                                                                                     |
+| **$L_3$ affiliate**                  | $X_3 - X_4$ where $X_4 \in [B, X_3]$       | $(X_3 - X_4) \times \text{Fee}_\text{Builder}$                                                                                     |
+| **…**                                | …                                          | …                                                                                                                                  |
 | **$L_{N-1}$ user (direct referrer)** | $X_{N-1}$ where $X_{N-1} \in [B, X_{N-2}]$ | $X_{N-1} \times \text{Fee}_\text{Builder}$ — Direct referrer earns base commission plus any remaining bonus commission passed down |
 
 > Note: Direct referrers earn the base commission rate from trades executed by their direct referrals.
@@ -142,31 +142,31 @@ Assume base commission $B$ is 10%, so the minimum pass-down rate is 10%. The ref
 Builder -> L1 -> L2 -> L3 -> Trader
 ```
 
-| Node | Total assigned rate | Earned commission on this trade path |
-|------|---------------------|--------------------------------------|
-| Builder | 100% | 10% builder margin |
-| $L_1$ affiliate | 90% | 30% indirect commission, calculated as 90% - 60% |
-| $L_2$ affiliate | 60% | 20% indirect commission, calculated as 60% - 40% |
-| $L_3$ affiliate | 40% | 40% direct commission |
+| Node            | Total assigned rate | Earned commission on this trade path             |
+| --------------- | ------------------- | ------------------------------------------------ |
+| Builder         | 100%                | 10% builder margin                               |
+| $L_1$ affiliate | 90%                 | 30% indirect commission, calculated as 90% - 60% |
+| $L_2$ affiliate | 60%                 | 20% indirect commission, calculated as 60% - 40% |
+| $L_3$ affiliate | 40%                 | 40% direct commission                            |
 
 Scenario 1: Builder lowers the $L_1$ affiliate's total assigned rate from 90% to 70%.
 
 The decrease is 20%. The $L_1$ affiliate has 30% earned commission on this trade path, so the full decrease is absorbed by $L_1$.
 
-| Node | Total assigned rate after | Earned commission after |
-|------|---------------------------|-------------------------|
-| Builder | 100% | 30% builder margin |
-| $L_1$ affiliate | 70% | 10% indirect commission |
-| $L_2$ affiliate | 60% | 20% indirect commission |
-| $L_3$ affiliate | 40% | 40% direct commission |
+| Node            | Total assigned rate after | Earned commission after |
+| --------------- | ------------------------- | ----------------------- |
+| Builder         | 100%                      | 30% builder margin      |
+| $L_1$ affiliate | 70%                       | 10% indirect commission |
+| $L_2$ affiliate | 60%                       | 20% indirect commission |
+| $L_3$ affiliate | 40%                       | 40% direct commission   |
 
 Scenario 2: Builder lowers the $L_1$ affiliate's total assigned rate from 90% to 50%.
 
 The decrease is 40%. The $L_1$ affiliate can absorb 30%, so the remaining 10% is deducted from the next downstream affiliate, $L_2$.
 
-| Node | Total assigned rate after | Earned commission after |
-|------|---------------------------|-------------------------|
-| Builder | 100% | 50% builder margin |
-| $L_1$ affiliate | 50% | 0% indirect commission |
-| $L_2$ affiliate | 50% | 10% indirect commission |
-| $L_3$ affiliate | 40% | 40% direct commission |
+| Node            | Total assigned rate after | Earned commission after |
+| --------------- | ------------------------- | ----------------------- |
+| Builder         | 100%                      | 50% builder margin      |
+| $L_1$ affiliate | 50%                       | 0% indirect commission  |
+| $L_2$ affiliate | 50%                       | 10% indirect commission |
+| $L_3$ affiliate | 40%                       | 40% direct commission   |

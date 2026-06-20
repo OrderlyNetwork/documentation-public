@@ -47,17 +47,14 @@ export default function Trading() {
   // A component that provides wallet connectivity,
   // but you can also use any wallet connection component that you customize
   return (
-    <ConnectorProvider
-      apiKey="<Your web3-onboard's api key>"
-      options={`metadata`}
-    >
+    <ConnectorProvider apiKey="<Your web3-onboard's api key>" options={`metadata`}>
       <OrderlyAppProvider
         networkId="testnet"
         brokerId="<Your broker id>"
         logoUrl="<Your brand logo url>"
       >
         <TradingPage
-          symbol={'PERP_ETH_USDC'}
+          symbol={"PERP_ETH_USDC"}
           tradingViewConfig={`tradingView config`}
           onSymbolChange={`onSymbolChange handler`}
         />
@@ -136,11 +133,11 @@ import { TradingPage } from "@orderly.network/react";
 export default function Trading() {
   return (
     <TradingPage
-      symbol={'PERP_ETH_USDC'}
+      symbol={"PERP_ETH_USDC"}
       tradingViewConfig={{
         scriptSRC: "/assets/chart/charting_library/charting_library.js",
         library_path: "/assets/chart/charting_library/",
-        customCssUrl: "/assets/chart/custom.css", // optional
+        customCssUrl: "/assets/chart/custom.css" // optional
       }}
     />
   );
