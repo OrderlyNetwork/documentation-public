@@ -2982,7 +2982,7 @@ paths:
         be generated through the mid price of the orderbook in addition to any
         executed trades on the platform.
       tags:
-        - private
+        - public
       parameters:
         - name: symbol
           in: query
@@ -5065,7 +5065,7 @@ paths:
 
         Scope: Only each builder_id's admin wallet can call this endpoint.
 
-        If `account_id` or `address` is provided, will always return the fee rate and indicate whether the user is on the builder’s default fee rate or not.
+        If `account_id` or `address` is provided, will always return the fee rate and indicate whether the user is on the builder’s default fee rate or not. Note that although both `account_id` and `address` are schema-optional, you must provide at least one of them to query a specific user's fee rate. If neither is provided, the API will fail in certain operation modes due to missing user context.
       tags:
         - private
       parameters:
@@ -14279,6 +14279,7 @@ components:
             - chainId
             - registrationNonce
             - timestamp
+            - txHash
           properties:
             delegateContract:
               type: string

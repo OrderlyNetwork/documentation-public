@@ -441,6 +441,9 @@ deposit();
 
 ## Withdrawal
 
+> [!WARNING]
+> **PnL Settlement Requirement**: Any realized profit from open or recently closed positions must be settled via the **Settle PnL** flow before it can be added to your `withdrawable_balance`. If you attempt to withdraw without settling your PnL, the withdrawal amount may exceed your available balance and fail. See [Settle PnL](/build-on-omnichain/user-flows/settle-pnl) for details.
+
 To withdraw tokens from Orderly:
 
 <Steps>
@@ -474,10 +477,10 @@ Example:
 ```json
 {
   "brokerId": "woofi_pro",
-  "chainId": 80001,
+  "chainId": 421614,
   "receiver": "0x036Cb579025d3535a0ADcD929D05481a3189714b",
   "token": "USDC",
-  "amount": "1000000",
+  "amount": 1000000,
   "withdrawNonce": 1,
   "timestamp": 1685973017064
 }
@@ -501,6 +504,181 @@ where:
   </Step>
 </Steps>
 
-### Example
+### Full Example
 
-The example code is very similar to the [Orderly Key registration](/build-on-omnichain/user-flows/wallet-authentication#full-example), except it uses the EIP-712 [on-chain domain](/build-on-omnichain/user-flows/wallet-authentication#on-chain-domain) and the signed message is different.
+Unlike key registration which uses the off-chain domain, a withdrawal signature requires the **on-chain domain** targeting the Orderly Ledger contract.
+
+Furthermore, note the type formatting difference:
+
+- In the EIP-712 cryptography signature message, `amount` must be represented as a **numeric value** (`uint256`/`BigInt`).
+- In the final REST API JSON payload, the `amount` field must be serialized as a **String**.
+
+<CodeGroup>
+
+```ts TypeScript
+import { ethers } from "ethers";
+
+const types = {
+  Withdraw: [
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "receiver", type: "address" },
+    { name: "token", type: "string" },
+    { name: "amount", type: "uint256" },
+    { name: "withdrawNonce", type: "uint64" },
+    { name: "timestamp", type: "uint64" }
+  ]
+};
+
+// Target Ledger Contract Address (Arbitrum Sepolia L2 Ledger shown below)
+// Mainnet: 0x6F7a338F2aA472838dEFD3283eB360d4Dff5D203
+// Testnet: 0x1826B75e2ef249173FC735149AE4B8e9ea10abff
+const ON_CHAIN_DOMAIN = {
+  name: "Orderly",
+  version: "1",
+  chainId: 421614,
+  verifyingContract: "0x1826B75e2ef249173FC735149AE4B8e9ea10abff"
+};
+
+const BASE_URL = "https://testnet-api.orderly.org";
+
+async function requestWithdrawal() {
+  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!);
+
+  // 1. Fetch withdrawal nonce from private API
+  const timestamp = Date.now();
+  const signatureKey = await wallet
+    .signTypedData
+    // ... Assume signature for API auth is already created
+    ();
+  // (Assuming you obtained withdrawNonce = 1 and orderlyAccountId)
+  const withdrawNonce = 1;
+  const orderlyAccountId = "0x...";
+
+  // 2. Prepare EIP-712 message (amount as BigInt)
+  const withdrawMessage = {
+    brokerId: "woofi_dex",
+    chainId: 421614,
+    receiver: wallet.address,
+    token: "USDC",
+    amount: 1000000n, // 1 USDC (6 decimals)
+    withdrawNonce,
+    timestamp
+  };
+
+  // 3. Sign EIP-712 typed data
+  const signature = await wallet.signTypedData(
+    ON_CHAIN_DOMAIN,
+    { Withdraw: types.Withdraw },
+    withdrawMessage
+  );
+
+  // 4. Send request to REST API (amount as String)
+  const response = await fetch(`${BASE_URL}/v1/withdraw_request`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "orderly-timestamp": String(timestamp),
+      "orderly-account-id": orderlyAccountId,
+      "orderly-key": "...",
+      "orderly-signature": "..." // Ed25519 API signature
+    },
+    body: JSON.stringify({
+      message: {
+        brokerId: withdrawMessage.brokerId,
+        chainId: withdrawMessage.chainId,
+        receiver: withdrawMessage.receiver,
+        token: withdrawMessage.token,
+        amount: withdrawMessage.amount.toString(), // MUST be String
+        withdrawNonce: withdrawMessage.withdrawNonce,
+        timestamp: withdrawMessage.timestamp
+      },
+      signature,
+      userAddress: wallet.address
+    })
+  });
+
+  const result = await response.json();
+  console.log(result);
+}
+```
+
+```py Python
+import time
+import requests
+from eth_account import Account, messages
+
+MESSAGE_TYPES = {
+    "Withdraw": [
+        {"name": "brokerId", "type": "string"},
+        {"name": "chainId", "type": "uint256"},
+        {"name": "receiver", "type": "address"},
+        {"name": "token", "type": "string"},
+        {"name": "amount", "type": "uint256"},
+        {"name": "withdrawNonce", "type": "uint64"},
+        {"name": "timestamp", "type": "uint64"},
+    ]
+}
+
+# Target Ledger Contract Address (Arbitrum Sepolia L2 Ledger shown below)
+# Mainnet: 0x6F7a338F2aA472838dEFD3283eB360d4Dff5D203
+# Testnet: 0x1826B75e2ef249173FC735149AE4B8e9ea10abff
+ON_CHAIN_DOMAIN = {
+    "name": "Orderly",
+    "version": "1",
+    "chainId": 421614,
+    "verifyingContract": "0x1826B75e2ef249173FC735149AE4B8e9ea10abff"
+}
+
+account = Account.from_key("your_private_key")
+timestamp = int(time.time() * 1000)
+withdraw_nonce = 1  # Fetched from /v1/withdraw_nonce
+
+# EIP-712 message: note amount is integer (numeric)
+withdraw_message = {
+    "brokerId": "woofi_dex",
+    "chainId": 421614,
+    "receiver": account.address,
+    "token": "USDC",
+    "amount": 1000000, # 1 USDC (6 decimals)
+    "withdrawNonce": withdraw_nonce,
+    "timestamp": timestamp
+}
+
+encoded_data = messages.encode_typed_data(
+    domain_data=ON_CHAIN_DOMAIN,
+    message_types={"Withdraw": MESSAGE_TYPES["Withdraw"]},
+    message_data=withdraw_message
+)
+signed_message = account.sign_message(encoded_data)
+
+# Send request to REST API (amount as String)
+payload = {
+    "message": {
+        "brokerId": withdraw_message["brokerId"],
+        "chainId": withdraw_message["chainId"],
+        "receiver": withdraw_message["receiver"],
+        "token": withdraw_message["token"],
+        "amount": str(withdraw_message["amount"]),  # Convert to String
+        "withdrawNonce": withdraw_message["withdrawNonce"],
+        "timestamp": withdraw_message["timestamp"]
+    },
+    "signature": signed_message.signature.hex(),
+    "userAddress": account.address
+}
+
+res = requests.post(
+    "https://testnet-api.orderly.org/v1/withdraw_request",
+    headers={
+        "Content-Type": "application/json",
+        "orderly-timestamp": str(timestamp),
+        "orderly-account-id": "...",
+        "orderly-key": "...",
+        "orderly-signature": "..."
+    },
+    json=payload
+)
+print(res.json())
+```
+
+</CodeGroup>

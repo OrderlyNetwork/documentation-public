@@ -204,6 +204,10 @@ Call the [Create Internal Transfer With Wallet Signature API](/build-on-omnichai
 
     The request body must include the generated signature and the message parameters used to create it:
 
+    > [!WARNING]
+    > **EIP-712 Signature vs. API Payload Mismatch**:
+    > The REST API request body `message` structure includes helper fields `chainId` and `chainType`. These fields **must NOT** be included in the EIP-712 message object during cryptography signing. If you include them in the EIP-712 signature `message` hash, the gateway validation will fail.
+
     <Note>
       Note that in the API request, `receiver` is a string (hex format with 0x prefix), while in the EIP-712 signature it must be bytes32. The `userAddress` must be an EVM address format (0x-prefixed hex string) for EVM chains, or a Solana address for SOL chains.
     </Note>
@@ -221,7 +225,7 @@ Call the [Create Internal Transfer With Wallet Signature API](/build-on-omnichai
 },
 "signature": "0xa9f5ef503a95af0bb0211858e8b6a83a3d23d7a84b8db3c2aa3327deb34b084577758cc6d8cbc9a047d60436c62d0591ee6693f34487bea785247608516360991b",
 "userAddress": "0xb6309c90b5ecc2f8a87987294af03951e80bfef0",
-"verifyingContract": "0x8794E7260517B1766fc7b55cAfcd56e6bf08600e"
+"verifyingContract": "0x1826B75e2ef249173FC735149AE4B8e9ea10abff"
 }
 
 ````
@@ -264,7 +268,7 @@ const USER_ADDRESS = "0x...";
 const CHAIN_ID = ENV === 'mainnet' ? 42161 : 421614;
 const LEDGER_CONTRACT_ADDRESS = ENV === 'mainnet'
     ? "0x6F7a338F2aA472838dEFD3283eB360d4Dff5D203"
-    : "0x8794E7260517B1766fc7b55cAfcd56e6bf08600e";
+    : "0x1826B75e2ef249173FC735149AE4B8e9ea10abff";
 const RECEIVER_ACCOUNT_ID = "0x...";
 const TRANSFER_AMOUNT = 1000000;
 const ORDERLY_TESTNET = ENV === 'testnet';
@@ -427,7 +431,7 @@ ORDERLY_SECRET = "ed25519:xxx"
 WALLET_SECRET = "70xxxf9"
 USER_ADDRESS = "0x..."
 CHAIN_ID = 42161 if ENV == 'mainnet' else 421614
-LEDGER_CONTRACT_ADDRESS = "0x6F7a338F2aA472838dEFD3283eB360d4Dff5D203" if ENV == 'mainnet' else "0x8794E7260517B1766fc7b55cAfcd56e6bf08600e"
+LEDGER_CONTRACT_ADDRESS = "0x6F7a338F2aA472838dEFD3283eB360d4Dff5D203" if ENV == 'mainnet' else "0x1826B75e2ef249173FC735149AE4B8e9ea10abff"
 RECEIVER_ACCOUNT_ID = "0x..."
 TRANSFER_AMOUNT = 1000000
 ORDERLY_TESTNET = ENV == 'testnet'
