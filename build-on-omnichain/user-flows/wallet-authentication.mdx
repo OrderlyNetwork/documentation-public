@@ -133,6 +133,13 @@ An Orderly Key is necessary to perform [API authentication](/build-on-omnichain/
 
 Orderly keys can have different scopes. A `read` scope can access all private read-only APIs, and a `trading` scope can, in addition, access all order APIs (create order, batch create order, edit order, cancel order, cancel order by client_order_id, cancel orders in bulk, batch cancel orders, batch cancel orders by client_order_id).
 
+> [!NOTE]
+> **API Privilege Model & Key Scope Design (By Design)**:
+> Orderly Network utilizes a two-tier key scope structure designed to decouple order placement from general account setup:
+>
+> - **`read` Scope**: Grants access to all private read-only APIs, as well as **account and risk parameter configuration write APIs** (such as `POST /v1/client/leverage` and `POST /v1/client/maintenance_config`). This design ensures that client interfaces can adjust configuration parameters without requiring full order execution authority. This security boundary behavior is intentional and **By Design**.
+> - **`trading` Scope**: Restricts key authority exclusively to order lifecycle actions (e.g., creating, editing, and cancelling orders).
+
 Orderly keys also have expirations for security reasons. The maximum allowed expiration of an Orderly Key is 365 days.
 
 > [!IMPORTANT]
