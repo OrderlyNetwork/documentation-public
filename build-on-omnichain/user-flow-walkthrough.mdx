@@ -41,6 +41,12 @@ Access keys can have different scopes:
 - **read** -- access all private read-only APIs
 - **trading** -- in addition to read access, access all order APIs (create order, batch create order, edit order, cancel order, cancel order by client_order_id, cancel orders in bulk, batch cancel orders, batch cancel orders by client_order_id)
 
+> [!NOTE]
+> **API Privilege Model & Key Scope Design (By Design)**:
+>
+> - **`read` Scope**: Allows reading private user metrics, plus invoking account configuration changes (such as adjusting leverage via `POST /v1/client/leverage` or editing maintenance configs via `POST /v1/client/maintenance_config`). Decoupling these configuration actions from order execution is a deliberate architectural decision (**By Design**).
+> - **`trading` Scope**: Mandatory strictly for order placement and lifecycle execution.
+
 Access keys also have expirations for security reasons. The maximum allowed expiration is 365 days.
 
 ### Account Registration

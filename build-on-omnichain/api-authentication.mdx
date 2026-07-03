@@ -62,11 +62,11 @@ Orderly uses the [`ed25519` elliptic curve standard](https://ed25519.cr.yp.to/) 
 
 ### Minimal Example
 
-This is a concise, single-file TypeScript example that demonstrates how to sign and send a request to the Orderly API using the `@noble/ed25519` library.
+This is a concise, single-file TypeScript example that demonstrates how to sign and send a request to the Orderly API using the `@noble/curves` library.
 
 ```ts
-import { signAsync, getPublicKeyAsync } from "@noble/ed25519";
-import bs58 from "bs58";
+import { ed25519 } from "@noble/curves/ed25519";
+import { base58 } from "@scure/base";
 
 async function main() {
   const orderlyAccountId = "YOUR_ACCOUNT_ID";
@@ -82,9 +82,11 @@ async function main() {
   });
   const timestamp = Date.now();
 
-  const privateKey = bs58.decode(orderlySecret);
+  const privateKey = base58.decode(orderlySecret);
   const message = `${timestamp}${method}${url.pathname}${url.search}${body}`;
-  const signature = await signAsync(new TextEncoder().encode(message), privateKey);
+  const signatureBytes = ed25519.sign(new TextEncoder().encode(message), privateKey);
+
+  const publicKeyBytes = ed25519.getPublicKey(privateKey);
 
   const response = await fetch(url, {
     method,
@@ -92,9 +94,9 @@ async function main() {
     headers: {
       "Content-Type": "application/json",
       "orderly-account-id": orderlyAccountId,
-      "orderly-key": `ed25519:${bs58.encode(await getPublicKeyAsync(privateKey))}`,
+      "orderly-key": `ed25519:${base58.encode(publicKeyBytes)}`,
       "orderly-timestamp": String(timestamp),
-      "orderly-signature": Buffer.from(signature).toString("base64url")
+      "orderly-signature": Buffer.from(signatureBytes).toString("base64url")
     }
   });
 
@@ -296,9 +298,8 @@ response = json.loads(res.text)
 ```py signer.py
 from base58 import b58encode
 from base64 import urlsafe_b64encode
-from datetime import datetime
 import json
-import math
+import time
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from requests import PreparedRequest, Request
 import urllib
@@ -313,18 +314,18 @@ class Signer(object):
         self._private_key = private_key
 
     def sign_request(self, req: Request) -> PreparedRequest:
-        d = datetime.utcnow()
-        epoch = datetime(1970, 1, 1)
-        timestamp = math.trunc((d - epoch).total_seconds() * 1_000)
+        timestamp = int(time.time() * 1000)
 
         json_str = ""
         if req.json is not None:
-            json_str = json.dumps(req.json)
+            json_str = json.dumps(req.json, separators=(',', ':'))
 
         url = urllib.parse.urlparse(req.url)
-        message = str(timestamp) + req.method + url.path + json_str
-        if len(url.query) > 0:
-            message += "?" + url.query
+        path_with_query = url.path
+        if url.query:
+            path_with_query += "?" + url.query
+
+        message = str(timestamp) + req.method + path_with_query + json_str
 
         orderly_signature = urlsafe_b64encode(
             self._private_key.sign(message.encode())
@@ -355,14 +356,10 @@ def encode_key(key: bytes):
   <Tab title="TypeScript">
     <CodeGroup>
 ```ts authenticationExample.ts
-import bs58 from 'bs58';
+import { base58 } from '@scure/base';
 import { config } from 'dotenv';
-import { webcrypto } from 'node:crypto';
 
 import { signAndSendRequest } from "./signer";
-
-// this is only necessary in Node.js to make `@noble/ed25519` dependency work
-if (!globalThis.crypto) globalThis.crypto = webcrypto as any;
 
 config();
 
@@ -370,7 +367,7 @@ async function main() {
 const baseUrl = 'https://testnet-api.orderly.org';
 const orderlyAccountId = '<orderly-account-id>';
 
-const orderlyKey = bs58.decode(process.env.ORDERLY_SECRET!);
+const orderlyKey = base58.decode(process.env.ORDERLY_SECRET!);
 
 const res = await signAndSendRequest(orderlyAccountId, orderlyKey, `${baseUrl}/v1/order`, {
 method: 'POST',
@@ -390,12 +387,12 @@ main();
 ````
 
 ```ts signer.ts
-import { getPublicKeyAsync, signAsync } from '@noble/ed25519';
+import { ed25519 } from '@noble/curves/ed25519';
 import { encodeBase58 } from 'ethers';
 
-export async function signAndSendRequest(
+export function signAndSendRequest(
   orderlyAccountId: string,
-  privateKey: Uint8Array | string,
+  privateKey: Uint8Array,
   input: URL | string,
   init?: RequestInit | undefined
 ): Promise<Response> {
@@ -407,7 +404,7 @@ export async function signAndSendRequest(
   if (init?.body) {
     message += init.body;
   }
-  const orderlySignature = await signAsync(encoder.encode(message), privateKey);
+  const orderlySignature = ed25519.sign(encoder.encode(message), privateKey);
 
   return fetch(input, {
     headers: {
@@ -417,7 +414,7 @@ export async function signAndSendRequest(
           : 'application/x-www-form-urlencoded',
       'orderly-timestamp': String(timestamp),
       'orderly-account-id': orderlyAccountId,
-      'orderly-key': `ed25519:${encodeBase58(await getPublicKeyAsync(privateKey))}`,
+      'orderly-key': `ed25519:${encodeBase58(ed25519.getPublicKey(privateKey))}`,
       'orderly-signature': Buffer.from(orderlySignature).toString('base64url'),
       ...(init?.headers ?? {})
     },

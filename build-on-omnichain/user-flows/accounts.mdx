@@ -22,7 +22,7 @@ Each account is identified by an account id, which can be calculated by
     <CodeGroup>
 ```ts TypeScript
 export function getAccountId(userAddress, brokerId) {
-  const abicoder = AbiCoder.defaultAbiCoder();
+  const abicoder = new AbiCoder();
   return keccak256(
     abicoder.encode(
       ['address', 'bytes32'],
@@ -95,7 +95,7 @@ const registrationNonce = nonceJson.data.registration_nonce as string;
 ```json
 {
   "brokerId": "woofi_dex",
-  "chainId": 80001,
+  "chainId": 421614,
   "timestamp": 1685973017064,
   "registrationNonce": "194528949540"
 }
@@ -105,7 +105,7 @@ where:
 
 | **Name**          | **Type**  | **Required** | **Description**                                                                                          |
 | ----------------- | --------- | ------------ | -------------------------------------------------------------------------------------------------------- |
-| brokerId          | string    | Y            | Builder ID                                                                                               |
+| brokerId          | string    | Y            | The unique identifier of the Builder (also known as Broker ID).                                          |
 | chainId           | int       | Y            | Chain ID of registering chain (within those that are supported by the Network)                           |
 | timestamp         | timestamp | Y            | timestamp in UNIX milliseconds                                                                           |
 | registrationNonce | string    | Y            | Valid nonce from Get [Registration Nonce](/build-on-omnichain/restful-api/public/get-registration-nonce) |
@@ -152,9 +152,9 @@ registerMessage.put("timestamp", Instant.now().toEpochMilli());
 registerMessage.put("registrationNonce", registrationNonce);
 
 JSONObject jsonObject = new JSONObject();
-jsonObject.put("types", RegisterExample.MESSAGE_TYPES);
+jsonObject.put("types", MESSAGE_TYPES);
 jsonObject.put("primaryType", "Registration");
-jsonObject.put("domain", RegisterExample.OFF_CHAIN_DOMAIN);
+jsonObject.put("domain", OFF_CHAIN_DOMAIN);
 jsonObject.put("message", registerMessage);
 
 Sign.SignatureData signature = Sign.signTypedData(jsonObject.toString(), credentials.getEcKeyPair());
@@ -188,9 +188,8 @@ chain_id = 421614
 
 account: Account = Account.from_key(os.environ.get("PRIVATE_KEY"))
 
-d = datetime.utcnow()
-epoch = datetime(1970, 1, 1)
-timestamp = math.trunc((d - epoch).total_seconds() * 1_000)
+import time
+timestamp = int(time.time() * 1000)
 
 register_message = {
     "brokerId": broker_id,
@@ -267,7 +266,7 @@ String baseUrl = "https://testnet-api.orderly.org";
 
 JSONObject jsonBody = new JSONObject();
 jsonBody.put("message", registerMessage);
-jsonBody.put("signature", RegisterExample.signatureToHashString(signature));
+jsonBody.put("signature", signatureToHashString(signature));
 jsonBody.put("userAddress", credentials.getAddress());
 RequestBody body = RequestBody.create(jsonBody.toString(), MediaType.get("application/json"));
 Request registerReq = new Request.Builder()
@@ -410,16 +409,16 @@ int chainId = 421614;
       registerMessage.put("registrationNonce", registrationNonce);
 
       JSONObject jsonObject = new JSONObject();
-      jsonObject.put("types", RegisterExample.MESSAGE_TYPES);
+      jsonObject.put("types", MESSAGE_TYPES);
       jsonObject.put("primaryType", "Registration");
-      jsonObject.put("domain", RegisterExample.OFF_CHAIN_DOMAIN);
+      jsonObject.put("domain", OFF_CHAIN_DOMAIN);
       jsonObject.put("message", registerMessage);
 
       Sign.SignatureData signature = Sign.signTypedData(jsonObject.toString(), credentials.getEcKeyPair());
 
       JSONObject jsonBody = new JSONObject();
       jsonBody.put("message", registerMessage);
-      jsonBody.put("signature", RegisterExample.signatureToHashString(signature));
+      jsonBody.put("signature", signatureToHashString(signature));
       jsonBody.put("userAddress", credentials.getAddress());
       RequestBody body = RequestBody.create(jsonBody.toString(), MediaType.get("application/json"));
       Request registerReq = new Request.Builder()
@@ -449,10 +448,9 @@ return Numeric.toHexString(retval);
 ````
 
 ```py Python
-from datetime import datetime
 import json
-import math
 import os
+import time
 import requests
 
 from eth_account import Account, messages
@@ -489,9 +487,7 @@ res = requests.get("%s/v1/registration_nonce" % base_url)
 response = json.loads(res.text)
 registration_nonce = response["data"]["registration_nonce"]
 
-d = datetime.utcnow()
-epoch = datetime(1970, 1, 1)
-timestamp = math.trunc((d - epoch).total_seconds() * 1_000)
+timestamp = int(time.time() * 1000)
 
 register_message = {
     "brokerId": broker_id,
@@ -599,3 +595,12 @@ registerAccount();
 ```
 
 </CodeGroup>
+
+## Next Steps
+
+After successfully registering your account, you must enable authentication by binding an Orderly Key. Proceed to the next step:
+
+- [Wallet Authentication (Orderly Key)](/build-on-omnichain/user-flows/wallet-authentication)
+
+> [!WARNING]
+> If you do not bind an Orderly Key to your account, you will not be able to access any private REST APIs or subscribe to private WebSocket streams.

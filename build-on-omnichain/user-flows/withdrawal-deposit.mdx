@@ -3,6 +3,11 @@ title: "Deposit/Withdrawal"
 description: "Implement secure cross-chain deposits and withdrawals with step-by-step smart contract and API integration guides."
 ---
 
+> [!TIP]
+> **Deposit Method Selection**:
+> This page explains **Standard Vault Deposit**, where the user connects their wallet and invokes the smart contract `deposit` function.
+> If your users are depositing from a Centralized Exchange (CEX) or using a custodial wallet that does not support DApps, refer to the [Deposit by Transfer](/build-on-omnichain/user-flows/deposit-by-transfer) guide.
+
 ## Deposit
 
 Token deposits can be made on any supported chains (list [here](/introduction/trade-on-orderly/supported-chains))
@@ -11,8 +16,11 @@ To create a deposit request:
 
 <Steps>
   <Step title="Approve spending of the token by the Vault smart contract">
-    Get Vault & USDC deposit address from [here](/build-on-omnichain/addresses#arbitrum).
-    All our smart contracts are verified, so you can get Vault & USDC ABI files via explorer, e.g. on Arbitrum Sepolia you can copy Vault ABI from [here](https://sepolia.arbiscan.io/address/0x0c554ddb6a9010ed1fd7e50d92559a06655da482).
+    Get Vault & USDC contract addresses from the [Smart Contract Addresses](/build-on-omnichain/addresses) page.
+    All our smart contracts are verified, meaning you can retrieve the Vault & Token ABIs from the block explorers of any supported mainnets or testnets.
+
+    > [!IMPORTANT]
+    > *The addresses and RPC nodes used in the following examples are for **Arbitrum Sepolia** testnet. Since Orderly is an omnichain protocol, when deploying to production, replace these with the correct contract addresses and RPC endpoints for your target chain.*
 
     <Accordion title="Example code">
       <CodeGroup>
@@ -40,10 +48,10 @@ USDC.approve(vaultAddress, depositAmount).send();
 usdc_address = Web3.to_checksum_address("0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d")
 vault_address = Web3.to_checksum_address("0x0EaC556c0C2321BA25b9DC01e4e3c95aD5CDCd2f")
 
-account: Account = Account.from_key(os.environ.get("PRIVATE_KEY"))
+private_key = os.environ.get("PRIVATE_KEY")
+account: Account = Account.from_key(private_key)
 
 w3 = Web3(Web3.HTTPProvider("https://arbitrum-sepolia.publicnode.com"))
-w3.middleware_onion.add(construct_sign_and_send_raw_middleware(account))
 
 with open("./src/abi/NativeUSDC.json") as f:
     abi = json.load(f)
@@ -54,10 +62,17 @@ usdc = w3.eth.contract(
 
 deposit_amount = 10000000
 
-# approve USDC ERC-20 to be transferred to Vault contract
-usdc.functions.approve(vault_address, deposit_amount).transact(
-    {"from": account.address}
-)
+# Build transaction to approve USDC ERC-20 to be transferred to Vault contract
+approve_tx = usdc.functions.approve(vault_address, deposit_amount).build_transaction({
+    "from": account.address,
+    "nonce": w3.eth.get_transaction_count(account.address),
+    "gasPrice": w3.eth.gas_price
+})
+
+# Sign and send the raw transaction directly (no middleware required)
+signed_tx = w3.eth.account.sign_transaction(approve_tx, private_key=private_key)
+tx_hash = w3.eth.send_raw_transaction(signed_tx.raw_transaction)
+w3.eth.wait_for_transaction_receipt(tx_hash)
 ```
 
 ```ts TypeScript
@@ -123,8 +138,8 @@ token_hash = w3.keccak(text=token_id)
 
 deposit_input = (
     bytes.fromhex(orderly_account_id[2:]),
-    bytes.fromhex(broker_hash.hex()[2:]),
-    bytes.fromhex(token_hash.hex()[2:]),
+    broker_hash,
+    token_hash,
     deposit_amount,
 )
 
@@ -299,7 +314,6 @@ import os
 
 from eth_account import Account
 from web3 import Web3
-from web3.middleware import construct_sign_and_send_raw_middleware
 
 broker_id = "woofi_pro"
 token_id = "USDC"
@@ -308,10 +322,10 @@ orderly_account_id = "0x..."
 usdc_address = Web3.to_checksum_address("0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d")
 vault_address = Web3.to_checksum_address("0x0EaC556c0C2321BA25b9DC01e4e3c95aD5CDCd2f")
 
-account: Account = Account.from_key(os.environ.get("PRIVATE_KEY"))
+private_key = os.environ.get("PRIVATE_KEY")
+account: Account = Account.from_key(private_key)
 
 w3 = Web3(Web3.HTTPProvider("https://arbitrum-sepolia.publicnode.com"))
-w3.middleware_onion.add(construct_sign_and_send_raw_middleware(account))
 
 with open("./src/abi/NativeUSDC.json") as f:
     abi = json.load(f)
@@ -322,10 +336,15 @@ usdc = w3.eth.contract(
 
 deposit_amount = 10000000
 
-# approve USDC ERC-20 to be transferred to Vault contract
-usdc.functions.approve(vault_address, deposit_amount).transact(
-    {"from": account.address}
-)
+# 1. Build and sign approve transaction
+approve_tx = usdc.functions.approve(vault_address, deposit_amount).build_transaction({
+    "from": account.address,
+    "nonce": w3.eth.get_transaction_count(account.address),
+    "gasPrice": w3.eth.gas_price
+})
+signed_approve_tx = w3.eth.account.sign_transaction(approve_tx, private_key=private_key)
+approve_hash = w3.eth.send_raw_transaction(signed_approve_tx.raw_transaction)
+w3.eth.wait_for_transaction_receipt(approve_hash)
 
 with open("./src/abi/Vault.json") as f:
     abi = json.load(f)
@@ -350,10 +369,16 @@ deposit_fee = vault.functions.getDepositFee(
     deposit_input,
 ).call()
 
-# deposit USDC into Vault contract
-vault.functions.deposit(deposit_input).transact(
-    {"from": account.address, "value": deposit_fee}
-)
+# 2. Build and sign deposit transaction
+deposit_tx = vault.functions.deposit(deposit_input).build_transaction({
+    "from": account.address,
+    "value": deposit_fee,
+    "nonce": w3.eth.get_transaction_count(account.address),
+    "gasPrice": w3.eth.gas_price
+})
+signed_deposit_tx = w3.eth.account.sign_transaction(deposit_tx, private_key=private_key)
+deposit_hash = w3.eth.send_raw_transaction(signed_deposit_tx.raw_transaction)
+w3.eth.wait_for_transaction_receipt(deposit_hash)
 ````
 
 ```ts TypeScript
@@ -400,7 +425,7 @@ async function deposit(): Promise<void> {
 }
 
 export function getAccountId(address: string, brokerId: string) {
-  const abicoder = AbiCoder.defaultAbiCoder();
+  const abicoder = new AbiCoder();
   return keccak256(
     abicoder.encode(
       ["address", "bytes32"],
@@ -415,6 +440,9 @@ deposit();
 </CodeGroup>
 
 ## Withdrawal
+
+> [!WARNING]
+> **PnL Settlement Requirement**: Any realized profit from open or recently closed positions must be settled via the **Settle PnL** flow before it can be added to your `withdrawable_balance`. If you attempt to withdraw without settling your PnL, the withdrawal amount may exceed your available balance and fail. See [Settle PnL](/build-on-omnichain/user-flows/settle-pnl) for details.
 
 To withdraw tokens from Orderly:
 
@@ -449,10 +477,10 @@ Example:
 ```json
 {
   "brokerId": "woofi_pro",
-  "chainId": 80001,
+  "chainId": 421614,
   "receiver": "0x036Cb579025d3535a0ADcD929D05481a3189714b",
   "token": "USDC",
-  "amount": "1000000",
+  "amount": 1000000,
   "withdrawNonce": 1,
   "timestamp": 1685973017064
 }
@@ -460,15 +488,15 @@ Example:
 
 where:
 
-| **Name**      | **Type**  | **Required** | **Description**                                                                                                      |
-| ------------- | --------- | ------------ | -------------------------------------------------------------------------------------------------------------------- |
-| brokerId      | string    | Y            | Builder ID, the valid list can be found \[here\]                                                                     |
-| chainId       | int       | Y            | Chain ID of the chain that the funds should be withdrawn to (within those that are supported by the Network)         |
-| receiver      | string    | Y            | Address of the receiver, which should be equal to the address of the account.                                        |
-| token         | string    | Y            | The string representation of the token that is being withdrawn (eg "USDC")                                           |
-| amount        | string    | Y            | Amount of tokens to be withdrawn                                                                                     |
-| withdrawNonce | int       | Y            | Valid withdrawal nonce from [Get Withdrawal Nonce API](/build-on-omnichain/restful-api/private/get-withdrawal-nonce) |
-| timestamp     | timestamp | Y            | current timestamp in UNIX milliseconds                                                                               |
+| **Name**      | **Type**  | **Required** | **Description**                                                                                                                                                                                   |
+| ------------- | --------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| brokerId      | string    | Y            | The unique identifier of the Builder (also known as Broker ID). A list of valid IDs can be retrieved via the [Get list of builders API](/build-on-omnichain/restful-api/public/get-builder-list). |
+| chainId       | int       | Y            | Chain ID of the chain that the funds should be withdrawn to (within those that are supported by the Network)                                                                                      |
+| receiver      | string    | Y            | Address of the receiver, which should be equal to the address of the account.                                                                                                                     |
+| token         | string    | Y            | The string representation of the token that is being withdrawn (eg "USDC")                                                                                                                        |
+| amount        | string    | Y            | Amount of tokens to be withdrawn                                                                                                                                                                  |
+| withdrawNonce | int       | Y            | Valid withdrawal nonce from [Get Withdrawal Nonce API](/build-on-omnichain/restful-api/private/get-withdrawal-nonce)                                                                              |
+| timestamp     | timestamp | Y            | current timestamp in UNIX milliseconds                                                                                                                                                            |
 
   </Step>
   <Step title="Make a withdraw request">
@@ -476,6 +504,181 @@ where:
   </Step>
 </Steps>
 
-### Example
+### Full Example
 
-The example code is very similar to the [Orderly Key registration](/build-on-omnichain/user-flows/wallet-authentication#full-example), except it uses the EIP-712 [on-chain domain](/build-on-omnichain/user-flows/wallet-authentication#on-chain-domain) and the signed message is different.
+Unlike key registration which uses the off-chain domain, a withdrawal signature requires the **on-chain domain** targeting the Orderly Ledger contract.
+
+Furthermore, note the type formatting difference:
+
+- In the EIP-712 cryptography signature message, `amount` must be represented as a **numeric value** (`uint256`/`BigInt`).
+- In the final REST API JSON payload, the `amount` field must be serialized as a **String**.
+
+<CodeGroup>
+
+```ts TypeScript
+import { ethers } from "ethers";
+
+const types = {
+  Withdraw: [
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "receiver", type: "address" },
+    { name: "token", type: "string" },
+    { name: "amount", type: "uint256" },
+    { name: "withdrawNonce", type: "uint64" },
+    { name: "timestamp", type: "uint64" }
+  ]
+};
+
+// Target Ledger Contract Address (Arbitrum Sepolia L2 Ledger shown below)
+// Mainnet: 0x6F7a338F2aA472838dEFD3283eB360d4Dff5D203
+// Testnet: 0x1826B75e2ef249173FC735149AE4B8e9ea10abff
+const ON_CHAIN_DOMAIN = {
+  name: "Orderly",
+  version: "1",
+  chainId: 421614,
+  verifyingContract: "0x1826B75e2ef249173FC735149AE4B8e9ea10abff"
+};
+
+const BASE_URL = "https://testnet-api.orderly.org";
+
+async function requestWithdrawal() {
+  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!);
+
+  // 1. Fetch withdrawal nonce from private API
+  const timestamp = Date.now();
+  const signatureKey = await wallet
+    .signTypedData
+    // ... Assume signature for API auth is already created
+    ();
+  // (Assuming you obtained withdrawNonce = 1 and orderlyAccountId)
+  const withdrawNonce = 1;
+  const orderlyAccountId = "0x...";
+
+  // 2. Prepare EIP-712 message (amount as BigInt)
+  const withdrawMessage = {
+    brokerId: "woofi_dex",
+    chainId: 421614,
+    receiver: wallet.address,
+    token: "USDC",
+    amount: 1000000n, // 1 USDC (6 decimals)
+    withdrawNonce,
+    timestamp
+  };
+
+  // 3. Sign EIP-712 typed data
+  const signature = await wallet.signTypedData(
+    ON_CHAIN_DOMAIN,
+    { Withdraw: types.Withdraw },
+    withdrawMessage
+  );
+
+  // 4. Send request to REST API (amount as String)
+  const response = await fetch(`${BASE_URL}/v1/withdraw_request`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "orderly-timestamp": String(timestamp),
+      "orderly-account-id": orderlyAccountId,
+      "orderly-key": "...",
+      "orderly-signature": "..." // Ed25519 API signature
+    },
+    body: JSON.stringify({
+      message: {
+        brokerId: withdrawMessage.brokerId,
+        chainId: withdrawMessage.chainId,
+        receiver: withdrawMessage.receiver,
+        token: withdrawMessage.token,
+        amount: withdrawMessage.amount.toString(), // MUST be String
+        withdrawNonce: withdrawMessage.withdrawNonce,
+        timestamp: withdrawMessage.timestamp
+      },
+      signature,
+      userAddress: wallet.address
+    })
+  });
+
+  const result = await response.json();
+  console.log(result);
+}
+```
+
+```py Python
+import time
+import requests
+from eth_account import Account, messages
+
+MESSAGE_TYPES = {
+    "Withdraw": [
+        {"name": "brokerId", "type": "string"},
+        {"name": "chainId", "type": "uint256"},
+        {"name": "receiver", "type": "address"},
+        {"name": "token", "type": "string"},
+        {"name": "amount", "type": "uint256"},
+        {"name": "withdrawNonce", "type": "uint64"},
+        {"name": "timestamp", "type": "uint64"},
+    ]
+}
+
+# Target Ledger Contract Address (Arbitrum Sepolia L2 Ledger shown below)
+# Mainnet: 0x6F7a338F2aA472838dEFD3283eB360d4Dff5D203
+# Testnet: 0x1826B75e2ef249173FC735149AE4B8e9ea10abff
+ON_CHAIN_DOMAIN = {
+    "name": "Orderly",
+    "version": "1",
+    "chainId": 421614,
+    "verifyingContract": "0x1826B75e2ef249173FC735149AE4B8e9ea10abff"
+}
+
+account = Account.from_key("your_private_key")
+timestamp = int(time.time() * 1000)
+withdraw_nonce = 1  # Fetched from /v1/withdraw_nonce
+
+# EIP-712 message: note amount is integer (numeric)
+withdraw_message = {
+    "brokerId": "woofi_dex",
+    "chainId": 421614,
+    "receiver": account.address,
+    "token": "USDC",
+    "amount": 1000000, # 1 USDC (6 decimals)
+    "withdrawNonce": withdraw_nonce,
+    "timestamp": timestamp
+}
+
+encoded_data = messages.encode_typed_data(
+    domain_data=ON_CHAIN_DOMAIN,
+    message_types={"Withdraw": MESSAGE_TYPES["Withdraw"]},
+    message_data=withdraw_message
+)
+signed_message = account.sign_message(encoded_data)
+
+# Send request to REST API (amount as String)
+payload = {
+    "message": {
+        "brokerId": withdraw_message["brokerId"],
+        "chainId": withdraw_message["chainId"],
+        "receiver": withdraw_message["receiver"],
+        "token": withdraw_message["token"],
+        "amount": str(withdraw_message["amount"]),  # Convert to String
+        "withdrawNonce": withdraw_message["withdrawNonce"],
+        "timestamp": withdraw_message["timestamp"]
+    },
+    "signature": signed_message.signature.hex(),
+    "userAddress": account.address
+}
+
+res = requests.post(
+    "https://testnet-api.orderly.org/v1/withdraw_request",
+    headers={
+        "Content-Type": "application/json",
+        "orderly-timestamp": str(timestamp),
+        "orderly-account-id": "...",
+        "orderly-key": "...",
+        "orderly-signature": "..."
+    },
+    json=payload
+)
+print(res.json())
+```
+
+</CodeGroup>

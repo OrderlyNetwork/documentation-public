@@ -95,7 +95,7 @@ interface IVault {
 
   </Step>
   <Step title="Add Orderly Key">
-    Add Delegate Orderly Key via [REST API](/build-on-omnichain/user-flows/wallet-authentication#orderly-key).
+    Add Delegate Orderly Key via [Add Delegate Signer Orderly Key API](/build-on-omnichain/restful-api/public/add-delegate-signer-orderly-key) (calling `POST /v1/delegate_orderly_key`). Note that normal Orderly Key endpoints cannot be used for smart contract accounts.
   </Step>
   <Step title="Deploy funds">
     You can either implement a function in your Smart Contract to call the `deposit` function of the Vault contract or you can call the `depositTo` function from any address and deposit into your Smart Contract's account wallet.
@@ -109,7 +109,181 @@ interface IVault {
   </Step>
 </Steps>
 
-### Example
+### Code Examples
 
-A full example can be found on [this Github repository](https://github.com/OrderlyNetwork/broker-registration).
-The website is deployed [here](https://orderlynetwork.github.io/broker-registration/).
+The following examples demonstrate how an EOA wallet delegates authentication for a Smart Contract account.
+
+<CodeGroup>
+
+```ts TypeScript
+import { ethers } from "ethers";
+
+const types = {
+  DelegateSigner: [
+    { name: "delegateContract", type: "address" },
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "timestamp", type: "uint64" },
+    { name: "registrationNonce", type: "uint256" },
+    { name: "txHash", type: "bytes32" }
+  ],
+  DelegateAddOrderlyKey: [
+    { name: "delegateContract", type: "address" },
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "orderlyKey", type: "string" },
+    { name: "scope", type: "string" },
+    { name: "timestamp", type: "uint64" },
+    { name: "expiration", type: "uint64" }
+  ]
+};
+
+const OFF_CHAIN_DOMAIN = {
+  name: "Orderly",
+  version: "1",
+  chainId: 421614,
+  verifyingContract: "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"
+};
+
+const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!); // Delegate EOA Wallet
+const smartContractAddress = "0xYourSmartContractAddress";
+
+// Step 2: Accept the link via API
+async function linkDelegate(txHash: string, registrationNonce: string) {
+  const timestamp = Date.now();
+  const message = {
+    delegateContract: smartContractAddress,
+    brokerId: "woofi_dex",
+    chainId: 421614,
+    timestamp,
+    registrationNonce,
+    txHash // ethers.js automatically parses hex string to bytes32
+  };
+
+  const signature = await wallet.signTypedData(
+    OFF_CHAIN_DOMAIN,
+    { DelegateSigner: types.DelegateSigner },
+    message
+  );
+
+  const response = await fetch("https://testnet-api.orderly.org/v1/delegate_signer", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      message,
+      signature,
+      userAddress: wallet.address
+    })
+  });
+  console.log(await response.json());
+}
+
+// Step 3: Add Orderly Key for the Smart Contract Account
+async function addDelegateKey(orderlyKeyStr: string) {
+  const timestamp = Date.now();
+  const message = {
+    delegateContract: smartContractAddress,
+    brokerId: "woofi_dex",
+    chainId: 421614,
+    orderlyKey: orderlyKeyStr,
+    scope: "read,trading",
+    timestamp,
+    expiration: timestamp + 1000 * 60 * 60 * 24 * 365 // 1 year
+  };
+
+  const signature = await wallet.signTypedData(
+    OFF_CHAIN_DOMAIN,
+    { DelegateAddOrderlyKey: types.DelegateAddOrderlyKey },
+    message
+  );
+
+  const response = await fetch("https://testnet-api.orderly.org/v1/delegate_orderly_key", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      message,
+      signature,
+      userAddress: wallet.address
+    })
+  });
+  console.log(await response.json());
+}
+```
+
+```py Python
+import time
+import requests
+from eth_account import Account, messages
+
+MESSAGE_TYPES = {
+    "DelegateSigner": [
+        {"name": "delegateContract", "type": "address"},
+        {"name": "brokerId", "type": "string"},
+        {"name": "chainId", "type": "uint256"},
+        {"name": "timestamp", "type": "uint64"},
+        {"name": "registrationNonce", "type": "uint256"},
+        {"name": "txHash", "type": "bytes32"}
+    ],
+    "DelegateAddOrderlyKey": [
+        {"name": "delegateContract", "type": "address"},
+        {"name": "brokerId", "type": "string"},
+        {"name": "chainId", "type": "uint256"},
+        {"name": "orderlyKey", "type": "string"},
+        {"name": "scope", "type": "string"},
+        {"name": "timestamp", "type": "uint64"},
+        {"name": "expiration", "type": "uint64"}
+    ]
+}
+
+OFF_CHAIN_DOMAIN = {
+    "name": "Orderly",
+    "version": "1",
+    "chainId": 421614,
+    "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"
+}
+
+account = Account.from_key("eoa_private_key")
+sc_address = "0xYourSmartContractAddress"
+
+# Step 2: Accept the link via API
+def link_delegate(tx_hash, registration_nonce):
+    timestamp = int(time.time() * 1000)
+    message = {
+        "delegateContract": sc_address,
+        "brokerId": "woofi_dex",
+        "chainId": 421614,
+        "timestamp": timestamp,
+        "registrationNonce": int(registration_nonce),
+        "txHash": bytes.fromhex(tx_hash[2:]) # Convert hex string to bytes for bytes32
+    }
+
+    encoded_data = messages.encode_typed_data(
+        domain_data=OFF_CHAIN_DOMAIN,
+        message_types={"DelegateSigner": MESSAGE_TYPES["DelegateSigner"]},
+        message_data=message
+    )
+    signature = account.sign_message(encoded_data).signature.hex()
+
+    # Send API Request (txHash in the API body must be string)
+    payload = {
+        "message": {
+            "delegateContract": message["delegateContract"],
+            "brokerId": message["brokerId"],
+            "chainId": message["chainId"],
+            "timestamp": message["timestamp"],
+            "registrationNonce": message["registrationNonce"],
+            "txHash": tx_hash
+        },
+        "signature": signature,
+        "userAddress": account.address
+    }
+    res = requests.post("https://testnet-api.orderly.org/v1/delegate_signer", json=payload)
+    print(res.json())
+```
+
+</CodeGroup>
+
+### Additional Resources
+
+- A full frontend reference implementation can be found in [this Github repository](https://github.com/OrderlyNetwork/broker-registration).
+- A deployed demonstration is available [here](https://orderlynetwork.github.io/broker-registration/).

@@ -7,9 +7,12 @@ description: "Request a one-time orderbook snapshot for a symbol via WebSocket i
 
 ```json
 {
-  "id": "clientID2",
-  "topic": "PERP_NEAR_USDC@orderbookupdate",
-  "event": "subscribe"
+  "id": "clientID1",
+  "event": "request",
+  "params": {
+    "type": "orderbook",
+    "symbol": "PERP_NEAR_USDC"
+  }
 }
 ```
 

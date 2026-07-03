@@ -98,6 +98,9 @@ Source: https://orderly.network/docs/home
       <Card title="SDK Overview" icon="wrench" href="/sdks/overview">
         Choose between React components, hooks, core utilities, or lower-level programmatic access.
       </Card>
+      <Card title="Builder Marketplace" icon="shop" href="/build-on-omnichain/builder-marketplace/introduction">
+        Extend the React components SDK, build customizable plugins, and distribute your UI features.
+      </Card>
     </CardGroup>
 
   </div>
@@ -136,7 +139,7 @@ Source: https://orderly.network/docs/home
 <div
       
     >
-      Explore vault products
+      Explore strategy vaults
     </div>
     <p
       
@@ -522,8 +525,103 @@ For markets that support both modes, traders can choose either Cross Margin or I
 
 - [Supported Markets](https://orderly.network/docs/introduction/trade-on-orderly/supported-markets): See the full list of perpetual futures markets available on Orderly, including contract identifiers.
 - [Permissionless Listing](https://orderly.network/docs/introduction/trade-on-orderly/permissionless-listing): Learn how qualified Builders can list additional perpetual markets on Orderly, including markets that use custom oracle sources or RWA trading sessions.
+- [Pre-TGE Listing](https://orderly.network/docs/introduction/trade-on-orderly/pre-tge-listing): Learn how Builders can list a perpetual market on a token before its TGE, using a synthetic Pre-TGE Oracle price and tightened risk caps.
 - [Custom Oracle](https://orderly.network/docs/introduction/trade-on-orderly/custom-oracle): Learn how Builders can provide custom oracle feeds for permissionlessly listed markets on Orderly.
-- [Permissionless Vault](https://orderly.network/docs/introduction/trade-on-orderly/permissionless-vault): Learn how anyone can create and manage a Strategy Vault on Orderly without permission or manual onboarding.
+### Permissionless Vault
+Source: https://orderly.network/docs/introduction/trade-on-orderly/permissionless-vault
+
+**Permissionless Vault lets any EOA wallet deploy a fully functional Strategy Vault in a single transaction** -- no applications, no approvals, no waiting. Backend automation handles cross-chain registration, account provisioning, and all configuration. Time to live: **under 30 minutes, zero manual intervention**.
+
+> [!NOTE]
+> **Strategy Vault** is Orderly Network's core technical product and underlying infrastructure, providing smart contracts and CeFi clearing capabilities. Official protocol-level vaults built on this infrastructure are branded as **OmniVault**. Permissionless Vault (PMV) allows external creators to deploy their own instances leveraging this same Strategy Vault technical infrastructure.
+
+Previously, launching a Strategy Vault required manual coordination across multiple teams -- contract deployment, multi-sig proposals, database configuration, and custodial setup. That process took 2–5 business days and involved 5+ people across 29 manual steps. Permissionless Vault removes all of that.
+
+> Disclaimer: A permissionlessly created vault is deployed and operated by its creator, not by Orderly. Orderly does not vet, operate, or backstop these vaults. Users should assess the vault's strategy, track record, and risk profile before depositing.
+
+## Part of the Orderly Permissionless Ecosystem
+
+Permissionless Vault is not a standalone feature -- it is a core component of Orderly Network's permissionless infrastructure, alongside [Permissionless Listing](/introduction/trade-on-orderly/permissionless-listing).
+
+|                                  | What it does                                                                | Who uses it                        |
+| :------------------------------- | :-------------------------------------------------------------------------- | :--------------------------------- |
+| **Permissionless Listing (PML)** | Lets qualified Builders list new perpetual markets without Orderly approval | Builders / Brokers                 |
+| **Permissionless Vault (PMV)**   | Lets anyone create and operate a Strategy Vault without manual onboarding   | Strategy Providers / Fund Managers |
+
+**How they work together:**
+
+- **PMV provides liquidity infrastructure for PML.** Vaults created through PMV are managed by Strategy Providers (SPs). An SP can choose to connect with a specific Broker through an opt-in mechanism, providing liquidity support for that Broker's markets -- including permissionlessly listed ones.
+- **Participation is voluntary.** Whether an SP connects with a Broker is entirely the SP's decision. There is no forced assignment or automatic linking.
+- **Each works independently.** PMV and PML operate on their own. A Permissionless Vault can function purely as an investment fund without any Broker association, and a permissionlessly listed market does not require a Permissionless Vault.
+
+Together, PML and PMV form the foundation of Orderly's vision for a fully permissionless trading ecosystem -- where both market creation and liquidity provisioning can happen without centralized gatekeeping.
+
+## Standard Vault vs. Permissionless Vault
+
+| Feature                    | Standard Vault (Current)         | Permissionless Vault    |
+| :------------------------- | :------------------------------- | :---------------------- |
+| **Who creates it**         | Orderly team (manual onboarding) | Any EOA wallet holder   |
+| **Setup time**             | 2–5 business days                | < 30 minutes            |
+| **Manual steps**           | 29 steps, 5+ people              | 1 transaction, 0 people |
+| **Multi-sig required**     | Yes (4–24h bottleneck)           | No                      |
+| **Database configuration** | 20+ manual SQL operations        | Fully automated         |
+
+## How It Works
+
+Permissionless Vault leverages deterministic contract deployment (CREATE3), cross-chain messaging (LayerZero V2), and automated backend provisioning to turn vault creation into a single on-chain action.
+
+### Creating a vault
+
+1. **Configure** -- The creator selects vault parameters through the frontend: vault name, description, broker, strategy provider (SP) address, SP name, performance fee rate, deployment chain, and first period start time.
+2. **Deploy** -- The creator signs a single `createPermissionlessVault()` transaction on their chosen chain. The factory contract deploys the vault using CREATE3 (deterministic address), registers it with the cross-chain manager, and sends a configuration message to the Orderly Chain via LayerZero V2.
+3. **Register** -- The Orderly Chain ledger receives the cross-chain message and automatically configures the vault: broker assignment, fee rates, and strategy provider authorization. This typically completes within 1–5 minutes.
+4. **Provision** -- The indexer captures on-chain events and syncs vault data to the CeFi backend, which auto-provisions all necessary accounts and configurations (replacing the 20+ manual SQL operations from the old flow).
+5. **Live** -- The vault appears in the vault listing and is ready for LP deposits.
+
+### What the creator provides
+
+| Parameter                | Notes                                                                                                                       |
+| :----------------------- | :-------------------------------------------------------------------------------------------------------------------------- |
+| **Vault Name**           | Max 50 characters. Alphanumeric, spaces, hyphens, underscores, dots. Immutable after creation.                              |
+| **Description**          | Max 500 characters. Markdown supported. Modifiable after creation.                                                          |
+| **Deployment Chain**     | Single chain for initial deployment (Arbitrum, Base, Optimism, or Sei). More chains can be added later.                     |
+| **Broker**               | Selected from available brokers (searchable dropdown).                                                                      |
+| **SP Address**           | The strategy provider's wallet address. Immutable after creation.                                                           |
+| **SP Name**              | Max 50 characters. Immutable after creation.                                                                                |
+| **Performance Fee Rate** | Integer 0–50 (representing 0%–50%). Immutable after creation.                                                               |
+| **1st Period Start**     | Must be a round hour and at least 24 hours in the future, or left unset (0). Modifiable after creation (with restrictions). |
+
+Parameters marked **immutable** cannot be changed after vault creation. If a change is absolutely necessary, the creator must contact Orderly support.
+
+### Deployment status
+
+After submitting the creation transaction, the frontend shows a simplified two-state model:
+
+- **Pending** -- Transaction submitted; the vault is being provisioned across the pipeline.
+- **Complete** -- The vault is fully operational and queryable via the vault info API.
+
+The full provisioning pipeline (contract deployed → ledger registered → CeFi provisioned → complete) typically finishes within 30 minutes. If any stage stalls, the system triggers automated alerts for investigation.
+
+## Fees & Costs
+
+Creating a Permissionless Vault (or adding a new chain) requires the creator to pay the following fees in a single transaction:
+
+| Fee                         | Source                                              | Description                                                                                                                                                                                                                                                 |
+| :-------------------------- | :-------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Gas Fee**                 | Network (RPC estimate)                              | Standard blockchain gas for deploying the vault contract and executing on-chain operations. Varies with network congestion.                                                                                                                                 |
+| **Cross-Chain Fee**         | `quoteFee()` on factory contract                    | LayerZero V2 messaging fee for syncing vault configuration to the Orderly Chain ledger. Any excess is refunded to the creator.                                                                                                                              |
+| **Vault Operation Reserve** | `assetsTransferCrossChainFee()` on factory contract | Native token (ETH) deposited into the vault contract to cover future cross-chain transfer operations (moving user funds from Vault to DEX). Currently fixed at **0.1 ETH** per chain. This deposit is **non-refundable** and remains in the vault contract. |
+
+> **Important:** The Vault Operation Reserve is essential for vault operations. If the vault's ETH balance is depleted, cross-chain fund transfers will fail and new LP deposits cannot enter the DEX for trading. The creator is responsible for maintaining sufficient ETH balance in the vault.
+
+> None of these fees are collected by Orderly Network. They are paid to the blockchain network and cross-chain infrastructure providers.
+
+## System Parameters (Non-Configurable)
+
+The following operational parameters are set by the system and **cannot be modified** by the vault creator. They apply uniformly to all Permissionless Vaults:
+
+| Parameter                       | Value                   | Notes                            ... (truncated for brevity)
+
 ### Supported Chains
 Source: https://orderly.network/docs/introduction/trade-on-orderly/supported-chains
 
@@ -815,6 +913,175 @@ Verify the integration end to end before going live.
   remain open and can still be liquidated if market conditions change after trading resumes.
 </Warning>
 
+### AI Integration Cheat Sheet
+Source: https://orderly.network/docs/build-on-omnichain/ai-integration-cheat-sheet
+
+This cheat sheet consolidates the critical paths, cryptographic signature logic, and core API mappings for integrating with the Orderly Network. It serves as a high-signal index designed for both AI agents and human developers.
+
+---
+
+## 1. Terminology & Core Architecture
+
+- **Builder ID (`broker_id`)**: The identifier assigned to your platform/Broker during onboarding. Must be passed in registration and key generation APIs.
+- **Orderly Key**: An on-chain registered Ed25519 keypair. The private key resides locally and is used to sign all subsequent private API/WS requests, bypassing wallet signatures.
+- **Strategy Vault vs. OmniVault**:
+  - **Strategy Vault**: The underlying technical smart contract and CeFi clearing infrastructure.
+  - **OmniVault**: The official protocol-level vault implementation built on top of this Strategy Vault infrastructure.
+
+---
+
+## 2. API Authentication Flow
+
+Orderly uses two main layers of authentication:
+
+1.  **EIP-712/Ethereum Signature**: Used only for registration and registering your Orderly Key.
+2.  **Orderly Key (Ed25519 Signature)**: Used to sign all private REST and WebSocket messages.
+
+### Request Headers for Authenticated Endpoints
+
+Every private request must contain the following HTTP headers:
+
+```http
+orderly-timestamp: <current_epoch_ms>
+orderly-signer-id: <account_id>
+orderly-key: <public_orderly_key_hex>
+orderly-signature: <computed_signature_base64>
+```
+
+### Signature Generation Rule
+
+The signature string is generated by concatenating the timestamp, the HTTP method, the path (including query parameters if they exist), and the request body:
+
+```
+SignatureMessage = orderly-timestamp + METHOD + PATH + (BODY_STRING if exists else "")
+```
+
+> [!IMPORTANT]
+>
+> - The path must contain query parameters if they exist (e.g., `/v1/order?symbol=PERP_ETH_USDC`).
+> - The generated signature must be encoded in **base64url (URL-safe Base64)** format.
+
+---
+
+## 3. Cryptographic Signature Implementations
+
+Here are minimal implementations for signing Orderly API requests using an Ed25519 private key.
+
+### TypeScript / Node.js
+
+```typescript
+
+
+
+interface SignParams {
+  method: "GET" | "POST" | "PUT" | "DELETE";
+  path: string; // e.g., "/v1/order" (include query parameters if exists)
+  body?: Record<string, any>;
+  timestamp: number; // e.g., Date.now()
+  orderlySecret: string; // base58-encoded Orderly private key
+}
+
+export function generateOrderlySignature({
+  method,
+  path,
+  body,
+  timestamp,
+  orderlySecret
+}: SignParams): string {
+  const bodyStr = body ? JSON.stringify(body) : "";
+  const message = `${timestamp}${method}${path}${bodyStr}`;
+
+  const privateKey = base58.decode(orderlySecret);
+  const signatureBytes = ed25519.sign(new TextEncoder().encode(message), privateKey);
+
+  return Buffer.from(signatureBytes).toString("base64url");
+}
+```
+
+### Python
+
+```python
+import json
+from base58 import b58decode
+from base64 import urlsafe_b64encode
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+
+def generate_orderly_signature(method: str, path: str, body: dict, timestamp: int, orderly_secret: str) -> str:
+    body_str = json.dumps(body) if body else ""
+    # Format: timestamp + method + path + body
+    message = f"{timestamp}{method}{path}{body_str}"
+
+    # Decode base58 encoded private key
+    private_key_bytes = b58decode(orderly_secret)
+    private_key = Ed25519PrivateKey.from_private_bytes(private_key_bytes)
+
+    # Sign and encode base64url (url-safe base64)
+    signature = private_key.sign(message.encode('utf-8'))
+    return urlsafe_b64encode(signature).decode('utf-8')
+```
+
+---
+
+## 4. Core REST API Endpoints Reference
+
+All private endpoints require private headers signed by your Orderly Key.
+
+| Endpoint                     | Method   | Auth Level            | Key Input Parameters                                            | Purpose                                                    |
+| :--------------------------- | :------- | :-------------------- | :-------------------------------------------------------------- | :--------------------------------------------------------- |
+| `/v1/register_account`       | `POST`   | Public (Wallet Sign)  | `broker_id`, `chain_id`, `user_address`                         | Registers user address to Orderly account ledger.          |
+| `/v1/orderly_key`            | `POST`   | Public (Wallet Sign)  | `broker_id`, `orderly_key`, `key_expiration`                    | Authorizes an Ed25519 public key on-chain for the account. |
+| `/v1/order`                  | `POST`   | Private (Orderly Key) | `symbol`, `side`, `order_type`, `order_price`, `order_quantity` | Creates limit/market order on the orderbook.               |
+| `/v1/order`                  | `DELETE` | Private (Orderly Key) | `order_id` (Query), `symbol`                                    | Cancels a specific order.                                  |
+| `/v1/order/cancel_all_after` | `POST`   | Private (Orderly Key) | `trigger_in` (ms)                                               | Dead man's switch. Auto-cancels orders after timeout.      |
+| `/v1/positions`              | `GET`    | Private (Orderly Key) | -                                                               | Retrieves unrealized P&L and sizes of active positions.    |
+| `/v1/client/holding`         | `GET`    | Private (Orderly Key) | -                                                               | Retrieves collateral token balances (USDC, etc.).          |
+
+---
+
+## 5. WebSocket Authentication & Heartbeat
+
+### Connection Endpoints
+
+- **Testnet**: `wss://testnet-ws-private-evm.orderly.org/v2/ws/private/stream/<account_id>`
+- **Mainnet**: `wss://ws-private-evm.orderly.org/v2/ws/private/stream/<account_id>`
+
+### Private Authentication Message
+
+Send an authentication frame immediately after connection opens:
+
+```json
+{
+  "id": "req-auth-1",
+  "event": "auth",
+  "params": {
+    "orderly_key": "<public_key_hex>",
+    "sign": "<computed_signature_base64>",
+    "timestamp": "<current_epoch_ms>"
+  }
+}
+```
+
+_Note: The string to sign for WebSocket authentication is: `${timestamp}auth`._
+
+### Heartbeat Mechanism
+
+To prevent connection timeout, send a ping frame every 10 seconds:
+
+```json
+{
+  "event": "ping"
+}
+```
+
+Expected response from the server:
+
+```json
+{
+  "event": "pong",
+  "ts": 123456789000
+}
+```
+
 
 ### Partner onboarding & support
 
@@ -846,7 +1113,7 @@ Each account is identified by an account id, which can be calculated by
     <CodeGroup>
 ```ts TypeScript
 export function getAccountId(userAddress, brokerId) {
-  const abicoder = AbiCoder.defaultAbiCoder();
+  const abicoder = new AbiCoder();
   return keccak256(
     abicoder.encode(
       ['address', 'bytes32'],
@@ -919,7 +1186,7 @@ const registrationNonce = nonceJson.data.registration_nonce as string;
 ```json
 {
   "brokerId": "woofi_dex",
-  "chainId": 80001,
+  "chainId": 421614,
   "timestamp": 1685973017064,
   "registrationNonce": "194528949540"
 }
@@ -929,7 +1196,7 @@ where:
 
 | **Name**          | **Type**  | **Required** | **Description**                                                                                          |
 | ----------------- | --------- | ------------ | -------------------------------------------------------------------------------------------------------- |
-| brokerId          | string    | Y            | Builder ID                                                                                               |
+| brokerId          | string    | Y            | The unique identifier of the Builder (also known as Broker ID).                                          |
 | chainId           | int       | Y            | Chain ID of registering chain (within those that are supported by the Network)                           |
 | timestamp         | timestamp | Y            | timestamp in UNIX milliseconds                                                                           |
 | registrationNonce | string    | Y            | Valid nonce from Get [Registration Nonce](/build-on-omnichain/restful-api/public/get-registration-nonce) |
@@ -976,9 +1243,9 @@ registerMessage.put("timestamp", Instant.now().toEpochMilli());
 registerMessage.put("registrationNonce", registrationNonce);
 
 JSONObject jsonObject = new JSONObject();
-jsonObject.put("types", RegisterExample.MESSAGE_TYPES);
+jsonObject.put("types", MESSAGE_TYPES);
 jsonObject.put("primaryType", "Registration");
-jsonObject.put("domain", RegisterExample.OFF_CHAIN_DOMAIN);
+jsonObject.put("domain", OFF_CHAIN_DOMAIN);
 jsonObject.put("message", registerMessage);
 
 Sign.SignatureData signature = Sign.signTypedData(jsonObject.toString(), credentials.getEcKeyPair());
@@ -1012,26 +1279,9 @@ chain_id = 421614
 
 account: Account = Account.from_key(os.environ.get("PRIVATE_KEY"))
 
-d = datetime.utcnow()
-epoch = datetime(1970, 1, 1)
-timestamp = math.trunc((d - epoch).total_seconds() * 1_000)
 
-register_message = {
-    "brokerId": broker_id,
-    "chainId": chain_id,
-    "timestamp": timestamp,
-    "registrationNonce": registration_nonce,
-}
 
-encoded_data = messages.encode_typed_data(
-    domain_data=OFF_CHAIN_DOMAIN,
-    message_types={"Registration": MESSAGE_TYPES["Registration"]},
-    message_data=register_message,
-)
-signed_message = account.sign_message(encoded_data)
-```
 
-```ts TypeScript
 const MESSAGE_TYPES = {
   EIP712Domain: [
     { name: "name", type: "string" },
@@ -1058,86 +1308,62 @@ const BASE_URL = "https://testnet-api.orderly.org";
 const BROKER_ID = "woofi_dex";
 const CHAIN_ID = 421614;
 
-const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!);
+config();
 
-const registerMessage = {
-  brokerId: BROKER_ID,
-  chainId: CHAIN_ID,
-  timestamp: Date.now(),
-  registrationNonce
-};
+async function registerAccount(): Promise<void> {
+  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!);
 
-const signature = await wallet.signTypedData(
-  OFF_CHAIN_DOMAIN,
-  {
-    Registration: MESSAGE_TYPES.Registration
-  },
-  registerMessage
-);
-```
+  const nonceRes = await fetch(`${BASE_URL}/v1/registration_nonce`);
+  const nonceJson = await nonceRes.json();
+  const registrationNonce = nonceJson.data.registration_nonce as string;
 
-      </CodeGroup>
-    </Accordion>
+  const registerMessage = {
+    brokerId: BROKER_ID,
+    chainId: CHAIN_ID,
+    timestamp: Date.now(),
+    registrationNonce
+  };
 
-  </Step>
-  <Step title="Register account">
-    Send all the necessary information via [Register account API](/build-on-omnichain/restful-api/public/register-account).
-
-    <Accordion title="Example code">
-      <CodeGroup>
-
-```Java Java
-String baseUrl = "https://testnet-api.orderly.org";
-
-JSONObject jsonBody = new JSONObject();
-jsonBody.put("message", registerMessage);
-jsonBody.put("signature", RegisterExample.signatureToHashString(signature));
-jsonBody.put("userAddress", credentials.getAddress());
-RequestBody body = RequestBody.create(jsonBody.toString(), MediaType.get("application/json"));
-Request registerReq = new Request.Builder()
-      .url(baseUrl + "/v1/register_account")
-      .post(body)
-      .build();
-String registerRes;
-try (Response response = client.newCall(registerReq).execute()) {
-    registerRes = response.body().string();
-}
-JSONObject registerObj = new JSONObject(registerRes);
-
-String orderlyAccountId = registerObj.getJSONObject("data").getString("account_id");
-System.out.println("orderlyAccountId: " + orderlyAccountId);
-
-// ...
-
-public static String signatureToHashString(Sign.SignatureData signature) {
-    byte[] retval = new byte[65];
-    System.arraycopy(signature.getR(), 0, retval, 0, 32);
-    System.arraycopy(signature.getS(), 0, retval, 32, 32);
-    System.arraycopy(signature.getV(), 0, retval, 64, 1);
-    return Numeric.toHexString(retval);
-}
-```
-
-```py Python
-base_url = "https://testnet-api.orderly.org"
-
-res = requests.post(
-    "%s/v1/register_account" % base_url,
-    headers={"Content-Type": "application/json"},
-    json={
-        "message": register_message,
-        "signature": signed_message.signature.hex(),
-        "userAddress": account.address,
+  const signature = await wallet.signTypedData(
+    OFF_CHAIN_DOMAIN,
+    {
+      Registration: MESSAGE_TYPES.Registration
     },
-)
-response = json.loads(res.text)
+    registerMessage
+  );
 
-orderly_account_id = response["data"]["account_id"]
-print("orderly_account_id:", orderly_account_id)
+  const registerRes = await fetch(`${BASE_URL}/v1/register_account`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      message: registerMessage,
+      signature,
+      userAddress: await wallet.getAddress()
+    })
+  });
+  const registerJson = await registerRes.json();
+  if (!registerJson.success) {
+    throw new Error(registerJson.message);
+  }
+  const orderlyAccountId = registerJson.data.account_id;
+  console.log("orderlyAccountId", orderlyAccountId);
+}
+
+registerAccount();
 ```
 
-```ts TypeScript
-const BASE_URL = "https:... (truncated for brevity)
+</CodeGroup>
+
+## Next Steps
+
+After successfully registering your account, you must enable authentication by binding an Orderly Key. Proceed to the next step:
+
+- [Wallet Authentication (Orderly Key)](/build-on-omnichain/user-flows/wallet-authentication)
+
+> [!WARNING]
+> If you do not bind an Orderly Key to your account, you will not be able to access any private REST APIs or subscribe to private WebSocket streams.
 
 ### Wallet Authentication
 Source: https://orderly.network/docs/build-on-omnichain/user-flows/wallet-authentication
@@ -1193,75 +1419,75 @@ The message types are required for the EIP-712 algorithm to do a proper signing.
 
 ```json5
 {
-    "EIP712Domain": [
-        { "name": "name", "type": "string" },
-        { "name": "version", "type": "string" },
-        { "name": "chainId", "type": "uint256" },
-        { "name": "verifyingContract", "type": "address" },
-    ],
-    "Registration": [
-        { "name": "brokerId", "type": "string" },
-        { "name": "chainId", "type": "uint256" },
-        { "name": "timestamp", "type": "uint64" },
-        { "name": "registrationNonce", "type": "uint256" },
-    ],
-    "AddOrderlyKey": [
-        { "name": "brokerId", "type": "string" },
-        { "name": "chainId", "type": "uint256" },
-        { "name": "orderlyKey", "type": "string" },
-        { "name": "scope", "type": "string" },
-        { "name": "timestamp", "type": "uint64" },
-        { "name": "expiration", "type": "uint64" },
-    ],
-    "Withdraw": [
-        { "name": "brokerId", "type": "string" },
-        { "name": "chainId", "type": "uint256" },
-        { "name": "receiver", "type": "address" },
-        { "name": "token", "type": "string" },
-        { "name": "amount", "type": "uint256" },
-        { "name": "withdrawNonce", "type": "uint64" },
-        { "name": "timestamp", "type": "uint64" },
-    ],
-    "SettlePnl": [
-        { "name": "brokerId", "type": "string" },
-        { "name": "chainId", "type": "uint256" },
-        { "name": "settleNonce", "type": "uint64" },
-        { "name": "timestamp", "type": "uint64" },
-    ],
-    "DelegateSigner": [
-        { "name": "delegateContract", "type": "address" },
-        { "name": "brokerId", "type": "string" },
-        { "name": "chainId", "type": "uint256" },
-        { "name": "timestamp", "type": "uint64" },
-        { "name": "registrationNonce", "type": "uint256" },
-        { "name": "txHash", "type": "bytes32" },
-    ],
-    "DelegateAddOrderlyKey": [
-        { "name": "delegateContract", "type": "address" },
-        { "name": "brokerId", "type": "string" },
-        { "name": "chainId", "type": "uint256" },
-        { "name": "orderlyKey", "type": "string" },
-        { "name": "scope", "type": "string" },
-        { "name": "timestamp", "type": "uint64" },
-        { "name": "expiration", "type": "uint64" },
-    ],
-    "DelegateWithdraw": [
-        { "name": "delegateContract", "type": "address" },
-        { "name": "brokerId", "type": "string" },
-        { "name": "chainId", "type": "uint256" },
-        { "name": "receiver", "type": "address" },
-        { "name": "token", "type": "string" },
-        { "name": "amount", "type": "uint256" },
-        { "name": "withdrawNonce", "type": "uint64" },
-        { "name": "timestamp", "type": "uint64" },
-    ],
-    "DelegateSettlePnl": [
-        { "name": "delegateContract", "type": "address" },
-        { "name": "brokerId", "type": "string" },
-        { "name": "chainId", "type": "uint256" },
-        { "name": "settleNonce", "type": "uint64" },
-        { "name": "timestamp", "type": "uint64" },
-    ],
+  EIP712Domain: [
+    { name: "name", type: "string" },
+    { name: "version", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "verifyingContract", type: "address" }
+  ],
+  Registration: [
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "timestamp", type: "uint64" },
+    { name: "registrationNonce", type: "uint256" }
+  ],
+  AddOrderlyKey: [
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "orderlyKey", type: "string" },
+    { name: "scope", type: "string" },
+    { name: "timestamp", type: "uint64" },
+    { name: "expiration", type: "uint64" }
+  ],
+  Withdraw: [
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "receiver", type: "address" },
+    { name: "token", type: "string" },
+    { name: "amount", type: "uint256" },
+    { name: "withdrawNonce", type: "uint64" },
+    { name: "timestamp", type: "uint64" }
+  ],
+  SettlePnl: [
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "settleNonce", type: "uint64" },
+    { name: "timestamp", type: "uint64" }
+  ],
+  DelegateSigner: [
+    { name: "delegateContract", type: "address" },
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "timestamp", type: "uint64" },
+    { name: "registrationNonce", type: "uint256" },
+    { name: "txHash", type: "bytes32" }
+  ],
+  DelegateAddOrderlyKey: [
+    { name: "delegateContract", type: "address" },
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "orderlyKey", type: "string" },
+    { name: "scope", type: "string" },
+    { name: "timestamp", type: "uint64" },
+    { name: "expiration", type: "uint64" }
+  ],
+  DelegateWithdraw: [
+    { name: "delegateContract", type: "address" },
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "receiver", type: "address" },
+    { name: "token", type: "string" },
+    { name: "amount", type: "uint256" },
+    { name: "withdrawNonce", type: "uint64" },
+    { name: "timestamp", type: "uint64" }
+  ],
+  DelegateSettlePnl: [
+    { name: "delegateContract", type: "address" },
+    { name: "brokerId", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "settleNonce", type: "uint64" },
+    { name: "timestamp", type: "uint64" }
+  ]
 }
 ```
 
@@ -1272,13 +1498,23 @@ An Orderly Key is necessary to perform [API authentication](/build-on-omnichain/
 
 Orderly keys can have different scopes. A `read` scope can access all private read-only APIs, and a `trading` scope can, in addition, access all order APIs (create order, batch create order, edit order, cancel order, cancel order by client_order_id, cancel orders in bulk, batch cancel orders, batch cancel orders by client_order_id).
 
+> [!NOTE]
+> **API Privilege Model & Key Scope Design (By Design)**:
+> Orderly Network utilizes a two-tier key scope structure designed to decouple order placement from general account setup:
+>
+> - **`read` Scope**: Grants access to all private read-only APIs, as well as **account and risk parameter configuration write APIs** (such as `POST /v1/client/leverage` and `POST /v1/client/maintenance_config`). This design ensures that client interfaces can adjust configuration parameters without requiring full order execution authority. This security boundary behavior is intentional and **By Design**.
+> - **`trading` Scope**: Restricts key authority exclusively to order lifecycle actions (e.g., creating, editing, and cancelling orders).
+
 Orderly keys also have expirations for security reasons. The maximum allowed expiration of an Orderly Key is 365 days.
+
+> [!IMPORTANT]
+> **Prerequisites**: Before binding an Orderly Key, you must first register your account. If the account does not exist on the network, key registration will fail. Refer to [Accounts](/build-on-omnichain/user-flows/accounts) for registration instructions.
 
 To add a new Orderly Key:
 
 <Steps>
   <Step title="Generate an ed25519 key-pair">
-    Any public ed25519 library can be used (such as [this one](https://www.npmjs.com/package/@noble/ed25519)).
+    Any public ed25519 library can be used (such as [this one](https://www.npmjs.com/package/@noble/curves)).
   </Step>
   <Step title="Obtain signature from EIP-712">
     Sign a message from the wallet in the following format using the EIP-712 standard and obtain the signature
@@ -1286,7 +1522,7 @@ To add a new Orderly Key:
 ```json
 {
   "brokerId": "woofi_dex",
-  "chainId": 80001,
+  "chainId": 421614,
   "orderlyKey": "ed25519:HqN9uKJioHjAJZbadgQRGzq2e7huKg6foCyNY43hWbCk",
   "scope": "trading",
   "timestamp": 1685973094398,
@@ -1296,14 +1532,14 @@ To add a new Orderly Key:
 
 where:
 
-| **Name**   | **Type**  | **Required** | **Description**                                                                                  |
-| ---------- | --------- | ------------ | ------------------------------------------------------------------------------------------------ |
-| brokerId   | string    | Y            | Builder ID, the valid list can be found \[here\]                                                 |
-| chainId    | int       | Y            | Chain ID of registering chain (within those that are supported by the Network)                   |
-| orderlyKey | string    | Y            | ed25519 public key                                                                               |
-| scope      | string    | Y            | valid scopes are `read`, `trading` and `asset`. Multiple scopes can be sent, comma separated     |
-| timestamp  | timestamp | Y            | timestamp in UNIX milliseconds                                                                   |
-| expiration | timestamp | Y            | Expiration time of the key in UNIX milliseconds. Maximum allowed expiration is 365 days from add |
+| **Name**   | **Type**  | **Required** | **Description**                                                                                                                                                                                   |
+| ---------- | --------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| brokerId   | string    | Y            | The unique identifier of the Builder (also known as Broker ID). A list of valid IDs can be retrieved via the [Get list of builders API](/build-on-omnichain/restful-api/public/get-builder-list). |
+| chainId    | int       | Y            | Chain ID of registering chain (within those that are supported by the Network)                                                                                                                    |
+| orderlyKey | string    | Y            | ed25519 public key                                                                                                                                                                                |
+| scope      | string    | Y            | valid scopes are `read`, `trading` and `asset`. Multiple scopes can be sent, comma separated                                                                                                      |
+| timestamp  | timestamp | Y            | timestamp in UNIX milliseconds                                                                                                                                                                    |
+| expiration | timestamp | Y            | Expiration time of the key in UNIX milliseconds. Maximum allowed expiration is 365 days from add                                                                                                  |
 
   </Step>
   <Step title="Add Orderly Key">
@@ -1318,11 +1554,6 @@ where:
 
 
 
-
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-if (!globalThis.crypto) globalThis.crypto = webcrypto;
 
 const MESSAGE_TYPES = {
   EIP712Domain: [
@@ -1357,8 +1588,8 @@ config();
 async function createOrderlyKey(): Promise<void> {
   const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!);
 
-  const privateKey = utils.randomPrivateKey();
-  const orderlyKey = `ed25519:${encodeBase58(await getPublicKeyAsync(privateKey))}`;
+  const privateKey = ed25519.utils.randomPrivateKey();
+  const orderlyKey = `ed25519:${encodeBase58(ed25519.getPublicKey(privateKey))}`;
   const timestamp = Date.now();
   const addKeyMessage = {
     brokerId: BROKER_ID,
@@ -1366,39 +1597,15 @@ async function createOrderlyKey(): Promise<void> {
     orderlyKey,
     scope: "read,trading",
     timestamp,
-    expiration: timestamp + 1_000 * 60 * 60 * 24 * 365 // 1 year
-  };
-
-  const signature = await wallet.signTypedData(
-    OFF_CHAIN_DOMAIN,
-    {
-      AddOrderlyKey: MESSAGE_TYPES.AddOrderlyKey
-    },
-    addKeyMessage
-  );
-
-  const keyRes = await fetch(`${BASE_URL}/v1/orderly_key`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      message: addKeyMessage,
-      signature,
-      userAddress: await wallet.getAddress()
-    })
-  });
-  const keyJson = await keyRes.json();
-  console.log("addAccessKey", keyJson);
-}
-
-createOrderlyKey();
-```
-
-</CodeGroup>
+    expiration: timestamp + 1_000 * 60 * 60 * 24 * 36... (truncated for brevity)
 
 ### Deposit/Withdrawal
 Source: https://orderly.network/docs/build-on-omnichain/user-flows/withdrawal-deposit
+
+> [!TIP]
+> **Deposit Method Selection**:
+> This page explains **Standard Vault Deposit**, where the user connects their wallet and invokes the smart contract `deposit` function.
+> If your users are depositing from a Centralized Exchange (CEX) or using a custodial wallet that does not support DApps, refer to the [Deposit by Transfer](/build-on-omnichain/user-flows/deposit-by-transfer) guide.
 
 ## Deposit
 
@@ -1408,8 +1615,11 @@ To create a deposit request:
 
 <Steps>
   <Step title="Approve spending of the token by the Vault smart contract">
-    Get Vault & USDC deposit address from [here](/build-on-omnichain/addresses#arbitrum).
-    All our smart contracts are verified, so you can get Vault & USDC ABI files via explorer, e.g. on Arbitrum Sepolia you can copy Vault ABI from [here](https://sepolia.arbiscan.io/address/0x0c554ddb6a9010ed1fd7e50d92559a06655da482).
+    Get Vault & USDC contract addresses from the [Smart Contract Addresses](/build-on-omnichain/addresses) page.
+    All our smart contracts are verified, meaning you can retrieve the Vault & Token ABIs from the block explorers of any supported mainnets or testnets.
+
+    > [!IMPORTANT]
+    > *The addresses and RPC nodes used in the following examples are for **Arbitrum Sepolia** testnet. Since Orderly is an omnichain protocol, when deploying to production, replace these with the correct contract addresses and RPC endpoints for your target chain.*
 
     <Accordion title="Example code">
       <CodeGroup>
@@ -1437,10 +1647,10 @@ USDC.approve(vaultAddress, depositAmount).send();
 usdc_address = Web3.to_checksum_address("0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d")
 vault_address = Web3.to_checksum_address("0x0EaC556c0C2321BA25b9DC01e4e3c95aD5CDCd2f")
 
-account: Account = Account.from_key(os.environ.get("PRIVATE_KEY"))
+private_key = os.environ.get("PRIVATE_KEY")
+account: Account = Account.from_key(private_key)
 
 w3 = Web3(Web3.HTTPProvider("https://arbitrum-sepolia.publicnode.com"))
-w3.middleware_onion.add(construct_sign_and_send_raw_middleware(account))
 
 with open("./src/abi/NativeUSDC.json") as f:
     abi = json.load(f)
@@ -1451,10 +1661,17 @@ usdc = w3.eth.contract(
 
 deposit_amount = 10000000
 
-# approve USDC ERC-20 to be transferred to Vault contract
-usdc.functions.approve(vault_address, deposit_amount).transact(
-    {"from": account.address}
-)
+# Build transaction to approve USDC ERC-20 to be transferred to Vault contract
+approve_tx = usdc.functions.approve(vault_address, deposit_amount).build_transaction({
+    "from": account.address,
+    "nonce": w3.eth.get_transaction_count(account.address),
+    "gasPrice": w3.eth.gas_price
+})
+
+# Sign and send the raw transaction directly (no middleware required)
+signed_tx = w3.eth.account.sign_transaction(approve_tx, private_key=private_key)
+tx_hash = w3.eth.send_raw_transaction(signed_tx.raw_transaction)
+w3.eth.wait_for_transaction_receipt(tx_hash)
 ```
 
 ```ts TypeScript
@@ -1520,8 +1737,8 @@ token_hash = w3.keccak(text=token_id)
 
 deposit_input = (
     bytes.fromhex(orderly_account_id[2:]),
-    bytes.fromhex(broker_hash.hex()[2:]),
-    bytes.fromhex(token_hash.hex()[2:]),
+    broker_hash,
+    token_hash,
     deposit_amount,
 )
 
@@ -1668,7 +1885,7 @@ async function deposit(): Promise<void> {
 }
 
 export function getAccountId(address: string, brokerId: string) {
-  const abicoder = AbiCoder.defaultAbiCoder();
+  const abicoder = new AbiCoder();
   return keccak256(
     abicoder.encode(
       ["address", "bytes32"],
@@ -1684,40 +1901,10 @@ deposit();
 
 ## Withdrawal
 
+> [!WARNING]
+> **PnL Settlement Requirement**: Any realized profit from open or recently closed positions must be settled via the **Settle PnL** flow before it can be added to your `withdrawable_balance`. If you attempt to withdraw without settling your PnL, the withdrawal amount may exceed your available balance and fail. See [Settle PnL](/build-on-omnichain/user-flows/settle-pnl) for details.
+
 To withdraw tokens from Orderly:
-
-<Steps>
-  <Step title="Choose a valid chain to withdraw your funds to">
-    A list of supported chains can be found on our [Smart Contract Addresses page](/build-on-omnichain/addresses).
-  </Step>
-  <Step title="Check if the chain has sufficient liquidity">
-    Since Orderly is an omnichain trading infrastructure, the liquidity of withdrawn assets might need to move across chains. If there is not enough liquidity of the withdrawn asset on the target chain, then an
-    additional cross-chain transaction fee will be deducted from the user's account.
-  </Step>
-  <Step title="Obtain a withdrawal nonce">
-    Get a nonce from [Get Withdrawal Nonce API](/build-on-omnichain/restful-api/private/get-withdrawal-nonce).
-  </Step>
-  <Step title="Obtain a signature from EIP-712">
-    Sign an EIP-712 message of [message type](/build-on-omnichain/user-flows/wallet-authentication#message-types) `Withdraw`:
-
-```json
-"Withdraw": [
-    {"name": "brokerId", "type": "string"},
-    {"name": "chainId", "type": "uint256"},
-    {"name": "receiver", "type": "address"},
-    {"name": "token", "type": "string"},
-    {"name": "amount", "type": "uint256"},
-    {"name": "withdrawNonce", "type": "uint64"},
-    {"name": "timestamp", "type": "uint64"},
-]
-```
-
-Example:
-
-```json
-{
-  "brokerId": "woofi_pro",
-  "chainId": 80001,
 ... (truncated for brevity)
 
 - [Exclusive Receiver Address](https://orderly.network/docs/build-on-omnichain/user-flows/deposit-by-transfer): Each account gets a unique deposit address — users can fund their perp account by simply transferring supported tokens, with no wallet connection, gas, or contract interaction required.
@@ -1748,7 +1935,7 @@ where:
 
 | **Name**    | **Type**  | **Required** | **Description**                                                                                                  |
 | ----------- | --------- | ------------ | ---------------------------------------------------------------------------------------------------------------- |
-| brokerId    | string    | Y            | Builder ID                                                                                                       |
+| brokerId    | string    | Y            | The unique identifier of the Builder (also known as Broker ID).                                                  |
 | chainId     | int       | Y            | Chain ID of the connected chain where the message was signed                                                     |
 | settleNonce | int       | Y            | Valid settlement nonce from [Get Settle PnL Nonce](/build-on-omnichain/restful-api/private/get-settle-pnl-nonce) |
 | timestamp   | timestamp | Y            | Current timestamp in UNIX milliseconds                                                                           |
@@ -2128,7 +2315,7 @@ const USER_ADDRESS = "0x...";
 const CHAIN_ID = ENV === 'mainnet' ? 42161 : 421614;
 const LEDGER_CONTRACT_ADDRESS = ENV === 'mainnet'
     ? "0x6F7a338F2aA472838dEFD3283eB360d4Dff5D203"
-    : "0x8794E7260517B1766fc7b55cAfcd56e6bf08600e";
+    : "0x1826B75e2ef249173FC735149AE4B8e9ea10abff";
 const RECEIVER_ACCOUNT_ID = "0x...";
 const TRANSFER_AMOUNT = 1000000;
 const ORDERLY_TESTNET = ENV === 'testnet';
@@ -2151,7 +2338,7 @@ async function get_transfer_nonce(client: Client): Promise<number | null> {
     }
 }
 
-function sign_internal_transfer_message(
+async function sign_internal_transfer_message(
     receiver_account_id: string,
     token: string,
     amount: number,
@@ -2159,7 +2346,7 @@ function sign_internal_transfer_message(
     chain_id: number,
     ledger_contract_address: string,
     private_key: string
-): string {
+): Promise<string> {
     const receiver_hex = receiver_account_id.startsWith('0x')
         ? receiver_account_id.slice(2)
         : receiver_account_id;
@@ -2173,12 +2360,6 @@ function sign_internal_transfer_message(
     };
 
     const types = {
-        EIP712Domain: [
-            { name: "name", type: "string" },
-            { name: "version", type: "string" },
-            { name: "chainId", type: "uint256" },
-            { name: "verifyingContract", type: "address" },
-        ],
         InternalTransfer: [
             { name: "receiver", type: "bytes32" },
             { name: "token", type: "string" },
@@ -2195,7 +2376,7 @@ function sign_internal_transfer_message(
     };
 
     const wallet = new ethers.Wallet(private_key);
-    const signature = wallet.signTypedDataSync(domain, types, message);
+    const signature = await wallet.signTypedData(domain, types, message);
     return signature;
 }
 
@@ -2250,7 +2431,7 @@ async function test_internal_transfer_v2(): Promise<any> {
             return null;
         }
 
-        const signature = sign_internal_transfer_message(
+        const signature = await sign_internal_transfer_message(
             RECEIVER_ACCOUNT_ID,
             "USDC",
             TRANSFER_AMOUNT,
@@ -2296,36 +2477,35 @@ ORDERLY_KEY = "ed25519:xxx"
 ORDERLY_SECRET = "ed25519:xxx"
 WALLET_SECRET = "70xxxf9"
 USER_ADDRESS = "0x..."
-CHAIN_I... (truncated for brevity)
+CHAIN_ID = 42161 if ENV == 'mainnet' else 421614
+LEDGER_CONTRACT_ADDRESS = "0x6F7a338F2aA472838dEFD3283eB360d4Dff5D203" if ENV == 'mainnet' else "0x1826B75e2ef249173FC735149AE4B8e9ea10abff"
+RECEIVER_ACCOUNT_ID = "0x..."
+TRAN... (truncated for brevity)
 
 - [User Flow Walkthrough](https://orderly.network/docs/build-on-omnichain/user-flow-walkthrough): End-to-end walkthrough of Orderly account creation, key management, ordering, and settlement via the API.
 
-### Builder Marketplace
+### Builders Marketplace
 
 ### Introduction
 Source: https://orderly.network/docs/build-on-omnichain/builder-marketplace/introduction
 
-The Orderly Builder Marketplace lets DEX builders install ready-made trading features, build custom plugins, and publish them for other builders to use. Plugins are built on top of the [Orderly SDK](/sdks/overview) and the Orderly REST/WebSocket API.
+The Orderly Builders Marketplace is the home for everything built on Orderly — features other builders can drop into their DEX, and (soon) standalone apps and services. It lists two kinds of things:
+
+- **DEX Modules** — features that plug into a DEX through the Orderly SDK: a frontend **plugin**, optionally backed by its own service (maintained by you or a third party). This handbook is about building and shipping these.
+- **Apps** — standalone apps, services, and tools that live beyond the frontend plugin system. _Coming soon_ — see [List an app](#list-an-app-coming-soon).
+
+Browse the live catalog at [marketplace.orderly.network](https://marketplace.orderly.network).
 
 <Note>
-  **Terminology:** A **module** is the complete feature you ship. It includes a **plugin** (the
-  frontend UI that plugs into your DEX) and optionally a builder-hosted backend service for
-  persistent logic.
+  **Terminology:** A **module** is the complete feature you ship — a **plugin** (the frontend UI
+  that plugs into your DEX via the Orderly SDK) plus an optional backend service for persistent
+  logic. "Plugin" is the developer-level term for the frontend code; "module" is how the feature is
+  listed in the marketplace.
 </Note>
 
-## Live Plugins
+## Install a module
 
-Browse existing plugins for inspiration or install them directly into your DEX. Builders and AI agents can also explore plugins through [`orderly-devkit`](#plugin-developer-toolchain). Please test thoroughly in your own environment before deploying to production.
-
-| Plugin            | Description                                                                                  | Builder | npm                                         | Demo                                                                                                                                | Source                                                               |
-| ----------------- | -------------------------------------------------------------------------------------------- | ------- | ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Onramper          | Fiat-to-crypto on-ramp — adds a Buy Crypto tab to the Transfer dialog (Deposit → Buy Crypto) | Orderly | `@orderly.network/onramper-plugin`          | [demo](https://demo.orderly.network/)                                                                                               | [GitHub](https://github.com/Orderly-Leo/onramper-plugin)             |
-| Fast Place Order  | Draggable quick-order widget for one-click market buy/sell                                   | Orderly | `@orderly.network/fast-place-order-plugin`  | [demo](https://github-dev.orderly.network/fast-place-order-plugin/iframe.html?id=fast-place-order--default&viewMode=story)          | [GitHub](https://github.com/OrderlyNetwork/fast-place-order-plugin)  |
-| OrderBook Shimmer | Desktop orderbook shimmer/flash effect                                                       | Orderly | `@orderly.network/orderbook-shimmer-plugin` | [demo](https://github-dev.orderly.network/orderbook-shimmer-plugin/iframe.html?id=orderbook-shimmer-plugin--default&viewMode=story) | [GitHub](https://github.com/OrderlyNetwork/orderbook-shimmer-plugin) |
-
-## Install a Plugin
-
-Install the npm package and register it in your `OrderlyAppProvider`:
+Browse modules at [marketplace.orderly.network](https://marketplace.orderly.network) (AI agents can discover them via the marketplace API `GET /api/plugins?search=...` or the `/llm.txt` catalog), then install the npm package and register it in your `OrderlyAppProvider`:
 
 ```bash
 npm install @orderly.network/onramper-plugin
@@ -2344,55 +2524,43 @@ npm install @orderly.network/onramper-plugin
 </OrderlyAppProvider>;
 ```
 
-Each plugin's source repo includes specific configuration options. For more integration patterns, see the [integration guide](/build-on-omnichain/builder-marketplace/integrate-host).
+Each module's source repo documents its specific configuration. For more integration patterns, see the [integration guide](/build-on-omnichain/builder-marketplace/integrate-host). Please test thoroughly in your own environment before deploying to production.
 
-## Build Your Own
+## Develop a module
 
 <Note>The plugin system requires **Orderly SDK v3.0.0 or above**.</Note>
 
-### What you can build
+Modules range from simple UI enhancements to full-stack trading strategies. The SDK plugin system handles the frontend; the Orderly REST and WebSocket API handles the trading infrastructure. Builders decide how to combine them.
 
-Plugins can range from simple UI enhancements to full-stack trading strategies. The SDK plugin system handles the frontend; the Orderly REST and WebSocket API handles the trading infrastructure. Builders decide how to combine them.
+- **Frontend-only modules** run entirely client-side: SDK hooks, direct Orderly REST/WebSocket API calls (the SDK provides the authenticated context), or embedded third-party services. For example: UI/styling enhancements, analytics dashboards, market screeners, social PnL sharing, custom deposit/withdraw UI.
+- **Modules with your own backend** add a builder-hosted service for persistent logic that outlives a browser session (strategy execution, scheduled orders, cross-user features), talking directly to the Orderly API. For example: TWAP, Grid Bot, DCA, Copy Trading, alert systems.
 
-**Frontend-only plugins** — everything runs client-side in the browser, no builder-hosted server needed. Your plugin can use SDK hooks, call the Orderly REST and WebSocket API directly (the SDK provides the authenticated context), or embed third-party services. Build using the SDK's plugin system to ensure your plugin stays compatible across SDK upgrades and is shareable with other builders. See the [Plugin Developer Handbook](/build-on-omnichain/builder-marketplace/plugin-developer-handbook) for the full development guide. For example:
+The full development guide is the **[Plugin Developer Handbook](/build-on-omnichain/builder-marketplace/plugin-developer-handbook)**. If you use an AI coding agent (Cursor, Claude Code, Codex), start with the [skills-first workflow](/build-on-omnichain/builder-marketplace/skills-first).
 
-- Custom UI and styling enhancements
-- Analytics dashboard, market screener, leaderboard
-- Social PnL sharing, notification widgets
-- Custom deposit/withdraw UI, portfolio visualization
-- Third-party service integrations
+| Tool                | What it does                                                    | Install                               |
+| ------------------- | --------------------------------------------------------------- | ------------------------------------- |
+| orderly-devkit CLI  | Scaffold, build, and submit modules                             | `pnpm add -g @orderly.network/devkit` |
+| Plugin agent skills | Guided AI-agent workflows (create → write → integrate → submit) | `orderly-devkit skills install`       |
+| SDK Docs MCP        | Query Orderly SDK docs from your agent                          | `orderly-devkit mcp install`          |
 
-**Plugins with your own backend** — a frontend plugin provides the user-facing UI, while your backend service handles persistent logic that outlives a browser session (e.g. strategy execution, scheduled orders, cross-user features) by talking directly to the Orderly REST and WebSocket API. For example:
+## Submit a module
 
-- TWAP, Grid Bot, DCA
-- Copy Trading, Portfolio Rebalancer
-- Alert / notification system
+Once your module is published to npm, you can list it on the Builders Marketplace. **Submission is permissionless**, with a **security review** before it goes live. Submit any of these ways:
 
-### Plugin developer toolchain
+- **Web** — sign in with GitHub at [marketplace.orderly.network](https://marketplace.orderly.network) and fill in the form.
+- **CLI / AI agent** — `orderly-devkit submit`, or run the `/orderly-plugin-submit` agent skill.
 
-The following tools are for building the frontend plugin portion of your module. If you use an AI coding agent (Cursor, Claude Code, Codex, etc.), install the plugin skills and MCP server alongside the CLI for guided workflows.
+See the [Marketplace submission tutorial](/build-on-omnichain/builder-marketplace/marketplace-submission) for the full flow. Why list your module:
 
-| Tool                | What it does                                                                | Install                               |
-| ------------------- | --------------------------------------------------------------------------- | ------------------------------------- |
-| orderly-devkit CLI  | Scaffold, build, and submit plugins                                         | `pnpm add -g @orderly.network/devkit` |
-| Plugin agent skills | Guided workflows for AI coding agents (create → write → integrate → submit) | `orderly-devkit skills install`       |
-| SDK Docs MCP        | Query Orderly SDK docs from your agent                                      | `orderly-devkit mcp install`          |
+- **Distribution** — listed modules appear across Orderly-powered UIs, giving your work instant reach.
+- **Discoverability** — builders and AI agents find and install modules through the marketplace web UI, its API, and the `/llm.txt` catalog.
+- **Monetization** — modules that provide a service can run their own business model (transaction fees, subscriptions, or profit sharing through the module's backend).
 
-For the full development guide, see the [Plugin Developer Handbook](/build-on-omnichain/builder-marketplace/plugin-developer-handbook). If you use an AI coding agent, start with the [skills-first workflow](/build-on-omnichain/builder-marketplace/skills-first).
+## List an app (coming soon)
 
-### Connect your backend (if needed)
+**Apps** are the next listing type: standalone apps, services, and tools that aren't frontend plugins (e.g. backend services, bots, or builder-to-builder mechanisms). App listing is a business-wise cooperation with Orderly rather than a self-serve flow. If you have an app, service, or tool you'd like to list, **contact the Orderly team** to discuss the details.
 
-If your plugin needs persistent logic beyond the browser session, you can run your own backend service. How you design it is up to you — your backend can call the Orderly REST and WebSocket API, run its own logic, or both. See the API reference in the sidebar for details.
-
-### List on the Builder Marketplace
-
-Once your plugin is published to npm, you can submit it for listing on the Builder Marketplace. Follow the [Marketplace submission tutorial](/build-on-omnichain/builder-marketplace/marketplace-submission) to get started.
-
-Why list your plugin:
-
-- **Distribution** — listed plugins appear across Orderly-powered UIs, giving your plugin instant reach
-- **Discoverability** — builders and AI agents can explore and install plugins through `orderly-devkit`, making your work easy to find and adopt
-- **Monetization** — plugins that provide a service can monetize through their own business model (e.g. transaction fees, subscriptions, or profit sharing through the plugin's backend)
+#### Plugin Developer Handbook
 
 ### Orderly Plugin Developer Handbook
 Source: https://orderly.network/docs/build-on-omnichain/builder-marketplace/plugin-developer-handbook
@@ -2406,7 +2574,7 @@ This handbook explains how to build, integrate, and publish **Orderly SDK plugin
 ## Who this is for
 
 - Developers adding UI or layout behavior to an Orderly-powered DEX host.
-- Teams submitting plugins to the Orderly Builder Marketplace.
+- Teams submitting plugins to the Orderly Builders Marketplace.
 - **Developers and agents** who want repeatable, Orderly-endorsed flows (skills) plus accurate API lookup (MCP).
 
 ## Documentation map (Diátaxis)
@@ -2640,11 +2808,11 @@ You can still follow this handbook and the CLI alone: read the same four stages 
 - [CLI reference: skills](/build-on-omnichain/builder-marketplace/cli-reference#skills-install)
 - [Agent skills alignment](/build-on-omnichain/builder-marketplace/agent-skills-alignment) — MCP tool names vs. legacy skill text.
 
-#### Tutorials
+##### Tutorials
 
 - [Tutorial 1: First plugin from the template](https://orderly.network/docs/build-on-omnichain/builder-marketplace/first-plugin): Goal: Scaffold a plugin and make one visible change on a single interceptor target that exists in the SDK.
 - [Tutorial 2: Integrate a plugin into the host app](https://orderly.network/docs/build-on-omnichain/builder-marketplace/integrate-host): Goal: Load an existing plugin package through OrderlyAppProvider’s plugins prop.
-### Tutorial 3: Submit a plugin to the Orderly Builder Marketplace
+### Tutorial 3: Submit a plugin to the Orderly Builders Marketplace
 Source: https://orderly.network/docs/build-on-omnichain/builder-marketplace/marketplace-submission
 
 **Goal:** Authenticate with the devkit, validate a local plugin folder, and submit it for Marketplace review.
@@ -2731,14 +2899,14 @@ Requires **`orderly-devkit login`** in the current CLI implementation.
 
 - [Tutorial 4: One plugin, multiple interceptor targets](https://orderly.network/docs/build-on-omnichain/builder-marketplace/multi-interceptor-targets): Register one plugin that intercepts more than one injector target so the same feature can appear in several UI surfaces.
 
-#### How-to guides
+##### How-to guides
 
 - [How to choose a plugin type: Widget, Page, or Layout](https://orderly.network/docs/build-on-omnichain/builder-marketplace/plugin-types): | Type | Mechanism | Typical integration | | ---------- | --------------------------------------------------------- | ----------------------------------------------------------------------------------------- | | Page | Ordinary React page using SDK UI + hoo...
 - [How to implement interceptor strategies](https://orderly.network/docs/build-on-omnichain/builder-marketplace/interceptor-strategies): Interceptor entries use:
 - [How to wire plugin packages in a host (workspace, path, npm)](https://orderly.network/docs/build-on-omnichain/builder-marketplace/host-integration-patterns): Use the pattern that matches your repository layout.
 - [How to write `usagePrompt` and the GitHub README](https://orderly.network/docs/build-on-omnichain/builder-marketplace/usage-prompt-and-readme): Guide for how to write `usageprompt` and the github readme
 
-#### Reference
+##### Reference
 
 ### CLI reference (`orderly-devkit`)
 Source: https://orderly.network/docs/build-on-omnichain/builder-marketplace/cli-reference
@@ -2812,12 +2980,12 @@ orderly-devkit create module --name my-module
 
 Register a new plugin from a local directory. Resolves metadata from **`.orderly-manifest.json`** and/or **`package.json`**; can pick up `repoUrl` from `git remote origin` when missing.
 
-| Option             | Description                                                                                                               |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| `--path` / `-p`    | Plugin root (default: prompt or `./`)                                                                                     |
-| `--tags` / `-t`    | Comma-separated; [valid tags](/build-on-omnichain/builder-marketplace/manifest-and-submit#valid-builder-marketplace-tags) |
-| `--storybook-url`  | Optional Storybook base URL                                                                                               |
-| `--dry-run` / `-d` | Validate and print payload only                                                                                           |
+| Option             | Description                                                                                                                |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| `--path` / `-p`    | Plugin root (default: prompt or `./`)                                                                                      |
+| `--tags` / `-t`    | Comma-separated; [valid tags](/build-on-omnichain/builder-marketplace/manifest-and-submit#valid-builders-marketplace-tags) |
+| `--storybook-url`  | Optional Storybook base URL                                                                                                |
+| `--dry-run` / `-d` | Validate and print payload only                                                                                            |
 
 ```bash
 orderly-devkit submit --path ./my-plugin --dry-run
@@ -2918,7 +3086,7 @@ The CLI exposes a **fixed subset** for scaffolding prompts only—see the **crea
 Use **Developer / Inspector** tooling in dev mode to enumerate paths registered by your SDK version. Deeper architecture for **`injectable` / `useInjectedComponent`** ships in **`@orderly.network/plugin-core`** on npm (GUIDE / TECH).
 
 - [Runtime injector targets (handbook reference)](https://orderly.network/docs/build-on-omnichain/builder-marketplace/runtime-injector-targets): Interceptor target strings must match the SDK exactly (case-sensitive).
-### Manifest and Builder Marketplace submit
+### Manifest and Builders Marketplace submit
 Source: https://orderly.network/docs/build-on-omnichain/builder-marketplace/manifest-and-submit
 
 Aligned with **`@orderly.network/devkit`** **`submit`**, **`update`**, and manifest wiring (see the published package for source filenames).
@@ -2958,7 +3126,7 @@ Typical fields (see `generateManifest` / your project’s template):
 
 Keep `pluginId` synchronized with `SDK.registerPlugin({ id: "..." })`.
 
-## Valid Builder Marketplace tags
+## Valid Builders Marketplace tags
 
 Maximum **5** tags. Allowed values:
 
@@ -2977,17 +3145,18 @@ Maximum **5** tags. Allowed values:
 
 ## `view` and `list`
 
-Both use authenticated requests in the devkit. Treat Builder Marketplace responses as the source of truth for listing metadata after submit.
+Both use authenticated requests in the devkit. Treat Builders Marketplace responses as the source of truth for listing metadata after submit.
 
 See also: [CLI reference](/build-on-omnichain/builder-marketplace/cli-reference).
 
 - [Orderly SDK Docs MCP (`orderly-sdk-docs`)](https://orderly.network/docs/build-on-omnichain/builder-marketplace/mcp-sdk-docs): Runtime npm package: @orderly.network/sdk-docs. MCP server binary: orderly-sdk-docs-mcp (stdio), commonly installed via orderly-devkit mcp install.
 - [Agent skills and upstream documentation alignment](https://orderly.network/docs/build-on-omnichain/builder-marketplace/agent-skills-alignment): Orderly publishes agent skills (install via orderly-devkit skills install) for orderly-plugin-create, orderly-plugin-write, orderly-plugin-add, orderly-plugi...
 
-#### Recipes
+##### Recipes
 
 - [Recipe: Quick start checklist](https://orderly.network/docs/build-on-omnichain/builder-marketplace/quickstart-recipe): 1. pnpm add -g @orderly.network/devkit (or pnpm dlx @orderly.network/devkit --help).
 - [Recipe: Marketplace submit checklist](https://orderly.network/docs/build-on-omnichain/builder-marketplace/marketplace-submit-recipe): 1. Ensure package.json name and GitHub origin (or .orderly-manifest.json repoUrl) are correct.
+
 
 
 ### API fundamentals
@@ -3101,7 +3270,7 @@ Orderly uses the [`ed25519` elliptic curve standard](https://ed25519.cr.yp.to/) 
 
 ### Minimal Example
 
-This is a concise, single-file TypeScript example that demonstrates how to sign and send a request to the Orderly API using the `@noble/ed25519` library.
+This is a concise, single-file TypeScript example that demonstrates how to sign and send a request to the Orderly API using the `@noble/curves` library.
 
 ```ts
 
@@ -3121,9 +3290,11 @@ async function main() {
   });
   const timestamp = Date.now();
 
-  const privateKey = bs58.decode(orderlySecret);
+  const privateKey = base58.decode(orderlySecret);
   const message = `${timestamp}${method}${url.pathname}${url.search}${body}`;
-  const signature = await signAsync(new TextEncoder().encode(message), privateKey);
+  const signatureBytes = ed25519.sign(new TextEncoder().encode(message), privateKey);
+
+  const publicKeyBytes = ed25519.getPublicKey(privateKey);
 
   const response = await fetch(url, {
     method,
@@ -3131,9 +3302,9 @@ async function main() {
     headers: {
       "Content-Type": "application/json",
       "orderly-account-id": orderlyAccountId,
-      "orderly-key": `ed25519:${bs58.encode(await getPublicKeyAsync(privateKey))}`,
+      "orderly-key": `ed25519:${base58.encode(publicKeyBytes)}`,
       "orderly-timestamp": String(timestamp),
-      "orderly-signature": Buffer.from(signature).toString("base64url")
+      "orderly-signature": Buffer.from(signatureBytes).toString("base64url")
     }
   });
 
@@ -3155,17 +3326,13 @@ main();
 
 
 
-
-// this is only necessary in Node.js to make `@noble/ed25519` dependency work
-if (!globalThis.crypto) globalThis.crypto = webcrypto as any;
-
 config();
 
 async function main() {
 const baseUrl = 'https://testnet-api.orderly.org';
 const orderlyAccountId = '<orderly-account-id>';
 
-const orderlyKey = bs58.decode(process.env.ORDERLY_SECRET!);
+const orderlyKey = base58.decode(process.env.ORDERLY_SECRET!);
 
 const res = await signAndSendRequest(orderlyAccountId, orderlyKey, `${baseUrl}/v1/order`, {
 method: 'POST',
@@ -3188,9 +3355,9 @@ main();
 
 
 
-export async function signAndSendRequest(
+export function signAndSendRequest(
   orderlyAccountId: string,
-  privateKey: Uint8Array | string,
+  privateKey: Uint8Array,
   input: URL | string,
   init?: RequestInit | undefined
 ): Promise<Response> {
@@ -3202,7 +3369,7 @@ export async function signAndSendRequest(
   if (init?.body) {
     message += init.body;
   }
-  const orderlySignature = await signAsync(encoder.encode(message), privateKey);
+  const orderlySignature = ed25519.sign(encoder.encode(message), privateKey);
 
   return fetch(input, {
     headers: {
@@ -3212,7 +3379,7 @@ export async function signAndSendRequest(
           : 'application/x-www-form-urlencoded',
       'orderly-timestamp': String(timestamp),
       'orderly-account-id': orderlyAccountId,
-      'orderly-key': `ed25519:${encodeBase58(await getPublicKeyAsync(privateKey))}`,
+      'orderly-key': `ed25519:${encodeBase58(ed25519.getPublicKey(privateKey))}`,
       'orderly-signature': Buffer.from(orderlySignature).toString('base64url'),
       ...(init?.headers ?? {})
     },
@@ -4226,11 +4393,7 @@ Leaderboard of addresses ranked by the chosen `sort_by` metric. Returns multi-wi
 - [Check If Wallet Is Registered](https://orderly.network/docs/build-on-omnichain/restful-api/public/check-if-wallet-is-registered): [GET /v1/get_account] Check if wallet is registered
 - [Check If Address Is Registered](https://orderly.network/docs/build-on-omnichain/restful-api/public/check-if-address-is-registered): [GET /v1/get_broker] Check if address is registered
 - [Get Registration Nonce](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-registration-nonce): [GET /v1/registration_nonce] Get registration nonce
-### Register Account
-Source: https://orderly.network/docs/build-on-omnichain/restful-api/public/register-account
-
-
-
+- [Register Account](https://orderly.network/docs/build-on-omnichain/restful-api/public/register-account): [POST /v1/register_account] Register account
 
 #### Key management
 
@@ -4248,11 +4411,7 @@ Source: https://orderly.network/docs/build-on-omnichain/restful-api/public/regis
 - [Get User Volume Statistics](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-user-volume-statistics): [GET /v1/volume/user/stats] Get user volume statistics
 - [Get User Statistics](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-user-statistics): [GET /v1/client/statistics] Get user statistics
 - [Get Account Overview Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-account-overview-info): [GET /v1/account_info] Get account overview info
-### Get account information
-Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/get-account-information
-
-
-
+- [Get Account Information](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-account-information): [GET /v1/client/info] Get account information
 - [Get User Daily Statistics](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-user-daily-statistics): [GET /v1/client/statistics/daily] Get user daily statistics
 
 #### Account notifications
@@ -4267,21 +4426,9 @@ Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/get-
 - [Get Leverage Setting](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-leverage-setting): [GET /v1/client/leverage] Get leverage setting
 - [Get All Leverage Settings](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-all-leverage-settings): [GET /v1/client/leverages] Get all leverage settings
 - [Update Leverage Setting](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-leverage-setting): [POST /v1/client/leverages] Update leverage setting
-### Get margin modes
-Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/get-margin-modes
-
-
-
-### Update margin mode
-Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/update-margin-mode
-
-
-
-### Add or reduce position margin
-Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/add-or-reduce-position-margin
-
-
-
+- [Get Margin Modes](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-margin-modes): [GET /v1/client/margin_modes] Get margin modes
+- [Update Margin Mode](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-margin-mode): [POST /v1/client/margin_mode] Update margin mode
+- [Add Or Reduce Position Margin](https://orderly.network/docs/build-on-omnichain/restful-api/private/add-or-reduce-position-margin): [POST /v1/position_margin] Add or reduce position margin
 - [Get Max Leverage Setting](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-max-leverage-setting): [GET /v1/public/leverage] Get max leverage setting
 - [Get Leverage Configuration](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-leverage-configuration): [GET /v1/public/config] Get leverage configuration
 - [Configure Auto Cancel During Maintenance](https://orderly.network/docs/build-on-omnichain/restful-api/private/configure-auto-cancel-during-maintenance): [POST /v1/client/maintenance_config] Configure auto-cancel during maintenance
@@ -4331,7 +4478,7 @@ Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/add-
 - [Get Trade](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-trade): [GET /v1/trade/{trade_id}] Get trade
 - [Get All Trades Of Specific Order](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-all-trades-of-specific-order): [GET /v1/order/{order_id}/trades] Get all trades of specific order
 - [Get All Trades Of Specific Algo Order](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-all-trades-of-specific-algo-order): [GET /v1/algo/order/{order_id}/trades] Get all trades of specific algo order
-- [Get Order Enums](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-order-enums): [GET /v1/public/broker/order_enums] List order tags for a broker
+- [List Order Tags For A Broker](https://orderly.network/docs/build-on-omnichain/restful-api/public/list-order-tags-for-a-broker): [GET /v1/public/broker/order_enums] List order tags for a broker
 
 #### Liquidations
 
@@ -4360,11 +4507,7 @@ Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/add-
 
 #### Positions
 
-### Get all positions info
-Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/get-all-positions-info
-
-
-
+- [Get All Positions Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-all-positions-info): [GET /v1/positions] Get all positions info
 - [Get Lite Positions Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-lite-positions-info): [GET /v1/positions_lite] Get lite positions info
 - [Get One Position Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-one-position-info): [GET /v1/position/{symbol}] Get one position info
 - [Get Position History](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-position-history): [GET /v1/position_history] Get position history
@@ -4402,6 +4545,15 @@ Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/get-
 - [Get Valor2 Redeem Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-valor2-redeem-info): [GET /v1/staking/valor2/redeem] Get valor2 redeem info
 - [Get Valor2 Revenue Buyback](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-valor2-revenue-buyback): [GET /v1/staking/valor2/revenue_buyback] Get valor2 revenue buyback
 
+
+### Market Making Rewards API
+
+- [Get Parameters Of Each Epoch](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-parameters-of-each-epoch): [GET /v1/public/market_making_rewards/epoch_info] Get parameters of each epoch
+- [Get The Status Of Market Making Rewards Programme](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-the-status-of-market-making-rewards-programme): [GET /v1/public/market_making_rewards/status] Get the status of market making rewards programme
+- [Get Symbol Rewards Parameters](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-symbol-rewards-parameters): [GET /v1/public/market_making_rewards/symbol_params] Get symbol rewards parameters
+- [Leaderboard For Market Maker Rewards](https://orderly.network/docs/build-on-omnichain/restful-api/public/leaderboard-for-market-maker-rewards): [GET /v1/public/market_making_rewards/leaderboard] Leaderboard for market maker rewards
+- [Get Market Maker Current Epoch Estimate](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-market-maker-current-epoch-estimate): [GET /v1/public/market_making_rewards/current_epoch_estimate] Get market maker current epoch estimate
+- [Get Wallet Group Market Making Rewards History](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-wallet-group-market-making-rewards-history): [GET /v1/public/market_making_rewards/group_rewards_history] Get wallet group market making rewards history
 
 ### Builder API
 
@@ -4460,43 +4612,43 @@ Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/get-
 - [Get Max Rebate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-max-rebate-rate): [GET /v1/referral/multi_level/max_rebate_rate] Get max rebate rate
 - [Claim Referral Code](https://orderly.network/docs/build-on-omnichain/restful-api/private/claim-referral-code): [POST /v1/referral/multi_level/claim_code] Claim referral code
 - [Get Rebate Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-rebate-info): [GET /v1/referral/multi_level/rebate_info] Get rebate info
-- [Update Referral Multi Level Rebate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-referral-multi-level-rebate-rate): [POST /v1/referral/multi_level/rebate_rate/update] Update referee rebate rate
-- [Set Default Referral Multi Level Rebate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/set-default-referral-multi-level-rebate-rate): [POST /v1/referral/multi_level/rebate_rate/set_default] Reset referee rebate rate
+- [Update Referee Rebate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-referee-rebate-rate): [POST /v1/referral/multi_level/rebate_rate/update] Update referee rebate rate
+- [Reset Referee Rebate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/reset-referee-rebate-rate): [POST /v1/referral/multi_level/rebate_rate/set_default] Reset referee rebate rate
 - [Get Multilevel Statistics](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-multilevel-statistics): [GET /v1/referral/multi_level/statistics] Get multilevel statistics
-- [Get Referral Multi Level Referee List](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-multi-level-referee-list): [GET /v1/referral/multi_level/referee_list] Get referee list
-- [Get Referral Multi Level Volume Prerequisite](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referral-multi-level-volume-prerequisite): [GET /v1/referral/multi_level/volume_prerequisite] Get volume prerequisite
+- [Get Referee List](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-referee-list): [GET /v1/referral/multi_level/referee_list] Get referee list
+- [Get Volume Prerequisite](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-volume-prerequisite): [GET /v1/referral/multi_level/volume_prerequisite] Get volume prerequisite
 
 
 #### Builder admin
 
 ##### Builder info
 
-- [Get Broker Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-broker-info): [GET /v1/broker/broker_info] Get builder fee tier information
-- [Get Builder Daily Fee Revenue](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-builder-daily-fee-revenue): [GET /v1/broker/daily_fee_revenue] Get builder's daily revenue settlement history
+- [Get Builder Fee Tier Information](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-builder-fee-tier-information): [GET /v1/broker/broker_info] Get builder fee tier information
+- [Get Builders Daily Revenue Settlement History](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-builders-daily-revenue-settlement-history): [GET /v1/broker/daily_fee_revenue] Get builder's daily revenue settlement history
 
 ##### User data
 
-- [Admin Client Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-client-info): [GET /v1/admin/client/info] Get account information
-- [Admin Client Holding](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-client-holding): [GET /v1/admin/client/holding] Get current holding
-- [Admin Internal Transfer History](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-internal-transfer-history): [GET /v1/admin/internal_transfer_history] Get internal transfer history
-- [Admin Asset History](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-asset-history): [GET /v1/admin/asset/history] Get asset history
-- [Admin Client Leverage](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-client-leverage): [GET /v1/admin/client/leverage] Get leverage setting
-- [Admin Orders](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-orders): [GET /v1/admin/orders] Get orders
-- [Admin Position](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-position): [GET /v1/admin/position/{symbol}] Get one position info
-- [Admin Positions](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-positions): [GET /v1/admin/positions] Get all positions info
-- [Admin Funding Fee History](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-funding-fee-history): [GET /v1/admin/funding_fee/history] Get funding fee history
-- [Admin Volume User Stats](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-volume-user-stats): [GET /v1/admin/volume/user/stats] Get user volume statistics
-- [Admin Liquidations](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-liquidations): [GET /v1/admin/liquidations] Get liquidated positions (admin)
-- [Admin Algo Orders](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-algo-orders): [GET /v1/admin/algo/orders] Get algo orders (admin)
-- [Admin Trades](https://orderly.network/docs/build-on-omnichain/restful-api/private/admin-trades): [GET /v1/admin/trades] Get trades (admin)
+- [Get Account Information 1](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-account-information-1): [GET /v1/admin/client/info] Get account information
+- [Get Current Holding 1](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-current-holding-1): [GET /v1/admin/client/holding] Get current holding
+- [Get Internal Transfer History 1](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-internal-transfer-history-1): [GET /v1/admin/internal_transfer_history] Get internal transfer history
+- [Get Asset History 1](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-asset-history-1): [GET /v1/admin/asset/history] Get asset history
+- [Get Leverage Setting 1](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-leverage-setting-1): [GET /v1/admin/client/leverage] Get leverage setting
+- [Get Orders 1](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-orders-1): [GET /v1/admin/orders] Get orders
+- [Get One Position Info 1](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-one-position-info-1): [GET /v1/admin/position/{symbol}] Get one position info
+- [Get All Positions Info 1](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-all-positions-info-1): [GET /v1/admin/positions] Get all positions info
+- [Get Funding Fee History 1](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-funding-fee-history-1): [GET /v1/admin/funding_fee/history] Get funding fee history
+- [Get User Volume Statistics 1](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-user-volume-statistics-1): [GET /v1/admin/volume/user/stats] Get user volume statistics
+- [Get Liquidated Positions Admin](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-liquidated-positions-admin): [GET /v1/admin/liquidations] Get liquidated positions (admin)
+- [Get Algo Orders Admin](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-algo-orders-admin): [GET /v1/admin/algo/orders] Get algo orders (admin)
+- [Get Trades Admin](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-trades-admin): [GET /v1/admin/trades] Get trades (admin)
 
 ##### Multilevel referral admin
 
 - [Enable Or Configure Multilevel Referral](https://orderly.network/docs/build-on-omnichain/restful-api/private/enable-or-configure-multilevel-referral): [POST /v1/referral/multi_level/admin] Enable or configure multilevel referral
 - [Get Multilevel Referral Config](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-multilevel-referral-config): [GET /v1/referral/multi_level/admin] Get multilevel referral config
 - [Update Multilevel Referral Config](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-multilevel-referral-config): [POST /v1/referral/multi_level/admin/update] Update multilevel referral config
-- [Update Referral Multi Level Affiliate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-referral-multi-level-affiliate-rate): [POST /v1/referral/multi_level/admin/update/affiliate] Update L1 affiliate rebate rate
-- [Reset Referral Multi Level Affiliate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/reset-referral-multi-level-affiliate-rate): [POST /v1/referral/multi_level/admin/reset/affiliate] Reset L1 affiliate rebate rate
+- [Update L1 Affiliate Rebate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-l1-affiliate-rebate-rate): [POST /v1/referral/multi_level/admin/update/affiliate] Update L1 affiliate rebate rate
+- [Reset L1 Affiliate Rebate Rate](https://orderly.network/docs/build-on-omnichain/restful-api/private/reset-l1-affiliate-rebate-rate): [POST /v1/referral/multi_level/admin/reset/affiliate] Reset L1 affiliate rebate rate
 - [Get Multilevel Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-multilevel-info): [GET /v1/referral/multi_level/admin/info] Get multilevel info
 - [Get Admin Referee List](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-admin-referee-list): [GET /v1/referral/multi_level/admin/referee_list] Get admin referee list
 - [Get Multilevel Summary Info](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-multilevel-summary-info): [GET /v1/referral/multi_level/admin/summary] Get multilevel summary info
@@ -4512,12 +4664,12 @@ Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/get-
 
 ##### Order tag admin
 
-- [Create Order Enum](https://orderly.network/docs/build-on-omnichain/restful-api/private/create-order-enum): [POST /v1/broker/order_enum] Create order tag
-- [Update Order Enum](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-order-enum): [PUT /v1/broker/order_enum/{enum_id}] Update order tag
-- [Get Order Enums For Broker](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-order-enums-for-broker): [GET /v1/broker/order_enums] List all order tags for a builder
-- [Get Order Enum For Broker](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-order-enum-for-broker): [GET /v1/broker/order_enum/{enum_id}] Get single order tag with stats
-- [Archive Order Enum](https://orderly.network/docs/build-on-omnichain/restful-api/private/archive-order-enum): [POST /v1/broker/order_enum/archive] Archive an order tag
-- [Unarchive Order Enum](https://orderly.network/docs/build-on-omnichain/restful-api/private/unarchive-order-enum): [POST /v1/broker/order_enum/unarchive] Unarchive an order tag
+- [Create Order Tag](https://orderly.network/docs/build-on-omnichain/restful-api/private/create-order-tag): [POST /v1/broker/order_enum] Create order tag
+- [Update Order Tag](https://orderly.network/docs/build-on-omnichain/restful-api/private/update-order-tag): [PUT /v1/broker/order_enum/{enum_id}] Update order tag
+- [List All Order Tags For A Builder](https://orderly.network/docs/build-on-omnichain/restful-api/private/list-all-order-tags-for-a-builder): [GET /v1/broker/order_enums] List all order tags for a builder
+- [Get Single Order Tag With Stats](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-single-order-tag-with-stats): [GET /v1/broker/order_enum/{enum_id}] Get single order tag with stats
+- [Archive An Order Tag](https://orderly.network/docs/build-on-omnichain/restful-api/private/archive-an-order-tag): [POST /v1/broker/order_enum/archive] Archive an order tag
+- [Unarchive An Order Tag](https://orderly.network/docs/build-on-omnichain/restful-api/private/unarchive-an-order-tag): [POST /v1/broker/order_enum/unarchive] Unarchive an order tag
 
 
 
@@ -4566,7 +4718,7 @@ Source: https://orderly.network/docs/build-on-omnichain/restful-api/private/get-
 - [Get Index Price Source](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-index-price-source): [GET /v1/public/index_price_source] Get index price source
 - [Get Historical Price List For All Symbols](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-historical-price-list-for-all-symbols): [GET /v1/public/market_info/history_charts] Get historical price list for all symbols
 - [Orderbook Snapshot](https://orderly.network/docs/build-on-omnichain/restful-api/private/orderbook-snapshot): [GET /v1/orderbook/{symbol}] Orderbook snapshot
-- [Get Kline](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-kline): [GET /v1/kline] Get kline
+- [Get Kline](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-kline): [GET /v1/kline] Get kline
 - [Get Kline History](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-kline-history): [GET /v1/tv/kline_history] Get kline history
 
 
@@ -4869,6 +5021,136 @@ Source: https://orderly.network/docs/sdks/overview
     to be purely functional, with no context dependencies.
   </Card>
 </CardGroup>
+
+### SDK Best Practices
+Source: https://orderly.network/docs/sdks/best-practices
+
+Orderly Network provides a layered SDK architecture to give developers flexibility in integration. Understanding how these layers interact is crucial for building robust applications and preventing state synchronization errors.
+
+---
+
+## 1. SDK Layer Architecture
+
+Orderly's frontend SDK is split into three main packages. Here is the dependency and data flow relationship:
+
+```mermaid
+graph TD
+    subgraph Client Application Layer
+        UI[Custom App UI]
+        ReactSDK["@orderly.network/react<br>(Pre-built UI Components)"]
+    end
+
+    subgraph State & Action Layer
+        HooksSDK["@orderly.network/hooks<br>(SWR State & Order Actions)"]
+    end
+
+    subgraph Core & Protocol Layer
+        CoreSDK["@orderly.network/core<br>(Ed25519 Keys, Authentication)"]
+    end
+
+    subgraph Network Layer
+        Wallet[EVM Wallet / Connector]
+        DEX[Orderly CeFi Ledger & Smart Contracts]
+    end
+
+    ReactSDK --> HooksSDK
+    UI --> HooksSDK
+    HooksSDK --> CoreSDK
+    CoreSDK --> Wallet
+    CoreSDK --> DEX
+```
+
+- **`@orderly.network/core` (Core SDK)**: Responsible for account lifecycle, cryptographic key management (Orderly Key), and raw REST/WS communication. It sits directly on top of the EVM wallet connector.
+- **`@orderly.network/hooks` (Hooks SDK)**: Exposes reactive state hooks using SWR for balance, orderbooks, and positions, along with action methods for order execution. It is headless (contains no styling).
+- **`@orderly.network/react` (React UI SDK)**: Provides high-level, styled components (such as Orderbook, Trading board, Asset management) built on top of the hooks.
+
+---
+
+## 2. Developer Avoidance Checklist (AI & Human)
+
+Ensure your integration follows these rules to avoid broken UI states and transaction failures:
+
+### ⬜ Rule 1: Always wrap your application with the correct Provider
+
+All Hooks and React components require context providers to access the Orderly core instance and wallet connection state.
+
+- **Best Practice**: Wrap your main root element with `<OrderlyConfigProvider>` and `<OrderlyProvider>`.
+- **Anti-pattern**: Calling `useOrderbook` or `useAccount` outside or above the `<OrderlyProvider>` component tree.
+
+### ⬜ Rule 2: Ensure correct Wallet-to-SDK connection synchronization
+
+The SDK does not connect to the blockchain network directly; it wraps your wallet provider.
+
+- **Best Practice**: Ensure the wallet's signer is passed to `useAccount().setAddress()` when the wallet connects or switches chains.
+- **Anti-pattern**: Assuming the SDK automatically detects wallet changes without updating the core state provider.
+
+### ⬜ Rule 3: Do not nest or declare multiple OrderlyProviders
+
+- **Best Practice**: Maintain a single root `<OrderlyProvider>` for your entire application.
+- **Anti-pattern**: Creating multiple providers for different pages or features. This resets the internal WebSocket connections and results in duplicated state synchronization.
+
+---
+
+## 3. Custom UI Hook Integration Example
+
+If you want to build a fully custom interface without using the pre-built React components, you should bypass `@orderly.network/react` and use `@orderly.network/hooks` directly. Here is a clean pattern:
+
+```jsx
+
+
+
+
+// 1. Root configuration wrapper
+export function App({ children }) {
+  return (
+    <OrderlyConfigProvider brokerId="your_broker_id" networkId="testnet">
+      <OrderlyProvider>{children}</OrderlyProvider>
+    </OrderlyConfigProvider>
+  );
+}
+
+// 2. Custom Trading Component using Headless Hooks
+export function CustomTradingConsole() {
+  const { state } = useAccount();
+  const [orderbook] = useOrderbook("PERP_ETH_USDC");
+  const { onSubmit } = useOrderEntry({
+    symbol: "PERP_ETH_USDC",
+    side: "BUY",
+    order_type: "LIMIT"
+  });
+
+  const handlePlaceOrder = async () => {
+    try {
+      const result = await onSubmit({
+        order_price: "3000",
+        order_quantity: "0.1"
+      });
+      console.log("Order submitted successfully:", result);
+    } catch (err) {
+      console.error("Order submission failed:", err);
+    }
+  };
+
+  return (
+    <div >
+      <h3>Account Status: {state.status}</h3>
+
+      <div >
+        <h4>Orderbook (Bids)</h4>
+        {orderbook.bids?.slice(0, 5).map((bid, i) => (
+          <div key={i}>
+            {bid.price} - {bid.quantity}
+          </div>
+        ))}
+      </div>
+
+      <button onClick={handlePlaceOrder} disabled={state.status !== "authenticated"}>
+        Place Buy Limit Order (0.1 ETH @ 3000)
+      </button>
+    </div>
+  );
+}
+```
 
 - [Release Notes](https://orderly.network/docs/sdks/release-notes): Links to the full Orderly TypeScript SDK release notes and related setup documentation.
 - [Migrate to SDK v2](https://orderly.network/docs/sdks/migrate): Migration guide from Orderly SDK v1 to v2, covering breaking changes, new hooks, and Solana support.
@@ -5395,7 +5677,43 @@ const brokerId = "<your id>";
 
 ### Overview & FAQ
 
-- [Overview](https://orderly.network/docs/introduction/orderly-omniVault/overview): Explore Orderly OmniVault, an omnichain strategy vault for earning yield through market-maker strategies.
+### Overview
+Source: https://orderly.network/docs/introduction/orderly-omniVault/overview
+
+Orderly OmniVault is the official protocol-level vault (Protocol Vault) built on top of Orderly Network's underlying **Strategy Vault** technical infrastructure. While Strategy Vault serves as our core technical product and infrastructure (providing underlying smart contracts and CeFi clearing capabilities), OmniVault is the flagship protocol vault designed to leverage this infrastructure to amplify liquidity and enhance the on-chain trading experience across tradable markets within the Orderly ecosystem, creating new yield-earning opportunities for our stakeholders.
+
+As part of the initiative, Orderly is collaborating with industry-leading market makers (our trusted partners) as **Strategy Providers (SP)**, starting with Vovega Research.<a href="#ref1"><sup>1 </sup></a> &nbsp;We leverage their extensive expertise to execute efficient market-making strategies through the utilization & management of the OmniVault assets. Users can conveniently deposit USDC into the Orderly OmniVault from any of the supported blockchain networks and become protocol liquidity providers, granting them a proportional share of OmniVault's PnL. This enables them to earn attractive passive yields generated by professional market-marking strategies.<a href="#ref2"><sup>2</sup></a> &nbsp;Orderly OmniVault opens up profit opportunities previously inaccessible to retail users.
+
+## Security
+
+Orderly has completed two independent audits on our strategy vault smart contracts to ensure the highest security level of asset security for users. Audit reports are publicly available on our [GitHub](https://github.com/OrderlyNetwork/Audits).
+
+Users should carefully assess their risk tolerance and the vault's risk profile before depositing. It's important to note that every strategy vault carries its own risks.
+
+## OmniVault Smart Contract Addresses
+
+0x70fe7d65ac7c1a1732f64d2e6fc0e33622d0c991
+
+1. [Arbitrum](https://arbiscan.io/address/0x70fe7d65ac7c1a1732f64d2e6fc0e33622d0c991)
+2. [Base](https://basescan.org/address/0x70fe7d65ac7c1a1732f64d2e6fc0e33622d0c991)
+3. [Optimism](https://optimistic.etherscan.io/address/0x70fe7d65ac7c1a1732f64d2e6fc0e33622d0c991)
+4. [Sei](https://seitrace.com/address/0x70Fe7d65Ac7c1a1732f64d2E6fC0E33622D0C991)
+
+---
+
+<a id="ref1">
+  <sup>1 </sup>
+</a>
+Strategy Providers are independent third parties and operate at arm's length from Orderly. While we
+work with reputable firms, Orderly does not guarantee their performance or assume liability for
+their actions.
+
+<a id="ref2">
+  <sup>2 </sup>
+</a>
+All yields are subject to market risks and may fluctuate. Past performance is not indicative of
+future results, and returns are not guaranteed.
+
 - [Mechanics](https://orderly.network/docs/introduction/orderly-omniVault/mechanics): Understand how OmniVault shares, deposits, withdrawals, and PnL distribution work.
 - [Liquidity Provider](https://orderly.network/docs/introduction/orderly-omniVault/liquidity-provider): Learn how to deposit into and withdraw from Orderly OmniVault as a liquidity provider.
 - [FAQ](https://orderly.network/docs/introduction/orderly-omniVault/faq): Find answers to frequently asked questions about Orderly OmniVault, covering fees, risks, and transactions.
@@ -5417,6 +5735,7 @@ const brokerId = "<your id>";
 
 - [Vault Positions](https://orderly.network/docs/strategy-vault/vault/public/vault-positions): [GET /v1/public/strategy_vault/vault/positions] Get Strategy Vault Positions
 - [Vault Open Orders](https://orderly.network/docs/strategy-vault/vault/public/vault-open-orders): [GET /v1/public/strategy_vault/vault/open_orders] Get Strategy Vault Open Orders
+- [Get Strategy Vault Order History](https://orderly.network/docs/strategy-vault/vault/public/get-strategy-vault-order-history): [GET /v1/public/strategy_vault/vault/order_history] Get Strategy Vault Order History
 - [Vault Trade History](https://orderly.network/docs/strategy-vault/vault/public/vault-trade-history): [GET /v1/public/strategy_vault/vault/trade_history] Get Strategy Vault Trade History
 - [Vault Liquidator History](https://orderly.network/docs/strategy-vault/vault/public/vault-liquidator-history): [GET /v1/public/strategy_vault/vault/liquidator_history] Get Strategy Vault Liquidator History
 

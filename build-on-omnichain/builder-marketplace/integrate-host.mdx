@@ -67,11 +67,7 @@ Read **`usagePrompt`** first when present—it describes integration steps from 
 import { OrderlyAppProvider } from "@orderly.network/react-app";
 
 const App = ({ children }: { children: React.ReactNode }) => (
-  <OrderlyAppProvider
-    brokerId="..."
-    brokerName="..."
-    plugins={[registerMyPlugin()]}
-  >
+  <OrderlyAppProvider brokerId="..." brokerName="..." plugins={[registerMyPlugin()]}>
     {children}
   </OrderlyAppProvider>
 );
