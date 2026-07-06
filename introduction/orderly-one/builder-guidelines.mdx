@@ -1,111 +1,98 @@
 ---
-title: "Builder Guidelines"
-description: "Review the code of conduct and branding standards for DEX builders on Orderly One."
+title: "Orderly One Builder Guidelines"
+description: "Review the responsibilities, expectations, and best practices for builders launching DEXs with Orderly One."
 sidebarTitle: "Builder Guidelines"
 ---
 
-Orderly One is built to empower developers to launch independent DEXes with speed and creativity. Every DEX built on our infrastructure reflects not only your project but also the wider ecosystem.
+## Introduction
 
-These Builder Guidelines sit alongside the Orderly One Terms of Use and are meant as a practical code of conduct for builders, outlining how projects should present themselves and how Orderly may respond if the standards are not met.
+Orderly One is designed to empower builders to launch their own decentralized exchanges (DEXs) quickly and efficiently. These guidelines outline the responsibilities, expectations, and best practices for anyone building on top of Orderly.
 
-These Builder Guidelines may be updated from time to time, and the latest version shall apply once updated.
+## What Orderly One Is (and Isn't)
 
-## **Why These Guidelines Exist**
+Orderly One provides shared infrastructure, liquidity, and tooling to help you build and operate a DEX.
 
-The Builder Guidelines exist to:
+However, it is important to understand that Orderly One is not a managed service.
 
-1. Protect the reputation and integrity of the Orderly brand.
+Orderly does not operate your DEX, control your frontend, or manage your users. Each DEX built using Orderly One is independently deployed and operated by its builder.
 
-2. Safeguard the ecosystem from harmful, misleading, or unlawful behaviour.
+## Your Infrastructure, Your Responsibility
 
-3. Give builders clarity about expectations from Day 1\.
+Orderly One provides the underlying infrastructure, liquidity, and tooling, but how your DEX is deployed and operated is entirely up to you.
 
-Orderly One celebrates creativity and independence, but with independence comes responsibility. Projects that are offensive, defamatory, misleading, unlawful, or reputationally damaging may not be promoted through Orderly channels and, in serious cases, may lose access to Orderly One services altogether.
+If you choose to run your DEX on your own domain or custom setup, you are fully responsible for the security and integrity of that environment.
 
-By following these Guidelines, you help ensure the ecosystem remains trusted, respected, and welcoming to both users and builders.
+This includes, but is not limited to:
 
-## **What Orderly One Is (and Isn't)**
+- your domain names, subdomains, and branded URLs;
+- DNS configuration and domain management;
+- hosting providers, servers, and cloud infrastructure;
+- CDNs, caching layers, and edge services;
+- deployment pipelines, environment variables, and access controls;
+- any modifications to the front-end code or SDK; and
+- any third-party services, scripts, or integrations you use.
 
-Orderly One is a no-code SDK that lets developers launch decentralized exchanges (DEXes) quickly and efficiently. By integrating the SDK, you gain access to Orderly's backend liquidity, order-matching engine, and cross-chain connectivity.
+These components are outside of Orderly's control. As a result, any issues arising from them, such as phishing attacks, DNS hijacks, frontend compromises, misconfigurations, or downtime, are the responsibility of the builder.
 
-Orderly One is a toolkit, not a managed service. You control your front-end, branding, and user experience. DEXes created with Orderly One are independently developed and operated by builders, not by Orderly Network.
+Orderly maintains and secures its official repositories, SDKs, templates, and core infrastructure, but does not monitor, manage, or audit individual DEX deployments.
 
-## **Independent by Design**
+If you run a custom frontend, you should treat it like any production system: secure it properly, monitor it actively, and protect your users accordingly.
 
-1. Do not present your DEX as an "official Orderly product."
+## Independent by Design
 
-2. You may say your project is "built with Orderly One" or "powered by Orderly liquidity."
+Each DEX built using Orderly One operates independently.
 
-3. Make it clear that users interact with your DEX at their own risk, and that Orderly is not responsible for your operations, marketing, or outcomes.
+As a builder, you:
 
-## **Names and Brands That Build Trust**
+- control your branding, domain, and user experience;
+- decide how your frontend is deployed and maintained; and
+- are responsible for all interactions users have with your interface.
 
-1. Avoid offensive, defamatory, discriminatory, or otherwise inappropriate names or imagery.
+You should make it clear to your users that they are interacting with your DEX, not Orderly directly.
 
-2. Avoid names that are misleading, confusing, or deliberately controversial.
+## User Transparency
 
-3. Do not copy or impersonate Orderly, other projects, companies, or individuals. It is important to respect the intellectual property rights of others.
+Builders are expected to provide clear and transparent information to users.
 
-4. Choose branding that reflects originality, professionalism, and respect for the community.
+This includes:
 
-## **Talk Straight, Build Credibility**
+- clearly identifying your DEX brand and ownership;
+- making it clear that users interact with your DEX at their own risk, and that you are responsible for the operation and security of your frontend and infrastructure;
+- providing appropriate disclosures, terms of use, and privacy policies; and
+- avoiding any misleading representation that your DEX is operated or controlled by Orderly.
 
-1. Be transparent about your product, fees, risks, and governance.
+## Security Best Practices
 
-2. Do not make exaggerated or misleading claims such as "guaranteed returns" or "risk-free profits."
+Operating a DEX frontend requires strong security practices. Builders should:
 
-3. Keep your messaging consistent across your website, documentation, and community channels.
+- secure domain access and use reputable registrars;
+- implement DNS protections, such as DNSSEC where available;
+- use secure hosting environments and restrict access;
+- protect environment variables and private keys;
+- audit any modifications made to the frontend code;
+- carefully vet third-party integrations and scripts;
+- monitor for phishing, spoofing, and unauthorized changes; and
+- maintain incident response procedures.
 
-## **Build for the Long Game**
+Failure to implement proper safeguards may expose your users to risk.
 
-1. Treat your users with fairness and respect.
+## Compliance and Legal Responsibility
 
-2. Avoid pump-and-dump schemes, scams, or misleading gimmicks.
+Builders are solely responsible for ensuring that their DEX complies with all applicable laws and regulations in the jurisdictions in which they operate.
 
-3. Do not adopt imagery, memes, or tactics that could be defamatory, abusive, or damaging to the ecosystem's reputation.
+This includes:
 
-## **Be Compliant**
+- regulatory compliance;
+- user eligibility and restrictions;
+- sanctions screening, if applicable; and
+- any required registrations or licenses.
 
-1. You are fully and solely responsible for ensuring your DEX complies with all applicable laws and regulations.
+Orderly does not provide legal advice and does not assume responsibility for a builder's compliance obligations.
 
-2. Do carefully consider the users you allow on your platform. Accepting users from certain countries may attract licensing requirements, while accepting users from sanctioned countries may result in your DEX enabling sanctioned activity.
+## Final Notes
 
-3. While it is tempting to name your DEX after a famous person, brand or event, this may breach intellectual property laws.
+Orderly One is a powerful toolkit, but with that flexibility comes responsibility.
 
-4. While we have mentioned a few examples of legal considerations you should factor in for your DEX, this is by no means exhaustive, and these issues vary from DEX to DEX. You should seek legal advice if you are unsure of the legal considerations for your DEX. Orderly is not responsible for your DEX nor any such legal risks.
+Builders who choose to deploy their own DEX must take full ownership of their infrastructure, security, and user experience.
 
-## **How We Shine a Spotlight**
-
-1. Orderly may choose to showcase projects on its channels, but this is always at our discretion.
-
-2. Projects that show professionalism, transparency, and alignment with ecosystem values are more likely to be featured.
-
-3. Projects that create reputational, legal, or regulatory risk will not be promoted.
-
-## **When We May Step In**
-
-1. Access to Orderly One SDK, liquidity, and connectivity is provided at Orderly's discretion.
-
-2. Access may be suspended or withdrawn if a project engages in offensive, defamatory, misleading, or high-risk behaviour.
-
-3. Access may also be suspended if a project creates reputational, legal, or regulatory risk.
-
-4. These decisions are made to protect the integrity of the ecosystem and community.
-
-## **Examples: Do's and Don'ts**
-
-✓ Launch a DEX with a fun, clear, and professional name.  
- ✓ Communicate transparently about fees, risks, and governance.  
- ✓ Use branding that is original and consistent.  
- ✓ Build a community presence that is constructive and engaged.
-
-✗ Launch with an offensive, misleading, or copied name.  
- ✗ Over-promise returns or imply official Orderly endorsement.  
- ✗ Use branding that imitates others or confuses users.  
- ✗ Engage in pump-and-dump style marketing that damages trust.
-
-## **Moving Forward Together**
-
-Orderly One gives builders the tools to innovate, experiment, and scale. These Guidelines exist to protect both Orderly and the ecosystem by ensuring that projects built on our infrastructure maintain integrity while leaving room for creativity.
-
-By building responsibly, and with personality, you strengthen your project and contribute to a community based on trust, transparency, and innovation.
+By using Orderly One, you acknowledge that you are operating an independent service and are responsible for maintaining it to an appropriate standard.
