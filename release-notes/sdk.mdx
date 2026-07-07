@@ -6,6 +6,59 @@ icon: "layer-group"
 
 import { Chip } from "/snippets/chip.mdx";
 
+## July 7, 2026 - v3.1.3
+
+<div style={{ display: "table", width: "100%" }}>
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="new" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Features**
+      - Added a new Crypto category across market list experiences, including the market selector, market search, market sidebar, and markets page
+      - Expanded Trading page plugin support, allowing builders to add custom order types and extend key trading page areas without forking the SDK. This includes order entry, chart overlays, data list tabs, and mobile trading layout extension points
+    </div>
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="update" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Optimizations**
+      - Optimized K-line history loading for newly listed markets. The chart now stops requesting unavailable historical data before a market's listing time, reducing unnecessary requests and improving page stability
+    </div>
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="bug" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      **Bug Fixes**
+      - Fixed Rabby Wallet compatibility issues
+      - Fixed an issue where the portfolio page could not scroll to access Settings in Chrome when the browser window height was small
+      - Fixed an issue where the max quantity shown in the TP/SL input could differ from the actual position quantity
+      - Fixed an isolated margin close issue on TradingView position lines. Closing an isolated margin position from the chart now sends the correct margin mode and no longer fails with reduce-only validation errors
+    </div>
+  </div>
+</div>
+
 
 ## June 11, 2026 - v3.1.1
 
