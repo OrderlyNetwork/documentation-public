@@ -4,7 +4,7 @@ export const Chip = ({ type }) => {
   let color = "#003D95";
   switch (type) {
     case "times":
-      content = "Release Times";
+      content = "Release Window";
       background = "#FFFAED";
       color = "#CA9400";
       break;
@@ -27,6 +27,7 @@ export const Chip = ({ type }) => {
     <div style={{ float: "left", display: "table-column", width: "20%" }}>
       <p>
         <span
+          className={`orderly-chip orderly-chip-${type}`}
           style={{
             background,
             color,
@@ -36,7 +37,9 @@ export const Chip = ({ type }) => {
             display: "inline-block",
             fontWeight: "500",
             letterSpacing: ".5px",
-            whiteSpace: "nowrap"
+            whiteSpace: "nowrap",
+            outline: "none",
+            boxShadow: "none"
           }}
         >
           {content}

@@ -3,6 +3,129 @@ iframe.preview {
   min-height: 500px;
 }
 
+.omnichain-release-notes-marker ~ h2 {
+  margin: 2.5rem 0 0.9rem;
+  padding-bottom: 0;
+  border-bottom: 0;
+  font-size: clamp(1.4rem, 1.1rem + 1vw, 2rem);
+  letter-spacing: -0.02em;
+}
+
+.omnichain-release-notes-marker ~ h2 + div {
+  display: grid !important;
+  gap: 0.75rem;
+  padding: 1.1rem 1.15rem;
+  border: 1px solid rgba(150, 150, 170, 0.18);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.04));
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.02) inset;
+}
+
+.omnichain-release-notes-marker ~ h2 + div > div {
+  display: block !important;
+  width: 100% !important;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(150, 150, 170, 0.12);
+}
+
+.omnichain-release-notes-marker ~ h2 + div > div:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.omnichain-release-notes-marker ~ h2 + div > div > div:first-child {
+  float: none !important;
+  display: inline-flex !important;
+  width: auto !important;
+  min-width: 0;
+  margin: 0;
+  margin-bottom: 0.55rem;
+}
+
+.omnichain-release-notes-marker ~ h2 + div > div > div:first-child p {
+  margin: 0;
+}
+
+.omnichain-release-notes-marker ~ h2 + div > div > div:first-child span[data-as="p"] {
+  background: transparent !important;
+}
+
+.omnichain-release-notes-marker ~ h2 + div .orderly-chip-times {
+  background: rgba(202, 148, 0, 0.14) !important;
+  color: #f2d17a !important;
+  border: 0 !important;
+}
+
+html:not(.dark) .omnichain-release-notes-marker ~ h2 + div .orderly-chip-times {
+  background: rgba(202, 148, 0, 0.12) !important;
+  color: #8a6400 !important;
+}
+
+.omnichain-release-notes-marker ~ h2 + div > div > div:last-child {
+  float: none !important;
+  display: block !important;
+  width: auto !important;
+  min-width: 0;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+.omnichain-release-notes-marker ~ h2 + div > div > div:last-child > p {
+  margin: 0;
+}
+
+.omnichain-release-notes-marker ~ h2 + div > div > div:last-child > span[data-as="p"] {
+  display: block;
+  margin-top: 0;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: rgba(240, 240, 250, 0.88);
+}
+
+.omnichain-release-notes-marker ~ h2 + div > div > div:last-child > span[data-as="p"]:first-child strong {
+  display: block;
+  font-weight: 600;
+}
+
+.omnichain-release-notes-marker ~ h2 + div > div > div:last-child > span[data-as="p"]:nth-child(2) {
+  margin-top: 0.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.omnichain-release-notes-marker ~ h2 + div > div > div:last-child ul {
+  margin: 0.35rem 0 0;
+  padding-left: 1.2rem;
+  color: rgba(240, 240, 250, 0.78);
+}
+
+.omnichain-release-notes-marker ~ h2 + div > div > div:last-child li {
+  margin: 0.2rem 0;
+  line-height: 1.6;
+}
+
+@media (max-width: 720px) {
+  .omnichain-release-notes-marker ~ h2 + div {
+    padding: 0.95rem 0.9rem;
+  }
+
+  .omnichain-release-notes-marker ~ h2 + div > div > div:first-child {
+    width: auto !important;
+    min-width: 0;
+  }
+}
+
+.sdk-overview-cards .card {
+  height: 100% !important;
+  margin-bottom: 0 !important;
+}
+
+.sdk-overview-cards .card.block {
+  display: flex;
+  flex-direction: column;
+}
+
 /* Desktop layout */
 @media screen and (min-width: 1024px) {
   .container {
@@ -287,11 +410,7 @@ iframe.preview {
 :root:not(.dark) {
   --home-text-muted: rgb(100, 116, 139);
   --home-border: rgba(148, 163, 184, 0.22);
-  --home-hero-bg: linear-gradient(
-    135deg,
-    rgba(15, 23, 42, 0.04) 0%,
-    rgba(170, 92, 248, 0.08) 100%
-  );
+  --home-hero-bg: linear-gradient(135deg, rgba(15, 23, 42, 0.04) 0%, rgba(170, 92, 248, 0.08) 100%);
   --home-hero-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
 }
 

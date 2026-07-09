@@ -135,8 +135,9 @@ function buildFullOutput(config: LlmsConfig, docs: DocsJson, pages: Map<string, 
     `API Base: \`${config.site.apiBase.mainnet}\` (Mainnet), \`${config.site.apiBase.testnet}\` (Testnet). ${config.site.auth}`
   );
   lines.push("");
+  lines.push("This file is a full documentation index. Use the source links to retrieve page details when needed.");
+  lines.push("");
 
-  const canonicalSet = new Set(config.canonicalPages.map(normalizeRoute));
   const latestVersion = docs.navigation?.versions?.find((entry) => entry.version === "latest");
   const tabs = latestVersion?.tabs ?? [];
 
@@ -146,7 +147,7 @@ function buildFullOutput(config: LlmsConfig, docs: DocsJson, pages: Map<string, 
     lines.push("");
 
     for (const group of tab.groups ?? []) {
-      emitGroup(group, pages, canonicalSet, lines, 3);
+      emitGroup(group, pages, lines, 3);
     }
   }
 
@@ -156,7 +157,6 @@ function buildFullOutput(config: LlmsConfig, docs: DocsJson, pages: Map<string, 
 function emitGroup(
   group: DocsGroup | DocsNode,
   pages: Map<string, PageInfo>,
-  canonicalSet: Set<string>,
   lines: string[],
   depth: number
 ) {
@@ -171,47 +171,20 @@ function emitGroup(
     if (typeof node === "string") {
       const page = pages.get(normalizeRoute(node));
       if (page) {
-        const isReleaseNote = page.route.startsWith("release-notes/");
-        if (canonicalSet.has(page.route) && !isReleaseNote) {
-          lines.push(`### ${page.title}`);
-          lines.push(`Source: ${page.sourceUrl}`);
-          lines.push("");
-          if (page.content.length > 10000) {
-            console.warn(`Warning: Truncating long canonical page: ${page.route} (${page.content.length} chars)`);
-          }
-          const truncatedContent = page.content.length > 10000 
-            ? page.content.slice(0, 9900) + "... (truncated for brevity)"
-            : page.content;
-          lines.push(truncatedContent);
-          lines.push("");
-        } else {
-          lines.push(`- [${page.title}](${page.sourceUrl}): ${page.summary}`);
-        }
+        lines.push(`- [${page.title}](${page.sourceUrl}): ${page.summary}`);
       }
     } else if (node.group) {
       if (lines[lines.length - 1] !== "" && lines[lines.length - 1]?.startsWith("- ")) {
         lines.push("");
       }
-      emitGroup(node, pages, canonicalSet, lines, depth + 1);
+      emitGroup(node, pages, lines, depth + 1);
       continue;
     } else if (node.pages) {
       for (const child of node.pages) {
         if (typeof child === "string") {
           const page = pages.get(normalizeRoute(child));
           if (page) {
-            const isReleaseNote = page.route.startsWith("release-notes/");
-            if (canonicalSet.has(page.route) && !isReleaseNote) {
-              lines.push(`### ${page.title}`);
-              lines.push(`Source: ${page.sourceUrl}`);
-              lines.push("");
-              const truncatedContent = page.content.length > 10000 
-                ? page.content.slice(0, 9900) + "... (truncated for brevity)"
-                : page.content;
-              lines.push(truncatedContent);
-              lines.push("");
-            } else {
-              lines.push(`- [${page.title}](${page.sourceUrl}): ${page.summary}`);
-            }
+            lines.push(`- [${page.title}](${page.sourceUrl}): ${page.summary}`);
           }
         }
       }
@@ -261,15 +234,26 @@ async function readPage(
 }
 
 function cleanFullContent(raw: string) {
-  return raw
+  const withoutFrontmatter = raw
     .replace(/^---[\s\S]*?---\s*/m, "") // Remove frontmatter
-    .replace(/import\s+[\s\S]*?from\s+['"].*?['"];?/g, "") // Remove imports
-    .replace(/export\s+const\s+[\s\S]*?;/g, "") // Remove exports
-    .replace(/<style[\s\S]*?>[\s\S]*?<\/style>/gi, "") // Remove <style> blocks
-    .replace(/style=\{\{[\s\S]*?\}\}/g, "") // Remove inline React styles
-    .replace(/className=['"].*?['"]/g, "") // Remove CSS classes (noise for AI)
-    .replace(/<svg[\s\S]*?>[\s\S]*?<\/svg>/gi, "[SVG Illustration]") // Replace heavy SVGs
+    .replace(/<svg[\s\S]*?>[\s\S]*?<\/svg>/gi, "[SVG Illustration]"); // Replace heavy SVGs
+
+  return replaceOutsideCodeFences(withoutFrontmatter, (content) =>
+    content
+      .replace(/import\s+[\s\S]*?from\s+['"].*?['"];?/g, "") // Remove MDX imports
+      .replace(/export\s+const\s+[\s\S]*?;/g, "") // Remove MDX exports
+      .replace(/<style[\s\S]*?>[\s\S]*?<\/style>/gi, "") // Remove <style> blocks
+      .replace(/style=\{\{[\s\S]*?\}\}/g, "") // Remove inline React styles
+      .replace(/className=['"].*?['"]/g, "") // Remove CSS classes (noise for AI)
+  )
     .trim();
+}
+
+function replaceOutsideCodeFences(content: string, replacer: (content: string) => string) {
+  return content
+    .split(/(```[\s\S]*?```)/g)
+    .map((part) => (part.startsWith("```") ? part : replacer(part)))
+    .join("");
 }
 
 async function resolveRouteFile(route: string) {
