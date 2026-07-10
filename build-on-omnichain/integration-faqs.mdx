@@ -32,9 +32,19 @@ description: "Frequently asked questions for builders integrating with Orderly N
 </Accordion>
 
 <Accordion title="What is the Builder Admin Wallet?">
-  The builder admin wallet is the wallet associated with your builder setup. It is used for
-  builder-level actions such as fee management and other admin-authenticated endpoints described in
-  the API docs.
+  The Builder Admin Wallet is the wallet tied to your builder admin account. After your builder
+  profile has graduated, this admin account manages builder-level settings such as fee configuration
+  and other admin operations.
+
+If you register through the broker registration tool, use the same creator wallet or designated
+admin wallet used during builder profile setup; otherwise, the issued Orderly keys may not map
+correctly and admin setup cannot be completed. Treat the admin account and Orderly keys as
+backend/admin-only credentials: call admin endpoints only from secured builder admin tooling or
+backend services, and never expose admin credentials or signing keys in your DEX frontend. See
+[Builder Onboarding](/introduction/getting-started/builder-onboarding), [Custom
+Fees](/build-on-omnichain/user-flows/custom-fees), and [API
+Authentication](/build-on-omnichain/api-authentication).
+
 </Accordion>
 
 <Accordion title="Can I access user data?">
