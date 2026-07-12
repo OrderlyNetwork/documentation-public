@@ -88,6 +88,7 @@ async function updateOpenApi() {
       if (stat.isDirectory()) return;
       let file = await fs.readFile(filePath, { encoding: "utf-8" });
       file = file.replace(/openapi: /, "openapi: orderly.openapi ");
+      if (!file.endsWith("\n")) file += "\n";
       return fs.writeFile(filePath, file);
     })
   );

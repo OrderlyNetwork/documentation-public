@@ -31,7 +31,7 @@ Edit `docs.json` directly for navigation and site structure changes.
 canonical pages. `llms.txt` and `llms-full.txt` are generated artifacts and
 should not be manually edited.
 
-`yarn update` only exists to regenerate generated documentation content:
+`npm run update` only exists to regenerate generated documentation content:
 
 - `build-on-omnichain/restful-api/`
 - `sdks/tech-doc/`
@@ -41,11 +41,11 @@ the generator source as well.
 
 In order to run the script, do the following:
 
-- Install Node.js, Yarn, and PNPM
-- Install dependencies via: `yarn`
-- Run update script: `yarn update`
-- Regenerate AI artifacts: `yarn update:llms`
-- Verify AI docs artifacts and route validity: `yarn check:ai-docs`
+- Install Node.js 24 and PNPM 9.0.6
+- Install dependencies via: `npm ci`
+- Run update script: `npm run update`
+- Regenerate AI artifacts: `npm run update:llms`
+- Verify AI docs artifacts and route validity: `npm run check:ai-docs`
 
 ### AI-friendly docs
 

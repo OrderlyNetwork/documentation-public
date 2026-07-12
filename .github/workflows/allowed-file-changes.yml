@@ -10,22 +10,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v5
 
       - name: Install Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v5
         with:
-          node-version: "20"
+          node-version: "24"
 
       - name: Install PNPM
-        uses: pnpm/action-setup@v3
-        with:
-          version: 9.0.6
+        run: npm install --global pnpm@9.0.6
 
       - name: Install dependencies
-        run: yarn
+        run: npm ci
 
       - name: Test for no git diff
         run: |
-          COREPACK_ENABLE_STRICT=0 yarn update
+          npm run update
           git diff --exit-code -- :^/sdks/tech-doc

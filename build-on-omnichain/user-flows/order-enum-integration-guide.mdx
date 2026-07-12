@@ -13,13 +13,13 @@ This guide explains the integration flow and links to the API reference pages. I
   <Step title="Create order tags">
     Builder admins create one or more order tag fee configs with a `default_fee_rate` and optional `pair_overrides`.
 
-    Use [POST `/v1/broker/order_enum`](/build-on-omnichain/restful-api/private/create-order-enum).
+    Use [POST `/v1/broker/order_enum`](/build-on-omnichain/restful-api/private/create-order-tag).
 
   </Step>
   <Step title="Expose active order tags to your DEX">
     Your DEX or backend fetches active order tag configs with `broker_id` so it can decide which tag to apply and disclose the extra fee to users.
 
-    Use [GET `/v1/public/broker/order_enums`](/build-on-omnichain/restful-api/public/get-order-enums).
+    Use [GET `/v1/public/broker/order_enums`](/build-on-omnichain/restful-api/public/list-order-tags-for-a-broker).
 
   </Step>
   <Step title="Apply the order tag during order placement">
@@ -41,7 +41,7 @@ This guide explains the integration flow and links to the API reference pages. I
 
 ## Public DEX Integration
 
-Use [GET `/v1/public/broker/order_enums`](/build-on-omnichain/restful-api/public/get-order-enums) from your DEX or backend service to discover available order tag fee configs for a builder.
+Use [GET `/v1/public/broker/order_enums`](/build-on-omnichain/restful-api/public/list-order-tags-for-a-broker) from your DEX or backend service to discover available order tag fee configs for a builder.
 
 The public list endpoint is unauthenticated and takes `broker_id` as a query parameter:
 
@@ -125,12 +125,12 @@ Admin endpoints require standard Orderly signed request headers and should only 
 
 | Action                                | API reference                                                                                              |
 | ------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| Create order tag                      | [POST `/v1/broker/order_enum`](/build-on-omnichain/restful-api/private/create-order-enum)                  |
-| Update order tag                      | [PUT `/v1/broker/order_enum/{enum_id}`](/build-on-omnichain/restful-api/private/update-order-enum)         |
-| List order tags with usage stats      | [GET `/v1/broker/order_enums`](/build-on-omnichain/restful-api/private/get-order-enums-for-broker)         |
-| Get single order tag with usage stats | [GET `/v1/broker/order_enum/{enum_id}`](/build-on-omnichain/restful-api/private/get-order-enum-for-broker) |
-| Archive order tag                     | [POST `/v1/broker/order_enum/archive`](/build-on-omnichain/restful-api/private/archive-order-enum)         |
-| Unarchive order tag                   | [POST `/v1/broker/order_enum/unarchive`](/build-on-omnichain/restful-api/private/unarchive-order-enum)     |
+| Create order tag                      | [POST `/v1/broker/order_enum`](/build-on-omnichain/restful-api/private/create-order-tag)                        |
+| Update order tag                      | [PUT `/v1/broker/order_enum/{enum_id}`](/build-on-omnichain/restful-api/private/update-order-tag)               |
+| List order tags with usage stats      | [GET `/v1/broker/order_enums`](/build-on-omnichain/restful-api/private/list-all-order-tags-for-a-builder)       |
+| Get single order tag with usage stats | [GET `/v1/broker/order_enum/{enum_id}`](/build-on-omnichain/restful-api/private/get-single-order-tag-with-stats) |
+| Archive order tag                     | [POST `/v1/broker/order_enum/archive`](/build-on-omnichain/restful-api/private/archive-an-order-tag)            |
+| Unarchive order tag                   | [POST `/v1/broker/order_enum/unarchive`](/build-on-omnichain/restful-api/private/unarchive-an-order-tag)        |
 
 ## Data Model Notes
 
