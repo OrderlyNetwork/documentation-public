@@ -67,9 +67,16 @@ The Custom Trading Fee System allows builders to tailor fee structures for their
   </Step>
 </Steps>
 
+### Conditional Maker Rebate
+
+A negative base maker fee is a protocol rebate. To be eligible for this rebate, a Builder must not charge the user a positive maker fee.
+
+- **Positive user maker fee:** If the user pays a positive maker fee, the Builder is not eligible for the protocol rebate. `Builder revenue = user maker fee`.
+- **Negative user maker fee (user rebate):** If the user also receives a maker rebate and the user maker fee is greater than or equal to the Builder's base maker fee, `Builder revenue = user maker fee - base maker fee`.
+
 ### Builder Rebate Distribution
 
-Builders receive daily rebates in their fee wallet, calculated after deducting any referral rebates.
+Eligible Builders receive daily rebates in their fee wallet, calculated after deducting any referral rebates.
 
 ## FAQs
 
@@ -88,9 +95,9 @@ Builders receive daily rebates in their fee wallet, calculated after deducting a
     users to volume-based tiers.
   </Accordion>
   <Accordion title="How does the rebate work for builders?">
-    Builders keep all fees above the Orderly base fee. When the Builder's base maker fee is
-    negative, the builder receives the maker rebate from Orderly and can choose to pass it on by
-    configuring a negative user-facing maker fee.
+    A negative base maker fee is conditional. The Builder is eligible for the protocol rebate only
+    when the user-facing maker fee is not positive. See [Conditional Maker
+    Rebate](#conditional-maker-rebate) for the revenue calculation.
   </Accordion>
   <Accordion title="How are fee rebates distributed?">
     Builder fee rebates are distributed daily to the builder's Orderly account registered with the

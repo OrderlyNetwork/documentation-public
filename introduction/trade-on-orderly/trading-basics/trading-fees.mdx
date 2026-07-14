@@ -52,7 +52,7 @@ As a Trader, you pay a single fee per trade that's set by the Builder (the DEX y
 Orderly gives Builders full control over their pricing. You set your own trading fees while tapping into Orderly's shared liquidity.
 
 - **Set your own fees:** You decide what to charge your users. The only rule: your fee must be at least as high as Orderly's **base fee**.
-- **Keep the difference:** You retain **100% of the margin** between what you charge users and what Orderly charges you. You have full ownership to decide how to redistribute this margin — for example, using a portion to fund referral programs to help with platform growth, offering user rebates, or creating other incentive structures.
+- **Keep the difference:** For taker fees, you retain **100% of the margin** between what you charge users and what Orderly charges you. Conditional rebate rules apply when your base maker fee is negative: if you charge the user a positive maker fee, the protocol rebate does not apply and your revenue equals the user's maker fee. You have full ownership to decide how to redistribute your margin — for example, using a portion to fund referral programs to help with platform growth, offering user rebates, or creating other incentive structures.
 - **Base fee tiers:** The base fee Orderly charges you depends on your tier in the Builder Staking programme.
 
 ### Builder Staking programme
@@ -61,7 +61,7 @@ Builders can get lower base fees and better support by hitting monthly volume ta
 
 <Tabs>
   <Tab title="Overview">
-      <img src="/images/getting-started/fee0707.jpg" />
+      <img src="/images/getting-started/fee0708.jpg" />
   </Tab>
 
   <Tab title="Public">
@@ -163,6 +163,6 @@ Builders can get lower base fees and better support by hitting monthly volume ta
 
 - **Volume calculation:** Monthly aggregate trading volume includes all activity from the Builder and their direct Builder referrals, calculated from daily snapshots to determine tier eligibility.
 - **Minimum tier assignments:** Minimum tiers may come from the distributor program or internal strategic assignments. They act as a floor, but builders can still move to higher tiers through staking or volume at the next daily refresh.
-- **Negative maker fees:** Builders at Silver tier and above receive maker rebates on qualifying orders. Trader rebates settle immediately on each execution; builder-side maker rebates and taker revenue are batched and settled together once per day.
+- **Conditional maker rebates:** Builders at Silver tier and above can receive a negative base maker fee on qualifying orders only when they do not charge the user a positive maker fee. See [Conditional Maker Rebate](/build-on-omnichain/user-flows/custom-fees#conditional-maker-rebate) for eligibility and revenue calculations. Trader rebates settle immediately on each execution; eligible builder-side maker rebates and taker revenue are batched and settled together once per day.
 
 </Note>
