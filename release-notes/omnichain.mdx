@@ -8,6 +8,44 @@ import { Chip } from "/snippets/chip.mdx";
 
 <div className="omnichain-release-notes-marker" />
 
+## July 14th, 2026
+
+<div style={{ display: "table", width: "auto" }}>
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="times" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      - Effective: July 14, 2026, approximately 11:15–11:18 UTC+8
+    </div>
+
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="update" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+
+      - Conditional maker rebate eligibility is evaluated per trade:
+        - If the Builder's base maker fee is negative but the user's trading fee is zero or positive, the Builder is not eligible for the maker rebate. Builder revenue before referral deductions equals the trading fee, not the trading fee minus the base maker fee
+        - If the Builder's base maker fee and the user's trading fee are both negative, the Builder is eligible for the maker rebate. Builder revenue before referral deductions equals the trading fee minus the base maker fee
+      - For eligible maker-rebate trades, net Builder revenue after referral deductions is calculated as: `Builder fee (net Builder revenue) = trading fee - base maker fee - (referral rebate + referee rebate)`
+    </div>
+
+  </div>
+</div>
+
 ## June 30th, 2026
 
 <div style={{ display: "table", width: "auto" }}>
