@@ -5307,19 +5307,38 @@ paths:
                   description: the referral code that admin wants to create
                 max_rebate_rate:
                   type: number
-                  description: the referral code’s rebate rate (max 1)
+                  deprecated: true
+                  description: Legacy API name for the canonical internal `maxRebateRate` field. Prefer the external alias `bonus_max_rebate_rate`.
+                bonus_max_rebate_rate:
+                  type: number
+                  description: Preferred external alias for the referral code's maximum bonus rebate rate (max 1).
                 referrer_rebate_rate:
                   type: number
-                  description: rebate rate of referrer
+                  deprecated: true
+                  description: Legacy API name for the canonical internal `referrerRebateRate` field. Prefer the external alias `bonus_referrer_rebate_rate`.
+                bonus_referrer_rebate_rate:
+                  type: number
+                  description: Preferred external alias for the referrer's bonus rebate rate.
                 referee_rebate_rate:
                   type: number
-                  description: rebate rate of referee
+                  deprecated: true
+                  description: Legacy API name for the canonical internal `refereeRebateRate` field. Prefer the external alias `bonus_referee_rebate_rate`.
+                bonus_referee_rebate_rate:
+                  type: number
+                  description: Preferred external alias for the referee's bonus rebate rate.
               required:
                 - account_id
                 - referral_code
-                - max_rebate_rate
-                - referrer_rebate_rate
-                - referee_rebate_rate
+              allOf:
+                - anyOf:
+                    - required: [bonus_max_rebate_rate]
+                    - required: [max_rebate_rate]
+                - anyOf:
+                    - required: [bonus_referrer_rebate_rate]
+                    - required: [referrer_rebate_rate]
+                - anyOf:
+                    - required: [bonus_referee_rebate_rate]
+                    - required: [referee_rebate_rate]
       responses:
         "200":
           description: OK
@@ -5472,19 +5491,38 @@ paths:
                   description: the referral code that admin wants to create
                 max_rebate_rate:
                   type: number
-                  description: the referral code’s rebate rate (max 1)
+                  deprecated: true
+                  description: Legacy API name for the canonical internal `maxRebateRate` field. Prefer the external alias `bonus_max_rebate_rate`.
+                bonus_max_rebate_rate:
+                  type: number
+                  description: Preferred external alias for the referral code's maximum bonus rebate rate (max 1).
                 referrer_rebate_rate:
                   type: number
-                  description: rebate rate of referrer
+                  deprecated: true
+                  description: Legacy API name for the canonical internal `referrerRebateRate` field. Prefer the external alias `bonus_referrer_rebate_rate`.
+                bonus_referrer_rebate_rate:
+                  type: number
+                  description: Preferred external alias for the referrer's bonus rebate rate.
                 referee_rebate_rate:
                   type: number
-                  description: rebate rate of referee
+                  deprecated: true
+                  description: Legacy API name for the canonical internal `refereeRebateRate` field. Prefer the external alias `bonus_referee_rebate_rate`.
+                bonus_referee_rebate_rate:
+                  type: number
+                  description: Preferred external alias for the referee's bonus rebate rate.
               required:
                 - account_id
                 - referral_code
-                - max_rebate_rate
-                - referrer_rebate_rate
-                - referee_rebate_rate
+              allOf:
+                - anyOf:
+                    - required: [bonus_max_rebate_rate]
+                    - required: [max_rebate_rate]
+                - anyOf:
+                    - required: [bonus_referrer_rebate_rate]
+                    - required: [referrer_rebate_rate]
+                - anyOf:
+                    - required: [bonus_referee_rebate_rate]
+                    - required: [referee_rebate_rate]
       responses:
         "200":
           description: OK
@@ -5826,14 +5864,27 @@ paths:
                   description: the referral code that admin wants to create
                 referrer_rebate_rate:
                   type: number
-                  description: the rebate rate of referrer
+                  deprecated: true
+                  description: Legacy API name for the canonical internal `referrerRebateRate` field. Prefer the external alias `bonus_referrer_rebate_rate`.
+                bonus_referrer_rebate_rate:
+                  type: number
+                  description: Preferred external alias for the referrer's bonus rebate rate.
                 referee_rebate_rate:
                   type: number
-                  description: the rebate rate of referee
+                  deprecated: true
+                  description: Legacy API name for the canonical internal `refereeRebateRate` field. Prefer the external alias `bonus_referee_rebate_rate`.
+                bonus_referee_rebate_rate:
+                  type: number
+                  description: Preferred external alias for the referee's bonus rebate rate.
               required:
                 - referral_code
-                - referrer_rebate_rate
-                - referee_rebate_rate
+              allOf:
+                - anyOf:
+                    - required: [bonus_referrer_rebate_rate]
+                    - required: [referrer_rebate_rate]
+                - anyOf:
+                    - required: [bonus_referee_rebate_rate]
+                    - required: [referee_rebate_rate]
       responses:
         "200":
           description: OK
@@ -5841,6 +5892,56 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BasicResponse"
+
+  /v1/referral/edit_description:
+    post:
+      summary: Edit referral description
+      deprecated: false
+      description: |
+        `POST /v1/referral/edit_description`
+
+        Sets or clears the private description attached to a referral-code holder. Restricted to the Builder admin that owns the referral relationship.
+
+        Set `description` to `null` to clear it. An empty string is accepted. Descriptions can contain letters, numbers, hyphens (`-`), underscores (`_`), at signs (`@`), commas (`,`), and spaces.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_address:
+                  type: string
+                  description: User address of an existing referral-code holder under the Builder.
+                description:
+                  type: string
+                  nullable: true
+                  maxLength: 50
+                  pattern: "^[A-Za-z0-9_@, -]{0,50}$"
+                  description: Private description for the referral-code holder. Set to `null` to clear it.
+              required:
+                - user_address
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/BasicResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        nullable: true
+                        example: null
 
   /v1/referral/auto_referral/update:
     post:
@@ -6033,9 +6134,11 @@ paths:
               properties:
                 referee_rebate_rate:
                   type: number
-                  description: New rebate rate for referees
-              required:
-                - referee_rebate_rate
+                  deprecated: true
+                  description: Legacy API name for the canonical internal `refereeRebateRate` field. Prefer the external alias `bonus_referee_rebate_rate`.
+                bonus_referee_rebate_rate:
+                  type: number
+                  description: Preferred external alias for the referee bonus rebate rate.
       responses:
         "200":
           description: OK
@@ -6094,14 +6197,16 @@ paths:
               properties:
                 referee_rebate_rate:
                   type: number
-                  description: New rebate rate for referees
+                  deprecated: true
+                  description: Legacy API name for the canonical internal `refereeRebateRate` field. Prefer the external alias `bonus_referee_rebate_rate`.
+                bonus_referee_rebate_rate:
+                  type: number
+                  description: Preferred external alias for the referee bonus rebate rate.
                 account_ids:
                   type: array
                   items:
                     type: string
                   description: The referee account to update. Updates default rate if not provided.
-              required:
-                - referee_rebate_rate
       responses:
         "200":
           description: OK
@@ -6296,8 +6401,33 @@ paths:
                 enable:
                   type: boolean
                   description: Enable Multi-Level Referral program
+                required_volume:
+                  type: number
+                  description: Required trading volume for the multilevel referral program.
+                default_rebate_rate:
+                  type: number
+                  deprecated: true
+                  description: Legacy API name for the canonical internal `defaultRebateRate` field. Prefer the external alias `default_bonus_rebate_rate`.
+                default_bonus_rebate_rate:
+                  type: number
+                  description: Preferred external alias for the default bonus rebate rate.
+                direct_bonus_rebate_rate:
+                  type: number
+                  deprecated: true
+                  description: Legacy API name for the canonical internal `directBonusRebateRate` field. Prefer the external alias `base_rebate_rate`.
+                base_rebate_rate:
+                  type: number
+                  description: Preferred external alias for the base rebate rate paid to the direct referrer.
               required:
                 - enable
+                - required_volume
+              allOf:
+                - anyOf:
+                    - required: [default_bonus_rebate_rate]
+                    - required: [default_rebate_rate]
+                - anyOf:
+                    - required: [base_rebate_rate]
+                    - required: [direct_bonus_rebate_rate]
       responses:
         "200":
           description: OK
@@ -6358,10 +6488,18 @@ paths:
                   description: Required volume for referral
                 default_rebate_rate:
                   type: number
-                  description: Default max rebate rate
-              required:
-                - required_volume
-                - default_rebate_rate
+                  deprecated: true
+                  description: Legacy API name for the canonical internal `defaultRebateRate` field. Prefer the external alias `default_bonus_rebate_rate`.
+                default_bonus_rebate_rate:
+                  type: number
+                  description: Preferred external alias for the default bonus rebate rate.
+                direct_bonus_rebate_rate:
+                  type: number
+                  deprecated: true
+                  description: Legacy API name for the canonical internal `directBonusRebateRate` field. Prefer the external alias `base_rebate_rate`.
+                base_rebate_rate:
+                  type: number
+                  description: Preferred external alias for the base rebate rate paid to the direct referrer.
       responses:
         "200":
           description: OK
@@ -6395,15 +6533,21 @@ paths:
               properties:
                 rebate_rate:
                   type: number
-                  description: Custom rebate rate for the target affiliate(s)
+                  deprecated: true
+                  description: Legacy API name for the canonical internal `rebateRate` field. Prefer the external alias `bonus_rebate_rate`.
+                bonus_rebate_rate:
+                  type: number
+                  description: Preferred external alias for the target affiliate's custom bonus rebate rate.
                 account_ids:
                   type: array
                   items:
                     type: string
                   description: The L1 affiliate account(s) to update
               required:
-                - rebate_rate
                 - account_ids
+              anyOf:
+                - required: [bonus_rebate_rate]
+                - required: [rebate_rate]
       responses:
         "200":
           description: OK
@@ -6511,11 +6655,17 @@ paths:
             type: integer
         - name: sort_by
           in: query
-          description: "Sort by field: total_invites, total_traded, referee_volume"
+          description: "Sort by field. `max_rebate_rate` is the legacy API name; prefer the external alias `bonus_max_rebate_rate`."
           required: false
           example: ""
           schema:
             type: string
+            enum:
+              - total_invites
+              - total_traded
+              - referee_volume
+              - bonus_max_rebate_rate
+              - max_rebate_rate
         - name: level
           in: query
           description: "Return all if not provided"
@@ -6578,7 +6728,14 @@ paths:
             type: string
         - name: referrer_address
           in: query
-          description: "Filter by referrer address"
+          description: "Only one of referrer_account and referrer_address can be provided"
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: referrer_account
+          in: query
+          description: "Only one of referrer_account and referrer_address can be provided"
           required: false
           example: ""
           schema:
@@ -6724,7 +6881,7 @@ paths:
 
         `POST /v1/referral/multi_level/admin/create/affiliate`
 
-        Creates a multilevel referral code on an affiliate's behalf. Restricted to Admin users only.
+        Creates a multilevel referral code on an L1 affiliate's behalf. The maximum bonus rebate rate is required for the L1 flow and must not be provided for non-L1 flows. Restricted to Admin users only.
       tags:
         - private
       parameters:
@@ -6746,10 +6903,16 @@ paths:
                   description: The referral code to create
                 max_rebate_rate:
                   type: number
-                  description: Maximum rebate rate
+                  deprecated: true
+                  description: Legacy API name for the canonical internal `maxRebateRate` field. Prefer the external alias `bonus_max_rebate_rate`.
+                bonus_max_rebate_rate:
+                  type: number
+                  description: Preferred external alias for the maximum bonus rebate rate required for L1 affiliate code creation.
               required:
                 - account_id
-                - max_rebate_rate
+              anyOf:
+                - required: [bonus_max_rebate_rate]
+                - required: [max_rebate_rate]
       responses:
         "200":
           description: OK
