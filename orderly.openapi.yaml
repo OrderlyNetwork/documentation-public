@@ -5305,40 +5305,21 @@ paths:
                 referral_code:
                   type: string
                   description: the referral code that admin wants to create
-                max_rebate_rate:
-                  type: number
-                  deprecated: true
-                  description: Legacy API name for the canonical internal `maxRebateRate` field. Prefer the external alias `bonus_max_rebate_rate`.
                 bonus_max_rebate_rate:
                   type: number
-                  description: Preferred external alias for the referral code's maximum bonus rebate rate (max 1).
-                referrer_rebate_rate:
-                  type: number
-                  deprecated: true
-                  description: Legacy API name for the canonical internal `referrerRebateRate` field. Prefer the external alias `bonus_referrer_rebate_rate`.
+                  description: The referral code's maximum bonus rebate rate (max 1).
                 bonus_referrer_rebate_rate:
                   type: number
-                  description: Preferred external alias for the referrer's bonus rebate rate.
-                referee_rebate_rate:
-                  type: number
-                  deprecated: true
-                  description: Legacy API name for the canonical internal `refereeRebateRate` field. Prefer the external alias `bonus_referee_rebate_rate`.
+                  description: Bonus rebate rate of the referrer.
                 bonus_referee_rebate_rate:
                   type: number
-                  description: Preferred external alias for the referee's bonus rebate rate.
+                  description: Bonus rebate rate of the referee.
               required:
                 - account_id
                 - referral_code
-              allOf:
-                - anyOf:
-                    - required: [bonus_max_rebate_rate]
-                    - required: [max_rebate_rate]
-                - anyOf:
-                    - required: [bonus_referrer_rebate_rate]
-                    - required: [referrer_rebate_rate]
-                - anyOf:
-                    - required: [bonus_referee_rebate_rate]
-                    - required: [referee_rebate_rate]
+                - bonus_max_rebate_rate
+                - bonus_referrer_rebate_rate
+                - bonus_referee_rebate_rate
       responses:
         "200":
           description: OK
@@ -5489,40 +5470,21 @@ paths:
                 referral_code:
                   type: string
                   description: the referral code that admin wants to create
-                max_rebate_rate:
-                  type: number
-                  deprecated: true
-                  description: Legacy API name for the canonical internal `maxRebateRate` field. Prefer the external alias `bonus_max_rebate_rate`.
                 bonus_max_rebate_rate:
                   type: number
-                  description: Preferred external alias for the referral code's maximum bonus rebate rate (max 1).
-                referrer_rebate_rate:
-                  type: number
-                  deprecated: true
-                  description: Legacy API name for the canonical internal `referrerRebateRate` field. Prefer the external alias `bonus_referrer_rebate_rate`.
+                  description: The referral code's maximum bonus rebate rate (max 1).
                 bonus_referrer_rebate_rate:
                   type: number
-                  description: Preferred external alias for the referrer's bonus rebate rate.
-                referee_rebate_rate:
-                  type: number
-                  deprecated: true
-                  description: Legacy API name for the canonical internal `refereeRebateRate` field. Prefer the external alias `bonus_referee_rebate_rate`.
+                  description: Bonus rebate rate of the referrer.
                 bonus_referee_rebate_rate:
                   type: number
-                  description: Preferred external alias for the referee's bonus rebate rate.
+                  description: Bonus rebate rate of the referee.
               required:
                 - account_id
                 - referral_code
-              allOf:
-                - anyOf:
-                    - required: [bonus_max_rebate_rate]
-                    - required: [max_rebate_rate]
-                - anyOf:
-                    - required: [bonus_referrer_rebate_rate]
-                    - required: [referrer_rebate_rate]
-                - anyOf:
-                    - required: [bonus_referee_rebate_rate]
-                    - required: [referee_rebate_rate]
+                - bonus_max_rebate_rate
+                - bonus_referrer_rebate_rate
+                - bonus_referee_rebate_rate
       responses:
         "200":
           description: OK
@@ -5862,29 +5824,16 @@ paths:
                 referral_code:
                   type: string
                   description: the referral code that admin wants to create
-                referrer_rebate_rate:
-                  type: number
-                  deprecated: true
-                  description: Legacy API name for the canonical internal `referrerRebateRate` field. Prefer the external alias `bonus_referrer_rebate_rate`.
                 bonus_referrer_rebate_rate:
                   type: number
-                  description: Preferred external alias for the referrer's bonus rebate rate.
-                referee_rebate_rate:
-                  type: number
-                  deprecated: true
-                  description: Legacy API name for the canonical internal `refereeRebateRate` field. Prefer the external alias `bonus_referee_rebate_rate`.
+                  description: Bonus rebate rate of the referrer.
                 bonus_referee_rebate_rate:
                   type: number
-                  description: Preferred external alias for the referee's bonus rebate rate.
+                  description: Bonus rebate rate of the referee.
               required:
                 - referral_code
-              allOf:
-                - anyOf:
-                    - required: [bonus_referrer_rebate_rate]
-                    - required: [referrer_rebate_rate]
-                - anyOf:
-                    - required: [bonus_referee_rebate_rate]
-                    - required: [referee_rebate_rate]
+                - bonus_referrer_rebate_rate
+                - bonus_referee_rebate_rate
       responses:
         "200":
           description: OK
@@ -5926,6 +5875,58 @@ paths:
                   maxLength: 50
                   pattern: "^[A-Za-z0-9_@, -]{0,50}$"
                   description: Private description for the referral-code holder. Set to `null` to clear it.
+              required:
+                - user_address
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/BasicResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        nullable: true
+                        example: null
+
+  /v1/referral/edit_referee_description:
+    post:
+      summary: Edit direct referee description
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second per user**
+
+        `POST /v1/referral/edit_referee_description`
+
+        Allows an affiliate to set or clear a private description for one of their direct referees in the multilevel referral program. The target must be the affiliate's direct referee.
+
+        Set `description` to `null` to clear it. An empty string is accepted. Descriptions can contain letters, numbers, hyphens (`-`), underscores (`_`), at signs (`@`), commas (`,`), and spaces.
+      tags:
+        - private
+      parameters:
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_address:
+                  type: string
+                  description: User address of the affiliate's direct referee.
+                description:
+                  type: string
+                  nullable: true
+                  maxLength: 50
+                  pattern: "^[A-Za-z0-9_@, -]{0,50}$"
+                  description: Private description for the direct referee. Set to `null` to clear it.
               required:
                 - user_address
       responses:
@@ -6132,13 +6133,9 @@ paths:
             schema:
               type: object
               properties:
-                referee_rebate_rate:
-                  type: number
-                  deprecated: true
-                  description: Legacy API name for the canonical internal `refereeRebateRate` field. Prefer the external alias `bonus_referee_rebate_rate`.
                 bonus_referee_rebate_rate:
                   type: number
-                  description: Preferred external alias for the referee bonus rebate rate.
+                  description: Bonus rebate rate for referees.
       responses:
         "200":
           description: OK
@@ -6195,13 +6192,9 @@ paths:
             schema:
               type: object
               properties:
-                referee_rebate_rate:
-                  type: number
-                  deprecated: true
-                  description: Legacy API name for the canonical internal `refereeRebateRate` field. Prefer the external alias `bonus_referee_rebate_rate`.
                 bonus_referee_rebate_rate:
                   type: number
-                  description: Preferred external alias for the referee bonus rebate rate.
+                  description: Bonus rebate rate for referees.
                 account_ids:
                   type: array
                   items:
@@ -6404,30 +6397,17 @@ paths:
                 required_volume:
                   type: number
                   description: Required trading volume for the multilevel referral program.
-                default_rebate_rate:
-                  type: number
-                  deprecated: true
-                  description: Legacy API name for the canonical internal `defaultRebateRate` field. Prefer the external alias `default_bonus_rebate_rate`.
                 default_bonus_rebate_rate:
                   type: number
-                  description: Preferred external alias for the default bonus rebate rate.
-                direct_bonus_rebate_rate:
-                  type: number
-                  deprecated: true
-                  description: Legacy API name for the canonical internal `directBonusRebateRate` field. Prefer the external alias `base_rebate_rate`.
+                  description: Default bonus rebate rate.
                 base_rebate_rate:
                   type: number
-                  description: Preferred external alias for the base rebate rate paid to the direct referrer.
+                  description: Base rebate rate paid to the direct referrer.
               required:
                 - enable
                 - required_volume
-              allOf:
-                - anyOf:
-                    - required: [default_bonus_rebate_rate]
-                    - required: [default_rebate_rate]
-                - anyOf:
-                    - required: [base_rebate_rate]
-                    - required: [direct_bonus_rebate_rate]
+                - default_bonus_rebate_rate
+                - base_rebate_rate
       responses:
         "200":
           description: OK
@@ -6486,20 +6466,12 @@ paths:
                 required_volume:
                   type: number
                   description: Required volume for referral
-                default_rebate_rate:
-                  type: number
-                  deprecated: true
-                  description: Legacy API name for the canonical internal `defaultRebateRate` field. Prefer the external alias `default_bonus_rebate_rate`.
                 default_bonus_rebate_rate:
                   type: number
-                  description: Preferred external alias for the default bonus rebate rate.
-                direct_bonus_rebate_rate:
-                  type: number
-                  deprecated: true
-                  description: Legacy API name for the canonical internal `directBonusRebateRate` field. Prefer the external alias `base_rebate_rate`.
+                  description: Default bonus rebate rate.
                 base_rebate_rate:
                   type: number
-                  description: Preferred external alias for the base rebate rate paid to the direct referrer.
+                  description: Base rebate rate paid to the direct referrer.
       responses:
         "200":
           description: OK
@@ -6531,13 +6503,9 @@ paths:
             schema:
               type: object
               properties:
-                rebate_rate:
-                  type: number
-                  deprecated: true
-                  description: Legacy API name for the canonical internal `rebateRate` field. Prefer the external alias `bonus_rebate_rate`.
                 bonus_rebate_rate:
                   type: number
-                  description: Preferred external alias for the target affiliate's custom bonus rebate rate.
+                  description: Custom bonus rebate rate for the target affiliate.
                 account_ids:
                   type: array
                   items:
@@ -6545,9 +6513,7 @@ paths:
                   description: The L1 affiliate account(s) to update
               required:
                 - account_ids
-              anyOf:
-                - required: [bonus_rebate_rate]
-                - required: [rebate_rate]
+                - bonus_rebate_rate
       responses:
         "200":
           description: OK
@@ -6655,7 +6621,7 @@ paths:
             type: integer
         - name: sort_by
           in: query
-          description: "Sort by field. `max_rebate_rate` is the legacy API name; prefer the external alias `bonus_max_rebate_rate`."
+          description: "Sort by field"
           required: false
           example: ""
           schema:
@@ -6665,7 +6631,6 @@ paths:
               - total_traded
               - referee_volume
               - bonus_max_rebate_rate
-              - max_rebate_rate
         - name: level
           in: query
           description: "Return all if not provided"
@@ -6773,7 +6738,9 @@ paths:
                       code_binding_time: 1769153820470
                       bind_type: "multi_level"
                       referral_rebate_rate: 0.15
+                      bonus_referrer_rebate_rate: 0.15
                       referee_rebate_rate: 0.2
+                      bonus_referee_rebate_rate: 0.2
                       is_default_rate: true
                       direct_invites: 1
                       indirect_invites: 1
@@ -6782,6 +6749,7 @@ paths:
                       direct_rebate: 0
                       indirect_rebate: 0.057997
                       direct_bonus_rebate: 0
+                      base_rebate: 0
                   meta:
                     total: 1
                     records_per_page: 20
@@ -6901,18 +6869,12 @@ paths:
                 referral_code:
                   type: string
                   description: The referral code to create
-                max_rebate_rate:
-                  type: number
-                  deprecated: true
-                  description: Legacy API name for the canonical internal `maxRebateRate` field. Prefer the external alias `bonus_max_rebate_rate`.
                 bonus_max_rebate_rate:
                   type: number
-                  description: Preferred external alias for the maximum bonus rebate rate required for L1 affiliate code creation.
+                  description: Maximum bonus rebate rate required for L1 affiliate code creation.
               required:
                 - account_id
-              anyOf:
-                - required: [bonus_max_rebate_rate]
-                - required: [max_rebate_rate]
+                - bonus_max_rebate_rate
       responses:
         "200":
           description: OK
@@ -15743,12 +15705,30 @@ components:
                               example: "C4"
                             max_rebate_rate:
                               type: number
+                              deprecated: true
+                              description: Legacy response field. Use `bonus_max_rebate_rate`.
+                              example: 0.4
+                            bonus_max_rebate_rate:
+                              type: number
+                              description: Preferred response field for the maximum bonus rebate rate.
                               example: 0.4
                             referrer_rebate_rate:
                               type: number
+                              deprecated: true
+                              description: Legacy response field. Use `bonus_referrer_rebate_rate`.
+                              example: 0.3
+                            bonus_referrer_rebate_rate:
+                              type: number
+                              description: Preferred response field for the referrer's bonus rebate rate.
                               example: 0.3
                             referee_rebate_rate:
                               type: number
+                              deprecated: true
+                              description: Legacy response field. Use `bonus_referee_rebate_rate`.
+                              example: 0.1
+                            bonus_referee_rebate_rate:
+                              type: number
+                              description: Preferred response field for the referee's bonus rebate rate.
                               example: 0.1
                             total_referrer_rebate:
                               type: number
@@ -15870,12 +15850,30 @@ components:
                             example: "C4"
                           max_rebate_rate:
                             type: number
+                            deprecated: true
+                            description: Legacy response field. Use `bonus_max_rebate_rate`.
+                            example: 0.4
+                          bonus_max_rebate_rate:
+                            type: number
+                            description: Preferred response field for the maximum bonus rebate rate.
                             example: 0.4
                           referrer_rebate_rate:
                             type: number
+                            deprecated: true
+                            description: Legacy response field. Use `bonus_referrer_rebate_rate`.
+                            example: 0.3
+                          bonus_referrer_rebate_rate:
+                            type: number
+                            description: Preferred response field for the referrer's bonus rebate rate.
                             example: 0.3
                           referee_rebate_rate:
                             type: number
+                            deprecated: true
+                            description: Legacy response field. Use `bonus_referee_rebate_rate`.
+                            example: 0.1
+                          bonus_referee_rebate_rate:
+                            type: number
+                            description: Preferred response field for the referee's bonus rebate rate.
                             example: 0.1
                           total_invites:
                             type: number
@@ -15891,6 +15889,12 @@ components:
                       example: "Kevin"
                     referee_rebate_rate:
                       type: number
+                      deprecated: true
+                      description: Legacy response field. Use `bonus_referee_rebate_rate`.
+                      example: 0.1
+                    bonus_referee_rebate_rate:
+                      type: number
+                      description: Preferred response field for the bonus rebate rate received by the referee.
                       example: 0.1
                     1d_referee_rebate:
                       type: number
@@ -15942,6 +15946,15 @@ components:
                         type: number
                         example: 2.22
                         description: "the total referral rebate paid to the referer based on the referee's fees paid"
+                      direct_bonus_rebate:
+                        type: number
+                        deprecated: true
+                        description: Legacy response field. Use `base_rebate`.
+                        example: 0.22
+                      base_rebate:
+                        type: number
+                        description: Preferred response field for the base rebate paid to the direct referrer.
+                        example: 0.22
                       date:
                         type: string
                         example: "2023-11-14"
@@ -15985,6 +15998,15 @@ components:
                         type: number
                         example: 2.22
                         description: "the total referral rebate received by the user on this day"
+                      direct_bonus_rebate:
+                        type: number
+                        deprecated: true
+                        description: Legacy response field. Use `base_rebate`.
+                        example: 0.22
+                      base_rebate:
+                        type: number
+                        description: Preferred response field for the base rebate paid to the direct referrer.
+                        example: 0.22
                       volume:
                         type: number
                         example: 123.456
@@ -17023,7 +17045,17 @@ components:
               properties:
                 max_rebate_rate:
                   type: number
+                  deprecated: true
+                  description: Legacy response field. Use `bonus_max_rebate_rate`.
                   example: 0.3
+                bonus_max_rebate_rate:
+                  type: number
+                  description: Preferred response field for the maximum bonus rebate rate.
+                  example: 0.3
+                base_rebate_rate:
+                  type: number
+                  description: Preferred response field for the base rebate rate paid to the direct referrer.
+                  example: 0.1
 
     ClaimCodeResponse:
       allOf:
@@ -17038,6 +17070,12 @@ components:
                   example: "mycode"
                 default_referee_rebate_rate:
                   type: number
+                  deprecated: true
+                  description: Legacy response field. Use `default_bonus_referee_rebate_rate`.
+                  example: 0.1
+                default_bonus_referee_rebate_rate:
+                  type: number
+                  description: Preferred response field for the default bonus rebate rate for referees.
                   example: 0.1
 
     GetRebateInfoResponse:
@@ -17053,12 +17091,30 @@ components:
                   example: "mycode"
                 max_rebate_rate:
                   type: number
+                  deprecated: true
+                  description: Legacy response field. Use `bonus_max_rebate_rate`.
+                  example: 0.3
+                bonus_max_rebate_rate:
+                  type: number
+                  description: Preferred response field for the maximum bonus rebate rate.
                   example: 0.3
                 direct_bonus_rebate_rate:
                   type: number
+                  deprecated: true
+                  description: Legacy response field. Use `base_rebate_rate`.
+                  example: 0.1
+                base_rebate_rate:
+                  type: number
+                  description: Preferred response field for the base rebate rate paid to the direct referrer.
                   example: 0.1
                 default_referee_rebate_rate:
                   type: number
+                  deprecated: true
+                  description: Legacy response field. Use `default_bonus_referee_rebate_rate`.
+                  example: 0.1
+                default_bonus_referee_rebate_rate:
+                  type: number
+                  description: Preferred response field for the default bonus rebate rate for referees.
                   example: 0.1
                 direct_invites:
                   type: number
@@ -17077,6 +17133,12 @@ components:
                   example: 123
                 direct_bonus_rebate:
                   type: number
+                  deprecated: true
+                  description: Legacy response field. Use `base_rebate`.
+                  example: 123
+                base_rebate:
+                  type: number
+                  description: Preferred response field for the base rebate paid to the direct referrer.
                   example: 123
                 indirect_rebate:
                   type: number
@@ -17113,6 +17175,12 @@ components:
                   example: 1000
                 direct_bonus_rebate:
                   type: number
+                  deprecated: true
+                  description: Legacy response field. Use `base_rebate`.
+                  example: 1000
+                base_rebate:
+                  type: number
+                  description: Preferred response field for the base rebate paid to the direct referrer.
                   example: 1000
                 indirect_rebate:
                   type: number
@@ -17146,8 +17214,18 @@ components:
                         type: string
                       referral_rebate_rate:
                         type: number
+                        deprecated: true
+                        description: Legacy response field. Use `bonus_referrer_rebate_rate`.
+                      bonus_referrer_rebate_rate:
+                        type: number
+                        description: Preferred response field for the bonus rebate rate retained by the referrer.
                       referee_rebate_rate:
                         type: number
+                        deprecated: true
+                        description: Legacy response field. Use `bonus_referee_rebate_rate`.
+                      bonus_referee_rebate_rate:
+                        type: number
+                        description: Preferred response field for the bonus rebate rate received by the referee.
                       is_default_rate:
                         type: boolean
                       direct_invites:
@@ -17164,6 +17242,11 @@ components:
                         type: number
                       direct_bonus_rebate:
                         type: number
+                        deprecated: true
+                        description: Legacy response field. Use `base_rebate`.
+                      base_rebate:
+                        type: number
+                        description: Preferred response field for the base rebate paid to the direct referrer.
                 meta:
                   $ref: "#/components/schemas/MetaData"
 
@@ -17206,11 +17289,21 @@ components:
                         example: "IRHETJUT"
                       referral_rebate_rate:
                         type: number
-                        description: Remaining rebate rate kept by the referrer after splitting the rebate with the referee.
+                        deprecated: true
+                        description: Legacy response field. Use `bonus_referrer_rebate_rate`.
+                        example: 0.15
+                      bonus_referrer_rebate_rate:
+                        type: number
+                        description: Preferred response field for the bonus rebate rate retained by the referrer.
                         example: 0.15
                       referee_rebate_rate:
                         type: number
-                        description: The rebate rate split given by the referrer.
+                        deprecated: true
+                        description: Legacy response field. Use `bonus_referee_rebate_rate`.
+                        example: 0.2
+                      bonus_referee_rebate_rate:
+                        type: number
+                        description: Preferred response field for the bonus rebate rate received by the referee.
                         example: 0.2
                       is_default_rate:
                         type: boolean
@@ -17236,6 +17329,12 @@ components:
                         example: 0.057997
                       direct_bonus_rebate:
                         type: number
+                        deprecated: true
+                        description: Legacy response field. Use `base_rebate`.
+                        example: 0
+                      base_rebate:
+                        type: number
+                        description: Preferred response field for the base rebate paid to the direct referrer.
                         example: 0
                 meta:
                   $ref: "#/components/schemas/MetaData"
@@ -17271,9 +17370,21 @@ components:
                   example: 1000
                 max_rebate_rate:
                   type: number
+                  deprecated: true
+                  description: Legacy response field. Use `bonus_max_rebate_rate`.
+                  example: 0.4
+                bonus_max_rebate_rate:
+                  type: number
+                  description: Preferred response field for the maximum bonus rebate rate.
                   example: 0.4
                 direct_bonus_rebate_rate:
                   type: number
+                  deprecated: true
+                  description: Legacy response field. Use `base_rebate_rate`.
+                  example: 0.1
+                base_rebate_rate:
+                  type: number
+                  description: Preferred response field for the base rebate rate paid to the direct referrer.
                   example: 0.1
 
     GetMultiLevelAdminInfoResponse:
@@ -17305,10 +17416,25 @@ components:
                         type: number
                       max_rebate_rate:
                         type: number
+                        deprecated: true
+                        description: Legacy response field. Use `bonus_max_rebate_rate`.
+                      bonus_max_rebate_rate:
+                        type: number
+                        description: Preferred response field for the maximum bonus rebate rate.
                       default_referee_rebate_rate:
                         type: number
+                        deprecated: true
+                        description: Legacy response field. Use `default_bonus_referee_rebate_rate`.
+                      default_bonus_referee_rebate_rate:
+                        type: number
+                        description: Preferred response field for the default bonus rebate rate for referees.
                       direct_bonus_rebate_rate:
                         type: number
+                        deprecated: true
+                        description: Legacy response field. Use `base_rebate_rate`.
+                      base_rebate_rate:
+                        type: number
+                        description: Preferred response field for the base rebate rate paid to the direct referrer.
                       total_direct_invites:
                         type: number
                       total_indirect_invites:
@@ -17329,6 +17455,11 @@ components:
                         type: number
                       total_direct_bonus_rebate:
                         type: number
+                        deprecated: true
+                        description: Legacy response field. Use `total_base_rebate`.
+                      total_base_rebate:
+                        type: number
+                        description: Preferred response field for the total base rebate paid to direct referrers.
                 meta:
                   $ref: "#/components/schemas/MetaData"
 
@@ -17373,6 +17504,11 @@ components:
                         type: number
                       total_direct_bonus_rebate:
                         type: number
+                        deprecated: true
+                        description: Legacy response field. Use `total_base_rebate`.
+                      total_base_rebate:
+                        type: number
+                        description: Preferred response field for the total base rebate paid to direct referrers.
                       date:
                         type: string
                 meta:
