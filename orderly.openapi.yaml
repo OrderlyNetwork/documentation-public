@@ -8977,10 +8977,13 @@ paths:
             type: number
         - name: source_type
           in: query
-          description: "Filter orders by source type."
+          description: "Filter orders by source type: `ORDINARY` or `ALL`."
           required: false
           schema:
             type: string
+            enum:
+              - ORDINARY
+              - ALL
         - name: page
           in: query
           description: the page you wish to query. start from 1
@@ -9426,12 +9429,13 @@ paths:
             type: string
         - name: algo_type
           in: query
-          description: "`TRAILING_STOP`/`TAKE_PROFIT`/`STOP_LOSS`/`TP_SL`/`POSITIONAL_TP_SL`/`BRACKET`"
+          description: "`STOP`/`TRAILING_STOP`/`TAKE_PROFIT`/`STOP_LOSS`/`TP_SL`/`POSITIONAL_TP_SL`/`BRACKET`"
           required: false
           example: ""
           schema:
             type: string
             enum:
+              - STOP
               - TRAILING_STOP
               - TAKE_PROFIT
               - STOP_LOSS
