@@ -38,7 +38,7 @@ The following example demonstrates how fees flow between parties.
 
 - **Orderly Base Fee:** Depends on the Builder's current fee tier. This tiering applies only to the Builder's base fee paid to Orderly.
 - **Example taker trade:** If Orderly's base taker fee is 3 bps and the Builder charges a 6 bps user-facing taker fee, the Builder's net profit is 3 bps.
-- **Example maker trade:** Maker economics depend on the Builder's Orderly base maker fee, which can be 0 bps or negative for higher tiers. The user-facing maker fee is still set by the Builder and can also be negative, which entitles qualifying maker trades to a rebate.
+- **Example maker trade:** A negative tier rate is the maximum rebate Orderly will fund when the Builder passes a negative maker fee through to the trader. The funded rebate is not Builder revenue. If the Builder charges the trader a zero or positive maker fee, Orderly funds no maker rebate; any positive maker fee collected is Builder revenue.
 
 **Referral Configuration:**
 The Builder generates a code for a KOL with an **80% Max Rebate**, split **50:50** between the Referrer and Referee.

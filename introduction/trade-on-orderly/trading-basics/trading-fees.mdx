@@ -52,7 +52,7 @@ As a Trader, you pay a single fee per trade that's set by the Builder (the DEX y
 Orderly gives Builders full control over their pricing. You set your own trading fees while tapping into Orderly's shared liquidity.
 
 - **Set your own fees:** You decide what to charge your users. The only rule: your fee must be at least as high as Orderly's **base fee**.
-- **Keep the difference:** For taker fees, you retain **100% of the margin** between what you charge users and what Orderly charges you. Conditional rebate rules apply when your base maker fee is negative: if you charge the user a positive maker fee, the protocol rebate does not apply and your revenue equals the user's maker fee. You have full ownership to decide how to redistribute your margin — for example, using a portion to fund referral programs to help with platform growth, offering user rebates, or creating other incentive structures.
+- **Keep your fee margin:** For taker fees, you retain **100% of the margin** between what you charge users and what Orderly charges you. For maker fees, positive fees collected from traders are Builder revenue. Protocol-funded maker rebates are passed through to traders and are not Builder revenue.
 - **Base fee tiers:** The base fee Orderly charges you depends on your tier in the Builder Staking programme.
 
 ### Builder Staking programme
@@ -70,7 +70,7 @@ Builders can get lower base fees and better support by hitting monthly volume ta
     | Fee type | Rate (bps) |
     |---|---|
     | Base taker fee (crypto and RWA) | 3.00 |
-    | Base maker fee (crypto and RWA) | 0.00 |
+    | Maker rebate cap (crypto and RWA) | 0.00 |
 
     **Marketing benefits:** None
 
@@ -84,7 +84,7 @@ Builders can get lower base fees and better support by hitting monthly volume ta
     | Fee type | Rate (bps) |
     |---|---|
     | Base taker fee (crypto and RWA) | 2.75 |
-    | Base maker fee (crypto and RWA) | -0.05 |
+    | Maker rebate cap (crypto and RWA) | -0.05 |
 
     **Marketing benefits:**
     - Launch RT/QT from Orderly
@@ -101,7 +101,7 @@ Builders can get lower base fees and better support by hitting monthly volume ta
     | Fee type | Rate (bps) |
     |---|---|
     | Base taker fee (crypto and RWA) | 2.50 |
-    | Base maker fee (crypto and RWA) | -0.10 |
+    | Maker rebate cap (crypto and RWA) | -0.10 |
 
     **Marketing benefits:**
     - All Silver benefits
@@ -121,7 +121,7 @@ Builders can get lower base fees and better support by hitting monthly volume ta
     | Fee type | Rate (bps) |
     |---|---|
     | Base taker fee (crypto and RWA) | 2.00 |
-    | Base maker fee (crypto and RWA) | -0.15 |
+    | Maker rebate cap (crypto and RWA) | -0.15 |
 
     **Marketing benefits:**
     - All Gold benefits
@@ -142,7 +142,7 @@ Builders can get lower base fees and better support by hitting monthly volume ta
     | Fee type | Rate (bps) |
     |---|---|
     | Base taker fee (crypto and RWA) | 1.00 |
-    | Base maker fee (crypto and RWA) | -0.20 |
+    | Maker rebate cap (crypto and RWA) | -0.20 |
 
     **Marketing benefits:**
     - All Platinum benefits
@@ -163,6 +163,6 @@ Builders can get lower base fees and better support by hitting monthly volume ta
 
 - **Volume calculation:** Monthly aggregate trading volume includes all activity from the Builder and their direct Builder referrals, calculated from daily snapshots to determine tier eligibility.
 - **Minimum tier assignments:** Minimum tiers may come from the distributor program or internal strategic assignments. They act as a floor, but builders can still move to higher tiers through staking or volume at the next daily refresh.
-- **Conditional maker rebates:** Builders at Silver tier and above can receive a negative base maker fee on qualifying orders only when they do not charge the user a positive maker fee. See [Conditional Maker Rebate](/build-on-omnichain/user-flows/custom-fees#conditional-maker-rebate) for eligibility and revenue calculations. Trader rebates settle immediately on each execution; eligible builder-side maker rebates and taker revenue are batched and settled together once per day.
+- **Conditional maker rebates:** The negative maker rate for Silver tier and above is a cap on the rebate Orderly will fund when the Builder passes a negative maker fee through to the trader. Orderly funds no rebate when the trader's maker fee is zero or positive. The funded rebate belongs to the trader and is not Builder revenue. See [Conditional Maker Rebates](/build-on-omnichain/user-flows/custom-fees#conditional-maker-rebates) for examples.
 
 </Note>

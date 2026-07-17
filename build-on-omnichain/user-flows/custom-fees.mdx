@@ -7,19 +7,19 @@ The Custom Trading Fee System allows builders to tailor fee structures for their
 
 ## Overview of Fee Structure
 
-|                  | Orderly Base Fee                                 | Builder-Set User Fee            |
-| ---------------- | ------------------------------------------------ | ------------------------------- |
-| **Who receives** | Orderly (100%)                                   | Builder (100%)                  |
-| **Taker**        | Based on the Builder's fee tier                  | Set by builder                  |
-| **Maker**        | Based on the Builder's fee tier; can be negative | Set by builder; can be negative |
+|                                      | Orderly tier rate                          | Builder-set user fee                                       |
+| ------------------------------------ | ------------------------------------------ | ---------------------------------------------------------- |
+| **Taker**                            | Base fee retained by Orderly               | Builder keeps the positive margin above Orderly's base fee |
+| **Maker: zero or positive user fee** | No maker rebate funded                     | Builder keeps any positive maker fee collected             |
+| **Maker: negative user fee**         | Funds the trader rebate up to the tier cap | Trader receives the funded rebate                          |
 
 <Note>
   Orderly base fees are set by the Builder's [builder staking
   programme](/introduction/trade-on-orderly/trading-basics/trading-fees#builder-staking-programme).
-  This tiering applies to the Builder's base fee paid to Orderly, with the same base rates applying
-  to crypto and RWA markets. Builders can still configure different user-facing trading fees for
-  crypto and RWA trades respectively, including negative maker fees so eligible maker trades receive
-  a rebate. Use the [Trading
+  This tiering determines the taker base fee and maker rebate cap, with the same rates applying to
+  crypto and RWA markets. Builders can still configure different user-facing trading fees for crypto
+  and RWA trades respectively, including negative maker fees that pass a rebate through to
+  qualifying traders. Use the [Trading
   fees](/introduction/trade-on-orderly/trading-basics/trading-fees) page for the current taker and
   maker base fee tiers.
 </Note>
@@ -36,7 +36,9 @@ The Custom Trading Fee System allows builders to tailor fee structures for their
     Orderly provides a [fee tier assignment tool](https://github.com/OrderlyNetwork/orderly-evm-broker-fee-admin) for volume-based tiers.
 
     <Note>
-      The fee rate is the total charged to, or rebated to, the user (Orderly base fee + custom fee). For taker fees, the custom fee cannot be less than the Orderly base fee. For maker fees, builders can configure a negative user-facing maker fee so qualifying maker trades receive a rebate.
+      The fee rate is the total charged to, or rebated to, the user. For taker fees, the user-facing
+      fee cannot be less than the Orderly base fee. For maker fees, a negative user-facing rate is a
+      trader rebate; Orderly funds it only up to the Builder's tier cap.
     </Note>
 
     <Note>
@@ -67,16 +69,36 @@ The Custom Trading Fee System allows builders to tailor fee structures for their
   </Step>
 </Steps>
 
-### Conditional Maker Rebate
+### Conditional Maker Rebates
 
-A negative base maker fee is a protocol rebate. To be eligible for this rebate, a Builder must not charge the user a positive maker fee.
+Conditional Maker Rebates align Orderly's protocol funding with the maker incentives that Builders actually pass through to traders. **Taker fees are unchanged.**
 
-- **Positive user maker fee:** If the user pays a positive maker fee, the Builder is not eligible for the protocol rebate. `Builder revenue = user maker fee`.
-- **Negative user maker fee (user rebate):** If the user also receives a maker rebate and the user maker fee is greater than or equal to the Builder's base maker fee, `Builder revenue = user maker fee - base maker fee`.
+A tier's negative base maker fee is the maximum rebate Orderly will fund for a qualifying maker trade. It is a pass-through incentive for the trader, not revenue for the Builder.
 
-### Builder Rebate Distribution
+#### How it works
 
-Eligible Builders receive daily rebates in their fee wallet, calculated after deducting any referral rebates.
+1. **User maker fee is zero or positive:** Orderly funds no maker rebate. If the fee is positive, the Builder keeps the maker fee collected from the trader as revenue.
+2. **User maker fee is negative:** Orderly funds the trader's maker rebate up to the Builder's tier cap. The Builder passes the funded rebate through to the trader and does not retain it as revenue.
+
+The negative user-facing maker fee must remain within the Builder's tier cap.
+
+#### Gold tier example
+
+For a Gold-tier Builder, the maker rebate cap is **-0.10 bps**:
+
+| User maker fee | Orderly-funded rebate | Builder outcome                                                              |
+| -------------- | --------------------- | ---------------------------------------------------------------------------- |
+| +0.10 bps      | 0 bps                 | Builder keeps +0.10 bps                                                      |
+| -0.05 bps      | -0.05 bps             | Full trader rebate is funded; Builder net maker fee is 0 bps                 |
+| -0.10 bps      | -0.10 bps             | Full trader rebate is funded at the tier cap; Builder net maker fee is 0 bps |
+
+#### Custom fee structures
+
+Eligibility is evaluated per trade, so Builders can apply different maker fees to different user groups. For example, a Builder can charge retail traders **+0.05 bps** and offer a whitelisted market maker **-0.10 bps**. Orderly funds the rebate only for the market maker's negative-fee trades; the retail trades receive no protocol-funded maker rebate.
+
+### Maker Rebate Settlement
+
+Protocol-funded maker rebates are passed through to traders. They may appear in Builder-side fee settlement as part of the funding flow, but they are not Builder earnings. Trader rebates settle on each qualifying execution.
 
 ## FAQs
 
@@ -94,14 +116,14 @@ Eligible Builders receive daily rebates in their fee wallet, calculated after de
     tool](https://github.com/OrderlyNetwork/orderly-evm-broker-fee-admin) to help builders assign
     users to volume-based tiers.
   </Accordion>
-  <Accordion title="How does the rebate work for builders?">
-    A negative base maker fee is conditional. The Builder is eligible for the protocol rebate only
-    when the user-facing maker fee is not positive. See [Conditional Maker
-    Rebate](#conditional-maker-rebate) for the revenue calculation.
+  <Accordion title="How do conditional maker rebates work?">
+    Orderly funds maker rebates only when a Builder sets a negative user-facing maker fee. The
+    rebate is passed through to the trader up to the Builder's tier cap and is not Builder revenue.
+    See [Conditional Maker Rebates](#conditional-maker-rebates) for examples.
   </Accordion>
   <Accordion title="How are fee rebates distributed?">
-    Builder fee rebates are distributed daily to the builder's Orderly account registered with the
-    wallet provided during the builder ID setup.
+    Trader maker rebates settle on each qualifying execution. Any Builder-side settlement associated
+    with funding the rebate is a pass-through and not Builder earnings.
   </Accordion>
   <Accordion title="What are the fee wallet requirements?">
     Currently EOA only, with multisig support upcoming.
