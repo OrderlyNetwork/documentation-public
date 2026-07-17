@@ -43,13 +43,13 @@ A distributor's tier is determined by their **30-day Aggregate Volume** or **\$O
 
 ### Tiers & Privileges
 
-| Tier         | 30d Aggregate Volume | \$ORDER Staked | Base Taker Fee | Base Maker Fee | Tier Assignment Privilege   |
-| :----------- | :------------------- | :------------- | :------------- | :------------- | :-------------------------- |
-| **Public**   | < \$50M              | < 100K         | 3.00 bps       | 0.00 bps       | -                           |
-| **Silver**   | ≥ \$50M              | ≥ 100K         | 2.75 bps       | -0.05 bps      | -                           |
-| **Gold**     | ≥ \$200M             | ≥ 300K         | 2.50 bps       | -0.10 bps      | Can assign Silver / Public  |
-| **Platinum** | ≥ \$750M             | ≥ 3M           | 2.00 bps       | -0.15 bps      | Can assign Gold & below     |
-| **Diamond**  | ≥ \$2B               | ≥ 7M           | 1.00 bps       | -0.20 bps      | Can assign Platinum & below |
+| Tier         | 30d Aggregate Volume | \$ORDER Staked | Base Taker Fee | Maker Rebate Cap | Tier Assignment Privilege   |
+| :----------- | :------------------- | :------------- | :------------- | :--------------- | :-------------------------- |
+| **Public**   | < \$50M              | < 100K         | 3.00 bps       | 0.00 bps         | -                           |
+| **Silver**   | ≥ \$50M              | ≥ 100K         | 2.75 bps       | -0.05 bps        | -                           |
+| **Gold**     | ≥ \$200M             | ≥ 300K         | 2.50 bps       | -0.10 bps        | Can assign Silver / Public  |
+| **Platinum** | ≥ \$750M             | ≥ 3M           | 2.00 bps       | -0.15 bps        | Can assign Gold & below     |
+| **Diamond**  | ≥ \$2B               | ≥ 7M           | 1.00 bps       | -0.20 bps        | Can assign Platinum & below |
 
 ### The Volume Formula
 
@@ -63,17 +63,17 @@ Reference: [Orderly Builder Programme](/introduction/trade-on-orderly/trading-ba
 
 ### The Core Equation
 
-Distributors earn the "spread" between the invitee's base fee and their own. Base fees are tier-based Builder fees paid to Orderly, not the user-facing fees each Builder configures for its trading platform.
+Vanguard revenue share applies only to taker orders. Maker orders and maker rebates are not included.
+
+Distributors earn the "spread" between the invitee's base taker fee and their own. Base taker fees are tier-based Builder fees paid to Orderly, not the user-facing fees each Builder configures for its trading platform.
 
 **Distributor Margin:**
 
 $$
-Margin = \max(0.1 \text{" bps"}, \text{"Invitee Base Fee"} - \text{"Distributor Base Fee"})
+Margin = \max(0.1 \text{" bps"}, \text{"Invitee Base Taker Fee"} - \text{"Distributor Base Taker Fee"})
 $$
 
-_(A guaranteed 0.1 bps minimum margin applies to Taker orders even if tiers are identical.)_
-
-For maker orders, the negative tier rate is the maximum rebate Orderly will fund when a Builder sets a negative user-facing maker fee. The funded rebate is passed through to the trader and is not Builder revenue. If the user-facing maker fee is zero or positive, Orderly funds no maker rebate.
+_(A guaranteed 0.1 bps minimum margin applies to taker orders even if tiers are identical.)_
 
 ## 5. Settlement & Distribution
 
