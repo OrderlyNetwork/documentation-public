@@ -15671,54 +15671,85 @@ components:
         - type: object
           required:
             - data
+            - timestamp
           properties:
             data:
               type: object
               required:
                 - rows
+                - snapshot_time
+                - meta
               properties:
                 snapshot_time:
                   type: number
-                  example: 1702989203989
+                  example: 1784278800000
                 rows:
                   type: array
                   items:
                     type: object
+                    required:
+                      - date
+                      - account_id
+                      - perp_volume
+                      - perp_taker_volume
+                      - perp_maker_volume
+                      - total_fee
+                      - broker_fee
+                      - address
+                      - broker_id
+                      - realized_pnl
                     properties:
                       account_id:
                         type: string
-                        example: "0x58220761ade872c94f85e62f1b24a74eec792aaa3677b6201071fd05c1698e89"
+                        example: "0x0b88771b33b176c4c3066a0742877988ee6aefccf8c3d98a31bcaefa23ca8b5a"
+                      date:
+                        description: Date represented by the leaderboard row in `YYYY-MM-DD` format.
+                        type: string
+                        format: date
+                        example: "2026-06-01"
                       perp_volume:
+                        description: Total perpetual trading volume for the leaderboard row.
                         type: number
-                        example: 451580.9523
+                        example: 283.648664
                       perp_maker_volume:
+                        description: Perpetual maker volume for the leaderboard row.
                         type: number
-                        example: 123.456
-                      perp_taker_volum:
+                        example: 0
+                      perp_taker_volume:
+                        description: Perpetual taker volume for the leaderboard row.
                         type: number
-                        example: 123.456
+                        example: 283.648664
+                      total_fee:
+                        description: Total trading fee charged or rebated for the leaderboard row. A negative value represents a net rebate.
+                        type: number
+                        example: 0.056732
+                      broker_fee:
+                        description: Gross Builder fee before deducting referral commissions distributed to affiliates and referees.
+                        type: number
+                        example: 0.028365
                       address:
                         type: string
-                        example: "0x0000000000"
+                        example: "0xd43a72d2212d8c285299f2b2655f8ccb946e9d8b"
                       realized_pnl:
+                        description: Realized profit and loss for the leaderboard row.
                         type: number
-                        example: 111.00
+                        example: -5.7548125
                       broker_id:
-                        type: number
-                        example: "demo"
+                        type: string
+                        example: "fillx"
                 meta:
                   type: object
                   properties:
                     records_per_page:
                       type: integer
-                      example: 25
+                      example: 50
                     current_page:
                       type: integer
                       example: 1
                       description: "start from 1"
                     total:
                       type: integer
-                      example: 50
+                      example: 608
 
     GetUserDailyStatsResponse:
       allOf:
