@@ -8552,19 +8552,21 @@ paths:
 
         `GET /v1/admin/client/info`
 
+        This endpoint supports per-user queries only. Provide either `user_account` or `user_address`; broker-wide queries are not supported.
+
       tags:
         - private
       parameters:
         - name: user_account
           in: query
-          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          description: "Target user account. This endpoint is per-user only; provide either `user_account` or `user_address`."
           required: false
           example: ""
           schema:
             type: string
         - name: user_address
           in: query
-          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          description: "Target user address. This endpoint is per-user only; provide either `user_address` or `user_account`."
           required: false
           example: ""
           schema:
@@ -8589,6 +8591,8 @@ paths:
 
         `GET /v1/admin/client/holding`
 
+        This endpoint supports per-user queries only. Provide either `user_account` or `user_address`; broker-wide queries are not supported.
+
       tags:
         - private
       parameters:
@@ -8603,14 +8607,14 @@ paths:
             type: boolean
         - name: user_account
           in: query
-          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          description: "Target user account. This endpoint is per-user only; provide either `user_account` or `user_address`."
           required: false
           example: ""
           schema:
             type: string
         - name: user_address
           in: query
-          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          description: "Target user address. This endpoint is per-user only; provide either `user_address` or `user_account`."
           required: false
           example: ""
           schema:
@@ -8635,6 +8639,8 @@ paths:
 
         `GET /v1/admin/internal_transfer_history`
 
+        This endpoint supports per-user queries only. Provide either `user_account` or `user_address`; broker-wide queries are not supported. `start_t` and `end_t` are optional time filters for the selected user.
+
       tags:
         - private
       parameters:
@@ -8647,14 +8653,14 @@ paths:
             type: string
         - name: start_t
           in: query
-          description: ""
+          description: "Optional start of the selected user's query range as a 13-digit Unix timestamp in milliseconds."
           required: false
           example: ""
           schema:
             type: string
         - name: end_t
           in: query
-          description: ""
+          description: "Optional end of the selected user's query range as a 13-digit Unix timestamp in milliseconds."
           required: false
           example: ""
           schema:
@@ -8706,14 +8712,14 @@ paths:
             type: boolean
         - name: user_account
           in: query
-          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          description: "Target user account. This endpoint is per-user only; provide either `user_account` or `user_address`."
           required: false
           example: ""
           schema:
             type: string
         - name: user_address
           in: query
-          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          description: "Target user address. This endpoint is per-user only; provide either `user_address` or `user_account`."
           required: false
           example: ""
           schema:
@@ -8738,6 +8744,10 @@ paths:
 
         `GET /v1/admin/asset/history`
 
+        Supports two query modes:
+        - **Per-user mode:** Provide either `user_account` or `user_address`. `start_t` and `end_t` are optional.
+        - **Broker mode:** Omit both `user_account` and `user_address`. Both `start_t` and `end_t` are required, and the time range cannot exceed 180 days.
+
       tags:
         - private
       parameters:
@@ -8757,21 +8767,27 @@ paths:
             type: string
         - name: status
           in: query
-          description: "`NEW`/`CONFIRM`/`PROCESSING`/`COMPLETED`/`FAILED`/`PENDING_REBALANCE`"
+          description: "`PENDING`/`PENDING_REBALANCE`/`PROCESSING`/`COMPLETED`/`FAILED`"
           required: false
           example: ""
           schema:
             type: string
+            enum:
+              - PENDING
+              - PENDING_REBALANCE
+              - PROCESSING
+              - COMPLETED
+              - FAILED
         - name: start_t
           in: query
-          description: ""
+          description: "Start of the query range as a 13-digit Unix timestamp in milliseconds. Required in broker mode and optional in per-user mode. The broker-mode range cannot exceed 180 days."
           required: false
           example: ""
           schema:
             type: number
         - name: end_t
           in: query
-          description: ""
+          description: "End of the query range as a 13-digit Unix timestamp in milliseconds. Required in broker mode and optional in per-user mode. The broker-mode range cannot exceed 180 days."
           required: false
           example: ""
           schema:
@@ -8792,14 +8808,14 @@ paths:
             type: number
         - name: user_account
           in: query
-          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          description: "Target user account for per-user mode. Provide either `user_account` or `user_address`. Omit both to use broker mode, which requires `start_t` and `end_t`."
           required: false
           example: ""
           schema:
             type: string
         - name: user_address
           in: query
-          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          description: "Target user address for per-user mode. Provide either `user_address` or `user_account`. Omit both to use broker mode, which requires `start_t` and `end_t`."
           required: false
           example: ""
           schema:
@@ -8814,7 +8830,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AssetHistoryResponse"
+                $ref: "#/components/schemas/AdminAssetHistoryResponse"
 
   /v1/admin/client/leverage:
     get:
@@ -8822,7 +8838,9 @@ paths:
       description: |
         **Limit: 1 requests per 1 second per IP address**
 
-        `GET /v1/admin/asset/history`
+        `GET /v1/admin/client/leverage`
+
+        This endpoint supports per-user queries only. Provide either `user_account` or `user_address`; broker-wide queries are not supported.
 
       tags:
         - private
@@ -8834,16 +8852,26 @@ paths:
           example: "PERP_BTC_USDC"
           schema:
             type: string
+        - name: margin_mode
+          in: query
+          description: "Margin mode to query. Defaults to `CROSS`."
+          required: false
+          schema:
+            type: string
+            enum:
+              - CROSS
+              - ISOLATED
+            default: CROSS
         - name: user_account
           in: query
-          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          description: "Target user account. This endpoint is per-user only; provide either `user_account` or `user_address`."
           required: false
           example: ""
           schema:
             type: string
         - name: user_address
           in: query
-          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          description: "Target user address. This endpoint is per-user only; provide either `user_address` or `user_account`."
           required: false
           example: ""
           schema:
@@ -8870,6 +8898,10 @@ paths:
 
         Note: This endpoint requires `trading` scope in orderly key.
 
+        Supports two query modes:
+        - **Per-user mode:** Provide either `user_account` or `user_address`. `start_t` and `end_t` are optional.
+        - **Broker mode:** Omit both `user_account` and `user_address`. Both `start_t` and `end_t` are required, and the time range cannot exceed 180 days.
+
       tags:
         - private
       parameters:
@@ -8889,11 +8921,19 @@ paths:
             type: string
         - name: order_type
           in: query
-          description: "`LIMIT`/`MARKET`"
+          description: "`LIMIT`/`MARKET`/`IOC`/`POST_ONLY`/`FOK`/`ASK`/`BID`"
           required: false
           example: ""
           schema:
             type: string
+            enum:
+              - LIMIT
+              - MARKET
+              - IOC
+              - POST_ONLY
+              - FOK
+              - ASK
+              - BID
         - name: status
           in: query
           description: >-
@@ -8911,22 +8951,36 @@ paths:
             type: string
         - name: start_t
           in: query
-          description: >-
-            start time range that wish to query, noted the time stamp is
-            13-digits timestamp.
+          description: "Start of the query range as a 13-digit Unix timestamp in milliseconds. Required in broker mode and optional in per-user mode. The broker-mode range cannot exceed 180 days."
           required: false
           example: ""
           schema:
             type: number
         - name: end_t
           in: query
-          description: >-
-            end time range that wish to query, noted the time stamp is 13-digits
-            timestamp.
+          description: "End of the query range as a 13-digit Unix timestamp in milliseconds. Required in broker mode and optional in per-user mode. The broker-mode range cannot exceed 180 days."
           required: false
           example: ""
           schema:
             type: number
+        - name: update_start_t
+          in: query
+          description: "Filter orders updated at or after this 13-digit Unix timestamp in milliseconds."
+          required: false
+          schema:
+            type: number
+        - name: update_end_t
+          in: query
+          description: "Filter orders updated at or before this 13-digit Unix timestamp in milliseconds."
+          required: false
+          schema:
+            type: number
+        - name: source_type
+          in: query
+          description: "Filter orders by source type."
+          required: false
+          schema:
+            type: string
         - name: page
           in: query
           description: the page you wish to query. start from 1
@@ -8964,14 +9018,14 @@ paths:
             type: string
         - name: user_account
           in: query
-          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          description: "Target user account for per-user mode. Provide either `user_account` or `user_address`. Omit both to use broker mode, which requires `start_t` and `end_t`."
           required: false
           example: ""
           schema:
             type: string
         - name: user_address
           in: query
-          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          description: "Target user address for per-user mode. Provide either `user_address` or `user_account`. Omit both to use broker mode, which requires `start_t` and `end_t`."
           required: false
           example: ""
           schema:
@@ -8986,7 +9040,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OrdersResponse"
+                $ref: "#/components/schemas/AdminOrdersResponse"
 
   /v1/admin/position/{symbol}:
     get:
@@ -8995,6 +9049,8 @@ paths:
         **Limit: 30 requests per 10 second per user**
 
         `GET /v1/admin/position/{symbol}`
+
+        This endpoint supports per-user queries only. Provide either `user_account` or `user_address`; broker-wide queries are not supported.
 
       tags:
         - private
@@ -9005,16 +9061,25 @@ paths:
           required: true
           schema:
             type: string
+        - name: margin_mode
+          in: query
+          description: "Filter by margin mode."
+          required: false
+          schema:
+            type: string
+            enum:
+              - CROSS
+              - ISOLATED
         - name: user_account
           in: query
-          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          description: "Target user account. This endpoint is per-user only; provide either `user_account` or `user_address`."
           required: false
           example: ""
           schema:
             type: string
         - name: user_address
           in: query
-          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          description: "Target user address. This endpoint is per-user only; provide either `user_address` or `user_account`."
           required: false
           example: ""
           schema:
@@ -9039,19 +9104,21 @@ paths:
 
         `GET /v1/admin/positions`
 
+        This endpoint supports per-user queries only. Provide either `user_account` or `user_address`; broker-wide queries are not supported.
+
       tags:
         - private
       parameters:
         - name: user_account
           in: query
-          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          description: "Target user account. This endpoint is per-user only; provide either `user_account` or `user_address`."
           required: false
           example: ""
           schema:
             type: string
         - name: user_address
           in: query
-          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          description: "Target user address. This endpoint is per-user only; provide either `user_address` or `user_account`."
           required: false
           example: ""
           schema:
@@ -9076,6 +9143,8 @@ paths:
 
         `GET /v1/admin/funding_fee/history`
 
+        This endpoint supports per-user queries only. Provide either `user_account` or `user_address`; broker-wide queries are not supported. `start_t` and `end_t` are optional time filters for the selected user.
+
       tags:
         - private
       parameters:
@@ -9088,18 +9157,14 @@ paths:
             type: string
         - name: start_t
           in: query
-          description: >-
-            start time range that you wish to query, noted that the time stamp
-            is a 13-digits timestamp.
+          description: "Optional start of the selected user's query range as a 13-digit Unix timestamp in milliseconds."
           required: false
           example: ""
           schema:
             type: string
         - name: end_t
           in: query
-          description: >-
-            end time range that you wish to query, noted that the time stamp is
-            a 13-digits timestamp.
+          description: "Optional end of the selected user's query range as a 13-digit Unix timestamp in milliseconds."
           required: false
           example: ""
           schema:
@@ -9120,14 +9185,14 @@ paths:
             type: string
         - name: user_account
           in: query
-          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          description: "Target user account. This endpoint is per-user only; provide either `user_account` or `user_address`."
           required: false
           example: ""
           schema:
             type: string
         - name: user_address
           in: query
-          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          description: "Target user address. This endpoint is per-user only; provide either `user_address` or `user_account`."
           required: false
           example: ""
           schema:
@@ -9152,19 +9217,27 @@ paths:
 
         `GET /v1/admin/volume/user/stats`
 
+        This endpoint supports per-user queries only. Provide either `user_account` or `user_address`; broker-wide queries are not supported.
+
       tags:
         - private
       parameters:
+        - name: broker_id
+          in: query
+          description: "Broker ID associated with the target user."
+          required: false
+          schema:
+            type: string
         - name: user_account
           in: query
-          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          description: "Target user account. This endpoint is per-user only; provide either `user_account` or `user_address`."
           required: false
           example: ""
           schema:
             type: string
         - name: user_address
           in: query
-          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          description: "Target user address. This endpoint is per-user only; provide either `user_address` or `user_account`."
           required: false
           example: ""
           schema:
@@ -9179,7 +9252,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/VolumeStatsResponse"
+                $ref: "#/components/schemas/AdminVolumeStatsResponse"
 
   /v1/admin/liquidations:
     get:
@@ -9190,6 +9263,10 @@ paths:
         `GET /v1/admin/liquidations`
 
         Get liquidated positions for admin usage.
+
+        Supports two query modes:
+        - **Per-user mode:** Provide either `user_account` or `user_address`. `start_t` and `end_t` are optional.
+        - **Broker mode:** Omit both `user_account` and `user_address`. Both `start_t` and `end_t` are required, the time range cannot exceed 90 days, and the broker user map cannot exceed 500,000 users.
       tags:
         - private
       parameters:
@@ -9202,14 +9279,14 @@ paths:
             type: string
         - name: start_t
           in: query
-          description: ""
+          description: "Start of the query range as a 13-digit Unix timestamp in milliseconds. Required in broker mode and optional in per-user mode. The broker-mode range cannot exceed 90 days."
           required: false
           example: ""
           schema:
             type: number
         - name: end_t
           in: query
-          description: ""
+          description: "End of the query range as a 13-digit Unix timestamp in milliseconds. Required in broker mode and optional in per-user mode. The broker-mode range cannot exceed 90 days."
           required: false
           example: ""
           schema:
@@ -9244,14 +9321,14 @@ paths:
             type: number
         - name: user_account
           in: query
-          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          description: "Target user account for per-user mode. Provide either `user_account` or `user_address`. Omit both to use broker mode, which requires `start_t` and `end_t`."
           required: false
           example: ""
           schema:
             type: string
         - name: user_address
           in: query
-          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          description: "Target user address for per-user mode. Provide either `user_address` or `user_account`. Omit both to use broker mode, which requires `start_t` and `end_t`."
           required: false
           example: ""
           schema:
@@ -9277,6 +9354,10 @@ paths:
         `GET /v1/admin/algo/orders`
 
         Get algo order details by customized filters for admin usage.
+
+        Supports two query modes:
+        - **Per-user mode:** Provide either `user_account` or `user_address`. `created_time_start` and `created_time_end` are optional.
+        - **Broker mode:** Omit both `user_account` and `user_address`. Both `created_time_start` and `created_time_end` are required, and the time range cannot exceed 180 days.
       tags:
         - private
       parameters:
@@ -9308,16 +9389,16 @@ paths:
           example: ""
           schema:
             type: string
-        - name: start_t
+        - name: created_time_start
           in: query
-          description: "start time range that wish to query, noted the time stamp is 13-digits timestamp."
+          description: "Start of the query range as a 13-digit Unix timestamp in milliseconds. Required in broker mode and optional in per-user mode. The broker-mode range cannot exceed 180 days."
           required: false
           example: ""
           schema:
             type: number
-        - name: end_t
+        - name: created_time_end
           in: query
-          description: "end time range that wish to query, noted the time stamp is 13-digits timestamp."
+          description: "End of the query range as a 13-digit Unix timestamp in milliseconds. Required in broker mode and optional in per-user mode. The broker-mode range cannot exceed 180 days."
           required: false
           example: ""
           schema:
@@ -9345,11 +9426,18 @@ paths:
             type: string
         - name: algo_type
           in: query
-          description: "Supported types are `STOP`, `TPSL`, `positional_TPSL`"
+          description: "`TRAILING_STOP`/`TAKE_PROFIT`/`STOP_LOSS`/`TP_SL`/`POSITIONAL_TP_SL`/`BRACKET`"
           required: false
           example: ""
           schema:
             type: string
+            enum:
+              - TRAILING_STOP
+              - TAKE_PROFIT
+              - STOP_LOSS
+              - TP_SL
+              - POSITIONAL_TP_SL
+              - BRACKET
         - name: is_triggered
           in: query
           description: ""
@@ -9359,14 +9447,14 @@ paths:
             type: string
         - name: user_account
           in: query
-          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          description: "Target user account for per-user mode. Provide either `user_account` or `user_address`. Omit both to use broker mode, which requires `created_time_start` and `created_time_end`."
           required: false
           example: ""
           schema:
             type: string
         - name: user_address
           in: query
-          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          description: "Target user address for per-user mode. Provide either `user_address` or `user_account`. Omit both to use broker mode, which requires `created_time_start` and `created_time_end`."
           required: false
           example: ""
           schema:
@@ -9394,6 +9482,10 @@ paths:
         Return client's trades history within a time range for admin usage.
 
         Only return the latest 500 entries.
+
+        Supports two query modes:
+        - **Per-user mode:** Provide either `user_account` or `user_address`. `start_t` and `end_t` are optional.
+        - **Broker mode:** Omit both `user_account` and `user_address`. Both `start_t` and `end_t` are required, and the time range cannot exceed 180 days.
       tags:
         - private
       parameters:
@@ -9406,14 +9498,14 @@ paths:
             type: string
         - name: start_t
           in: query
-          description: "start time range that wish to query, noted the time stamp is 13-digits timestamp."
+          description: "Start of the query range as a 13-digit Unix timestamp in milliseconds. Required in broker mode and optional in per-user mode. The broker-mode range cannot exceed 180 days."
           required: false
           example: ""
           schema:
             type: number
         - name: end_t
           in: query
-          description: "end time range that wish to query, noted the time stamp is 13-digits timestamp."
+          description: "End of the query range as a 13-digit Unix timestamp in milliseconds. Required in broker mode and optional in per-user mode. The broker-mode range cannot exceed 180 days."
           required: false
           example: ""
           schema:
@@ -9434,14 +9526,14 @@ paths:
             type: number
         - name: user_account
           in: query
-          description: "Target user account to query for admin usage, required for either user_account or user_address"
+          description: "Target user account for per-user mode. Provide either `user_account` or `user_address`. Omit both to use broker mode, which requires `start_t` and `end_t`."
           required: false
           example: ""
           schema:
             type: string
         - name: user_address
           in: query
-          description: "Target user address to query for admin usage, required for either user_account or user_address"
+          description: "Target user address for per-user mode. Provide either `user_address` or `user_account`. Omit both to use broker mode, which requires `start_t` and `end_t`."
           required: false
           example: ""
           schema:
@@ -11026,6 +11118,33 @@ components:
                   example: 120272.7674
                 perp_volume_last_30_days:
                   description: Perpetual trading volume over the last 30 days for the selected scope.
+                  type: number
+                  example: 300730.5454
+
+    AdminVolumeStatsResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                perp_volume_ytd:
+                  description: Perpetual trading volume year to date for the selected user.
+                  type: number
+                  example: 274148.0364
+                perp_volume_ltd:
+                  description: Perpetual trading volume since launch for the selected user.
+                  type: number
+                  example: 274148.0364
+                perp_volume_last_7_days:
+                  description: Perpetual trading volume over the last 7 days for the selected user.
+                  type: number
+                  example: 120272.7674
+                perp_volume_last_30_days:
+                  description: Perpetual trading volume over the last 30 days for the selected user.
                   type: number
                   example: 300730.5454
 
@@ -13669,6 +13788,40 @@ components:
                   items:
                     $ref: "#/components/schemas/Order"
 
+    AdminOrder:
+      allOf:
+        - $ref: "#/components/schemas/Order"
+        - type: object
+          properties:
+            account_id:
+              description: Account ID associated with the order.
+              type: string
+              example: "0x114f583aea808c5812e16109b6c087660285a26f0a31dcc0f9b54f1a6a0fefbd"
+            user_address:
+              description: Wallet address associated with the order.
+              type: string
+              example: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619"
+
+    AdminOrdersResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - meta
+                - rows
+              properties:
+                meta:
+                  $ref: "#/components/schemas/PaginationMeta"
+                rows:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/AdminOrder"
+
     AlgoOrdersResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
@@ -13772,58 +13925,105 @@ components:
                 rows:
                   type: array
                   items:
-                    type: object
-                    required:
-                      - id
-                      - tx_id
-                      - side
-                      - token
-                      - amount
-                      - fee
-                      - trans_status
-                      - created_time
-                      - updated_time
-                      - chain_id
-                    properties:
-                      id:
-                        type: string
-                        example: "230707030600002"
-                      tx_id:
-                        description: On-chain transaction hash associated with the transfer.
-                        type: string
-                        example: "0x4b0714c63cc7abae72bf68e84e25860b88ca651b7d27dad1e32bf4c027fa5326"
-                      side:
-                        description: Transfer direction of the record.
-                        type: string
-                        example: "WITHDRAW"
-                      token:
-                        description: Token symbol involved in the transfer.
-                        type: string
-                        example: "USDC"
-                      amount:
-                        description: Transfer amount.
-                        type: number
-                        example: 555
-                      fee:
-                        description: Fee charged for the transfer.
-                        type: number
-                        example: 0
-                      trans_status:
-                        description: Current processing status of the transfer.
-                        type: string
-                        example: "FAILED"
-                      created_time:
-                        description: Timestamp when the transfer request was created in milliseconds.
-                        type: number
-                        example: 1688699193034
-                      updated_time:
-                        description: Timestamp of the latest transfer update in milliseconds.
-                        type: number
-                        example: 1688699193096
-                      chain_id:
-                        description: Chain ID associated with the transfer.
-                        type: string
-                        example: "986532"
+                    $ref: "#/components/schemas/AssetHistoryRecord"
+
+    AssetHistoryRecord:
+      type: object
+      required:
+        - id
+        - tx_id
+        - side
+        - token
+        - amount
+        - fee
+        - trans_status
+        - created_time
+        - updated_time
+        - chain_id
+      properties:
+        id:
+          type: string
+          example: "230707030600002"
+        tx_id:
+          description: On-chain transaction hash associated with the transfer.
+          type: string
+          example: "0x4b0714c63cc7abae72bf68e84e25860b88ca651b7d27dad1e32bf4c027fa5326"
+        side:
+          description: Transfer direction of the record.
+          type: string
+          example: "WITHDRAW"
+        token:
+          description: Token symbol involved in the transfer.
+          type: string
+          example: "USDC"
+        amount:
+          description: Transfer amount.
+          type: number
+          example: 555
+        fee:
+          description: Fee charged for the transfer.
+          type: number
+          example: 0
+        trans_status:
+          description: Current processing status of the transfer.
+          type: string
+          enum:
+            - PENDING
+            - PENDING_REBALANCE
+            - PROCESSING
+            - COMPLETED
+            - FAILED
+          example: "FAILED"
+        created_time:
+          description: Timestamp when the transfer request was created in milliseconds.
+          type: number
+          example: 1688699193034
+        updated_time:
+          description: Timestamp of the latest transfer update in milliseconds.
+          type: number
+          example: 1688699193096
+        chain_id:
+          description: Chain ID associated with the transfer.
+          type: string
+          example: "986532"
+
+    AdminAssetHistoryRecord:
+      allOf:
+        - $ref: "#/components/schemas/AssetHistoryRecord"
+        - type: object
+          properties:
+            block_time:
+              description: Block timestamp associated with the asset history record in milliseconds.
+              type: number
+              example: 1688699193034
+            account_id:
+              description: Account ID associated with the asset history record.
+              type: string
+              example: "0x114f583aea808c5812e16109b6c087660285a26f0a31dcc0f9b54f1a6a0fefbd"
+            user_address:
+              description: Wallet address associated with the asset history record.
+              type: string
+              example: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619"
+
+    AdminAssetHistoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - meta
+                - rows
+              properties:
+                meta:
+                  $ref: "#/components/schemas/PaginationMeta"
+                rows:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/AdminAssetHistoryRecord"
 
     ClaimInsuranceFundBody:
       type: object
@@ -17777,12 +17977,22 @@ components:
                       liquidation_id:
                         type: number
                         example: 101
-                      user_id:
-                        type: number
-                        example: 12345
                       account_id:
                         type: string
                         example: "0x114f583aea808c5812e16109b6c087660285a26f0a31dcc0f9b54f1a6a0fefbd"
+                      type:
+                        type: string
+                        example: "liquidated"
+                      assigned:
+                        type: number
+                        description: 1 if assigned to an SPV or market maker; 0 if claimed.
+                        example: 1
+                      margin_mode:
+                        type: string
+                        enum:
+                          - CROSS
+                          - ISOLATED
+                        example: CROSS
                       timestamp:
                         type: number
                         example: 1663313562090
@@ -17873,6 +18083,14 @@ components:
                       user_id:
                         type: number
                         example: 12345
+                      account_id:
+                        description: Account ID associated with the trade.
+                        type: string
+                        example: "0x114f583aea808c5812e16109b6c087660285a26f0a31dcc0f9b54f1a6a0fefbd"
+                      user_address:
+                        description: Wallet address associated with the trade.
+                        type: string
+                        example: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619"
                       symbol:
                         type: string
                         example: "PERP_BTC_USDC"
@@ -17953,6 +18171,14 @@ components:
                       user_id:
                         type: number
                         example: 12345
+                      account_id:
+                        description: Account ID associated with the algo order.
+                        type: string
+                        example: "0x114f583aea808c5812e16109b6c087660285a26f0a31dcc0f9b54f1a6a0fefbd"
+                      user_address:
+                        description: Wallet address associated with the algo order.
+                        type: string
+                        example: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619"
                       algo_status:
                         type: string
                         example: NEW
