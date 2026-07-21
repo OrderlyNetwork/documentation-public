@@ -1,156 +1,637 @@
 ---
 title: "Custom Trading Fee Per Order"
-description: "Integrate order tags to apply custom trading fees to specific order flows."
+description: "Create, discover, apply, and reconcile broker-scoped custom trading fees for individual orders."
 ---
 
-Order tags let builders apply custom trading fees per order by assigning an `order_tag` such as `enum:STRATEGY_DCA` during order placement. The order tag value can be either a plain referral code or `enum:<enum_id>`. The `enum_id` is the fee config identifier; to apply custom trading fee per order, the order tag sent on an order must include the `enum:` prefix. Use this guide when your DEX, strategy backend, vault, bot flow, campaign, or broker-specific UX needs fee rules that differ by order category.
+Use this guide to apply broker-scoped custom trading fees to individual orders.
 
-This guide explains the integration flow and links to the API reference pages. It intentionally does not duplicate the full API specs.
+<Info>
+  **API base URL:** `https://api.orderly.org` (mainnet) or
+  `https://testnet-api.orderly.org` (testnet)
 
-## Integration Flow
+**New-order tag format:** `enum:<owning_broker_id>:<enum_id>`
+
+**Authentication:** Public discovery endpoints are unauthenticated. Broker admin endpoints require
+Orderly Ed25519 signature headers.
+
+</Info>
+
+## Overview
+
+A custom trading fee configuration is a broker-owned order classification with an additional fee rate. A DEX can attach the configuration to an order for strategy, vault, campaign, bot, or other product-specific flows.
+
+The current tag format separates two identities:
+
+| Identity          | Source                               | Role                                                                       |
+| ----------------- | ------------------------------------ | -------------------------------------------------------------------------- |
+| Fee-owning broker | `broker_id` inside `order_tag`       | Owns the fee configuration and receives the full `order_enum_fee`.         |
+| Executing broker  | Accepted order and execution context | Executes the order and retains its existing builder and affiliate context. |
+
+The configuration key is `{fee-owning broker, enum_id}`. `enum_id` is not globally unique. For example, these tags select different fee configurations:
+
+```text
+enum:broker_a:ORDERLY
+enum:broker_b:ORDERLY
+```
+
+With the current format, `order_enum_fee` is always separated from builder and affiliate fee-share calculations, including when the fee owner and executing broker are the same.
+
+### Legacy and current tag formats
+
+| Behavior                  | Legacy                      | Current                             |
+| ------------------------- | --------------------------- | ----------------------------------- |
+| Tag                       | `enum:<enum_id>`            | `enum:<owning_broker_id>:<enum_id>` |
+| New order submission      | Not supported after cutover | Required                            |
+| Existing order processing | Supported                   | Supported                           |
+| Owner resolution          | Executing broker            | Broker in the tag                   |
+| Valid `enum_id` length    | Up to 31 characters         | Up to 36 characters                 |
+| Full tag storage          | 36 characters               | 128-character capacity              |
+
+## Quick Start
 
 <Steps>
-  <Step title="Create order tags">
-    Builder admins create one or more order tag fee configs with a `default_fee_rate` and optional `pair_overrides`.
+  <Step title="Discover the owner's fee configuration">
+    Query the public list with the fee owner's broker ID:
 
-    Use [POST `/v1/broker/order_enum`](/build-on-omnichain/restful-api/private/create-order-tag).
+    ```bash
+    curl "https://api.orderly.org/v1/public/broker/order_enums?broker_id=broker_b&symbol=PERP_BTC_USDC"
+    ```
 
-  </Step>
-  <Step title="Expose active order tags to your DEX">
-    Your DEX or backend fetches active order tag configs with `broker_id` so it can decide which tag to apply and disclose the extra fee to users.
+    Select an active configuration from the response. API objects contain an unprefixed `enum_id`, such as
+    `GRID_PRO`.
 
-    Use [GET `/v1/public/broker/order_enums`](/build-on-omnichain/restful-api/public/list-order-tags-for-a-broker).
-
-  </Step>
-  <Step title="Apply the order tag during order placement">
-    Set `order_tag` to `enum:<enum_id>` on supported order creation requests, for example `enum:STRATEGY_DCA`.
-
-    Use [POST `/v1/order`](/build-on-omnichain/restful-api/private/create-order), [POST `/v1/batch-order`](/build-on-omnichain/restful-api/private/batch-create-order), or [POST `/v1/algo/order`](/build-on-omnichain/restful-api/private/create-algo-order).
+    See [GET `/v1/public/broker/order_enums`](/build-on-omnichain/restful-api/public/list-order-tags-for-a-broker).
 
   </Step>
-  <Step title="Reconcile order and trade results">
-    Read `order_tag` on orders for attribution and use trade-level fee fields for reporting and reconciliation.
 
-    Use the order and trade APIs listed below.
+  <Step title="Build the order tag">
+    Combine the owner from the query with the returned `enum_id`:
+
+    ```text
+    enum:broker_b:GRID_PRO
+    ```
+
+    Do not use the executing broker's ID unless it also owns the selected configuration.
 
   </Step>
-  <Step title="Operate the order tag lifecycle">
-    Update fee rates, archive inactive order tags, unarchive order tags when needed, and review usage stats through admin APIs.
+
+  <Step title="Submit the order">
+    ```bash
+    curl -X POST "https://api.orderly.org/v1/order" \
+      -H "Content-Type: application/json" \
+      -H "orderly-timestamp: 1649920583000" \
+      -H "orderly-account-id: your_account_id" \
+      -H "orderly-key: ed25519:your_public_key" \
+      -H "orderly-signature: your_signature" \
+      -d '{
+        "symbol": "PERP_BTC_USDC",
+        "order_type": "LIMIT",
+        "side": "BUY",
+        "order_price": 65000,
+        "order_quantity": 0.01,
+        "order_tag": "enum:broker_b:GRID_PRO"
+      }'
+    ```
+
+    Use the normal signing procedure for the order endpoint. Signature construction is outside this guide.
+
+  </Step>
+
+  <Step title="Verify the execution">
+    Read the order and trade records after execution:
+
+    - Confirm the order returns the full `order_tag` without truncation.
+    - Confirm each trade exposes `order_enum_fee` separately.
+    - Use trade-level values, not order estimates, for statements and reconciliation.
+
   </Step>
 </Steps>
 
-## Public DEX Integration
+## Order Tag Contract
 
-Use [GET `/v1/public/broker/order_enums`](/build-on-omnichain/restful-api/public/list-order-tags-for-a-broker) from your DEX or backend service to discover available order tag fee configs for a builder.
+### Syntax
 
-The public list endpoint is unauthenticated and takes `broker_id` as a query parameter:
-
-```text
-GET /v1/public/broker/order_enums?broker_id={broker_id}
-```
-
-Optional filters include `symbol`, `enum_id`, and `include_archived`.
-
-### Fee Disclosure
-
-When `order_tag` uses the `enum:<enum_id>` format, the matching order tag fee config applies an additional custom trading fee on top of the standard fee schedule. The `enum:` prefix is required for custom trading fee per order. This is different from a plain referral-code `order_tag`, which is treated as referral attribution and does not apply the custom trading fee per order.
-
-The order tag fee is charged in addition to the user's existing trading fee:
+All new custom-fee-tagged orders use exactly three colon-separated segments:
 
 ```text
-final fee = trading fee + order tag fee
+enum:<owning_broker_id>:<enum_id>
 ```
 
-`default_fee_rate` is the fallback fee rate for the order tag. `pair_overrides` lets builders override that fallback for specific symbols, so one order tag can charge different additional fee rates by market. If `pair_overrides` includes the order symbol, use that symbol-specific order tag fee rate. Otherwise, use `default_fee_rate`. Display the order tag fee separately from the standard trading fee so users understand both components before placing an order.
+| Segment            | Rule                                                                                        |
+| ------------------ | ------------------------------------------------------------------------------------------- |
+| `enum`             | Fixed, strictly lowercase prefix.                                                           |
+| `owning_broker_id` | Non-empty registered broker ID, maximum 64 characters, no colon.                            |
+| `enum_id`          | Must match `^[A-Z0-9_]+$`, maximum 36 characters.                                           |
+| Full tag           | Longest valid value is 106 characters. Every integration field must support 128 characters. |
 
-## Applying Order Tags to Orders
-
-Set `order_tag` on supported order creation APIs:
-
-| API                                                                                  | Integration note                                                                               |
-| ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
-| [POST `/v1/order`](/build-on-omnichain/restful-api/private/create-order)             | Set `order_tag` on the order request body.                                                     |
-| [POST `/v1/batch-order`](/build-on-omnichain/restful-api/private/batch-create-order) | Set `order_tag` on each order object inside `orders` that should use the order tag fee config. |
-| [POST `/v1/algo/order`](/build-on-omnichain/restful-api/private/create-algo-order)   | Set `order_tag` on the algo order request body.                                                |
-
-`order_tag` supports two formats:
-
-| Format               | Example             | Behavior                                                                                             |
-| -------------------- | ------------------- | ---------------------------------------------------------------------------------------------------- |
-| Referral code        | `REFERRAL2026`      | Plain string. Overrides the referral relationship.                                                   |
-| Order tag fee config | `enum:STRATEGY_DCA` | Applies an additional custom trading fee on top of the standard fee schedule and preserves referral. |
-
-Custom trading fee order tags must use this format:
+Valid examples:
 
 ```text
-enum:<enum_id>
+enum:broker_a:STRATEGY_DCA
+enum:broker_b:ORDERLY
+enum:woofi_pro:GRID_PRO_X
 ```
 
-`order_tag` is immutable after order placement. To change the tag on an open order, cancel the order and place a new one with the intended `order_tag`.
+Invalid examples:
 
-## Returned Order and Trade Data
+| Value                        | Reason                                             |
+| ---------------------------- | -------------------------------------------------- |
+| `ENUM:broker_a:STRATEGY_DCA` | Prefix is not lowercase.                           |
+| `enum:STRATEGY_DCA`          | Legacy shape is not valid for new orders.          |
+| `enum::STRATEGY_DCA`         | Owning broker is empty.                            |
+| `enum:broker_a:`             | `enum_id` is empty.                                |
+| `enum:broker_a:grid-pro`     | `enum_id` contains lowercase letters and a hyphen. |
+| `enum:broker_a:GRID:PRO`     | Extra separator creates an invalid fourth segment. |
 
-Use order APIs for attribution and UI display:
+### Build tags defensively
 
-| API                                                                                                              | Relevant data                          |
-| ---------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| [GET `/v1/order/{order_id}`](/build-on-omnichain/restful-api/private/get-order-by-order_id)                      | Returns `order_tag` on the order.      |
-| [GET `/v1/client/order/{client_order_id}`](/build-on-omnichain/restful-api/private/get-order-by-client_order_id) | Returns `order_tag` on the order.      |
-| [GET `/v1/orders`](/build-on-omnichain/restful-api/private/get-orders)                                           | Returns `order_tag` on each order row. |
+The following TypeScript helper enforces the current client-side contract:
 
-Use trade APIs for fee reporting and reconciliation:
+```ts
+const ENUM_ID_PATTERN = /^[A-Z0-9_]{1,36}$/;
 
-| API                                                                                                                     | Relevant data                                                             |
-| ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| [GET `/v1/trades`](/build-on-omnichain/restful-api/private/get-trades)                                                  | Returns `fee`, `order_enum_fee`, and `order_enum_fee_rate` on trade rows. |
-| [GET `/v1/trade/{trade_id}`](/build-on-omnichain/restful-api/private/get-trade)                                         | Returns `fee`, `order_enum_fee`, and `order_enum_fee_rate`.               |
-| [GET `/v1/order/{order_id}/trades`](/build-on-omnichain/restful-api/private/get-all-trades-of-specific-order)           | Returns order trades with order tag fee fields.                           |
-| [GET `/v1/algo/order/{order_id}/trades`](/build-on-omnichain/restful-api/private/get-all-trades-of-specific-algo-order) | Returns algo order trades with order tag fee fields.                      |
+export function buildOrderEnumTag(owningBrokerId: string, enumId: string): string {
+  if (owningBrokerId.length === 0 || owningBrokerId.length > 64 || owningBrokerId.includes(":")) {
+    throw new Error("Invalid fee-owning broker ID");
+  }
 
-On trade records, `fee` includes both the standard trading fee and the order tag fee:
+  if (!ENUM_ID_PATTERN.test(enumId)) {
+    throw new Error("Invalid enum_id");
+  }
+
+  const tag = `enum:${owningBrokerId}:${enumId}`;
+  if (tag.length > 128) {
+    throw new Error("Order tag exceeds 128 characters");
+  }
+
+  return tag;
+}
+```
+
+Validate again at the service boundary. A browser-only validator does not protect backend, bot, or direct API integrations.
+
+### Referral-code behavior
+
+A plain `order_tag`, such as `REFERRAL2026`, remains a referral-code flow. An `enum:` tag identifies a custom trading fee configuration and does not replace the account's existing referral relationship.
+
+The custom trading fee is not part of referral-eligible fee revenue. Do not add `order_enum_fee` to an affiliate or executing-builder commission base.
+
+### Legacy tags
+
+Do not send `enum:<enum_id>` on a new order after the current format is enabled. The platform retains legacy parsing only so orders accepted before cutover can continue to fill, charge, and update owner statistics.
+
+When reading historical legacy records, resolve the fee owner to the executing broker. Do not rewrite stored legacy tags.
+
+## Discover Custom Fee Configurations
+
+Discovery APIs return unprefixed `enum_id` values. The caller combines the queried owner broker ID and returned `enum_id` to construct the full `order_tag`.
+
+### List configurations for an owner
+
+Use [GET `/v1/public/broker/order_enums`](/build-on-omnichain/restful-api/public/list-order-tags-for-a-broker). This endpoint is unauthenticated and limited to 10 requests per second per IP address.
+
+| Query parameter    | Type    | Required | Description                                                           |
+| ------------------ | ------- | -------- | --------------------------------------------------------------------- |
+| `broker_id`        | string  | Yes      | Broker that owns the fee configuration.                               |
+| `symbol`           | string  | No       | Filter or resolve configuration for a market such as `PERP_BTC_USDC`. |
+| `enum_id`          | string  | No       | Filter by unprefixed `enum_id`.                                       |
+| `include_archived` | boolean | No       | Include archived configurations. Defaults to `false`.                 |
+
+```bash
+curl "https://api.orderly.org/v1/public/broker/order_enums?broker_id=broker_b&symbol=PERP_BTC_USDC&include_archived=false"
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "timestamp": 1702989203989,
+  "data": [
+    {
+      "enum_id": "GRID_PRO",
+      "name": "Grid Pro",
+      "description": "Grid strategy orders",
+      "status": "active",
+      "default_fee_rate": 0.005,
+      "pair_overrides": {
+        "PERP_BTC_USDC": 0.003
+      },
+      "created_time": 1710300000000,
+      "updated_time": 1710300000000
+    }
+  ]
+}
+```
+
+For this response, construct:
 
 ```text
-fee = standard trading fee + order_enum_fee
+enum:broker_b:GRID_PRO
 ```
 
-If you need the amount excluding the order tag fee, calculate:
+If a pair override exists for the order symbol, it is the applicable custom fee rate. Otherwise, use `default_fee_rate` for fee disclosure.
+
+Cache public responses briefly, but treat order acceptance and trade results as authoritative. Do not use an archived configuration for new orders.
+
+### Get one configuration
+
+Use [GET `/v1/public/broker/order_enum`](/build-on-omnichain/restful-api/public/get-one-order-tag-for-a-broker). This endpoint is unauthenticated.
+
+| Query parameter | Type   | Required | Description                         |
+| --------------- | ------ | -------- | ----------------------------------- |
+| `broker_id`     | string | Yes      | Broker that owns the configuration. |
+| `enum_id`       | string | Yes      | Unprefixed `enum_id`.               |
+
+```bash
+curl "https://api.orderly.org/v1/public/broker/order_enum?broker_id=broker_b&enum_id=GRID_PRO"
+```
+
+The response uses the same configuration object as the list endpoint and does not include usage statistics.
+
+## Apply a Custom Fee to an Order
+
+Set the optional `order_tag` field to the complete current-format tag.
+
+| API                                                                                  | Placement                                                 |
+| ------------------------------------------------------------------------------------ | --------------------------------------------------------- |
+| [POST `/v1/order`](/build-on-omnichain/restful-api/private/create-order)             | Set `order_tag` on the request body.                      |
+| [POST `/v1/batch-order`](/build-on-omnichain/restful-api/private/batch-create-order) | Set `order_tag` independently on each object in `orders`. |
+| [POST `/v1/algo/order`](/build-on-omnichain/restful-api/private/create-algo-order)   | Set `order_tag` on the algo-order request body.           |
+
+`order_tag` has a 128-character transport and storage capacity. It cannot be changed after order acceptance. Cancel and replace the order if the tag must change.
+
+### Single order
+
+```json
+{
+  "symbol": "PERP_BTC_USDC",
+  "order_type": "LIMIT",
+  "side": "BUY",
+  "order_price": 65000,
+  "order_quantity": 0.01,
+  "order_tag": "enum:broker_b:GRID_PRO"
+}
+```
+
+### Batch order
+
+```json
+{
+  "orders": [
+    {
+      "symbol": "PERP_BTC_USDC",
+      "order_type": "LIMIT",
+      "side": "BUY",
+      "order_price": 65000,
+      "order_quantity": 0.01,
+      "order_tag": "enum:broker_b:GRID_PRO"
+    },
+    {
+      "symbol": "PERP_ETH_USDC",
+      "order_type": "LIMIT",
+      "side": "SELL",
+      "order_price": 3200,
+      "order_quantity": 0.5,
+      "order_tag": "enum:broker_b:GRID_PRO"
+    }
+  ]
+}
+```
+
+Each item is independent. Validate and assign the intended owner and configuration for every tagged item rather than copying a batch-level value implicitly.
+
+### Algo order
+
+```json
+{
+  "symbol": "PERP_ETH_USDC",
+  "algo_type": "STOP",
+  "type": "LIMIT",
+  "side": "BUY",
+  "quantity": 0.5,
+  "price": 3200,
+  "trigger_price_type": "MARK_PRICE",
+  "trigger_price": 3190,
+  "order_tag": "enum:broker_b:GRID_PRO"
+}
+```
+
+### Submission behavior
+
+Before submitting, verify that:
+
+1. The configuration was discovered under the same owner encoded in the tag.
+2. The configuration is active.
+3. The symbol and fee configuration are suitable for the order.
+4. The full tag passes the validation rules above and is not truncated by an SDK, database, queue, or log field.
+
+Always handle a rejected order. Public discovery is useful for configuration and display, but the order API is the final authority at submission time.
+
+## Fee and Settlement Behavior
+
+The custom trading fee is an additional per-execution fee:
 
 ```text
-standard trading fee = fee - order_enum_fee
+trade fee = fee excluding custom trading fee + order_enum_fee
+effectiveTradeFee = trade fee - order_enum_fee
+effectiveTradeFeeRate = trade fee rate - order_enum_fee_rate
 ```
 
-## Admin Operations
+Display the custom trading fee separately from the standard trading fee before submission when the UI has enough information to estimate it. Use actual trade records for final amounts.
 
-Admin endpoints require standard Orderly signed request headers and should only be called from secured builder admin tooling or backend services.
+### Economic ownership
 
-| Action                                | API reference                                                                                              |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| Create order tag                      | [POST `/v1/broker/order_enum`](/build-on-omnichain/restful-api/private/create-order-tag)                        |
-| Update order tag                      | [PUT `/v1/broker/order_enum/{enum_id}`](/build-on-omnichain/restful-api/private/update-order-tag)               |
-| List order tags with usage stats      | [GET `/v1/broker/order_enums`](/build-on-omnichain/restful-api/private/list-all-order-tags-for-a-builder)       |
-| Get single order tag with usage stats | [GET `/v1/broker/order_enum/{enum_id}`](/build-on-omnichain/restful-api/private/get-single-order-tag-with-stats) |
-| Archive order tag                     | [POST `/v1/broker/order_enum/archive`](/build-on-omnichain/restful-api/private/archive-an-order-tag)            |
-| Unarchive order tag                   | [POST `/v1/broker/order_enum/unarchive`](/build-on-omnichain/restful-api/private/unarchive-an-order-tag)        |
+| Scenario                                | Custom fee recipient                            | Affiliate-eligible treatment                                               |
+| --------------------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------- |
+| Owner and executing broker are the same | Fee-owning broker receives the full custom fee. | Exclude the full custom fee.                                               |
+| Owner and executing broker differ       | Fee-owning broker receives the full custom fee. | Exclude the full custom fee from the executing broker and affiliate basis. |
 
-## Data Model Notes
+Do not calculate builder, partner, or affiliate payouts from raw `fee` or `total_fee`. Start from explicit eligible components or subtract `order_enum_fee` as defined by the settlement contract.
 
-| Field              | Description                                                                                                                                |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `enum_id`          | Unique uppercase fee config ID, for example `STRATEGY_DCA`. The order tag value must be `enum:<enum_id>`, for example `enum:STRATEGY_DCA`. |
-| `status`           | `active` or `archived`.                                                                                                                    |
-| `default_fee_rate` | Default fee rate applied when no symbol override exists.                                                                                   |
-| `pair_overrides`   | Optional map of symbol to fee rate.                                                                                                        |
-| `created_time`     | Creation timestamp in milliseconds.                                                                                                        |
-| `updated_time`     | Last update timestamp in milliseconds.                                                                                                     |
+### Signed maker settlement
 
-Admin list responses include usage stats such as `total_orders`, `total_volume`, and `total_fees_collected`.
+Financial reconciliation must use the signed fee rate after subtracting the custom fee for the maker branch:
 
-## Implementation Notes
+```text
+if baseMakerFeeRate < 0 and effectiveTradeFeeRate < 0:
+    builderRevenue = 0
+    orderlyRevenue = effectiveTradeFee
+    referrerRebate = 0
+    refereeRebate = 0
 
-- Treat `enum_id` as immutable. If the classification semantics change, create a new fee config rather than reusing a misleading ID.
-- Use uppercase alphanumeric characters and underscores only, with a maximum `enum_id` length of 31 characters.
-- The full `order_tag` value must fit within 36 characters, including the required `enum:` prefix.
-- Archived order tags should not be used for new orders.
-- Do not expose admin endpoints, account credentials, or signing keys in the DEX frontend.
-- Cache public order tag responses briefly to avoid rate limit pressure, but refresh when admin configuration changes need to be reflected quickly.
-- Fee configuration is evaluated at execution time, so updates can affect later fills of existing open orders.
+if baseMakerFeeRate < 0 and effectiveTradeFeeRate >= 0:
+    builderRevenue = effectiveTradeFee
+    orderlyRevenue = 0
+```
+
+Do not subtract a negative `baseMakerFee` from `effectiveTradeFee` to manufacture positive builder or affiliate revenue.
+
+## Read and Reconcile Results
+
+### Order-level data
+
+Order query APIs return the full `order_tag`. Use it for attribution and UI display.
+
+| API                                                                                                              | Relevant data                         |
+| ---------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| [GET `/v1/order/{order_id}`](/build-on-omnichain/restful-api/private/get-order-by-order_id)                      | Returns the full `order_tag`.         |
+| [GET `/v1/client/order/{client_order_id}`](/build-on-omnichain/restful-api/private/get-order-by-client_order_id) | Returns the full `order_tag`.         |
+| [GET `/v1/orders`](/build-on-omnichain/restful-api/private/get-orders)                                           | Returns the full `order_tag` per row. |
+
+Order-level `total_fee` includes custom trading fees accumulated across executed trades. It is an aggregate display value, not a payout basis.
+
+### Trade-level data
+
+Trade query APIs return per-execution `fee`, `order_enum_fee`, and `order_enum_fee_rate`.
+
+| API                                                                                                                     | Relevant data                                       |
+| ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| [GET `/v1/trades`](/build-on-omnichain/restful-api/private/get-trades)                                                  | Returns fee fields on trade rows.                   |
+| [GET `/v1/trade/{trade_id}`](/build-on-omnichain/restful-api/private/get-trade)                                         | Returns fee fields for one trade.                   |
+| [GET `/v1/order/{order_id}/trades`](/build-on-omnichain/restful-api/private/get-all-trades-of-specific-order)           | Returns fee fields for the order's executions.      |
+| [GET `/v1/algo/order/{order_id}/trades`](/build-on-omnichain/restful-api/private/get-all-trades-of-specific-algo-order) | Returns fee fields for the algo order's executions. |
+
+```text
+fee excluding custom trading fee = fee - order_enum_fee
+```
+
+Use trade-level records for statements, fee reconciliation, settlement verification, and finance reporting because fee calculation occurs per execution.
+
+### Resolve attribution
+
+For a trade using the current tag format:
+
+- Read the executing broker from the order or execution context.
+- Parse the fee-owning broker and `enum_id` from the full `order_tag`.
+- Classify the fill as same-builder when the two broker IDs match, otherwise cross-builder.
+
+For a historical legacy trade, resolve the owner to the executing broker.
+
+### Usage statistics
+
+The broker admin APIs aggregate usage by `{fee-owning broker, enum_id}`. Cross-builder activity therefore appears in the owner's totals.
+
+The aggregate does not split statistics by executing broker. Use durable order and trade data when a report needs executing-broker, same-builder, or cross-builder dimensions.
+
+## Manage Custom Fee Configurations
+
+Call admin endpoints only from secured broker backend or admin tooling. Never expose signing keys in a DEX frontend.
+
+All configuration management APIs use an unprefixed `enum_id`. They do not accept the full `enum:<broker_id>:<enum_id>` tag.
+
+### Create a configuration
+
+Use [POST `/v1/broker/order_enum`](/build-on-omnichain/restful-api/private/create-order-tag). This authenticated endpoint is limited to one request per second.
+
+| Field              | Type   | Required | Rules                                                                             |
+| ------------------ | ------ | -------- | --------------------------------------------------------------------------------- |
+| `enum_id`          | string | Yes      | `^[A-Z0-9_]+$`, maximum 36 characters, unique within the owner broker, immutable. |
+| `name`             | string | Yes      | Human-readable name.                                                              |
+| `description`      | string | No       | Human-readable purpose.                                                           |
+| `default_fee_rate` | number | Yes      | `0.00001` through `0.01`, at most five decimal places.                            |
+| `pair_overrides`   | object | No       | Symbol-to-rate map; each symbol must exist and each rate uses the same limits.    |
+
+```json
+{
+  "enum_id": "GRID_PRO",
+  "name": "Grid Pro",
+  "description": "Grid strategy orders",
+  "default_fee_rate": 0.005,
+  "pair_overrides": {
+    "PERP_BTC_USDC": 0.003
+  }
+}
+```
+
+The default limit is 10 active configurations per owning broker and is deployment-configurable. Existing configurations share the same pool regardless of which tag format historical orders used.
+
+### Update a configuration
+
+Use [PUT `/v1/broker/order_enum/{enum_id}`](/build-on-omnichain/restful-api/private/update-order-tag). This authenticated endpoint is limited to one request per second. The configuration must be active, and `enum_id` cannot change.
+
+```json
+{
+  "name": "Grid Pro",
+  "description": "Updated grid strategy orders",
+  "default_fee_rate": 0.004,
+  "pair_overrides": {
+    "PERP_BTC_USDC": 0.0025
+  }
+}
+```
+
+For `pair_overrides`:
+
+- Omit it or send `null` to leave existing overrides unchanged.
+- Send an empty object to remove every override.
+- Send a non-empty object to replace the existing override set.
+
+### List or get owned configurations
+
+Use [GET `/v1/broker/order_enums`](/build-on-omnichain/restful-api/private/list-all-order-tags-for-a-builder) or [GET `/v1/broker/order_enum/{enum_id}`](/build-on-omnichain/restful-api/private/get-single-order-tag-with-stats).
+
+The authenticated responses include the fee configuration and owner-aggregated usage statistics:
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "enum_id": "GRID_PRO",
+      "name": "Grid Pro",
+      "description": "Grid strategy orders",
+      "status": "active",
+      "default_fee_rate": 0.005,
+      "pair_overrides": {
+        "PERP_BTC_USDC": 0.003
+      },
+      "usage_stats": {
+        "total_orders": 12543,
+        "total_volume": "1234567.89",
+        "total_fees_collected": "6172.84"
+      },
+      "created_time": 1710300000000,
+      "updated_time": 1710300000000
+    }
+  ]
+}
+```
+
+### Archive a configuration
+
+Use [POST `/v1/broker/order_enum/archive`](/build-on-omnichain/restful-api/private/archive-an-order-tag). This authenticated endpoint is limited to one request per second.
+
+```json
+{
+  "enum_id": "GRID_PRO"
+}
+```
+
+Do not use an archived configuration for new orders. Historical order and trade attribution remains available.
+
+### Unarchive a configuration
+
+Use [POST `/v1/broker/order_enum/unarchive`](/build-on-omnichain/restful-api/private/unarchive-an-order-tag). This authenticated endpoint is limited to one request per second.
+
+```json
+{
+  "enum_id": "GRID_PRO"
+}
+```
+
+A configuration can be unarchived only during the configured retention period and only if restoring it does not exceed the active-configuration limit. The default retention period is 720 hours (30 days). After that, the daily purge job moves it to `PURGED` and it cannot be restored.
+
+## Authentication and Rate Limits
+
+### Admin request headers
+
+| Header               | Required | Description                                                     |
+| -------------------- | -------- | --------------------------------------------------------------- |
+| `orderly-timestamp`  | Yes      | Signed request timestamp in milliseconds.                       |
+| `orderly-account-id` | Yes      | Authenticated admin account ID.                                 |
+| `orderly-key`        | Yes      | Public Orderly key used for signing.                            |
+| `orderly-signature`  | Yes      | Request signature generated with the corresponding private key. |
+
+Public discovery endpoints do not require these headers.
+
+### Documented limits
+
+| Endpoint                               | Limit                                 |
+| -------------------------------------- | ------------------------------------- |
+| `GET /v1/public/broker/order_enums`    | 10 requests per second per IP address |
+| `POST /v1/broker/order_enum`           | 1 request per second                  |
+| `PUT /v1/broker/order_enum/{enum_id}`  | 1 request per second                  |
+| `GET /v1/broker/order_enums`           | 10 requests per second                |
+| `POST /v1/broker/order_enum/archive`   | 1 request per second                  |
+| `POST /v1/broker/order_enum/unarchive` | 1 request per second                  |
+
+Apply exponential backoff for `429` responses and cache public discovery results to avoid unnecessary requests.
+
+## Migrate a Legacy Integration
+
+The current format reuses existing fee configurations. Migration changes the tag that clients send; it does not duplicate configuration rows.
+
+### Before cutover
+
+1. Change tag construction from `enum:<enum_id>` to `enum:<owning_broker_id>:<enum_id>`.
+2. Update all client, server, SDK, schema, event, log, and analytics fields that carry a full `order_tag` from 36 to 128 characters.
+3. Update `enum_id` validation from 31 to 36 characters.
+4. Continue reading both legacy and current tags in order history and execution consumers.
+5. Resolve historical legacy ownership to the executing broker and current ownership from the tag.
+6. Update reconciliation so every `order_enum_fee` is excluded from affiliate and executing-builder fee-share bases.
+7. Test one same-builder and one cross-builder fill end to end.
+
+### At cutover
+
+- Stop submitting V1 tags on new orders.
+- Monitor rejection rates for malformed or truncated current-format tags.
+- Verify `order_enum_fee` and `order_enum_fee_rate` are populated on actual trades.
+- Verify the full tag survives order, execution, settlement, archive, and reporting paths.
+
+### Historical behavior
+
+Orders accepted with V1 tags before cutover continue to fill under V1 tag parsing. Do not rewrite those tags.
+
+Fees already settled before the current settlement behavior was enabled are not recalculated or redistributed. Reports should preserve the rule that applied at execution time.
+
+## Troubleshooting
+
+### New orders fail after cutover
+
+Check whether the integration still sends `enum:<enum_id>`. New orders require the owner segment:
+
+```text
+enum:<owning_broker_id>:<enum_id>
+```
+
+### A fee configuration cannot be resolved
+
+Confirm that the tag's owner matches the `broker_id` used to discover the configuration. The same `enum_id` under another broker identifies a different configuration.
+
+### The tag is truncated
+
+Search every hop for the old 36-character limit. The source order field must be widened before downstream widening can preserve the value. Validate the returned order tag byte-for-byte against the submitted value.
+
+### The custom fee differs from the displayed estimate
+
+Check the pair override for the executed symbol and use per-trade values for final reconciliation. Partial fills can produce multiple fee records.
+
+### Usage totals do not split by executing broker
+
+This is expected. Admin usage statistics aggregate by fee owner and `enum_id`. Build executing-broker reports from order and trade facts.
+
+### Admin API returns a configuration error
+
+| Code    | Meaning                                  | Corrective action                                           |
+| ------- | ---------------------------------------- | ----------------------------------------------------------- |
+| `-1201` | `enum_id` already exists for this owner. | Choose another ID or update the existing configuration.     |
+| `-1202` | Configuration not found.                 | Verify owner context and unprefixed `enum_id`.              |
+| `-1203` | Configuration is not active.             | Use an active configuration or unarchive it if eligible.    |
+| `-1204` | Configuration is already archived.       | Do not repeat archive, or unarchive it.                     |
+| `-1205` | Unarchive retention period expired.      | Create a new configuration.                                 |
+| `-1206` | Active configuration limit reached.      | Archive an unused configuration before create or unarchive. |
+| `-1207` | `enum_id` format is invalid.             | Use uppercase letters, digits, and underscores only.        |
+| `-1208` | Fee rate is invalid.                     | Use `0.00001` through `0.01` with at most five decimals.    |
+| `-1209` | `enum_id` is longer than 36 characters.  | Shorten the ID.                                             |
+| `-1210` | Symbol is invalid.                       | Use an existing market symbol.                              |
+
+Order-submission validation errors may use a different order API error contract. Preserve and log the complete response rather than mapping every failure to "configuration not found."
+
+## Integration Checklist
+
+- [ ] Public discovery queries the fee-owning broker, not automatically the executing broker.
+- [ ] New tags use `enum:<owning_broker_id>:<enum_id>`.
+- [ ] Prefix, segment, character, and length rules are validated server-side.
+- [ ] Every full-tag field supports 128 characters.
+- [ ] Public API `enum_id` values remain unprefixed in application state.
+- [ ] The DEX shows the custom trading fee separately from the standard trading fee when estimating charges.
+- [ ] Order rejection is handled without silently retrying with a different tag.
+- [ ] Order responses preserve the submitted full tag.
+- [ ] Trade reconciliation uses `fee` and `order_enum_fee` per execution.
+- [ ] Affiliate and builder payout calculations exclude the full custom trading fee.
+- [ ] Historical readers support legacy and current tags without rewriting legacy data.
+- [ ] Admin endpoints and signing keys remain backend-only.
+- [ ] Same-builder, cross-builder, partial-fill, malformed-tag, archived-configuration, and maximum-length cases are tested.
+
+_Last updated: July 21, 2026._
