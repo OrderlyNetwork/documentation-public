@@ -2053,11 +2053,12 @@ paths:
             type: string
         - name: order_tag
           in: query
-          description: ""
+          description: Filter by the full stored order tag, including a current-format `enum:<owning_broker_id>:<enum_id>` tag.
           required: false
           example: ""
           schema:
             type: string
+            maxLength: 128
         - name: start_t
           in: query
           description: >-
@@ -4040,11 +4041,14 @@ paths:
                   description: "`SELL`/`BUY`, required if `STOP` type"
                 order_tag:
                   type: string
+                  maxLength: 128
+                  example: "enum:broker_b:GRID_PRO"
                   description: |
                     Optional tag for the order. Supports two formats:
                     - Referral code: plain string (e.g., `REFERRAL2026`) - overrides referral relationship
-                    - Order tag fee config: `enum:<enum_id>` (e.g., `enum:STRATEGY_DCA`) - adds fee on top of existing fees, preserves referral
-                    Max length: 36 characters. Cannot be modified after order placement.
+                    - Custom trading fee: `enum:<owning_broker_id>:<enum_id>` (e.g., `enum:broker_b:GRID_PRO`) - adds the custom fee and preserves the existing referral relationship
+                    New custom-fee-tagged orders must use the current three-segment format. Legacy `enum:<enum_id>` tags are supported only on orders accepted before cutover.
+                    Maximum length: 128 characters. Cannot be modified after order placement.
                 child_orders:
                   type: array
                   items:
@@ -4385,11 +4389,12 @@ paths:
             type: string
         - name: order_tag
           in: query
-          description: Filter by a custom tag assigned to the order.
+          description: Filter by the full stored order tag, including a current-format `enum:<owning_broker_id>:<enum_id>` tag.
           required: false
           example: ""
           schema:
             type: string
+            maxLength: 128
         - name: start_t
           in: query
           description: >-
@@ -4651,11 +4656,12 @@ paths:
             type: string
         - name: order_tag
           in: query
-          description: Filter by a custom tag assigned to the order.
+          description: Filter by the full stored order tag, including a current-format `enum:<owning_broker_id>:<enum_id>` tag.
           required: false
           example: ""
           schema:
             type: string
+            maxLength: 128
         - name: aggregateBy
           in: query
           description: "Either by `DATE` or by `ACCOUNT`"
@@ -4765,11 +4771,12 @@ paths:
             type: number
         - name: order_tag
           in: query
-          description: Filter by a custom tag assigned to the order.
+          description: Filter by the full stored order tag, including a current-format `enum:<owning_broker_id>:<enum_id>` tag.
           required: false
           example: ""
           schema:
             type: string
+            maxLength: 128
         - name: broker_id
           in: query
           description: "if the broker_id is empty, return all users"
@@ -7736,11 +7743,12 @@ paths:
               example: "PERP_WOO_USDC"
         - name: order_tag
           in: query
-          description: Filter by a custom tag assigned to the order.
+          description: Filter by the full stored order tag, including a current-format `enum:<owning_broker_id>:<enum_id>` tag.
           required: false
           example: ""
           schema:
             type: string
+            maxLength: 128
       responses:
         "200":
           description: OK
@@ -8944,11 +8952,12 @@ paths:
             type: string
         - name: order_tag
           in: query
-          description: Filter by a custom tag assigned to the order.
+          description: Filter by the full stored order tag, including a current-format `enum:<owning_broker_id>:<enum_id>` tag.
           required: false
           example: ""
           schema:
             type: string
+            maxLength: 128
         - name: start_t
           in: query
           description: "Start of the query range as a 13-digit Unix timestamp in milliseconds. Required in broker mode and optional in per-user mode. The broker-mode range cannot exceed 180 days."
@@ -9387,11 +9396,12 @@ paths:
             type: string
         - name: order_tag
           in: query
-          description: Filter by a custom tag assigned to the order.
+          description: Filter by the full stored order tag, including a current-format `enum:<owning_broker_id>:<enum_id>` tag.
           required: false
           example: ""
           schema:
             type: string
+            maxLength: 128
         - name: created_time_start
           in: query
           description: "Start of the query range as a 13-digit Unix timestamp in milliseconds. Required in broker mode and optional in per-user mode. The broker-mode range cannot exceed 180 days."
@@ -9562,16 +9572,21 @@ paths:
 
         `GET /v1/public/broker/order_enums?broker_id={broker_id}`
 
-        List order tag fee configs for a broker.
+        List custom trading fee configurations owned by `broker_id`. Returned `enum_id` values are unprefixed.
+
+        To submit a new enum-tagged order, combine the queried owner and returned ID as `enum:<broker_id>:<enum_id>`.
       tags:
         - public
       parameters:
         - name: broker_id
           in: query
-          description: Broker ID
+          description: Broker that owns the enum configurations
           required: true
           schema:
             type: string
+            minLength: 1
+            maxLength: 64
+            pattern: "^[^:]+$"
         - name: symbol
           in: query
           description: Filter by symbol
@@ -9580,16 +9595,20 @@ paths:
             type: string
         - name: enum_id
           in: query
-          description: Filter by fee config ID (`enum_id`)
+          description: Filter by unprefixed enum ID
           required: false
           schema:
             type: string
+            minLength: 1
+            maxLength: 36
+            pattern: "^[A-Z0-9_]+$"
         - name: include_archived
           in: query
-          description: Include archived order tags
+          description: Include archived fee configurations
           required: false
           schema:
             type: boolean
+            default: false
       responses:
         "200":
           description: Success
@@ -9597,6 +9616,44 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GetOrderEnumsResponse"
+
+  /v1/public/broker/order_enum:
+    get:
+      summary: Get one order tag for a broker
+      description: |
+        `GET /v1/public/broker/order_enum?broker_id={broker_id}&enum_id={enum_id}`
+
+        Get one custom trading fee configuration owned by `broker_id`. The response does not include usage statistics.
+
+        The returned `enum_id` is unprefixed. To submit a new enum-tagged order, construct `enum:<broker_id>:<enum_id>`.
+      tags:
+        - public
+      parameters:
+        - name: broker_id
+          in: query
+          description: Broker that owns the enum configuration
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 64
+            pattern: "^[^:]+$"
+        - name: enum_id
+          in: query
+          description: Unprefixed enum ID
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 36
+            pattern: "^[A-Z0-9_]+$"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetOrderEnumResponse"
 
   /v1/broker/order_enum:
     post:
@@ -9606,7 +9663,24 @@ paths:
 
         `POST /v1/broker/order_enum`
 
-        Create a new order tag fee config. The fee config identifier is `enum_id`; the order tag value sent on orders is `enum:<enum_id>`.
+        Create a custom trading fee configuration owned by the authenticated broker. `enum_id` is unique within that broker and immutable.
+
+        To submit a new order with this enum, construct `order_tag` as `enum:<authenticated_broker_id>:<enum_id>`.
+
+        The default active-enum limit is 10 per owning broker and is deployment-configurable.
+
+        Existing fee configurations share the same active-configuration pool regardless of which tag format historical orders used.
+
+        Common errors:
+
+        | Code | Meaning |
+        | --- | --- |
+        | `-1201` | Enum ID already exists for this owner. |
+        | `-1206` | Active enum limit reached. |
+        | `-1207` | Enum ID format is invalid. |
+        | `-1208` | Fee rate is invalid. |
+        | `-1209` | Enum ID is longer than 36 characters. |
+        | `-1210` | A pair override symbol is invalid. |
       tags:
         - private
       parameters:
@@ -9635,16 +9709,30 @@ paths:
 
         `PUT /v1/broker/order_enum/{enum_id}`
 
-        Update an order tag fee config. Cannot change `enum_id`.
+        Update an active custom trading fee configuration owned by the authenticated broker. `enum_id` cannot be changed.
+
+        For `pair_overrides`, omit the field or send `null` to leave the existing map unchanged, send `{}` to remove every override, or send a non-empty object to replace the map.
+
+        Common errors:
+
+        | Code | Meaning |
+        | --- | --- |
+        | `-1202` | Enum not found for the authenticated owner. |
+        | `-1203` | Enum is not active. |
+        | `-1208` | Fee rate is invalid. |
+        | `-1210` | A pair override symbol is invalid. |
       tags:
         - private
       parameters:
         - name: enum_id
           in: path
-          description: Fee config ID (`enum_id`)
+          description: Unprefixed enum ID owned by the authenticated broker
           required: true
           schema:
             type: string
+            minLength: 1
+            maxLength: 36
+            pattern: "^[A-Z0-9_]+$"
         - $ref: "#/components/parameters/orderly_timestamp"
         - $ref: "#/components/parameters/orderly_account_id"
         - $ref: "#/components/parameters/orderly_key"
@@ -9668,16 +9756,21 @@ paths:
 
         `GET /v1/broker/order_enum/{enum_id}`
 
-        Get a single order tag fee config with usage stats.
+        Get one custom trading fee configuration owned by the authenticated broker, including usage statistics aggregated across every executing broker.
+
+        Common error: `-1202` means the enum was not found for the authenticated owner.
       tags:
         - private
       parameters:
         - name: enum_id
           in: path
-          description: Fee config ID (`enum_id`)
+          description: Unprefixed enum ID owned by the authenticated broker
           required: true
           schema:
             type: string
+            minLength: 1
+            maxLength: 36
+            pattern: "^[A-Z0-9_]+$"
         - $ref: "#/components/parameters/orderly_timestamp"
         - $ref: "#/components/parameters/orderly_account_id"
         - $ref: "#/components/parameters/orderly_key"
@@ -9698,7 +9791,7 @@ paths:
 
         `GET /v1/broker/order_enums`
 
-        List all order tag fee configs for the broker with usage stats.
+        List custom trading fee configurations owned by the authenticated broker. Usage statistics aggregate by `{fee-owning broker, enum_id}` across every executing broker.
       tags:
         - private
       parameters:
@@ -9710,16 +9803,20 @@ paths:
             type: string
         - name: enum_id
           in: query
-          description: Filter by fee config ID (`enum_id`, partial match supported)
+          description: Filter by unprefixed enum ID (partial match supported)
           required: false
           schema:
             type: string
+            minLength: 1
+            maxLength: 36
+            pattern: "^[A-Z0-9_]+$"
         - name: include_archived
           in: query
-          description: "Include archived order tags in results (default: false)"
+          description: "Include archived fee configurations in results (default: false)"
           required: false
           schema:
             type: boolean
+            default: false
         - $ref: "#/components/parameters/orderly_timestamp"
         - $ref: "#/components/parameters/orderly_account_id"
         - $ref: "#/components/parameters/orderly_key"
@@ -9740,7 +9837,15 @@ paths:
 
         `POST /v1/broker/order_enum/archive`
 
-        Archive an order tag fee config.
+        Archive a custom trading fee configuration owned by the authenticated broker. Archived configurations cannot be used for new orders; historical attribution remains available.
+
+        Common errors:
+
+        | Code | Meaning |
+        | --- | --- |
+        | `-1202` | Enum not found for the authenticated owner. |
+        | `-1203` | Enum is not active. |
+        | `-1204` | Enum is already archived. |
       tags:
         - private
       parameters:
@@ -9758,7 +9863,10 @@ paths:
               properties:
                 enum_id:
                   type: string
-                  description: Fee config ID (`enum_id`) to archive
+                  minLength: 1
+                  maxLength: 36
+                  pattern: "^[A-Z0-9_]+$"
+                  description: Unprefixed enum ID to archive
                   example: "STRATEGY_DCA"
       responses:
         "200":
@@ -9776,7 +9884,17 @@ paths:
 
         `POST /v1/broker/order_enum/unarchive`
 
-        Unarchive an order tag fee config.
+        Unarchive a custom trading fee configuration owned by the authenticated broker.
+
+        The enum must still be within the configured retention period, and restoring it must not exceed the active-enum limit. The default retention period is 720 hours (30 days). After retention expires, the daily purge job moves the enum to `PURGED`, and it cannot be restored.
+
+        Common errors:
+
+        | Code | Meaning |
+        | --- | --- |
+        | `-1202` | Enum not found for the authenticated owner. |
+        | `-1205` | Unarchive retention period expired. |
+        | `-1206` | Active enum limit reached. |
       tags:
         - private
       parameters:
@@ -9794,7 +9912,10 @@ paths:
               properties:
                 enum_id:
                   type: string
-                  description: Fee config ID (`enum_id`) to unarchive
+                  minLength: 1
+                  maxLength: 36
+                  pattern: "^[A-Z0-9_]+$"
+                  description: Unprefixed enum ID to unarchive
                   example: "STRATEGY_DCA"
       responses:
         "200":
@@ -12961,14 +13082,6 @@ components:
           type: number
         side:
           type: string
-        order_tag:
-          type: string
-          description: |
-            Optional tag for the order. Supports two formats:
-            - Referral code: plain string (e.g., `REFERRAL2026`) - overrides referral relationship
-            - Order tag fee config: `enum:<enum_id>` (e.g., `enum:STRATEGY_DCA`) - adds fee on top of existing fees, preserves referral
-            Max length: 36 characters. Cannot be modified after order placement.
-
     BatchCreateOrderBody:
       required:
         - order_type
@@ -12994,11 +13107,14 @@ components:
           type: string
         order_tag:
           type: string
+          maxLength: 128
+          example: "enum:broker_b:GRID_PRO"
           description: |
             Optional tag for the order. Supports two formats:
             - Referral code: plain string (e.g., `REFERRAL2026`) - overrides referral relationship
-            - Order tag fee config: `enum:<enum_id>` (e.g., `enum:STRATEGY_DCA`) - adds fee on top of existing fees, preserves referral
-            Max length: 36 characters. Cannot be modified after order placement.
+            - Custom trading fee: `enum:<owning_broker_id>:<enum_id>` (e.g., `enum:broker_b:GRID_PRO`) - adds the custom fee and preserves the existing referral relationship
+            New custom-fee-tagged orders must use the current three-segment format. Legacy `enum:<enum_id>` tags are supported only on orders accepted before cutover.
+            Maximum length: 128 characters. Cannot be modified after order placement.
         margin_mode:
           type: string
           description: "Margin mode for the order. Default: the symbol's current default margin mode."
@@ -13173,11 +13289,14 @@ components:
           description: "`MARKET` orders beyond this slippage will not be executed"
         order_tag:
           type: string
+          maxLength: 128
+          example: "enum:broker_b:GRID_PRO"
           description: |
             Optional tag for the order. Supports two formats:
             - Referral code: plain string (e.g., `REFERRAL2026`) - overrides referral relationship
-            - Order tag fee config: `enum:<enum_id>` (e.g., `enum:STRATEGY_DCA`) - adds fee on top of existing fees, preserves referral
-            Max length: 36 characters. Cannot be modified after order placement.
+            - Custom trading fee: `enum:<owning_broker_id>:<enum_id>` (e.g., `enum:broker_b:GRID_PRO`) - adds the custom fee and preserves the existing referral relationship
+            New custom-fee-tagged orders must use the current three-segment format. Legacy `enum:<enum_id>` tags are supported only on orders accepted before cutover.
+            Maximum length: 128 characters. Cannot be modified after order placement.
         level:
           type: number
           description: "Integer value from `0` to `4`. This parameter controls wether to present the price of bid0 to bid4 or ask0 to ask4. Only allowed when `order_type` is `BID` or `ASK`."
@@ -13367,6 +13486,7 @@ components:
         total_fee:
           type: number
           example: 0.5
+          description: Aggregate fee across executed trades, including any custom trading fees. Use trade-level fields for reconciliation; this value is not a builder or affiliate payout basis.
         fee_asset:
           type: string
           example: "WOO"
@@ -13396,10 +13516,11 @@ components:
           example: null
         order_tag:
           type: string
+          maxLength: 128
           nullable: true
-          example: null
+          example: "enum:broker_b:GRID_PRO"
           description: |
-            Optional tag for the order. Supports plain string (referral code) or `enum:<enum_id>` format.
+            Full tag stored on the order. Current custom-fee tags use `enum:<owning_broker_id>:<enum_id>`. Historical orders may contain a legacy `enum:<enum_id>` tag; do not rewrite it.
         margin_mode:
           type: string
           example: "CROSS"
@@ -13454,9 +13575,10 @@ components:
           example: "false"
         order_tag:
           type: string
-          example: "test_tag"
+          maxLength: 128
+          example: "enum:broker_b:GRID_PRO"
           description: |
-            Optional tag for the order. Supports plain string (referral code) or `enum:<enum_id>` format.
+            Full tag stored on the algo order. Current custom-fee tags use `enum:<owning_broker_id>:<enum_id>`. Historical orders may contain a legacy `enum:<enum_id>` tag; do not rewrite it.
         parent_algo_order_id:
           type: number
           example: 0
@@ -13490,6 +13612,7 @@ components:
         total_fee:
           type: number
           example: 0
+          description: Aggregate fee across executed trades, including any custom trading fees. Use trade-level fields for reconciliation; this value is not a builder or affiliate payout basis.
         trigger_price:
           type: number
           example: 2.5
@@ -13549,6 +13672,7 @@ components:
         fee:
           type: number
           example: 1.0E-4
+          description: Total per-execution fee, including `order_enum_fee` when present. Subtract `order_enum_fee` to derive the non-enum trade fee.
         fee_asset:
           type: string
           example: "USDC"
@@ -13588,12 +13712,12 @@ components:
           example: "CROSS"
         order_enum_fee:
           type: number
-          description: "Additional fee charged due to the order tag fee config, in fee_asset units"
+          description: "Additional per-execution fee paid in full to the fee-owning broker, in `fee_asset` units. Exclude this amount from executing-builder and affiliate fee-share calculations."
           example: 0.05
           nullable: true
         order_enum_fee_rate:
           type: number
-          description: "The order tag fee rate applied at execution time"
+          description: "Custom trading fee rate applied at execution time. Subtract this value from the trade fee rate to derive the effective rate excluding the custom fee."
           example: 0.005
           nullable: true
 
@@ -13609,6 +13733,7 @@ components:
         fee:
           type: number
           example: 1.0E-4
+          description: Total per-execution fee, including `order_enum_fee` when present. Subtract `order_enum_fee` to derive the non-enum trade fee.
         fee_asset:
           type: string
           example: "USDC"
@@ -13636,12 +13761,12 @@ components:
           example: ""
         order_enum_fee:
           type: number
-          description: "Additional fee charged due to the order tag fee config, in fee_asset units"
+          description: "Additional per-execution fee paid in full to the fee-owning broker, in `fee_asset` units. Exclude this amount from executing-builder and affiliate fee-share calculations."
           example: 0.05
           nullable: true
         order_enum_fee_rate:
           type: number
-          description: "The order tag fee rate applied at execution time"
+          description: "Custom trading fee rate applied at execution time. Subtract this value from the trade fee rate to derive the effective rate excluding the custom fee."
           example: 0.005
           nullable: true
 
@@ -17821,26 +17946,39 @@ components:
       type: object
       required:
         - enum_id
+        - name
         - default_fee_rate
       properties:
         enum_id:
           type: string
-          description: "Fee config ID. UPPERCASE alphanumeric + underscores, max 31 chars. To apply it to an order, set `order_tag` to `enum:<enum_id>`."
-          example: "STRATEGY_DCA"
+          minLength: 1
+          maxLength: 36
+          pattern: "^[A-Z0-9_]+$"
+          description: "Unprefixed enum ID. Uppercase letters, digits, and underscores only; unique within the authenticated owner broker and immutable. To apply it to a new order, set `order_tag` to `enum:<owner_broker_id>:<enum_id>`."
+          example: "GRID_PRO"
         name:
           type: string
-          example: "DCA Strategy"
+          description: Human-readable enum name.
+          example: "Grid Pro"
         description:
           type: string
-          example: "Dollar Cost Averaging strategy orders"
+          description: Human-readable purpose of the enum.
+          example: "Grid strategy orders"
         default_fee_rate:
           type: number
-          description: "0.00001 to 0.01 (0.001% to 1%)"
+          minimum: 0.00001
+          maximum: 0.01
+          multipleOf: 0.00001
+          description: "Default enum fee rate. Must be 0.00001 through 0.01 (0.001% through 1%) with at most five decimal places."
           example: 0.005
         pair_overrides:
           type: object
+          description: "Optional symbol-to-fee-rate map. Every symbol must exist, and every rate must satisfy the same limits as `default_fee_rate`."
           additionalProperties:
             type: number
+            minimum: 0.00001
+            maximum: 0.01
+            multipleOf: 0.00001
           example:
             PERP_BTC_USDC: 0.003
 
@@ -17849,18 +17987,26 @@ components:
       properties:
         name:
           type: string
-          example: "DCA Strategy"
+          example: "Grid Pro"
         description:
           type: string
-          example: "Dollar Cost Averaging strategy orders"
+          example: "Updated grid strategy orders"
         default_fee_rate:
           type: number
-          description: "0.00001 to 0.01 (0.001% to 1%)"
+          minimum: 0.00001
+          maximum: 0.01
+          multipleOf: 0.00001
+          description: "Default enum fee rate. Must be 0.00001 through 0.01 (0.001% through 1%) with at most five decimal places."
           example: 0.005
         pair_overrides:
           type: object
+          nullable: true
+          description: "Omit or send `null` to leave existing overrides unchanged. Send `{}` to remove every override, or a non-empty map to replace the existing override set. Every rate must satisfy the same limits as `default_fee_rate`."
           additionalProperties:
             type: number
+            minimum: 0.00001
+            maximum: 0.01
+            multipleOf: 0.00001
           example:
             PERP_BTC_USDC: 0.003
 
@@ -17869,19 +18015,36 @@ components:
       properties:
         enum_id:
           type: string
-          description: "Fee config ID. To apply it to an order, set `order_tag` to `enum:<enum_id>`."
-          example: "STRATEGY_DCA"
+          minLength: 1
+          maxLength: 36
+          pattern: "^[A-Z0-9_]+$"
+          description: "Unprefixed enum ID. Combine it with the enum owner's broker ID as `enum:<owner_broker_id>:<enum_id>` when submitting a new order."
+          example: "GRID_PRO"
+        name:
+          type: string
+          example: "Grid Pro"
+        description:
+          type: string
+          example: "Grid strategy orders"
         status:
           type: string
           enum: [active, archived]
           example: "active"
         default_fee_rate:
           type: number
+          minimum: 0.00001
+          maximum: 0.01
+          multipleOf: 0.00001
+          description: Default enum fee rate used when the order symbol has no pair override.
           example: 0.005
         pair_overrides:
           type: object
+          description: Symbol-specific enum fee rates that override `default_fee_rate`.
           additionalProperties:
             type: number
+            minimum: 0.00001
+            maximum: 0.01
+            multipleOf: 0.00001
           example:
             PERP_BTC_USDC: 0.003
         created_time:
@@ -17896,23 +18059,21 @@ components:
         - $ref: "#/components/schemas/OrderEnum"
         - type: object
           properties:
-            name:
-              type: string
-              example: "DCA Strategy"
-            description:
-              type: string
-              example: "Dollar Cost Averaging strategy orders"
             usage_stats:
               type: object
+              description: "Usage aggregated by `{fee-owning broker, enum_id}` across every executing broker. These totals do not split activity by executing broker."
               properties:
                 total_orders:
                   type: number
+                  description: Total orders attributed to this owner and enum ID across every executing broker.
                   example: 12543
                 total_volume:
                   type: string
+                  description: Total attributed execution volume across every executing broker.
                   example: "1234567.89"
                 total_fees_collected:
                   type: string
+                  description: Total custom trading fees received by the fee-owning broker.
                   example: "6172.84"
 
     ArchiveOrderEnumResponse:
@@ -17925,8 +18086,11 @@ components:
               properties:
                 enum_id:
                   type: string
-                  description: "Fee config ID. To apply it to an order, set `order_tag` to `enum:<enum_id>`."
-                  example: "STRATEGY_DCA"
+                  minLength: 1
+                  maxLength: 36
+                  pattern: "^[A-Z0-9_]+$"
+                  description: "Unprefixed enum ID. Combine it with the enum owner's broker ID as `enum:<owner_broker_id>:<enum_id>` when submitting a new order."
+                  example: "GRID_PRO"
                 name:
                   type: string
                   example: "DCA Strategy"
@@ -17935,6 +18099,7 @@ components:
                   example: "Dollar Cost Averaging strategy orders"
                 status:
                   type: string
+                  enum: [archived]
                   example: "archived"
                 default_fee_rate:
                   type: number
@@ -17962,8 +18127,11 @@ components:
               properties:
                 enum_id:
                   type: string
-                  description: "Fee config ID. To apply it to an order, set `order_tag` to `enum:<enum_id>`."
-                  example: "STRATEGY_DCA"
+                  minLength: 1
+                  maxLength: 36
+                  pattern: "^[A-Z0-9_]+$"
+                  description: "Unprefixed enum ID. Combine it with the enum owner's broker ID as `enum:<owner_broker_id>:<enum_id>` when submitting a new order."
+                  example: "GRID_PRO"
                 name:
                   type: string
                   example: "DCA Strategy"
@@ -17972,6 +18140,7 @@ components:
                   example: "Dollar Cost Averaging strategy orders"
                 status:
                   type: string
+                  enum: [active]
                   example: "active"
                 default_fee_rate:
                   type: number
@@ -18132,6 +18301,7 @@ components:
                       fee:
                         type: number
                         example: 0.0001
+                        description: Total per-execution fee, including `order_enum_fee` when present. Subtract `order_enum_fee` to derive the non-enum trade fee.
                       fee_asset:
                         type: string
                         example: "USDC"
@@ -18171,12 +18341,12 @@ components:
                         example: "CROSS"
                       order_enum_fee:
                         type: number
-                        description: "Additional fee charged due to the order tag fee config, in fee_asset units"
+                        description: "Additional per-execution fee paid in full to the fee-owning broker, in `fee_asset` units. Exclude this amount from executing-builder and affiliate fee-share calculations."
                         example: 0.05
                         nullable: true
                       order_enum_fee_rate:
                         type: number
-                        description: "The order tag fee rate applied at execution time"
+                        description: "Custom trading fee rate applied at execution time. Subtract this value from the trade fee rate to derive the effective rate excluding the custom fee."
                         example: 0.005
                         nullable: true
 
@@ -18228,7 +18398,9 @@ components:
                         example: "false"
                       order_tag:
                         type: string
-                        example: test_tag
+                        maxLength: 128
+                        example: "enum:broker_b:GRID_PRO"
+                        description: "Full tag stored on the algo order. Current custom-fee tags use `enum:<owning_broker_id>:<enum_id>`. Historical orders may contain a legacy `enum:<enum_id>` tag; do not rewrite it."
                       parent_algo_order_id:
                         type: number
                         example: 0
@@ -18262,6 +18434,7 @@ components:
                       total_fee:
                         type: number
                         example: 0
+                        description: Aggregate fee across executed trades, including any custom trading fees. Use trade-level fields for reconciliation; this value is not a builder or affiliate payout basis.
                       trigger_price:
                         type: number
                         example: 2.5
