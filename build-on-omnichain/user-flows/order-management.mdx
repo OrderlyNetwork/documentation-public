@@ -7,11 +7,14 @@ description: "How orders flow through Orderly's architecture, from placement to 
 
 When a user places an order, it flows through Orderly's layered architecture:
 
-1. The **Broker Front-end Layer** forwards the request with the user's Trading Key
-2. The **Messaging Layer** verifies the Trading Key
-3. The **Engine Layer** matches the order against the order book
-4. On execution, trade data is uploaded to the **Settlement Layer**
-5. The user receives order and execution updates
+1. The **Broker Front-end Layer** forwards the signed order request
+2. The **Messaging Layer** verifies the request signature
+3. The **Engine Layer** matches the order off-chain using price-time priority
+4. The user receives order and execution updates
+5. On execution, matched trade data is batched and uploaded to the **Settlement Layer**
+6. After L2 inclusion, the matched trade data is publicly observable on Orderly L2
+7. Each L2 batch or block publishes its batch data to Ethereum as calldata or
+   blob data, which becomes observable after the L1 publication is available
 
 ```mermaid
 sequenceDiagram
@@ -20,26 +23,32 @@ sequenceDiagram
     participant ML as Messaging Layer (ML)
     participant SL as Settlement Layer (SL)
     participant EL as Engine Layer (EL)
+    participant ETH as Ethereum
 
     %% User places order
     U->>BF: Place order
 
     %% Trading Key handling
-    BF->>ML: With Trading Key
-    ML->>ML: Trading Key Verification
+    BF->>ML: Signed order request
+    ML->>ML: Verify request signature
 
     %% Forward to engine
     ML->>EL: Verified order
 
     %% Matching engine
-    EL->>EL: Order Matching
-
-    %% Trade result
-    EL-->>SL: Trade upload
+    EL->>EL: Off-chain matching (price-time priority)
 
     %% Execution update broadcast
     EL-->>U: Order / Execution update
+
+    %% Trade result
+    EL-->>SL: Batched matched trade data
+
+    %% L2 data publication
+    SL-->>ETH: Publish batch calldata / blob
 ```
+
+For the visibility and MEV boundaries at each stage, see [Orderly Orderbook Design](/introduction/trade-on-orderly/trading-basics/orderbook-design).
 
 ## API Reference
 
@@ -47,6 +56,8 @@ Orders are managed through the following APIs:
 
 - **Create order:** [POST `/v1/order`](/build-on-omnichain/restful-api/private/create-order)
 - **Batch create orders:** [POST `/v1/batch-order`](/build-on-omnichain/restful-api/private/batch-create-order)
+  batches client order submissions; it is separate from post-match settlement
+  batching.
 - **Edit order:** [PUT `/v1/order`](/build-on-omnichain/restful-api/private/edit-order)
 - **Cancel order:** [DELETE `/v1/order`](/build-on-omnichain/restful-api/private/cancel-order)
 - **Cancel all orders:** [DELETE `/v1/orders`](/build-on-omnichain/restful-api/private/cancel-all-pending-orders)

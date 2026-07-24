@@ -2722,16 +2722,17 @@ paths:
         `POST /v1/batch-order`
 
 
-        Creates a batch of orders as a list according to the same rules as a
-        single Create Order.
+        Creates up to 10 orders in one request. Send the orders in the `orders`
+        JSON array. Each order in the request counts as one order toward the
+        overall create order rate limit.
 
 
-        Parameters for each order within the batch will be the same as the
-        create single order. The batch of orders should be sent as a JSON array
-        containing all the orders. The maximum number of orders that can be sent
-        in 1 batch order request is 10. Each order within the batch order
-        request is counted as 1 order towards the overall create order rate
-        limit.
+        **Reduce-only limitation:** `POST /v1/batch-order` does not support or
+        apply `reduce_only`. Do not include `reduce_only` in a batch order item.
+        If reduce-only execution is required, submit each order separately using
+        [`POST /v1/order`](/build-on-omnichain/restful-api/private/create-order)
+        with `reduce_only: true`. Without this constraint, an order may increase
+        a position instead of reducing it.
 
 
 
@@ -2746,6 +2747,10 @@ paths:
         - $ref: "#/components/parameters/orderly_signature"
         - $ref: "#/components/parameters/recv_window_header"
       requestBody:
+        description: >-
+          `reduce_only` is not supported or applied to batch order items. Use
+          `POST /v1/order` with `reduce_only: true` when reduce-only execution is
+          required.
         content:
           application/json:
             schema:
@@ -13083,6 +13088,10 @@ components:
         side:
           type: string
     BatchCreateOrderBody:
+      description: >-
+        Fields for one `POST /v1/batch-order` item. `reduce_only` is not
+        supported by this endpoint and is intentionally not included in this
+        schema.
       required:
         - order_type
         - side

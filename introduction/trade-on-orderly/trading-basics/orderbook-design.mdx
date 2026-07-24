@@ -7,12 +7,16 @@ Orderly is an omnichain decentralized orderbook protocol. It provides the matchi
 
 ## Orderbook design
 
-Orderly uses a **central limit order book (CLOB)** -- the same type of system used by major centralized exchanges. The key difference: Orderly settles everything on-chain, combining CEX-level performance with decentralized transparency.
+Orderly uses a **central limit order book (CLOB)** -- the same type of system used
+by major centralized exchanges. Orders are submitted and matched off-chain,
+while matched trade data is uploaded for on-chain settlement.
 
-- **Transparency:** All orders are recorded on the blockchain and publicly verifiable.
-- **Security:** On-chain settlement means data is immutable and tamper-proof.
+- **Transparency:** The public orderbook shows aggregate prices and quantities.
+  Matched trade data becomes publicly observable after it is included on
+  Orderly L2.
+- **Authentication:** Order requests are signed using a Trading Key, and the
+  request signature is verified before matching.
 - **Speed:** A high-performance off-chain matching engine provides low-latency execution.
-- **Self-custody:** Users retain full control of their funds at all times.
 
 ## Omnichain approach
 
@@ -26,18 +30,63 @@ The system has three layers:
 
 **Settlement Layer (Orderly L2)** -- on a single chain
 
-- A transaction ledger that stores all transaction and user data on-chain. Users do not interact with it directly.
+- A ledger that records settlement data on Orderly L2. Matched trade data
+  becomes publicly observable after L2 inclusion. Users do not interact with
+  this layer directly.
 
 **Engine Layer (Orderbook)** -- order-related services
 
 - Where trade execution happens. Includes the matching engine, risk engine, and other services. You interact with this layer when managing orders.
 
-After orders are matched, they settle on the Orderly L2 (built with OP Stack), which periodically settles to Ethereum. Cross-layer communication (deposits, withdrawals, balance updates) is powered by LayerZero.
+After orders are matched, matched trade data is batched and uploaded to Orderly
+L2 (built with OP Stack). Each L2 batch or block publishes the corresponding
+batch data to Ethereum as calldata or blob data, where it can be observed and
+decoded. Cross-layer communication (deposits, withdrawals, balance updates) is
+powered by LayerZero.
+
+## Order and settlement visibility
+
+Order submission, matching, and settlement have different visibility boundaries.
+
+### Order submission
+
+A client or broker sends the full order request to Orderly's off-chain
+infrastructure. Orderly's operator and matching infrastructure can read the full
+order content. The public resting orderbook displays only aggregate prices and
+quantities, without account or individual order details. The order request is
+not submitted to a public blockchain mempool before matching.
+
+### Matching
+
+The matching engine processes full order details off-chain using price-time
+priority. Matching does not depend on ordering a user transaction in a public
+blockchain mempool. This does not mean the order is hidden from Orderly's
+operator or matching infrastructure.
+
+### Batch upload
+
+Only matched trade data is included in the settlement batch. Unmatched and
+canceled orders are not included. The batch is created after matching, and its
+matched trade data becomes publicly observable after inclusion on Orderly L2.
+The pre-match public-mempool guarantee does not extend to this post-match stage.
+
+### On-chain settlement
+
+Each Orderly L2 batch or block is published to Ethereum as calldata or blob data
+that public observers can inspect and decode once the L1 publication is
+available. This visibility occurs after matching and L2 inclusion. No guarantee
+is made that post-match settlement data remains private.
 
 ## MEV protection
 
-MEV (maximal extractable value) is when someone profits by front-running or reordering transactions before they are confirmed on-chain. Orderly mitigates this through:
+For this order flow, MEV protection specifically refers to public-mempool
+front-running before matching. Because order submission and matching happen
+off-chain, a public blockchain observer cannot inspect an order-submission
+transaction in a public mempool and place a blockchain transaction ahead of it.
 
-- **Fast matching:** The sequencer matches orders with minimal latency, leaving little window for front-running.
-- **Deep liquidity:** A deep order book makes price manipulation significantly harder.
-- **Off-chain matching:** Orders are matched off-chain in a neutral environment -- there is no on-chain transaction to front-run.
+This guarantee is limited to that pre-match public-mempool scenario. Orderly's
+operator and matching infrastructure can see full order details before matching,
+and matching follows price-time priority. After matching, settlement data becomes
+publicly observable as described above. Off-chain matching should therefore not
+be interpreted as making post-match settlement data private or as eliminating
+every form of MEV.

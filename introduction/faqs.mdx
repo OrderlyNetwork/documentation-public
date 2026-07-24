@@ -73,10 +73,14 @@ Traders can explore an ecosystem of front-ends built on Orderly. A comprehensive
   execution. **REDUCE ONLY:** Executes buy or sell orders which only reduce a current position
 </Accordion>
 
-  <Accordion title="How do you ensure no fake orders are settled on-chain?">
-    All orders coming into the Orderly off-chain matching engine are signed by users' private trading keys and are settled on-chain with those signatures. Public keys are stored on the contract, and the signatures are verified to validate orders.
+  <Accordion title="How are orders authenticated before settlement?">
+    Order requests are signed using users' Trading Keys. The Messaging Layer
+    verifies the request signature before forwarding an order to the Engine
+    Layer. Only matched trade data is included in the settlement batch;
+    unmatched and canceled orders are not included.
 
-    The above model ensures that even if the operator is compromised, no fake orders are executed and all user funds are safe.
+    See [Orderly Orderbook Design](/introduction/trade-on-orderly/trading-basics/orderbook-design)
+    for the visibility boundaries before and after matching.
 
   </Accordion>
 
