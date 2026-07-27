@@ -1,9 +1,9 @@
 ---
 title: "Custom Oracle"
-description: "Learn how Builders can provide custom oracle feeds for permissionlessly listed markets on Orderly."
+description: "Learn how Builders can provide custom oracle feeds for Perp Anything markets on Orderly."
 ---
 
-Custom Oracle lets Builders bring additional Index Price sources into [Permissionless Listing](/introduction/trade-on-orderly/permissionless-listing). It is designed for markets that need pricing beyond Orderly's standard CEX feeds and platform oracle sources.
+Custom Oracle lets Builders bring additional Index Price sources into [Perp Anything](/introduction/trade-on-orderly/permissionless-listing). It is designed for markets that need pricing beyond Orderly's standard CEX feeds and platform oracle sources.
 
 There are two Custom Oracle modes:
 
@@ -12,7 +12,7 @@ There are two Custom Oracle modes:
 | **Builder Oracle**                   | Builders with their own pricing model, index service, or aggregation backend.                               | The Builder pushes prices to Orderly over WebSocket.                                     |
 | **Bring Your Own Key (BYOK) Oracle** | Builders that want to use their own provider account for a supported oracle provider such as Pyth or Stork. | Orderly uses the Builder's provider credentials to pull prices from the oracle provider. |
 
-Both modes can be selected as Index Price sources during Permissionless Listing. They can also be combined with CEX feeds and platform oracle sources, with each selected source assigned a weight.
+Both modes can be selected as Index Price sources during Perp Anything setup. They can also be combined with CEX feeds and platform oracle sources, with each selected source assigned a weight.
 
 ## Builder Oracle
 
@@ -52,7 +52,7 @@ With Builder Oracle, the Builder is responsible for operating the price feed:
 - monitor stale data, skipped prices, and feed availability;
 - use multiple sources where possible to reduce single-source risk.
 
-If a Builder Oracle feed becomes unhealthy, the affected market can be restricted or placed into reduce-only mode according to the Permissionless Listing risk rules.
+If a Builder Oracle feed becomes unhealthy, the affected market can be restricted or placed into reduce-only mode according to the Perp Anything risk rules.
 
 ## Bring Your Own Key (BYOK) Oracle
 
@@ -91,11 +91,11 @@ RWA trading sessions are configured at the listed market level through `market_s
 
 ## Integration flow
 
-For the API sequence, feed setup, source selection, RWA `market_session`, and listing submit example, see [Permissionless Listing with Custom Oracle](/build-on-omnichain/user-flows/permissionless-listing-custom-oracle).
+For the API sequence, feed setup, source selection, RWA `market_session`, and listing submit example, see [Perp Anything with Custom Oracle](/build-on-omnichain/user-flows/permissionless-listing-custom-oracle).
 
 ## Related Pages
 
-- [Permissionless Listing](/introduction/trade-on-orderly/permissionless-listing)
+- [Perp Anything](/introduction/trade-on-orderly/permissionless-listing)
 - [Supported Markets](/introduction/trade-on-orderly/supported-markets)
 - [Mark Price, Index Price, and Last Price](/introduction/trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price)
-- [Permissionless Listing with Custom Oracle](/build-on-omnichain/user-flows/permissionless-listing-custom-oracle)
+- [Perp Anything with Custom Oracle](/build-on-omnichain/user-flows/permissionless-listing-custom-oracle)
