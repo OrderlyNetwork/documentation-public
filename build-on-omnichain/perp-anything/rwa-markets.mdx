@@ -1,0 +1,95 @@
+---
+title: "RWA Markets"
+description: "Configure supported real-world asset markets, market sessions, and closed-market behavior in Perp Anything."
+---
+
+Perp Anything supports real-world asset (RWA) perpetual markets from Orderly's supported RWA list. RWA listings use the same isolated-risk operating model as other Perp Anything markets, with an additional `market_session` that defines when the underlying market is open, closed, or affected by holidays and early closes.
+
+> Disclaimer: An RWA market is created and operated by a Builder, not by Orderly. The Builder remains responsible for its liquidity, price sources, Insurance Fund coverage, and market operation.
+
+## Supported market coverage
+
+RWA market coverage currently includes the **US, Hong Kong (HK), China (CN), and Japan (JP)**. Available market sessions vary by market, and support for additional markets is planned to be added gradually.
+
+Orderly maintains the supported RWA list, market-session definitions, holiday calendars, and early-close schedules. A Builder cannot turn an arbitrary symbol into an RWA market by adding `market_session` to a listing request.
+
+## Determine whether a symbol is RWA
+
+<Note>
+  The listing and RWA-session endpoints on this page are not currently included in this
+  documentation site's bundled OpenAPI reference. Confirm production availability with your Orderly
+  integration contact before implementation.
+</Note>
+
+Call `POST /v1/broker/listing/symbol_context` with the base symbol:
+
+```json
+{
+  "symbol": "AAPL"
+}
+```
+
+The response provides listing context and indicates whether the symbol is an RWA symbol. When `is_rwa` is `true`, the final listing request must include a supported `market_session`.
+
+## Select a market session
+
+Retrieve supported sessions with:
+
+```http
+GET /v1/public/rwa/market_sessions
+```
+
+Each response row includes the session name, timezone, trading hours, holidays, and early-close information. Use a returned session value rather than constructing one locally.
+
+The trading session belongs to the listed market, not to an individual price source. The same source framework can therefore support crypto and RWA markets.
+
+## Choose price sources
+
+An RWA market can use supported CEX feeds, platform oracle sources, Builder-pushed feeds, or Bring Your Own Key sources when those sources are available for the asset.
+
+See [Builder Oracle](/build-on-omnichain/user-flows/builder-oracle) to create Builder-controlled sources, inspect available sources, and assign source weights.
+
+## Submit an RWA market
+
+Include a supported `market_session` with the selected price sources:
+
+```json
+{
+  "symbol": "AAPL",
+  "sources": [
+    {
+      "source": "ORACLE_woofi_pro",
+      "source_symbol": "AAPL",
+      "price_multiplier": 1,
+      "weight": 60
+    },
+    {
+      "source": "PYTH_woofi_pro",
+      "source_symbol": "AAPL",
+      "price_multiplier": 1,
+      "weight": 40
+    }
+  ],
+  "market_session": "US_STOCK"
+}
+```
+
+Submit the market through `POST /v1/broker/listing/submit`.
+
+- If the symbol is RWA, `market_session` is required.
+- If the symbol is not RWA, omit `market_session`.
+- Passing `market_session` does not change a symbol's RWA classification.
+
+## Closed-market behavior
+
+When the underlying market is closed, frontends can show a **Market Closed** state and use the latest valid price according to the configured session rules.
+
+RWA Mark Price protection also changes between on-market and off-market hours. During `OFF_MARKET`, the underlying market is closed, liquidity can be lower, and the Index Price is frozen. Orderly applies the RWA-specific off-market factor described in [Mark Price, Index Price, and Last Price](/introduction/trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price#rwa-symbols).
+
+Market-session state does not remove the Builder's operating responsibilities. Continue monitoring price-source health, liquidity, and Insurance Fund coverage.
+
+## Related pages
+
+- [Introduction](/build-on-omnichain/perp-anything/introduction)
+- [Market Operations](/build-on-omnichain/perp-anything/market-operations)
+- [Builder Oracle](/build-on-omnichain/user-flows/builder-oracle)

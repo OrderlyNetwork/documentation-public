@@ -1,19 +1,20 @@
 ---
-title: "Perp Anything with Custom Oracle"
-description: "How Builders can list a market using custom oracle feeds, Bring Your Own Key oracle sources, and RWA market sessions."
+title: "Builder Oracle"
+description: "Create and operate Builder-pushed or Bring Your Own Key price sources, then use them in Perp Anything markets."
 ---
 
-This flow is for Builders who want to list a Perp Anything market and use a custom oracle feed as one of the market's Index Price sources.
+Builder Oracle lets Builders bring their own Index Price sources into [Perp Anything](/build-on-omnichain/perp-anything/introduction). Use it when a market needs pricing beyond Orderly's standard CEX feeds and platform oracle sources.
 
-Use this page together with the [Perp Anything overview](/introduction/trade-on-orderly/permissionless-listing). The overview explains Builder responsibility, Insurance Fund requirements, Isolated Margin behavior, and trader-facing risk disclosures. This page focuses on the integration flow and API sequence.
+This guide covers two Builder-controlled modes:
 
-<Note>
-  RWA market coverage currently includes the US, Hong Kong (HK), China (CN), and Japan (JP).
-  Available market sessions vary by market. Support for additional markets is planned to be added
-  gradually.
-</Note>
+| Mode                                 | Best for                                                                             | How prices reach Orderly                                                               |
+| ------------------------------------ | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- |
+| **Builder-pushed feed**              | Builders with their own pricing model, index service, or aggregation backend.        | The Builder publishes prices to Orderly over WebSocket.                                |
+| **Bring Your Own Key (BYOK) Oracle** | Builders that use their own account with a supported provider such as Pyth or Stork. | Orderly uses the Builder's provider credentials to retrieve prices from that provider. |
 
-## Source types
+Both modes can be combined with CEX feeds and platform oracle sources. Each selected source receives a weight in the market's Index Price configuration.
+
+## Source types and selection
 
 When configuring a Perp Anything market, Builders can select from multiple Index Price source types:
 
@@ -21,22 +22,84 @@ When configuring a Perp Anything market, Builders can select from multiple Index
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | CEX                              | Centralized exchange price feeds supported by Orderly.                                                             |
 | Platform oracle                  | Orderly-supported oracle sources such as Pyth and Stork.                                                           |
-| Builder Oracle                   | A custom oracle feed pushed by a Builder to Orderly.                                                               |
+| Builder Oracle                   | A Builder-controlled Index Price feed published to Orderly.                                                        |
 | Bring Your Own Key (BYOK) Oracle | A Builder-owned oracle connection using the Builder's own provider credentials, such as Pyth or Stork credentials. |
 
 Selected sources are submitted with weights. The weights must be positive integers and sum to `100`.
 
-## Core listing flow
+## Builder-pushed feeds
+
+A Builder-pushed feed is the push-based Builder Oracle mode. The Builder owns the price calculation and publishes the resulting Index Price to Orderly.
+
+Use a Builder-pushed feed for:
+
+- an internal index service;
+- an exchange aggregation service;
+- a pricing model for a long-tail asset;
+- an RWA data-provider integration.
+
+The feed is identified as `ORACLE_<broker_id>`. New feeds are `active` and `private` by default so the Builder can test them before making them available to other Builders.
+
+### Visibility
+
+- **Private** feeds are visible only to the Builder that owns the feed.
+- **Public** feeds can be selected by other Builders.
+
+If another Builder selects a public feed, that Builder is responsible for understanding the source's availability and quality risk.
+
+### Operating responsibilities
+
+The Builder operating the feed must:
+
+- keep the WebSocket connection active during the relevant market session;
+- publish valid prices at the required frequency;
+- monitor stale data, skipped prices, and feed availability;
+- use multiple sources where possible to reduce single-source risk.
+
+If a Builder-pushed feed becomes unhealthy, affected markets can be restricted or placed into reduce-only mode according to Perp Anything risk controls.
+
+## Bring Your Own Key (BYOK) Oracle
+
+BYOK connects a supported oracle-provider account to Orderly. The Builder does not need to operate a WebSocket publisher, but remains responsible for the provider relationship.
+
+Initial BYOK provider support includes Pyth and Stork. Chainlink support is planned for a future rollout.
+
+### How BYOK works
+
+1. Select a supported provider, such as Pyth or Stork.
+2. Submit the provider credentials through Orderly's private API.
+3. Orderly validates the credentials and creates a provider-specific source, such as `PYTH_<broker_id>` or `STORK_<broker_id>`.
+4. Register feeds under the BYOK provider.
+5. Orderly retrieves prices from the provider and makes the feed available for source selection.
+
+BYOK feeds have their own status and health model. The Builder controls whether a feed is active or inactive, while Orderly reports provider-side conditions such as missing symbols, retrieval failures, invalid keys, and quota issues.
+
+The Builder must:
+
+- keep provider credentials valid;
+- monitor key status and provider health;
+- manage which BYOK feeds are active;
+- understand provider quota, coverage, and availability constraints.
+
+## Integration flow
+
+<Note>
+  The listing endpoints in this section are not currently included in this documentation site's
+  bundled OpenAPI reference. Confirm production availability with your Orderly integration contact
+  before implementation.
+</Note>
+
+`XYZZZ` is a fictional token used only as a placeholder. Replace it and the example source identifiers below with values available for your supported asset.
 
 <Steps>
-  <Step title="Create or update a custom oracle feed">
+  <Step title="Create or update a Builder Oracle feed">
     Use `POST /v1/broker/listing/oracle/feed` to register the feed that your listing will use.
 
     For a Builder Oracle feed, omit `oracle`. For a BYOK feed, set `oracle` to the provider, such as `pyth` or `stork`.
 
 ```json
 {
-  "base_ccy": "AAPL",
+  "base_ccy": "XYZZZ",
   "visibility": "private",
   "status": "active"
 }
@@ -46,18 +109,18 @@ Selected sources are submitted with weights. The weights must be positive intege
 
   </Step>
 
-  <Step title="Push custom oracle prices">
+  <Step title="Publish Builder Oracle prices">
     Builder Oracle feeds publish Index Price updates to the dedicated oracle WebSocket endpoint.
 
 ```json
 {
-  "id": "push_aapl_001",
+  "id": "push_xyzzz_001",
   "event": "publish",
   "topic": "indexpricefeed",
   "ts": 1711440000000,
   "data": {
-    "base_ccy": "AAPL",
-    "price": 213.55
+    "base_ccy": "XYZZZ",
+    "price": 1.23
   }
 }
 ```
@@ -68,40 +131,21 @@ Selected sources are submitted with weights. The weights must be positive intege
 
   </Step>
 
-  <Step title="Check listing context">
-    Call `POST /v1/broker/listing/symbol_context` with the base symbol you want to list.
-
-```json
-{
-  "symbol": "AAPL"
-}
-```
-
-    The response provides listing parameters and indicates whether the symbol is an RWA symbol. If `is_rwa` is `true`, the listing must include a valid `market_session` in the final submit request.
-
-  </Step>
-
   <Step title="Fetch available price sources">
     Call `GET /v1/broker/listing/index_sources` to retrieve the available source list. The response can include CEX, platform oracle, Builder Oracle, and BYOK Oracle sources.
 
     To fetch runtime price and health details for Builder Oracle and BYOK sources, call:
 
 ```http
-GET /v1/broker/listing/builder_sources?base_ccy=AAPL
+GET /v1/broker/listing/builder_sources?base_ccy=XYZZZ
 ```
 
     This returns active public feeds, plus the Builder's own private feeds. Other Builders cannot see or select your private feeds.
 
   </Step>
 
-  <Step title="Select an RWA market session if needed">
-    If `symbol_context` identifies the symbol as RWA, call:
-
-```http
-GET /v1/public/rwa/market_sessions
-```
-
-    For an RWA listing, use a `market_session` value returned by this endpoint. Each response row includes the session name, timezone, trading hours, and holiday and early-close information.
+  <Step title="Complete RWA setup if needed">
+    If the market is an RWA market, complete the symbol-context and market-session steps in [RWA Markets](/build-on-omnichain/perp-anything/rwa-markets) before submitting the listing.
 
   </Step>
 
@@ -110,26 +154,25 @@ GET /v1/public/rwa/market_sessions
 
 ```json
 {
-  "symbol": "AAPL",
+  "symbol": "XYZZZ",
   "sources": [
     {
       "source": "ORACLE_woofi_pro",
-      "source_symbol": "AAPL",
+      "source_symbol": "XYZZZ",
       "price_multiplier": 1,
       "weight": 60
     },
     {
       "source": "PYTH_woofi_pro",
-      "source_symbol": "AAPL",
+      "source_symbol": "XYZZZ",
       "price_multiplier": 1,
       "weight": 40
     }
-  ],
-  "market_session": "US_STOCK"
+  ]
 }
 ```
 
-    For non-RWA symbols, omit `market_session`. For RWA symbols, `market_session` is required and must match a supported market session.
+    This non-RWA example omits `market_session`. For an RWA symbol, follow the requirements in [RWA Markets](/build-on-omnichain/perp-anything/rwa-markets).
 
   </Step>
 
@@ -138,24 +181,7 @@ GET /v1/public/rwa/market_sessions
   </Step>
 </Steps>
 
-## Visibility and responsibility
-
-Custom oracle feeds can be either private or public:
-
-- **Private feeds** are visible only to the Builder that owns the feed.
-- **Public feeds** can be selected by other Builders.
-
-If a Builder selects a public custom oracle feed operated by another Builder, that Builder is responsible for understanding the availability and quality risk of the selected source.
-
-## RWA constraints
-
-RWA markets are controlled by Orderly's supported RWA list. Builders cannot turn an arbitrary symbol into an RWA market by passing `market_session` directly.
-
-- If the symbol is RWA, `market_session` is required.
-- If the symbol is not RWA, `market_session` should be omitted.
-- RWA trading sessions are configured at the listed market level, not at the source level.
-
-### Full example
+## Full example
 
 The following example separates the reusable WebSocket client from your provider logic. The SDK file signs the connection, keeps the WebSocket alive, handles reconnects, and publishes `indexpricefeed` messages. The provider file only decides which price to publish.
 
@@ -176,7 +202,7 @@ pip install websockets cryptography base58
 export ORDERLY_ACCOUNT_ID="0x..."
 export ORDERLY_KEY="ed25519:..."
 export ORDERLY_SECRET="..."
-export BASE_CCY="AAPL"
+export BASE_CCY="XYZZZ"
 
 python provider_ws_example.py
 
@@ -338,7 +364,7 @@ async def run():
         account_id=os.environ["ORDERLY_ACCOUNT_ID"],
         orderly_key=os.environ["ORDERLY_KEY"],
         orderly_secret=os.environ["ORDERLY_SECRET"],
-        base_ccy=os.getenv("BASE_CCY", "AAPL"),
+        base_ccy=os.getenv("BASE_CCY", "XYZZZ"),
         domain=os.getenv("ORACLE_WS_DOMAIN", "wss://ws-oracle.orderly.org"),
     )
 
@@ -354,3 +380,11 @@ asyncio.run(run())
 ```
 
 </CodeGroup>
+
+## Related pages
+
+- [Introduction](/build-on-omnichain/perp-anything/introduction)
+- [Market Operations](/build-on-omnichain/perp-anything/market-operations)
+- [RWA Markets](/build-on-omnichain/perp-anything/rwa-markets)
+- [Supported Markets](/introduction/trade-on-orderly/supported-markets)
+- [Mark Price, Index Price, and Last Price](/introduction/trade-on-orderly/perpetual-futures/mark-price-index-price-and-last-price)

@@ -22,22 +22,22 @@ The Builder Oracle guide remains under the `build-on-omnichain/user-flows` files
 
 ## Canonical routes
 
-| Page | Canonical route |
-| --- | --- |
-| Introduction | `/build-on-omnichain/perp-anything/introduction` |
+| Page              | Canonical route                                       |
+| ----------------- | ----------------------------------------------------- |
+| Introduction      | `/build-on-omnichain/perp-anything/introduction`      |
 | Market Operations | `/build-on-omnichain/perp-anything/market-operations` |
-| Builder Oracle | `/build-on-omnichain/user-flows/builder-oracle` |
-| RWA Markets | `/build-on-omnichain/perp-anything/rwa-markets` |
-| Pre-TGE Listing | `/build-on-omnichain/perp-anything/pre-tge-listing` |
+| Builder Oracle    | `/build-on-omnichain/user-flows/builder-oracle`       |
+| RWA Markets       | `/build-on-omnichain/perp-anything/rwa-markets`       |
+| Pre-TGE Listing   | `/build-on-omnichain/perp-anything/pre-tge-listing`   |
 
 ## Redirects
 
-| Existing route | Destination |
-| --- | --- |
-| `/introduction/trade-on-orderly/permissionless-listing` | `/build-on-omnichain/perp-anything/introduction` |
-| `/introduction/trade-on-orderly/custom-oracle` | `/build-on-omnichain/user-flows/builder-oracle` |
-| `/introduction/trade-on-orderly/pre-tge-listing` | `/build-on-omnichain/perp-anything/pre-tge-listing` |
-| `/build-on-omnichain/user-flows/permissionless-listing-custom-oracle` | `/build-on-omnichain/user-flows/builder-oracle` |
+| Existing route                                                        | Destination                                         |
+| --------------------------------------------------------------------- | --------------------------------------------------- |
+| `/introduction/trade-on-orderly/permissionless-listing`               | `/build-on-omnichain/perp-anything/introduction`    |
+| `/introduction/trade-on-orderly/custom-oracle`                        | `/build-on-omnichain/user-flows/builder-oracle`     |
+| `/introduction/trade-on-orderly/pre-tge-listing`                      | `/build-on-omnichain/perp-anything/pre-tge-listing` |
+| `/build-on-omnichain/user-flows/permissionless-listing-custom-oracle` | `/build-on-omnichain/user-flows/builder-oracle`     |
 
 ## Content responsibilities
 
