@@ -5,6 +5,54 @@ description: "Prepare, launch, monitor, and operate Perp Anything markets with i
 
 Operating a Perp Anything market means owning its risk coverage, liquidity, price-source selection, and response to market-health alerts. Orderly provides the infrastructure and automated controls, while the Builder remains responsible for keeping the market healthy.
 
+## At a glance
+
+| Economics                                                                | Launch and capital gates                                                                                  |
+| ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| **50% of Orderly base taker fees** (taker only; daily settlement)        | IF and depth thresholds **differ by network** — see [Network parameters](#network-parameters)             |
+| Default **5** markets (adjustable; excludes `DELISTING` / `DELISTED`)    | `POST_ONLY` can move to `ACTIVE` after both sides meet **Depth Warning** for the **depth hold window**    |
+
+Full fee rules: [Fee share](#fee-share). Full lifecycle: [Lifecycle thresholds](#lifecycle-thresholds).
+
+## Network parameters
+
+| Parameter             | Mainnet     | Testnet     |
+| --------------------- | ----------- | ----------- |
+| **IF Requirement**    | 25,000 USDC | 100 USDC    |
+| **Depth Warning**     | 25,000 USDC | 500 USDC    |
+| **Depth Limit**       | 12,500 USDC | 250 USDC    |
+| **Depth hold window** | 10 minutes  | 10 minutes  |
+| **Fee share**         | 50%         | 50%         |
+
+- **IF Requirement** — Per-effective-symbol Insurance Fund threshold on the assigned IF account. The account balance must stay **strictly above** this amount times the number of effective symbols (`IF balance > IF Requirement × n`). Effective symbols are markets in `NEW`, `PENDING`, `POST_ONLY`, `ACTIVE`, or `REDUCE_ONLY`. Multi-symbol examples are in [Insurance Fund and Market Maker accounts](#insurance-fund-and-market-maker-accounts).
+- **Depth Warning** — Per-side order book depth inside the **±2%** band (bid and ask checked separately). **Launch:** both sides must stay **≥ Depth Warning** for the full depth hold window before `POST_ONLY` can move to `ACTIVE`. **After launch:** depth **below** Depth Warning is thin liquidity and can trigger depth warnings (for example Telegram). Keep market-making **at or above** this level.
+- **Depth Limit** — Lower per-side depth floor than Depth Warning (also within ±2%, each side). If **either** side falls **below Depth Limit**, Orderly can restrict the market (for example into `REDUCE_ONLY`). This is the hard liquidity floor, not just an alert.
+- **Depth hold window** — How long both sides must continuously stay **≥ Depth Warning** before full trading can open. It is a **time window**, not a USDC amount. Same on Mainnet and Testnet (**10 minutes**).
+  - Check bid depth within ±2% and ask depth within ±2%.
+  - Both must be **≥ Depth Warning** at the same time.
+  - That condition must hold **without interruption for 10 consecutive minutes**.
+  - If either side dips **below** Depth Warning even briefly, the timer **resets** and you need another full 10 minutes.
+  - After an uninterrupted 10 minutes, the market **can** move to `ACTIVE` (full trading, including market orders).
+  - Example (Mainnet): both sides at 30,000 USDC for 10 minutes → passes. Fine for 9 minutes then bid drops to 20,000 USDC → resets. Ask healthy but bid only 10,000 USDC the whole time → does not pass.
+- **Fee share** — Default **50%** of Orderly **base taker fees** on the market (same on Mainnet and Testnet). Scope, settlement, and reconciliation are in [Fee share](#fee-share).
+
+Use Mainnet values for production. Use Testnet values when validating listing and market-making before mainnet launch.
+
+## Builder readiness
+
+Perp Anything is available to all Builders. Each Builder can have up to **5** markets by default in any status other than `DELISTING` or `DELISTED` (adjustable by Orderly).
+
+Before launch:
+
+- Confirm Builder Admin access.
+- Assign each effective listed symbol, including the new symbol, to exactly one IF account whose balance stays **strictly above** the network [IF Requirement](#network-parameters) **times** the number of effective symbols on that account (`IF balance > IF Requirement × n`). See the [IF formula and examples](#insurance-fund-and-market-maker-accounts).
+- Select at least one valid Index Price source; two or more are recommended.
+- Configure trading parameters within Orderly's supported constraints.
+- Prepare market-making so both sides can meet **Depth Warning** for the full [depth hold window](#network-parameters).
+- Bind Telegram alerts so the operating team can respond to Insurance Fund, liquidity, funding, and source-health warnings.
+
+For Builder-controlled price sources, see [Builder Oracle](/build-on-omnichain/user-flows/builder-oracle). For trading-session requirements, see [RWA Markets](/build-on-omnichain/perp-anything/rwa-markets).
+
 ## Insurance Fund and Market Maker accounts
 
 Each Builder can set up and manage:
@@ -12,11 +60,26 @@ Each Builder can set up and manage:
 - **Insurance Fund (IF) accounts** — Each effective symbol must be assigned to exactly one IF account. One IF account can support multiple symbols.
 - **Market Maker (MM) accounts** — Optional sub-accounts that can be bound to listed symbols to provide liquidity.
 
-Each IF account must maintain at least **$25,000 for every effective symbol assigned to it**. Effective symbols are symbols in `NEW`, `PENDING`, `POST_ONLY`, `ACTIVE`, or `REDUCE_ONLY` status. For example, an IF account assigned three effective symbols must maintain at least $75,000.
+Each IF account must keep its balance **strictly above** the **IF Requirement** for every effective symbol assigned to it. Per-network amounts are in [Network parameters](#network-parameters):
+
+```
+IF balance > IF Requirement × (number of effective symbols on that IF account)
+```
+
+| Example | Calculation | Healthy IF balance must be |
+| ------- | ----------- | -------------------------- |
+| 1 effective symbol | 1 × IF Requirement | **>** IF Requirement |
+| 3 effective symbols on one IF | 3 × IF Requirement | **>** 3 × IF Requirement |
+
+For Mainnet, 3 effective symbols means the shared IF must stay **above** 3 × 25,000 USDC. For Testnet, 3 effective symbols means **above** 3 × 100 USDC. Do not fund exactly at the product of the requirement — the rule is **strictly greater than**, not greater-or-equal.
+
+Effective symbols are symbols in `NEW`, `PENDING`, `POST_ONLY`, `ACTIVE`, or `REDUCE_ONLY`. Symbols in `DELISTING` or `DELISTED` do not count toward this requirement or the default 5-market cap.
+
+A symbol in **`REDUCE_ONLY` still counts** toward the IF Requirement and the 5-market cap. Restoring healthier conditions may require adding IF balance (and liquidity) before the market can leave restricted status.
 
 IF accounts are separate from Orderly's platform IF and from other Builders' IF accounts. Losses for a symbol draw only from its assigned IF account. When several symbols share an IF account, losses can reduce the coverage available to the other symbols assigned to that account.
 
-If an assigned IF account falls below the required balance, Orderly can restrict trading or begin delisting affected symbols. If the assigned IF is depleted, auto-deleveraging is scoped to the affected market.
+If an assigned IF account is **not above** the requirement, Orderly can restrict trading or begin delisting affected symbols. If the assigned IF is depleted, auto-deleveraging is scoped to the affected market.
 
 See [Insurance Fund and ADL](/introduction/trade-on-orderly/perpetual-futures/insurance-fund-and-adl) for the general liquidation and ADL mechanisms.
 
@@ -26,60 +89,102 @@ All Perp Anything markets are **Isolated Margin only**. A position cannot use co
 
 See [Isolated Margin](/introduction/trade-on-orderly/perpetual-futures/isolated-margin) for margin behavior and [Isolated Margin Integration](/build-on-omnichain/user-flows/isolated-margin) for implementation steps.
 
-## Launch sequence
+## Lifecycle thresholds
 
-New markets follow a phased launch:
+New markets do not open for full trading immediately. They move through status transitions as listing, liquidity, and risk conditions change. These controls apply only to the affected market and do not change standard Orderly markets or markets assigned to a different IF account.
 
-1. **POST_ONLY** — The market accepts limit orders only, giving Market Makers time to build liquidity on both sides of the order book.
-2. **ACTIVE** — The market opens for full trading, including market orders, after bid-side and ask-side order book depth within ±2% are each at least **$25,000** for **10 consecutive minutes**.
+Threshold amounts and the depth hold window are defined once in [Network parameters](#network-parameters).
 
-If conditions deteriorate after launch, Orderly can move the market into **REDUCE_ONLY**, where only position-closing orders are allowed. A market that cannot recover can then move through **DELISTING** to **DELISTED**. Triggers include insufficient depth, low Insurance Fund coverage, funding-rate anomalies, and unavailable price sources.
+### Status matrix
 
-These controls apply to the affected market and do not change the state of standard Orderly markets or markets assigned to a different IF account.
+| Status        | What trading allows                        | How the market gets here / moves on                                                                 | Counts toward IF Requirement | Counts toward 5-market cap |
+| ------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------- | ---------------------------- | -------------------------- |
+| `NEW`         | Pre-launch setup                           | Listing created; moves toward launch as configuration completes                                     | Yes                          | Yes                        |
+| `PENDING`     | Pre-launch setup                           | Intermediate pre-launch state before the market accepts orders                                      | Yes                          | Yes                        |
+| `POST_ONLY`   | **Limit orders only** (liquidity build-up) | Market is open for makers to quote both sides before full trading                                   | Yes                          | Yes                        |
+| `ACTIVE`      | **Full trading**, including market orders  | After the [launch gate](#launch-gate) passes                                                        | Yes                          | Yes                        |
+| `REDUCE_ONLY` | **Close-only** (reduce positions)          | Orderly can move the market here if conditions deteriorate (see [After launch](#after-launch))      | Yes                          | Yes                        |
+| `DELISTING`   | Restricted; market is being wound down     | Market may enter delisting if it cannot recover from restricted conditions                          | No                           | **No**                     |
+| `DELISTED`    | Terminal; market is closed                 | End state after delisting completes                                                                 | No                           | **No**                     |
 
-The full lifecycle uses `NEW`, `PENDING`, `POST_ONLY`, `ACTIVE`, `REDUCE_ONLY`, `DELISTING`, and `DELISTED`. `NEW` through `REDUCE_ONLY` count as effective states for Insurance Fund requirements.
+### Launch gate
 
-## Builder readiness
+The market stays in `POST_ONLY` (limit orders only) until liquidity is proven continuous—not just present for a moment.
 
-Perp Anything is available to all Builders. Each Builder can have up to **5 active markets** by default, adjustable by Orderly.
+To open full trading:
 
-Before launch:
+1. Bid depth within ±2% **and** ask depth within ±2% are each **≥ Depth Warning** for the network.
+2. Both sides hold that condition for the full **depth hold window** without interruption.
+3. When the window completes, the market **can** move to `ACTIVE` (including market orders).
 
-- Confirm Builder Admin access.
-- Assign each effective listed symbol, including the new symbol, to exactly one funded IF account.
-- Select at least one valid Index Price source; two or more are recommended.
-- Configure trading parameters within Orderly's supported constraints.
-- Prepare market-making coverage for the activation depth requirement.
-- Bind Telegram alerts so the operating team can respond to Insurance Fund, liquidity, funding, and source-health warnings.
+If either side breaks **below** Depth Warning during the window, the timer resets. Step-by-step behavior and examples are under **Depth hold window** in [Network parameters](#network-parameters).
 
-For Builder-controlled price sources, see [Builder Oracle](/build-on-omnichain/user-flows/builder-oracle). For trading-session requirements, see [RWA Markets](/build-on-omnichain/perp-anything/rwa-markets).
+### After launch
+
+After launch, Orderly continues to monitor depth against **Depth Warning** (soft / alert when depth is **below** this level) and **Depth Limit** (hard floor that can trigger restriction such as `REDUCE_ONLY`). See the definitions under [Network parameters](#network-parameters).
+
+If conditions deteriorate, Orderly can move the market into **`REDUCE_ONLY`**, where only position-closing orders are allowed. A symbol in `REDUCE_ONLY` still counts toward the IF Requirement and the 5-market cap; you may need to restore IF balance and liquidity before the market can recover. A market that cannot recover may then move through **`DELISTING`** to **`DELISTED`**.
+
+Other restriction and delisting triggers include:
+
+- Insurance Fund not above requirement on the assigned IF account;
+- funding-rate anomalies;
+- unavailable price sources.
 
 ## Monitor the market
 
 Builders receive real-time Telegram notifications throughout the market lifecycle, including launch status updates and alerts for:
 
 - Insurance Fund balance;
-- order book depth;
+- order book depth (Depth Warning and Depth Limit);
 - funding-rate conditions;
 - price-source health;
 - market restrictions and delisting.
 
 Respond to the underlying condition instead of assuming that a status change is temporary. Continue monitoring existing positions and market status, and handle orders according to the active restriction.
 
-## Fee share and settlement cadence
+## Fee share
 
-Builders receive a share of trading fees generated by their Perp Anything markets. The default fee share is **50% of Orderly base fees**, may be adjusted by Orderly for individual Builders, and is settled once per day to the Builder's DEX Admin account.
+Builders who operate a Perp Anything market receive a share of **Orderly base taker fees** generated on that market. The default share is the same on **Mainnet and Testnet** (see [Network parameters](#network-parameters)).
+
+| Item                     | Rule                                                                            |
+| ------------------------ | ------------------------------------------------------------------------------- |
+| **Default share**        | **50%** of Orderly **base taker fees** on the market                            |
+| **Networks**             | Same **50%** default on Mainnet and Testnet                                     |
+| **What is included**     | Base **taker** fees only                                                        |
+| **What is not included** | Maker fees, liquidation fees, funding payments, or other non-base-taker charges |
+| **Adjustments**          | Orderly may set a different share for an individual Builder                     |
+| **Settlement**           | Once per day to the Builder's **DEX Admin** account                             |
+
+Base taker fee rates follow the Builder's tier in the [Builder Staking programme](/introduction/trade-on-orderly/trading-basics/trading-fees#builder-staking-programme). The fee share is a percentage of that base taker fee collected on Perp Anything market volume. Check current tier rates on the Trading fees page — the example below is not a live rate quote.
+
+### Illustrative example
+
+Assume a Public-tier base taker fee of **3.00 bps** and a taker trade of **$1,000,000** notional on a Perp Anything market (illustrative only; use current tier rates from [Trading fees](/introduction/trade-on-orderly/trading-basics/trading-fees)):
+
+| Item                        | Calculation           | Amount   |
+| --------------------------- | --------------------- | -------- |
+| Orderly base taker fee      | 3.00 bps × $1,000,000 | $300     |
+| Builder fee share (50%)     | 50% × $300            | **$150** |
+| Orderly retains (remainder) | 50% × $300            | $150     |
+
+Maker fills on the same market do **not** generate this fee share under the current rule.
 
 <Info>
   Fee-share settlement is processed once per day. Liquidation and other risk controls are evaluated
   independently and can execute whenever their trigger conditions are met.
 </Info>
 
+### Reconciliation API
+
 Use [GET `/v1/broker/daily_fee_revenue`](/build-on-omnichain/restful-api/private/get-builders-daily-revenue-settlement-history) to reconcile daily Builder revenue settlement records.
+
+The Perp Anything share appears as `permissionless_listing_fee_share` in the API response. That field is the listing fee share for Perp Anything markets.
 
 ## Related pages
 
 - [Introduction](/build-on-omnichain/perp-anything/introduction)
+- [Trading fees](/introduction/trade-on-orderly/trading-basics/trading-fees) — base fee tiers
 - [Builder Oracle](/build-on-omnichain/user-flows/builder-oracle)
 - [RWA Markets](/build-on-omnichain/perp-anything/rwa-markets)
 - [Pre-TGE Listing](/build-on-omnichain/perp-anything/pre-tge-listing)

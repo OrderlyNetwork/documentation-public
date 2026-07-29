@@ -19,8 +19,11 @@ There are two ways to list markets on Orderly. Standard Listing is built for pla
 | **Insurance Fund**  | Shared across the platform        | Multiple IF accounts per Builder; one assigned to each symbol |
 | **Listing process** | Evaluated and approved by Orderly | Self-serve after setup                                        |
 | **Risk parameters** | Standardized and conservative     | Configurable by the Builder within supported constraints      |
+| **Listing fee share** | —                               | Default **50% of Orderly base taker fees** (taker only)       |
 
 Standard Listing is well suited to established assets. Perp Anything provides a faster path for long-tail assets, community-specific demand, and markets that need Builder-controlled price sources or trading sessions.
+
+Builders who operate a Perp Anything market earn a default **50% share of Orderly base taker fees** generated on that market, settled daily (same default on Mainnet and Testnet). Maker fees, liquidation fees, and funding are not part of this share. Insurance Fund and depth thresholds **differ by network** — full parameters, settlement, and lifecycle gates are in [Market Operations](/build-on-omnichain/perp-anything/market-operations#network-parameters).
 
 ## How responsibility is separated
 
@@ -40,7 +43,7 @@ See [Market Operations](/build-on-omnichain/perp-anything/market-operations) for
 
 Multiple Builders can list the same underlying asset independently. A standard Orderly market and Builder-operated markets for the same asset have separate symbols, order books, liquidity, Insurance Funds, and risk parameters.
 
-When a supported trading interface displays a Community Listed market, it shows the symbol and the Builder's name, such as `BTC woofi`, so traders can see who operates it.
+When a supported trading interface displays a Community Listed market, it shows the symbol and the Builder's name (for example `BTC woofi`) so traders can see who operates it.
 
 ## What traders see
 
@@ -74,7 +77,7 @@ For the underlying mechanisms, see [Isolated Margin](/introduction/trade-on-orde
 
 ## Continue with Perp Anything
 
-- [Market Operations](/build-on-omnichain/perp-anything/market-operations) — Prepare, launch, monitor, and operate a market.
+- [Market Operations](/build-on-omnichain/perp-anything/market-operations) — Fee share, Insurance Fund, launch thresholds, lifecycle statuses, and monitoring.
 - [Builder Oracle](/build-on-omnichain/user-flows/builder-oracle) — Configure Builder-controlled price sources and integrate them into a listing.
 - [RWA Markets](/build-on-omnichain/perp-anything/rwa-markets) — Configure supported real-world asset markets and trading sessions.
 - [Pre-TGE Listing](/build-on-omnichain/perp-anything/pre-tge-listing) — Open price discovery before a token's TGE.
