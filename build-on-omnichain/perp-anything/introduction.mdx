@@ -1,0 +1,83 @@
+---
+title: "Introduction"
+description: "Understand how Perp Anything lets Builders launch and operate perpetual markets within Orderly's supported risk controls."
+---
+
+Perp Anything moves the listing decision closer to Builders without moving the risk onto the whole platform. Builders can launch perpetual markets on their own timeline within Orderly's supported asset, price-source, and risk-control rules.
+
+The operating model is simple: **Orderly provides the market infrastructure and automated guardrails; the Builder operates the market; traders see it as Community Listed and decide whether to trade it.**
+
+> Disclaimer: A Perp Anything market is created and operated by a Builder, not by Orderly. Orderly does not vet, operate, or backstop these markets.
+
+## Standard Listing vs. Perp Anything
+
+There are two ways to list markets on Orderly. Standard Listing is built for platform-wide stability, while Perp Anything is built for Builder-level autonomy.
+
+| Feature             | Standard Listing                  | Perp Anything                                                 |
+| :------------------ | :-------------------------------- | :------------------------------------------------------------ |
+| **Who manages it**  | Orderly                           | Individual Builder                                            |
+| **Insurance Fund**  | Shared across the platform        | Multiple IF accounts per Builder; one assigned to each symbol |
+| **Listing process** | Evaluated and approved by Orderly | Self-serve after setup                                        |
+| **Risk parameters** | Standardized and conservative     | Configurable by the Builder within supported constraints      |
+| **Listing fee share** | —                               | Default **50% of Orderly base taker fees** (taker only)       |
+
+Standard Listing is well suited to established assets. Perp Anything provides a faster path for long-tail assets, community-specific demand, and markets that need Builder-controlled price sources or trading sessions.
+
+Builders who operate a Perp Anything market earn a default **50% share of Orderly base taker fees** generated on that market, settled daily (same default on Mainnet and Testnet). Maker fees, liquidation fees, and funding are not part of this share. Insurance Fund and depth thresholds **differ by network** — full parameters, settlement, and lifecycle gates are in [Market Operations](/build-on-omnichain/perp-anything/market-operations#network-parameters).
+
+## How responsibility is separated
+
+Perp Anything is not an unrestricted listing lane. It is a self-service model with clear ownership, isolated risk, automated checks, and trader-facing disclosure.
+
+| Design choice               | Responsibility boundary                                                                                                                           |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Builder-operated market** | The Builder chooses the market, price sources, trading parameters, launch timing, and liquidity setup.                                            |
+| **Orderly infrastructure**  | Orderly provides matching, liquidation, settlement, parameter constraints, status transitions, and monitoring.                                    |
+| **Isolated risk**           | Builder-level Insurance Fund accounts, isolated-margin trading, separate order books, and market-scoped ADL limit the effect of a market failure. |
+| **Automated lifecycle**     | Markets can move through launch, active, restricted, and delisting states as operating conditions change.                                         |
+| **Trader transparency**     | Community Listed markets identify the operating Builder and display a risk disclosure before the first trade.                                     |
+
+See [Market Operations](/build-on-omnichain/perp-anything/market-operations) for Insurance Fund, liquidity, launch, monitoring, and lifecycle requirements.
+
+### Independent markets per Builder
+
+Multiple Builders can list the same underlying asset independently. A standard Orderly market and Builder-operated markets for the same asset have separate symbols, order books, liquidity, Insurance Funds, and risk parameters.
+
+When a supported trading interface displays a Community Listed market, it shows the symbol and the Builder's name (for example `BTC woofi`) so traders can see who operates it.
+
+## What traders see
+
+Markets listed via Perp Anything appear as **Community Listed** when shown on a frontend. They use the same Orderly matching, order, and settlement infrastructure as standard markets, but have different ownership and risk boundaries.
+
+Builder-operated frontends can choose whether to show Community Listed markets, show all of them, or show only selected Builders' markets. Existing positions, orders, and trade history remain accessible even if a market is not shown in the market picker.
+
+|                                    | Standard Orderly markets               | Community Listed markets                                                        |
+| ---------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------- |
+| **Who operates it**                | Orderly                                | Individual Builder                                                              |
+| **Insurance Fund**                 | Shared platform IF, managed by Orderly | One Builder-managed IF assigned per market; one IF may support multiple markets |
+| **Margin mode**                    | Cross Margin and Isolated Margin       | **Isolated Margin only**                                                        |
+| **What happens if IF is depleted** | Platform backstop                      | ADL applied only to positions in that market                                    |
+| **Liquidity**                      | Platform-coordinated                   | Depends on the Builder's market-making                                          |
+| **Risk controls**                  | Platform-wide standards                | Market-specific and independently enforceable                                   |
+
+In practice:
+
+- Orderly is not responsible for the performance, liquidity, or risk management of Perp Anything markets.
+- Risk is isolated by assigned IF account. Markets that share an IF account share its available coverage; markets assigned to a different IF account are not affected.
+- Community Listed liquidity depends on the Builder's market-making setup, so spreads and depth can differ from standard markets.
+- Markets can be restricted or delisted if liquidity, funding, source health, or Insurance Fund conditions deteriorate.
+- A risk disclosure is shown before a trader's first trade in a Community Listed market.
+
+For the underlying mechanisms, see [Isolated Margin](/introduction/trade-on-orderly/perpetual-futures/isolated-margin) and [Insurance Fund and ADL](/introduction/trade-on-orderly/perpetual-futures/insurance-fund-and-adl).
+
+## Related capabilities
+
+- [Permissionless Vault](/introduction/trade-on-orderly/permissionless-vault) lets external Strategy Providers deploy and manage Strategy Vaults without manual onboarding.
+- The planned **Public MM Program** is intended to open market-making participation beyond Builder-managed MM accounts for Community Listed markets.
+
+## Continue with Perp Anything
+
+- [Market Operations](/build-on-omnichain/perp-anything/market-operations) — Fee share, Insurance Fund, launch thresholds, lifecycle statuses, and monitoring.
+- [Builder Oracle](/build-on-omnichain/user-flows/builder-oracle) — Configure Builder-controlled price sources and integrate them into a listing.
+- [RWA Markets](/build-on-omnichain/perp-anything/rwa-markets) — Configure supported real-world asset markets and trading sessions.
+- [Pre-TGE Listing](/build-on-omnichain/perp-anything/pre-tge-listing) — Open price discovery before a token's TGE.
