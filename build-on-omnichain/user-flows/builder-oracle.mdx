@@ -18,14 +18,32 @@ Both modes can be combined with CEX feeds and platform oracle sources. Each sele
 
 When configuring a Perp Anything market, Builders can select from multiple Index Price source types:
 
-| Source type                      | Description                                                                                                        |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| CEX                              | Centralized exchange price feeds supported by Orderly.                                                             |
-| Platform oracle                  | Orderly-supported oracle sources such as Pyth and Stork.                                                           |
-| Builder Oracle                   | A Builder-controlled Index Price feed published to Orderly.                                                        |
-| Bring Your Own Key (BYOK) Oracle | A Builder-owned oracle connection using the Builder's own provider credentials, such as Pyth or Stork credentials. |
+| Source type | Description | Supported providers / sources |
+| :--- | :--- | :--- |
+| **CEX** | Centralized exchange price feeds supported by Orderly. | Binance, OKX, Bybit, Gate.io, KuCoin, Coinbase, MEXC, Bitget, BingX, Hyperliquid, LBank |
+| **Platform oracle** | Orderly-supported oracle sources. | Pyth, Stork |
+| **Builder Oracle** | A Builder-controlled Index Price feed published to Orderly over WebSocket. | Custom feeds (`ORACLE_<broker_id>`) |
+| **Bring Your Own Key (BYOK)** | A Builder-owned oracle connection using the Builder's provider credentials. | Pyth (`PYTH_<broker_id>`), Stork (`STORK_<broker_id>`) |
 
 Selected sources are submitted with weights. The weights must be positive integers and sum to `100`.
+
+### Supported CEX sources
+
+Orderly supports price feeds from 11 centralized exchanges:
+
+| Exchange | Source Identifier |
+| :--- | :--- |
+| Binance | `BINANCE` |
+| OKX | `OKX` |
+| Bybit | `BYBIT` |
+| Gate.io | `GATEIO` |
+| KuCoin | `KUCOIN` |
+| Coinbase | `COINBASE` |
+| MEXC | `MEXC` |
+| Bitget | `BITGET` |
+| BingX | `BINGX` |
+| Hyperliquid | `HYPERLIQUID` |
+| LBank | `LBANK` |
 
 ## Builder-pushed feeds
 
