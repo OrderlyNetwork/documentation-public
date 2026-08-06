@@ -3,7 +3,7 @@ title: "Pre-TGE Listing"
 description: "Learn how Builders can list a perpetual market on a token before its TGE, using a synthetic Pre-TGE Oracle price and tightened risk caps."
 ---
 
-Pre-TGE Listing extends [Perp Anything](/build-on-omnichain/perp-anything/introduction) to tokens that have not launched yet -- no spot market, no external venue, and no price feed to aggregate. The standard flow requires at least one CEX or oracle source, which a pre-launch token cannot provide. Pre-TGE Listing opens a separate entry path with a synthetic price source and tightened risk caps, so a Builder can open price discovery before the token's formal TGE.
+Pre-TGE Listing extends [Perp Anything](/build-on-omnichain/perp-anything/introduction) to tokens that have not launched yet -- no spot market, no external venue, and no price feed to aggregate. The standard flow requires at least one exchange (CEX/DEX) or oracle source, which a pre-launch token cannot provide. Pre-TGE Listing opens a separate entry path with a synthetic price source and tightened risk caps, so a Builder can open price discovery before the token's formal TGE.
 
 > Disclaimer: A Pre-TGE market is created and operated by a Builder, not by Orderly. Pre-launch tokens carry elevated risk; Orderly does not vet, operate, or backstop these markets.
 
@@ -17,7 +17,7 @@ Pre-TGE Listing reuses the Perp Anything pipeline, with three additions: a dedic
 
 ### Creating the listing
 
-In the listing wizard, the Builder selects **Pre-TGE Token** on the "What are you listing?" step, alongside Crypto and RWA. Before this, the Builder aligns with Orderly offline on the token ticker and a reference initial price (from FDV, OTC quotes, or a comparable launch). Orderly then sets up the Pre-TGE Oracle for that token, which the Builder selects as the market's price source.
+In the [Perp Anything listing wizard in Orderly One](https://dex.orderly.network/permissionless-listing), the Builder selects **Pre-TGE Token** on the "What are you listing?" step, alongside Crypto and RWA. Before this, the Builder aligns with Orderly offline on the token ticker and a reference initial price (from FDV, OTC quotes, or a comparable launch). Orderly then sets up the Pre-TGE Oracle for that token, which the Builder selects as the market's price source.
 
 ### Pre-TGE Oracle price
 
@@ -64,7 +64,7 @@ Funding rate is still calculated and displayed so traders can read market supply
 
 When the token launches and external venues start quoting it, the Builder transitions the market to a regular Community Listed market via Edit Listing:
 
-1. Add external sources (CEX / oracle / BYOK) and adjust weights. See [Builder Oracle](/build-on-omnichain/user-flows/builder-oracle) for Builder-controlled sources.
+1. Add external sources (CEX / DEX / oracle / BYOK) and adjust weights. See [Builder Oracle](/build-on-omnichain/user-flows/builder-oracle) for Builder-controlled sources.
 2. Click **End Pre-TGE Phase** at the bottom of Step 2 and type the symbol name to confirm.
 3. Submit.
 

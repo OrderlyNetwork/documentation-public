@@ -3,7 +3,7 @@ title: "Builder Oracle"
 description: "Create and operate Builder-pushed or Bring Your Own Key price sources, then use them in Perp Anything markets."
 ---
 
-Builder Oracle lets Builders bring their own Index Price sources into [Perp Anything](/build-on-omnichain/perp-anything/introduction). Use it when a market needs pricing beyond Orderly's standard CEX feeds and platform oracle sources.
+Builder Oracle lets Builders bring their own Index Price sources into [Perp Anything](/build-on-omnichain/perp-anything/introduction). Use it when a market needs pricing beyond Orderly's standard exchange feeds (CEX/DEX) and platform oracle sources.
 
 This guide covers two Builder-controlled modes:
 
@@ -12,7 +12,7 @@ This guide covers two Builder-controlled modes:
 | **Builder-pushed feed**              | Builders with their own pricing model, index service, or aggregation backend.        | The Builder publishes prices to Orderly over WebSocket.                                |
 | **Bring Your Own Key (BYOK) Oracle** | Builders that use their own account with a supported provider such as Pyth or Stork. | Orderly uses the Builder's provider credentials to retrieve prices from that provider. |
 
-Both modes can be combined with CEX feeds and platform oracle sources. Each selected source receives a weight in the market's Index Price configuration.
+Both modes can be combined with exchange feeds (CEX/DEX) and platform oracle sources. Each selected source receives a weight in the market's Index Price configuration.
 
 ## Source types and selection
 
@@ -20,30 +20,32 @@ When configuring a Perp Anything market, Builders can select from multiple Index
 
 | Source type | Description | Supported providers / sources |
 | :--- | :--- | :--- |
-| **CEX** | Centralized exchange price feeds supported by Orderly. | Binance, OKX, Bybit, Gate.io, KuCoin, Coinbase, MEXC, Bitget, BingX, Hyperliquid, LBank |
+| **CEX** | Centralized exchange price feeds supported by Orderly. | Binance, Binance Futures, OKX, Bybit, Gate.io, KuCoin, Coinbase, MEXC, Bitget, BingX, LBank |
+| **DEX** | Decentralized exchange price feeds supported by Orderly. | Hyperliquid |
 | **Platform oracle** | Orderly-supported oracle sources. | Pyth, Stork |
 | **Builder Oracle** | A Builder-controlled Index Price feed published to Orderly over WebSocket. | Custom feeds (`ORACLE_<broker_id>`) |
 | **Bring Your Own Key (BYOK)** | A Builder-owned oracle connection using the Builder's provider credentials. | Pyth (`PYTH_<broker_id>`), Stork (`STORK_<broker_id>`) |
 
 Selected sources are submitted with weights. The weights must be positive integers and sum to `100`.
 
-### Supported CEX sources
+### Supported exchange sources
 
-Orderly supports price feeds from 11 centralized exchanges:
+Orderly supports price feeds from centralized (CEX) and decentralized (DEX) exchanges:
 
-| Exchange | Source Identifier |
-| :--- | :--- |
-| Binance | `BINANCE` |
-| OKX | `OKX` |
-| Bybit | `BYBIT` |
-| Gate.io | `GATEIO` |
-| KuCoin | `KUCOIN` |
-| Coinbase | `COINBASE` |
-| MEXC | `MEXC` |
-| Bitget | `BITGET` |
-| BingX | `BINGX` |
-| Hyperliquid | `HYPERLIQUID` |
-| LBank | `LBANK` |
+| Exchange | Type | Source Identifier |
+| :--- | :--- | :--- |
+| Binance | CEX | `BINANCE` |
+| Binance Futures | CEX | `BINANCE_FUTURES` |
+| OKX | CEX | `OKX` |
+| Bybit | CEX | `BYBIT` |
+| Gate.io | CEX | `GATEIO` |
+| KuCoin | CEX | `KUCOIN` |
+| Coinbase | CEX | `COINBASE` |
+| MEXC | CEX | `MEXC` |
+| Bitget | CEX | `BITGET` |
+| BingX | CEX | `BINGX` |
+| LBank | CEX | `LBANK` |
+| Hyperliquid | DEX | `HYPERLIQUID` |
 
 ## Builder-pushed feeds
 
@@ -150,7 +152,7 @@ The Builder must:
   </Step>
 
   <Step title="Fetch available price sources">
-    Call `GET /v1/broker/listing/index_sources` to retrieve the available source list. The response can include CEX, platform oracle, Builder Oracle, and BYOK Oracle sources.
+    Call `GET /v1/broker/listing/index_sources` to retrieve the available source list. The response can include CEX, DEX, platform oracle, Builder Oracle, and BYOK Oracle sources.
 
     To fetch runtime price and health details for Builder Oracle and BYOK sources, call:
 
