@@ -10,7 +10,7 @@ Orderly adds a brand new affiliate programme that allows DEXs and their affiliat
 The core model is a funneled and multilevel referral system:
 
 - Builders work with their direct affiliates to grow their trading platform, with attractive referral commissions for the direct affiliates to build their own multilevel referral networks.
-- Affiliates higher up the hierarchy can set higher commission sharing ratios and pass a portion of their commissions down to referees, subject to the builder-set minimum pass-down rate.
+- Affiliates can pass a portion of their available commission down to referees, subject to the builder-set minimum pass-down rate and their own assigned rate.
 
 ## 2. Prerequisites
 
@@ -22,12 +22,12 @@ In some cases, a trading volume requirement may be necessary. If a volume prereq
 
 The key differences between the legacy and new affiliate programs are summarized below:
 
-| Details                      | Legacy                                                                                                            | New                                                                                                                                                                                                     |
-| ---------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Referral network**         | **Single-level**, only direct referrals                                                                           | **Multilevel** (up to 15 levels), direct and indirect referrals                                                                                                                                         |
-| **Referral commission**      | Affiliates earn commissions from **direct referees only**                                                         | Affiliates earn commissions from both **direct and indirect referees** down the referral chain, with a direct-referral earnings guarantee when the builder-set minimum pass-down rate is greater than 0 |
-| **Commission configuration** | Single-level commission up to 100%, decided by builder                                                            | Builder assigns affiliates a total commission rate and may configure a minimum pass-down rate for direct-referral earnings.                                                                             |
-| **Referral code creation**   | Created primarily by the builder or qualified affiliates upon meeting the applicable trading volume requirements. | Qualified affiliates can create codes after meeting the required trading volume (where applicable). Affiliates may only create one unique referral code.                                                |
+| Details                      | Legacy                                                                                                            | New                                                                                                                                                     |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Referral network**         | **Single-level**, only direct referrals                                                                           | **Multilevel** (up to 15 levels), direct and indirect referrals                                                                                         |
+| **Referral commission**      | Affiliates earn commissions from **direct referees only**                                                         | Affiliates earn commissions from both **direct and indirect referees** down the referral chain. The DEX selects how the commission basis is calculated. |
+| **Commission configuration** | Single-level commission up to 100%, decided by builder                                                            | Builder assigns affiliates a total commission rate and may configure a minimum pass-down rate for direct-referral earnings.                             |
+| **Referral code creation**   | Created primarily by the builder or qualified affiliates upon meeting the applicable trading volume requirements. | Qualified affiliates can create one active referral code after meeting the required trading volume (where applicable) and may change that code later.   |
 
 ## 4. Coexistence of legacy affiliate program
 
@@ -39,21 +39,19 @@ If you are already an existing affiliate, please check with your respective DEX 
 
 DEXs assign a total commission rate to each $L_1$ affiliate. This assigned rate already includes all commission available to that affiliate and their downstream referral chain. These $L_1$ affiliates are the initial referrers who establish a multilevel network and do not report to any referrer above them.
 
-The builder or broker may also set a minimum pass-down rate. If this minimum is greater than 0, each affiliate is guaranteed to receive a commission share from trades executed by their direct referrals, and downstream assigned rates cannot be lower than that minimum.
+The builder may also set a minimum pass-down rate. If this minimum is greater than 0, each affiliate is guaranteed to receive a commission share from trades executed by their direct referrals, and downstream assigned rates cannot be lower than that minimum.
 
 ### 5.1 Affiliate commission
 
-Affiliates receive their referral commissions from the builder fees shared by DEXs. This commission is paid out for every trade executed on the DEX.
+Affiliates receive referral commissions for trades executed through their referral network. The DEX selects the basis used to calculate those commissions.
 
-$$
-\text{Fee}_\text{Builder} = \text{TradingFee}_N - \text{BaseFee}_\text{Builder}
-$$
+In this guide, **trading fee** means the fee eligible for the affiliate program. It does not include additional commissions or fees charged by other builders when traders use their modules or services.
 
-where $\text{BaseFee}_\text{Builder}$ depends on the builder fee tier of the DEX.
+The DEX may use either the trading fee, with a fallback to builder revenue when the requested commission would exceed available builder revenue, or builder revenue for every trade. This means the commission basis can vary by trade. Affiliates do not select this mode; check with your DEX if you need to confirm which calculation applies. An accepted mode change takes effect at **00:00 UTC on the next calendar day**. Trades before that time use the previous mode, trades at or after that time use the new mode, and settled historical commissions are not recalculated.
 
 $L_1$ affiliates may distribute a portion of their commission to their direct referees ($L_2$). This process can be extended further, as $L_2$ affiliates can further sub-divide their allocation to their direct referees ($L_3$), establishing a multilevel structure. This multilevel referral network can extend up to a total of 15 levels.
 
-Let $X_i$ be the assigned commission rate at level $i$. $X_1$ is the rate assigned by the DEX to the $L_1$ affiliate. Each downstream assigned rate must be no higher than the upstream assigned rate. If the builder or broker configured a minimum pass-down rate $P$ greater than 0, each downstream assigned rate must also be at least $P$, for example $X_2 \in [P, X_1]$. If $P = 0$, there is no minimum earnings guarantee.
+Let $X_i$ be the assigned commission rate at level $i$. $X_1$ is the rate assigned by the DEX to the $L_1$ affiliate. Each downstream assigned rate must be no higher than the upstream assigned rate. If the builder configured a minimum pass-down rate $P$ greater than 0, each downstream assigned rate must also be at least $P$, for example $X_2 \in [P, X_1]$. If $P = 0$, there is no minimum earnings guarantee. Each rate is applied to the commission basis selected for that trade.
 
 DEXs may assign different total commission rates to strategic affiliates based on their growth strategy. Your available commission range depends on the assigned rate passed down from the referrer above you.
 
@@ -64,26 +62,26 @@ Affiliates can earn two types of commission:
 
 For every trade executed by a user $(L_N)$ on the DEX, the table below shows indirect commission for upstream affiliates and direct commission for the trader's direct referrer:
 
-| Role                                 | Affiliate commission rate                             | Affiliate commission                                                                   |
-| ------------------------------------ | ----------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| **$L_1$ affiliate**                  | $X_1 - X_2$ where $X_2$ is within the allowed range   | $(X_1 - X_2) \times \text{Fee}_\text{Builder}$                                         |
-| **$L_2$ affiliate**                  | $X_2 - X_3$ where $X_3$ is within the allowed range   | $(X_2 - X_3) \times \text{Fee}_\text{Builder}$                                         |
-| **$L_3$ affiliate**                  | $X_3 - X_4$ where $X_4$ is within the allowed range   | $(X_3 - X_4) \times \text{Fee}_\text{Builder}$                                         |
-| **…**                                | …                                                     | …                                                                                      |
-| **$L_{N-1}$ user (direct referrer)** | $X_{N-1}$ where $X_{N-1}$ is within the allowed range | $X_{N-1} \times \text{Fee}_\text{Builder}$ — Direct referrer earns their assigned rate |
+| Role                                 | Affiliate commission rate                             | Affiliate commission                                                                 |
+| ------------------------------------ | ----------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| **$L_1$ affiliate**                  | $X_1 - X_2$ where $X_2$ is within the allowed range   | $(X_1 - X_2) \times \text{Commission basis}$                                         |
+| **$L_2$ affiliate**                  | $X_2 - X_3$ where $X_3$ is within the allowed range   | $(X_2 - X_3) \times \text{Commission basis}$                                         |
+| **$L_3$ affiliate**                  | $X_3 - X_4$ where $X_4$ is within the allowed range   | $(X_3 - X_4) \times \text{Commission basis}$                                         |
+| **…**                                | …                                                     | …                                                                                    |
+| **$L_{N-1}$ user (direct referrer)** | $X_{N-1}$ where $X_{N-1}$ is within the allowed range | $X_{N-1} \times \text{Commission basis}$ — Direct referrer earns their assigned rate |
 
 > Note: If the builder-set minimum pass-down rate is greater than 0, direct referrers earn at least that minimum rate from trades executed by their direct referrals.
 
 #### Example: 3-Level Referral Network
 
-Consider a trade where Builder revenue for a given trade = $100, with the following commission rates:
+Consider a trade where the commission basis is $100, with the following commission rates:
 
 - Minimum pass-down rate $P = 10\%$ (configured by the DEX)
 - $X_1 = 50\%$ ($L_1$ assigned rate)
 - $X_2 = 35\%$ ($L_2$ assigned rate set by $L_1$, where $X_2 \in [P, X_1]$)
 - $X_3 = 25\%$ ($L_3$ assigned rate set by $L_2$, where $X_3 \in [P, X_2]$)
 
-**Commission distribution for $100 Builder revenue:**
+**Commission distribution for a $100 commission basis:**
 
 | Role                              | Calculation                | Commission |
 | --------------------------------- | -------------------------- | ---------- |
@@ -92,7 +90,7 @@ Consider a trade where Builder revenue for a given trade = $100, with the follow
 | $L_3$ affiliate (direct referrer) | $25\% \times 100$          | **$25**    |
 | **Total distributed**             |                            | **$50**    |
 
-In this example, when $L_4$ (the trader) executes a trade, $L_3$ earns their assigned rate of $X_3 = 25\%$. Since the minimum pass-down rate is $10\%$, $L_3$ is guaranteed to earn at least $10\%$ from direct-referral trades. The total distributed rate is $50\%$. The $L_4$ trader does not earn commission from their own trade.
+These amounts are gross affiliate commissions before any trading fee discount. In this example, when $L_4$ (the trader) executes a trade, $L_3$ earns a gross commission of $25, based on their assigned rate of $X_3 = 25\%$. Since the minimum pass-down rate is $10\%$, $L_3$ is guaranteed a gross commission rate of at least $10\%$ from direct-referral trades. The total distributed rate is $50\%$. The $L_4$ trader does not earn affiliate commission from their own trade, but may receive a trading fee discount funded from $L_3$'s gross direct commission.
 
 ### 5.2 Referee's commission rate adjustments
 
@@ -144,3 +142,21 @@ The decrease is 30%. $L_2$ can absorb 20%, so the remaining 10% is deducted from
 | You             | 90%                 | 60% indirect commission |
 | $L_2$ affiliate | 30%                 | 0% indirect commission  |
 | $L_3$ affiliate | 30%                 | 30% direct commission   |
+
+## 6. Manage your referrals
+
+### 6.1 Share commission with direct referees
+
+You can share a percentage of the gross commission you earn from a direct referee's trades with that trader. The trader receives the shared amount as a trading fee discount. This discount percentage is separate from the commission rate assigned to you or passed down through your referral network.
+
+The discount is your gross direct commission multiplied by the discount percentage. Your net payout is the gross direct commission minus that discount. Any minimum pass-down rate applies before the discount is deducted. The discount does not increase the total commission funded by the DEX. It applies only to your direct referees, not to traders referred further down your network. You can set a default discount rate and customize it for individual direct referees. Changes apply to future commission calculations and do not recalculate settled history.
+
+### 6.2 Add private notes to direct referees
+
+You can add a private note to each direct referee to record context such as a campaign, community, or account owner. Only you can see these notes; they are not shown to the referee or to affiliates elsewhere in the network.
+
+Notes are available only for direct referees. Adding, changing, or clearing a note does not affect commission rates, referral bindings, or reporting history.
+
+### 6.3 Change your referral code
+
+You can change your referral code without changing existing referral relationships. Users who are already bound to your code remain attributed to you, and your historical commission and referral reporting is preserved.
