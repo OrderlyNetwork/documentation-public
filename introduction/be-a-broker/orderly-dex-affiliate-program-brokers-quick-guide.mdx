@@ -53,7 +53,7 @@ Builders can choose one of two calculation modes:
 | **Trading fee with builder revenue fallback** | Uses the trading fee as the commission basis. If the resulting total referral commission would exceed builder revenue for that trade, the entire calculation uses builder revenue instead. |
 | **Builder revenue**                           | Always uses builder revenue as the commission basis. This preserves the previous calculation behavior.                                                                                     |
 
-The selected mode applies to all trades under the builder. Existing builders are not automatically moved to a different mode. When an authorized mode change is accepted, it takes effect at **00:00 UTC on the next calendar day**. Trades before that time use the previous mode, and settled historical commissions are not recalculated.
+The basis mode is **Builder revenue** by default. Builders are not automatically moved to the trading fee mode. To request a mode change, contact Orderly for assistance. Once Orderly processes the request, the new mode takes effect at **00:00 UTC on the next calendar day**. Trades before that time use the previous mode, and settled historical commissions are not recalculated.
 
 For example, suppose the trading fee is $90, builder revenue is $50, and the total referral commission rate is 30%. The requested commission is $27, so the trading fee can be used as the basis. At an 80% total rate, the requested commission would be $72, which exceeds builder revenue; the calculation therefore uses $50 as the basis instead.
 
