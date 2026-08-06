@@ -17755,6 +17755,13 @@ components:
                   type: number
                   description: Preferred response field for the base rebate rate paid to the direct referrer.
                   example: 0.1
+                rebate_basis_mode:
+                  type: string
+                  description: "Rebate calculation basis for the builder. `BUILDER_REVENUE` always uses builder revenue. `EFFECTIVE_TRADE_FEE_WITH_FALLBACK` uses the standard gross trading fee, excluding additional module fees, custom per-order fees, and other fees added on top; if the requested total commission exceeds builder revenue, the calculation falls back to builder revenue for that trade."
+                  enum:
+                    - BUILDER_REVENUE
+                    - EFFECTIVE_TRADE_FEE_WITH_FALLBACK
+                  example: BUILDER_REVENUE
 
     GetMultiLevelAdminInfoResponse:
       allOf:
