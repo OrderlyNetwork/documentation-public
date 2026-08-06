@@ -18,12 +18,12 @@ The ecosystem consists of three key participants:
 
 Orderly supports a legacy single-level affiliate program and a multilevel affiliate program. The key differences are:
 
-| Details                      | Legacy                                                                                                        | Multilevel                                                                                                                                                                 |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Referral network**         | Single-level, with direct referrals only                                                                      | Up to 15 levels, with direct and indirect referrals                                                                                                                        |
-| **Referral commission**      | Affiliates earn commission from direct referees only                                                          | Affiliates can earn commission from direct and indirect referees down the referral chain. The builder selects how the commission basis is calculated.                      |
-| **Commission configuration** | The builder decides a single-level commission of up to 100%                                                   | The builder assigns affiliates a total commission rate and may configure a minimum pass-down rate for direct-referral earnings                                             |
-| **Referral code creation**   | Primarily created by the builder or qualified affiliates that meet the applicable trading volume requirements | Qualified affiliates can create one active referral code after meeting the applicable trading volume requirements. They can change it only while no users are bound to it. |
+| Details                      | Legacy                                                                                                        | Multilevel                                                                                                                                                                                                  |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Referral network**         | Single-level, with direct referrals only                                                                      | Up to 15 levels, with direct and indirect referrals                                                                                                                                                         |
+| **Referral commission**      | Affiliates earn commission from direct referees only                                                          | Affiliates can earn commission from direct and indirect referees down the referral chain. The builder selects how the commission basis is calculated.                                                       |
+| **Commission configuration** | The builder decides a single-level commission of up to 100%                                                   | The builder assigns affiliates a total commission rate and may configure a minimum pass-down rate for direct-referral earnings                                                                              |
+| **Referral code creation**   | Primarily created by the builder or qualified affiliates that meet the applicable trading volume requirements | Qualified affiliates can create one active referral code after meeting the applicable trading volume requirements. Only auto-generated codes can be changed, and only while no users are bound to the code. |
 
 ### Coexistence and migration
 
@@ -81,19 +81,11 @@ If a user generates **\$10 USDC** in _Net Builder Fees_:
 
 ## Configuration for Builders
 
-Builders manage referral codes and rebate rates via the Orderly Admin Console.
-
-**Admin console:** [https://admin.orderly.network/referral](https://admin.orderly.network/referral)
-
-Click ""+ create code" button.
-
-<img src="/images/be-a-broker/affiliate-referral-program/admin-portal.png" width="70%" />
+Builders manage referral codes and rebate rates in [Orderly One Affiliate](https://dex.orderly.network/affiliate).
 
 ### Setup Fields
 
-A popup window will appear for Builders to create a referral code for an address.
-
-<img src="/images/be-a-broker/affiliate-referral-program/create-ref-code.png" width="70%" />
+Common referral-code settings include:
 
 1.  **User Address:** The wallet address of the Affiliate (Referrer) who will own this code.
 2.  **Referral Code:** The unique string traders will enter (e.g., `REFFCODE1`).
@@ -110,7 +102,5 @@ Rewards are calculated automatically by the Orderly protocol.
 - **Currency:** Payouts are settled in **USDC**.
 
 ## Auto referral system
-
-<img src="/images/be-a-broker/affiliate-referral-program/auto-referral.png" width="70%" />
 
 Similar to the affiliate system, the auto-referral system grants traders a referral code once they reach a specific trading volume. This means that instead of manual entry, traders are automatically assigned a code based on their trading activity.
