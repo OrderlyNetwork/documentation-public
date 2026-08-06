@@ -14,6 +14,28 @@ The ecosystem consists of three key participants:
 2.  **The Referrer (Affiliate):** A user (e.g., a KOL, influencer, or community leader) who invites others to trade. They can modify the fee split between themselves and the trader, but not the maximum rebate limit.
 3.  **The Referee (Trader):** The new user who signs up using a referral code.
 
+## Legacy and multilevel affiliate programs
+
+Orderly supports a legacy single-level affiliate program and a multilevel affiliate program. The key differences are:
+
+| Details                      | Legacy                                                                                                        | Multilevel                                                                                                                                                                 |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Referral network**         | Single-level, with direct referrals only                                                                      | Up to 15 levels, with direct and indirect referrals                                                                                                                        |
+| **Referral commission**      | Affiliates earn commission from direct referees only                                                          | Affiliates can earn commission from direct and indirect referees down the referral chain. The builder selects how the commission basis is calculated.                      |
+| **Commission configuration** | The builder decides a single-level commission of up to 100%                                                   | The builder assigns affiliates a total commission rate and may configure a minimum pass-down rate for direct-referral earnings                                             |
+| **Referral code creation**   | Primarily created by the builder or qualified affiliates that meet the applicable trading volume requirements | Qualified affiliates can create one active referral code after meeting the applicable trading volume requirements. They can change it only while no users are bound to it. |
+
+### Coexistence and migration
+
+The multilevel affiliate program supersedes the legacy program for new activations:
+
+- New builders, and existing builders that have not enabled the legacy program, use the multilevel program when they enable affiliate referrals. The legacy program is not available to them.
+- Builders already using the legacy program can continue using it or upgrade to the multilevel program. The upgrade is irreversible.
+- After an upgrade, existing legacy referral codes remain valid and continue to generate commission, but no new legacy referral codes can be created.
+- Affiliates should check with their DEX to confirm which program is active. When a DEX upgrades, eligible affiliates can create a multilevel referral code while continuing to earn from existing legacy codes.
+
+For multilevel program configuration and commission guidance, see the [Builder's Quick Guide](/introduction/be-a-broker/orderly-dex-affiliate-program-brokers-quick-guide) and [Affiliate's Quick Guide](/introduction/be-a-broker/orderly-dex-affiliate-program-affiliates-quick-guide).
+
 ## How It Works
 
 ### 1. The Binding Process
