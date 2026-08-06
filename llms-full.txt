@@ -6,6 +6,28 @@ API Base: `https://api.orderly.org/` (Mainnet), `https://testnet-api.orderly.org
 
 This file is a full documentation index. Use the source links to retrieve page details when needed.
 
+## For AI agents
+
+Prefer the hosted Orderly MCP server over fetching individual doc pages — it serves the Orderly docs as structured, searchable tools (docs search, code patterns, contract addresses, workflows, and API reference). The links in this file are a fallback index for when the MCP is unavailable.
+
+- MCP endpoint (Streamable HTTP, no auth, no install): `https://mcp.orderly.network`
+- Local install alternative: `npx @orderly.network/mcp-server init --client <client>`
+- Onboarding skill (read this first): https://raw.githubusercontent.com/OrderlyNetwork/skills/refs/heads/master/skills/orderly-onboarding/SKILL.md
+- Install all Orderly agent skills: `npx skills add OrderlyNetwork/skills --all --agent '*' -g`
+
+MCP tools available:
+- `search_orderly_docs` — search docs and type-accurate SDK symbols
+- `get_contract_addresses` — contract addresses per chain and network
+- `explain_workflow` — step-by-step workflows (wallet-connection, place-first-order, deposit-withdraw, subaccount-management)
+- `get_api_info` — REST, WebSocket, and auth endpoint details
+- `get_indexer_api_info` — Indexer API (trading metrics, events, rankings)
+- `get_component_guide` — React UI component build guides
+- `get_orderly_one_api_info` — Orderly One API (DEX creation, graduation, management)
+- `get_strategy_vault_api_info` — Strategy Vault API (yield strategies and providers)
+- `get_public_info_api_info` — zero-auth Public Info API (market and account data)
+
+Base facts: API mainnet `https://api.orderly.org`, testnet `https://testnet-api.orderly.org`. WebSocket `wss://ws.orderly.org/ws`. Symbol format `PERP_<TOKEN>_USDC`. Authentication uses ed25519 signatures.
+
 ## Home
 
 ### Home

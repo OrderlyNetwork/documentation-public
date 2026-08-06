@@ -17,6 +17,7 @@ type LlmsConfig = {
     apiBase: { mainnet: string; testnet: string };
     auth: string;
   };
+  agentIntro?: string[];
   compactSections: Array<{ title: string; routes: string[] }>;
   canonicalPages: string[];
 };
@@ -109,6 +110,11 @@ function buildCompactOutput(config: LlmsConfig, pages: Map<string, PageInfo>) {
   );
   lines.push("");
 
+  if (config.agentIntro?.length) {
+    lines.push(...config.agentIntro);
+    lines.push("");
+  }
+
   for (const section of config.compactSections) {
     lines.push(`## ${section.title}`);
     lines.push("");
@@ -137,6 +143,11 @@ function buildFullOutput(config: LlmsConfig, docs: DocsJson, pages: Map<string, 
   lines.push("");
   lines.push("This file is a full documentation index. Use the source links to retrieve page details when needed.");
   lines.push("");
+
+  if (config.agentIntro?.length) {
+    lines.push(...config.agentIntro);
+    lines.push("");
+  }
 
   const latestVersion = docs.navigation?.versions?.find((entry) => entry.version === "latest");
   const tabs = latestVersion?.tabs ?? [];
