@@ -8851,7 +8851,7 @@ paths:
       description: |
         `GET /v1/admin/asset/convert_history`
 
-        Returns asset conversion history records for a Builder Admin.
+        Returns asset conversion history records from the Builder's trading platform. Only the Builder Admin can query this endpoint.
 
         Use `page` and `size` for offset pagination, or pass the `next_cursor` from the previous response as `cursor` for consistent keyset pagination. When provided, `cursor` takes precedence over `page`. Cursor pagination is recommended for reconciliation and exports because offset pagination may duplicate or skip records when new conversions arrive between requests.
 
