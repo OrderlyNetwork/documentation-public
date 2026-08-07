@@ -8845,6 +8845,128 @@ paths:
               schema:
                 $ref: "#/components/schemas/AdminAssetHistoryResponse"
 
+  /v1/admin/asset/convert_history:
+    get:
+      summary: Get asset conversion history
+      description: |
+        `GET /v1/admin/asset/convert_history`
+
+        Returns asset conversion history records for a Builder Admin.
+
+        Use `page` and `size` for offset pagination, or pass the `next_cursor` from the previous response as `cursor` for consistent keyset pagination. When provided, `cursor` takes precedence over `page`. Cursor pagination is recommended for reconciliation and exports because offset pagination may duplicate or skip records when new conversions arrive between requests.
+
+        `start_t` and `end_t` are required. `start_t` must be less than or equal to `end_t`, and the query range cannot exceed 180 days. To filter by user, provide either `user_address` or `user_account`, but not both.
+
+        Example request:
+        `GET /v1/admin/asset/convert_history?page=1&size=20&start_t=1772706491837&end_t=1778747916938&user_address=0xa772873e31f088A88C3Fc77E624AE5f4fd1E296B`
+      tags:
+        - private
+      parameters:
+        - name: page
+          in: query
+          description: Page number, starting from 1. Ignored when `cursor` is provided.
+          required: false
+          example: 1
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: size
+          in: query
+          description: Number of rows per page.
+          required: false
+          example: 20
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: cursor
+          in: query
+          description: Keyset cursor for consistent pagination. Pass the `next_cursor` value from the previous response. Takes precedence over `page` when provided.
+          required: false
+          example: 617574
+          schema:
+            type: integer
+            format: int64
+        - name: start_t
+          in: query
+          description: Start of the query window as a 13-digit Unix timestamp in milliseconds. Must be less than or equal to `end_t`; the query range cannot exceed 180 days.
+          required: true
+          example: 1772706491837
+          schema:
+            type: integer
+            format: int64
+            minimum: 1000000000000
+            maximum: 9999999999999
+        - name: end_t
+          in: query
+          description: End of the query window as a 13-digit Unix timestamp in milliseconds. Must be greater than or equal to `start_t`; the query range cannot exceed 180 days.
+          required: true
+          example: 1778747916938
+          schema:
+            type: integer
+            format: int64
+            minimum: 1000000000000
+            maximum: 9999999999999
+        - name: user_address
+          in: query
+          description: Filter by user wallet address. Provide either `user_address` or `user_account`, but not both.
+          required: false
+          example: "0xa772873e31f088A88C3Fc77E624AE5f4fd1E296B"
+          schema:
+            type: string
+        - name: user_account
+          in: query
+          description: Filter by internal account identifier. Provide either `user_account` or `user_address`, but not both.
+          required: false
+          example: "0x94e0bc419e3eecdba0d15e67f04cd62a5ee685a9190464cea4afb6e3c0b66e2b"
+          schema:
+            type: string
+        - $ref: "#/components/parameters/orderly_timestamp"
+        - $ref: "#/components/parameters/orderly_account_id"
+        - $ref: "#/components/parameters/orderly_key"
+        - $ref: "#/components/parameters/orderly_signature"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminAssetConvertHistoryResponse"
+              example:
+                success: true
+                data:
+                  rows:
+                    - convert_id: 617575
+                      account_id: "0x94e0bc419e3eecdba0d15e67f04cd62a5ee685a9190464cea4afb6e3c0b66e2b"
+                      user_address: "0xa772873e31f088A88C3Fc77E624AE5f4fd1E296B"
+                      converted_asset:
+                        USDT: 50.00000000
+                      received_asset: "USDC"
+                      received_qty: 49.61831000
+                      type: "manual"
+                      status: "completed"
+                      details:
+                        - transaction_id: 560847
+                          venue: "on_chain"
+                          converted_asset: "USDT"
+                          received_asset: "USDC"
+                          converted_qty: 50.00000000
+                          received_qty: 49.61831000
+                          chain_id: 56
+                          tx_id: "0xeeab245a9981eb0adbbb8561762cfffc350978a7b70ebc29809a148834da66a6"
+                          haircut: 0.00000000
+                          result: "succeeded"
+                      created_time: 1772706491837
+                      updated_time: 1772706491837
+                  meta:
+                    total: 1
+                    records_per_page: 20
+                    current_page: 1
+                  next_cursor: 617575
+                timestamp: 1778747916938
+
   /v1/admin/client/leverage:
     get:
       summary: Get leverage setting
@@ -14162,6 +14284,169 @@ components:
                   type: array
                   items:
                     $ref: "#/components/schemas/AdminAssetHistoryRecord"
+
+    AdminAssetConvertHistoryDetail:
+      type: object
+      required:
+        - transaction_id
+        - venue
+        - converted_asset
+        - received_asset
+        - converted_qty
+        - received_qty
+        - chain_id
+        - tx_id
+        - haircut
+        - result
+      properties:
+        transaction_id:
+          description: Unique identifier for the conversion transaction.
+          type: integer
+          format: int64
+          example: 560847
+        venue:
+          description: Venue where the conversion was executed.
+          type: string
+          example: "on_chain"
+        converted_asset:
+          description: Asset converted in this transaction.
+          type: string
+          example: "USDT"
+        received_asset:
+          description: Asset received from this transaction.
+          type: string
+          example: "USDC"
+        converted_qty:
+          description: Quantity converted in this transaction.
+          type: number
+          format: double
+          example: 50.00000000
+        received_qty:
+          description: Quantity received from this transaction.
+          type: number
+          format: double
+          example: 49.61831000
+        chain_id:
+          description: Chain ID used for the conversion transaction.
+          type: integer
+          example: 56
+        tx_id:
+          description: On-chain transaction hash for the conversion.
+          type: string
+          example: "0xeeab245a9981eb0adbbb8561762cfffc350978a7b70ebc29809a148834da66a6"
+        haircut:
+          description: Haircut applied to the conversion.
+          type: number
+          format: double
+          example: 0.00000000
+        result:
+          description: Result of the conversion transaction.
+          type: string
+          example: "succeeded"
+
+    AdminAssetConvertHistoryRecord:
+      type: object
+      required:
+        - convert_id
+        - account_id
+        - user_address
+        - converted_asset
+        - received_asset
+        - received_qty
+        - type
+        - status
+        - details
+        - created_time
+        - updated_time
+      properties:
+        convert_id:
+          description: Unique identifier for the asset conversion.
+          type: integer
+          format: int64
+          example: 617575
+        account_id:
+          description: Internal account identifier associated with the conversion.
+          type: string
+          example: "0x94e0bc419e3eecdba0d15e67f04cd62a5ee685a9190464cea4afb6e3c0b66e2b"
+        user_address:
+          description: Wallet address associated with the conversion.
+          type: string
+          example: "0xa772873e31f088A88C3Fc77E624AE5f4fd1E296B"
+        converted_asset:
+          description: Map of converted asset symbols to quantities.
+          type: object
+          additionalProperties:
+            type: number
+            format: double
+          example:
+            USDT: 50.00000000
+        received_asset:
+          description: Asset received from the conversion.
+          type: string
+          example: "USDC"
+        received_qty:
+          description: Total quantity received from the conversion.
+          type: number
+          format: double
+          example: 49.61831000
+        type:
+          description: Conversion type.
+          type: string
+          example: "manual"
+        status:
+          description: Current conversion status.
+          type: string
+          example: "completed"
+        details:
+          description: Execution details for the conversion.
+          type: array
+          items:
+            $ref: "#/components/schemas/AdminAssetConvertHistoryDetail"
+        created_time:
+          description: Timestamp when the conversion was created in milliseconds.
+          type: integer
+          format: int64
+          example: 1772706491837
+        updated_time:
+          description: Timestamp when the conversion was last updated in milliseconds.
+          type: integer
+          format: int64
+          example: 1772706491837
+
+    AdminAssetConvertHistoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+            - timestamp
+          properties:
+            timestamp:
+              description: Server timestamp in milliseconds.
+              type: integer
+              format: int64
+              example: 1778747916938
+            data:
+              type: object
+              required:
+                - rows
+                - meta
+                - next_cursor
+              properties:
+                rows:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/AdminAssetConvertHistoryRecord"
+                meta:
+                  allOf:
+                    - $ref: "#/components/schemas/PaginationMeta"
+                  description: Page metadata. When using cursor pagination, `total` is a point-in-time reference value; follow the `next_cursor` chain instead of relying on `total` for reconciliation or export.
+                next_cursor:
+                  description: Cursor for the next page, equal to the last `convert_id` in the current page. `null` means there are no more records. Pass this value as `cursor` in the next request.
+                  type: integer
+                  format: int64
+                  nullable: true
+                  example: 617575
 
     ClaimInsuranceFundBody:
       type: object
