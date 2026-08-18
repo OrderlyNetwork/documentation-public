@@ -1,49 +1,85 @@
 ---
-title: TS SDK
-description: "Release notes for the TypeScript SDK"
+title: "Orderly Web SDK release notes"
+description: "Release notes for the Orderly Web SDK"
 icon: "layer-group"
 ---
 
 import { Chip } from "/snippets/chip.mdx";
 
-## Aug 17th, 2026 - v3.1.9
+## Latest update
 
-<div style={{ display: "table", width: "100%" }}>
-  <div style={{ display: "table-row", width: "auto" }}>
-    <Chip type="bug" />
-    <div
-      style={{
-        float: "left",
-        display: "table-column",
-        paddingLeft: "30px",
-        width: "calc(80% - 30px)",
-      }}
-    >
-      **Bug Fixes**
-      - **Wallet component compatibility** — Fixed compatibility issues for builders who have not enabled or configured a Privy wallet integration
-    </div>
-  </div>
-</div>
+| Release date    | Stable release                                                        |
+| --------------- | --------------------------------------------------------------------- |
+| August 17, 2026 | [3.1.9](https://github.com/OrderlyNetwork/js-sdk/tree/v3.1.9) |
 
-## Jul 16th, 2026 - v3.1.6
+## Version 3.1.9
 
-<div style={{ display: "table", width: "100%" }}>
-  <div style={{ display: "table-row", width: "auto" }}>
-    <Chip type="new" />
-    <div
-      style={{
-        float: "left",
-        display: "table-column",
-        paddingLeft: "30px",
-        width: "calc(80% - 30px)",
-      }}
-    >
-      **Features & Improvements**
-      - **Affiliate-defined referral codes** — Affiliates can now define their own referral code when creating one
-    </div>
-  </div>
-</div>
+_August 17, 2026_
 
+This version includes the following updates:
+
+- Added `isTestnetChain(chainId)` to the result returned by [`useChains`](https://github.com/OrderlyNetwork/js-sdk/blob/v3.1.9/packages/hooks/src/orderly/useChains.ts) in `@orderly.network/hooks`. Use `const [, { isTestnetChain }] = useChains()`. The static `isTestnet(chainId)` helper in `@orderly.network/utils` is deprecated.
+- Improved wallet initialization reliability across supported providers, including compatibility when Privy is not configured.
+- Fixed an issue where a deposit could fail with `Insufficient allowance` immediately after successful token approval.
+- Fixed an issue that could produce inconsistent order-book data during slippage calculations.
+
+## Version 3.1.8
+
+_August 11, 2026_
+
+<Warning>
+  **Action required:** `@orderly.network/hooks` no longer exports `useOdosQuote`. Replace it with
+  [`useSwapQuote`](https://github.com/OrderlyNetwork/js-sdk/blob/v3.1.8/packages/hooks/src/orderly/useSwapQuote.ts)
+  and send a `SwapQuoteRequest` containing `fromToken`, `toToken`, `amount`, and `slippage`. The
+  previous Odos request shape is not compatible.
+</Warning>
+
+This version includes the following updates:
+
+- Convert quotes now use the Orderly Swap API. Added `useSwapQuote` with typed requests and responses.
+- Changed the default Convert slippage from `1%` to `0.5%`. Existing locally saved settings are preserved.
+- Improved quote precision, minimum received amount calculations, exchange-rate calculations, and Convert error reporting.
+- Added `ThemeConfig.isDefault` and `ThemeConfig.tradingViewColorConfig` to `@orderly.network/ui`.
+- Added `pnlZeroColor` and `closeIconColor`. The existing `pnlZoreColor` and `closeIcon` fields remain supported but are deprecated.
+- Improved theme fallback behavior and TradingView color synchronization.
+- Fixed an issue where Ledger-specific behavior could remain active after switching from a Solana Ledger wallet to another wallet.
+- Updated testnet and Chain Selector behavior, including support for X Layer Testnet and automatic selection of the Testnet view when no mainnet chains are available.
+
+## Version 3.1.7
+
+_August 3, 2026_
+
+This version includes the following updates:
+
+- Updated the default `OrderlyLogo` to the latest Orderly wordmark.
+- Improved Affiliate FAQ content presentation.
+
+## Version 3.1.6
+
+_July 16, 2026_
+
+<Warning>
+  **Action required:**
+  [`useReferralCode().createReferralCode`](https://github.com/OrderlyNetwork/js-sdk/blob/v3.1.6/packages/affiliate/src/hooks/useReferralCode.ts)
+  in `@orderly.network/affiliate` now requires
+  `{ referral_code: string; referee_rebate_rate: number }`. `referral_code` must contain 4-15
+  uppercase letters or digits.
+
+  **Network configuration:** The default Ethereum RPC in `@orderly.network/types` changed to
+  `https://ethereum-rpc.publicnode.com`. Applications that restrict outbound RPC traffic must allow
+  this endpoint.
+</Warning>
+
+This version includes the following updates:
+
+- Added support for custom referral codes in the multi-level Affiliate flow.
+- Fixed an issue where plugin-provided components could remount and lose local state when the plugin context changed.
+- Improved the mobile Markets selector and corrected Markets table layering.
+- Changed the default Ethereum RPC endpoint to `ethereum-rpc.publicnode.com`.
+
+[Official SDK release notes](https://orderly.network/docs/release-notes/sdk) | [SDK overview](https://orderly.network/docs/sdks/overview) | [React Components setup](https://orderly.network/docs/sdks/react/getting_started) | [Hooks setup](https://orderly.network/docs/sdks/hooks/setup) | [Source repository](https://github.com/OrderlyNetwork/js-sdk)
+
+## Earlier releases
 
 ## Jul 14th, 2026 - v3.1.5
 
