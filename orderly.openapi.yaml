@@ -4884,7 +4884,7 @@ paths:
 
         `GET /v1/broker/daily_fee_revenue`
 
-        Retrieve daily revenue settlement records for the broker ID linked to the authenticated builder admin. Use this endpoint to reconcile settled builder revenue by UTC accounting date.
+        Retrieve daily revenue settlement records for the broker ID linked to the authenticated builder admin. Use this endpoint to reconcile builder revenue by settlement date. The settlement date is recorded at `00:00 UTC` on the day after the revenue date.
 
         Each row represents a settlement day and breaks revenue into Perp Anything fee share, distributor fee share, builder fee revenue, and revenue share generated via cross-builder or tagged order flows (`order_tag`). `builder_fee_revenue` is the net fee revenue earned from the builder's trading platform: trading fees minus the builder's base fee, after affiliate commission distribution. `total_revenue` equals `permissionless_listing_fee_share` + `distributor_fee_share` + `builder_fee_revenue` + `cross_broker_fee`.
 
@@ -15995,7 +15995,7 @@ components:
                       date:
                         type: string
                         format: date
-                        description: Revenue date in UTC, formatted as `YYYY-MM-DD`.
+                        description: Settlement date, formatted as `YYYY-MM-DD`. Settlement occurs at `00:00 UTC` on the day after the revenue date.
                         example: "2026-08-18"
                       permissionless_listing_fee_share:
                         type: number
