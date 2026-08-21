@@ -30,8 +30,13 @@ Supported chains and tokens are returned dynamically by the [`GET /v1/public/tok
 
 | Chain     | Chain ID | Supported Tokens | Minimum Deposit |
 | --------- | -------- | ---------------- | --------------- |
-| Arbitrum  | `42161`  | USDC, USDT       | 5               |
+| Ethereum  | `1`      | USDC             | 5               |
 | BNB Chain | `56`     | USDC, USDT       | 5               |
+| X Layer   | `196`    | USDC, USDG       | --              |
+| ADI       | `36900`  | USDC             | 5               |
+| Arbitrum  | `42161`  | USDC, USDT       | 5               |
+
+Minimum deposit is denominated in the token being transferred. X Layer currently has no minimum configured — always treat the `minimum_deposit` value returned by [Get Receiver Address](/build-on-omnichain/restful-api/private/get-receiver-address) as the source of truth.
 
 <Warning>
   Only the chain + token combinations listed above are supported. Sending unsupported tokens or
@@ -43,9 +48,11 @@ Supported chains and tokens are returned dynamically by the [`GET /v1/public/tok
 
 | Chain              | DepositFactory                               | DepositBeaconImpl                            |
 | ------------------ | -------------------------------------------- | -------------------------------------------- |
-| Arbitrum (`42161`) | `0x8dCBDFF1758d9Bd77b37ff78982912C35FDc2F21` | `0x43001EF2e62Ac260FA78D5a0Af8787261e4D82F9` |
+| Ethereum (`1`)     | `0x8dCBDFF1758d9Bd77b37ff78982912C35FDc2F21` | `0x5bcB988b63a36c0B05cB61064d6e6ecE710dC063` |
 | BNB Chain (`56`)   | `0x8dCBDFF1758d9Bd77b37ff78982912C35FDc2F21` | `0xDE5C8345DD0Ce07eb0c7A210F307Ae6DB61584cb` |
+| X Layer (`196`)    | `0x8dCBDFF1758d9Bd77b37ff78982912C35FDc2F21` | `0x5771B915a19f1763274Ef97a475C4525dA7F963F` |
 | ADI (`36900`)      | `0x91DA1846473E6c3345ef3c32D4a3BC2Ebe851519` | `0x5fc83da893e63Dec205e6d634B930e3012674440` |
+| Arbitrum (`42161`) | `0x8dCBDFF1758d9Bd77b37ff78982912C35FDc2F21` | `0x43001EF2e62Ac260FA78D5a0Af8787261e4D82F9` |
 
 The **DepositFactory** acts as a beacon that stores the current implementation address. Each user's receiver address is a lightweight **DepositProxy** that delegates to the **DepositBeaconImpl** for deposit logic. Proxies are deployed on-demand during the first deposit.
 
