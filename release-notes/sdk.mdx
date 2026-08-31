@@ -16,13 +16,16 @@ import { Chip } from "/snippets/chip.mdx";
 
 _August 31, 2026_
 
-> [!IMPORTANT]
-> `QuantityInput` and `AvailableQuantity` from `@orderly.network/ui-transfer` now display token symbols by default. To continue displaying `token.display_name`, pass `showDisplayName`:
->
-> ```tsx
-> <QuantityInput showDisplayName {...props} />
-> <AvailableQuantity showDisplayName {...props} />
-> ```
+<Warning>
+  **Action required:** `QuantityInput` and `AvailableQuantity` from
+  `@orderly.network/ui-transfer` now display token symbols by default. To continue displaying
+  `token.display_name`, pass `showDisplayName`:
+
+  ```tsx
+  <QuantityInput showDisplayName {...props} />
+  <AvailableQuantity showDisplayName {...props} />
+  ```
+</Warning>
 
 - Added `ArbitrumMainnetChainInfo` and `SolanaMainnetChainInfo` to `@orderly.network/types`, together with `mainnetChainFallback` and `testnetChainFallback` in `@orderly.network/hooks`.
 - Improved `useChains` and Privy wallet initialization when chain metadata is unavailable, including broker configurations that expose only Solana chains.
