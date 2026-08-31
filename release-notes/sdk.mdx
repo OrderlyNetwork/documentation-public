@@ -8,9 +8,27 @@ import { Chip } from "/snippets/chip.mdx";
 
 ## Latest update
 
-| Release date    | Stable release                                                        |
-| --------------- | --------------------------------------------------------------------- |
-| August 21, 2026 | [3.1.11](https://github.com/OrderlyNetwork/js-sdk/tree/v3.1.11) |
+| Release date    | Stable release                                                  |
+| --------------- | --------------------------------------------------------------- |
+| August 31, 2026 | [3.1.12](https://github.com/OrderlyNetwork/js-sdk/tree/v3.1.12) |
+
+## Version 3.1.12
+
+_August 31, 2026_
+
+> [!IMPORTANT]
+> `QuantityInput` and `AvailableQuantity` from `@orderly.network/ui-transfer` now display token symbols by default. To continue displaying `token.display_name`, pass `showDisplayName`:
+>
+> ```tsx
+> <QuantityInput showDisplayName {...props} />
+> <AvailableQuantity showDisplayName {...props} />
+> ```
+
+- Added `ArbitrumMainnetChainInfo` and `SolanaMainnetChainInfo` to `@orderly.network/types`, together with `mainnetChainFallback` and `testnetChainFallback` in `@orderly.network/hooks`.
+- Improved `useChains` and Privy wallet initialization when chain metadata is unavailable, including broker configurations that expose only Solana chains.
+- Fixed missing or inaccurate estimated deposit times across supported EVM and Solana networks.
+- Fixed an issue where order entry could display a zero maximum quantity instead of an insufficient-balance message.
+- Improved token labeling across deposit, withdrawal, vault, and exclusive-deposit flows.
 
 ## Version 3.1.11
 
