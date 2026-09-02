@@ -6881,86 +6881,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/BasicResponse"
 
-  /v1/public/points/leaderboard:
-    get:
-      summary: Get merits leaderboard
-      deprecated: false
-      description: |
-        **Limit: 10 requests per 1 second per IP address**
-
-        `GET /v1/public/points/leaderboard`
-      tags:
-        - public
-      parameters:
-        - name: start_r
-          in: query
-          description: "Starting rank you wish to query"
-          required: false
-          example: ""
-          schema:
-            type: integer
-        - name: end_r
-          in: query
-          description: "Ending rank you wish to query"
-          required: false
-          example: ""
-          schema:
-            type: integer
-        - name: epoch_id
-          in: query
-          description: "the epoch for which you want to check the leaderboard"
-          required: false
-          example: ""
-          schema:
-            type: integer
-        - name: page
-          in: query
-          description: "start from 1"
-          required: false
-          example: ""
-          schema:
-            type: integer
-        - name: size
-          in: query
-          description: ""
-          required: false
-          example: ""
-          schema:
-            type: integer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetPointsLeaderboardResponse"
-
-  /v1/client/points:
-    get:
-      summary: Get user's merits
-      deprecated: false
-      description: |
-        **Limit: 10 requests per 1 second per user**
-
-        `GET /v1/client/points`
-      tags:
-        - public
-      parameters:
-        - name: address
-          in: query
-          description: ""
-          required: true
-          example: "sample_address"
-          schema:
-            type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetPointsResponse"
-
   /v1/client/points/user_statistics:
     get:
       summary: Get user statistics
@@ -7008,26 +6928,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/GetUserStatisticsResponse"
 
-  /v1/public/points/epoch_dates:
-    get:
-      summary: Get start and end date of all epochs
-      deprecated: false
-      description: |
-        **Limit: 10 requests per 1 second per user**
-
-        `GET /v1/public/points/epoch_dates`
-
-        Retrieve the dates of all epochs
-      tags:
-        - public
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetEpochDatesResponse"
-
   /v1/public/points/rankings:
     get:
       summary: Get stage rankings
@@ -7074,26 +6974,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GetStageRankingsResponse"
-
-  /v1/public/points/epoch:
-    get:
-      summary: Get number of merits for distribution
-      deprecated: false
-      description: |
-        **Limit: 10 requests per 1 second per user per IP address**
-
-        `GET /v1/public/points/epoch`
-
-        Retrieve the number of merits for past epochs and current epoch
-      tags:
-        - public
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetEpochPointsResponse"
 
   /v1/public/points/stages:
     get:
@@ -17110,75 +16990,6 @@ components:
                 auto_referral_code:
                   type: string
 
-    GetPointsLeaderboardResponse:
-      allOf:
-        - $ref: "#/components/schemas/BasicResponse"
-        - type: object
-          properties:
-            data:
-              type: object
-              properties:
-                epoch_id:
-                  type: number
-                  example: 1
-                meta:
-                  $ref: "#/components/schemas/PaginationMeta"
-                rows:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      rank:
-                        type: number
-                        example: 1
-                      tier:
-                        type: number
-                        example: 1
-                      address:
-                        type: string
-                        example: "0xfcc17f2b240380d56f0615e8f654e4ae3cee8957"
-                      points:
-                        type: number
-                        example: 15000
-                      previous_rank:
-                        type: number
-                        example: 4
-
-    GetEpochPointsResponse:
-      allOf:
-        - $ref: "#/components/schemas/BasicResponse"
-        - type: object
-          properties:
-            data:
-              type: object
-              properties:
-                current_total_epoch_points:
-                  type: number
-                  example: 547
-                current_epoch_points:
-                  type: number
-                  example: 17
-                current_epoch_id:
-                  type: number
-                  example: 3
-                total_traders:
-                  type: number
-                  example: 200
-                rows:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      rank:
-                        type: number
-                        example: 1
-                      epoch_id:
-                        type: number
-                        example: 1
-                      total_points:
-                        type: number
-                        example: 15000
-
     GetPointStagesResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
@@ -17311,67 +17122,6 @@ components:
                     current_page:
                       type: number
                       example: 1
-
-    GetEpochDatesResponse:
-      allOf:
-        - $ref: "#/components/schemas/BasicResponse"
-        - type: object
-          properties:
-            data:
-              type: object
-              properties:
-                rows:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      epoch_start_date:
-                        type: number
-                        example: 1708905600000
-                      epoch_id:
-                        type: number
-                        example: 1
-                      epoch_end_date:
-                        type: number
-                        example: 1708992000000
-
-    GetPointsResponse:
-      allOf:
-        - $ref: "#/components/schemas/BasicResponse"
-        - type: object
-          properties:
-            data:
-              type: object
-              properties:
-                total_points:
-                  type: number
-                  example: 547
-                global_rank:
-                  type: number
-                  example: 17
-                tier:
-                  type: number
-                  example: 3
-                current_epoch_points:
-                  type: number
-                  example: 200
-                current_epoch_rank:
-                  type: number
-                  example: 3
-                rows:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      rank:
-                        type: number
-                        example: 1
-                      epoch_id:
-                        type: number
-                        example: 1
-                      points:
-                        type: number
-                        example: 15000
 
     GetDefaultBrokerFeesResponse:
       allOf:
