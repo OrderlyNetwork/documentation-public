@@ -14668,7 +14668,8 @@ components:
               description: orderly key to be added
             scope:
               type: string
-              description: "Valid scopes are `read`, `trading`, and `asset`. Multiple scopes can be sent as a comma-separated string such as `read,trading`."
+              description: "Valid scopes are `read`, `trading`, and `asset`. Scopes are independent: `trading` does not grant `read`. Send multiple scopes as a comma-separated string, such as `read,trading`, for a key that needs both private data access and trading access."
+              example: "read,trading"
             timestamp:
               type: number
               description: timestamp in UNIX milliseconds
@@ -14714,7 +14715,8 @@ components:
               description: orderly key to be added
             scope:
               type: string
-              description: "Valid scopes are `read`, `trading` and `asset`; multiple scopes can be sent by separating scopes with comma such as `read,trading`"
+              description: "Valid scopes are `read`, `trading`, and `asset`. Scopes are independent: `trading` does not grant `read`. Send multiple scopes as a comma-separated string, such as `read,trading`, for a key that needs both private data access and trading access."
+              example: "read,trading"
             timestamp:
               type: number
               description: timestamp in UNIX milliseconds

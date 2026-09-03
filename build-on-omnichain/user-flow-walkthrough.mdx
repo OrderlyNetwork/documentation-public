@@ -36,16 +36,17 @@ For other actions, such as calling trading-related RESTful APIs, only the Orderl
 
 Orderly uses the ed25519 elliptic curve standard for access keys. Users can generate access keys using any public ed25519 library and then add them to any account through a REST API.
 
-Access keys can have different scopes:
+Access Key scopes are independent. Granting one scope does not grant any other scope:
 
-- **read** -- access all private read-only APIs
-- **trading** -- in addition to read access, access all order APIs (create order, batch create order, edit order, cancel order, cancel order by client_order_id, cancel orders in bulk, batch cancel orders, batch cancel orders by client_order_id)
+- **`read`**: Accesses private account data from endpoints that require `read`, plus designated account configuration APIs such as `POST /v1/client/leverages` and `POST /v1/client/maintenance_config`.
+- **`trading`**: Accesses order and trading operations that require the `trading` scope. A key with `trading` alone does not receive `read` access.
+- **`asset`**: Accesses asset operations that require the `asset` scope.
 
-> [!NOTE]
-> **API Privilege Model & Key Scope Design (By Design)**:
->
-> - **`read` Scope**: Allows reading private user metrics, plus invoking account configuration changes (such as adjusting leverage via `POST /v1/client/leverage` or editing maintenance configs via `POST /v1/client/maintenance_config`). Decoupling these configuration actions from order execution is a deliberate architectural decision (**By Design**).
-> - **`trading` Scope**: Mandatory strictly for order placement and lifecycle execution.
+<Warning>
+  For a normal trading integration that also reads balances, positions, or other private account
+  data, assign both scopes as `read,trading`. Add `asset` separately when the integration needs
+  asset operations.
+</Warning>
 
 Access keys also have expirations for security reasons. The maximum allowed expiration is 365 days.
 
@@ -87,7 +88,7 @@ To add a new access key on Orderly:
 {
   "brokerId": "woofi_dex",
   "orderlyKey": "ed25519:HqN9uKJioHjAJZbadgQRGzq2e7huKg6foCyNY43hWbCk",
-  "scope": "trading",
+  "scope": "read,trading",
   "timestamp": 1685973094398,
   "expiration": 1686081094398
 }
@@ -95,14 +96,14 @@ To add a new access key on Orderly:
 
 where:
 
-| Name       | Type      | Required | Description                                                                                      |
-| ---------- | --------- | -------- | ------------------------------------------------------------------------------------------------ |
-| brokerId   | string    | Y        | Builder ID                                                                                       |
-| chainId    | int       | Y        | Chain ID of registering chain (within those supported by the Network)                            |
-| orderlyKey | string    | Y        | ed25519 public key                                                                               |
-| scope      | string    | Y        | Valid scopes are `read`, `trading`; multiple scopes can be sent, comma separated                 |
-| timestamp  | timestamp | Y        | Timestamp in UNIX milliseconds                                                                   |
-| expiration | timestamp | Y        | Expiration time of the key in UNIX milliseconds. Maximum allowed expiration is 365 days from add |
+| Name       | Type      | Required | Description                                                                                                                                        |
+| ---------- | --------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| brokerId   | string    | Y        | Builder ID                                                                                                                                         |
+| chainId    | int       | Y        | Chain ID of registering chain (within those supported by the Network)                                                                              |
+| orderlyKey | string    | Y        | ed25519 public key                                                                                                                                 |
+| scope      | string    | Y        | Valid scopes are `read`, `trading`, and `asset`. Scopes are independent. Send multiple scopes as a comma-separated string, such as `read,trading`. |
+| timestamp  | timestamp | Y        | Timestamp in UNIX milliseconds                                                                                                                     |
+| expiration | timestamp | Y        | Expiration time of the key in UNIX milliseconds. Maximum allowed expiration is 365 days from add                                                   |
 
 3. Send all the necessary information via the [Add Orderly Key](/build-on-omnichain/restful-api/public/add-orderly-key) API
 
