@@ -131,14 +131,17 @@ The message types are required for the EIP-712 algorithm to do a proper signing.
 Orderly uses the `ed25519` elliptic curve standard for Orderly keys. Users can generate Orderly keys using any public `ed25519` libraries and then be added to any account through the REST API.
 An Orderly Key is necessary to perform [API authentication](/build-on-omnichain/api-authentication).
 
-Orderly keys can have different scopes. A `read` scope can access all private read-only APIs, and a `trading` scope can, in addition, access all order APIs (create order, batch create order, edit order, cancel order, cancel order by client_order_id, cancel orders in bulk, batch cancel orders, batch cancel orders by client_order_id).
+Orderly Key scopes are independent. Granting one scope does not grant any other scope:
 
-> [!NOTE]
-> **API Privilege Model & Key Scope Design (By Design)**:
-> Orderly Network utilizes a two-tier key scope structure designed to decouple order placement from general account setup:
->
-> - **`read` Scope**: Grants access to all private read-only APIs, as well as **account and risk parameter configuration write APIs** (such as `POST /v1/client/leverage` and `POST /v1/client/maintenance_config`). This design ensures that client interfaces can adjust configuration parameters without requiring full order execution authority. This security boundary behavior is intentional and **By Design**.
-> - **`trading` Scope**: Restricts key authority exclusively to order lifecycle actions (e.g., creating, editing, and cancelling orders).
+- **`read`**: Accesses private account data from endpoints that require `read`, plus designated account and risk configuration APIs such as `POST /v1/client/leverages` and `POST /v1/client/maintenance_config`.
+- **`trading`**: Accesses order and trading operations that require the `trading` scope. A key with `trading` alone does not receive `read` access.
+- **`asset`**: Accesses asset operations that require the `asset` scope.
+
+<Warning>
+  For a normal trading integration that also reads balances, positions, or other private account
+  data, assign both scopes as `read,trading`. A key with only `trading` cannot call endpoints that
+  require `read`. Add `asset` separately when the integration needs asset operations.
+</Warning>
 
 Orderly keys also have expirations for security reasons. The maximum allowed expiration of an Orderly Key is 365 days.
 
@@ -159,7 +162,7 @@ To add a new Orderly Key:
   "brokerId": "woofi_dex",
   "chainId": 421614,
   "orderlyKey": "ed25519:HqN9uKJioHjAJZbadgQRGzq2e7huKg6foCyNY43hWbCk",
-  "scope": "trading",
+  "scope": "read,trading",
   "timestamp": 1685973094398,
   "expiration": 1686081094398
 }
@@ -172,7 +175,7 @@ where:
 | brokerId   | string    | Y            | The unique identifier of the Builder (also known as Broker ID). A list of valid IDs can be retrieved via the [Get list of builders API](/build-on-omnichain/restful-api/public/get-builder-list). |
 | chainId    | int       | Y            | Chain ID of registering chain (within those that are supported by the Network)                                                                                                                    |
 | orderlyKey | string    | Y            | ed25519 public key                                                                                                                                                                                |
-| scope      | string    | Y            | valid scopes are `read`, `trading` and `asset`. Multiple scopes can be sent, comma separated                                                                                                      |
+| scope      | string    | Y            | Valid scopes are `read`, `trading`, and `asset`. Scopes are independent. Send multiple scopes as a comma-separated string, such as `read,trading`.                                                |
 | timestamp  | timestamp | Y            | timestamp in UNIX milliseconds                                                                                                                                                                    |
 | expiration | timestamp | Y            | Expiration time of the key in UNIX milliseconds. Maximum allowed expiration is 365 days from add                                                                                                  |
 

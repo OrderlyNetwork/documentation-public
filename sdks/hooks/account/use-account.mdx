@@ -23,7 +23,7 @@ const { createOrderlyKey } = useAccount();
 const res = await createOrderlyKey(30);
 ```
 
-After the `OrderlyKey` is successfully created, it will be stored in the `KeyStore`, and will be used for API signatures later on.
+After the `OrderlyKey` is successfully created, it will be stored in the `KeyStore`, and will be used for API signatures later on. The SDK creates the key with the combined `read,trading` scopes so it can retrieve private account data and perform trading operations. These scopes are independent; `trading` alone does not grant `read`.
 
 ## KeyStore
 
@@ -56,7 +56,7 @@ The above statuses are represented as follows:
 
 - `NotConnected`/ `Connected` - Wallet connection status, not related to Orderly. `NotConnected` means no wallet connected, `Connected` means the wallet app is connected and we know the user's wallet address.
 - `NotSignedIn` / `SignedIn` - The result from calling [`Get Account Information`](/build-on-omnichain/restful-api/private/get-account-information) or [`Register Account`](/build-on-omnichain/restful-api/public/register-account). `NotSignedIn` means there's no registered account associated with the wallet address and `brokerId` pair. `SignedIn` means that an account has been previously registered with the wallet address and `brokerId` pair.
-- `DisabledTrading` / `EnableTrading` - The result from calling [`Get Orderly Key`](/build-on-omnichain/restful-api/public/get-orderly-key) or [`Add Orderly Key`](/build-on-omnichain/restful-api/public/add-orderly-key). `DisabledTrading` means no active Orderly Key is found in the `KeyStore`. `EnableTrading` means an active Orderly Key is found in the `KeyStore` and can be used to authenticate for any private API requests.
+- `DisabledTrading` / `EnableTrading` - The result from calling [`Get Orderly Key`](/build-on-omnichain/restful-api/public/get-orderly-key) or [`Add Orderly Key`](/build-on-omnichain/restful-api/public/add-orderly-key). `DisabledTrading` means no active Orderly Key is found in the `KeyStore`. `EnableTrading` means an active Orderly Key is found in the `KeyStore`. Requests still require the scopes specified by each endpoint.
 
 ### Get account status
 
@@ -108,7 +108,7 @@ Once the user has successfully connected a wallet, use the `setAddress` method t
 - `chain` - information regarding the connected chain, including the `id`
 - `wallet` - wallet information, including the name of the wallet app
 
-The `setAddress` method in `Account` will check the `accound_id` and the existence of any valid `OrderlyKey` from the provided `address` and update the `state`. If the `state` is `AccountStatusEnum.EnableTrading`, then the full login process in complete and the user can then access all functionalities provided by Orderly.
+The `setAddress` method in `Account` will check the `account_id` and the existence of any valid `OrderlyKey` from the provided `address` and update the `state`. If the `state` is `AccountStatusEnum.EnableTrading`, the SDK login process is complete. Access remains limited to the scopes assigned to the key.
 
 ```typescript
 const { account, state } = useAccount();

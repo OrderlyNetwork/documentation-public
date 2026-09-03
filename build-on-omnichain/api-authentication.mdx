@@ -447,7 +447,7 @@ curl --request POST \
 
 ## Security
 
-Orderly validates every request through three checks. A request must pass all three to be accepted.
+Orderly validates every authenticated request through four checks. A request must pass all four to be accepted.
 
 ### Request Timestamp
 
@@ -460,3 +460,7 @@ The `orderly-signature` header must be a valid ed25519 signature generated from 
 ### Orderly Key Validity
 
 The `orderly-key` header must reference a key that has been added to the network, is associated with the account, and has not expired.
+
+### Scope Authorization
+
+The Orderly Key must include every scope required by the endpoint. Scopes are independent: `trading` does not grant `read`, and `read` does not grant `trading`. A normal trading integration that also retrieves private account data should use `read,trading`. Add `asset` separately for endpoints that require asset access.
