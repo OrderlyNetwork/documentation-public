@@ -40,6 +40,7 @@ import { Chip } from "/snippets/chip.mdx";
 
       - **Limit-price support for position TP/SL orders:** Position-level take-profit and stop-loss orders can now be configured to place a reduce-only limit order once the trigger price is reached. Existing market-based position TP/SL behavior remains unchanged
       - **`accruedFundingFee` in Position WebSocket updates:** [Position WebSocket messages](/build-on-omnichain/websocket-api/private/position-push) now include the `accruedFundingFee` field, enabling integrators to receive accrued funding-fee data alongside position updates
+      - **Multi-collateral support in isolated margin:** Eligible collateral assets can now support isolated-margin trading, including accounts that hold supported non-USDC collateral. Isolated margin remains denominated and accounted for in USDC. If opening a position would cause the USDC borrowing amount to exceed 50,000 USDC, automatic collateral conversion is triggered to reduce the borrowing amount
     </div>
 
   </div>
