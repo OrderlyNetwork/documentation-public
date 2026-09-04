@@ -8,6 +8,77 @@ import { Chip } from "/snippets/chip.mdx";
 
 <div className="omnichain-release-notes-marker" />
 
+## Sep 6th, 2026 (Scheduled)
+
+<div style={{ display: "table", width: "auto" }}>
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="times" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      - Mainnet: Sep 6th, 2026 04:00-04:45 UTC+8
+    </div>
+
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="new" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+
+      - **Limit-price support for position TP/SL orders:** Position-level take-profit and stop-loss orders can now be configured to place a reduce-only limit order once the trigger price is reached. Existing market-based position TP/SL behavior remains unchanged
+      - **`accruedFundingFee` in Position WebSocket updates:** [Position WebSocket messages](/build-on-omnichain/websocket-api/private/position-push) now include the `accruedFundingFee` field, enabling integrators to receive accrued funding-fee data alongside position updates
+    </div>
+
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="update" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+
+      - **Pending-order amendment protection:** Each pending order can be successfully amended up to 1,000 times. Further amendment requests are rejected without changing the existing order; cancel, fill, and settlement flows are unaffected
+      - **More consistent collateral and withdrawal checks:** Improved alignment between risk-engine withdrawal validation and position-service free-collateral calculations
+      - **Isolated-margin risk handling improvements:** Improved risk calculations for isolated-order amendments, pending-order cleanup, liquidation-lock checks, and isolated-margin operations
+      - **Risk-engine performance improvements:** Enhanced selected risk-engine processing paths and runtime handling to improve efficiency and resilience under load
+    </div>
+
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="bug" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+
+      - **Multilevel referral rebate consistency:** Fixed an issue where a referred user without a claimed referral code could retain an outdated rebate configuration after an upstream affiliate's maximum rebate rate was reduced. A subsequent increase could produce an invalid negative upstream rebate split
+    </div>
+
+  </div>
+</div>
+
 ## Jul 14th, 2026
 
 <div style={{ display: "table", width: "auto" }}>
