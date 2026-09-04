@@ -8,6 +8,68 @@ import { Chip } from "/snippets/chip.mdx";
 
 <div className="omnichain-release-notes-marker" />
 
+## Sep 6th, 2026
+
+This release introduces improvements to order management, isolated-margin support, risk-engine reliability, and position data.
+
+<div style={{ display: "table", width: "auto" }}>
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="times" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      - Production maintenance: Sep 6th, 2026 04:00-04:45 UTC+8
+    </div>
+
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="new" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+
+      **What's New**
+
+      - **Limit-price support for position TP/SL orders** — Take-profit and stop-loss orders for open positions can now use a specified limit price, giving traders more control over execution
+      - **Accrued funding fee in Position WebSocket updates** — The private [Position WebSocket push topic](/build-on-omnichain/websocket-api/private/position-push) now includes `accrued_funding_fee`, enabling clients to display the funding fee accrued by an open position in real time
+    </div>
+
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="update" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+
+      **Improvements**
+
+      - Improved risk-engine request performance and stability
+      - Strengthened validation for pending orders and withdrawals
+      - Fixed isolated-margin issues
+      - Improved collateral calculation consistency across risk and position services
+      - Enhanced broker identification handling for new orders
+    </div>
+
+  </div>
+</div>
+
 ## Jul 14th, 2026
 
 <div style={{ display: "table", width: "auto" }}>
