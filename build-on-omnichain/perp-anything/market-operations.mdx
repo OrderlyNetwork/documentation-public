@@ -30,10 +30,10 @@ Full fee rules: [Fee share](#fee-share). Full lifecycle: [Lifecycle thresholds](
 | **Fee share**         | 50%         | 50%         |
 
 - **IF Requirement** — Per-effective-symbol Insurance Fund threshold on the assigned IF account. The account balance must stay **strictly above** this amount times the number of effective symbols (`IF balance > IF Requirement × n`). Effective symbols are markets in `NEW`, `PENDING`, `POST_ONLY`, `ACTIVE`, or `REDUCE_ONLY`. Multi-symbol examples are in [Insurance Fund and Market Maker accounts](#insurance-fund-and-market-maker-accounts).
-- **Depth Warning** — Per-side order book depth inside the **±2%** band (bid and ask checked separately). **Launch:** both sides must stay **≥ Depth Warning** for the full depth hold window before `POST_ONLY` can move to `ACTIVE`. **After launch:** depth **below** Depth Warning is thin liquidity and can trigger depth warnings (for example Telegram). Keep market-making **at or above** this level.
-- **Depth Limit** — Lower per-side depth floor than Depth Warning (also within ±2%, each side). If **either** side falls **below Depth Limit**, Orderly can restrict the market (for example into `REDUCE_ONLY`). This is the hard liquidity floor, not just an alert.
+- **Depth Warning** — Per-side order book depth inside the **±5%** band (bid and ask checked separately). **Launch:** both sides must stay **≥ Depth Warning** for the full depth hold window before `POST_ONLY` can move to `ACTIVE`. **After launch:** depth **below** Depth Warning is thin liquidity and can trigger depth warnings (for example Telegram). Keep market-making **at or above** this level.
+- **Depth Limit** — Lower per-side depth floor than Depth Warning (also within ±5%, each side). If **either** side falls **below Depth Limit**, Orderly can restrict the market (for example into `REDUCE_ONLY`). This is the hard liquidity floor, not just an alert.
 - **Depth hold window** — How long both sides must continuously stay **≥ Depth Warning** before full trading can open. It is a **time window**, not a USDC amount. Same on Mainnet and Testnet (**10 minutes**).
-  - Check bid depth within ±2% and ask depth within ±2%.
+  - Check bid depth within ±5% and ask depth within ±5%.
   - Both must be **≥ Depth Warning** at the same time.
   - That condition must hold **without interruption for 10 consecutive minutes**.
   - If either side dips **below** Depth Warning even briefly, the timer **resets** and you need another full 10 minutes.
@@ -120,7 +120,7 @@ The market stays in `POST_ONLY` (limit orders only) until liquidity is proven co
 
 To open full trading:
 
-1. Bid depth within ±2% **and** ask depth within ±2% are each **≥ Depth Warning** for the network.
+1. Bid depth within ±5% **and** ask depth within ±5% are each **≥ Depth Warning** for the network.
 2. Both sides hold that condition for the full **depth hold window** without interruption.
 3. When the window completes, the market **can** move to `ACTIVE` (including market orders).
 
