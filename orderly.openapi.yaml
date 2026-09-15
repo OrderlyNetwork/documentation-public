@@ -4586,14 +4586,15 @@ paths:
   /v1/public/announcement:
     get:
       summary: Get announcements
-      deprecated: false
+      deprecated: true
       description: |-
+        **Legacy endpoint.** For the current announcement format, use [Get announcements (v2)](/build-on-omnichain/restful-api/public/get-announcements-v2).
+
         **Limit: 10 requests per 1 second per IP address**
 
         `GET /v1/public/announcement`
 
         Returns active platform announcements published by Orderly.
-
       tags:
         - public
       responses:
@@ -4603,6 +4604,71 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GetAnnouncementsResponse"
+
+  /v2/public/announcement:
+    get:
+      summary: Get announcements (v2)
+      deprecated: false
+      description: |-
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v2/public/announcement`
+
+        Returns active platform announcements published by Orderly.
+
+        | Request | Specification |
+        | --- | --- |
+        | Method | `GET` |
+        | Path | `/v2/public/announcement` |
+        | Authentication | Public endpoint; no API key or signature required. |
+        | Query parameters | None. Pagination and broker, language, and type filters are not supported. |
+        | Request body | None. |
+        | Response format | `application/json` |
+
+        Read announcements from `data.rows`, which is empty when there are no active announcements. If a translation is missing, clients can fall back to `message` in its provided language.
+
+        `message` can contain text in any language. `i18n` supports only five fixed locales: `zh`, `es`, `fr`, `jp`, and `ko`. The Japanese key is `jp`.
+
+        `data.last_updated_time` is the latest announcement update time retrieved by the backend. It does not necessarily equal the maximum `updated_time` in the returned rows.
+
+        Example request (replace `${BASE_URL}` with the API domain for your environment):
+
+        ```shell
+        curl "${BASE_URL}/v2/public/announcement" \
+          -H 'Accept: application/json'
+        ```
+
+      tags:
+        - public
+      security: []
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetAnnouncementsV2Response"
+              examples:
+                success:
+                  summary: Illustrative announcement response (not a live capture)
+                  value:
+                    success: true
+                    timestamp: 1789430400000
+                    data:
+                      last_updated_time: 1789426800000
+                      rows:
+                        - announcement_id: 12345
+                          message: "Community voting is now open."
+                          url: "https://example.com/vote"
+                          i18n:
+                            zh: "社群投票現已開放。"
+                            es: null
+                            fr: null
+                            jp: null
+                            ko: null
+                          type: "VOTE"
+                          updated_time: 1789426800000
 
   /v1/volume/broker/daily:
     get:
@@ -15809,6 +15875,105 @@ components:
                         description: Optional link with more details about the announcement.
                         type: string
                         example: "https://orderly.network/docs/release-notes/omnichain"
+
+    GetAnnouncementsV2Response:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+            - timestamp
+          properties:
+            timestamp:
+              description: Time the response was generated, as a Unix timestamp in milliseconds.
+              type: integer
+              format: int64
+              example: 1789430400000
+            data:
+              type: object
+              required:
+                - last_updated_time
+                - rows
+              properties:
+                last_updated_time:
+                  description: Latest announcement update time retrieved by the backend, as a Unix timestamp in milliseconds. Not necessarily the maximum updated_time in the returned rows.
+                  type: integer
+                  format: int64
+                  example: 1789426800000
+                rows:
+                  description: Currently active announcements. Returns an empty array when there are no active announcements.
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - announcement_id
+                      - message
+                      - url
+                      - i18n
+                      - type
+                      - updated_time
+                    properties:
+                      announcement_id:
+                        description: Unique ID of the announcement.
+                        type: integer
+                        format: int64
+                        example: 12345
+                      message:
+                        description: Main announcement text in any language. Use as a fallback in its provided language when a translation is missing.
+                        type: string
+                        example: "Community voting is now open."
+                      url:
+                        description: Destination link for the announcement, or null.
+                        type: string
+                        nullable: true
+                        example: "https://example.com/vote"
+                      i18n:
+                        description: Translations for five fixed locales only (zh, es, fr, jp, ko). Values can be null. The Japanese key is jp.
+                        type: object
+                        additionalProperties: false
+                        required:
+                          - zh
+                          - es
+                          - fr
+                          - jp
+                          - ko
+                        properties:
+                          zh:
+                            type: string
+                            nullable: true
+                            description: Chinese translation.
+                            example: "社群投票現已開放。"
+                          es:
+                            type: string
+                            nullable: true
+                            description: Spanish translation.
+                          fr:
+                            type: string
+                            nullable: true
+                            description: French translation.
+                          jp:
+                            type: string
+                            nullable: true
+                            description: Japanese translation.
+                          ko:
+                            type: string
+                            nullable: true
+                            description: Korean translation.
+                      type:
+                        description: Announcement category, or null.
+                        type: string
+                        nullable: true
+                        enum:
+                          - LISTING
+                          - DELISTING
+                          - VOTE
+                          - null
+                        example: "VOTE"
+                      updated_time:
+                        description: Time the announcement was updated, as a Unix timestamp in milliseconds.
+                        type: integer
+                        format: int64
+                        example: 1789426800000
 
     GetBrokerInfoResponse:
       allOf:
