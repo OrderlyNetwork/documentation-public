@@ -3,7 +3,7 @@ title: "Isolated Margin"
 description: "Discover how Isolated Margin mode works on Orderly, including per-position risk isolation."
 ---
 
-Orderly supports two margin modes for perpetual futures: **Cross Margin** and **Isolated Margin**. Cross Margin is the default and shares your entire account balance across all positions. Isolated Margin lets you allocate a fixed amount of margin to a single position, capping your maximum loss to that amount. Isolated Margin currently accepts **USDC only** as collateral.
+Orderly supports two margin modes for perpetual futures: **Cross Margin** and **Isolated Margin**. Cross Margin is the default and shares your entire account balance across all positions. Isolated Margin lets you allocate a fixed amount of margin to a single position, capping your maximum loss to that amount. Isolated Margin supports multiple eligible collateral assets, including supported non-USDC collateral, while remaining denominated and accounted for in USDC.
 
 This page explains how Isolated Margin works, how it differs from Cross Margin, and when to use each mode.
 
@@ -55,7 +55,11 @@ If an Isolated position is liquidated, only the margin assigned to that position
 
 For markets that support both modes, traders can choose either Cross Margin or Isolated Margin when placing orders. Perp Anything markets are the exception and should be treated as Isolated Margin only.
 
-**Collateral requirement:** Isolated Margin positions require USDC as collateral. Other assets in your account (such as USDT, ETH, WBTC, or SOL) cannot be used for Isolated Margin. To trade in Isolated mode, deposit USDC or convert existing assets to USDC.
+### Multi-collateral support
+
+Eligible collateral assets can support isolated-margin trading, including accounts that hold supported non-USDC collateral. Isolated margin remains denominated and accounted for in USDC. See [Multi-Collateral](/introduction/trade-on-orderly/multi-collateral) for supported collateral assets and applicable limits.
+
+When projected USDC borrowing from opening an isolated-margin position exceeds the **50,000 USDC** limit, automatic conversion of collateral into USDC is triggered to reduce the borrowing amount.
 
 ## Related Pages
 

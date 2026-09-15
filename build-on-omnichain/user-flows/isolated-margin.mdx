@@ -53,6 +53,8 @@ When using [POST `/v1/client/leverages`](/build-on-omnichain/restful-api/private
 
 Place an order specifying the `margin_mode` parameter.
 
+Isolated Margin supports eligible non-USDC collateral, while position margin remains denominated and accounted for in USDC. When projected USDC borrowing from opening an isolated-margin position exceeds the **50,000 USDC** limit, automatic conversion of collateral into USDC is triggered to reduce the borrowing amount. See [Multi-collateral support](/introduction/trade-on-orderly/perpetual-futures/isolated-margin#multi-collateral-support) for details.
+
 **API:** [POST `/v1/order`](/build-on-omnichain/restful-api/private/create-order)
 
 **Request body:**
