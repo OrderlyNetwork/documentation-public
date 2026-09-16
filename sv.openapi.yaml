@@ -1597,12 +1597,28 @@ components:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
         - type: object
+          required:
+            - success
+            - timestamp
+            - data
           properties:
+            timestamp:
+              type: integer
+              format: int64
+              description: Response timestamp in Unix milliseconds.
+              example: 1702989203989
             data:
               type: object
+              required:
+                - meta
+                - rows
               properties:
                 meta:
                   type: object
+                  required:
+                    - records_per_page
+                    - current_page
+                    - total
                   properties:
                     total:
                       type: number
@@ -1617,57 +1633,80 @@ components:
                 rows:
                   type: array
                   items:
-                    type: object
-                    properties:
-                      exchange:
-                        type: string
-                        example: "orderly"
-                      order_id:
-                        type: number
-                        example: 78151
-                      created_time:
-                        type: number
-                        example: 1653563963000
-                      updated_time:
-                        type: number
-                        example: 1653564213000
-                      type:
-                        type: string
-                        example: "LIMIT"
-                      symbol:
-                        type: string
-                        example: "PERP_WOO_USDC"
-                      side:
-                        type: string
-                        example: "BUY"
-                      quantity:
-                        type: number
-                        example: 20
-                      price:
-                        type: number
-                        example: 0.67772
-                      amount:
-                        type: number
-                        example: 10
-                      executed_quantity:
-                        type: number
-                        example: 20
-                      total_executed_quantity:
-                        type: number
-                        example: 20
-                      average_executed_price:
-                        type: number
-                        example: 0.67772
-                      status:
-                        type: string
-                        example: "NEW"
-                      is_triggered:
-                        type: string
-                        example: "false"
-                      child_orders:
-                        type: array
-                        items:
-                          type: object
+                    $ref: "#/components/schemas/VaultOpenOrder"
+    VaultOpenOrder:
+      type: object
+      required:
+        - order_id
+        - created_time
+        - updated_time
+        - type
+        - symbol
+        - side
+        - quantity
+        - price
+        - executed_quantity
+        - total_executed_quantity
+        - average_executed_price
+        - status
+        - is_triggered
+        - exchange
+        - child_orders
+      properties:
+        order_id:
+          type: integer
+          format: int64
+          example: 78151
+        created_time:
+          type: integer
+          format: int64
+          example: 1653563963000
+        updated_time:
+          type: integer
+          format: int64
+          example: 1653564213000
+        type:
+          type: string
+          example: "LIMIT"
+        symbol:
+          type: string
+          example: "PERP_WOO_USDC"
+        side:
+          type: string
+          example: "BUY"
+        quantity:
+          type: number
+          example: 20
+        price:
+          type: number
+          example: 0.67772
+        executed_quantity:
+          type: number
+          example: 0
+        total_executed_quantity:
+          type: number
+          example: 0
+        average_executed_price:
+          type: number
+          example: 0
+        status:
+          type: string
+          example: "NEW"
+        is_triggered:
+          type: boolean
+          example: false
+        exchange:
+          type: string
+          enum:
+            - orderly
+            - binance
+          example: "orderly"
+        child_orders:
+          description: Child orders, each using the same structure as the parent order.
+          type: array
+          items:
+            $ref: "#/components/schemas/VaultOpenOrder"
+          example: []
     VaultTradeHistoryResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"

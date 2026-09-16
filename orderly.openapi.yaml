@@ -4616,28 +4616,6 @@ paths:
 
         Returns active platform announcements published by Orderly.
 
-        | Request | Specification |
-        | --- | --- |
-        | Method | `GET` |
-        | Path | `/v2/public/announcement` |
-        | Authentication | Public endpoint; no API key or signature required. |
-        | Query parameters | None. Pagination and broker, language, and type filters are not supported. |
-        | Request body | None. |
-        | Response format | `application/json` |
-
-        Read announcements from `data.rows`, which is empty when there are no active announcements. If a translation is missing, clients can fall back to `message` in its provided language.
-
-        `message` can contain text in any language. `i18n` supports only five fixed locales: `zh`, `es`, `fr`, `jp`, and `ko`. The Japanese key is `jp`.
-
-        `data.last_updated_time` is the latest announcement update time retrieved by the backend. It does not necessarily equal the maximum `updated_time` in the returned rows.
-
-        Example request (replace `${BASE_URL}` with the API domain for your environment):
-
-        ```shell
-        curl "${BASE_URL}/v2/public/announcement" \
-          -H 'Accept: application/json'
-        ```
-
       tags:
         - public
       security: []
