@@ -10,7 +10,36 @@ import { Chip } from "/snippets/chip.mdx";
 
 | Release date    | Stable release                                                  |
 | --------------- | --------------------------------------------------------------- |
-| August 31, 2026 | [3.1.12](https://github.com/OrderlyNetwork/js-sdk/tree/v3.1.12) |
+| September 11, 2026 | [3.2.0](https://github.com/OrderlyNetwork/js-sdk/tree/v3.2.0) |
+
+## Version 3.2.0
+
+_September 11, 2026_
+
+<Warning>
+  **Upgrade notice: This release includes TypeScript compatibility changes.**
+
+  - `@orderly.network/types`: Removed `OrderEntity.broker_id`. Remove this field from order objects and related type references.
+  - `@orderly.network/types`: Added the required `margin_mode` field to `API.FundingFeeRow`. Update manually constructed records and test fixtures with `MarginMode.CROSS` or `MarginMode.ISOLATED`, as appropriate.
+  - `@orderly.network/hooks`: Corrected the return types of `useOrderEntry().helper.validate()` and `helper.validator()` from `Promise<OrderValidationResult | null>` to `Promise<OrderlyOrder>`. Treat successful results as order objects and update related type annotations.
+
+  See the published [types 3.2.0](https://www.npmjs.com/package/@orderly.network/types/v/3.2.0) and [hooks 3.2.0](https://www.npmjs.com/package/@orderly.network/hooks/v/3.2.0) packages.
+</Warning>
+
+This version includes the following updates:
+
+- **Multi-collateral support in isolated margin mode:** Eligible non-USDC assets now count toward available collateral when placing isolated orders or adjusting position margin.
+- **Limit execution for full-position TP/SL:** Take-profit and stop-loss orders can independently use `MARKET` or `LIMIT` execution, with a separate limit price for each. When editing an existing order, newly added TP or SL orders also support either execution type.
+- **Unsettled funding fees in the Positions list:** Added an unsettled funding fee column to the Positions list in `@orderly.network/ui-positions`. Click a value to view the corresponding position's funding fee history.
+- **USDC borrow limit checks:** `useOrderEntry().submit()` now accepts `usdcBorrowLimit` and rejects isolated, non-reduce-only orders with `USDCBorrowLimitExceededError` when projected borrowing exceeds the limit. The default limit is 50,000 USDC when no value is provided.
+- **New threshold query hook:** Added `useConvertThreshold()` to `@orderly.network/hooks` to retrieve the auto-conversion LTV and negative USDC balance thresholds.
+- **Configurable list item keys:** Added the optional `keyExtractor` prop to `ListView` in `@orderly.network/ui` to support stable list item identifiers.
+- Fixed an issue where updating the limit price of a triggered full-position take-profit order could fail. Trigger prices are read-only after the TP/SL order is triggered.
+- Fixed an issue where prices could become inconsistent between the order list and editing interfaces after pending orders were updated.
+- Fixed an issue where the Adjust Margin dialog did not update its displayed information and adjustment amount when positions or available funds changed.
+- Fixed an issue on mobile where the close-position dialog could show the wrong trading symbol after another position was closed.
+- Corrected available collateral calculations when cross-margin orders are pending.
+- Corrected maximum order quantity calculations in isolated margin mode.
 
 ## Version 3.1.12
 
