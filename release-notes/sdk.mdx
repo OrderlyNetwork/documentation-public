@@ -10,7 +10,16 @@ import { Chip } from "/snippets/chip.mdx";
 
 | Release date    | Stable release                                                  |
 | --------------- | --------------------------------------------------------------- |
-| September 11, 2026 | [3.2.0](https://github.com/OrderlyNetwork/js-sdk/tree/v3.2.0) |
+| September 17, 2026 | [3.2.1](https://github.com/OrderlyNetwork/js-sdk/tree/v3.2.1) |
+
+## Version 3.2.1
+
+_September 17, 2026_
+
+- In `@orderly.network/ui-transfer`, users can now convert USDC to USDG from the Robinhood network withdrawal form.
+- `account.assetsManager.convert()` now accepts an optional `received_asset`, and the `convert()` function returned by `useConvert()` accepts an optional `receivedAsset`. When omitted, the received asset remains USDC.
+- Market lists now include a “Show low vol.” toggle. It is on by default and remembers the user’s choice; turning it off hides markets with less than $1,000 in 24-hour trading volume.
+- Fixed conversion history to label received amounts and fees with the asset actually received.
 
 ## Version 3.2.0
 
