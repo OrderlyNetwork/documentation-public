@@ -12,24 +12,24 @@ Retrieve published announcements, product updates, and campaigns for your tradin
 | Mainnet / Production | `https://dex-api.orderly.network`         |
 | Testnet / Staging    | `https://testnet-dex-api.orderly.network` |
 
-These endpoints are hosted by the DEX Creator API. Append the complete path, for example `https://dex-api.orderly.network/api/public/v1/blogposts`. Content, IDs, slugs, and cursors are environment-specific.
+Append the complete path to the base URL, for example `https://dex-api.orderly.network/api/public/v1/blogposts`. Content, IDs, slugs, and cursors are environment-specific.
 
 Both documented endpoints use `GET` and require no API key, wallet signature, or authorization header. Responses use JSON; send `Accept: application/json`. Enum values are case-sensitive. Timestamps are ISO 8601 UTC strings, and absent optional content fields are returned as `null`. API examples use illustrative content; their slugs and broker IDs may not exist.
 
 ## Content visibility
 
-| Scope              | Request           | Content returned                                                                     |
-| ------------------ | ----------------- | ------------------------------------------------------------------------------------ |
-| Orderly's official | Omit `brokerId`   | Official Orderly posts and builder posts approved for Orderly's official feed        |
-| Builder platform   | Supply `brokerId` | Published posts for that broker, including posts available only in its platform feed |
+| Scope                      | Request           | Content returned                                                                                         |
+| -------------------------- | ----------------- | -------------------------------------------------------------------------------------------------------- |
+| Orderly's official         | Omit `brokerId`   | Official Orderly posts and builder posts approved for Orderly's official feed                            |
+| Builder's trading platform | Supply `brokerId` | Published posts for that builder's trading platform, including posts available only in its platform feed |
 
-A builder's latest published version may be newer than the version approved for Orderly's official feed. The same slug can therefore return different content and timestamps depending on `brokerId`. Use the same `brokerId` for list and detail requests. A broker-scoped request filters to that broker and does not automatically add posts from Orderly's official feed.
+The same slug can return different published content and timestamps depending on the requested feed. Use the same `brokerId` for list and detail requests. A builder-scoped request filters to that builder's trading platform and does not automatically add posts from Orderly's official feed.
 
-Builder-only visibility controls feed distribution. The endpoints remain public, so a broker ID is not a credential or confidentiality control. Draft, deleted, and unpublished posts are not returned.
+Both feeds are publicly accessible. Only published posts are returned.
 
 ## Sorting and pagination
 
-The list sorts by `startsAt` when present, otherwise `publishedAt`, descending, then by post ID descending. A start time takes precedence even when earlier than publication time. Future start times are included. Sorting uses the revision visible in the requested scope; draft changes and revisions awaiting approval for Orderly's official feed do not change that feed's ordering.
+The list sorts by `startsAt` when present, otherwise `publishedAt`, descending, then by post ID descending. A start time takes precedence even when earlier than publication time. Future start times are included. Sorting uses the published content returned by the requested feed.
 
 Start and end times are content metadata, not automatic publication or expiration controls. An ended campaign can remain listed until unpublished. `publishedAt` remains the publication timestamp.
 
@@ -58,7 +58,7 @@ Do not decode or construct cursors. Use `nextCursor`, not the number of returned
 
 ## Shared rate limit
 
-Public Blogpost endpoints share **60 requests per client IP per rolling 60 seconds at each API instance**. Coordinate requests and cache results, especially when users share an outbound IP.
+Public Blogpost endpoints share a rate limit of **60 requests per client IP per rolling 60 seconds**. Coordinate requests and cache results, especially when users share an outbound IP.
 
 | Header                  | Meaning                                        |
 | ----------------------- | ---------------------------------------------- |
@@ -83,7 +83,7 @@ Published edits, visibility changes, and unpublishing may take time to appear wh
 | ------------- | ------------------------------------------------------------------------------------------------------------------ |
 | `400`         | Correct validation issues using `error.issues[].path`. For an invalid pagination cursor, restart without a cursor. |
 | `404`         | Article unavailable. Check the slug and broker scope.                                                              |
-| `409`         | Incomplete approved revision on detail. Show temporary unavailability and retry later.                             |
+| `409`         | Article temporarily unavailable. Retry later.                                                                      |
 | `429`         | Wait for `Retry-After`.                                                                                            |
 | `500` / `503` | Retry with backoff.                                                                                                |
 

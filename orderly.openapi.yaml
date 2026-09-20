@@ -17,7 +17,7 @@ paths:
 
         Pass `nextCursor` unchanged as `cursor` to continue. Preserve the environment and filters; restart without a cursor when changing filters. Stop when `nextCursor` is null, rather than relying on the number of returned items. The feed can change between requests. No total count, page number, search parameter, or custom sort parameter is provided.
 
-        **Shared limit: 60 requests per client IP per rolling 60 seconds per API instance**, across public Blogpost endpoints. See [Blogpost API overview](/build-on-omnichain/blogpost/overview) for visibility, caching, and error handling.
+        **Shared limit: 60 requests per client IP per rolling 60 seconds**, across public Blogpost endpoints. See [Blogpost API overview](/build-on-omnichain/blogpost/overview) for visibility, caching, and error handling.
       tags:
         - public
       servers:
@@ -93,7 +93,7 @@ paths:
       description: |
         Returns one published article with rendered HTML. Use the complete slug returned by the list, including any builder prefix, and preserve the same `brokerId` for builder-scoped content. A missing, unpublished, or out-of-scope post returns 404.
 
-        **Shared limit: 60 requests per client IP per rolling 60 seconds per API instance**, across public Blogpost endpoints. See [Blogpost API overview](/build-on-omnichain/blogpost/overview) for visibility, rendering, caching, and error handling.
+        **Shared limit: 60 requests per client IP per rolling 60 seconds**, across public Blogpost endpoints. See [Blogpost API overview](/build-on-omnichain/blogpost/overview) for visibility, rendering, caching, and error handling.
       tags:
         - public
       servers:
@@ -10126,13 +10126,11 @@ components:
           schema:
             $ref: "#/components/schemas/BlogpostValidationError"
     BlogpostIncompleteRevision:
-      description: Published blogpost has an incomplete approved revision. Show temporary content unavailability and retry later.
+      description: Article temporarily unavailable. Show an unavailable-content state and retry later.
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/BlogpostServiceError"
-          example:
-            error: Published blogpost has an incomplete approved revision
     BlogpostInternalError:
       description: Failed to retrieve blogposts. Retry with backoff.
       content:
@@ -10142,13 +10140,11 @@ components:
           example:
             error: Failed to retrieve blogposts
     BlogpostUnavailable:
-      description: Blogpost database is temporarily unavailable. Retry later with backoff.
+      description: Service temporarily unavailable. Retry later with backoff.
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/BlogpostServiceError"
-          example:
-            error: Blogpost database is temporarily unavailable
     BlogpostRateLimited:
       description: Shared public Blogpost request budget exhausted. Honor Retry-After before retrying.
       headers:
