@@ -7,6 +7,155 @@ tags:
   - name: public
   - name: private
 paths:
+  /api/public/v1/blogposts:
+    get:
+      summary: List published blogposts
+      description: |
+        Returns published posts in the requested content scope. Filters are combined and enum values are case-sensitive.
+
+        Results sort by `startsAt` when present, otherwise `publishedAt`, descending, then by post ID descending. Future start times are included. Sorting uses the published revision visible in the requested scope. Start and end times are metadata, not publication or expiration controls.
+
+        Pass `nextCursor` unchanged as `cursor` to continue. Preserve the environment and filters; restart without a cursor when changing filters. Stop when `nextCursor` is null, rather than relying on the number of returned items. The feed can change between requests. No total count, page number, search parameter, or custom sort parameter is provided.
+
+        **Shared limit: 60 requests per client IP per rolling 60 seconds per API instance**, across public Blogpost endpoints. See [Blogpost API overview](/build-on-omnichain/blogpost/overview) for visibility, caching, and error handling.
+      tags:
+        - public
+      servers:
+        - url: https://dex-api.orderly.network
+          description: Mainnet / Production
+        - url: https://testnet-dex-api.orderly.network
+          description: Testnet / Staging
+      security: []
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum posts per page.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 12
+        - name: cursor
+          in: query
+          description: Opaque nextCursor from the preceding response. Omit for the first page. Do not decode or construct cursors.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 1024
+        - $ref: "#/components/parameters/blogpost_category"
+        - name: publisher
+          in: query
+          description: Filter to official Orderly or builder posts. Omit for both. Builder posts require approval to appear in Orderly's official feed.
+          schema:
+            type: string
+            enum: [ORDERLY, BUILDER]
+        - $ref: "#/components/parameters/blogpost_broker_id"
+      responses:
+        "200":
+          description: Published posts. An empty result is successful.
+          headers:
+            Cache-Control:
+              schema:
+                type: string
+                example: "public, max-age=15, s-maxage=15"
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, nextCursor]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/BlogpostSummary"
+                  nextCursor:
+                    type: string
+                    nullable: true
+                    description: Opaque cursor for the next request; null means no more pages.
+                    example: null
+        "400":
+          description: Request validation failed, or invalid pagination cursor. Restart without a cursor if the cursor is invalid.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/BlogpostValidationError"
+                  - $ref: "#/components/schemas/BlogpostServiceError"
+        "429":
+          $ref: "#/components/responses/BlogpostRateLimited"
+        "500":
+          $ref: "#/components/responses/BlogpostInternalError"
+        "503":
+          $ref: "#/components/responses/BlogpostUnavailable"
+  /api/public/v1/blogposts/{slug}:
+    get:
+      summary: Get published blogpost
+      description: |
+        Returns one published article with rendered HTML. Use the complete slug returned by the list, including any builder prefix, and preserve the same `brokerId` for builder-scoped content. A missing, unpublished, or out-of-scope post returns 404.
+
+        **Shared limit: 60 requests per client IP per rolling 60 seconds per API instance**, across public Blogpost endpoints. See [Blogpost API overview](/build-on-omnichain/blogpost/overview) for visibility, rendering, caching, and error handling.
+      tags:
+        - public
+      servers:
+        - url: https://dex-api.orderly.network
+          description: Mainnet / Production
+        - url: https://testnet-dex-api.orderly.network
+          description: Testnet / Staging
+      security: []
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          description: Exact returned slug, including any builder prefix. Lowercase letters, digits, hyphens, and underscores; the last character must be a letter or digit.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 165
+            pattern: "^[a-z0-9_-]*[a-z0-9]$"
+          example: example_dex-autumn-trading-campaign
+        - $ref: "#/components/parameters/blogpost_broker_id"
+      responses:
+        "200":
+          description: Published article in the requested scope.
+          headers:
+            Cache-Control:
+              schema:
+                type: string
+                example: "public, max-age=30, s-maxage=30, stale-while-revalidate=60"
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/BlogpostSummary"
+                      - type: object
+                        required: [html]
+                        properties:
+                          html:
+                            type: string
+                            description: Server-rendered, sanitized article HTML. Raw Markdown is not returned. Applications supply layout and styling.
+                            example: "<h2>Campaign details</h2><p>Explore the campaign schedule and participation requirements.</p>"
+        "400":
+          $ref: "#/components/responses/BlogpostInvalidRequest"
+        "404":
+          description: Blogpost not found. Check the slug and broker scope.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogpostServiceError"
+              example:
+                error: Blogpost not found
+        "409":
+          $ref: "#/components/responses/BlogpostIncompleteRevision"
+        "429":
+          $ref: "#/components/responses/BlogpostRateLimited"
+        "500":
+          $ref: "#/components/responses/BlogpostInternalError"
+        "503":
+          $ref: "#/components/responses/BlogpostUnavailable"
   /v1/client/add_sub_account:
     post:
       summary: Add sub account
@@ -9969,7 +10118,97 @@ paths:
                 $ref: "#/components/schemas/UnarchiveOrderEnumResponse"
 
 components:
+  responses:
+    BlogpostInvalidRequest:
+      description: Request validation failed. Correct the field identified by each issue's path.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BlogpostValidationError"
+    BlogpostIncompleteRevision:
+      description: Published blogpost has an incomplete approved revision. Show temporary content unavailability and retry later.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BlogpostServiceError"
+          example:
+            error: Published blogpost has an incomplete approved revision
+    BlogpostInternalError:
+      description: Failed to retrieve blogposts. Retry with backoff.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BlogpostServiceError"
+          example:
+            error: Failed to retrieve blogposts
+    BlogpostUnavailable:
+      description: Blogpost database is temporarily unavailable. Retry later with backoff.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BlogpostServiceError"
+          example:
+            error: Blogpost database is temporarily unavailable
+    BlogpostRateLimited:
+      description: Shared public Blogpost request budget exhausted. Honor Retry-After before retrying.
+      headers:
+        Retry-After:
+          description: Seconds to wait before retrying.
+          schema:
+            type: integer
+            example: 30
+        X-RateLimit-Limit:
+          description: Maximum requests in the window.
+          schema:
+            type: integer
+            example: 60
+        X-RateLimit-Remaining:
+          description: Remaining requests in the current budget.
+          schema:
+            type: integer
+            example: 0
+        X-RateLimit-Reset:
+          description: Reset timestamp in Unix seconds.
+          schema:
+            type: integer
+            format: int64
+        Cache-Control:
+          schema:
+            type: string
+            example: no-store
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [error, code, retryAfter]
+            properties:
+              error:
+                type: string
+                example: Blogpost public rate limit exceeded
+              code:
+                type: string
+                example: BLOGPOST_PUBLIC_RATE_LIMITED
+              retryAfter:
+                type: integer
+                description: Remaining wait in seconds. Example value is illustrative.
+                example: 30
   parameters:
+    blogpost_category:
+      name: category
+      in: query
+      description: Filter by category. Omit for all categories. Values are case-sensitive.
+      schema:
+        type: string
+        enum: [ANNOUNCEMENT, UPDATE, CAMPAIGN]
+    blogpost_broker_id:
+      name: brokerId
+      in: query
+      description: Builder-platform scope. Trimmed length must be 1-128 characters. Omit for Orderly's official feed. Preserve this value when opening an article from a builder-scoped list. This filters to the broker without automatically adding posts from Orderly's official feed.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 128
+      example: example_dex
     orderly_timestamp:
       name: orderly-timestamp
       in: header
@@ -10028,6 +10267,152 @@ components:
       schema:
         type: string
   schemas:
+    BlogpostSummary:
+      type: object
+      required:
+        [
+          id,
+          publisher,
+          category,
+          slug,
+          title,
+          summary,
+          coverUrl,
+          coverLogoUrl,
+          keywords,
+          startsAt,
+          endsAt,
+          ctaUrl,
+          author,
+          publishedAt,
+          updatedAt
+        ]
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Stable post identifier for UI keys and deduplication.
+          example: "11111111-1111-4111-8111-111111111111"
+        publisher:
+          type: string
+          enum: [ORDERLY, BUILDER]
+          example: BUILDER
+        category:
+          type: string
+          enum: [ANNOUNCEMENT, UPDATE, CAMPAIGN]
+          example: CAMPAIGN
+        slug:
+          type: string
+          description: Complete identifier used in the detail URL, including any builder prefix.
+          example: example_dex-autumn-trading-campaign
+        title:
+          type: string
+          example: Autumn trading campaign
+        summary:
+          type: string
+          description: Short description for cards and previews.
+          example: Explore the campaign schedule and participation requirements.
+        coverUrl:
+          type: string
+          nullable: true
+          description: Optional banner-image URL.
+          example: https://images.example.com/campaign-banner.webp
+        coverLogoUrl:
+          type: string
+          nullable: true
+          description: Optional post-specific logo URL, independent of the banner and author logo.
+          example: null
+        keywords:
+          type: array
+          description: Article keywords; may be empty.
+          items:
+            type: string
+          example: [trading, campaign]
+        startsAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: Start time in UTC. When present, takes precedence over publishedAt for list sorting, even if earlier. Does not automatically publish the post.
+          example: "2026-10-01T00:00:00.000Z"
+        endsAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: End time in UTC. Does not determine sorting or automatically remove the post.
+          example: "2026-10-31T23:59:00.000Z"
+        ctaUrl:
+          type: string
+          nullable: true
+          description: Optional HTTPS call-to-action URL. The consuming application supplies the button label.
+          example: https://example.com/campaign
+        author:
+          type: object
+          required: [brokerId, name, logo]
+          properties:
+            brokerId:
+              type: string
+              description: Broker ID captured for the published revision. Official posts use orderly.
+              example: example_dex
+            name:
+              type: string
+              description: Author or DEX display name captured for the published revision.
+              example: Example DEX
+            logo:
+              type: string
+              nullable: true
+              description: Current DEX avatar; may be an image data URI. Null for official Orderly posts or when unavailable. Can change independently of article timestamps; separate from coverLogoUrl.
+              example: null
+        publishedAt:
+          type: string
+          format: date-time
+          description: Publication time in UTC for the requested scope. Orderly's official feed and builder-platform feeds may have different times. Not replaced by startsAt.
+          example: "2026-09-20T12:00:00.000Z"
+        updatedAt:
+          type: string
+          format: date-time
+          description: Update time in UTC of the visible published revision for the requested scope, not the latest draft edit.
+          example: "2026-09-20T12:00:00.000Z"
+    BlogpostServiceError:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          description: Service error message. Use HTTP status and structured fields for error handling.
+    BlogpostValidationError:
+      type: object
+      required: [success, error]
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: object
+          required: [issues]
+          properties:
+            issues:
+              type: array
+              description: Validation issues. Each path identifies the affected query or path parameter; other fields depend on the validation failure.
+              items:
+                type: object
+                properties:
+                  path:
+                    type: array
+                    items:
+                      oneOf:
+                        - type: string
+                        - type: integer
+                  code:
+                    type: string
+                  message:
+                    type: string
+              example:
+                - origin: number
+                  code: too_big
+                  maximum: 100
+                  inclusive: true
+                  path: [limit]
+                  message: "Too big: expected number to be <=100"
     ReceiverAddressResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
