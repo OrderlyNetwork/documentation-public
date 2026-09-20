@@ -1,0 +1,360 @@
+---
+title: "Writing and formatting blogposts"
+description: "Format blogpost content with Markdown, upload images, embed videos, and prepare your article for publication."
+---
+
+Use the blogpost editor to publish announcements, updates, and campaigns for your trading platform. Write the article in **Content** using Markdown: plain text with simple symbols for headings, emphasis, lists, links, and media.
+
+## Start here
+
+1. Create a blogpost and choose **Announcement**, **Update**, or **Campaign**.
+2. Enter **Title** and **Summary** in their own fields.
+3. Write the article in **Content**, starting with an introduction or a `##` heading.
+4. Use **Upload image** and **Embed video** to add media.
+5. Check **Live preview** and save your draft before publishing.
+
+The preview is illustrative. Your trading platform may display the content with different styling or positioning.
+
+<Note>
+  Copy the text inside the example boxes into Content. Do not copy the surrounding triple-backtick
+  markers: code blocks are not supported in blogposts.
+</Note>
+
+## Formatting cheat sheet
+
+| What you want      | What to type                                                             |
+| ------------------ | ------------------------------------------------------------------------ |
+| Main section       | `## Campaign details`                                                    |
+| Subsection         | `### How to join`                                                        |
+| Smaller subsection | `#### Eligibility`                                                       |
+| Bold               | `**Important information**`                                              |
+| Italic             | `*Additional context*`                                                   |
+| Bullet item        | `- One requirement`                                                      |
+| Numbered item      | `1. First step`                                                          |
+| Quote or callout   | `> A short note for readers.`                                            |
+| Link               | `[Visit our DEX](https://example.com/)`                                  |
+| Divider            | `---` on its own line, with blank lines around it                        |
+| Image              | Use **Insert image at cursor** for an uploaded image                     |
+| Video              | Use **Embed video**, or a supported link with the `"embed-video"` marker |
+
+## Paragraphs and line breaks
+
+Separate paragraphs with a blank line:
+
+```markdown
+Our trading campaign is now live.
+
+Read the requirements below before participating.
+```
+
+Pressing Enter once usually keeps text in the same paragraph. For a deliberate line break within a paragraph, add a backslash at the end of the first line:
+
+```markdown
+Registration opens on October 1.\
+Trading begins on October 5.
+```
+
+## Headings
+
+Use `##`, `###`, and `####`, with a space after the hash symbols:
+
+```markdown
+## Campaign details
+
+Introduce the campaign here.
+
+### How to join
+
+Explain the steps here.
+
+#### Eligibility
+
+Explain who can participate here.
+```
+
+The editor has a separate Title field, so do not use `#` headings in Content. Five- and six-level headings are also unsupported. Use `##` for main sections and `###` for their subsections.
+
+## Bold and italic
+
+```markdown
+**Registration is required.**
+
+_All times are in UTC._
+
+Trade on **Example DEX** during the campaign period.
+```
+
+Use bold for short points that need emphasis rather than entire paragraphs.
+
+## Lists
+
+Use bullets for requirements and numbered lists for steps:
+
+```markdown
+- Register for the campaign.
+- Trade on the participating DEX.
+- Meet the minimum trading volume.
+
+1. Open the campaign page.
+2. Connect your wallet.
+3. Review the rules and register.
+```
+
+Indent nested bullets beneath their parent:
+
+```markdown
+- Check your eligibility.
+  - Use a supported wallet.
+  - Review the campaign's regional restrictions.
+- Complete registration.
+```
+
+Checkbox/task-list syntax such as `- [ ] Register` is not supported.
+
+## Links
+
+Put the label in square brackets and the destination in parentheses:
+
+```markdown
+[View the campaign](https://example.com/campaign)
+```
+
+Use complete **HTTPS** addresses. HTTP, email (`mailto:`), JavaScript, and relative links such as `/campaign` are unsupported. Link labels do not need an `@` prefix. Plain HTTPS URLs are accepted, but descriptive labels are easier to read.
+
+## Quotes and dividers
+
+Start a quotation or callout with `>`:
+
+```markdown
+> Important: only trades made during the campaign period count toward rewards.
+```
+
+Custom colored alert boxes are not supported. To insert a divider, put `---` on its own line, with blank lines before and after:
+
+```markdown
+The campaign details are listed above.
+
+---
+
+## Frequently asked questions
+
+Find answers below.
+```
+
+## Tables
+
+Use pipes between columns and a row of dashes below the header:
+
+```markdown
+| Tier   | Minimum trading volume | Reward    |
+| ------ | ---------------------- | --------- |
+| Bronze | $10,000                | 1 entry   |
+| Silver | $50,000                | 3 entries |
+| Gold   | $100,000               | 5 entries |
+```
+
+Alignment markers are supported:
+
+```markdown
+| Item           |  Status   | Amount |
+| :------------- | :-------: | -----: |
+| Example reward | Available |   $100 |
+```
+
+Keep tables narrow enough for mobile. Use subsections or bullets for lengthy requirements. Write a literal pipe inside a cell as `\|`.
+
+## Add images
+
+1. Click **Upload image** above Content and choose your file.
+2. Find it in **Uploaded images** below Content.
+3. Place the text cursor where the image should appear.
+4. Click **Insert image at cursor**, or use **Copy image Markdown** and paste it.
+5. Check Live preview and save your draft.
+
+Uploading and inserting are separate steps. An uploaded image appears in the article body only after its Markdown reference is inserted.
+
+### Image Markdown
+
+The editor generates a reference like this:
+
+```markdown
+![Trading dashboard showing the campaign leaderboard](asset://123e4567-e89b-42d3-a456-426614174000)
+```
+
+Use the reference generated for an image uploaded to the current post. The ID above is illustrative; invented IDs and references from other posts will not work.
+
+- The leading `!` makes an image rather than a text link.
+- Edit the text inside `[...]` to describe the image for accessibility.
+- Keep the `asset://...` reference unchanged.
+- Put the image on its own line, with blank lines around it.
+- For a visible caption, add a paragraph below the image. The accessibility description is not a visible caption.
+
+External image Markdown such as `![Chart](https://example.com/chart.png)` is unsupported. If you have permission to use the image, download and upload it through the editor. HTML image tags and base64/data-URI images are also unsupported in Content.
+
+### Banner, logo, and body images
+
+| Image type | Where to set it                       | Purpose                     |
+| ---------- | ------------------------------------- | --------------------------- |
+| Banner     | **Banner image** or **Set as banner** | Optional cover/banner       |
+| Logo       | **Logo image** or **Set as logo**     | Optional post-specific logo |
+| Body image | Insert the reference in **Content**   | Image within the article    |
+
+Selecting a banner or logo does not insert it into Content. Insert the reference separately if it should also appear in the body. Banner and logo must use different uploaded assets when both are selected.
+
+Images display responsively. Custom width, height, alignment, and CSS cannot be specified in image Markdown. Before deleting an image, remove body references and clear any banner/logo selection using it. Images used by published versions may still be in use.
+
+### Image limits
+
+| Limit                        | Maximum                                     |
+| ---------------------------- | ------------------------------------------- |
+| Supported formats            | PNG, JPEG, WebP                             |
+| Individual file size         | 5 MiB (5,242,880 bytes)                     |
+| Width or height              | 4,096 pixels per dimension                  |
+| Total uploaded size per post | 25 MiB (26,214,400 bytes)                   |
+| Uploaded assets per post     | 20, including banner, logo, and body assets |
+| Image occurrences in Content | 10                                          |
+
+Repeated references to the same image count toward the 10-occurrence limit. GIF and SVG uploads are unsupported.
+
+## Embed videos
+
+1. Place the cursor where the video should appear.
+2. Click **Embed video** above Content.
+3. Enter a descriptive **Video title**.
+4. Paste a supported HTTPS YouTube or Vimeo URL.
+5. Click **Insert video** and check Live preview.
+
+The dialog inserts Markdown and converts supported share/watch URLs into embed URLs.
+
+### Video Markdown
+
+Use a link with the exact marker `"embed-video"`:
+
+```markdown
+[Watch the walkthrough](https://www.youtube.com/watch?v=dQw4w9WgXcQ "embed-video")
+
+[Watch the walkthrough](https://vimeo.com/76979871 "embed-video")
+```
+
+Replace these example URLs and titles with your own. Put each embed in its own paragraph, with blank lines before and after:
+
+```markdown
+## Watch the walkthrough
+
+Learn how to find the campaign and review its requirements.
+
+[Campaign walkthrough](https://youtu.be/dQw4w9WgXcQ "embed-video")
+
+After watching, follow the steps below.
+```
+
+Without `"embed-video"`, the URL is an ordinary clickable link:
+
+```markdown
+[Open the walkthrough on YouTube](https://youtu.be/dQw4w9WgXcQ)
+```
+
+### Supported URLs and limits
+
+| Provider                       | Accepted formats                                                                                                                                             |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| YouTube                        | `https://www.youtube.com/watch?v=VIDEO_ID`, `https://youtu.be/VIDEO_ID`, `https://www.youtube.com/shorts/VIDEO_ID`, `https://www.youtube.com/embed/VIDEO_ID` |
+| YouTube privacy-enhanced embed | `https://www.youtube-nocookie.com/embed/VIDEO_ID`                                                                                                            |
+| Vimeo                          | `https://vimeo.com/VIDEO_ID`, `https://player.vimeo.com/video/VIDEO_ID`                                                                                      |
+
+- Up to **5 embedded videos** per post.
+- Titles must contain **1-120 characters**.
+- URLs must be HTTPS and no longer than **2,048 characters**.
+- Use individual videos, not channels or playlists.
+- Sharing/tracking parameters are removed during URL conversion. Do not rely on timestamp parameters to set the player's start position.
+- Videos must permit embedding for your audience. Private, removed, region-restricted, or embedding-disabled videos may not play.
+- Direct video uploads, MP4 links as players, other providers, and pasted HTML iframe code are unsupported. Use an ordinary HTTPS link for other providers.
+
+## Unsupported formatting
+
+| Unsupported content                                 | Use instead                          |
+| --------------------------------------------------- | ------------------------------------ |
+| `#` heading                                         | Title field, then `##` sections      |
+| `#####` or `######` headings                        | `##`, `###`, or `####`               |
+| Inline code using backticks                         | Plain or bold text                   |
+| Fenced or indented code blocks                      | Paragraphs or lists                  |
+| Strikethrough (`~~text~~`)                          | Rewrite or remove text               |
+| Task lists (`- [ ]` or `- [x]`)                     | Ordinary bullets                     |
+| Raw HTML, including `<br>`, `<img>`, and `<iframe>` | Markdown line breaks and media tools |
+| CSS, scripts, custom embed widgets                  | Supported Markdown and media         |
+| External images in image syntax                     | Upload images to the current post    |
+| HTTP or relative links                              | Complete HTTPS links                 |
+
+Avoid four-space-indented ordinary paragraphs: Markdown interprets them as code blocks. Emojis and ordinary Unicode text are supported, but invisible control or direction-changing characters may be rejected.
+
+## Ready-to-edit template
+
+Set Title and Summary separately. Copy the following into Content, replace the sample details, and insert your own images with the editor:
+
+```markdown
+## About the campaign
+
+Join our trading campaign on Example DEX. Read the schedule and requirements before registering.
+
+> All campaign times are shown in UTC.
+
+## How to participate
+
+1. Open the campaign page.
+2. Connect a supported wallet.
+3. Read the rules and register.
+4. Trade during the campaign period.
+
+## Requirements
+
+- Complete registration before trading.
+- Use the participating DEX.
+- Meet the required trading volume.
+
+## Rewards
+
+| Tier   | Minimum trading volume | Reward    |
+| ------ | ---------------------- | --------- |
+| Bronze | $10,000                | 1 entry   |
+| Silver | $50,000                | 3 entries |
+
+## Important information
+
+**Review the full rules before joining.**
+
+[Read the campaign rules](https://example.com/campaign/rules)
+
+---
+
+## Get started
+
+[Visit the campaign](https://example.com/campaign)
+```
+
+## Before publishing
+
+- **Title:** required, up to 120 characters. **Summary:** required for publication, up to 80 characters.
+- **Content:** required for publication, up to 100 KiB (102,400 UTF-8 bytes). This is a byte limit, not a character count.
+- **Links:** at most 50 ordinary link occurrences, with URLs up to 2,048 characters.
+- **Campaign dates:** require at least a Start time or End time. Announcements and Updates can omit both. If both are set, End time must follow Start time. Use the editor's UTC fields; dates written in Content do not populate those fields.
+- Check headings, lists, tables, and media in the preview. Use descriptive link labels, image descriptions, and video titles.
+- Remove placeholders and verify dates, eligibility, rewards, links, and terms.
+- Save your draft. If publishing fails, preserve your content and read the error before retrying.
+
+## Troubleshooting
+
+| What you see                           | What to check                                                                                                                 |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Heading-level error                    | Use `##`, `###`, or `####`.                                                                                                   |
+| Unsupported formatting                 | Remove code blocks, backticks, strikethrough, or checkbox lists.                                                              |
+| Raw HTML error                         | Replace pasted HTML with supported Markdown or media tools.                                                                   |
+| Image not found or invalid reference   | Insert the reference from Uploaded images for this post.                                                                      |
+| Uploaded image absent from the article | Use Insert image at cursor or paste its generated Markdown into Content.                                                      |
+| Video appears as a link                | Use Embed video or the exact `"embed-video"` marker.                                                                          |
+| Invalid video embed                    | Check the URL, title, five-video limit, and separate paragraph.                                                               |
+| Player cannot play                     | Check video visibility and embedding permissions.                                                                             |
+| Size or complexity error               | Shorten the article, reduce nested lists or oversized tables, and check media/link limits.                                    |
+| Too many requests                      | Wait for the displayed retry interval.                                                                                        |
+| Forbidden or no response               | Preserve the draft and contact support if it persists. Share the environment, action, error, and a small reproducing snippet. |
+
+For displaying published articles in your application, see the [Blogpost API overview](/build-on-omnichain/blogpost/overview).

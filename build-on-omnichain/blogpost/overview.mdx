@@ -1,0 +1,92 @@
+---
+title: "Blogpost API"
+description: "Display published Orderly announcements, product updates, and builder campaigns using the public Blogpost API."
+---
+
+Retrieve published announcements, product updates, and campaigns for your trading platform or website. Use [List published blogposts](/build-on-omnichain/blogpost/list-published-blogposts) for a feed and [Get published blogpost](/build-on-omnichain/blogpost/get-published-blogpost) for an article with rendered HTML.
+
+To prepare article content in the editor, see [Writing and formatting blogposts](/build-on-omnichain/blogpost/markdown-guide).
+
+## API domains
+
+| Environment          | Base URL                                  |
+| -------------------- | ----------------------------------------- |
+| Mainnet / Production | `https://dex-api.orderly.network`         |
+| Testnet / Staging    | `https://testnet-dex-api.orderly.network` |
+
+Append the complete path to the base URL, for example `https://dex-api.orderly.network/api/public/v1/blogposts`. Content, IDs, slugs, and cursors are environment-specific.
+
+Both documented endpoints use `GET` and require no API key, wallet signature, or authorization header. Responses use JSON; send `Accept: application/json`. Enum values are case-sensitive. Timestamps are ISO 8601 UTC strings, and absent optional content fields are returned as `null`. API examples use illustrative content; their slugs and broker IDs may not exist.
+
+## Content visibility
+
+| Scope                      | Request           | Content returned                                                                                         |
+| -------------------------- | ----------------- | -------------------------------------------------------------------------------------------------------- |
+| Orderly's official         | Omit `brokerId`   | Official Orderly posts and builder posts approved for Orderly's official feed                            |
+| Builder's trading platform | Supply `brokerId` | Published posts for that builder's trading platform, including posts available only in its platform feed |
+
+The same slug can return different published content and timestamps depending on the requested feed. Use the same `brokerId` for list and detail requests. A builder-scoped request filters to that builder's trading platform and does not automatically add posts from Orderly's official feed.
+
+Both feeds are publicly accessible. Only published posts are returned.
+
+## Sorting and pagination
+
+The list sorts by `startsAt` when present, otherwise `publishedAt`, descending, then by post ID descending. A start time takes precedence even when earlier than publication time. Future start times are included. Sorting uses the published content returned by the requested feed.
+
+Start and end times are content metadata, not automatic publication or expiration controls. An ended campaign can remain listed until unpublished. `publishedAt` remains the publication timestamp.
+
+1. Request the first page without `cursor`.
+2. Pass the returned `nextCursor` unchanged as `cursor` for the next page.
+3. Preserve the environment and filters. Restart from the first page when changing filters.
+4. Stop when `nextCursor` is `null`.
+
+Do not decode or construct cursors. Use `nextCursor`, not the number of returned items, to decide whether to continue. The feed can change between requests. There is no total count, page number, search parameter, or custom sort parameter. Empty results are successful:
+
+```json
+{
+  "data": [],
+  "nextCursor": null
+}
+```
+
+## Rendering articles
+
+- Render banners, post logos, author avatars, dates, and CTA links only when present. `startsAt` and `endsAt` can both be absent.
+- Use `id` for stable UI keys and deduplication. Use the full returned `slug` for article requests.
+- The author's avatar can be an image data URI and can change independently of article timestamps. It is separate from `coverLogoUrl`.
+- Detail responses add sanitized, server-rendered `html`. Raw Markdown is not returned.
+- HTML can contain paragraphs, H2-H4 headings, emphasis, lists, blockquotes, links, tables, images, and supported YouTube/Vimeo embeds. Provide responsive styles; video wrappers use the `blogpost-video-embed` class.
+- Applications supply the layout, styling, date formatting, and CTA button label. The editor preview is illustrative.
+
+## Shared rate limit
+
+Public Blogpost endpoints share a rate limit of **60 requests per client IP per rolling 60 seconds**. Coordinate requests and cache results, especially when users share an outbound IP.
+
+| Header                  | Meaning                                        |
+| ----------------------- | ---------------------------------------------- |
+| `X-RateLimit-Limit`     | Maximum requests in the window                 |
+| `X-RateLimit-Remaining` | Remaining requests in the current budget       |
+| `X-RateLimit-Reset`     | Reset timestamp in Unix seconds                |
+| `Retry-After`           | On HTTP `429`, seconds to wait before retrying |
+
+Rate-limit responses include `error`, `code: "BLOGPOST_PUBLIC_RATE_LIMITED"`, and `retryAfter` in seconds. Honor `Retry-After` and avoid immediate retry loops.
+
+## Caching and errors
+
+| Response                                 | `Cache-Control`                                              |
+| ---------------------------------------- | ------------------------------------------------------------ |
+| Successful list                          | `public, max-age=15, s-maxage=15`                            |
+| Successful detail                        | `public, max-age=30, s-maxage=30, stale-while-revalidate=60` |
+| Service errors and rate-limit rejections | `no-store`                                                   |
+
+Published edits, visibility changes, and unpublishing may take time to appear while caches expire. Detail responses allow stale content while revalidation occurs.
+
+| HTTP status   | Handling                                                                                                           |
+| ------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `400`         | Correct validation issues using `error.issues[].path`. For an invalid pagination cursor, restart without a cursor. |
+| `404`         | Article unavailable. Check the slug and broker scope.                                                              |
+| `409`         | Article temporarily unavailable. Retry later.                                                                      |
+| `429`         | Wait for `Retry-After`.                                                                                            |
+| `500` / `503` | Retry with backoff.                                                                                                |
+
+Service errors normally contain an `error` string; validation errors contain `success: false` and an `error.issues` array. Use HTTP status and structured fields instead of matching English error text. Check the content type before parsing: an intermediary can return a non-JSON error.
