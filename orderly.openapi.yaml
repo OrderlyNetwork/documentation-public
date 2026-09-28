@@ -11,7 +11,9 @@ paths:
     get:
       summary: Get daily conversion volume
       description: |
-        Returns daily conversion volume for a builder or for all of Orderly when `broker_id` is omitted.
+        Returns daily asset conversion volume for a builder or for all of Orderly when `broker_id` is omitted.
+
+        Asset conversion transactions are initiated by Orderly trading services. This volume excludes spot swaps, which are on-chain swaps executed directly between a wallet and a swap service.
 
         This is a public endpoint with no API key or signature required. Only Mainnet / Production data is available.
 
@@ -72,7 +74,9 @@ paths:
     get:
       summary: Get historical conversion volume
       description: |
-        Returns historical daily conversion volume for a builder or for all of Orderly when `broker_id` is omitted. There is no maximum query date-range limit.
+        Returns historical daily asset conversion volume for a builder or for all of Orderly when `broker_id` is omitted. There is no maximum query date-range limit.
+
+        Asset conversion transactions are initiated by Orderly trading services. This volume excludes spot swaps, which are on-chain swaps executed directly between a wallet and a swap service.
 
         This is a public endpoint with no API key or signature required. Only Mainnet / Production data is available.
 
@@ -10428,7 +10432,7 @@ components:
                     example: "2026-09-24"
                   convert_volume:
                     type: number
-                    description: Conversion volume for the date and requested builder or platform scope.
+                    description: Asset conversion volume for the date and requested builder or platform scope. Covers conversions initiated by Orderly trading services; excludes on-chain spot swaps executed directly between a wallet and a swap service.
                     example: 736.390842
             snapshot_time:
               type: integer
