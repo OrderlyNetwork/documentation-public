@@ -3112,14 +3112,9 @@ paths:
         overall create order rate limit.
 
 
-        **Reduce-only limitation:** `POST /v1/batch-order` does not support or
-        apply `reduce_only`. Do not include `reduce_only` in a batch order item.
-        If reduce-only execution is required, submit each order separately using
-        [`POST /v1/order`](/build-on-omnichain/restful-api/private/create-order)
-        with `reduce_only: true`. Without this constraint, an order may increase
-        a position instead of reducing it.
-
-
+        Supports reduce-only orders. Set `reduce_only: true` on an individual
+        item in the `orders` array to restrict that order to reducing an existing
+        position. Configure this flag independently for each order in the batch.
 
 
         Note: This endpoint requires `trading` scope in orderly key.
@@ -3133,9 +3128,8 @@ paths:
         - $ref: "#/components/parameters/recv_window_header"
       requestBody:
         description: >-
-          `reduce_only` is not supported or applied to batch order items. Use
-          `POST /v1/order` with `reduce_only: true` when reduce-only execution is
-          required.
+          Send order items in the `orders` array. Each item can include
+          `reduce_only: true` to restrict it to reducing an existing position.
         content:
           application/json:
             schema:
@@ -13846,9 +13840,8 @@ components:
           type: string
     BatchCreateOrderBody:
       description: >-
-        Fields for one `POST /v1/batch-order` item. `reduce_only` is not
-        supported by this endpoint and is intentionally not included in this
-        schema.
+        Fields for one `POST /v1/batch-order` item. Set `reduce_only: true`
+        to restrict this order to reducing an existing position.
       required:
         - order_type
         - side
@@ -13867,6 +13860,10 @@ components:
           type: number
         order_amount:
           type: number
+        reduce_only:
+          type: boolean
+          description: When true, this order can only reduce an existing position and cannot increase or open a position. Set independently for each item in the orders array.
+          example: true
         visible_quantity:
           type: number
         side:
