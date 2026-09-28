@@ -7,6 +7,117 @@ tags:
   - name: public
   - name: private
 paths:
+  /md/volume/builder/daily_stats:
+    get:
+      summary: Get builder daily volume
+      description: |
+        `GET /md/volume/builder/daily_stats`
+
+        Returns daily trading statistics for the specified builder. This public endpoint requires no API key or signature and supports Mainnet and Testnet.
+
+        Omit `market` to retrieve total trading volume, including RWA markets. Set `market=rwa` to retrieve RWA trading volume only.
+      tags:
+        - public
+      servers:
+        - url: https://api.orderly.org
+          description: Mainnet
+        - url: https://testnet-api.orderly.org
+          description: Testnet
+      security: []
+      parameters:
+        - name: broker_id
+          in: query
+          required: true
+          description: Builder's broker ID for the requested daily trading statistics.
+          schema:
+            type: string
+          example: demo
+        - name: market
+          in: query
+          required: false
+          description: Set to rwa for RWA volume only. Omit to include all markets, including RWA.
+          schema:
+            type: string
+          example: rwa
+      responses:
+        "200":
+          description: Daily statistics returned directly as an array. The example uses illustrative values.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BuilderDailyVolumeRecord"
+              example:
+                - date: "2026-09-27T00:00:00.000Z"
+                  dateString: "2026-9-27"
+                  createdAt: "2026-09-27T00:00:00.000Z"
+                  updatedAt: "2026-09-28T06:17:33.322Z"
+                  builderFee: "125.50000000"
+                  takerVolume: "250000.00000000"
+                  makerVolume: "200000.00000000"
+                  activeUser: 25
+  /v1/public/broker/daily_fee_revenue:
+    get:
+      summary: Get builder daily revenue settlement history (public)
+      description: |
+        `GET /v1/public/broker/daily_fee_revenue`
+
+        Returns daily revenue settlement records for the builder specified by `broker_id`. This public endpoint requires no API key or signature and supports Mainnet and Testnet.
+
+        `broker_id`, `start_date`, and `end_date` are required. Dates must use `YYYY-MM-DD`, with `start_date` less than or equal to `end_date`. The date range must be valid and cannot exceed 180 days.
+
+        Uses the same revenue fields as [the builder admin daily revenue API](https://orderly.network/docs/build-on-omnichain/restful-api/private/get-builders-daily-revenue-settlement-history). Each row's `date` is the settlement date, at `00:00 UTC` on the day after the revenue date. Results are sorted by `date` descending.
+      tags:
+        - public
+      servers:
+        - url: https://api.orderly.org
+          description: Mainnet
+        - url: https://testnet-api.orderly.org
+          description: Testnet
+      security: []
+      parameters:
+        - name: broker_id
+          in: query
+          required: true
+          description: Builder's broker ID for the requested daily revenue settlement records.
+          schema:
+            type: string
+          example: demo
+        - name: start_date
+          in: query
+          required: true
+          description: Start settlement date in UTC, formatted as YYYY-MM-DD. Must be less than or equal to end_date.
+          schema:
+            type: string
+            format: date
+          example: "2026-08-12"
+        - name: end_date
+          in: query
+          required: true
+          description: End settlement date in UTC, formatted as YYYY-MM-DD. The range from start_date must not exceed 180 days.
+          schema:
+            type: string
+            format: date
+          example: "2026-08-19"
+      responses:
+        "200":
+          description: Daily revenue settlement records for the requested builder. The example uses illustrative values.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetBuilderDailyFeeRevenueResponse"
+              example:
+                success: true
+                data:
+                  rows:
+                    - date: "2026-08-19"
+                      permissionless_listing_fee_share: 0
+                      distributor_fee_share: 0
+                      builder_fee_revenue: 125.5
+                      cross_broker_fee: 0
+                      total_revenue: 125.5
+                timestamp: 1790577553456
   /orderly/api/v1/data/convert_volume:
     get:
       summary: Get daily conversion volume
@@ -10405,6 +10516,44 @@ components:
       schema:
         type: string
   schemas:
+    BuilderDailyVolumeRecord:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+          description: Date of the daily statistics as an ISO 8601 UTC timestamp.
+          example: "2026-09-27T00:00:00.000Z"
+        dateString:
+          type: string
+          description: Calendar date formatted as YYYY-M-D, without leading zeros for month or day.
+          example: "2026-9-27"
+        createdAt:
+          type: string
+          format: date-time
+          description: Record creation timestamp in UTC.
+          example: "2026-09-27T00:00:00.000Z"
+        updatedAt:
+          type: string
+          format: date-time
+          description: Record update timestamp in UTC.
+          example: "2026-09-28T06:17:33.322Z"
+        builderFee:
+          type: string
+          description: Builder fee value for the day and selected market scope, returned as a decimal string. Use the daily revenue settlement API for settled revenue records.
+          example: "125.50000000"
+        takerVolume:
+          type: string
+          description: Taker trading volume for the day and selected market scope, returned as a decimal string. Includes RWA when market is omitted; RWA only when market=rwa.
+          example: "250000.00000000"
+        makerVolume:
+          type: string
+          description: Maker trading volume for the day and selected market scope, returned as a decimal string. Includes RWA when market is omitted; RWA only when market=rwa.
+          example: "200000.00000000"
+        activeUser:
+          type: integer
+          description: Number of active users for the day and selected market scope.
+          example: 25
     ConvertVolumeResponse:
       type: object
       properties:
