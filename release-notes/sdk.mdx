@@ -23,6 +23,16 @@ This version includes the following updates:
 - **Added trading fee rebate settings** in `@orderly.network/affiliate`, allowing eligible multi-level affiliates to share a portion of their referral commissions with directly referred traders. The settings show a preview of the resulting trading fee rebate rate before saving.
 - **Added CeFi conversions to USDC** in `@orderly.network/ui-transfer` for tokens with `on_chain_swap: false`. For CeFi conversions, the form hides slippage settings and the minimum received amount.
 
+### Companion release: DevKit 1.2.2
+
+`@orderly.network/devkit@1.2.2` is released alongside SDK 3.2.2. See the [DevKit guide](/build-on-omnichain/builder-marketplace/marketplace-submission) for command usage and submission requirements.
+
+- **Updated Marketplace integration** to use the new API for plugin search, submission, and management.
+- **Changed Marketplace login to wallet authentication.** Run `orderly-devkit login --force`, connect your wallet, and sign the login message. Plugin submissions require a linked GitHub account; custom login callback ports must be within 9876–9899.
+- **Added automatic uploads for local cover images** when submitting or updating plugins. Plugin submissions now go through asynchronous review.
+- **Updated plugin submission requirements.** Provide `npmName`, `repoUrl`, `name`, `description`, 1–5 `tags`, and 1–5 `coverImages`. Remove `--storybook-url` from submission commands; metadata updates no longer support `storybookUrl` or `storybookTooltip`.
+- **Replaced plugin deletion with delisting.** Use `orderly-devkit disable --pluginId <id>` instead of `orderly-devkit delete --pluginId <id>` to delist an available plugin. This retains the listing record and cannot be reversed through the CLI.
+
 ## Version 3.2.1
 
 _September 17, 2026_
