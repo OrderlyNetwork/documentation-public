@@ -64,15 +64,15 @@ Only builders using **Trading fee with builder revenue fallback** (effective tra
 
 Eligible builders decide whether affiliates can configure trading fee rebates for their direct referees. If you do not enable this setting, affiliates cannot configure these rebates.
 
-When enabled, set a **maximum kickback ratio**: the maximum share of an affiliate's referral commission rate that they can rebate to their direct referees for those referees' trades. Affiliates enter the trading fee rebate rate directly in the frontend; they do not need to configure a kickback ratio.
+When enabled, set a **maximum kickback ratio**: the maximum share of an affiliate's referral commission rate that they can rebate to their direct referees for those referees' trades. Affiliates enter a kickback ratio in the frontend, no higher than your maximum. The trading fee rebate rate is calculated from their referral commission rate and chosen kickback ratio.
 
-The maximum trading fee rebate rate an affiliate can configure is:
+Your cap determines the maximum resulting trading fee rebate rate:
 
 ```text
 Maximum trading fee rebate rate = Referral commission rate × Maximum kickback ratio
 ```
 
-For example, with a 20% referral commission rate and a builder-set maximum kickback ratio of 25%, the affiliate can enter a trading fee rebate rate of up to 5%.
+For example, with a 20% referral commission rate and a builder-set maximum kickback ratio of 25%, the affiliate can choose a kickback ratio of up to 25%. Choosing 25% produces a 5% trading fee rebate rate.
 
 This shares part of the referral commission with the trading referee. It is separate from assigning a downstream affiliate commission rate; the maximum kickback ratio is not the minimum pass-down rate.
 

@@ -72,13 +72,19 @@ Both rates must stay within your available range: no higher than your assigned r
 
 If your builder uses effective trading fee as the commission basis and enables trading fee rebates, you can share part of your referral commission with your direct referees as a rebate for their trades.
 
-Set the **trading fee rebate rate** directly in the frontend, up to the cap defined by your builder:
+Set the **kickback ratio** in the frontend: the percentage of your referral commission you share with direct referees as a trading fee rebate. Your chosen ratio cannot exceed the maximum kickback ratio set by your builder. You do not enter the trading fee rebate rate directly; it is calculated as:
+
+```text
+Trading fee rebate rate = Referral commission rate × Kickback ratio
+```
+
+The builder's cap determines the maximum resulting trading fee rebate rate:
 
 ```text
 Max trading fee rebate rate = Referral commission rate × Max kickback ratio (set by builder)
 ```
 
-For example, if your referral commission rate is 20% and your builder's maximum kickback ratio is 25%, you can enter a trading fee rebate rate of up to 5%.
+For example, if your referral commission rate is 20% and your builder's maximum kickback ratio is 25%, you can enter a kickback ratio of up to 25%. Entering 25% produces a 5% trading fee rebate rate.
 
 This rebate comes from your referral commission allocation. It is separate from the commission rate you assign to a downstream affiliate, and does not give the trader affiliate commission on their own trade. If the builder has not enabled trading fee rebates, you cannot configure a rebate.
 
