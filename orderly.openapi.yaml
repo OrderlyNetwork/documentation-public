@@ -3904,7 +3904,7 @@ paths:
 
         `GET /v1/internal_transfer_history`
 
-        Orderly key must has `asset` scope to access this endpoint.
+        Returns internal transfer history for the authenticated account.
       tags:
         - private
       parameters:
@@ -15426,7 +15426,7 @@ components:
               description: orderly key to be added
             scope:
               type: string
-              description: "Valid scopes are `read`, `trading`, and `asset`. Scopes are independent: `trading` does not grant `read`. Send multiple scopes as a comma-separated string, such as `read,trading`, for a key that needs both private data access and trading access."
+              description: "Choose `read` or `trading` according to the permissions needed. Scopes are independent: `trading` does not grant `read`. Use `read,trading` when both private data access and trading access are needed."
               example: "read,trading"
             timestamp:
               type: number
@@ -15473,7 +15473,7 @@ components:
               description: orderly key to be added
             scope:
               type: string
-              description: "Valid scopes are `read`, `trading`, and `asset`. Scopes are independent: `trading` does not grant `read`. Send multiple scopes as a comma-separated string, such as `read,trading`, for a key that needs both private data access and trading access."
+              description: "Choose `read` or `trading` according to the permissions needed. Scopes are independent: `trading` does not grant `read`. Use `read,trading` when both private data access and trading access are needed."
               example: "read,trading"
             timestamp:
               type: number

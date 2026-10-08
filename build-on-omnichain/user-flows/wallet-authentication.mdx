@@ -135,12 +135,11 @@ Orderly Key scopes are independent. Granting one scope does not grant any other 
 
 - **`read`**: Accesses private account data from endpoints that require `read`, plus designated account and risk configuration APIs such as `POST /v1/client/leverages` and `POST /v1/client/maintenance_config`.
 - **`trading`**: Accesses order and trading operations that require the `trading` scope. A key with `trading` alone does not receive `read` access.
-- **`asset`**: Accesses asset operations that require the `asset` scope.
 
 <Warning>
   For a normal trading integration that also reads balances, positions, or other private account
   data, assign both scopes as `read,trading`. A key with only `trading` cannot call endpoints that
-  require `read`. Add `asset` separately when the integration needs asset operations.
+  require `read`.
 </Warning>
 
 Orderly keys also have expirations for security reasons. The maximum allowed expiration of an Orderly Key is 365 days.
@@ -175,7 +174,7 @@ where:
 | brokerId   | string    | Y            | The unique identifier of the Builder (also known as Broker ID). A list of valid IDs can be retrieved via the [Get list of builders API](/build-on-omnichain/restful-api/public/get-builder-list). |
 | chainId    | int       | Y            | Chain ID of registering chain (within those that are supported by the Network)                                                                                                                    |
 | orderlyKey | string    | Y            | ed25519 public key                                                                                                                                                                                |
-| scope      | string    | Y            | Valid scopes are `read`, `trading`, and `asset`. Scopes are independent. Send multiple scopes as a comma-separated string, such as `read,trading`.                                                |
+| scope      | string    | Y            | Choose `read` or `trading` according to the permissions needed. Scopes are independent. Use `read,trading` when both permissions are needed.                                                |
 | timestamp  | timestamp | Y            | timestamp in UNIX milliseconds                                                                                                                                                                    |
 | expiration | timestamp | Y            | Expiration time of the key in UNIX milliseconds. Maximum allowed expiration is 365 days from add                                                                                                  |
 

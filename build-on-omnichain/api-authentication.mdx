@@ -463,4 +463,4 @@ The `orderly-key` header must reference a key that has been added to the network
 
 ### Scope Authorization
 
-The Orderly Key must include every scope required by the endpoint. Scopes are independent: `trading` does not grant `read`, and `read` does not grant `trading`. A normal trading integration that also retrieves private account data should use `read,trading`. Add `asset` separately for endpoints that require asset access.
+The Orderly Key must include every scope required by the endpoint. Use `read` for endpoints that require private data access and `trading` for endpoints that require trading access. Scopes are independent: `trading` does not grant `read`, and `read` does not grant `trading`. A normal trading integration that also retrieves private account data should use `read,trading`.
