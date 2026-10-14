@@ -1306,7 +1306,11 @@ paths:
 
         `GET /v1/public/index_price_source`
 
-        Retrieves the available tokens to be used as collateral within Orderly.
+        Retrieves the configured index price sources for each symbol.
+
+        The `sources` array lists configured sources; it does not indicate which sources
+        actually participated in the index price calculation at that moment. Actual
+        participation depends on price availability, price validity, and effective weight.
       tags:
         - public
       responses:
@@ -12427,6 +12431,11 @@ components:
                         example: 1710382176255
                       sources:
                         type: array
+                        description: |
+                          Configured index price sources for this symbol. This list does not
+                          indicate which sources actually participated in the calculation at
+                          that moment; participation depends on price availability, price
+                          validity, and effective weight.
                         items:
                           type: string
                         example:
