@@ -29,6 +29,22 @@ CLI without exposing keys.
 
 JSON by default; add `--csv` for list data. Run `orderly --help` for the full command surface.
 
+## Machine-readable command surface
+
+`orderly schema --json` prints the entire command tree as JSON: every command, its arguments and
+flags, which are required, defaults, and whether the command mutates server state. Use it instead
+of parsing `--help`.
+
+Mutating commands also accept `--dry-run`, which prints the exact request that would be signed and
+sent, then exits without touching the keychain or the network:
+
+```bash
+orderly order-place PERP_ETH_USDC BUY MARKET 0.01 --account <account-id> --dry-run
+```
+
+Exit codes are stable: `0` success, `1` unexpected, `2` usage/validation, `3` auth, `4` trading
+rejection, `5` transient (rate limit or upstream error).
+
 ## Install
 
 | Platform | Architecture  | Archive                                     |
