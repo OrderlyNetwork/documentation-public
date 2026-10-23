@@ -1,0 +1,110 @@
+---
+title: "Agent CLI (`orderly`)"
+description: "The Orderly Network trading CLI: a single static binary for market data, orders, and account management that is safe for AI agents to run."
+---
+
+`orderly` is the trading CLI for Orderly Network. It ships as a single static binary, so there is
+no Node.js runtime, package manager, or dependency tree to install. Source:
+[OrderlyNetwork/cli](https://github.com/OrderlyNetwork/cli).
+
+<Note>
+  **Not the devkit CLI.** `orderly` is not `orderly-devkit`. The devkit CLI
+  (`@orderly.network/devkit`) only scaffolds and publishes Builders Marketplace plugins — see [CLI
+  reference (`orderly-devkit`)](/build-on-omnichain/builder-marketplace/cli-reference). This page is
+  about the trading client.
+</Note>
+
+## What it is
+
+A terminal trading client for Orderly Network. One static binary covers market data, order
+management, account operations, and streaming, against both testnet and mainnet.
+
+## Security model
+
+Wallet and API keys live in the OS keychain. They are never written to files, and signing happens
+inside the binary. Command output contains results only, so you can give an agent access to the
+CLI without exposing keys.
+
+## Output
+
+JSON by default; add `--csv` for list data. Run `orderly --help` for the full command surface.
+
+## Install
+
+| Platform | Architecture  | Archive                                     |
+| -------- | ------------- | ------------------------------------------- |
+| Linux    | x86_64        | `orderly-x86_64-unknown-linux-musl.tar.gz`  |
+| Linux    | arm64         | `orderly-aarch64-unknown-linux-musl.tar.gz` |
+| macOS    | Apple silicon | `orderly-aarch64-apple-darwin.tar.gz`       |
+| macOS    | Intel         | `orderly-x86_64-apple-darwin.tar.gz`        |
+| Windows  | x86_64        | `orderly-x86_64-pc-windows-msvc.zip`        |
+| Windows  | arm64         | `orderly-aarch64-pc-windows-msvc.zip`       |
+
+### Linux x86_64
+
+```bash
+curl -fsSL https://github.com/OrderlyNetwork/cli/releases/latest/download/orderly-x86_64-unknown-linux-musl.tar.gz | tar -xz
+install -m 0755 orderly ~/.local/bin/orderly
+```
+
+### Linux arm64
+
+```bash
+curl -fsSL https://github.com/OrderlyNetwork/cli/releases/latest/download/orderly-aarch64-unknown-linux-musl.tar.gz | tar -xz
+install -m 0755 orderly ~/.local/bin/orderly
+```
+
+### macOS Apple silicon
+
+```bash
+curl -fsSL https://github.com/OrderlyNetwork/cli/releases/latest/download/orderly-aarch64-apple-darwin.tar.gz | tar -xz
+install -m 0755 orderly ~/.local/bin/orderly
+```
+
+### macOS Intel
+
+```bash
+curl -fsSL https://github.com/OrderlyNetwork/cli/releases/latest/download/orderly-x86_64-apple-darwin.tar.gz | tar -xz
+install -m 0755 orderly ~/.local/bin/orderly
+```
+
+### Windows
+
+Download `orderly-x86_64-pc-windows-msvc.zip` (or `orderly-aarch64-pc-windows-msvc.zip` on ARM)
+and add the extracted directory to `PATH`.
+
+<Note>
+  Release asset names are unversioned, so `releases/latest/download/...` URLs stay stable and can be
+  used directly in automation. Checksums, cosign signatures, and provenance are documented in
+  [INSTALL.md](https://github.com/OrderlyNetwork/cli/blob/master/INSTALL.md).
+</Note>
+
+## Quick start on testnet
+
+```bash
+orderly wallet-create --type EVM --network testnet
+orderly wallet-register --broker-id demo --network testnet
+orderly faucet-usdc <address> --broker-id demo --chain-id 421614 --network testnet
+orderly wallet-add-key --broker-id demo --scope read,trading --network testnet
+orderly auth-list --network testnet
+orderly account-balance --account <account-id> --network testnet
+orderly order-place PERP_ETH_USDC BUY MARKET 0.01 --account <account-id> --network testnet
+```
+
+## What it can do
+
+- **Market data** — markets, prices, and orderbook snapshots.
+- **Orders** — place, cancel, edit, and batch operations.
+- **Algo orders** — take-profit/stop-loss, trailing, and bracket orders.
+- **Positions** — list positions and close them.
+- **Account** — leverage, balances, deposits, and withdrawals.
+- **Streaming** — WebSocket subscriptions from the terminal.
+- **Chains** — EVM chains including Arbitrum, Base, and Optimism, plus Solana.
+
+## Why it is agent-friendly
+
+- **Keychain isolation** — keys stay in the OS keychain and never appear in files or output.
+- **JSON output** — results are machine-readable by default, with `--csv` for list data.
+- **No Node dependency** — a single static binary, so nothing else needs to be installed.
+- **Stable release URLs** — unversioned asset names make `releases/latest/download` safe to pin in
+  scripts.
