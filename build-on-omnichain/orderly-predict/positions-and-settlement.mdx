@@ -1,0 +1,66 @@
+---
+title: "Positions and Settlement"
+description: "Read Orderly Predict positions, trades, and settlement records, and how Predict trading fees are calculated per fill."
+---
+
+This page covers reading a trader's Predict positions, trade history, and settlement records, and how Predict fees are calculated. For order placement, see [Order Management](/build-on-omnichain/orderly-predict/order-management).
+
+## Positions
+
+**API:** [GET `/v1/positions`](/build-on-omnichain/restful-api/private/get-all-positions-info), [GET `/v1/position/{symbol}`](/build-on-omnichain/restful-api/private/get-one-position-info)
+
+Predict positions use the same `position_qty` sign convention as the order book: a positive `position_qty` is an UP position, a negative one is DOWN. `margin_mode` is always `ISOLATED`, and the existing isolated-margin fields (`margin`, `mark_price`, `unsettled_pnl`, and so on) are populated the same way as for perpetual futures.
+
+[GET `/v1/positions`](/build-on-omnichain/restful-api/private/get-all-positions-info) and [GET `/v1/trades`](/build-on-omnichain/restful-api/private/get-trades) accept the same optional `product_type` filter (`PERP` or `BINARY`, uppercase only) described in [Order Management](/build-on-omnichain/orderly-predict/order-management#filtering-by-product-type). Account-level aggregates such as total account value are not affected by this filter -- it only filters the rows returned.
+
+## Trade history
+
+**API:** [GET `/v1/trades`](/build-on-omnichain/restful-api/private/get-trades)
+
+Each trade row's `fee` is the actual fee charged for that one fill, in USDC, rounded up per fill rather than averaged across the order -- see [Orderly Predict fees](/introduction/trade-on-orderly/trading-basics/trading-fees#orderly-predict-fees) for the formula and how it's split between Orderly and your Builder fee. The total fee for an order is the sum of its individual fills' `fee` values, not a recomputation from an average price.
+
+<Warning>
+  A missing or zero-looking fee field must never be treated as a free trade. Always read the fee
+  from the trade record, execution report, or account fee rate fields -- do not assume zero when a
+  field is absent.
+</Warning>
+
+Expiry settlement produces fills at price `0`, `0.5`, or `1` per share. Treat these as real fills: a fill amount of zero is a legitimate value when the UP-book execution price is `0`, not a sign of missing or malformed data.
+
+## Position history
+
+**API:** [GET `/v1/position_history`](/build-on-omnichain/restful-api/private/get-position-history)
+
+For a Predict position's closed segment, the response adds three fields on top of the existing ones:
+
+| Field                        | Meaning                                                                                                                         |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `outcome`                    | `UP`, `DOWN`, or `TIE` for a segment closed by expiry settlement; `null` if the trader exited early.                            |
+| `settlement_price_per_share` | `1`, `0.5`, or `0` for a segment closed by expiry settlement; `null` if the trader exited early. This value is always the UP-book settlement price `R` -- an UP position's segment settles at `R` per share, and a DOWN position's segment settles at `1 - R` per share. |
+| `settled_at`                 | The timestamp this segment's system expiry settlement finished; `null` for an early exit, or if settlement hasn't finished yet. |
+
+This endpoint also accepts the same `product_type` filter described in [Order Management](/build-on-omnichain/orderly-predict/order-management#filtering-by-product-type).
+
+### Personal settlement completion
+
+A round's result being published (see [Market Data](/build-on-omnichain/orderly-predict/market-data)) and a trader's position actually being settled are two different moments. Use `settled_at` on the matching position history row -- not the round's `result_committed_at`, and not the round reaching `DELISTED` -- to decide whether to show a trader their final profit or loss for that round.
+
+## Fees
+
+Every Predict fill is charged a fee based on its UP-book execution price, whether the trade was an UP or DOWN fill. The formula, the Predict base rate determined by the Builder's tier, and how the fee splits between Orderly and your Builder fee are documented in [Orderly Predict fees](/introduction/trade-on-orderly/trading-basics/trading-fees#orderly-predict-fees). Your account's current Predict maker and taker rates are available from [GET `/v1/client/info`](/build-on-omnichain/restful-api/private/get-account-information) (`binary_maker_fee_rate`, `binary_taker_fee_rate`), the same fields used for the fee calculation.
+
+The funds locked when an order is placed, including the fee buffer, are covered in [Order Management: Order freeze and MAX amount](/build-on-omnichain/orderly-predict/order-management#order-freeze-and-max-amount).
+
+## Real-time updates
+
+For Predict-specific fields on the private WebSocket topics, see:
+
+- [WebSocket API: Position Push](/build-on-omnichain/websocket-api/private/position-push#orderly-predict) -- the `positionQty` sign convention for UP and DOWN.
+- [WebSocket API: Execution Report](/build-on-omnichain/websocket-api/private/execution-report#orderly-predict) -- expiry settlement fills at `0`, `0.5`, or `1`.
+- [WebSocket API: Account](/build-on-omnichain/websocket-api/private/account#orderly-predict) -- Predict fee rate fields; [GET `/v1/client/info`](/build-on-omnichain/restful-api/private/get-account-information) always returns them, but the WebSocket push may omit them for a given message if the account's rates can't be resolved for that push.
+
+## Related pages
+
+- [GET /v1/positions](/build-on-omnichain/restful-api/private/get-all-positions-info) and [GET /v1/position_history](/build-on-omnichain/restful-api/private/get-position-history) -- the REST reference for the fields on this page.
+- [WebSocket API Introduction](/build-on-omnichain/websocket-api/introduction) -- how to connect and authenticate before subscribing to the topics above.
+- [Orderly Predict fees](/introduction/trade-on-orderly/trading-basics/trading-fees#orderly-predict-fees) -- the fee formula and Builder/Orderly split.

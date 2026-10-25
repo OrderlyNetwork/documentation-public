@@ -50,3 +50,7 @@ For index price, use SPOT symbol such as `SPOT_ETH_USDC` instead of `PERP_ETH_US
 ```
 
 </ResponseExample>
+
+## Orderly Predict
+
+A Predict round's own index price is not pushed on this topic (no subscription first frame, request snapshot, or update). Subscribe to the underlying's own index price instead, for example `SPOT_BTC_USDC@indexprice` for the BTC 5-minute Up/Down market. See [Underlying price data](/build-on-omnichain/orderly-predict/market-data#underlying-price-data) for how the round's strike and expiry prices are derived from this feed.

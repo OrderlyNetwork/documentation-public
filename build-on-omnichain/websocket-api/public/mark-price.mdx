@@ -48,3 +48,7 @@ Push interval: 1s
 ```
 
 </ResponseExample>
+
+## Orderly Predict
+
+For a Predict round symbol (`<binary_symbol>`), `markprice` uses the existing topic and payload with no added fields. During trading, the mark price equals the round's own index price -- see [Underlying price data](/build-on-omnichain/orderly-predict/market-data#underlying-price-data) for how that index price is derived. At expiry it ends at exactly `0`, `0.5`, or `1`.

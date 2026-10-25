@@ -44,6 +44,8 @@ Push interval: real-time push
         "futuresMakerFeeRate": 4,
         "rwaFuturesTakerFeeRate": 13.0,
         "rwaFuturesMakerFeeRate": 12.0,
+        "binaryMakerFeeRate": 0,
+        "binaryTakerFeeRate": 300,
         "maintenanceCancelFlag": false,
         "totalCollateralValue": 100,
         "freeCollateral": 100,
@@ -57,3 +59,9 @@ Push interval: real-time push
 }
 ```
 </ResponseExample>
+
+## Orderly Predict
+
+`accountDetail` additively includes `binaryMakerFeeRate` and `binaryTakerFeeRate` (in bps), with the same meaning, unit, and value as the matching fields on `GET /v1/client/info`.
+
+If the account's Predict fee rates cannot be resolved for a given push, both fields are omitted from that push rather than sent as `0`; other `accountDetail` fields are unaffected. A missing `binaryTakerFeeRate` does not mean the account trades Predict for free -- do not default an omitted rate to `0`. See [Positions and Settlement](/build-on-omnichain/orderly-predict/positions-and-settlement#fees) for how these rates are used.

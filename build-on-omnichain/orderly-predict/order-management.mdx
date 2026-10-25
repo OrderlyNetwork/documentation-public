@@ -1,0 +1,136 @@
+---
+title: "Order Management"
+description: "Place, edit, and cancel Orderly Predict orders using Orderly's existing order APIs, including the client-side DOWN conversion and Predict-specific validation."
+---
+
+Orderly Predict does not add a parallel order API. You place, edit, and cancel Predict orders through the same endpoints you already use for perpetual futures, with the validation rules on this page layered on top.
+
+## Converting a DOWN order
+
+The matching engine only understands the UP book. If a trader wants to buy DOWN at price `d`, your frontend must convert that into a `SELL` order on the UP book at price `1 - d`, with the same quantity:
+
+```
+Buy DOWN @ d, qty q  ->  SELL order_price = 1 - d, order_quantity = q
+```
+
+For example, a trader buying DOWN at \$0.45 for 22.2 shares becomes:
+
+```json
+{
+  "symbol": "<binary_symbol>",
+  "side": "SELL",
+  "order_type": "LIMIT",
+  "order_price": "0.55",
+  "order_quantity": "22.2",
+  "margin_mode": "ISOLATED"
+}
+```
+
+Orderly does not validate which direction a trader intended and never echoes a direction back in any response -- `side`, `order_price`, and `executed_price` in every request and response are always UP-book values. Your frontend is responsible for presenting the DOWN price and direction back to the trader.
+
+## Order types
+
+**API:** [POST `/v1/order`](/build-on-omnichain/restful-api/private/create-order), [POST `/v1/batch-order`](/build-on-omnichain/restful-api/private/batch-create-order), [PUT `/v1/order`](/build-on-omnichain/restful-api/private/edit-order)
+
+Predict orders accept only `LIMIT`, `IOC` (with an explicit price-protection limit), and `POST_ONLY`. `BID`, `ASK`, a literal `MARKET` type, and `FOK` are all rejected with `BINARY_ORDER_TYPE_NOT_SUPPORTED`.
+
+A "Market" entry mode is a frontend concept, not a distinct `order_type` value: implement it as an `IOC` order with a protection price so the trader never fills worse than they expect. By default, the protection price is 2 ticks beyond the best available price, and is configurable; either way it is clamped to the `0.01`-`0.99` quote range. Unfilled quantity beyond the protection price is cancelled immediately rather than chasing the price further.
+
+<Note>
+  `post_only_adjust` is only valid together with `POST_ONLY`. Sending it with any other order type
+  also returns `BINARY_ORDER_TYPE_NOT_SUPPORTED`.
+</Note>
+
+## `margin_mode` must be `ISOLATED`
+
+Every Predict order must explicitly set `margin_mode` to `ISOLATED`. Omitting the field does not fall back to a default -- it is rejected with `BINARY_MARGIN_MODE_NOT_SUPPORTED`. There is no cross-margin mode for Predict symbols.
+
+## Price, quantity, and minimum notional
+
+Predict info (see [Market Data](/build-on-omnichain/orderly-predict/market-data)) gives you each round's `quote_min`, `quote_max`, `quote_tick`, `base_min`, `base_max`, `base_tick`, and `min_notional`. Orders that fall outside these bounds, or that don't land exactly on a tick, are rejected outright -- the platform does not round a non-conforming price or quantity for you.
+
+`min_notional` is always checked against the UP-book notional (`order_price x order_quantity`), for both `BUY` and `SELL` -- never against the DOWN-side price. Because DOWN's price is \$1 minus the UP price, this gives DOWN orders an uneven minimum share count and minimum paid amount depending on price. For example, for a round with `min_notional = 5` USDC:
+
+| UP price | DOWN price | Min shares | Min paid amount |
+| -------- | ---------- | ---------- | --------------- |
+| `0.90`   | `0.10`     | 5.56       | about \$0.56    |
+| `0.10`   | `0.90`     | 50         | \$45            |
+
+If your frontend takes an amount input rather than a share count, you are responsible for:
+
+- Converting the entered amount to a share count, rounded down to the nearest `base_tick`.
+- Splitting an order into multiple orders when the converted quantity would exceed `base_max` (for example, a large amount entered at a low price). Orderly does not auto-split orders for you; submit the resulting orders through [POST `/v1/batch-order`](/build-on-omnichain/restful-api/private/batch-create-order).
+
+### Order freeze and MAX amount
+
+When an order is placed, Orderly locks funds to cover the order's full potential cost plus a small buffer for the trading fee that will apply when it fills:
+
+- Buying UP locks `order_price x order_quantity`, plus the buffer.
+- Buying DOWN locks `(1 - order_price) x order_quantity`, plus the buffer.
+
+A "MAX" button computes `MAX amount = available balance / (1 + b)`, then converts that amount to a share count and rounds down to the nearest `base_tick`. The required freeze for a given order cost is `required freeze = cost x (1 + b)`. In both formulas, `b` is the current fee buffer rate, provided as a constant by the Orderly SDK; always read it from there rather than hard-coding or publishing a specific number, since the platform can change it independently of your frontend.
+
+Because the full potential cost is always locked up front, Predict positions carry no liquidation risk -- see [Trading Rules: Margin](/introduction/trade-on-orderly/orderly-predict/trading-rules#margin) for the trader-facing explanation.
+
+## Order cutoff
+
+Every create, edit, and cancel request is judged by the time Orderly's server receives it, not by a client-side timestamp. Create, edit, and cancel requests all stop being accepted at the same cutoff point shortly before a round's expiry; any of these three request types that arrives after that point is rejected with `ROUND_CLOSED`.
+
+<Note>
+  The cutoff margin defaults to 5000 ms (so orders stop being accepted 5 seconds before expiry), and
+  the platform can adjust it. Don't hard-code this value -- treat a `ROUND_CLOSED` response as the
+  signal that the cutoff has passed, and never automatically resubmit a `ROUND_CLOSED` order to the
+  next round.
+</Note>
+
+### Cancelling all orders
+
+[DELETE `/v1/orders`](/build-on-omnichain/restful-api/private/cancel-all-pending-orders) without a `symbol` skips any Predict round that has already passed its cutoff instead of failing the whole request -- it cancels everything it still can and moves on.
+
+## Filtering by product type
+
+[GET `/v1/orders`](/build-on-omnichain/restful-api/private/get-orders) accepts an optional `product_type` query parameter, `PERP` or `BINARY` (uppercase only). Omit it to get all products; passing an empty string, lowercase, or any other value is rejected as a parameter error.
+
+## Leverage and margin transfers are rejected
+
+Predict positions use isolated margin with no leverage -- see [Isolated Margin](/build-on-omnichain/user-flows/isolated-margin) for how isolated margin works generally. For Predict symbols specifically:
+
+- Setting leverage on a Predict symbol through [POST `/v1/client/leverages`](/build-on-omnichain/restful-api/private/update-leverage-setting) is always rejected, including setting it to 1x. A batch leverage update silently skips any Predict symbols in the batch rather than failing it.
+- Manually adding or removing margin on a Predict position through [POST `/v1/position_margin`](/build-on-omnichain/restful-api/private/add-or-reduce-position-margin) is always rejected with `INVALID_PARAMS`.
+
+## Exiting a position
+
+To close a Predict position before expiry, submit an opposite-side order with `reduce_only=true` and a quantity capped at the current position size. This applies whether the exit order is `LIMIT`, `IOC`, or `POST_ONLY`. A `reduce_only` order never flips a position to the opposite side -- it only reduces it, and is still subject to the same price, quantity, and cutoff checks as any other order.
+
+Closing a DOWN position uses the same client-side conversion as opening one (see [Converting a DOWN order](#converting-a-down-order) above): to sell DOWN at price `d`, send a `BUY` order at `order_price = 1 - d` with `reduce_only=true`.
+
+```
+Sell DOWN @ d, qty q  ->  BUY order_price = 1 - d, order_quantity = q, reduce_only = true
+```
+
+Closing an UP position is a plain `SELL` order at the UP price, with `reduce_only=true`.
+
+<Note>
+  A market-close order flag, if your integration uses one from perpetual futures, is also rejected
+  for Predict positions with `BINARY_ORDER_TYPE_NOT_SUPPORTED` -- use the `reduce_only` approach
+  above instead.
+</Note>
+
+## Algo orders are not supported
+
+[POST `/v1/algo/order`](/build-on-omnichain/restful-api/private/create-algo-order) and the rest of the algo order family reject Predict symbols; there is no stop, take-profit/stop-loss, or bracket order support for Predict positions.
+
+## Errors
+
+| Error                              | When it happens                                                                                                                                                               |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ROUND_CLOSED`                     | A create, edit, or cancel request arrives after the round's [order cutoff](#order-cutoff).                                                                                    |
+| `BINARY_ORDER_TYPE_NOT_SUPPORTED`  | An unsupported `order_type` (`BID`, `ASK`, a literal `MARKET`, `FOK`), `post_only_adjust` without `POST_ONLY`, or a perpetual-futures market-close flag on a Predict position. |
+| `BINARY_MARGIN_MODE_NOT_SUPPORTED` | `margin_mode` is omitted or set to anything other than `ISOLATED`.                                                                                                            |
+
+{/* TODO(eng): confirm the numeric error code and HTTP status for these three errors once Error Codes is updated, and link to that page instead. */}
+
+## Related pages
+
+- [Positions and Settlement](/build-on-omnichain/orderly-predict/positions-and-settlement) -- read positions, trades, and settlement records, and how fees are calculated.
+- [Error Codes](/build-on-omnichain/error-codes) -- the full error reference. The numeric error codes and HTTP statuses for the three Predict-specific errors above are not yet finalized there; match on the error name shown in the table until they are.

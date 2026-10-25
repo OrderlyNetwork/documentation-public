@@ -619,6 +619,35 @@ paths:
               schema:
                 $ref: "#/components/schemas/GetIpInfoResponse"
 
+  /v1/product_restricted_areas:
+    get:
+      summary: Get restricted areas by product
+      deprecated: false
+      description: |
+
+        **Limit: 10 requests per 1 second per IP address**
+
+        `GET /v1/product_restricted_areas`
+
+        Returns the restricted country and city list for a product type. Cached on the backend with a 30-second TTL.
+      tags:
+        - public
+      parameters:
+        - name: product_type
+          in: query
+          description: Product type to query. Orderly Predict passes `BINARY`.
+          required: true
+          schema:
+            type: string
+            example: "BINARY"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetProductRestrictedAreasResponse"
+
   /v1/public/futures_market:
     get:
       summary: Get market volume by builder
@@ -748,6 +777,9 @@ paths:
         - 7d: 00:00:00 (2024-07-04)
 
         - 30d: 00:00:00 (2024-06-11)
+
+
+        Predict symbols are not listed.
       tags:
         - public
       responses:
@@ -791,6 +823,9 @@ paths:
         `GET /v1/public/market_info/history_charts`
 
         Return the close price for all symbols
+
+
+        Predict symbols are not listed.
 
       tags:
         - public
@@ -943,6 +978,9 @@ paths:
 
         * `est_funding_rate` : rolling average of all funding rates over the
         last 8 hours
+
+
+        Predict symbols are included in this list with zero funding; no separate Predict funding endpoint exists.
       tags:
         - public
       parameters: []
@@ -965,6 +1003,9 @@ paths:
         `GET /v1/public/funding_rate/{symbol}`
 
         Get latest funding rate for one market.
+
+
+        For a Predict symbol, this returns a zero funding rate.
       tags:
         - public
       parameters:
@@ -996,6 +1037,9 @@ paths:
 
 
         Get funding rate history for one market.
+
+
+        For a Predict symbol, this returns a zero funding rate.
       tags:
         - public
       parameters:
@@ -1056,6 +1100,9 @@ paths:
         `GET /v1/public/futures/{symbol}`
 
         Get basic market information for one trading pair.
+
+
+        For a Predict symbol, `index_price` is not a tradable BBO. During trading, `mark_price` equals the round's own index price. Neither `index_price` nor `mark_price` is S0 or S1. The final value of both is exactly 0, 0.5, or 1; funding fields are zero.
       tags:
         - public
       parameters:
@@ -1232,6 +1279,8 @@ paths:
         - Order size should be within holding threshold. See
         [account_info](/docs/build-on-omnichain/restful-api/private/get-account-information)
 
+
+        Predict symbols are not returned by this endpoint; `symbol` and response are unchanged, and there is no "include Predict" toggle. Use `GET /v1/public/binary/info` or `GET /v1/public/binary/info/{symbol}` for Predict round information.
       tags:
         - public
       parameters:
@@ -1287,6 +1336,9 @@ paths:
 
         Get available symbols that Orderly supports, and also send order
         rules for each symbol. The definition of rules can be found at [Get Order Rules per Market](/docs/build-on-omnichain/restful-api/public/get-order-rules-per-symbol)
+
+
+        Predict symbols are not returned by this endpoint. Use `GET /v1/public/binary/info` for Predict round information.
       tags:
         - public
       parameters: []
@@ -1297,6 +1349,110 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AvailableSymbolsResponse"
+  /v1/public/binary/info:
+    get:
+      summary: Get Orderly Predict round info for all rounds
+      deprecated: false
+      # TODO(eng): confirm the rate limit for this endpoint.
+      description: |
+        `GET /v1/public/binary/info`
+
+        Returns a snapshot of up to the most recent 300 Predict rounds, newest first. Each row carries both the round's trading parameters and, once available, its result. There is no query filtering, scope, or pagination.
+
+        The snapshot refreshes about once per minute and includes rounds with `status` `ACTIVE`, `DELISTING`, `RECYCLING`, or `DELISTED`. Rounds that have not yet opened for trading (`NEW`, `PENDING`) are never included. A round reaching its order cutoff does not remove it from the snapshot; whether new orders are still accepted is governed by the order endpoints, not by this snapshot.
+
+        Multiple rows can have `status = ACTIVE` at the same time, since several upcoming rounds are open for trading ahead of their strike. The row currently in its observation window is the `ACTIVE` row where `observation_start_at <= server time < expire_at`.
+
+        The permanent per-round symbol always comes from this endpoint (or from `GET /v1/public/binary/info/{symbol}`); clients must not construct it from any naming pattern.
+      tags:
+        - public
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BinaryRoundInfoListResponse"
+  /v1/public/binary/info/{symbol}:
+    get:
+      summary: Get Orderly Predict round info for one round
+      deprecated: false
+      # TODO(eng): confirm the rate limit for this endpoint.
+      description: |
+        `GET /v1/public/binary/info/{symbol}`
+
+        Returns the full lifecycle information for a single Predict round, from when it opens for trading through result publication. Clients keep polling this same endpoint after expiry instead of switching to another endpoint.
+
+        Looked up from the same snapshot as `GET /v1/public/binary/info`. Returns successfully even before the result is published; it never responds with a "result not ready" state. Returns `RESOURCE_NOT_FOUND` when the symbol does not exist, is not a Predict symbol, has not yet opened for trading, or has fallen outside the most recent 300 rounds.
+
+        Whether the result has been published is determined only by whether `result_committed_at` has a value, never by `status`, `s1`, or `outcome`.
+      tags:
+        - public
+      parameters:
+        - name: symbol
+          in: path
+          description: The round's permanent Predict symbol, as returned by Predict info. Never constructed by the client.
+          required: true
+          example: "<binary_symbol>"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BinaryRoundInfoResponse"
+  /v1/public/index_price:
+    get:
+      summary: Get index price history
+      deprecated: false
+      description: |
+        **Limit: 10 requests per second per IP address**
+
+        `GET /v1/public/index_price`
+
+        Returns a fixed 1-second-granularity array of index prices for the given symbol over the requested time range. This endpoint is public and does not require authentication.
+
+        The query window must fall within the last 24 hours, with `start_t` less than `end_t`, and `end_t` not later than the current time. A single query must span at least 1 second and at most 10 minutes; a window outside that range returns a parameter error instead of being clipped.
+
+        Returns only records that actually exist in the window, ordered ascending by `timestamp`; missing seconds are not backfilled and there is no guarantee of one record per second. Returns the earliest `min(limit, 1000)` records in the window. There is no pagination.
+      tags:
+        - public
+      parameters:
+        - name: symbol
+          in: query
+          description: "For example `PERP_BTC_USDC`. A syntactically valid symbol with no recorded data returns an empty array."
+          required: true
+          example: "PERP_BTC_USDC"
+          schema:
+            type: string
+        - name: start_t
+          in: query
+          description: UTC epoch milliseconds, inclusive.
+          required: true
+          schema:
+            type: integer
+        - name: end_t
+          in: query
+          description: UTC epoch milliseconds, exclusive.
+          required: true
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: "Positive integer. Default and maximum 1000."
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IndexPriceHistoryResponse"
   /v1/public/index_price_source:
     get:
       summary: Get index price source
@@ -1374,6 +1530,9 @@ paths:
         **Limit: 10 requests per 1 second per IP address**
 
         `GET /v1/tv/history?symbol={}&resolution={}&from={}&to={}`
+
+
+        A Predict symbol returns `s=no_data`; Predict has no kline of its own.
       tags:
         - public
       parameters:
@@ -1445,9 +1604,21 @@ paths:
         **Limit: 30 requests per 10 second per user**
 
         `GET /v1/positions`
+
+
+        For a Predict position, `position_qty` greater than 0 is UP, less than 0 is DOWN, and `margin_mode` is always `ISOLATED`. `product_type` only filters `rows`; account-level fields such as `account_value` and `free_collateral` keep their existing basis regardless of the filter.
       tags:
         - private
       parameters:
+        - name: product_type
+          in: query
+          description: "Filter by product type. Only uppercase `PERP` or `BINARY` is accepted; omit to return all products. `PERP` includes all non-Predict products."
+          required: false
+          schema:
+            type: string
+            enum:
+              - PERP
+              - BINARY
         - $ref: "#/components/parameters/orderly_timestamp"
         - $ref: "#/components/parameters/orderly_account_id"
         - $ref: "#/components/parameters/orderly_key"
@@ -1531,6 +1702,9 @@ paths:
         **Limit: 10 requests per 1 second per user**
 
         `GET /v1/position_history`
+
+
+        For a Predict round's expiry settlement segment, the row also carries `outcome`, `settlement_price_per_share`, and `settled_at`; these are null for a segment closed by an early exit. `settled_at` having a value means only that the system's expiry close for that segment is complete, not that any later fund transfer has finished.
       tags:
         - private
       parameters:
@@ -1540,6 +1714,15 @@ paths:
           required: false
           schema:
             type: string
+        - name: product_type
+          in: query
+          description: "Filter by product type. Only uppercase `PERP` or `BINARY` is accepted; omit to return all products. `PERP` includes all non-Predict products."
+          required: false
+          schema:
+            type: string
+            enum:
+              - PERP
+              - BINARY
         - name: limit
           in: query
           description: ""
@@ -1712,6 +1895,9 @@ paths:
            - `symbol_leverage_max = round down to int → min(1 / (imr_factor * notional ^ 0.8), 1/base_imr)`
 
         3. Check if the margin is enough
+
+
+        Setting leverage for a Predict symbol is always rejected, including setting it to 1. In batch mode (no `symbol`), Predict symbols are skipped rather than attempted; other symbols are still updated normally.
       tags:
         - private
       parameters:
@@ -1992,6 +2178,9 @@ paths:
         the previous one if completed, otherwise the order will be rejected.
 
 
+        For a Predict symbol: `margin_mode` must be sent as `ISOLATED`, or the order is rejected with `BINARY_MARGIN_MODE_NOT_SUPPORTED`. Only `LIMIT`, `POST_ONLY`, and `IOC` with an explicit protection price are accepted; any other `order_type` (including `MARKET`, `ASK`, `BID`, `FOK`) is rejected with `BINARY_ORDER_TYPE_NOT_SUPPORTED`. `order_price` and `order_quantity` must satisfy the round's `quote_min`/`quote_max`/`quote_tick` and `base_min`/`base_max`/`base_tick` without any automatic rounding; out-of-range or off-tick values are rejected outright. `min_notional` is always validated against the UP-book `order_price x order_quantity`, for both `BUY` and `SELL`. Once the platform's receive time for the request reaches the round's order cutoff before `expire_at`, the order is rejected with `ROUND_CLOSED`; clients must not auto-resubmit to the next round.
+
+
         Note: This endpoint requires `trading` scope in orderly key.
       tags:
         - private
@@ -2022,6 +2211,10 @@ paths:
         `DELETE /v1/order?order_id={order_id}&symbol={symbol}`
 
         Cancels a single order by `order_id`.
+
+
+        For a Predict symbol: once the platform's receive time for the request reaches the round's order cutoff before `expire_at`, this returns `ROUND_CLOSED`.
+
 
         Note: This endpoint requires `trading` scope in orderly key.
       tags:
@@ -2064,6 +2257,9 @@ paths:
 
         Edit a pending order by `order_id`. Only the `order_price` or
         `order_quantity` can be amended.
+
+
+        For a Predict symbol: the amended `order_price` must still satisfy the round's `quote_min`/`quote_max`/`quote_tick` or the edit is rejected outright; `order_type` remains limited to `LIMIT`, `POST_ONLY`, and `IOC` with a protection price. Once the platform's receive time for the request reaches the round's order cutoff before `expire_at`, this returns `ROUND_CLOSED`.
 
 
         Note: This endpoint requires `trading` scope in orderly key.
@@ -2128,6 +2324,9 @@ paths:
         Return client's trades history within a time range.
 
         Only return the latest 500 entries.
+
+
+        For a Predict fill, `fee` is the actual USDC fee for that fill, computed as `C x r x p x (1 - p)` (`C` the fill's `executed_quantity`, `p` the fill's `executed_price`, `r` the account's Predict maker or taker rate for that fill's role, as a decimal: `r` = `binary_maker_fee_rate`/`binary_taker_fee_rate` in bps divided by 10000) and rounded up per fill to quote-token precision. An order's total fee is the sum of its fills' `fee`; it is never recomputed from an average price.
       tags:
         - private
       parameters:
@@ -2138,6 +2337,15 @@ paths:
           example: ""
           schema:
             type: string
+        - name: product_type
+          in: query
+          description: "Filter by product type. Only uppercase `PERP` or `BINARY` is accepted; omit to return all products. `PERP` includes all non-Predict products."
+          required: false
+          schema:
+            type: string
+            enum:
+              - PERP
+              - BINARY
         - name: start_t
           in: query
           description: >-
@@ -2297,6 +2505,9 @@ paths:
         - `REDUCE`: Transfer margin from the isolated position back to your available balance, raising the liquidation price.
 
         **Prerequisites:** You must have an open isolated position on the specified symbol.
+
+
+        Rejected with `INVALID_PARAMS` for a Predict symbol; Predict positions cannot have margin manually added or removed.
 
         Note: This endpoint requires `trading` scope in orderly key.
       tags:
@@ -2501,6 +2712,15 @@ paths:
             If sort_by == `UPDATED_TIME_ASC`, ascending order by updated_time. Ascending order by order_id if updated_time are same;
           schema:
             type: string
+        - name: product_type
+          in: query
+          description: "Filter by product type. Only uppercase `PERP` or `BINARY` is accepted; omit to return all products. `PERP` includes all non-Predict products."
+          required: false
+          schema:
+            type: string
+            enum:
+              - PERP
+              - BINARY
         - $ref: "#/components/parameters/orderly_timestamp"
         - $ref: "#/components/parameters/orderly_account_id"
         - $ref: "#/components/parameters/orderly_key"
@@ -2525,6 +2745,9 @@ paths:
         Cancel a list of orders, filtered by `symbol` optionally. This request
         will cancel all open orders within the filter criteria, and will cancel
         all open orders if no filter is provided.
+
+
+        When no `symbol` is given, Predict rounds that are already past their order cutoff are skipped rather than attempted, and this does not produce an error; other targets are still cancelled normally. A single Predict symbol past cutoff returns `ROUND_CLOSED` when that symbol is requested explicitly.
 
 
         Note: This endpoint requires `trading` scope in orderly key.
@@ -3120,6 +3343,8 @@ paths:
         item in the `orders` array to restrict that order to reducing an existing
         position. Configure this flag independently for each order in the batch.
 
+        Each Predict item in the array follows the same Predict validation as `POST /v1/order` (`margin_mode` must be `ISOLATED`, `order_type` limited to `LIMIT`, `POST_ONLY`, and `IOC` with a protection price, price/quantity bounds enforced without rounding, `min_notional` validated against the UP-book notional). Each item is evaluated against its own round's order cutoff independently; an item past cutoff is rejected with `ROUND_CLOSED` without affecting the other items.
+
 
         Note: This endpoint requires `trading` scope in orderly key.
       tags:
@@ -3168,6 +3393,9 @@ paths:
         given or all of the given order_ids are invalid. 
 
 
+        For a Predict order, once the platform's receive time for the request reaches that round's order cutoff before `expire_at`, that item returns `ROUND_CLOSED`.
+
+
         Note: This endpoint requires `trading` scope in orderly key.
       tags:
         - private
@@ -3205,6 +3433,9 @@ paths:
 
 
         Cancel an order by `client_order_id`.
+
+
+        For a Predict symbol, once the platform's receive time for the request reaches the round's order cutoff before `expire_at`, this returns `ROUND_CLOSED`.
 
 
         Note: This endpoint requires `trading` scope in orderly key.
@@ -3255,6 +3486,9 @@ paths:
         This endpoint will return invalid client_order_id error if 0
         client_order_ids are given or all of the given client_order_ids are
         invalid. 
+
+
+        For a Predict order, once the platform's receive time for the request reaches that round's order cutoff before `expire_at`, that item returns `ROUND_CLOSED`.
 
 
         Note: This endpoint requires `trading` scope in orderly key.
@@ -3324,6 +3558,9 @@ paths:
 
         Snapshot of the current orderbook. Price of asks/bids are in descending
         order.
+
+
+        For a Predict symbol, the response also includes `down_asks` and `down_bids`, a server-derived DOWN book computed from the same UP snapshot. `asks` and `bids` keep their existing UP semantics and payload; all four arrays share the same `timestamp`.
       tags:
         - private
       parameters:
@@ -3370,6 +3607,9 @@ paths:
         Please note that for symbols with low trading activity, the kline might
         be generated through the mid price of the orderbook in addition to any
         executed trades on the platform.
+
+
+        A Predict symbol returns empty rows; Predict has no kline of its own. Query the underlying `PERP_BTC_USDC` instead.
       tags:
         - public
       parameters:
@@ -4377,6 +4617,9 @@ paths:
 
 
         Sample request can be found [here](/docs/build-on-omnichain/user-flows/algo-order-samples)
+
+
+        Algo orders are rejected for Predict symbols.
 
 
         Note: This endpoint requires trading scope in orderly key.
@@ -5571,6 +5814,7 @@ paths:
                 rwa_maker_fee_rate:
                   type: number
                   description: "RWA maker fee charged to users (0.0001 = 0.01%). Must be set in decimal-rate increments of 0.00001 (0.001% or 0.1 bps)."
+                # TODO(eng): confirm Predict maker/taker field names and units for this endpoint
                 account_ids:
                   type: array
                   items:
@@ -5665,6 +5909,7 @@ paths:
                 rwa_maker_fee_rate:
                   type: number
                   description: "RWA maker fee charged to users by default (0.0001 = 0.01%). Must be set in decimal-rate increments of 0.00001 (0.001% or 0.1 bps)."
+                # TODO(eng): confirm Predict maker/taker field names and units for this endpoint
               required:
                 - maker_fee_rate
                 - taker_fee_rate
@@ -11451,6 +11696,57 @@ components:
                   type: string
                   example: "Canada"
 
+    GetProductRestrictedAreasResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                product_type:
+                  description: The product type that was queried.
+                  type: string
+                  example: "BINARY"
+                countries:
+                  type: object
+                  properties:
+                    rows:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            description: Country name.
+                            type: string
+                            example: "United States"
+                          visibility:
+                            description: Whether the product entry point stays visible (`visible`) or is hidden (`hidden`) for this country. Both values mean trading is fully blocked.
+                            type: string
+                            example: "visible"
+                cities:
+                  type: object
+                  properties:
+                    rows:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            description: City name.
+                            type: string
+                            example: "Toronto"
+                          country_name:
+                            description: The country this city belongs to.
+                            type: string
+                            example: "Canada"
+                          visibility:
+                            description: Whether the product entry point stays visible (`visible`) or is hidden (`hidden`) for this city. Both values mean trading is fully blocked.
+                            type: string
+                            example: "hidden"
+
     GetMarketVolumeByBrokerResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
@@ -13316,6 +13612,22 @@ components:
                           - CROSS
                           - ISOLATED
                         example: "CROSS"
+                      outcome:
+                        type: string
+                        nullable: true
+                        description: "`UP`, `DOWN`, or `TIE` for a Predict round's expiry settlement segment; null for a segment closed by an early exit. `TIE` is `S1 = S0`."
+                        enum:
+                          - UP
+                          - DOWN
+                          - TIE
+                      settlement_price_per_share:
+                        type: number
+                        nullable: true
+                        description: "1 or 0 for a Predict round's expiry settlement segment; 0.5 per share on both sides when `outcome` is `TIE`; null for a segment closed by an early exit. This value is always the UP-book settlement price `R`; an UP position's segment settles at `R` per share and a DOWN position's segment settles at `1 - R` per share."
+                      settled_at:
+                        type: integer
+                        nullable: true
+                        description: When the system's expiry close for this segment completed. Null for a segment closed by an early exit, or while the system has not yet fully closed it.
 
     PositionResponse:
       allOf:
@@ -14600,6 +14912,8 @@ components:
               required:
                 - account_id
                 - account_mode
+                - binary_maker_fee_rate
+                - binary_taker_fee_rate
                 - email
                 - futures_maker_fee_rate
                 - futures_taker_fee_rate
@@ -14638,6 +14952,14 @@ components:
                   example: 0
                 rwa_maker_fee_rate:
                   description: Maker fee rate applied to RWA markets.
+                  type: number
+                  example: 0
+                binary_taker_fee_rate:
+                  description: "Taker fee rate applied to Orderly Predict markets, in bps. A new account defaults to 300. Always present; a missing or invalid value must not be treated as a free (zero) rate."
+                  type: number
+                  example: 300
+                binary_maker_fee_rate:
+                  description: "Maker fee rate applied to Orderly Predict markets, in bps. A new account defaults to 0. Always present; a missing or invalid value must not be treated as a free (zero) rate."
                   type: number
                   example: 0
                 futures_taker_fee_rate:
@@ -15677,6 +15999,221 @@ components:
             data:
               $ref: "#/components/schemas/AlgoOrder"
 
+    BinaryRoundInfoRow:
+      type: object
+      required:
+        - symbol
+        - product_type
+        - status
+        - activated_at
+        - observation_start_at
+        - expire_at
+        - s0
+        - index_price_symbol
+        - fee_model
+        - s1
+        - outcome
+        - settlement_price_per_share
+        - result_committed_at
+        - rule_version
+        - quote_min
+        - quote_max
+        - quote_tick
+        - base_min
+        - base_max
+        - base_tick
+        - min_notional
+      properties:
+        symbol:
+          type: string
+          description: The round's permanent Predict symbol. Never constructed by the client.
+          example: "<binary_symbol>"
+        product_type:
+          type: string
+          description: Always `BINARY`. Clients use this field to classify the product and must not parse it from the symbol.
+          example: "BINARY"
+        status:
+          type: string
+          description: Round status. Only `ACTIVE`, `DELISTING`, `RECYCLING`, or `DELISTED`; trading controls never set another value.
+          enum:
+            - ACTIVE
+            - DELISTING
+            - RECYCLING
+            - DELISTED
+        activated_at:
+          type: integer
+          nullable: true
+          description: When the round opened for trading (t_active). Null before it opens.
+        observation_start_at:
+          type: integer
+          description: t0, the time boundary used to record S0.
+        expire_at:
+          type: integer
+          description: t1, the expiry boundary for ordinary order placement, editing, and cancellation.
+        s0:
+          type: number
+          nullable: true
+          description: S0. Null before t0 or before it has been recorded. This is the only S0 field; there is no `strike_price` alias.
+        index_price_symbol:
+          type: string
+          description: "The underlying's Index symbol, formatted as `PERP_{underlying}_USDC`."
+          example: "PERP_BTC_USDC"
+        fee_model:
+          type: string
+          description: Always `BINARY_PROBABILITY`, meaning each fill is charged in USDC as `C x r x p x (1 - p)`, where `r` is the account's Predict maker or taker rate in bps divided by 10000.
+          example: "BINARY_PROBABILITY"
+        s1:
+          type: number
+          nullable: true
+          description: S1. Always null before the result is published.
+        outcome:
+          type: string
+          nullable: true
+          description: "`UP`, `DOWN`, or `TIE` once the result is published; null before that. `S1 > S0` is `UP`, `S1 < S0` is `DOWN`, `S1 = S0` is `TIE`."
+          enum:
+            - UP
+            - DOWN
+            - TIE
+        settlement_price_per_share:
+          type: number
+          nullable: true
+          description: Settlement price per share once the result is published. 1 or 0 for `UP`/`DOWN`; 0.5 per share on both UP and DOWN for `TIE`. Null before the result is published. This value is always the UP-book settlement price `R`; an UP position settles at `R` per share and a DOWN position settles at `1 - R` per share.
+        result_committed_at:
+          type: integer
+          nullable: true
+          description: When the result was first published. Null before that. Does not by itself mean a user's funds have settled; see `GET /v1/position_history`.
+        rule_version:
+          type: string
+          description: Always `binary-v1`.
+          example: "binary-v1"
+        quote_min:
+          type: number
+          description: Minimum order price. Currently fixed at `0.01`.
+        quote_max:
+          type: number
+          description: Maximum order price. Currently fixed at `0.99`.
+        quote_tick:
+          type: number
+          description: Order price tick size. Currently fixed at `0.01`.
+        base_min:
+          type: number
+          description: Minimum order quantity in shares. Currently fixed at `0.01`.
+        base_max:
+          type: number
+          description: Maximum order quantity in shares. Currently fixed at `10000`.
+        base_tick:
+          type: number
+          description: Order quantity tick size in shares. Currently fixed at `0.01`.
+        min_notional:
+          type: number
+          description: Minimum notional value. Currently fixed at `5`.
+        funding_period:
+          type: number
+          description: Funding period in hours, present when the corresponding configuration is available. Predict does not support liquidation, so `std_liquidation_fee`, `liquidator_fee`, `claim_insurance_fund_discount`, and `liquidation_tier` are omitted rather than zero-filled.
+        cap_funding:
+          type: number
+        floor_funding:
+          type: number
+        interest_rate:
+          type: number
+        cap_ir:
+          type: number
+        floor_ir:
+          type: number
+        imr_factor:
+          type: number
+        deviation_factor:
+          type: number
+        mark_index_price_deviation_floor:
+          type: number
+        mark_index_price_deviation_cap:
+          type: number
+
+    BinaryRoundInfoListResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required:
+                - rows
+              properties:
+                rows:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/BinaryRoundInfoRow"
+
+    BinaryPriceEvidence:
+      type: object
+      nullable: true
+      description: Null before the result is published. Not an independent evidence resource, actual price-fetch timestamp, or audit proof.
+      properties:
+        s0:
+          type: object
+          properties:
+            price:
+              type: number
+            timestamp:
+              type: integer
+            source:
+              type: string
+              example: "live"
+        s1:
+          type: object
+          properties:
+            price:
+              type: number
+            timestamp:
+              type: integer
+            source:
+              type: string
+              example: "live"
+
+    BinaryRoundInfoResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              allOf:
+                - $ref: "#/components/schemas/BinaryRoundInfoRow"
+                - type: object
+                  required:
+                    - price_evidence
+                    - manual_correction
+                  properties:
+                    price_evidence:
+                      $ref: "#/components/schemas/BinaryPriceEvidence"
+                    manual_correction:
+                      type: object
+                      nullable: true
+                      description: Always null.
+
+    IndexPriceHistoryEntry:
+      type: object
+      properties:
+        timestamp:
+          type: integer
+        index_price:
+          type: number
+
+    IndexPriceHistoryResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasicResponse"
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: array
+              items:
+                $ref: "#/components/schemas/IndexPriceHistoryEntry"
+
     OrderbookResponse:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
@@ -15699,6 +16236,16 @@ components:
                   type: array
                   items:
                     $ref: "#/components/schemas/OrderbookEntry"
+                down_asks:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/OrderbookEntry"
+                  description: Present only for Predict symbols. Derived from UP `bids` as `1 - price` per level, ordered lowest price first.
+                down_bids:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/OrderbookEntry"
+                  description: Present only for Predict symbols. Derived from UP `asks` as `1 - price` per level, ordered highest price first.
                 timestamp:
                   type: integer
                   description: Unix epoch time in milliseconds

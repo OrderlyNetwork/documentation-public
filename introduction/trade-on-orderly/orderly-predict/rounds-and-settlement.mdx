@@ -1,0 +1,72 @@
+---
+title: "Rounds and Settlement"
+description: "Understand how an Orderly Predict round moves from open to settled, and how the outcome is decided."
+---
+
+Orderly Predict trades happen inside **rounds**: fixed-length cycles that open for trading, record a starting price, and settle to UP, DOWN, or a tie at expiry. This page covers round states, how the outcome is decided, and how settlement works. For order types, price limits, and how to exit a position, see [Trading Rules](/introduction/trade-on-orderly/orderly-predict/trading-rules).
+
+## Life of a round
+
+Rounds don't open one at a time, back to back -- Orderly keeps several upcoming rounds open for trading at once, each waiting on its own strike. A round opens for trading roughly 10 rounds' worth of lead time before its strike is recorded (about 50 minutes, since each round is 5 minutes); the platform can adjust this lead time, so treat it as approximate rather than a fixed window. During this lead time -- and until the strike is recorded -- the round shows as "strike pending," as in the first row below.
+
+| Stage                 | What's happening                                                                                                                                       |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Open (strike pending) | The round is open and fully tradable, but its strike hasn't been recorded yet -- this is simply the state before the strike time; it's not a separate, more limited mode. The UI shows "strike pending."                                          |
+| Open                  | The strike (see below) has been recorded. Trading continues exactly as before, until a few seconds before expiry, when new orders, edits, and cancellations stop being accepted -- see [Order cutoff](#order-cutoff) below.                                                                         |
+| Settling              | The round has reached its expiry time, and the outcome is being decided.                  |
+| Result published      | The outcome has been decided and published. Positions are being closed out and funds are being credited back to your account balance.                  |
+| Ended                 | Open orders and positions for the round are closed out. This doesn't by itself confirm your funds have arrived -- see [Settlement](#settlement) below for when your position actually settles. The outcome, strike, expiry price, and settlement details stay available to query. |
+
+### Order cutoff
+
+A round keeps accepting new orders, order edits, and cancellations right up until its order cutoff.
+
+- Whether a request makes the cutoff is judged by the time Orderly's server receives it, not the time you sent it -- a request that arrives after the cutoff is rejected, even if you sent it in time.
+- Requests that reached the server before the cutoff are processed normally.
+- The cutoff defaults to 5 seconds before expiry, though the platform can adjust this -- if your order is rejected as the round closes, it means you missed this window, whatever the exact margin was at the time.
+
+## How the outcome is decided
+
+Every round compares two prices:
+
+- **Strike (S0):** the first index price observed inside the round's observation window.
+- **Expiry price (S1):** the last index price observed inside the round's observation window (see below for the window's exact boundaries).
+
+Both S0 and S1 are taken from Orderly's BTC index price.
+
+The observation window runs from the start time up to, but not including, the expiry time. A price observed exactly at the expiry time belongs to the next round instead.
+
+- If the expiry price is above the strike, **UP wins**.
+- If the expiry price is below the strike, **DOWN wins**.
+- If the expiry price equals the strike, the round is a **tie** -- neither side wins.
+
+See the [Glossary](/introduction/trade-on-orderly/trading-basics/glossary) for short definitions of strike, expiry price, and outcome.
+
+## Settlement
+
+Once the outcome is decided, it's published the next time round info refreshes (see the timing below). The round's settlement price is fixed per share: \$1 for the winning side and \$0 for the losing side, or \$0.50 for both sides if the round ties.
+
+There's no separate settlement fee for this step -- only the trading fees you already paid when you opened or closed your position apply; see [Orderly Predict fees](/introduction/trade-on-orderly/trading-basics/trading-fees#orderly-predict-fees).
+
+Publishing the outcome and crediting your funds are two different moments:
+
+- The **outcome** (UP, DOWN, or tie) is published the next time round info refreshes after it's decided -- round info updates about once a minute, so there can be a delay of roughly a minute or sometimes longer.
+- Your **position** is then closed at the settlement price, and the resulting balance returns to your account balance. This can happen a short time after the outcome is published.
+
+Your position only shows as settled, with its final profit or loss, once this second step completes.
+
+## Example: a tied round
+
+Say you bought 100 UP shares at \$0.60 per share, for a total cost of \$60.
+
+If the round ties, your position settles at \$0.50 per share: 100 shares x \$0.50 = \$50. You get back \$50 against the \$60 you paid, a \$10 loss before trading fees -- even though you didn't guess the direction wrong. A tie pays a fixed \$0.50 per share regardless of your entry price, so whether it's a profit or a loss for you depends on what you paid.
+
+## When price data is delayed
+
+If the price needed to record the strike or the expiry price isn't available right away, the round stays in **Settling** until it is. No substitute or estimated result is created, and your position and funds stay locked until a real outcome is reached. In rare cases, Orderly may need to manually verify and record the missing price before the round can settle; see [Supplemental Terms for Orderly Predict](/introduction/trade-on-orderly/orderly-predict/supplemental-terms) for the terms that cover this.
+
+## Related pages
+
+- [Trading Rules](/introduction/trade-on-orderly/orderly-predict/trading-rules) -- order types, price and size limits, and margin.
+- [Orderly Predict fees](/introduction/trade-on-orderly/trading-basics/trading-fees#orderly-predict-fees) -- how trading fees are calculated.
+- [Glossary](/introduction/trade-on-orderly/trading-basics/glossary) -- short definitions of Orderly Predict terms.

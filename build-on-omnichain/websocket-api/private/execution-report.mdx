@@ -73,3 +73,7 @@ Push interval: real-time push
 ```
 
 </ResponseExample>
+
+## Orderly Predict
+
+For a Predict round, the fill generated at round expiry has a positive `executedQuantity` equal to the settled position size. Its `executedPrice` is always the UP-book settlement price `R`, exactly `0`, `0.5`, or `1` -- treat these as legitimate fill values, not as missing or filtered-out data. An UP position's settlement fill pays `R` per share; a DOWN position's settlement fill pays `1 - R` per share, even though the recorded `executedPrice` is the same `R`. See [Positions and Settlement](/build-on-omnichain/orderly-predict/positions-and-settlement#trade-history) for how this fill appears in trade history.

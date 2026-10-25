@@ -70,3 +70,24 @@ description: "Subscribe to incremental orderbook updates for a symbol via WebSoc
 ```
 
 </ResponseExample>
+
+## Orderly Predict
+
+For a Predict round symbol (`<binary_symbol>`), the push additionally includes `down_asks` and `down_bids`, following the same incremental-update rules as `asks` and `bids`. `asks` and `bids` keep their existing UP-side semantics. Each `down_asks` price is `1 - bid price`, and each `down_bids` price is `1 - ask price`; quantities are unchanged.
+
+```json Subscribed Message
+{
+  "topic": "<binary_symbol>@orderbookupdate",
+  "ts": 1618826337580,
+  "data": {
+    "symbol": "<binary_symbol>",
+    "prevTs": 1618826337380,
+    "asks": [[0.56, 120]],
+    "bids": [[0.55, 100]],
+    "down_asks": [[0.45, 100]],
+    "down_bids": [[0.44, 120]]
+  }
+}
+```
+
+Non-Predict symbols do not return `down_asks` or `down_bids`. See [Market Data](/build-on-omnichain/orderly-predict/market-data#order-book) for how the UP and DOWN sides relate.

@@ -1,0 +1,52 @@
+---
+title: "Orderly Predict Overview"
+description: "Learn what Orderly Predict is and how UP and DOWN trades work."
+---
+
+Orderly Predict is a market on BTC, settled every 5 minutes, where you trade on whether the price finishes a round up or down. You can place a trade well before a round's 5-minute decision window starts -- see [Rounds and Settlement](/introduction/trade-on-orderly/orderly-predict/rounds-and-settlement) for when a round opens. This page explains how UP and DOWN trades work, how their prices relate to each other, and how Orderly Predict differs from perpetual futures.
+
+## How UP and DOWN prices work
+
+When you trade on Orderly Predict, you're paying a cost per share for a payout that depends on the round's outcome, not buying a direct read on probability.
+
+- If UP is priced at \$0.57, you pay \$0.57 per share. If BTC finishes the round higher than the round's strike, each share pays \$1 -- a \$0.43 gain before trading fees.
+- If your side loses, the share pays out \$0, and the \$0.57 you paid is gone.
+- If the round ties, every share -- UP and DOWN alike -- pays out \$0.50.
+- Because ties settle at \$0.50, a price is not the same as the probability that BTC finishes higher.
+
+A trading fee applies when your order fills; see [Orderly Predict fees](/introduction/trade-on-orderly/trading-basics/trading-fees#orderly-predict-fees). There's no separate fee when a round settles.
+
+## UP and DOWN are two sides of one trade
+
+Every round has exactly one outcome: UP, DOWN, or a tie. They aren't two separate markets -- they're two views of the same trade.
+
+- For any single fill, the DOWN price is \$1 minus the UP price. The two prices you see on screen can add up to slightly more than \$1; see [Prices shown are prices you can trade at](#prices-shown-are-prices-you-can-trade-at).
+- Your position shows as UP or DOWN, depending on which side you bought.
+- Because the two sides mirror each other, there's a single order book for UP, and the DOWN price is derived from it.
+
+## Prices shown are prices you can trade at
+
+The UP and DOWN prices you see are executable prices, not a mid-price:
+
+- The UP price shown is the best price you could buy UP at right now.
+- The DOWN price shown is the best price you could buy DOWN at right now.
+
+Because both sides are quoted at the price you'd actually trade at, UP + DOWN usually add up to slightly more than \$1 -- the difference is the market's spread, not an error. In thin markets, the gap can be wider.
+
+## No leverage, no liquidation, no funding
+
+Orderly Predict works differently from perpetual futures:
+
+- **No leverage.** Every position is fully collateralized; there's nothing to borrow.
+- **No liquidation.** Because positions are fully collateralized up front, there's no maintenance margin to fall below and nothing to liquidate.
+- **No funding.** Rounds settle within minutes, so there's no funding rate.
+
+## Availability
+
+Whether Orderly Predict is available depends on the app you trade on -- Builders choose whether to enable it for their users. Check the terms of the app you're trading on before you trade, or see [Builders](/introduction/trade-on-orderly/builders) for the current list. Orderly Predict is also subject to its own [Supplemental Terms](/introduction/trade-on-orderly/orderly-predict/supplemental-terms) and is not offered to US Persons or Restricted Persons.
+
+## Related pages
+
+- [Rounds and Settlement](/introduction/trade-on-orderly/orderly-predict/rounds-and-settlement) -- how a round moves from open to settled.
+- [Trading Rules](/introduction/trade-on-orderly/orderly-predict/trading-rules) -- order types, price and size limits, and margin.
+- [Orderly Predict fees](/introduction/trade-on-orderly/trading-basics/trading-fees#orderly-predict-fees) -- how trading fees are calculated.

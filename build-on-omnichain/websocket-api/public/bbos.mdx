@@ -61,3 +61,7 @@ Push interval: 1s
 ```
 
 </ResponseExample>
+
+## Orderly Predict
+
+Predict round symbols (`<binary_symbol>`) appear in `bbos` like any other symbol, with `ask`, `askSize`, `bid`, and `bidSize` in UP-side semantics. `bbos` does not add DOWN fields; compute the DOWN price on the client as `1 - price`. See [Market Data](/build-on-omnichain/orderly-predict/market-data#order-book) for the order book model this builds on.

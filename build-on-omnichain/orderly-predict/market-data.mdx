@@ -1,0 +1,153 @@
+---
+title: "Market Data"
+description: "Discover Orderly Predict rounds, read round status and results, and get UP/DOWN quotes through Orderly's REST and WebSocket market data APIs."
+---
+
+This page covers how to discover Predict rounds, read their status and results, and get UP/DOWN order book, trade, and index price data. For order placement rules, see [Order Management](/build-on-omnichain/orderly-predict/order-management).
+
+## Discovering rounds
+
+Predict trading parameters, round timing, and the result are all combined into one pair of endpoints -- there is no separate "rounds" or "history" resource.
+
+- **List rounds:** [GET `/v1/public/binary/info`](/build-on-omnichain/restful-api/public/get-orderly-predict-round-info-for-all-rounds) -- a snapshot of up to 300 rounds, newest first, refreshed about once a minute.
+- **Get one round:** [GET `/v1/public/binary/info/{symbol}`](/build-on-omnichain/restful-api/public/get-orderly-predict-round-info-for-one-round) -- the same fields for a single round, by its exact `symbol`.
+
+Both endpoints are public and share the same underlying snapshot. The snapshot includes current, upcoming, and recently ended rounds, but it is not a guarantee of complete history -- rounds delisted more than 48 hours ago may no longer appear, and the list does not return pagination metadata.
+
+The list routinely contains several `ACTIVE` rounds at the same time -- Orderly keeps a handful of upcoming rounds open for trading ahead of their strike (see [Rounds and Settlement](/introduction/trade-on-orderly/orderly-predict/rounds-and-settlement#life-of-a-round)). To find the round currently in its observation window (the one a "current round" display should show), look for the `ACTIVE` row where `observation_start_at <= server time < expire_at` -- see [Round status](#round-status) and the phase table below for the other `ACTIVE` rounds still waiting on their strike.
+
+<Note>
+  [GET `/v1/public/info`](/build-on-omnichain/restful-api/public/get-available-symbols) no longer
+  returns Predict round symbols, with no flag to opt back into including them -- use the Predict info
+  endpoints above to discover rounds instead.
+</Note>
+
+### Round status
+
+| `status`    | Meaning                                                             |
+| ----------- | ------------------------------------------------------------------- |
+| `ACTIVE`    | Open for trading.                                                   |
+| `DELISTING` | Past expiry; the outcome is being decided or has just been decided. |
+| `RECYCLING` | Being cleaned up after settlement.                                  |
+| `DELISTED`  | Open orders and positions are closed out; the result is final.    |
+
+A round reaching its expiry time does not mean it disappears from the list -- it moves through these statuses over time. Whether new orders are still accepted is governed by the order cutoff described in [Order Management](/build-on-omnichain/orderly-predict/order-management#order-cutoff), not by this status alone.
+
+`DELISTED` alone doesn't confirm that an individual trader's funds have arrived -- see [Personal settlement completion](/build-on-omnichain/orderly-predict/positions-and-settlement#personal-settlement-completion). A round can also reach `DELISTED` (or `RECYCLING`) without ever having opened for trading; such a round may have no result at all.
+
+### Result fields
+
+Before a result is published, `s1`, `outcome`, `settlement_price_per_share`, and `result_committed_at` are all `null`. `s0` may already have a value once the round's strike is recorded, even while trading continues.
+
+| Field                        | Meaning once published                               |
+| ---------------------------- | ---------------------------------------------------- |
+| `s0`                         | The strike price recorded at the start of the round. |
+| `s1`                         | The expiry price recorded at the end of the round.   |
+| `outcome`                    | `UP`, `DOWN`, or `TIE`.                              |
+| `settlement_price_per_share` | `1`, `0`, or `0.5` per share. This value is always the UP-book settlement price `R`: an UP position settles at `R` per share, and a DOWN position settles at `1 - R` per share. |
+| `result_committed_at`        | The timestamp the result was first published.        |
+
+`result_committed_at` having a value is the only signal that a round's result has been published -- do not infer this from `status` or from `s1`/`outcome` alone. `result_committed_at` only means the outcome is known; it does not mean funds have been credited to any individual account. Personal settlement completion is a separate signal -- see [Positions and Settlement](/build-on-omnichain/orderly-predict/positions-and-settlement#personal-settlement-completion).
+
+### Frontend phase table
+
+A typical frontend derives a display phase from `status`, `observation_start_at`, `expire_at`, and the result fields, rather than expecting a dedicated phase field from the API.
+
+<Note>
+  Use server time -- the outermost `timestamp` field on the response -- for "the current time"
+  below, not the client's local clock.
+</Note>
+
+The same round phase has three names depending on which layer you're reading: what traders see on screen, what your frontend tracks internally, and what the API returns.
+
+| Trader-facing stage   | Builder frontend phase       | How to derive it                                                                                                                                                                    |
+| --------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Open (strike pending) | Early trading                | `status = ACTIVE` and the current time is before `observation_start_at`.                                                                                                            |
+| Open                  | Observing                    | `status = ACTIVE` and the current time is at or after `observation_start_at` but before `expire_at`.                                                                                |
+| Settling              | Waiting for result           | `activated_at` is not `null`, the round has passed `expire_at`, but `result_committed_at` is still `null`.                                                                          |
+| Result published      | Result published             | `result_committed_at`, `s1`, `outcome`, and `settlement_price_per_share` all have values.                                                                                           |
+| Your position settled | Personal settlement complete  | Your `GET /v1/position_history` record for this round is complete, with valid `settled_at`, outcome, and settlement price. `status = DELISTED` alone does not confirm this -- see [Positions and Settlement](/build-on-omnichain/orderly-predict/positions-and-settlement#personal-settlement-completion). |
+
+This last row is a personal, account-level signal, not a round phase -- it has no corresponding round `status` of its own. A round reaching `DELISTED` does not by itself mean an individual trader's funds have arrived. See [Personal settlement completion](/build-on-omnichain/orderly-predict/positions-and-settlement#personal-settlement-completion).
+
+### Polling for the result
+
+There is no push notification for a round's result -- poll [GET `/v1/public/binary/info/{symbol}`](/build-on-omnichain/restful-api/public/get-orderly-predict-round-info-for-one-round):
+
+- Start polling once the round reaches `expire_at`, every 2 seconds plus 0 to 1 second of random jitter.
+- After 30 seconds of the result still being `null`, back off to every 10 seconds.
+- Stop as soon as the result fields have a value.
+
+## Order book
+
+[GET `/v1/orderbook/{symbol}`](/build-on-omnichain/restful-api/private/orderbook-snapshot) returns the existing `asks` and `bids` arrays in UP terms, plus two additive fields for Predict symbols:
+
+```json
+{
+  "data": {
+    "timestamp": 1787832145600,
+    "asks": [{ "price": 0.56, "quantity": 120 }],
+    "bids": [{ "price": 0.55, "quantity": 100 }],
+    "down_asks": [{ "price": 0.45, "quantity": 100 }],
+    "down_bids": [{ "price": 0.44, "quantity": 120 }]
+  }
+}
+```
+
+- `down_asks` is derived from UP `bids` (price = \$1 minus the UP bid price, same quantity).
+- `down_bids` is derived from UP `asks` (price = \$1 minus the UP ask price, same quantity).
+- All four arrays come from the same snapshot and share one `timestamp`; Orderly computes the DOWN side server-side, so you don't need to derive it yourself for this endpoint.
+- Non-Predict symbols never return `down_asks` or `down_bids`.
+
+The `<binary_symbol>@orderbook` and `<binary_symbol>@orderbookupdate` WebSocket topics carry the same additive `down_asks` and `down_bids` fields for Predict symbols; see [WebSocket API: Orderbook](/build-on-omnichain/websocket-api/public/orderbook) and [Order Book Update](/build-on-omnichain/websocket-api/public/order-book-update). The `<binary_symbol>@bbo` topic adds `down_bid` and `down_ask` the same way -- see [WebSocket API: BBO](/build-on-omnichain/websocket-api/public/bbo).
+
+## Underlying price data
+
+A Predict round's strike and expiry price are drawn from the underlying index, not from the round's own order book:
+
+- **Kline for the underlying:** [GET `/v1/kline`](/build-on-omnichain/restful-api/public/get-kline) with `symbol=PERP_BTC_USDC`. Requesting kline for a round's own symbol returns empty rows; always query the underlying symbol instead.
+- **Underlying index price:** subscribe to `SPOT_BTC_USDC@indexprice` for live updates. See [WebSocket API: Index Price](/build-on-omnichain/websocket-api/public/index-price).
+- **A round's own index price is not pushed on the public WebSocket** -- there is no live topic for it. For the round's current index price, poll [GET `/v1/public/futures/{symbol}`](/build-on-omnichain/restful-api/public/get-market-info-for-one-symbol) (`index_price`); for historical index price data over a time range, use [GET `/v1/public/index_price`](#index-price-history) below.
+
+Predict info's `index_price_symbol` field tells you which underlying symbol a round is priced against. This field is a `PERP_{underlying}_USDC` value (for example `PERP_BTC_USDC`) and can't be pasted directly into a WebSocket topic name -- the underlying index topic is `SPOT_BTC_USDC@indexprice`, as shown above.
+
+### Index price history
+
+[GET `/v1/public/index_price`](/build-on-omnichain/restful-api/public/get-index-price-history) returns 1-second-granularity index price points for a time range:
+
+- Public endpoint; no authentication required.
+- Rate limit: 10 requests per second per IP.
+- The queried range must fall within the last 24 hours, and must span at least 1 second and at most 10 minutes.
+- Returns at most `limit` rows (default and maximum 1000), earliest first; there is no pagination.
+
+## Funding fields
+
+Predict rounds return the same funding-related fields as perpetual futures ([GET `/v1/public/funding_rates`](/build-on-omnichain/restful-api/public/get-predicted-funding-rates-for-all-markets), [GET `/v1/public/funding_rate/{symbol}`](/build-on-omnichain/restful-api/public/get-predicted-funding-rate-for-one-market), [GET `/v1/public/funding_rate_history`](/build-on-omnichain/restful-api/public/get-funding-rate-history-for-one-market)), but the values are always zero -- Orderly Predict has no funding mechanism. These fields are kept for response-shape compatibility with existing integrations; do not surface them to traders as a real funding rate.
+
+## Multi-round quotes
+
+To show best bid/ask across many rounds at once (for example, on a rounds picker), subscribe to the existing `bbos` topic rather than polling Predict info or the order book per round. `bbos` returns UP-side best bid/ask for every live symbol once per second; compute the DOWN-side quote client-side as \$1 minus the UP price. A newly created round's symbol may take up to about 2 minutes to start appearing in `bbos`, since the gateway only reloads its symbol list on that cadence; don't assume a symbol appears there the instant it's created. See [WebSocket API: BBOs](/build-on-omnichain/websocket-api/public/bbos).
+
+## What index, mark, and trade price are not
+
+- `index_price` on a round is not the order book midpoint.
+- None of `index_price`, `mark_price`, or the public trade price feed are ever the strike (S0) or expiry price (S1) used for settlement.
+- S0 and S1 are authoritative as published by Predict info -- read them from there rather than recomputing them yourself from the index price history endpoint above; once published, the values Predict info returns are fixed and won't be recalculated or overwritten on query.
+
+## Endpoints that don't apply to Predict rounds
+
+| Endpoint / topic                                                                                                                | Behavior for a Predict symbol   |
+| ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| [GET `/v1/tv/history`](/build-on-omnichain/restful-api/public/get-tradingview-history-bars)                                     | Returns `no_data`.             |
+| [GET `/v1/public/market_info/history_charts`](/build-on-omnichain/restful-api/public/get-historical-price-list-for-all-symbols) | Predict symbols are not listed. |
+| [GET `/v1/public/market_info/price_changes`](/build-on-omnichain/restful-api/public/get-price-info-for-all-symbols)             | Predict symbols are not listed. |
+| `price-changes` WebSocket topic                                                                                                 | Predict symbols are excluded.   |
+
+See [WebSocket API: Price Changes](/build-on-omnichain/websocket-api/public/price-changes) for the topic-level detail.
+
+## Related pages
+
+- [Order Management](/build-on-omnichain/orderly-predict/order-management) -- place, edit, and cancel orders, including the DOWN conversion.
+- [WebSocket API: Orderbook](/build-on-omnichain/websocket-api/public/orderbook) and [BBO](/build-on-omnichain/websocket-api/public/bbo) -- real-time UP/DOWN quotes for a single round.
+- [WebSocket API: BBOs](/build-on-omnichain/websocket-api/public/bbos) -- best bid/ask across many rounds at once.
+- [WebSocket API: Index Price](/build-on-omnichain/websocket-api/public/index-price) -- live updates for the underlying index.

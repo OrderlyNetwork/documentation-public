@@ -7,6 +7,13 @@ description: "Step-by-step guide to integrating Isolated Margin: setting leverag
 
 This guide walks through the full lifecycle of using Isolated Margin via the API. Both Cross and Isolated margin modes are supported simultaneously -- you can hold a Cross position and an Isolated position on the same symbol at the same time. Simply specify `margin_mode` when placing an order. For a conceptual overview, see [Isolated Margin basics](/introduction/trade-on-orderly/perpetual-futures/isolated-margin).
 
+<Note>
+  Orderly Predict symbols are isolated-margin only. Leverage changes and margin transfers are
+  rejected for Predict symbols -- see [Order
+  Management](/build-on-omnichain/orderly-predict/order-management#leverage-and-margin-transfers-are-rejected)
+  for the Predict-specific rules.
+</Note>
+
 ```mermaid
 flowchart LR
     A[Set leverage] --> B[Place order]

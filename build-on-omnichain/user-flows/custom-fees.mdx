@@ -102,6 +102,12 @@ Eligibility is evaluated per trade, so Builders can apply different maker fees t
 
 Protocol-funded maker rebates are passed through to traders. They may appear in Builder-side fee settlement as part of the funding flow, but they are not Builder earnings. Trader rebates settle on each qualifying execution.
 
+## Orderly Predict Fees
+
+Retrieve the account's current Predict rates through [GET `/v1/client/info`](/build-on-omnichain/restful-api/private/get-account-information) (`binary_maker_fee_rate`, `binary_taker_fee_rate`). For the fee formula, the floor and cap on Predict rates, and the Predict base rate by tier, see [Orderly Predict fees](/introduction/trade-on-orderly/trading-basics/trading-fees#orderly-predict-fees).
+
+{/* TODO(eng): confirm the Predict maker/taker field names on POST /v1/broker/fee_rate/set, /v1/broker/fee_rate/set_default, and /v1/broker/fee_rate/default, and whether GET /v1/broker/user_info, GET /v1/broker/fee_rate/default, and the broker-info responses also carry Predict fields. Once confirmed, document how Builders set Predict rates through these endpoints. */}
+
 ## FAQs
 
 <AccordionGroup>

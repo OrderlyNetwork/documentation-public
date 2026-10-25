@@ -48,3 +48,7 @@ Push interval: real-time push
 ```
 
 </ResponseExample>
+
+## Orderly Predict
+
+For a Predict round symbol (`<binary_symbol>`), `trade` pushes use UP book semantics: `price` and `side` always reflect the UP side, with no added Predict fields. Compute the DOWN-side display price on the client as `1 - price`. See [Market Data](/build-on-omnichain/orderly-predict/market-data#order-book) for the UP-book model this reflects.

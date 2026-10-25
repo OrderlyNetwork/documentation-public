@@ -79,7 +79,14 @@ Base facts: API mainnet `https://api.orderly.org`, testnet `https://testnet-api.
 - [Liquidations](https://orderly.network/docs/introduction/trade-on-orderly/perpetual-futures/liquidations): Understand how Orderly triggers and processes liquidations when margin falls below the threshold.
 - [Insurance Fund & ADL](https://orderly.network/docs/introduction/trade-on-orderly/perpetual-futures/insurance-fund-and-adl): Understand how the Orderly Insurance Fund protects against insolvency during liquidations.
 
-- [Supported Markets](https://orderly.network/docs/introduction/trade-on-orderly/supported-markets): See the full list of perpetual futures markets available on Orderly, including contract identifiers.
+#### Orderly Predict
+
+- [Orderly Predict Overview](https://orderly.network/docs/introduction/trade-on-orderly/orderly-predict/overview): Learn what Orderly Predict is and how UP and DOWN trades work.
+- [Rounds and Settlement](https://orderly.network/docs/introduction/trade-on-orderly/orderly-predict/rounds-and-settlement): Understand how an Orderly Predict round moves from open to settled, and how the outcome is decided.
+- [Trading Rules](https://orderly.network/docs/introduction/trade-on-orderly/orderly-predict/trading-rules): Price limits, order types, exits, and margin rules for trading on Orderly Predict.
+- [Supplemental Terms for Orderly Predict](https://orderly.network/docs/introduction/trade-on-orderly/orderly-predict/supplemental-terms): Review the supplemental legal terms that apply to Orderly Predict, the BTC 5-minute prediction market.
+
+- [Supported Markets](https://orderly.network/docs/introduction/trade-on-orderly/supported-markets): See the full list of perpetual futures and Orderly Predict markets available on Orderly, including contract identifiers.
 - [Permissionless Vault](https://orderly.network/docs/introduction/trade-on-orderly/permissionless-vault): Learn how anyone can create and manage a Strategy Vault on Orderly without permission or manual onboarding.
 - [Supported Chains](https://orderly.network/docs/introduction/trade-on-orderly/supported-chains): Explore the list of supported chains on Orderly Network.
 - [Multi-Collateral](https://orderly.network/docs/introduction/trade-on-orderly/multi-collateral): Understand supported collateral types, deposit caps, discount rates, and cross-chain rules.
@@ -143,6 +150,13 @@ Base facts: API mainnet `https://api.orderly.org`, testnet `https://testnet-api.
 - [Builder Oracle](https://orderly.network/docs/build-on-omnichain/user-flows/builder-oracle): Create and operate Builder-pushed or Bring Your Own Key price sources, then use them in Perp Anything markets.
 - [RWA Markets](https://orderly.network/docs/build-on-omnichain/perp-anything/rwa-markets): Configure supported real-world asset markets, market sessions, and closed-market behavior in Perp Anything.
 - [Pre-TGE Listing](https://orderly.network/docs/build-on-omnichain/perp-anything/pre-tge-listing): Learn how Builders can list a perpetual market on a token before its TGE, using a synthetic Pre-TGE Oracle price and tightened risk caps.
+
+### Orderly Predict
+
+- [Introduction](https://orderly.network/docs/build-on-omnichain/orderly-predict/introduction): How Builders integrate Orderly Predict: one permanent symbol per round, how the UP and DOWN sides map to one order book, and what's new versus what's reused from Orderly's existing APIs.
+- [Market Data](https://orderly.network/docs/build-on-omnichain/orderly-predict/market-data): Discover Orderly Predict rounds, read round status and results, and get UP/DOWN quotes through Orderly's REST and WebSocket market data APIs.
+- [Order Management](https://orderly.network/docs/build-on-omnichain/orderly-predict/order-management): Place, edit, and cancel Orderly Predict orders using Orderly's existing order APIs, including the client-side DOWN conversion and Predict-specific validation.
+- [Positions and Settlement](https://orderly.network/docs/build-on-omnichain/orderly-predict/positions-and-settlement): Read Orderly Predict positions, trades, and settlement records, and how Predict trading fees are calculated per fill.
 
 ### Builders Marketplace
 
@@ -250,6 +264,7 @@ Base facts: API mainnet `https://api.orderly.org`, testnet `https://testnet-api.
 - [Get announcements (Legacy)](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-announcements): [GET /v1/public/announcement] Get announcements
 - [Get Announcements V2](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-announcements-v2): [GET /v2/public/announcement] Get announcements (v2)
 - [Get Ip Info](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-ip-info): [GET /v1/ip_info] Get IP info
+- [Get Restricted Areas By Product](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-restricted-areas-by-product): [GET /v1/product_restricted_areas] Get restricted areas by product
 
 #### USDC faucet
 
@@ -585,7 +600,10 @@ Base facts: API mainnet `https://api.orderly.org`, testnet `https://testnet-api.
 - [Get Open Interests For All Symbols](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-open-interests-for-all-symbols): [GET /v1/public/market_info/traders_open_interests] Get open interests for all symbols
 - [Get Market Info For All Symbols](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-market-info-for-all-symbols): [GET /v1/public/futures] Get market info for all symbols
 - [Get Market Info For One Symbol](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-market-info-for-one-symbol): [GET /v1/public/futures/{symbol}] Get market info for one symbol
+- [Get Orderly Predict Round Info For All Rounds](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-orderly-predict-round-info-for-all-rounds): [GET /v1/public/binary/info] Get Orderly Predict round info for all rounds
+- [Get Orderly Predict Round Info For One Round](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-orderly-predict-round-info-for-one-round): [GET /v1/public/binary/info/{symbol}] Get Orderly Predict round info for one round
 - [Get Index Price Source](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-index-price-source): [GET /v1/public/index_price_source] Get index price source
+- [Get Index Price History](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-index-price-history): [GET /v1/public/index_price] Get index price history
 - [Get Historical Price List For All Symbols](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-historical-price-list-for-all-symbols): [GET /v1/public/market_info/history_charts] Get historical price list for all symbols
 - [Orderbook Snapshot](https://orderly.network/docs/build-on-omnichain/restful-api/private/orderbook-snapshot): [GET /v1/orderbook/{symbol}] Orderbook snapshot
 - [Get Kline](https://orderly.network/docs/build-on-omnichain/restful-api/public/get-kline): [GET /v1/kline] Get kline

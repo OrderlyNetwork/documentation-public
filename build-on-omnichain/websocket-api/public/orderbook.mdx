@@ -74,3 +74,23 @@ description: "Subscribe to full depth-100 orderbook snapshots for a symbol via W
 }
 ```
 </ResponseExample>
+
+## Orderly Predict
+
+For a Predict round symbol (`<binary_symbol>`), the push additionally includes `down_asks` and `down_bids`. `asks` and `bids` keep their existing UP-side semantics and payload. Each `down_asks` price is `1 - bid price`, and each `down_bids` price is `1 - ask price`; quantities are unchanged.
+
+```json Subscribed Message
+{
+  "topic": "<binary_symbol>@orderbook",
+  "ts": 1614152140945,
+  "data": {
+    "symbol": "<binary_symbol>",
+    "asks": [[0.56, 120]],
+    "bids": [[0.55, 100]],
+    "down_asks": [[0.45, 100]],
+    "down_bids": [[0.44, 120]]
+  }
+}
+```
+
+Non-Predict symbols do not return `down_asks` or `down_bids`. See [Market Data](/build-on-omnichain/orderly-predict/market-data#order-book) for how the UP and DOWN sides relate.

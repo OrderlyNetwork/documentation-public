@@ -38,3 +38,21 @@ description: "Review definitions of key trading terms used across Orderly, from 
 **Auto De-leveraging (ADL):** A safety mechanism that kicks in when normal liquidation can't fully close a position. It automatically reduces opposing positions to keep the system solvent. Learn more [here](/introduction/trade-on-orderly/perpetual-futures/insurance-fund-and-adl#adl-auto-deleveraging).
 
 **Insurance Fund:** A reserve pool that covers losses when a liquidated position can't be fully absorbed by liquidators. It's funded by liquidation fees and by Orderly. Learn more [here](/introduction/trade-on-orderly/perpetual-futures/insurance-fund-and-adl).
+
+**Round:** A single Orderly Predict market cycle with a start time and an expiry time. Each round opens for trading, records a strike, and settles to UP, DOWN, or a tie at expiry. Learn more [here](/introduction/trade-on-orderly/orderly-predict/rounds-and-settlement).
+
+**Strike (S0):** The reference price recorded at the start of an Orderly Predict round's observation window. The round's outcome is decided by comparing the expiry price against the strike.
+
+**Expiry Price (S1):** The price recorded at the end of an Orderly Predict round's observation window, used only to compare against the strike to decide the outcome.
+
+**Outcome:** The result of an Orderly Predict round: UP if the expiry price is above the strike, DOWN if it's below, or a tie if the two are equal. Learn more [here](/introduction/trade-on-orderly/orderly-predict/rounds-and-settlement).
+
+**Settlement Price:** The price used to pay out an Orderly Predict round's positions: \$1 per share for the winning side and \$0 for the losing side, or \$0.50 per share for both sides if the round ties.
+
+**Tie:** The outcome when the expiry price exactly equals the strike. Neither UP nor DOWN wins; both sides settle at \$0.50 per share. Learn more [here](/introduction/trade-on-orderly/orderly-predict/rounds-and-settlement).
+
+**UP:** The side of an Orderly Predict round that wins if the expiry price is above the strike. Buying UP opens a positive position.
+
+**DOWN:** The side of an Orderly Predict round that wins if the expiry price is below the strike. Buying DOWN opens a negative position and is placed as a sell order on the UP order book.
+
+**Share:** The unit of position size in Orderly Predict. Each share pays out \$1 if its side wins, \$0 if it loses, or \$0.50 if the round ties.

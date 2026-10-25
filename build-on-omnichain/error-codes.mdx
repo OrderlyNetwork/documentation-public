@@ -37,3 +37,7 @@ description: "Complete list of Orderly API error codes with HTTP status codes an
 | -1201      | 400         | Least request ratio should be the specified value.                                                                                                                |
 | -1202      | 400         | No liquidation needed -- user margin is sufficient.                                                                                                               |
 | -1202      | 400         | Cannot find the given `liquidationId`.                                                                                                                            |
+
+{/* TODO(eng): confirm the numeric error code and HTTP status for `ROUND_CLOSED`. Description: the platform received the order, edit, or cancel request after the Orderly Predict round's order cutoff before expiry. Do not automatically resubmit to the next round. */}
+{/* TODO(eng): confirm the numeric error code and HTTP status for `BINARY_ORDER_TYPE_NOT_SUPPORTED`. Description: a Predict order used an unsupported `order_type`, a market-close flag, or `post_only_adjust` without `POST_ONLY`. Use a supported order type instead. */}
+{/* TODO(eng): confirm the numeric error code and HTTP status for `BINARY_MARGIN_MODE_NOT_SUPPORTED`. Description: a Predict order's `margin_mode` was not `ISOLATED`. Always send `ISOLATED` for Predict orders. */}

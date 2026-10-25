@@ -1,0 +1,52 @@
+---
+title: "Trading Rules"
+description: "Price limits, order types, exits, and margin rules for trading on Orderly Predict."
+---
+
+This page covers the trading parameters and order rules specific to Orderly Predict. For how a round moves from open to settled, see [Rounds and Settlement](/introduction/trade-on-orderly/orderly-predict/rounds-and-settlement). For how trading fees are calculated, see [Orderly Predict fees](/introduction/trade-on-orderly/trading-basics/trading-fees#orderly-predict-fees).
+
+## Price and size limits
+
+| Parameter           | Value                                      |
+| ------------------- | ------------------------------------------ |
+| Price range         | \$0.01 to \$0.99, in \$0.01 steps          |
+| Share size          | 0.01 to 10,000 shares, in 0.01-share steps |
+| Minimum order value | 5 USDC                                     |
+
+The 5 USDC minimum is always checked against the UP price, even when you're buying DOWN. Because DOWN's price is \$1 minus the UP price, this gives DOWN orders an uneven minimum share count:
+
+- If UP is priced at \$0.90 (DOWN at \$0.10), buying DOWN needs at least 5.56 shares (about \$0.56).
+- If UP is priced at \$0.10 (DOWN at \$0.90), buying DOWN needs at least 50 shares (\$45).
+
+## Order types
+
+Orderly's official interface offers two order types:
+
+- **Limit:** You set the price and amount; the order sits on the book until it fills, is cancelled, or the round ends.
+- **Market:** Fills immediately against the best available price, up to a price protection limit; if the market moves past that limit, the unfilled part is cancelled instead of chasing the price further. In Orderly's reference interface the default protection is \$0.02 per share (2 ticks); your app may differ.
+
+The API also accepts **Post Only** orders for makers; see [Order Management](/build-on-omnichain/orderly-predict/order-management#order-types) if you're building on top of Orderly Predict.
+
+## Exiting before expiry
+
+You can close an Orderly Predict position any time before the round's [order cutoff](/introduction/trade-on-orderly/orderly-predict/rounds-and-settlement#order-cutoff) by placing an opposite trade at the current executable price. Orderly doesn't guarantee a counterparty, and in thin markets the price may be worse than you expect.
+
+An exit always reduces your existing position; it never flips you to the opposite side. If you try to exit more shares than you hold, only enough to close your existing position is accepted. Once you've exited, that portion of your position no longer takes part in the round's settlement, and its realized profit or loss is final. The margin locked for the closed portion is released as soon as the exit fills -- you don't have to wait for the round to settle.
+
+An exit order is checked against the same 5 USDC minimum order value (based on the UP price) as an opening order; see [Price and size limits](#price-and-size-limits) above.
+
+## Margin
+
+Orderly Predict uses isolated margin only -- there's no mode switch and no option to use cross margin on these markets.
+
+When you place an order, Orderly locks the order's full potential cost up front, plus a small buffer to cover the trading fee that applies when the trade fills:
+
+- **Buying UP** locks the order price multiplied by the share count (plus the fee buffer).
+- **Buying DOWN** locks the DOWN price multiplied by the share count -- equivalent to \$1 minus the UP order price -- plus the fee buffer.
+
+This is why Orderly Predict has no liquidation.
+
+## Related pages
+
+- [Orderly Predict fees](/introduction/trade-on-orderly/trading-basics/trading-fees#orderly-predict-fees) -- how trading fees are calculated.
+- [Rounds and Settlement](/introduction/trade-on-orderly/orderly-predict/rounds-and-settlement) -- how a round moves from open to settled.

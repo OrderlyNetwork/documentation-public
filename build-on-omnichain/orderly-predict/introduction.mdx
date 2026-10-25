@@ -1,0 +1,76 @@
+---
+title: "Introduction"
+description: "How Builders integrate Orderly Predict: one permanent symbol per round, how the UP and DOWN sides map to one order book, and what's new versus what's reused from Orderly's existing APIs."
+---
+
+Orderly Predict is a 5-minute BTC Up/Down market. For Builders, it is not a separate trading stack: it reuses Orderly's existing order, position, and WebSocket APIs, with a small set of additive fields and validation rules layered on top. This page gives you the integration model; the rest of this group covers the details.
+
+<Note>Orderly Predict is available on both mainnet and testnet.</Note>
+
+## One permanent symbol per round
+
+Every round gets its own `symbol`, created once and never reused. A symbol is the single business key that ties together orders, trades, positions, settlement, and market data for that round.
+
+- Always read the current symbol from the Predict info endpoints (`GET /v1/public/binary/info`; see [Market Data](/build-on-omnichain/orderly-predict/market-data)) -- never construct or guess a round symbol yourself. The list returns multiple `ACTIVE` rounds at once, newest first; the one currently in its observation window (and so the one usually shown as "the current round") is the `ACTIVE` row where `observation_start_at <= server time < expire_at`.
+- A symbol is permanent: once a round is created, its symbol never changes and is never recycled for a different round.
+- Every request that touches a round (orders, order book, trades, positions) carries this `symbol`; there is no separate round ID.
+
+## One order book, two sides
+
+Orderly Predict trades UP and DOWN, but there is only one order book per round, quoted in UP terms:
+
+| Concept                 | UP book semantics         |
+| ----------------------- | ------------------------- |
+| `BUY`                   | Buys UP                   |
+| `SELL`                  | Buys DOWN (by selling UP) |
+| Positive `position_qty` | An UP position             |
+| Negative `position_qty` | A DOWN position           |
+
+Because DOWN is the mirror image of UP (DOWN price = \$1 minus the UP price), there is no separate DOWN order book in the matching engine. A DOWN order book view does exist in market data responses, but it is derived from the UP book, not a second book you can place orders against directly. See [Market Data](/build-on-omnichain/orderly-predict/market-data) and [Order Management](/build-on-omnichain/orderly-predict/order-management) for how the derivation and the client-side conversion work.
+
+## What's new versus what's reused
+
+| Area                                                  | Status       | What changes                                                                            |
+| ----------------------------------------------------- | ------------ | --------------------------------------------------------------------------------------- |
+| Round discovery, index price history, and region restriction | New          | Three resources: round discovery and index price history are covered in [Market Data](/build-on-omnichain/orderly-predict/market-data); region restriction is covered below |
+| Order placement, editing, cancellation, order queries | Reused       | Existing order APIs, with Predict-specific validation                                    |
+| Order book                                            | Reused       | Existing market data API, with additive `down_asks`/`down_bids` fields for Predict       |
+| Trades, positions, position history                   | Reused       | Existing APIs, with a new optional `product_type` filter for Predict                     |
+| Kline, funding                                        | Reused as-is | No separate Predict round kline; funding fields exist but values are always zero         |
+| Account fee rates                                     | Reused       | Existing account info API, with additive Predict fee rate fields                         |
+| WebSocket topics                                      | Reused       | Existing topics, with additive fields for Predict symbols                                |
+
+Apart from the read-only Predict info, index price history, and restricted areas endpoints, there is no separate Predict API. If you already integrate Orderly's order and position APIs, most of the work is adding the Predict-specific validation rules and reading a couple of new fields.
+
+## Enabling Orderly Predict for your users
+
+Whether your frontend shows Orderly Predict to traders is entirely up to you. The product toggle is a Builder frontend display setting -- it is off by default, and there is no platform API for it. See [Orderly Predict Overview](/introduction/trade-on-orderly/orderly-predict/overview) for what your traders will see once you do.
+
+If you enable Orderly Predict, you must also do the following:
+
+- Block restricted regions yourself -- see [Region restriction](#region-restriction) below. Orderly's backend does not enforce this restriction.
+- Disclose Orderly Predict's [Supplemental Terms](/introduction/trade-on-orderly/orderly-predict/supplemental-terms) to your users and link to them from your frontend.
+
+## Region restriction
+
+Orderly Predict is blocked in some regions, and your frontend is responsible for enforcing that block -- Orderly's backend does not reject orders based on a user's region.
+
+1. Call [`GET /v1/ip_info`](/build-on-omnichain/restful-api/public/get-ip-info) to get the user's `region` (country name) and `city`.
+2. Call [`GET /v1/product_restricted_areas?product_type=BINARY`](/build-on-omnichain/restful-api/public/get-restricted-areas-by-product) to get the restricted list. The response has two groups, `countries.rows[]` and `cities.rows[]`, each row carrying `name` and `visibility`; `cities.rows[]` entries also carry `country_name`.
+3. Match by name, not by code: match the user's country against `countries.rows[].name`, and match the user's city against `cities.rows[].name` together with `country_name` (so you don't mismatch two different countries' same-named cities).
+4. If both a country and a city match, the city's `visibility` takes priority over the country's.
+
+Both `visible` and `hidden` matches fully block trading -- the only difference is whether you show the entry point:
+
+| `visibility` | What to do |
+| --- | --- |
+| `visible` | Keep the Orderly Predict entry point visible, but disable order placement, order editing, cancellation, exits ("Sell"), and "Cancel all" for this user. |
+| `hidden`  | Hide the Orderly Predict entry point entirely for this user. |
+
+A restricted user can still view price charts, the order book, and other market data -- only order actions are disabled. Region restriction does not affect deposits: Orderly Predict has no deposit of its own, funds are shared with PERP/CROSS, and your region check must not block a user's existing PERP/CROSS deposit flow.
+
+## Continue with Orderly Predict
+
+- [Market Data](/build-on-omnichain/orderly-predict/market-data) -- discover rounds, read round status and results, and get UP/DOWN quotes.
+- [Order Management](/build-on-omnichain/orderly-predict/order-management) -- place, edit, and cancel orders, including the DOWN conversion.
+- [Positions and Settlement](/build-on-omnichain/orderly-predict/positions-and-settlement) -- read positions, trades, and settlement records, and how fees are calculated.

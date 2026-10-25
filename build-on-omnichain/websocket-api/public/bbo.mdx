@@ -51,3 +51,25 @@ Push interval: 10ms
 ```
 
 </ResponseExample>
+
+## Orderly Predict
+
+For a Predict round symbol (`<binary_symbol>`), the push additionally includes `down_bid` and `down_ask`. `bid` and `ask` keep their existing UP-side semantics. `down_bid = 1 - ask` and `down_ask = 1 - bid`.
+
+```json Subscribed Message
+{
+  "topic": "<binary_symbol>@bbo",
+  "ts": 1614152296945,
+  "data": {
+    "symbol": "<binary_symbol>",
+    "ask": 0.56,
+    "askSize": 120,
+    "bid": 0.55,
+    "bidSize": 100,
+    "down_bid": 0.44,
+    "down_ask": 0.45
+  }
+}
+```
+
+Non-Predict symbols do not return `down_bid` or `down_ask`. See [Market Data](/build-on-omnichain/orderly-predict/market-data#order-book) for how the UP and DOWN sides relate.
