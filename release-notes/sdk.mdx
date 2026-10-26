@@ -10,7 +10,36 @@ import { Chip } from "/snippets/chip.mdx";
 
 | Release date    | Stable release                                                  |
 | --------------- | --------------------------------------------------------------- |
-| September 30, 2026 | [3.2.2](https://github.com/OrderlyNetwork/js-sdk/tree/v3.2.2) |
+| October 26, 2026 | [3.3.0](https://github.com/OrderlyNetwork/js-sdk/tree/v3.3.0) |
+
+## Version 3.3.0
+
+_October 26, 2026_
+
+This version introduces Prediction:
+
+- **Added Prediction trading** to Orderly SDK applications.
+- **New dependency:** Add `@orderly.network/prediction@3.3.0` and align your existing Orderly SDK dependencies with the 3.3.0 release. React 18 or later is required.
+- **Integration guide:** Follow the [Prediction integration guide](https://github.com/OrderlyNetwork/js-sdk/blob/main/packages/prediction/docs/integration-guide.md) for dependency setup, routing, and navigation.
+- **Templates:** See complete integration examples for [Next.js](https://github.com/OrderlyNetwork/orderly-js-sdk-nextjs-template), [Remix](https://github.com/OrderlyNetwork/orderly-js-sdk-remix-template), and [Vite](https://github.com/OrderlyNetwork/orderly-js-sdk-vite-template).
+
+## Version 3.2.3
+
+_October 22, 2026_
+
+This version includes the following updates:
+
+- **Fixed small rebate amounts displaying incorrectly** in `@orderly.network/affiliate`, including totals appearing as `$0` and inconsistent precision across charts, tooltips, and details on the new Trader page.
+- **Fixed TradingView take-profit line editing** in `@orderly.network/ui-tradingview`, where dragging a newly created TP line to change its trigger price could report a missing parent order.
+- **Fixed pending Bracket TP/SL editing** in `@orderly.network/ui-tpsl` and `@orderly.network/hooks`. Unsupported Market/Limit type switching is now disabled while price editing remains available. Also fixed restoring, changing, and clearing configured prices.
+
+### Companion release: DevKit 1.2.3
+
+`@orderly.network/devkit@1.2.3` is released alongside SDK 3.2.3. See the [DevKit guide](https://unpkg.com/@orderly.network/devkit@1.2.3/README.md) for command usage.
+
+- **Added plugin configuration schema tooling.** Use `orderly-devkit schema` to generate installation forms from plugin source, with `--write` to save the schema and `--check` to check that it matches the source.
+- **Added plugin runtime compatibility checks.** Use `orderly-devkit check` to check build dependencies for compatibility with Orderly One. Checks are advisory by default; `--strict` returns a non-zero exit code for incompatible dependencies.
+- **Updated plugin submission checks.** `orderly-devkit submit` requires a `repository` field pointing to the actual repository in `package.json`, and compatible version ranges for non-optional peers on `react`, `react-dom`, and `@orderly.network/*`. If changes are needed, publish a new plugin version before resubmitting.
 
 ## Version 3.2.2
 
