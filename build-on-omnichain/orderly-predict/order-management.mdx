@@ -49,12 +49,12 @@ Every Predict order must explicitly set `margin_mode` to `ISOLATED`. Omitting th
 
 Predict info (see [Market Data](/build-on-omnichain/orderly-predict/market-data)) gives you each round's `quote_min`, `quote_max`, `quote_tick`, `base_min`, `base_max`, `base_tick`, and `min_notional`. Orders that fall outside these bounds, or that don't land exactly on a tick, are rejected outright -- the platform does not round a non-conforming price or quantity for you.
 
-`min_notional` is always checked against the UP-book notional (`order_price x order_quantity`), for both `BUY` and `SELL` -- never against the DOWN-side price. Because DOWN's price is \$1 minus the UP price, this gives DOWN orders an uneven minimum share count and minimum paid amount depending on price. For example, for a round with `min_notional = 5` USDC:
+`min_notional` is always checked against the UP-book notional (`order_price x order_quantity`), for both `BUY` and `SELL` -- never against the DOWN-side price. Because DOWN's price is \$1 minus the UP price, this gives DOWN orders an uneven minimum share count and minimum paid amount depending on price. For example, for a round with `min_notional = 1` USDC:
 
 | UP price | DOWN price | Min shares | Min paid amount |
 | -------- | ---------- | ---------- | --------------- |
-| `0.90`   | `0.10`     | 5.56       | about \$0.56    |
-| `0.10`   | `0.90`     | 50         | \$45            |
+| `0.90`   | `0.10`     | 1.12       | about \$0.11    |
+| `0.10`   | `0.90`     | 10         | \$9             |
 
 If your frontend takes an amount input rather than a share count, you are responsible for:
 
