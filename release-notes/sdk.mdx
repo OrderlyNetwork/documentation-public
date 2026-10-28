@@ -10,18 +10,49 @@ import { Chip } from "/snippets/chip.mdx";
 
 | Release date    | Stable release                                                  |
 | --------------- | --------------------------------------------------------------- |
-| October 26, 2026 | [3.3.0](https://github.com/OrderlyNetwork/js-sdk/tree/v3.3.0) |
+| October 28, 2026 | [3.3.1](https://github.com/OrderlyNetwork/js-sdk/tree/v3.3.1) |
+
+## Version 3.3.1
+
+_October 28, 2026 · Stable release_
+
+### Upgrade notices
+
+<Warning>
+  **Prediction is enabled by default:** Register `/predict` and `/predict/:symbol` routes and render them with `PredictionPage`. To defer integration, set `features={{ prediction: false }}` on `OrderlyAppProvider`. See the [Prediction integration guide](https://github.com/OrderlyNetwork/js-sdk/blob/HEAD/packages/prediction/docs/integration-guide.md).
+</Warning>
+
+### Updates
+
+- **Copy updates:** Standardized the English product label to “Predict” across pages, menus, and filters. Updated the probability label to “Up probability” and the compact list header to “Last/Up prob.”.
+- **Integration documentation updates:** Improved the `@orderly.network/prediction` integration guide with `/predict` page routes, menu configuration, and legacy-link examples. See the [integration documentation](https://www.npmjs.com/package/@orderly.network/prediction/v/3.3.1).
 
 ## Version 3.3.0
 
-_October 26, 2026_
+_October 26, 2026 · Stable release_
 
-This version introduces Prediction:
+### Upgrade notices
 
-- **Added Prediction trading** to Orderly SDK applications.
+<Warning>
+  **Prediction is enabled by default:** Connect `/prediction` and `/prediction/:symbol` through `OrderlyAppProvider`'s `onRouteChange` and render the page with `PredictionPage`. To defer integration, set `features={{ prediction: false }}` on `OrderlyAppProvider`. See the [Prediction integration guide](https://www.npmjs.com/package/@orderly.network/prediction).
+</Warning>
+
 - **New dependency:** Add `@orderly.network/prediction@3.3.0` and align your existing Orderly SDK dependencies with the 3.3.0 release. React 18 or later is required.
 - **Integration guide:** Follow the [Prediction integration guide](https://github.com/OrderlyNetwork/js-sdk/blob/main/packages/prediction/docs/integration-guide.md) for dependency setup, routing, and navigation.
-- **Templates:** See complete integration examples for [Next.js](https://github.com/OrderlyNetwork/orderly-js-sdk-nextjs-template), [Remix](https://github.com/OrderlyNetwork/orderly-js-sdk-remix-template), and [Vite](https://github.com/OrderlyNetwork/orderly-js-sdk-vite-template).
+- **Templates:** See complete integration examples for [Vite](https://github.com/OrderlyNetwork/orderly-js-sdk-vite-template), [Remix](https://github.com/OrderlyNetwork/orderly-js-sdk-remix-template),and[Next.js](https://github.com/OrderlyNetwork/orderly-js-sdk-nextjs-template), 
+
+### New features
+
+- Added `@orderly.network/prediction` for Prediction market trading, with integration into relevant Markets, Trading, Trading Next, and Portfolio pages on desktop and mobile.
+- Added `@orderly.network/ui-assets` with reusable asset lists, account summaries, and conversion history components.
+
+### Bug fixes
+
+- Fixed order lists failing to preserve symbol, side, and date filters after live updates.
+- Fixed an issue where fully filled orders could disappear from order history or filled-order lists after execution updates.
+- Fixed notifications for partially filled IOC orders to distinguish filled quantities from canceled remainders.
+- Fixed misleading peaks and troughs in asset and PnL charts caused by curves extending beyond adjacent data points.
+- Fixed long sub-account names clipping or crowding account balances.
 
 ## Version 3.2.3
 
