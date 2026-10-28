@@ -1307,6 +1307,15 @@ paths:
         `GET /v1/public/token`
 
         Retrieves the available tokens to be used as collateral within Orderly.
+
+        Token-level `decimals` describes Orderly ledger precision and the integer
+        amount precision used in signed withdrawal messages. `chain_details[].decimals`
+        describes on-chain token units. These values can differ: native OKB on
+        X Layer (`196`) uses 8 ledger decimals and 18 on-chain decimals.
+
+        For native OKB, `contract_address` is an empty string; ERC20 approval is
+        not applicable. Use the standard Vault deposit flow. Check
+        `exclusive_deposit_supported` separately before offering Deposit by Transfer.
       tags:
         - public
       parameters:
@@ -1323,6 +1332,32 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TokenInfoResponse"
+              examples:
+                nativeOkb:
+                  summary: Native OKB on X Layer (chain_id=196)
+                  value:
+                    success: true
+                    data:
+                      rows:
+                        - token: OKB
+                          token_hash: "0x4526a805bc924644101a6ea6f6a02af9e68a2bd1b0f3c8b3f38c9cf5e19a5a50"
+                          decimals: 8
+                          minimum_withdraw_amount: 0.00000001
+                          base_weight: 0.75
+                          discount_factor: 0.000007
+                          haircut: 0.08
+                          user_max_qty: 1000
+                          is_collateral: true
+                          on_chain_swap: false
+                          chain_details:
+                            - chain_id: "196"
+                              contract_address: ""
+                              decimals: 18
+                              withdrawal_fee: 0.01
+                              cross_chain_withdrawal_fee: 0
+                              display_name: OKB
+                              exclusive_deposit_supported: false
+                    timestamp: 1793176144348
   /v1/public/info:
     get:
       summary: Get available symbols
@@ -12655,15 +12690,15 @@ components:
                         example: 111
                       is_collateral:
                         type: boolean
-                        description: True, the asset can be collateral, users are allowed to manually swap, and we will do auto-swap
+                        description: Whether the asset can be used as collateral. This flag alone does not indicate support for manual or on-chain swaps.
                         example: true
                       decimals:
                         type: number
-                        description: precision of the token
+                        description: Orderly ledger decimals, also used for signed withdrawal integer amounts. May differ from chain_details[].decimals; OKB uses 8 here and 18 on X Layer.
                         example: 6
                       minimum_withdraw_amount:
                         type: number
-                        description: ""
+                        description: Minimum withdrawal amount in human-readable token units; the requested amount must also exceed applicable fees.
                         example: 0.000001
                       on_chain_swap:
                         type: boolean
@@ -12678,19 +12713,23 @@ components:
                           type: object
                           properties:
                             chain_id:
-                              type: integer
-                              example: 43113
+                              type: string
+                              example: "196"
                             contract_address:
                               type: string
+                              description: ERC20 token address, or an empty string for native OKB on X Layer. Native OKB does not require ERC20 approval.
                               example: "0x5d64c9cfb0197775b4b3ad9be4d3c7976e0d8dc3"
                             cross_chain_withdrawal_fee:
-                              type: integer
+                              type: number
+                              description: Additional cross-chain withdrawal fee in human-readable token units.
                               example: 0
                             decimals:
                               type: integer
+                              description: On-chain token decimals. Native OKB on X Layer uses 18; this is distinct from the token-level ledger decimals.
                               example: 18
-                            withdraw_fee:
+                            withdrawal_fee:
                               type: number
+                              description: Withdrawal fee in human-readable token units, deducted from the requested gross amount. Native OKB currently uses 0.01.
                               example: 2
                             display_name:
                               type: string

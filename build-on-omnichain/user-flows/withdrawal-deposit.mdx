@@ -10,12 +10,16 @@ description: "Implement secure cross-chain deposits and withdrawals with step-by
 
 ## Deposit
 
-Token deposits can be made on any supported chains (list [here](/introduction/trade-on-orderly/supported-chains))
+Token deposits can be made on supported chains (list [here](/introduction/trade-on-orderly/supported-chains)). Check [Get supported collateral info](/build-on-omnichain/restful-api/public/get-supported-collateral-info) for the token/chain combination.
+
+The steps and USDC examples below describe an ERC20 deposit. For native OKB on X Layer, skip approval and follow [Native OKB deposits on X Layer](#native-okb-deposits-on-x-layer).
 
 To create a deposit request:
 
 <Steps>
-  <Step title="Approve spending of the token by the Vault smart contract">
+  <Step title="For ERC20 tokens, approve spending by the Vault smart contract">
+    Native tokens do not use ERC20 approval.
+
     Get Vault & USDC contract addresses from the [Smart Contract Addresses](/build-on-omnichain/addresses) page.
     All our smart contracts are verified, meaning you can retrieve the Vault & Token ABIs from the block explorers of any supported mainnets or testnets.
 
@@ -439,7 +443,77 @@ deposit();
 
 </CodeGroup>
 
+### USDG deposits on Arbitrum
+
+USDG on Arbitrum One (chain ID `42161`) is an ERC20 token. Use its [token and Vault addresses](/build-on-omnichain/addresses#arbitrum) with the standard ERC20 deposit flow above: approve the Vault to spend USDG, set `tokenHash` to `keccak256(utf8("USDG"))`, and call `deposit`. USDG uses **6 decimals** both on Arbitrum and in the Orderly ledger; for example, `100 USDG` is `100000000` token units.
+
+The USDG principal is transferred via the ERC20 allowance. Transaction `value` covers only the quoted Vault deposit fee when enabled; the fee and transaction gas are paid in **ETH** on Arbitrum. Deposit by Transfer is not supported for USDG on Arbitrum; use the standard Vault deposit flow.
+
+### Native OKB deposits on X Layer
+
+For X Layer mainnet (`chain_id=196`), OKB is the native token. Use the Vault at `0x816f722424B49Cf1275cc86DA9840Fbd5a6167e9`, also listed on the [Smart Contract Addresses page](/build-on-omnichain/addresses#x-layer).
+
+- Do not call `approve` or send OKB directly to the Vault address. Call the payable Vault `deposit` function so the deposit is associated with the correct Orderly account and broker.
+- Set `tokenHash` to `keccak256(utf8("OKB"))`: `0x4526a805bc924644101a6ea6f6a02af9e68a2bd1b0f3c8b3f38c9cf5e19a5a50`.
+- Set `tokenAmount` to the deposit principal in **18-decimal on-chain units**. For example, `0.1 OKB` is `100000000000000000`.
+- When `depositFeeEnabled()` is true, quote `getDepositFee(receiver, depositInput)` immediately before submission. Set transaction `value` to **principal + quoted fee**, both in the native token's smallest unit. Only the principal is credited as collateral. Transaction gas is paid separately in OKB.
+- After the cross-chain deposit completes, verify the credited amount in Orderly. Ledger precision is **8 decimals**, so use amounts representable at that precision; `0.1 OKB` corresponds to `10000000` ledger units. Do not send the 8-decimal ledger integer as the on-chain deposit amount.
+
+This ethers v6 example uses a connected wallet signer, its registered Orderly account ID, and an enabled broker ID:
+
+```ts TypeScript
+import { Contract, keccak256, parseUnits, toUtf8Bytes, type Signer } from "ethers";
+
+async function depositNativeOkb(
+  signer: Signer,
+  brokerId: string,
+  orderlyAccountId: string,
+  amount: string
+) {
+  if (!signer.provider || (await signer.provider.getNetwork()).chainId !== 196n) {
+    throw new Error("Connect the signer to X Layer mainnet (chain ID 196)");
+  }
+
+  const vault = new Contract(
+    "0x816f722424B49Cf1275cc86DA9840Fbd5a6167e9",
+    [
+      "function deposit((bytes32 accountId,bytes32 brokerHash,bytes32 tokenHash,uint128 tokenAmount) data) payable",
+      "function getDepositFee(address receiver,(bytes32 accountId,bytes32 brokerHash,bytes32 tokenHash,uint128 tokenAmount) data) view returns (uint256)",
+      "function depositFeeEnabled() view returns (bool)"
+    ],
+    signer
+  );
+
+  const principal = parseUnits(amount, 18);
+  if (principal <= 0n || principal % 10_000_000_000n !== 0n) {
+    throw new Error("Use a positive amount with at most 8 decimal places");
+  }
+
+  const depositInput = {
+    accountId: orderlyAccountId,
+    brokerHash: keccak256(toUtf8Bytes(brokerId)),
+    tokenHash: keccak256(toUtf8Bytes("OKB")),
+    tokenAmount: principal
+  };
+  const receiver = await signer.getAddress();
+  const messageFee = (await vault.depositFeeEnabled())
+    ? await vault.getDepositFee(receiver, depositInput)
+    : 0n;
+
+  const tx = await vault.deposit(depositInput, { value: principal + messageFee });
+  return tx.wait();
+}
+```
+
+The public collateral API represents native OKB with `chain_details[].contract_address=""`. An empty address is not an ERC20 address; do not substitute a wrapped-token contract. `exclusive_deposit_supported=false` means the [Deposit by Transfer](/build-on-omnichain/user-flows/deposit-by-transfer) flow is not available for this token/chain pair.
+
 ## Withdrawal
+
+For USDG withdrawals to Arbitrum One, set `token="USDG"` and `chainId=42161` in the withdrawal message, and encode `amount` with **6 decimals**. For example, a gross withdrawal of `100 USDG` is `100000000` in the signed message and `"100000000"` in the REST payload. With the current `1 USDG` withdrawal fee and zero cross-chain withdrawal fee, the receiver gets `99 USDG`. Check [Get supported collateral info](/build-on-omnichain/restful-api/public/get-supported-collateral-info) for current fees.
+
+For OKB withdrawals to X Layer, use `token="OKB"` and `chainId=196` in the withdrawal message. Encode `amount` using the token-level **8 decimals** returned by [Get supported collateral info](/build-on-omnichain/restful-api/public/get-supported-collateral-info), not the chain's 18 decimals. For example, a gross withdrawal of `0.1 OKB` is `10000000` in the signed message and `"10000000"` in the REST payload. With the current `0.01 OKB` withdrawal fee and zero cross-chain withdrawal fee, the receiver gets `0.09 OKB` as native OKB.
+
+Read the current fees and minimum amount from the API before withdrawing. The requested amount must exceed the applicable fees and minimum amount. OKB supports withdrawals only to its configured X Layer chain; its rebalance path is disabled.
 
 > [!WARNING]
 > **PnL Settlement Requirement**: Any realized profit from open or recently closed positions must be settled via the **Settle PnL** flow before it can be added to your `withdrawable_balance`. If you attempt to withdraw without settling your PnL, the withdrawal amount may exceed your available balance and fail. See [Settle PnL](/build-on-omnichain/user-flows/settle-pnl) for details.

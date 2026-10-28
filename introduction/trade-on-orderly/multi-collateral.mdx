@@ -27,7 +27,9 @@ These values represent the maximum amount of each collateral type that can be de
 | WBTC       | Ethereum        | 80                      |
 | USD1       | Ethereum        | 100,000                 |
 | USD1       | BSC             | 100,000                 |
+| USDG       | Arbitrum        | 100,000                 |
 | USDG       | X Layer         | 100,000                 |
+| OKB        | X Layer         | 2,000                   |
 | USDG       | Robinhood Chain | 100,000                 |
 
 ### Max Deposits (User)
@@ -42,6 +44,15 @@ These values represent the maximum amount of each collateral type that can be de
 | WBTC       | 5              |
 | USD1       | 100,000        |
 | USDG       | 100,000        |
+| OKB        | 1,000          |
+
+The OKB user collateral cap is 1,000 OKB for standard accounts and 2,000 OKB for market-maker accounts. The X Layer global deposit cap remains 2,000 OKB across all accounts.
+
+### Native OKB on X Layer
+
+OKB is the native token of X Layer (`chain_id=196`), so it has no ERC20 contract address and does not require an ERC20 approval. Use the [standard Vault deposit flow](/build-on-omnichain/user-flows/withdrawal-deposit#native-okb-deposits-on-x-layer). Deposit by Transfer is not supported for OKB.
+
+On-chain OKB amounts use **18 decimals**, while Orderly ledger amounts and signed withdrawal amounts use **8 decimals**. The withdrawal fee is **0.01 OKB**. Read [Get supported collateral info](/build-on-omnichain/restful-api/public/get-supported-collateral-info) for current parameters and chain availability.
 
 ## What is Loan-to-value (LTV)?
 
@@ -114,6 +125,7 @@ Weight and DCF will be determined based on the table below:
 | WBTC       | 0.8         | 0.000007  |
 | USD1       | 0.98        | 0.0000045 |
 | USDG       | 0.98        | 0.0000045 |
+| OKB        | 0.75        | 0.000007  |
 
 ---
 
@@ -159,12 +171,15 @@ This is a protective measure to manage risk. As always, remember that the lower 
 | WBTC       | 3.5%                           |
 | USD1       | 0.035%                         |
 | USDG       | 0.035%                         |
+| OKB        | 8%                             |
 
 ---
 
 ## Manual Conversion
 
-We recommend monitoring your LTV ratio to ensure it stays below the 95% and/or -11,000 USDC threshold. We permit manual conversion of collateral to assist with this maintenance via on-chain swaps.
+OKB does not support on-chain swaps or reverse swaps. The on-chain swap tables below do not apply to OKB. Its 8% haircut applies to automatic conversion and is not a quoted manual conversion fee.
+
+We recommend monitoring your LTV ratio to ensure it stays below the 95% and/or -11,000 USDC threshold. Manual conversion of supported collateral can help maintain this ratio. USDG uses the CeFi conversion flow rather than on-chain swaps, so the on-chain swap tables below do not apply to USDG.
 
 Each collateral's minimum and maximum swap amount can be found in the table below:
 
