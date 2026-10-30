@@ -10,7 +10,28 @@ import { Chip } from "/snippets/chip.mdx";
 
 | Release date    | Stable release                                                  |
 | --------------- | --------------------------------------------------------------- |
-| October 28, 2026 | [3.3.1](https://github.com/OrderlyNetwork/js-sdk/tree/v3.3.1) |
+| October 30, 2026 | [3.4.0](https://github.com/OrderlyNetwork/js-sdk/tree/v3.4.0) |
+
+## Version 3.4.0
+
+_October 30, 2026 · Stable release_
+
+### Upgrade notices
+
+<Warning>
+  **The announcement feature includes breaking changes:** Apps using the default announcement entry points must connect `/announcement` and `/announcement/:slug` and update their navigation adapters. See the [announcement integration and migration guide](https://unpkg.com/@orderly.network/ui-notification@3.4.0-alpha.0/docs/integration-guide.md) for migration steps.
+</Warning>
+
+### New features
+
+- **Announcement center:** Added paginated lists, category and source filters, and multilingual announcement details with Markdown and video content.
+- **Announcement source configuration:** Added `widgetConfigs.announcement.excludeOfficial` to control whether Orderly official announcements are shown. Official announcements are included by default.
+- **Strict mode:** Replaced the Show low volume control with a “Strict” filter. When enabled, it hides markets with less than 1,000 USDC in 24-hour trading volume and also applies to new listings, top gainers, and top losers. Existing filter preferences are preserved.
+
+### Bug fixes
+
+- Fixed Markets showing empty states before initial loading completes.
+- Improved prediction market list presentation and the mobile market selection experience.
 
 ## Version 3.3.1
 
