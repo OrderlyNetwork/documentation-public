@@ -3,7 +3,7 @@ title: "Trading fees"
 description: "Understand the fee structure for traders and the Builder Staking programme."
 ---
 
-# Overview
+## Overview
 
 Trading fees are the costs you pay when you buy, sell, or trade on an exchange. On Orderly, fees are measured in **basis points (1 bps = 0.01%)** of your trade's total value.
 
@@ -39,7 +39,7 @@ as **Maker** and charged the maker fee.
   position's average entry price**.
 </Note>
 
-# How fees work for Traders
+## How fees work for Traders
 
 As a Trader, you pay a single fee per trade that's set by the Builder (the DEX you're using).
 
@@ -47,7 +47,7 @@ As a Trader, you pay a single fee per trade that's set by the Builder (the DEX y
 - **How it's charged:** Fees are automatically deducted from your USDC balance when your trade executes.
 - **Maker vs Taker:** Whether you pay the maker or taker rate depends on how your order is filled. If your order sits in the book and waits, you're a **Maker**. If it fills immediately, you're a **Taker**.
 
-# How fees work for Builders
+## How fees work for Builders
 
 Orderly gives Builders full control over their pricing. You set your own trading fees while tapping into Orderly's shared liquidity.
 
@@ -71,7 +71,7 @@ Builders can get lower base fees and better support by hitting monthly volume ta
     |---|---|
     | Base taker fee (crypto and RWA) | 3.00 |
     | Maker rebate cap (crypto and RWA) | 0.00 |
-    | Predict taker base rate (bps, see note) | 200 |
+    | Predict taker base rate (bps, see note) | 400 |
 
     **Marketing benefits:** None
 
@@ -86,7 +86,7 @@ Builders can get lower base fees and better support by hitting monthly volume ta
     |---|---|
     | Base taker fee (crypto and RWA) | 2.75 |
     | Maker rebate cap (crypto and RWA) | -0.05 |
-    | Predict taker base rate (bps, see note) | 190 |
+    | Predict taker base rate (bps, see note) | 375 |
 
     **Marketing benefits:**
     - Launch RT/QT from Orderly
@@ -104,7 +104,7 @@ Builders can get lower base fees and better support by hitting monthly volume ta
     |---|---|
     | Base taker fee (crypto and RWA) | 2.50 |
     | Maker rebate cap (crypto and RWA) | -0.10 |
-    | Predict taker base rate (bps, see note) | 175 |
+    | Predict taker base rate (bps, see note) | 350 |
 
     **Marketing benefits:**
     - All Silver benefits
@@ -125,7 +125,7 @@ Builders can get lower base fees and better support by hitting monthly volume ta
     |---|---|
     | Base taker fee (crypto and RWA) | 2.00 |
     | Maker rebate cap (crypto and RWA) | -0.15 |
-    | Predict taker base rate (bps, see note) | 150 |
+    | Predict taker base rate (bps, see note) | 325 |
 
     **Marketing benefits:**
     - All Gold benefits
@@ -147,7 +147,7 @@ Builders can get lower base fees and better support by hitting monthly volume ta
     |---|---|
     | Base taker fee (crypto and RWA) | 1.00 |
     | Maker rebate cap (crypto and RWA) | -0.20 |
-    | Predict taker base rate (bps, see note) | 100 |
+    | Predict taker base rate (bps, see note) | 300 |
 
     **Marketing benefits:**
     - All Platinum benefits
@@ -173,7 +173,7 @@ Builders can get lower base fees and better support by hitting monthly volume ta
 
 </Note>
 
-# Orderly Predict fees
+## Orderly Predict fees
 
 For what Orderly Predict is and how a round works, see the [Orderly Predict Overview](/introduction/trade-on-orderly/orderly-predict/overview). Orderly Predict uses a different fee formula from perpetual futures and RWA markets, because the formula weights the traded price `p` (0.01 to 0.99) with a `p x (1 - p)` term rather than charging a flat rate. This section covers how the fee is calculated and how it splits between Orderly and the Builder.
 
@@ -187,7 +187,7 @@ fee for the fill = shares filled x fee per share
 ```
 
 - `p` is the UP-book execution price for that fill. A DOWN trade at price `d` is the same fill at UP price `p = 1 - d`; the formula always uses `p`, never a separate DOWN formula.
-- `fee rate` is the account's Predict maker or taker rate, chosen by the role -- maker or taker -- of that fill. Which rate applies to you depends on the app you're trading on -- check your app's order screen to see your current rate. Unless the Builder you're trading through has customized it, the default is taker 300 bps, maker 0 bps.
+- `fee rate` is the account's Predict maker or taker rate, chosen by the role -- maker or taker -- of that fill. Unless the Builder you're trading through has customized it, the default is taker 600 bps, maker 0 bps; check your app's order screen for your current rate.
 - Fees are charged in USDC and calculated fill by fill. An order that fills across several prices is never charged on its average price.
 
 <Note>
@@ -202,27 +202,26 @@ Because of the `p x (1 - p)` term, the fee is not a flat percentage of the fee r
 - At `p = 0.10` or `p = 0.90`, the fee per share is 9% of the fee rate.
 - Expressed against the traded notional (shares filled x `p`), the effective rate is `fee rate x (1 - p)`: it is highest when `p` is low and lowest when `p` is high, even though the fee amount itself is largest at `p = 0.50`.
 
-#### Worked example (default taker rate, 300 bps)
+#### Worked example (default taker rate, 600 bps)
 
 Buying 100 shares at `p = 0.50`:
 
-- Fee per share: `0.50 x 0.03 x 0.50 = 0.0075`
-- Fee for the fill: `100 x 0.0075 = 0.75` USDC
-- Trade notional: `100 x 0.50 = 50` USDC, so the fee is 1.5% of notional
+- Fee per share: `0.50 x 0.06 x 0.50 = 0.015`
+- Fee for the fill: `100 x 0.015 = 1.50` USDC
+- Trade notional: `100 x 0.50 = 50` USDC, so the fee is 3% of notional
 
 Buying 100 shares at `p = 0.10`:
 
-- Fee per share: `0.10 x 0.03 x 0.90 = 0.0027`
-- Fee for the fill: `100 x 0.0027 = 0.27` USDC
-- Trade notional: `100 x 0.10 = 10` USDC, so the fee is 2.7% of notional
+- Fee per share: `0.10 x 0.06 x 0.90 = 0.0054`
+- Fee for the fill: `100 x 0.0054 = 0.54` USDC
+- Trade notional: `100 x 0.10 = 10` USDC, so the fee is 5.4% of notional
 
 The second fill has a smaller fee in USDC, even though it is a larger share of its (smaller) notional.
 
 ### Maker and taker rates
 
-- Default user rates are **taker 300 bps, maker 0 bps**. Builders can adjust maker up from 0 bps, and can only adjust taker down, since the default taker rate already sits at the shared cap. Taker cannot go below the tier's Predict taker base rate; see [Custom Fee Structure](/build-on-omnichain/user-flows/custom-fees) for how.
+- Default user rates are **taker 600 bps, maker 0 bps**. Builders can configure their user rates subject to the Predict floors below. See [Custom Fee Structure](/build-on-omnichain/user-flows/custom-fees) for how.
 - The Predict maker rate has a floor of 0 bps, and the Predict taker rate has a floor of the tier's Predict taker base rate. Unlike perpetual futures and RWA, Predict does not support negative rates or maker rebates.
-- Predict maker and taker rates share the same upper cap of **300 bps (0.03), inclusive**. A Builder-set value above the cap is rejected when written.
 - A maker rate of 0 bps is a valid configuration and means makers are charged exactly no fee.
 - Settlement at expiry is performed by the system, not by matching, and is never charged a fee. Only trades -- opening a position or exiting it early with an opposite trade -- are charged.
 

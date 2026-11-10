@@ -53,4 +53,31 @@ For index price, use SPOT symbol such as `SPOT_ETH_USDC` instead of `PERP_ETH_US
 
 ## Orderly Predict
 
-A Predict round's own index price is not pushed on this topic (no subscription first frame, request snapshot, or update). Subscribe to the underlying's own index price instead, for example `SPOT_BTC_USDC@indexprice` for the BTC 5-minute Up/Down market. See [Underlying price data](/build-on-omnichain/orderly-predict/market-data#underlying-price-data) for how the round's strike and expiry prices are derived from this feed.
+Subscribe to `SPOT_BTCTWAP60S_USDC@indexprice` for the **Predict Index**, a rolling 60-second TWAP of Orderly's BTC index price, updated every second. This is the price series used by the Predict chart and current price; TWAP rounds take their strike and expiry values from this series at the respective time boundaries.
+
+```json Subscribe
+{
+  "id": "predictIndex",
+  "topic": "SPOT_BTCTWAP60S_USDC@indexprice",
+  "event": "subscribe"
+}
+```
+
+```json Subscribed Message
+{
+  "topic": "SPOT_BTCTWAP60S_USDC@indexprice",
+  "ts": 1794268800000,
+  "data": {
+    "symbol": "SPOT_BTCTWAP60S_USDC",
+    "price": 68000.12
+  }
+}
+```
+
+Read `settlement_index_symbol` from Predict info to identify each round's actual price source and use `{settlement_index_symbol}@indexprice` directly. Rounds created before the TWAP transition retain `SPOT_BTC_USDC`; new rounds use `SPOT_BTCTWAP60S_USDC`.
+
+The underlying BTC index remains available at `SPOT_BTC_USDC@indexprice`.
+
+During a Predict Index service outage, no updates are pushed; use the last received timestamp to detect a stale series. Backfilled values after restart are available through [index price history](/build-on-omnichain/restful-api/public/get-index-price-history), not replayed on this topic.
+
+A Predict round's own valuation index is not pushed on this topic. See [Predict Index](/build-on-omnichain/orderly-predict/market-data#predict-index) for the calculation and the distinction between the underlying index, Predict Index, and round valuation.

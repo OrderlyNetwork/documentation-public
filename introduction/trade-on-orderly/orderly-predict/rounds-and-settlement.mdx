@@ -27,18 +27,20 @@ A round keeps accepting new orders, order edits, and cancellations right up unti
 
 ## How the outcome is decided
 
-Every round compares two prices:
+Orderly Predict uses a **Predict Index**: a rolling 60-second time-weighted average price (TWAP) of Orderly's BTC index price. The entire Predict Index series is calculated this way, with a new value every second; the underlying BTC index itself is unchanged.
 
-- **Strike (S0):** the first index price observed inside the round's observation window.
-- **Expiry price (S1):** the last index price observed inside the round's observation window (see below for the window's exact boundaries).
+Every round using the Predict Index compares two values from this series:
 
-Both S0 and S1 are taken from Orderly's BTC index price.
+- **Strike (S0):** the Predict Index value at the observation start time.
+- **Expiry price (S1):** the Predict Index value at the expiry time.
 
-The observation window runs from the start time up to, but not including, the expiry time. A price observed exactly at the expiry time belongs to the next round instead.
+Each boundary value already averages the preceding 60 seconds; S0 and S1 are not averaged again. For consecutive rounds using the same Predict Index, one round's expiry price is the next round's strike.
+
+The price source is fixed when a round is created: rounds created before the TWAP transition retain their original index source until settlement; rounds created after the transition use the Predict Index.
 
 - If the expiry price is above the strike, **UP wins**.
 - If the expiry price is below the strike, **DOWN wins**.
-- If the expiry price equals the strike, the round is a **tie** -- neither side wins.
+- If the expiry price equals the strike, the round is a **tie** -- both sides settle at \$0.50 per share.
 
 See the [Glossary](/introduction/trade-on-orderly/trading-basics/glossary) for short definitions of strike, expiry price, and outcome.
 

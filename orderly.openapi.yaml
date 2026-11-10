@@ -1458,7 +1458,7 @@ paths:
       parameters:
         - name: symbol
           in: query
-          description: "For example `PERP_BTC_USDC`. A syntactically valid symbol with no recorded data returns an empty array."
+          description: "For example `PERP_BTC_USDC` for the underlying BTC index, or `SPOT_BTCTWAP60S_USDC` for the Predict Index (rolling 60-second TWAP). Use Predict info's `settlement_index_symbol` for a round's actual S0/S1 source. A syntactically valid symbol with no recorded data returns an empty array."
           required: true
           example: "PERP_BTC_USDC"
           schema:
@@ -14994,9 +14994,9 @@ components:
                   type: number
                   example: 0
                 binary_taker_fee_rate:
-                  description: "Taker fee rate applied to Orderly Predict markets, in bps. A new account defaults to 300. Always present; a missing or invalid value must not be treated as a free (zero) rate."
+                  description: "Taker fee rate applied to Orderly Predict markets, in bps. A new account defaults to 600. Always present; a missing or invalid value must not be treated as a free (zero) rate."
                   type: number
-                  example: 300
+                  example: 600
                 binary_maker_fee_rate:
                   description: "Maker fee rate applied to Orderly Predict markets, in bps. A new account defaults to 0. Always present; a missing or invalid value must not be treated as a free (zero) rate."
                   type: number
@@ -16049,6 +16049,7 @@ components:
         - expire_at
         - s0
         - index_price_symbol
+        - settlement_index_symbol
         - fee_model
         - s1
         - outcome
@@ -16092,11 +16093,15 @@ components:
         s0:
           type: number
           nullable: true
-          description: S0. Null before t0 or before it has been recorded. This is the only S0 field; there is no `strike_price` alias.
+          description: S0, the boundary price at t0 from `settlement_index_symbol`. For rounds using `SPOT_BTCTWAP60S_USDC`, this is the Predict Index value `P(t0)`, with no additional averaging. Null before t0 or before it has been recorded. This is the only S0 field; there is no `strike_price` alias.
         index_price_symbol:
           type: string
           description: "The underlying's Index symbol, formatted as `PERP_{underlying}_USDC`."
           example: "PERP_BTC_USDC"
+        settlement_index_symbol:
+          type: string
+          description: "The actual S0/S1 price source, fixed when the round is created. Use directly with `GET /v1/public/index_price` and `{symbol}@indexprice`. Rounds created after the TWAP transition use `SPOT_BTCTWAP60S_USDC` (rolling 60-second TWAP); earlier rounds retain `SPOT_BTC_USDC`."
+          example: "SPOT_BTCTWAP60S_USDC"
         fee_model:
           type: string
           description: Always `BINARY_PROBABILITY`, meaning each fill is charged in USDC as `C x r x p x (1 - p)`, where `r` is the account's Predict maker or taker rate in bps divided by 10000.
@@ -16104,7 +16109,7 @@ components:
         s1:
           type: number
           nullable: true
-          description: S1. Always null before the result is published.
+          description: S1, the boundary price at t1 from `settlement_index_symbol`. For rounds using `SPOT_BTCTWAP60S_USDC`, this is the Predict Index value `P(t1)`, with no additional averaging. Always null before the result is published.
         outcome:
           type: string
           nullable: true
@@ -16123,7 +16128,7 @@ components:
           description: When the result was first published. Null before that. Does not by itself mean a user's funds have settled; see `GET /v1/position_history`.
         rule_version:
           type: string
-          description: Always `binary-v1`.
+          description: Rule version for this round. Read `settlement_index_symbol` to identify the actual S0/S1 price source; do not infer it from the rule version.
           example: "binary-v1"
         quote_min:
           type: number

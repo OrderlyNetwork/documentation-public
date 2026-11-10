@@ -103,13 +103,38 @@ The `<binary_symbol>@orderbook` and `<binary_symbol>@orderbookupdate` WebSocket 
 
 ## Underlying price data
 
-A Predict round's strike and expiry price are drawn from the underlying index, not from the round's own order book:
+A Predict round's strike and expiry price use the source returned in `settlement_index_symbol`. This field is available when the round is created and stays fixed through settlement. It is separate from the round's own order book and valuation fields.
+
+### Predict Index
+
+The **Predict Index** (`SPOT_BTCTWAP60S_USDC`, displayed as **BTC / USDC - TWAP: 60s**) is a rolling 60-second TWAP of Orderly's `PERP_BTC_USDC` index price. It produces one value per second for the entire price series, including the Predict chart and current price.
+
+At UTC whole second `t`, its value `P(t)` is calculated over `(t - 60s, t]`:
+
+```text
+P(t) = sum(price × duration in seconds) / 60
+```
+
+- Only positive underlying index prices are used. Each price applies from its source timestamp until the next price arrives; the window starts with the last price whose source timestamp is at or before `t - 60s`.
+- The last segment ends at `t`; no future data is used. This is a time-weighted calculation, not an arithmetic average of a required number of samples.
+- Round only the final value, using `HALF_UP` and the same decimal precision as the underlying index. Once written, the value is fixed.
+- For TWAP rounds, `s0 = P(observation_start_at)` and `s1 = P(expire_at)`. Each is a single value from the series, with no additional averaging. Consecutive TWAP rounds share the same boundary value.
+
+Subscribe to `SPOT_BTCTWAP60S_USDC@indexprice` for live Predict Index updates, once per second. See [WebSocket API: Index Price](/build-on-omnichain/websocket-api/public/index-price#orderly-predict) for a subscription and message example. For history, query [GET `/v1/public/index_price`](#index-price-history) with `symbol=SPOT_BTCTWAP60S_USDC`.
+
+The price source is fixed when each round is created: rounds created after the TWAP transition use `SPOT_BTCTWAP60S_USDC`; existing rounds retain `SPOT_BTC_USDC`. Read `settlement_index_symbol` for the actual source, rather than inferring it from the round's age or `index_price_symbol`.
+
+During a Predict Index service outage, no values are written or pushed; after restart, missing seconds are recalculated from historical underlying index data using the same formula. Backfilled values are available through REST, not replayed on the WebSocket.
+
+If a boundary value is missing, settlement waits for that exact value; it does not substitute another second's value.
+
+### Underlying BTC and round valuation
 
 - **Kline for the underlying:** [GET `/v1/kline`](/build-on-omnichain/restful-api/public/get-kline) with `symbol=PERP_BTC_USDC`. Requesting kline for a round's own symbol returns empty rows; always query the underlying symbol instead.
 - **Underlying index price:** subscribe to `SPOT_BTC_USDC@indexprice` for live updates. See [WebSocket API: Index Price](/build-on-omnichain/websocket-api/public/index-price).
 - **A round's own index price is not pushed on the public WebSocket** -- there is no live topic for it. For the round's current index price, poll [GET `/v1/public/futures/{symbol}`](/build-on-omnichain/restful-api/public/get-market-info-for-one-symbol) (`index_price`); for historical index price data over a time range, use [GET `/v1/public/index_price`](#index-price-history) below.
 
-Predict info's `index_price_symbol` field tells you which underlying symbol a round is priced against. This field is a `PERP_{underlying}_USDC` value (for example `PERP_BTC_USDC`) and can't be pasted directly into a WebSocket topic name -- the underlying index topic is `SPOT_BTC_USDC@indexprice`, as shown above.
+Predict info's `index_price_symbol` still identifies the underlying (`PERP_BTC_USDC`); the underlying index is unchanged by the TWAP calculation. It is distinct from `settlement_index_symbol`, which identifies the round's actual S0/S1 source. Use the Predict Index feed for the TWAP chart and current price; `SPOT_BTC_USDC@indexprice` remains available for observing the underlying BTC index.
 
 ### Index price history
 
@@ -131,7 +156,7 @@ To show best bid/ask across many rounds at once (for example, on a rounds picker
 ## What index, mark, and trade price are not
 
 - `index_price` on a round is not the order book midpoint.
-- None of `index_price`, `mark_price`, or the public trade price feed are ever the strike (S0) or expiry price (S1) used for settlement.
+- The round's own `index_price`, `mark_price`, and public trade price feed are not the Predict Index or the authoritative S0/S1 used for settlement.
 - S0 and S1 are authoritative as published by Predict info -- read them from there rather than recomputing them yourself from the index price history endpoint above; once published, the values Predict info returns are fixed and won't be recalculated or overwritten on query.
 
 ## Endpoints that don't apply to Predict rounds
@@ -150,4 +175,4 @@ See [WebSocket API: Price Changes](/build-on-omnichain/websocket-api/public/pric
 - [Order Management](/build-on-omnichain/orderly-predict/order-management) -- place, edit, and cancel orders, including the DOWN conversion.
 - [WebSocket API: Orderbook](/build-on-omnichain/websocket-api/public/orderbook) and [BBO](/build-on-omnichain/websocket-api/public/bbo) -- real-time UP/DOWN quotes for a single round.
 - [WebSocket API: BBOs](/build-on-omnichain/websocket-api/public/bbos) -- best bid/ask across many rounds at once.
-- [WebSocket API: Index Price](/build-on-omnichain/websocket-api/public/index-price) -- live updates for the underlying index.
+- [WebSocket API: Index Price](/build-on-omnichain/websocket-api/public/index-price) -- live updates for the underlying index and the Predict Index.
