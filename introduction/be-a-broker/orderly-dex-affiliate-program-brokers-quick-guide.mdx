@@ -10,6 +10,7 @@ The Orderly DEX Affiliate Program helps you grow your DEX through a multilevel a
 - Set the commission available to your direct affiliates.
 - Let affiliates build their own referral networks, up to 15 affiliate levels.
 - Reward both direct and indirect referrals while keeping control of your total commission allocation.
+- Optionally let affiliates share referral commission with direct referees as a trading fee rebate, subject to your maximum kickback ratio.
 
 In this guide, a **Level 1 (L1) affiliate** is an affiliate directly connected to your DEX. Affiliates below L1 are managed by the affiliate immediately above them.
 
@@ -57,6 +58,24 @@ Keep these rules in mind:
 - You manage L1 rates only. Each affiliate manages the rates of their own direct referees.
 - Increasing the minimum pass-down rate will be rejected if it would make any L1 total rate exceed 100%.
 
+### 3.3 Enable trading fee rebates (optional)
+
+Only builders using **Trading fee with builder revenue fallback** (effective trading fee) as the commission basis can configure trading fee rebates. Builders using **Builder revenue** as the commission basis cannot configure this setting.
+
+Eligible builders decide whether affiliates can configure trading fee rebates for their direct referees. If you do not enable this setting, affiliates cannot configure these rebates.
+
+When enabled, set a **maximum kickback ratio**: the maximum share of an affiliate's referral commission rate that they can rebate to their direct referees for those referees' trades. Affiliates enter a kickback ratio in the frontend, no higher than your maximum. The trading fee rebate rate is calculated from their referral commission rate and chosen kickback ratio.
+
+Your cap determines the maximum resulting trading fee rebate rate:
+
+```text
+Maximum trading fee rebate rate = Referral commission rate × Maximum kickback ratio
+```
+
+For example, with a 20% referral commission rate and a builder-set maximum kickback ratio of 25%, the affiliate can choose a kickback ratio of up to 25%. Choosing 25% produces a 5% trading fee rebate rate.
+
+This shares part of the referral commission with the trading referee. It is separate from assigning a downstream affiliate commission rate; the maximum kickback ratio is not the minimum pass-down rate.
+
 ## 4. Understand how affiliates earn
 
 Consider this referral path:
@@ -69,13 +88,13 @@ flowchart TD
     D -->|invites| T[Trader]
 ```
 
-When the trader trades:
+Before any trading fee rebate is applied, when the trader trades:
 
 - The **direct referrer** earns their full assigned rate of 25%.
 - The next affiliate earns the difference between 35% and 25%, which is 10%.
 - The L1 affiliate earns the difference between 50% and 35%, which is 15%.
 
-The total distributed rate remains 50%. The trader does not earn affiliate commission from their own trade.
+The total distributed rate remains 50%. The trader does not earn affiliate commission from their own trade, but may receive a trading fee rebate if you enable the setting and their direct referrer configures a rebate.
 
 ## 5. Change an L1 rate
 
