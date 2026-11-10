@@ -576,28 +576,19 @@ html:not(.dark) .card.block:hover {
   line-height: 20px;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .featured-builder-card .builder-tier {
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
-
-  .featured-builder-card:hover .builder-tier,
-  .featured-builder-card:focus-visible .builder-tier {
-    opacity: 1;
-  }
-}
-
 .featured-builder-card .builder-tier-diamond {
-  background: #b9eaff;
+  background: rgba(185, 234, 255, 0.16);
+  color: #b9eaff;
 }
 
 .featured-builder-card .builder-tier-platinum {
-  background: #ddd8ed;
+  background: rgba(221, 216, 237, 0.16);
+  color: #ddd8ed;
 }
 
 .featured-builder-card .builder-tier-gold {
-  background: #f4d77c;
+  background: rgba(244, 215, 124, 0.16);
+  color: #f4d77c;
 }
 
 .featured-builder-card .builder-brand {
@@ -609,26 +600,32 @@ html:not(.dark) .card.block:hover {
 }
 
 .featured-builder-card .builder-brand img {
-  width: 100%;
-  height: 72px;
+  width: 176px;
+  height: 64px;
   max-width: 100%;
-  max-height: 72px;
+  max-height: 64px;
   margin: 0;
   object-fit: contain;
 }
 
 .featured-builder-card .builder-wordmark {
-  font-size: 30px;
+  font-size: 28px;
   font-weight: 700;
 }
 
+.featured-builder-card .builder-brand .builder-logo-compact {
+  width: 136px;
+}
+
 .featured-builder-card .builder-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
   font-size: 16px;
   font-weight: 600;
 }
 
-.featured-builder-card .builder-visit {
-  margin-top: 8px;
+.featured-builder-card .builder-arrow {
   color: #c6b4ff;
-  font-size: 14px;
 }
