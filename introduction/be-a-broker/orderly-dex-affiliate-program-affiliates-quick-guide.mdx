@@ -18,7 +18,7 @@ Confirm that your DEX has enabled the multilevel affiliate program. Your DEX may
 
 Check the eligibility rules, commission structure, and commission calculation basis directly with your builder because they may vary by DEX.
 
-Trading fee rebates are available only when your builder uses effective trading fee as the commission basis and enables the setting. Your builder sets the maximum kickback ratio. Otherwise, you cannot configure trading fee rebates for your direct referees.
+Trading fee rebates are available only when your builder uses **Trading fee with builder revenue fallback** (see [Choose the commission basis](/introduction/be-a-broker/orderly-dex-affiliate-program-brokers-quick-guide#choose-the-commission-basis)) as the commission basis and enables the setting. Your builder sets the maximum kickback ratio. Otherwise, you cannot configure trading fee rebates for your direct referees.
 
 For a comparison with the legacy program and migration guidance, see [Legacy and multilevel affiliate programs](/introduction/be-a-broker/affiliate-referral-program#legacy-and-multilevel-affiliate-programs).
 
@@ -34,21 +34,6 @@ When you assign a rate to a direct referee:
 
 ## 4. Understand how you earn
 
-<Steps>
-  <Step title="Builder assigns your rate">
-    Your builder sets the commission rate available to you.
-  </Step>
-  <Step title="You pass down a rate to your direct affiliate">
-    You keep the difference between your rate and the rate you pass down.
-  </Step>
-  <Step title="The network continues to the trader's direct referrer">
-    Each affiliate in between keeps the difference between their rate and the next one.
-  </Step>
-  <Step title="The direct referrer invites the trader">
-    When the trader trades, the direct referrer earns their full assigned rate.
-  </Step>
-</Steps>
-
 There are two ways to earn:
 
 - **Direct earnings:** When your direct referee trades, you earn your assigned rate for that referral path.
@@ -58,11 +43,13 @@ There are two ways to earn:
 
 Before any trading fee rebate is applied, when the trader trades:
 
-- You earn 15%, the difference between 50% and 35%.
-- Your direct affiliate earns 10%, the difference between 35% and 25%.
-- The trader's direct referrer earns their full 25% assigned rate.
+| Affiliate                | Assigned rate | Earns when the trader trades |
+| ------------------------ | ------------- | ---------------------------- |
+| You                      | 50%           | 15% (50% − 35%)              |
+| Your direct affiliate    | 35%           | 10% (35% − 25%)              |
+| Trader's direct referrer | 25%           | 25% (full assigned rate)     |
 
-The total distributed rate remains 50%. The trader does not earn affiliate commission from their own trade, but may receive a trading fee rebate if the builder enables the setting and their direct referrer configures a rebate.
+The total distributed rate remains 50%. The trader does not earn affiliate commission from their own trade, but may receive a trading fee rebate if the builder enables the setting and their direct referrer configures a rebate, or if the trader is an L1 affiliate. See [Trading fee rebates](#trading-fee-rebates-when-enabled) below.
 
 ## 5. Set rates for direct referees
 
@@ -77,9 +64,11 @@ Both rates must stay within your available range: no higher than your assigned r
 
 ### Trading fee rebates (when enabled)
 
-If your builder uses effective trading fee as the commission basis and enables trading fee rebates, you can share part of your referral commission with your direct referees as a rebate for their trades.
+Your referral commission rate is your assigned rate.
 
-Set the **kickback ratio** in the frontend: the percentage of your referral commission you share with direct referees as a trading fee rebate. Your chosen ratio cannot exceed the maximum kickback ratio set by your builder. You do not enter the trading fee rebate rate directly; it is calculated as:
+If your builder uses **Trading fee with builder revenue fallback** as the commission basis and enables trading fee rebates, you can share part of your referral commission with your direct referees as a rebate for their trades.
+
+Set **Your commission shared with traders** (your kickback ratio) in the frontend: the percentage of your referral commission you share with direct referees as a trading fee rebate. Your chosen ratio cannot exceed the maximum kickback ratio set by your builder. You do not enter the trading fee rebate rate directly; it is calculated as:
 
 ```text
 Trading fee rebate rate = Referral commission rate × Kickback ratio
@@ -93,11 +82,11 @@ Max trading fee rebate rate = Referral commission rate × Max kickback ratio (se
 
 For example, if your referral commission rate is 20% and your builder's maximum kickback ratio is 25%, you can enter a kickback ratio of up to 25%. Entering 25% produces a 5% trading fee rebate rate.
 
-This rebate comes from your referral commission allocation. It is separate from the commission rate you assign to a downstream affiliate, and does not give the trader affiliate commission on their own trade. If the builder has not enabled trading fee rebates, you cannot configure a rebate.
+This rebate for your direct referees comes from your referral commission allocation. It is separate from the commission rate you assign to a downstream affiliate, and does not give the trader affiliate commission on their own trade. If the builder has not enabled trading fee rebates, you cannot configure a rebate.
 
 ### Trading fee rebates on your own trades (L1 affiliates)
 
-If you are an L1 affiliate and your builder enables trading fee rebates, you also receive a trading fee rebate on your own trades:
+Separately, if you are an L1 affiliate, you also receive a trading fee rebate on your own trades when your builder enables trading fee rebates. This rebate uses only the builder's maximum kickback ratio; it does not depend on the kickback ratio you set for your direct referees.
 
 ```text
 Own-trade rebate rate = Your referral commission rate × Max kickback ratio (set by builder)

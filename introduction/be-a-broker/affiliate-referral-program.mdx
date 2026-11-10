@@ -18,12 +18,13 @@ The ecosystem consists of three key participants:
 
 Orderly supports a legacy single-level affiliate program and a multilevel affiliate program. The key differences are:
 
-| Details                      | Legacy                                                                                                        | Multilevel                                                                                                                                                                                                  |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Referral network**         | Single-level, with direct referrals only                                                                      | Up to 15 levels, with direct and indirect referrals                                                                                                                                                         |
-| **Referral commission**      | Affiliates earn commission from direct referees only                                                          | Affiliates can earn commission from direct and indirect referees down the referral chain. The builder selects how the commission basis is calculated.                                                       |
-| **Commission configuration** | The builder decides a single-level commission of up to 100%                                                   | The builder assigns affiliates a total commission rate and may configure a minimum pass-down rate for direct-referral earnings                                                                              |
-| **Referral code creation**   | Primarily created by the builder or qualified affiliates that meet the applicable trading volume requirements | Qualified affiliates can create one active referral code after meeting the applicable trading volume requirements. Only auto-generated codes can be changed, and only while no users are bound to the code. |
+| Details                      | Legacy                                                                                                        | Multilevel                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Referral network**         | Single-level, with direct referrals only                                                                      | Up to 15 levels, with direct and indirect referrals                                                                                                                                                                                                                                                                                                                                                            |
+| **Referral commission**      | Affiliates earn commission from direct referees only                                                          | Affiliates can earn commission from direct and indirect referees down the referral chain. The builder selects how the commission basis is calculated.                                                                                                                                                                                                                                                          |
+| **Commission configuration** | The builder decides a single-level commission of up to 100%                                                   | The builder assigns affiliates a total commission rate and may configure a minimum pass-down rate for direct-referral earnings                                                                                                                                                                                                                                                                                 |
+| **Referral code creation**   | Primarily created by the builder or qualified affiliates that meet the applicable trading volume requirements | Qualified affiliates can create one active referral code after meeting the applicable trading volume requirements. Only auto-generated codes can be changed, and only while no users are bound to the code.                                                                                                                                                                                                    |
+| **Trader rebate**            | The referrer shares part of the Reward Split with the referee as a Referee Rebate.                            | Optional. When the builder uses Trading fee with builder revenue fallback and sets a maximum rebate, affiliates can share part of their commission with direct referees as a trading fee rebate; L1 affiliates also receive a rebate on their own trades. See [Set rates for direct referees](/introduction/be-a-broker/orderly-dex-affiliate-program-affiliates-quick-guide#5-set-rates-for-direct-referees). |
 
 ### Coexistence and migration
 
@@ -36,15 +37,15 @@ The multilevel affiliate program supersedes the legacy program for new activatio
 
 For multilevel program configuration and commission guidance, see the [Builder's Quick Guide](/introduction/be-a-broker/orderly-dex-affiliate-program-brokers-quick-guide) and [Affiliate's Quick Guide](/introduction/be-a-broker/orderly-dex-affiliate-program-affiliates-quick-guide).
 
-## How It Works
+## How it works
 
-### 1. The Binding Process
+### 1. The binding process
 
 The binding is established when a new user (Referee) connects to a Builder and enters a referral code. Their account is permanently bound to the Referrer. A bound referral code cannot be removed or modified after binding.
 
 <img src="/images/be-a-broker/affiliate-referral-program/bind-ref-code.png" width="70%" />
 
-### 2. The Reward Split
+### 2. The reward split
 
 When a Referee executes a trade, the trading fee is split automatically. Orderly Network retains a base protocol fee, and the remaining **Builder Fee** is distributed among the Builder, Referrer, and Referee based on the configured rebate settings.
 
@@ -52,9 +53,11 @@ When a Referee executes a trade, the trading fee is split automatically. Orderly
 - **Referee Rebate:** A discount returned to the trader, incentivizing them to use the referral code.
 - **Builder Revenue:** The remaining portion of the fee retained by the platform.
 
-## Example Calculation
+The Referee Rebate described here belongs to the legacy program; the multilevel program uses trading fee rebates instead. See [Trading fee rebates (when enabled)](/introduction/be-a-broker/orderly-dex-affiliate-program-affiliates-quick-guide#trading-fee-rebates-when-enabled).
 
-The following example demonstrates how fees flow between parties.
+## Example calculation
+
+The following example demonstrates how fees flow between parties under the legacy program.
 
 **Scenario:**
 
@@ -79,11 +82,11 @@ If a user generates **\$10 USDC** in _Net Builder Fees_:
 2.  **\$4.00** is credited to the Affiliate (Referrer).
 3.  **\$2.00** is retained by the Builder.
 
-## Configuration for Builders
+## Configuration for builders
 
 Builders manage referral codes and rebate rates in [Orderly One Affiliate](https://dex.orderly.network/affiliate).
 
-### Setup Fields
+### Setup fields
 
 Common referral-code settings include:
 

@@ -24,7 +24,7 @@ For a comparison with the legacy program and migration guidance, see [Legacy and
 
 ## 3. Set up your program
 
-### 3.1 Choose the commission basis
+### Choose the commission basis
 
 The commission basis is the amount to which affiliate commission rates are applied.
 
@@ -42,9 +42,11 @@ The commission basis is the amount to which affiliate commission rates are appli
 
 If the total rate were 80%, the trading-fee calculation would request \$72. Because that exceeds the \$50 of builder revenue, the entire calculation would use \$50 instead. Both modes would then produce a \$40 commission.
 
+In Orderly One, this option is labeled **Trading fee**.
+
 To change the basis mode, contact Orderly. Once processed, the change takes effect at **00:00 UTC on the next calendar day**. Trades before that time use the previous mode. Settled commissions are not recalculated.
 
-### 3.2 Set your program rates
+### Set your program rates
 
 Configure rates in this order:
 
@@ -58,13 +60,13 @@ Keep these rules in mind:
 - You manage L1 rates only. Each affiliate manages the rates of their own direct referees.
 - Increasing the minimum pass-down rate will be rejected if it would make any L1 total rate exceed 100%.
 
-### 3.3 Enable trading fee rebates (optional)
+### Enable trading fee rebates (optional)
 
-Only builders using **Trading fee with builder revenue fallback** (effective trading fee) as the commission basis can configure trading fee rebates. Builders using **Builder revenue** as the commission basis cannot configure this setting.
+Only builders using **Trading fee with builder revenue fallback** as the commission basis can configure trading fee rebates. Builders using **Builder revenue** as the commission basis cannot configure this setting.
 
 Eligible builders decide whether affiliates can configure trading fee rebates for their direct referees. If you do not enable this setting, affiliates cannot configure these rebates.
 
-When enabled, set a **maximum kickback ratio**: the maximum share of an affiliate's referral commission rate that they can rebate to their direct referees for those referees' trades. Affiliates enter a kickback ratio in the frontend, no higher than your maximum. The trading fee rebate rate is calculated from their referral commission rate and chosen kickback ratio.
+When enabled, set **Maximum rebate %** (the maximum kickback ratio) in Orderly One: the maximum share of an affiliate's referral commission rate that they can rebate to their direct referees for those referees' trades. Affiliates enter a kickback ratio in the frontend, no higher than your maximum. The trading fee rebate rate is calculated from their referral commission rate and chosen kickback ratio.
 
 Your cap determines the maximum resulting trading fee rebate rate:
 
@@ -76,26 +78,21 @@ For example, with a 20% referral commission rate and a builder-set maximum kickb
 
 This shares part of the referral commission with the trading referee. It is separate from assigning a downstream affiliate commission rate; the maximum kickback ratio is not the minimum pass-down rate.
 
-The same maximum kickback ratio also applies to L1 affiliates' own trades. An L1 affiliate receives a trading fee rebate on their own trades at their referral commission rate × your maximum kickback ratio. For example, with a 40% L1 referral commission rate and a 40% maximum kickback ratio, the L1 affiliate receives 16% of the trading fees from their own trades.
+L1 affiliates also receive a trading fee rebate on their own trades, calculated from your **Maximum rebate %** setting. This is independent of the kickback ratio affiliates set for their own direct referees. For example, with a 40% L1 referral commission rate and a 40% maximum kickback ratio, the L1 affiliate receives 16% of the trading fees from their own trades.
 
 ## 4. Understand how affiliates earn
 
-Consider this referral path:
-
-<Steps>
-  <Step title="You assign 50% to the L1 affiliate" />
-  <Step title="The L1 affiliate passes down 35% to the next affiliate" />
-  <Step title="The next affiliate passes down 25% to the direct referrer" />
-  <Step title="The direct referrer invites the trader" />
-</Steps>
+Consider this referral path: you assign 50% to the L1 affiliate, who passes down 35% to the next affiliate, who passes down 25% to the direct referrer, who invites the trader.
 
 Before any trading fee rebate is applied, when the trader trades:
 
-- The **direct referrer** earns their full assigned rate of 25%.
-- The next affiliate earns the difference between 35% and 25%, which is 10%.
-- The L1 affiliate earns the difference between 50% and 35%, which is 15%.
+| Affiliate       | Assigned rate | Earns when the trader trades |
+| --------------- | ------------- | ---------------------------- |
+| L1 affiliate    | 50%           | 15% (50% − 35%)              |
+| Next affiliate  | 35%           | 10% (35% − 25%)              |
+| Direct referrer | 25%           | 25% (full assigned rate)     |
 
-The total distributed rate remains 50%. The trader does not earn affiliate commission from their own trade, but may receive a trading fee rebate if you enable the setting and their direct referrer configures a rebate.
+The total distributed rate remains 50%. The trader does not earn affiliate commission from their own trade, but may receive a trading fee rebate if you enable the setting and their direct referrer configures a rebate, or if the trader is an L1 affiliate. See [Enable trading fee rebates (optional)](#enable-trading-fee-rebates-optional).
 
 ## 5. Change an L1 rate
 
