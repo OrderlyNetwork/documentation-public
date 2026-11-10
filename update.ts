@@ -197,8 +197,10 @@ async function updateOpenApi() {
     })
   );
 
-  await removeGeneratedDuplicatesOfNavPages(docsJsonPages);
+  // Restore aliases first: removing duplicates would otherwise delete the
+  // generated page an alias needs to be copied from.
   await restoreNavReferencedDuplicates(docsJsonPages);
+  await removeGeneratedDuplicatesOfNavPages(docsJsonPages);
 }
 
 /**
@@ -271,6 +273,7 @@ async function restoreNavReferencedDuplicates(docsJsonPages: Set<string>) {
           `${filePath} is missing after regeneration and no prior openapi key could be read from git HEAD to restore it.`
         )
       );
+      process.exitCode = 1;
       continue;
     }
 
@@ -281,12 +284,18 @@ async function restoreNavReferencedDuplicates(docsJsonPages: Set<string>) {
           `${filePath} is missing after regeneration and no generated page documents its operation (${previousKey}) to restore it from.`
         )
       );
+      process.exitCode = 1;
       continue;
     }
 
     const sourceContent = await fs.readFile(sourcePath, { encoding: "utf-8" });
     await fs.mkdir(path.dirname(filePath), { recursive: true });
-    await fs.writeFile(filePath, sourceContent);
+    // Keep the alias's own title override rather than inheriting the source's.
+    const aliasContent = reapplyTitleOverride(
+      sourceContent.replace(/^title:.*\n/m, ""),
+      previousContent
+    );
+    await fs.writeFile(filePath, aliasContent);
   }
 }
 
