@@ -5273,14 +5273,34 @@ paths:
       description: |-
         **Limit: 10 requests per 1 second per IP address**
 
-        `GET /v2/public/announcement`
+        Lists published announcements in the selected scope, ordered by publication time descending, then by announcement ID descending.
 
-        Returns active platform announcements published by Orderly.
+        By default, the list contains official Orderly announcements. Set `broker_id` to include that builder's announcements. Set `exclude_official=true` with `broker_id` to return only that builder's announcements. With no `broker_id`, excluding official announcements returns an empty list.
 
+        Omit both `page` and `size` to return all matching announcements. Set either parameter to enable pagination.
+
+        The response includes `message` and `i18n` for backward compatibility. For new integrations, read the title from `translations` and use `translations.en.title` if the requested language is unavailable.
+
+        For announcement content, use [Get announcement details](/build-on-omnichain/restful-api/public/get-announcement-details). To load announcements eligible for notification cards, use [Get active announcement cards](/build-on-omnichain/restful-api/public/get-active-announcement-cards).
       tags:
         - public
       security: []
-      parameters: []
+      parameters:
+        - $ref: "#/components/parameters/AnnouncementBrokerId"
+        - $ref: "#/components/parameters/AnnouncementExcludeOfficial"
+        - $ref: "#/components/parameters/AnnouncementCategoryFilter"
+        - name: page
+          in: query
+          description: Page number. If pagination is enabled, an omitted value or a value below 1 is treated as 1.
+          schema:
+            type: integer
+          example: 1
+        - name: size
+          in: query
+          description: Page size. If pagination is enabled, an omitted value or a value below 1 is treated as 20. Values above 100 are capped at 100.
+          schema:
+            type: integer
+          example: 5
       responses:
         "200":
           description: OK
@@ -5290,7 +5310,91 @@ paths:
                 $ref: "#/components/schemas/GetAnnouncementsV2Response"
               examples:
                 success:
-                  summary: Illustrative announcement response (not a live capture)
+                  summary: Published announcements (illustrative)
+                  value:
+                    success: true
+                    timestamp: 1789430400000
+                    data:
+                      last_updated_time: 1789426800000
+                      meta:
+                        total: 1
+                        records_per_page: 1
+                        current_page: 1
+                      rows:
+                        - announcement_id: 12345
+                          message: "New perpetual market listing"
+                          url: null
+                          i18n:
+                            zh: "新永續合約市場上架"
+                            es: null
+                            fr: null
+                            jp: null
+                            ko: null
+                          type: LISTING
+                          updated_time: 1789426800000
+                          is_official: true
+                          category: LISTINGS
+                          slug: new-perpetual-market-listing
+                          published_time: 1789426800000
+                          notification_card_end_time: 1789513200000
+                          translations:
+                            en:
+                              title: "New perpetual market listing"
+                            zh:
+                              title: "新永續合約市場上架"
+                empty:
+                  summary: No published announcements in scope
+                  value:
+                    success: true
+                    timestamp: 1789430400000
+                    data:
+                      last_updated_time: 0
+                      meta:
+                        total: 0
+                        records_per_page: 0
+                        current_page: 1
+                      rows: []
+        "400":
+          description: INVALID_PARAM (-1005). The broker ID does not exist or a query parameter is invalid.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnnouncementQueryError"
+
+  /v2/public/announcement/active:
+    get:
+      summary: Get active announcement cards
+      description: |-
+        **Limit: 10 requests per 1 second per IP address**
+
+        Returns published announcements whose `notification_card_end_time` is later than the current server time. Use this endpoint to load notification cards with their content. Card expiration affects card eligibility. Published announcements remain available through the [list](/build-on-omnichain/restful-api/public/get-announcements-v2) and [detail](/build-on-omnichain/restful-api/public/get-announcement-details) endpoints while they are published.
+
+        Uses the same official and builder scope as the list endpoint. Results are not paginated and do not include `meta`.
+
+        The response includes `message` and `i18n` for backward compatibility. For new integrations, read the title and content from `translations` and use `translations.en` for both if the requested language is unavailable.
+      tags:
+        - public
+      security: []
+      parameters:
+        - $ref: "#/components/parameters/AnnouncementBrokerId"
+        - $ref: "#/components/parameters/AnnouncementExcludeOfficial"
+        - $ref: "#/components/parameters/AnnouncementCategoryFilter"
+        - name: locale
+          in: query
+          description: "Case-insensitive locale: `en`, `zh`, `es`, `fr`, `ja`, or `ko`. If provided, `translations` includes English and the requested translation when available. If omitted, all complete translations are returned. Use `ja` for Japanese."
+          schema:
+            type: string
+          example: zh
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetActiveAnnouncementCardsResponse"
+              examples:
+                success:
+                  summary: Active notification cards (illustrative)
                   value:
                     success: true
                     timestamp: 1789430400000
@@ -5298,16 +5402,132 @@ paths:
                       last_updated_time: 1789426800000
                       rows:
                         - announcement_id: 12345
-                          message: "Community voting is now open."
-                          url: "https://example.com/vote"
+                          message: "New perpetual market listing"
+                          url: null
                           i18n:
-                            zh: "社群投票現已開放。"
+                            zh: "新永續合約市場上架"
                             es: null
                             fr: null
                             jp: null
                             ko: null
-                          type: "VOTE"
+                          type: LISTING
                           updated_time: 1789426800000
+                          is_official: true
+                          category: LISTINGS
+                          slug: new-perpetual-market-listing
+                          published_time: 1789426800000
+                          notification_card_end_time: 1789513200000
+                          translations:
+                            en:
+                              title: "New perpetual market listing"
+                              content: "A new perpetual market is now available."
+                            zh:
+                              title: "新永續合約市場上架"
+                              content: "新的永續合約市場現已開放交易。"
+        "400":
+          description: INVALID_PARAM (-1005). The broker ID does not exist or a query parameter is invalid.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnnouncementQueryError"
+
+  /v2/public/announcement/detail:
+    get:
+      summary: Get announcement details
+      description: |-
+        **Limit: 10 requests per 1 second per IP address**
+
+        Returns one published announcement with its translated titles and content. Provide exactly one of `announcement_id` or `slug`.
+
+        When looking up by ID, omit `broker_id` for official announcements or supply it to search official and builder announcements.
+
+        When looking up by slug, set `is_official=true` to search official announcements, or provide `broker_id` to search only that builder's announcements. A slug is unique within its source.
+
+        The response includes `message` and `i18n` for backward compatibility. For new integrations, read the title and content from `translations` and use `translations.en` for both if the requested language is unavailable.
+
+        A lookup with no matching published announcement returns HTTP 400 with `RESOURCE_NOT_FOUND` (code `-1006`).
+      tags:
+        - public
+      security: []
+      parameters:
+        - name: announcement_id
+          in: query
+          description: Announcement ID. Provide either this parameter or slug.
+          schema:
+            type: integer
+            format: int64
+        - name: slug
+          in: query
+          description: Announcement slug. Leading and trailing whitespace is trimmed. Provide either this parameter or announcement_id.
+          schema:
+            type: string
+        - name: is_official
+          in: query
+          description: When looking up by slug, set to true to search official announcements. In this case, broker_id is ignored. This parameter has no effect on ID lookups.
+          schema:
+            type: boolean
+            default: false
+        - name: broker_id
+          in: query
+          description: Optional for ID lookups. Required for slug lookups unless is_official is true.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetAnnouncementDetailsResponse"
+              examples:
+                success:
+                  summary: Published announcement details (illustrative)
+                  value:
+                    success: true
+                    timestamp: 1789430400000
+                    data:
+                      announcement_id: 12345
+                      message: "New perpetual market listing"
+                      url: null
+                      i18n:
+                        zh: "新永續合約市場上架"
+                        es: null
+                        fr: null
+                        jp: null
+                        ko: null
+                      type: LISTING
+                      updated_time: 1789426800000
+                      is_official: true
+                      category: LISTINGS
+                      slug: new-perpetual-market-listing
+                      published_time: 1789426800000
+                      notification_card_end_time: 1789513200000
+                      translations:
+                        en:
+                          title: "New perpetual market listing"
+                          content: "A new perpetual market is now available."
+                        zh:
+                          title: "新永續合約市場上架"
+                          content: "新的永續合約市場現已開放交易。"
+        "400":
+          description: INVALID_PARAM (-1005) for missing, conflicting, or invalid lookup parameters. RESOURCE_NOT_FOUND (-1006) when no published announcement matches the lookup in the requested scope.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnnouncementQueryError"
+              examples:
+                invalidLookup:
+                  summary: Missing lookup parameter
+                  value:
+                    success: false
+                    code: -1005
+                    message: announcement_id or slug is required
+                notFound:
+                  summary: Announcement not found
+                  value:
+                    success: false
+                    code: -1006
+                    message: announcement not found
 
   /v1/volume/broker/daily:
     get:
@@ -10703,6 +10923,26 @@ components:
                 description: Remaining wait in seconds. Example value is illustrative.
                 example: 30
   parameters:
+    AnnouncementBrokerId:
+      name: broker_id
+      in: query
+      description: Builder ID. If omitted, only official announcements are in scope. The ID must refer to an existing builder.
+      schema:
+        type: string
+    AnnouncementExcludeOfficial:
+      name: exclude_official
+      in: query
+      description: Exclude official announcements from the result.
+      schema:
+        type: boolean
+        default: false
+    AnnouncementCategoryFilter:
+      name: category
+      in: query
+      description: "Case-insensitive category filter: `CAMPAIGN`, `LISTINGS`, `DELISTINGS`, `UPDATES`, `LEGAL`, or `OTHERS`."
+      schema:
+        type: string
+      example: LISTINGS
     convert_volume_broker_id:
       name: broker_id
       in: query
@@ -17168,104 +17408,225 @@ components:
                         type: string
                         example: "https://orderly.network/docs/release-notes/omnichain"
 
-    GetAnnouncementsV2Response:
+    AnnouncementCategory:
+      type: string
+      enum: [CAMPAIGN, LISTINGS, DELISTINGS, UPDATES, LEGAL, OTHERS]
+      description: Announcement category.
+      example: LISTINGS
+
+    AnnouncementSummaryFields:
+      type: object
+      required:
+        - announcement_id
+        - message
+        - url
+        - i18n
+        - type
+        - updated_time
+        - is_official
+        - category
+        - slug
+        - published_time
+        - notification_card_end_time
+      properties:
+        announcement_id:
+          description: Unique announcement ID.
+          type: integer
+          format: int64
+        message:
+          description: English title in the legacy response format.
+          type: string
+        url:
+          description: Legacy destination link. The v2 response returns null.
+          type: string
+          nullable: true
+        i18n:
+          description: Legacy translated titles. Unavailable translations are null. The Japanese key is jp.
+          type: object
+          additionalProperties: false
+          required:
+            - zh
+            - es
+            - fr
+            - jp
+            - ko
+          properties:
+            zh:
+              type: string
+              nullable: true
+              description: Chinese translation.
+            es:
+              type: string
+              nullable: true
+              description: Spanish translation.
+            fr:
+              type: string
+              nullable: true
+              description: French translation.
+            jp:
+              type: string
+              nullable: true
+              description: Japanese translation.
+            ko:
+              type: string
+              nullable: true
+              description: Korean translation.
+        type:
+          description: Legacy category. LISTINGS maps to LISTING and DELISTINGS maps to DELISTING. Other categories use their category value.
+          type: string
+          enum: [CAMPAIGN, LISTING, DELISTING, UPDATES, LEGAL, OTHERS]
+          example: LISTING
+        updated_time:
+          description: Last update time, as a Unix timestamp in milliseconds.
+          type: integer
+          format: int64
+        is_official:
+          description: True for an official Orderly announcement and false for a builder announcement.
+          type: boolean
+        category:
+          $ref: "#/components/schemas/AnnouncementCategory"
+        slug:
+          description: Stable URL identifier after publication. Unique within the official source or a single builder.
+          type: string
+        published_time:
+          description: Publication time, as a Unix timestamp in milliseconds.
+          type: integer
+          format: int64
+        notification_card_end_time:
+          description: Notification card display deadline, as a Unix timestamp in milliseconds. Null means there is no card deadline. The deadline controls card eligibility.
+          type: integer
+          format: int64
+          nullable: true
+
+    AnnouncementTitleTranslation:
+      type: object
+      required: [title]
+      properties:
+        title:
+          description: Localized announcement title.
+          type: string
+
+    AnnouncementContentTranslation:
+      allOf:
+        - $ref: "#/components/schemas/AnnouncementTitleTranslation"
+        - type: object
+          required: [content]
+          properties:
+            content:
+              description: Localized announcement content in Markdown.
+              type: string
+
+    AnnouncementListItem:
+      allOf:
+        - $ref: "#/components/schemas/AnnouncementSummaryFields"
+        - type: object
+          required: [translations]
+          properties:
+            translations:
+              type: object
+              description: Titles only. English is always included. Chinese (zh), Spanish (es), French (fr), Japanese (ja), and Korean (ko) appear when both the title and content are available for that locale.
+              required: [en]
+              properties:
+                en:
+                  $ref: "#/components/schemas/AnnouncementTitleTranslation"
+              additionalProperties:
+                $ref: "#/components/schemas/AnnouncementTitleTranslation"
+
+    AnnouncementWithContent:
+      allOf:
+        - $ref: "#/components/schemas/AnnouncementSummaryFields"
+        - type: object
+          required: [translations]
+          properties:
+            translations:
+              type: object
+              description: Titles and content. English is always included. Other complete locales may include zh, es, fr, ja, and ko. The active cards endpoint can limit these with the locale query parameter.
+              required: [en]
+              properties:
+                en:
+                  $ref: "#/components/schemas/AnnouncementContentTranslation"
+              additionalProperties:
+                $ref: "#/components/schemas/AnnouncementContentTranslation"
+
+    AnnouncementLastUpdatedTime:
+      description: Latest update time among published announcements in scope, before category, card eligibility, or pagination filters. A Unix timestamp in milliseconds, or 0 when there are no published announcements in scope.
+      type: integer
+      format: int64
+      example: 1789426800000
+
+    AnnouncementResponseBase:
       allOf:
         - $ref: "#/components/schemas/BasicResponse"
         - type: object
-          required:
-            - data
-            - timestamp
+          required: [timestamp]
           properties:
             timestamp:
               description: Time the response was generated, as a Unix timestamp in milliseconds.
               type: integer
               format: int64
-              example: 1789430400000
+
+    AnnouncementQueryError:
+      type: object
+      required: [success, code, message]
+      properties:
+        success:
+          type: boolean
+          example: false
+        code:
+          type: integer
+          example: -1005
+        message:
+          type: string
+          example: category is invalid
+
+    GetAnnouncementsV2Response:
+      allOf:
+        - $ref: "#/components/schemas/AnnouncementResponseBase"
+        - type: object
+          required: [data]
+          properties:
             data:
               type: object
-              required:
-                - last_updated_time
-                - rows
+              required: [last_updated_time, meta, rows]
               properties:
                 last_updated_time:
-                  description: Latest announcement update time retrieved by the backend, as a Unix timestamp in milliseconds. Not necessarily the maximum updated_time in the returned rows.
-                  type: integer
-                  format: int64
-                  example: 1789426800000
+                  $ref: "#/components/schemas/AnnouncementLastUpdatedTime"
+                meta:
+                  description: Pagination metadata. Total counts matching announcements before pagination. With no pagination, records_per_page equals total and current_page is 1. With pagination, records_per_page and current_page report the effective size and page.
+                  allOf:
+                    - $ref: "#/components/schemas/PaginationMeta"
                 rows:
-                  description: Currently active announcements. Returns an empty array when there are no active announcements.
+                  description: Published announcements matching the request. An empty result is returned as an empty array.
                   type: array
                   items:
-                    type: object
-                    required:
-                      - announcement_id
-                      - message
-                      - url
-                      - i18n
-                      - type
-                      - updated_time
-                    properties:
-                      announcement_id:
-                        description: Unique ID of the announcement.
-                        type: integer
-                        format: int64
-                        example: 12345
-                      message:
-                        description: Main announcement text in any language. Use as a fallback in its provided language when a translation is missing.
-                        type: string
-                        example: "Community voting is now open."
-                      url:
-                        description: Destination link for the announcement, or null.
-                        type: string
-                        nullable: true
-                        example: "https://example.com/vote"
-                      i18n:
-                        description: Translations for five fixed locales only (zh, es, fr, jp, ko). Values can be null. The Japanese key is jp.
-                        type: object
-                        additionalProperties: false
-                        required:
-                          - zh
-                          - es
-                          - fr
-                          - jp
-                          - ko
-                        properties:
-                          zh:
-                            type: string
-                            nullable: true
-                            description: Chinese translation.
-                            example: "社群投票現已開放。"
-                          es:
-                            type: string
-                            nullable: true
-                            description: Spanish translation.
-                          fr:
-                            type: string
-                            nullable: true
-                            description: French translation.
-                          jp:
-                            type: string
-                            nullable: true
-                            description: Japanese translation.
-                          ko:
-                            type: string
-                            nullable: true
-                            description: Korean translation.
-                      type:
-                        description: Announcement category, or null.
-                        type: string
-                        nullable: true
-                        enum:
-                          - LISTING
-                          - DELISTING
-                          - VOTE
-                          - null
-                        example: "VOTE"
-                      updated_time:
-                        description: Time the announcement was updated, as a Unix timestamp in milliseconds.
-                        type: integer
-                        format: int64
-                        example: 1789426800000
+                    $ref: "#/components/schemas/AnnouncementListItem"
+
+    GetActiveAnnouncementCardsResponse:
+      allOf:
+        - $ref: "#/components/schemas/AnnouncementResponseBase"
+        - type: object
+          required: [data]
+          properties:
+            data:
+              type: object
+              required: [last_updated_time, rows]
+              properties:
+                last_updated_time:
+                  $ref: "#/components/schemas/AnnouncementLastUpdatedTime"
+                rows:
+                  description: Published announcements currently eligible for notification cards. An empty result is returned as an empty array.
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/AnnouncementWithContent"
+
+    GetAnnouncementDetailsResponse:
+      allOf:
+        - $ref: "#/components/schemas/AnnouncementResponseBase"
+        - type: object
+          required: [data]
+          properties:
+            data:
+              $ref: "#/components/schemas/AnnouncementWithContent"
 
     GetBrokerInfoResponse:
       allOf:
