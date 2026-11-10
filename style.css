@@ -576,6 +576,18 @@ html:not(.dark) .card.block:hover {
   line-height: 20px;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .featured-builder-card .builder-tier {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .featured-builder-card:hover .builder-tier,
+  .featured-builder-card:focus-visible .builder-tier {
+    opacity: 1;
+  }
+}
+
 .featured-builder-card .builder-tier-diamond {
   background: #b9eaff;
 }
