@@ -41,9 +41,11 @@ description: "Review definitions of key trading terms used across Orderly, from 
 
 **Round:** A single Orderly Predict market cycle with a start time and an expiry time. Each round opens for trading, records a strike, and settles to UP, DOWN, or a tie at expiry. Learn more [here](/introduction/trade-on-orderly/orderly-predict/rounds-and-settlement).
 
-**Strike (S0):** The reference price recorded at the start of an Orderly Predict round's observation window. The round's outcome is decided by comparing the expiry price against the strike.
+**Predict Index:** A rolling 60-second time-weighted average (TWAP) of Orderly's BTC index price, calculated every second. Rounds using this source take their strike and expiry values from this series. Learn more [here](/build-on-omnichain/orderly-predict/market-data#predict-index).
 
-**Expiry Price (S1):** The price recorded at the end of an Orderly Predict round's observation window, used only to compare against the strike to decide the outcome.
+**Strike (S0):** The reference price at an Orderly Predict round's observation start time. For TWAP rounds, this is the Predict Index value at that exact time. The round's outcome is decided by comparing the expiry price against the strike.
+
+**Expiry Price (S1):** The reference price at an Orderly Predict round's expiry time. For TWAP rounds, this is the Predict Index value at that exact time, compared against the strike to decide the outcome.
 
 **Outcome:** The result of an Orderly Predict round: UP if the expiry price is above the strike, DOWN if it's below, or a tie if the two are equal. Learn more [here](/introduction/trade-on-orderly/orderly-predict/rounds-and-settlement).
 

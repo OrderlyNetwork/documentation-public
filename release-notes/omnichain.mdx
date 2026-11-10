@@ -8,6 +8,63 @@ import { Chip } from "/snippets/chip.mdx";
 
 <div className="omnichain-release-notes-marker" />
 
+## Nov 10th, 2026 (Scheduled Maintenance)
+
+<div style={{ display: "table", width: "auto" }}>
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="times" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+      - Mainnet: Nov 10th, 2026 04:00-05:30 UTC+8
+    </div>
+
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="new" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+
+      - Orderly Predict: BTC 5-minute Up/Down prediction market
+      - Builder announcements in Orderly One
+      - Trading fee rebates for affiliate direct referees
+    </div>
+
+  </div>
+
+  <div style={{ display: "table-row", width: "auto" }}>
+    <Chip type="update" />
+    <div
+      style={{
+        float: "left",
+        display: "table-column",
+        paddingLeft: "30px",
+        width: "calc(80% - 30px)",
+      }}
+    >
+
+      - OKB collateral support on X Layer
+      - Batch order reduce-only support
+      - Blogpost public API
+      - Builder daily volume public API
+      - Conversion volume public API
+    </div>
+
+  </div>
+</div>
+
 ## Sep 6th, 2026 (Scheduled Maintenance)
 
 <div style={{ display: "table", width: "auto" }}>
@@ -38,9 +95,9 @@ import { Chip } from "/snippets/chip.mdx";
       }}
     >
 
-      - **Limit-price support for position TP/SL orders:** Position-level take-profit and stop-loss orders can now be configured to place a reduce-only limit order once the trigger price is reached. Existing market-based position TP/SL behavior remains unchanged
-      - **`accruedFundingFee` in Position WebSocket updates:** [Position WebSocket messages](/build-on-omnichain/websocket-api/private/position-push) now include the `accruedFundingFee` field, enabling integrators to receive accrued funding-fee data alongside position updates
-      - **Multi-collateral support in isolated margin:** Eligible collateral assets can now support isolated-margin trading, including accounts that hold supported non-USDC collateral. Isolated margin remains denominated and accounted for in USDC. If opening a position would cause the USDC borrowing amount to exceed 50,000 USDC, automatic collateral conversion is triggered to reduce the borrowing amount
+      - Position TP/SL orders now support reduce-only limit orders when triggered
+      - Added `accruedFundingFee` to [Position WebSocket updates](/build-on-omnichain/websocket-api/private/position-push)
+      - Multi-collateral support for [isolated margin](/introduction/trade-on-orderly/perpetual-futures/isolated-margin#multi-collateral-support), with USDC accounting and automatic collateral conversion if opening a position would push USDC borrowing above 50,000 USDC
     </div>
 
   </div>
@@ -56,10 +113,8 @@ import { Chip } from "/snippets/chip.mdx";
       }}
     >
 
-      - **Pending-order amendment protection:** Each pending order can be successfully amended up to 1,000 times. Further amendment requests are rejected without changing the existing order; cancel, fill, and settlement flows are unaffected
-      - **More consistent collateral and withdrawal checks:** Improved alignment between risk-engine withdrawal validation and position-service free-collateral calculations
-      - **Isolated-margin risk handling improvements:** Improved risk calculations for isolated-order amendments, pending-order cleanup, liquidation-lock checks, and isolated-margin operations
-      - **Risk-engine performance improvements:** Enhanced selected risk-engine processing paths and runtime handling to improve efficiency and resilience under load
+      - Pending orders now allow up to 1,000 successful amendments; further requests are rejected without changing the order
+      - Improved collateral and withdrawal checks, isolated-margin risk handling, and risk-engine performance
     </div>
 
   </div>
@@ -75,7 +130,7 @@ import { Chip } from "/snippets/chip.mdx";
       }}
     >
 
-      - **Multilevel referral rebate consistency:** Fixed an issue where a referred user without a claimed referral code could retain an outdated rebate configuration after an upstream affiliate's maximum rebate rate was reduced. A subsequent increase could produce an invalid negative upstream rebate split
+      - Fixed stale rebate settings and invalid negative rebate splits in multilevel referrals
     </div>
 
   </div>
