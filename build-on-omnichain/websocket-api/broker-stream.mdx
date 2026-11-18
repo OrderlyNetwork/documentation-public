@@ -125,6 +125,16 @@ The linked account-level pages describe each event's business fields. Broker pay
 - `balance.data.balances` is keyed by token. Broker balance entries do not include `averageOpenPrice` or `pnl24H`; those fields in the account-level example are not part of the broker balance payload.
 - Optional fields with null values can be omitted. Examples on account-level pages do not require every field to be present in every broker event.
 
+Algo report versions use different `type` values:
+
+| Order type     | `algoexecutionreport` (v1) | `algoexecutionreportv2` |
+| -------------- | -------------------------- | ----------------------- |
+| Limit          | `LIMIT_ORDER`              | `LIMIT`                 |
+| Market         | `MARKET_ORDER`             | `MARKET`                |
+| Close position | `CLOSE_POSITION`           | `CLOSE_POSITION`        |
+
+The `MARKET` value in the linked account-level v1 example does not apply to broker v1 reports. Parse each topic using its own values. A v2 event is emitted only when the upstream message contains a new-format report with a positive `algoOrderId`; do not assume every v1 event has a corresponding v2 event.
+
 For example, a balance update for a user under `example_broker` is:
 
 ```json

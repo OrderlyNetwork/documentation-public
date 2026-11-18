@@ -5,6 +5,8 @@ description: "Subscribe to algo order execution reports via private WebSocket st
 
 This page describes the account-level private stream. This event is also forwarded through the [Broker Data Stream](/build-on-omnichain/websocket-api/broker-stream), which uses a broker-prefixed response topic and adds the affected user's `accountId`. Follow that guide for broker access and subscription behavior.
 
+For broker v1 events, `type` uses `MARKET_ORDER` and `LIMIT_ORDER` rather than `MARKET` and `LIMIT`. See the [broker version differences](/build-on-omnichain/websocket-api/broker-stream#message-envelope) before using the account-level example below.
+
 Push interval: real-time push
 
 ```json
