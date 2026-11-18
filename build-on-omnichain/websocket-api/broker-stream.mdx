@@ -1,0 +1,186 @@
+---
+title: "Broker Data Stream"
+description: "Authenticate as a broker admin and monitor user events across your broker through a dedicated WebSocket connection."
+---
+
+The broker data stream delivers events for accounts belonging to your broker through one authenticated connection. It is intended for monitoring and supervision and does not accept trading actions.
+
+## Access and connection
+
+Contact Orderly to enable broker stream access and obtain the broker WebSocket endpoint for your environment. Use your configured **broker admin account ID** and an Orderly Key associated with that account. An ordinary user account cannot open a broker stream.
+
+Orderly supplies the full connection base URL, including the stream path configured for your environment. Append the admin account ID as its final path segment:
+
+```text
+wss://<broker-host>/<configured-stream-path>/{admin_account_id}
+```
+
+Replace `<broker-host>` and `<configured-stream-path>` with the host and path provided by Orderly. The stream path is configurable; do not infer it from the account-level private endpoint. The final path parameter is the admin's account ID, not a broker ID or the account ID of a user you want to monitor.
+
+The server derives the broker from the configured admin account. You do not supply a broker ID to select another broker's data.
+
+## Authentication
+
+Use the [WebSocket authentication](/build-on-omnichain/websocket-api/authentication) signature scheme:
+
+1. Generate a current Unix timestamp in milliseconds.
+2. Sign the timestamp's decimal string using the admin account's Orderly secret key and Ed25519. Do not append an HTTP method, path, or body.
+3. Encode the signature as base64url.
+4. Supply all three URL authentication parameters when opening the broker connection, then subscribe after the connection succeeds.
+
+The timestamp must be within five minutes of the server's current time. Use the full `ed25519:<public-key>` value for `orderly_key`. Only send the public key, timestamp, and signature; keep the secret key local.
+
+### Authenticate in the connection URL
+
+Append `orderly_key`, `timestamp`, and `sign` to the connection URL. URL-encode the parameter values. Provide all three parameters together so authentication is performed while opening the connection; a successful URL authentication does not require a separate `auth` message.
+
+```text
+wss://<broker-host>/<configured-stream-path>/{admin_account_id}?orderly_key=<encoded-orderly-key>&timestamp=<timestamp-ms>&sign=<encoded-base64url-signature>
+```
+
+The values above are placeholders. Generate a fresh timestamp and signature for each connection. Never put the secret key in the URL.
+
+## Subscribe and unsubscribe
+
+Use the plain topic name in subscription requests. The server scopes the subscription to your broker automatically.
+
+```json
+{
+  "id": "broker-sub-1",
+  "event": "subscribe",
+  "topic": "executionreport"
+}
+```
+
+```json
+{
+  "id": "broker-sub-1",
+  "event": "subscribe",
+  "success": true,
+  "ts": 1794873600002
+}
+```
+
+Send a separate request for each topic. Do not prefix subscription topics with a broker ID or account ID.
+
+To unsubscribe, put the topic names in a nonempty `params` array. Changing only `event` in a subscribe request is not sufficient:
+
+```json
+{
+  "id": "broker-unsub-1",
+  "event": "unsubscribe",
+  "params": ["executionreport"]
+}
+```
+
+The response lists the topics actually removed:
+
+```json
+{
+  "id": "broker-unsub-1",
+  "event": "unsubscribe",
+  "success": true,
+  "ts": 1794873600003,
+  "data": ["executionreport"]
+}
+```
+
+An already removed topic is omitted from this response array. Broker subscriptions do not support the `params.symbol` filter shown on the account-level execution report page; filter received events in your application.
+
+## Event topics
+
+Broker forwarding is available for the following event types. Access also depends on the topics enabled for your environment; confirm availability with Orderly when enabling the stream.
+
+| Topic                   | Event data                                                                                                          |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `executionreport`       | [Order execution reports](/build-on-omnichain/websocket-api/private/execution-report)                               |
+| `algoexecutionreport`   | [Algo execution reports](/build-on-omnichain/websocket-api/private/algo-execution-report)                           |
+| `algoexecutionreportv2` | [Algo execution reports v2](/build-on-omnichain/websocket-api/private/algo-execution-report-v2)                     |
+| `balance`               | [Token balance updates](/build-on-omnichain/websocket-api/private/balance)                                          |
+| `position`              | [Position updates](/build-on-omnichain/websocket-api/private/position-push)                                         |
+| `liquidationsaccount`   | [Liquidation events for the liquidated account](/build-on-omnichain/websocket-api/private/liquidation-account-push) |
+| `assetconvert`          | [Asset conversion updates](/build-on-omnichain/websocket-api/private/asset-convert)                                 |
+| `positioninfo`          | Account risk and collateral information, described below                                                            |
+
+Other private topics, including `account`, `wallet`, `settle`, `notifications`, `liquidatorliquidations`, and `queuedorder`, are not forwarded through this broker stream. A successful subscription acknowledgment alone does not establish that a topic produces broker events.
+
+### Message envelope
+
+Broker events use this envelope:
+
+| Field       | Type            | Description                                                                                                    |
+| ----------- | --------------- | -------------------------------------------------------------------------------------------------------------- |
+| `topic`     | string          | Broker-prefixed event topic: `{broker_id}@{topic}`. This differs from the plain topic used to subscribe.       |
+| `accountId` | string          | Account ID of the user whose event is being delivered, not the admin's account ID.                             |
+| `ts`        | number          | Message timestamp in Unix milliseconds.                                                                        |
+| `data`      | object or array | Event payload. `algoexecutionreport` contains an array of reports; other topics listed here contain an object. |
+
+The linked account-level pages describe each event's business fields. Broker payloads preserve the following wire-format details:
+
+- `algoexecutionreport.data` is an array, including when it contains one report. `algoexecutionreportv2.data` is an object with optional nested `childOrders`.
+- `executionreport.data.averageExecutedPrice` is the cumulative average execution price. The payload also includes the `avgPrice` alias; do not expect the `avgExecutedPrice` spelling shown in the account-level example.
+- `executionreport.data.matchId` is a JSON number. Algo reports use a string-valued `matchId`. Do not expect the snake-case `match_id` field from the account-level execution report example.
+- Optional fields with null values can be omitted. Examples on account-level pages do not require every field to be present in every broker event.
+
+For example, a balance update for a user under `example_broker` is:
+
+```json
+{
+  "topic": "example_broker@balance",
+  "accountId": "0x1111111111111111111111111111111111111111111111111111111111111111",
+  "ts": 1794873600100,
+  "data": {
+    "balances": {
+      "USDC": {
+        "holding": 1000,
+        "frozen": 0,
+        "version": 42
+      }
+    }
+  }
+}
+```
+
+The example shows selected balance fields. Use `accountId` to keep each user's state separate. Do not route events to the admin account or assume the received `topic` equals the subscription string.
+
+### Position information
+
+The `positioninfo` payload contains account-level risk settings and collateral information. Its `positions` object is keyed by token, such as `USDC`; it is not the perpetual position list delivered by `position`.
+
+| `data` fields                                                                                          | Type   | Description                                           |
+| ------------------------------------------------------------------------------------------------------ | ------ | ----------------------------------------------------- |
+| `marginMode`                                                                                           | string | Account margin mode.                                  |
+| `marginRate`, `liquidationMarginRate`                                                                  | number | Account margin and liquidation margin rates.          |
+| `leverage`, `futuresLeverage`                                                                          | number | Account leverage settings.                            |
+| `interestRate`                                                                                         | number | Account interest rate.                                |
+| `takerFeeRate`, `makerFeeRate`, `guiTakerFeeRate`, `guiMakerFeeRate`                                   | number | Account fee rates.                                    |
+| `futuresApiTakerFeeRate`, `futuresApiMakerFeeRate`, `futuresGuiTakerFeeRate`, `futuresGuiMakerFeeRate` | number | Futures fee rates by order source and liquidity role. |
+| `positions`                                                                                            | object | Collateral information keyed by token.                |
+
+Each entry in `data.positions` contains numeric fields `holding`, `outstandingHolding`, `pendingExposure`, `interest`, `breakEvenPrice`, `realisedPnl`, `settledPnl`, `markPx`, `liquidPx`, `fee24H`, `frozen`, `staked`, `unbonding`, and `vault`.
+
+## Errors and reconnecting
+
+An unrecognized broker admin account is rejected when the connection is opened. Invalid credentials supplied in the URL also cause rejection and connection closure. Authentication and subscription command failures return `success: false`; broker stream error details are carried in `data`:
+
+```json
+{
+  "id": "broker-sub-1",
+  "event": "subscribe",
+  "success": false,
+  "ts": 1794873600002,
+  "data": "invalid topic"
+}
+```
+
+If access fails, verify the environment-specific endpoint, configured admin account, key ownership, signature encoding, and timestamp. A successful authentication does not replace broker access configuration.
+
+Send a JSON `ping` regularly while connected, for example every 10 seconds:
+
+```json
+{
+  "event": "ping"
+}
+```
+
+The server responds with `event: "pong"`, `success: true`, and a millisecond `ts`. Do not rely on the server sending a ping every 10 seconds; idle timeout behavior depends on the broker endpoint's configuration. After reconnecting, authenticate again and restore your subscriptions. Treat the stream as live events: do not assume a subscription sends an initial snapshot or replays events missed during a disconnection. Reconcile state through the appropriate authorized REST APIs. Newly registered users may not appear in the broker stream until their account-to-broker mapping has refreshed; do not rely on immediate coverage after registration.

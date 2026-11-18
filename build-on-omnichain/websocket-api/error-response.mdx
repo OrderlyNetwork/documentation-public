@@ -23,3 +23,7 @@ Error responses follow the same format as successful responses, with `success` s
 | `invalid topic <topic>`              | The requested topic is not supported             |
 | `auth failed`                        | Authentication failed due to invalid credentials |
 | `missing required parameter <param>` | A required parameter is missing                  |
+
+## Broker stream errors
+
+The [Broker Data Stream](/build-on-omnichain/websocket-api/broker-stream#errors-and-reconnecting) returns command error details in `data` rather than `errorMsg`. Connection-level rejection, including an unrecognized broker admin account, may omit the client request ID and event before closing the connection. See the broker guide for the response example and access checks.

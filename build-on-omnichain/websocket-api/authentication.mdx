@@ -43,3 +43,7 @@ For example, `wss://ws-private-evm.orderly.org/v2/ws/private/stream/0xd7379678a3
 ```
 
 </ResponseExample>
+
+## Broker stream authentication
+
+The [Broker Data Stream](/build-on-omnichain/websocket-api/broker-stream#authentication) uses the same timestamp-only Ed25519 signing scheme. For broker connections, follow that guide and supply all URL authentication parameters when opening the connection. Use the configured broker admin account ID in the connection path and an Orderly Key associated with that account. Broker access must be enabled separately; an ordinary user's credentials cannot select or access a broker's user stream.

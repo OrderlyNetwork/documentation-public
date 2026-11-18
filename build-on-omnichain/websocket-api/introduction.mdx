@@ -25,3 +25,7 @@ Testnet: `wss://testnet-ws-private-evm.orderly.org/v2/ws/private/stream/{account
 Users need to be authenticated before subscribing to any topic. They would be disconnected if authentication fails. For more information, refer to the [Authentication](/build-on-omnichain/websocket-api/authentication) section.
 
 Users can subscribe/unsubscribe to topics such as: `account`, `balance`, `position`, `executionreport`. See individual topic pages for the full list of available topics.
+
+## Broker Data Stream
+
+The [Broker Data Stream](/build-on-omnichain/websocket-api/broker-stream) lets a configured broker admin monitor events for users under that broker through a dedicated connection. It uses admin authentication and adds the affected user's `accountId` to each event. See the broker guide for access, connection details, supported topics, and the broker-specific message envelope.
