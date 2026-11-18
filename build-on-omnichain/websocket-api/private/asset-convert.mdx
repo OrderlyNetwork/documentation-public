@@ -39,16 +39,18 @@ Push interval: push on update
 {
   "topic": "assetconvert",
   "ts": 1641439456774,
-  "data":{
-      "convertId": 123456789,  // planId
-      "transactionId": 202,     // id
-      "timestamp": 1663313562090, // updatedTime 
-      "type": "auto",          // refType  0/1=auto, 1=manual 
-      "convertedAsset": "ETH",  // sellToken
-      "convertedQty": 1.23,     // sellQuantity
-      "receivedAsset": "USDC",   // buyToken
-      "receivedQty": 18123.43   // buyQuantity
-    }
+  "data": {
+    "convertId": 123456789,
+    "transactionId": 202,
+    "timestamp": 1663313562090,
+    "type": "auto",
+    "convertedAsset": "ETH",
+    "convertedQty": 1.23,
+    "receivedAsset": "USDC",
+    "receivedQty": 18123.43
+  }
 }
 ```
 </ResponseExample>
+
+The `type` field is `auto` for automatic conversions and `manual` for manual conversions.

@@ -5,6 +5,8 @@ description: "Subscribe to real-time token balance updates via private WebSocket
 
 This page describes the account-level private stream. This event is also forwarded through the [Broker Data Stream](/build-on-omnichain/websocket-api/broker-stream), which uses a broker-prefixed response topic and adds the affected user's `accountId`. Follow that guide for broker access and subscription behavior.
 
+For broker events, token entries in `data.balances` do not include the `averageOpenPrice` or `pnl24H` fields shown in the account-level example below. See the [broker payload details](/build-on-omnichain/websocket-api/broker-stream#message-envelope).
+
 Push interval: real-time push
 
 ```json

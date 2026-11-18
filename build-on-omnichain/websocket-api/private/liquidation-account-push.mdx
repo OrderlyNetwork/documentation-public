@@ -5,6 +5,8 @@ description: "Subscribe to account-level liquidation event notifications via pri
 
 This page describes the account-level private stream. This event is also forwarded through the [Broker Data Stream](/build-on-omnichain/websocket-api/broker-stream), which uses a broker-prefixed response topic and adds the affected user's `accountId`. Follow that guide for broker access and subscription behavior.
 
+For broker events, `data` is a single object rather than the array shown below. Its `positionsByPerp` field remains an array. See the [broker liquidation example](/build-on-omnichain/websocket-api/broker-stream#liquidation-event-example).
+
 Push interval: push on update
 
 ```json

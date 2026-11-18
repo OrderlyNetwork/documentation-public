@@ -5,6 +5,8 @@ description: "Subscribe to real-time position updates via private WebSocket stre
 
 This page describes the account-level private stream. This event is also forwarded through the [Broker Data Stream](/build-on-omnichain/websocket-api/broker-stream), which uses a broker-prefixed response topic and adds the affected user's `accountId`. Follow that guide for broker access and subscription behavior.
 
+For broker events, each entry in `data.positions` uses `updatedTime` rather than `updated_time` and includes `marginToken` (default `USDC`). See the [broker payload details](/build-on-omnichain/websocket-api/broker-stream#message-envelope).
+
 Push interval: push on update
 
 ```json

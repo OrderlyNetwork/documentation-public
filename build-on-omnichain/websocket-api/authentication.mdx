@@ -9,23 +9,25 @@ You can authenticate when creating the WebSocket connection by appending the aut
 
 For example, `wss://ws-private-evm.orderly.org/v2/ws/private/stream/0xd7379678a303b57d7d43eb23c64dd7528ac8cb4efe983a3aedcfe9b4aa4cb984?orderly_key=xxxxxxxx&timestamp=xxxxx&sign=xxxxx` will authenticate the user when creating the connection, no need to send auth request again.
 
-| Name        | Type      | Required | Description |
-| ----------- | --------- | -------- | ----------- |
-| orderly_key | string    | Y        | Orderly Key |
-| sign        | string    | Y        | signature   |
-| timestamp   | timestamp | Y        | timestamp   |
+| Name        | Type   | Required | Description                                                 |
+| ----------- | ------ | -------- | ----------------------------------------------------------- |
+| orderly_key | string | Y        | Orderly Key                                                 |
+| sign        | string | Y        | signature                                                   |
+| timestamp   | string | Y        | Unix timestamp in milliseconds, encoded as a decimal string |
+
+Send `timestamp` as a JSON string in an `auth` message. Sign that exact decimal string and encode the signature as base64url. The example values below are placeholders; generate a fresh timestamp and signature for each authentication attempt.
 
 <RequestExample>
 
-```bash
+```json
 {
-    "id":"123r",
-    "event":"auth",
-    "params":{
-        "orderly_key":"ed25519:CUS69ZJOXwSV38xo...",
-        "sign":"4180da84117fc9753b...",
-        "timestamp":1621910107900
-    }
+  "id": "123r",
+  "event": "auth",
+  "params": {
+    "orderly_key": "ed25519:CUS69ZJOXwSV38xo...",
+    "sign": "BASE64URL_SIGNATURE",
+    "timestamp": "1621910107900"
+  }
 }
 ```
 

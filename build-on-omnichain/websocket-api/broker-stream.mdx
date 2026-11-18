@@ -120,6 +120,9 @@ The linked account-level pages describe each event's business fields. Broker pay
 - `algoexecutionreport.data` is an array, including when it contains one report. `algoexecutionreportv2.data` is an object with optional nested `childOrders`.
 - `executionreport.data.averageExecutedPrice` is the cumulative average execution price. The payload also includes the `avgPrice` alias; do not expect the `avgExecutedPrice` spelling shown in the account-level example.
 - `executionreport.data.matchId` is a JSON number. Algo reports use a string-valued `matchId`. Do not expect the snake-case `match_id` field from the account-level execution report example.
+- `liquidationsaccount.data` is a single liquidation object containing `liquidationId`, `timestamp`, `transferAmountToInsuranceFund`, and a `positionsByPerp` array. The array wrapper in the account-level example does not apply to broker events.
+- `position.data.positions` is an array. Each position uses `updatedTime` for its update timestamp and includes `marginToken` for its margin asset, defaulting to `USDC`. Use `updatedTime` instead of the `updated_time` spelling in the account-level example.
+- `balance.data.balances` is keyed by token. Broker balance entries do not include `averageOpenPrice` or `pnl24H`; those fields in the account-level example are not part of the broker balance payload.
 - Optional fields with null values can be omitted. Examples on account-level pages do not require every field to be present in every broker event.
 
 For example, a balance update for a user under `example_broker` is:
@@ -142,6 +145,35 @@ For example, a balance update for a user under `example_broker` is:
 ```
 
 The example shows selected balance fields. Use `accountId` to keep each user's state separate. Do not route events to the admin account or assume the received `topic` equals the subscription string.
+
+### Liquidation event example
+
+A broker liquidation event contains one liquidation object. Its `positionsByPerp` array lists the affected perpetual positions:
+
+```json
+{
+  "topic": "example_broker@liquidationsaccount",
+  "accountId": "0x1111111111111111111111111111111111111111111111111111111111111111",
+  "ts": 1794873600100,
+  "data": {
+    "liquidationId": 101,
+    "timestamp": 1794873600000,
+    "transferAmountToInsuranceFund": 0,
+    "positionsByPerp": [
+      {
+        "symbol": "PERP_BTC_USDC",
+        "positionQty": 1.23,
+        "costPositionTransfer": 1350,
+        "transferPrice": 18123.43,
+        "liquidatorFee": 0.015,
+        "insuranceFundFee": 0.015,
+        "absLiquidationFee": 3520,
+        "marginMode": "CROSS"
+      }
+    ]
+  }
+}
+```
 
 ### Position information
 
