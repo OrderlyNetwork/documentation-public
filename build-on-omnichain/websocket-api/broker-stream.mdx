@@ -7,15 +7,15 @@ The broker data stream delivers events for accounts belonging to your broker thr
 
 ## Access and connection
 
-Contact Orderly to enable broker stream access and obtain the broker WebSocket endpoint for your environment. Use your configured **broker admin account ID** and an Orderly Key associated with that account. An ordinary user account cannot open a broker stream.
+Broker stream access is available only to brokers explicitly enabled by Orderly. Contact Orderly to enable access and obtain the broker WebSocket endpoint for your environment. Use your configured **broker admin account ID** and an Orderly Key associated with that account. An ordinary user account cannot open a broker stream.
 
-Orderly supplies the full connection base URL, including the stream path configured for your environment. Append the admin account ID as its final path segment:
+Use the connection base URL supplied by Orderly for your environment. Append the admin account ID as its final path segment:
 
 ```text
 wss://<broker-host>/<configured-stream-path>/{admin_account_id}
 ```
 
-Replace `<broker-host>` and `<configured-stream-path>` with the host and path provided by Orderly. The stream path is configurable; do not infer it from the account-level private endpoint. The final path parameter is the admin's account ID, not a broker ID or the account ID of a user you want to monitor.
+Replace `<broker-host>` and `<configured-stream-path>` with the host and path provided by Orderly. Use the supplied broker endpoint when connecting. The final path parameter is the admin's account ID, not a broker ID or the account ID of a user you want to monitor.
 
 The server derives the broker from the configured admin account. You do not supply a broker ID to select another broker's data.
 
@@ -99,10 +99,8 @@ Broker forwarding is available for the following event types. Access also depend
 | `balance`               | [Token balance updates](/build-on-omnichain/websocket-api/private/balance)                                          |
 | `position`              | [Position updates](/build-on-omnichain/websocket-api/private/position-push)                                         |
 | `liquidationsaccount`   | [Liquidation events for the liquidated account](/build-on-omnichain/websocket-api/private/liquidation-account-push) |
-| `assetconvert`          | [Asset conversion updates](/build-on-omnichain/websocket-api/private/asset-convert)                                 |
-| `positioninfo`          | Account risk and collateral information, described below                                                            |
 
-Other private topics, including `account`, `wallet`, `settle`, `notifications`, `liquidatorliquidations`, and `queuedorder`, are not forwarded through this broker stream. A successful subscription acknowledgment alone does not establish that a topic produces broker events.
+Use the topics listed above and confirm that they are enabled for your broker. A successful subscription acknowledgment alone does not establish that a topic produces broker events.
 
 ### Message envelope
 
@@ -133,7 +131,7 @@ Algo report versions use different `type` values:
 | Market         | `MARKET_ORDER`             | `MARKET`                |
 | Close position | `CLOSE_POSITION`           | `CLOSE_POSITION`        |
 
-The `MARKET` value in the linked account-level v1 example does not apply to broker v1 reports. Parse each topic using its own values. A v2 event is emitted only when the upstream message contains a new-format report with a positive `algoOrderId`; do not assume every v1 event has a corresponding v2 event.
+The `MARKET` value in the linked account-level v1 example does not apply to broker v1 reports. Parse each topic using its own values. The two topics provide different report formats; do not assume every v1 event has a corresponding v2 event.
 
 For example, a balance update for a user under `example_broker` is:
 
@@ -185,22 +183,6 @@ A broker liquidation event contains one liquidation object. Its `positionsByPerp
 }
 ```
 
-### Position information
-
-The `positioninfo` payload contains account-level risk settings and collateral information. Its `positions` object is keyed by token, such as `USDC`; it is not the perpetual position list delivered by `position`.
-
-| `data` fields                                                                                          | Type   | Description                                           |
-| ------------------------------------------------------------------------------------------------------ | ------ | ----------------------------------------------------- |
-| `marginMode`                                                                                           | string | Account margin mode.                                  |
-| `marginRate`, `liquidationMarginRate`                                                                  | number | Account margin and liquidation margin rates.          |
-| `leverage`, `futuresLeverage`                                                                          | number | Account leverage settings.                            |
-| `interestRate`                                                                                         | number | Account interest rate.                                |
-| `takerFeeRate`, `makerFeeRate`, `guiTakerFeeRate`, `guiMakerFeeRate`                                   | number | Account fee rates.                                    |
-| `futuresApiTakerFeeRate`, `futuresApiMakerFeeRate`, `futuresGuiTakerFeeRate`, `futuresGuiMakerFeeRate` | number | Futures fee rates by order source and liquidity role. |
-| `positions`                                                                                            | object | Collateral information keyed by token.                |
-
-Each entry in `data.positions` contains numeric fields `holding`, `outstandingHolding`, `pendingExposure`, `interest`, `breakEvenPrice`, `realisedPnl`, `settledPnl`, `markPx`, `liquidPx`, `fee24H`, `frozen`, `staked`, `unbonding`, and `vault`.
-
 ## Errors and reconnecting
 
 An unrecognized broker admin account is rejected when the connection is opened. Invalid credentials supplied in the URL also cause rejection and connection closure. Authentication and subscription command failures return `success: false`; broker stream error details are carried in `data`:
@@ -225,4 +207,4 @@ Send a JSON `ping` regularly while connected, for example every 10 seconds:
 }
 ```
 
-The server responds with `event: "pong"`, `success: true`, and a millisecond `ts`. Do not rely on the server sending a ping every 10 seconds; idle timeout behavior depends on the broker endpoint's configuration. After reconnecting, authenticate again and restore your subscriptions. Treat the stream as live events: do not assume a subscription sends an initial snapshot or replays events missed during a disconnection. Reconcile state through the appropriate authorized REST APIs. Newly registered users may not appear in the broker stream until their account-to-broker mapping has refreshed; do not rely on immediate coverage after registration.
+The server responds with `event: "pong"`, `success: true`, and a millisecond `ts`. Do not rely on the server sending a ping every 10 seconds; idle timeout behavior depends on the broker endpoint's configuration. After reconnecting, authenticate again and restore your subscriptions. Treat the stream as live events: do not assume a subscription sends an initial snapshot or replays events missed during a disconnection. Reconcile state through the appropriate authorized REST APIs. Events for newly registered users may be delayed. Reconcile their state through the appropriate authorized REST APIs until broker events are available.
