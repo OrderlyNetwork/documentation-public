@@ -9,13 +9,13 @@ The broker data stream delivers events for accounts belonging to your broker thr
 
 Broker stream access is available only to brokers explicitly enabled by Orderly. Contact Orderly to enable access and obtain the broker WebSocket endpoint for your environment. Use your configured **broker admin account ID** and an Orderly Key associated with that account. An ordinary user account cannot open a broker stream.
 
-Use the connection base URL supplied by Orderly for your environment. Append the admin account ID as its final path segment:
+The staging/testnet connection URL is:
 
 ```text
-wss://<broker-host>/<configured-stream-path>/{admin_account_id}
+wss://testnet-ws-broker.orderly.org/ws/stream/{admin_account_id}
 ```
 
-Replace `<broker-host>` and `<configured-stream-path>` with the host and path provided by Orderly. Use the supplied broker endpoint when connecting. The final path parameter is the admin's account ID, not a broker ID or the account ID of a user you want to monitor.
+Replace `{admin_account_id}` with your configured broker admin account ID. Use `/ws/stream/` in this URL. Contact Orderly for the mainnet broker endpoint; the account-level private stream endpoint is a separate connection.
 
 The server derives the broker from the configured admin account. You do not supply a broker ID to select another broker's data.
 
@@ -26,19 +26,47 @@ Use the [WebSocket authentication](/build-on-omnichain/websocket-api/authenticat
 1. Generate a current Unix timestamp in milliseconds.
 2. Sign the timestamp's decimal string using the admin account's Orderly secret key and Ed25519. Do not append an HTTP method, path, or body.
 3. Encode the signature as base64url.
-4. Supply all three URL authentication parameters when opening the broker connection, then subscribe after the connection succeeds.
+4. Authenticate with all three URL parameters or an `AUTH` message before subscribing.
 
 The timestamp must be within five minutes of the server's current time. Use the full `ed25519:<public-key>` value for `orderly_key`. Only send the public key, timestamp, and signature; keep the secret key local.
 
 ### Authenticate in the connection URL
 
-Append `orderly_key`, `timestamp`, and `sign` to the connection URL. URL-encode the parameter values. Provide all three parameters together so authentication is performed while opening the connection; a successful URL authentication does not require a separate `auth` message.
+Append `orderly_key`, `timestamp`, and `sign` to the connection URL. Preserve the literal colon in `ed25519:<public-key>`; percent-encoding it as `%3A` does not work with the tested staging endpoint. The timestamp is a decimal string and the signature is base64url. Provide all three parameters together; successful URL authentication does not require a separate `AUTH` message.
 
 ```text
-wss://<broker-host>/<configured-stream-path>/{admin_account_id}?orderly_key=<encoded-orderly-key>&timestamp=<timestamp-ms>&sign=<encoded-base64url-signature>
+wss://testnet-ws-broker.orderly.org/ws/stream/{admin_account_id}?orderly_key=ed25519:<public-key>&timestamp=<timestamp-ms>&sign=<base64url-signature>
 ```
 
 The values above are placeholders. Generate a fresh timestamp and signature for each connection. Never put the secret key in the URL.
+
+### Authenticate with a message
+
+Alternatively, connect to the staging URL without query parameters, then send:
+
+```json
+{
+  "id": "broker-auth-1",
+  "event": "AUTH",
+  "params": {
+    "orderly_key": "ed25519:ADMIN_PUBLIC_KEY",
+    "timestamp": "1795159681000",
+    "sign": "BASE64URL_SIGNATURE"
+  }
+}
+```
+
+Replace the example values with your public key and a fresh timestamp and signature. Keep `timestamp` as a JSON string. Wait for a successful authentication response before subscribing:
+
+```json
+{
+  "id": "broker-auth-1",
+  "event": "AUTH",
+  "success": true,
+  "ts": 1795159681160,
+  "data": ""
+}
+```
 
 ## Subscribe and unsubscribe
 
@@ -47,7 +75,7 @@ Use the plain topic name in subscription requests. The server scopes the subscri
 ```json
 {
   "id": "broker-sub-1",
-  "event": "subscribe",
+  "event": "SUBSCRIBE",
   "topic": "executionreport"
 }
 ```
@@ -55,20 +83,20 @@ Use the plain topic name in subscription requests. The server scopes the subscri
 ```json
 {
   "id": "broker-sub-1",
-  "event": "subscribe",
+  "event": "SUBSCRIBE",
   "success": true,
   "ts": 1794873600002
 }
 ```
 
-Send a separate request for each topic. Do not prefix subscription topics with a broker ID or account ID.
+Use the uppercase command names shown here. Command responses return uppercase event names. Send a separate request for each topic. Do not prefix subscription topics with a broker ID or account ID.
 
-To unsubscribe, put the topic names in a nonempty `params` array. Changing only `event` in a subscribe request is not sufficient:
+To unsubscribe, send `UN_SUBSCRIBE` with the topic names in a nonempty `params` array. The event name includes an underscore; `unsubscribe` is rejected. Changing only `event` in a subscribe request is not sufficient:
 
 ```json
 {
   "id": "broker-unsub-1",
-  "event": "unsubscribe",
+  "event": "UN_SUBSCRIBE",
   "params": ["executionreport"]
 }
 ```
@@ -78,7 +106,7 @@ The response lists the topics actually removed:
 ```json
 {
   "id": "broker-unsub-1",
-  "event": "unsubscribe",
+  "event": "UN_SUBSCRIBE",
   "success": true,
   "ts": 1794873600003,
   "data": ["executionreport"]
@@ -190,7 +218,7 @@ An unrecognized broker admin account is rejected when the connection is opened. 
 ```json
 {
   "id": "broker-sub-1",
-  "event": "subscribe",
+  "event": "SUBSCRIBE",
   "success": false,
   "ts": 1794873600002,
   "data": "invalid topic"
@@ -199,7 +227,7 @@ An unrecognized broker admin account is rejected when the connection is opened. 
 
 If access fails, verify the environment-specific endpoint, configured admin account, key ownership, signature encoding, and timestamp. A successful authentication does not replace broker access configuration.
 
-Send a JSON `ping` regularly while connected, for example every 10 seconds:
+The server can send a keep-alive request such as:
 
 ```json
 {
@@ -207,4 +235,14 @@ Send a JSON `ping` regularly while connected, for example every 10 seconds:
 }
 ```
 
-The server responds with `event: "pong"`, `success: true`, and a millisecond `ts`. Do not rely on the server sending a ping every 10 seconds; idle timeout behavior depends on the broker endpoint's configuration. After reconnecting, authenticate again and restore your subscriptions. Treat the stream as live events: do not assume a subscription sends an initial snapshot or replays events missed during a disconnection. Reconcile state through the appropriate authorized REST APIs. Events for newly registered users may be delayed. Reconcile their state through the appropriate authorized REST APIs until broker events are available.
+Reply promptly with:
+
+```json
+{
+  "event": "PONG"
+}
+```
+
+Your client can also send `{"event": "PING"}` regularly, for example every 10 seconds. The server responds with `event: "PONG"`, `success: true`, and a millisecond `ts`. Handle server-initiated `ping` as well as command responses; idle timeout settings can vary by environment.
+
+After reconnecting, authenticate again and restore your subscriptions. Treat the stream as live events: do not assume a subscription sends an initial snapshot or replays events missed during a disconnection. Events for newly registered users may also be delayed. Reconcile state through the appropriate authorized REST APIs.
