@@ -9,13 +9,19 @@ The broker data stream delivers events for accounts belonging to your broker thr
 
 Broker stream access is available only to brokers explicitly enabled by Orderly. Contact Orderly to enable access and obtain the broker WebSocket endpoint for your environment. Use your configured **broker admin account ID** and an Orderly Key associated with that account. An ordinary user account cannot open a broker stream.
 
-The staging/testnet connection URL is:
+Mainnet (production):
+
+```text
+wss://ws-broker.orderly.org/ws/stream/{admin_account_id}
+```
+
+Staging/testnet:
 
 ```text
 wss://testnet-ws-broker.orderly.org/ws/stream/{admin_account_id}
 ```
 
-Replace `{admin_account_id}` with your configured broker admin account ID. Use `/ws/stream/` in this URL. Contact Orderly for the mainnet broker endpoint; the account-level private stream endpoint is a separate connection.
+Replace `{admin_account_id}` with your configured broker admin account ID. Use `/ws/stream/` in both environments. The account-level private stream endpoint is a separate connection.
 
 The server derives the broker from the configured admin account. You do not supply a broker ID to select another broker's data.
 
@@ -42,7 +48,7 @@ The values above are placeholders. Generate a fresh timestamp and signature for 
 
 ### Authenticate with a message
 
-Alternatively, connect to the staging URL without query parameters, then send:
+Alternatively, connect to the URL for your environment without query parameters, then send:
 
 ```json
 {
